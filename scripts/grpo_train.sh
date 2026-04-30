@@ -78,6 +78,11 @@ DATASET=${DATASET:-stream_agent_rl_traj}
 SAVE_STEPS=${SAVE_STEPS:-200}
 RUN_NAME=${RUN_NAME:-agent-grpo}
 
+# v12.6: pre-extracted frames root — eliminates 300s+ online video decode per rollout.
+# When unset, falls back to legacy in-line video decoding.
+VLLM_ROLLOUT_FRAMES_ROOT=${VLLM_ROLLOUT_FRAMES_ROOT:-${PROJECT_DIR}/data/agent_v5/frames}
+VLLM_ROLLOUT_VIDEO_ROOT=${VLLM_ROLLOUT_VIDEO_ROOT:-/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos}
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 DEEPSPEED="${SCRIPT_DIR}/zero3.json"
@@ -155,6 +160,8 @@ torchrun --nproc_per_node=${NPROC} \
     --args.train.rollout_fpc 2.0 \
     --args.train.time_reward_window 5 \
     --args.train.time_reward_slack 3.0 \
+    --args.train.vllm_rollout_frames_root "${VLLM_ROLLOUT_FRAMES_ROOT}" \
+    --args.train.vllm_rollout_video_root "${VLLM_ROLLOUT_VIDEO_ROOT}" \
     --args.train.dataloader.num_workers 4 \
     --args.train.dataloader.pin_memory True \
     ${MAX_STEPS_ARG}
