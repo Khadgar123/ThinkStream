@@ -535,6 +535,12 @@ async def run_pipeline(
                     save_1b(vid, ev)
                     n_sc = sum(1 for c in ev if c.get("state_changes"))
                     await tracker_1b.record(success=True, video_id=vid, state_changes=n_sc)
+            elif run_2:
+                # --skip_pass 1 + run pass2 → still need 1b evidence on disk
+                # for pass2's compression boundary scoring (state_change-aware
+                # range selection in score_range_for_compression). Without
+                # this, pass2 falls back to evidence=None and degrades.
+                ev = load_1b(vid)
 
             # --- Pass 2 ---
             if run_2:
