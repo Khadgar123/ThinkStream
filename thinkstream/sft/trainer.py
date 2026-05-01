@@ -257,7 +257,7 @@ class WeightedSFTTrainer(Trainer):
                         if ans_start is not None and ans_end is not None
                         else []
                     )
-                for ans_start, ans_end in ans_spans:
+                for turn_idx, (ans_start, ans_end) in enumerate(ans_spans):
                     if ans_start is None or ans_end is None:
                         continue
                     s = max(1, int(ans_start))   # logits[p-1] predicts pos p
@@ -280,14 +280,28 @@ class WeightedSFTTrainer(Trainer):
                     # sample_type. v12.11: now invoked per assistant turn,
                     # so multi-turn recall samples get BOTH tool_call and
                     # final-answer turns counted toward behavioral stats.
+                    # turn_idx tells the helper which turn this span is so
+                    # it can pick the right expected_kind for shape-B
+                    # recall (turn 0 = tool_call, turn 1 = final answer).
                     self._accumulate_v12_behavioral(
                         preds, input_ids, b, s, e, stype,
+                        turn_idx=turn_idx,
+                        n_turns=len(ans_spans),
                     )
 
     def _accumulate_v12_behavioral(
         self, preds, input_ids, b: int, s: int, e: int, stype: str,
+        turn_idx: int = 0, n_turns: int = 1,
     ) -> None:
-        """v12.1 per-sample behavioral counters from teacher-forced argmax."""
+        """v12.1 per-sample behavioral counters from teacher-forced argmax.
+
+        v12.11 audit-3 fix (2026-05-01): turn_idx + n_turns added so this
+        helper can disambiguate the EXPECTED kind for multi-turn recall
+        samples (shape B = [tool_call, final_answer]). For sample_type
+        "recall" with n_turns=2, turn 0 expects "recall", turn 1 expects
+        "answer_nonempty". Single-turn samples (n_turns=1) keep the prior
+        behavior of inferring expected directly from sample_type.
+        """
         # Lazy-init on first call so __init__ doesn't change.
         if "v12_kind_match" not in self._eval_acc:
             for k in (
@@ -322,7 +336,14 @@ class WeightedSFTTrainer(Trainer):
             self._eval_acc["v12_format_valid"][stype] += 1
             self._eval_acc["v12_format_valid"]["_all"] += 1
 
-        if stype == "silent":
+        # v12.11 audit-3 fix: shape-B recall samples have 2 assistant turns;
+        # turn 0 should be tool_call ("recall"), turn 1 should be final
+        # answer ("answer_nonempty"). Inferring expected purely from
+        # sample_type would tag turn 1 as "recall" too → false negative on
+        # v12_kind_match.
+        if stype in ("recall_query", "recall") and n_turns >= 2:
+            expected_kind = "recall" if turn_idx == 0 else "answer_nonempty"
+        elif stype == "silent":
             expected_kind = "answer_empty"
         elif stype in ("response", "recall_response"):
             expected_kind = "answer_nonempty"

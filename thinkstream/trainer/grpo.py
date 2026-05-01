@@ -724,6 +724,13 @@ def rollout(
                 # Loss-time logprobs need the same memory/visual_window/
                 # queries context the rollout used.
                 "step_messages": [],
+                # v12.11 audit-3 fix (2026-05-01): per-gen first-pass recall
+                # tool_call text. Reward parser at _calc_rewards_v12_trajectory
+                # reads cr["recall_first_pass_text"][gen_idx] to count actual
+                # recall calls (n_recall / spam / behavior_recall_used_rate).
+                # Without merging this field per-gen, those counters all read
+                # zero on HF rollout despite recalls actually happening.
+                "recall_first_pass_text": [],
             }
             for g in range(group_size):
                 if ci < len(per_gen_results[g]):
@@ -737,6 +744,9 @@ def rollout(
                         list(cr_g.get("recall_returned_chunks") or [])
                     )
                     merged["step_messages"].append(cr_g.get("step_messages"))
+                    merged["recall_first_pass_text"].append(
+                        cr_g.get("recall_first_pass_text", "")
+                    )
                 else:
                     # Pad with empty if this gen finished early
                     merged["generated_tokens"].append(torch.tensor([]))
@@ -744,6 +754,7 @@ def rollout(
                     merged["compress_budget"].append(0)
                     merged["recall_returned_chunks"].append([])
                     merged["step_messages"].append(None)
+                    merged["recall_first_pass_text"].append("")
             merged_chunk_results.append(merged)
 
         all_rollout_results.append({
@@ -893,14 +904,48 @@ def _calc_rewards_v12(
                 chunk_texts.append(text)
 
                 parsed = parse_agent_output_v12(text)
+
+                # v12.11 audit-3 fix (2026-05-01): legacy flat reward path
+                # parity with trajectory path. generated_tokens is the
+                # SECOND-pass answer for recall chunks (P0.6 fix); the
+                # first-pass tool_call lives in recall_first_pass_text.
+                # Without re-parsing first pass, n_recall stays zero on
+                # actual recall trajectories under DATASET=stream_agent_rl.
+                fpt_field = cr.get("recall_first_pass_text", "")
+                if isinstance(fpt_field, list):
+                    first_pass_text = fpt_field[g] if g < len(fpt_field) else ""
+                else:
+                    first_pass_text = fpt_field or ""
+                first_pass_parsed = (
+                    parse_agent_output_v12(first_pass_text)
+                    if first_pass_text else None
+                )
+                is_recall_chunk = (
+                    first_pass_parsed is not None
+                    and first_pass_parsed.get("kind") == "recall"
+                )
+
                 if parsed["kind"] == "answer" and parsed["answer_text"]:
                     if answer_chunk is None:
                         answer_chunk = cr["chunk_idx"]
                         final_answer = parsed["answer_text"]
-                elif parsed["kind"] == "recall":
+                if is_recall_chunk:
+                    # Capture recall via FIRST-pass parser (which sees the
+                    # actual tool_call). Counted regardless of second-pass kind.
                     n_recall += 1
-                    # v12.2: capture query text and retriever output for this
-                    # recall event (mirrors v11 grpo.py:1329-1334 logic)
+                    args = (first_pass_parsed.get("tool_call") or {}).get("arguments") or {}
+                    if recall_query_text is None:
+                        recall_query_text = args.get("query") or ""
+                    returned_lists = cr.get("recall_returned_chunks") or []
+                    if isinstance(returned_lists, list) and g < len(returned_lists):
+                        rl = returned_lists[g]
+                        if isinstance(rl, list):
+                            recall_returned_per_call.append([int(c) for c in rl])
+                elif parsed["kind"] == "recall":
+                    # Edge case: no recall_first_pass_text (legacy rollout
+                    # cache from before the per-gen merge). Fall back to
+                    # second-pass parsing.
+                    n_recall += 1
                     args = (parsed.get("tool_call") or {}).get("arguments") or {}
                     if recall_query_text is None:
                         recall_query_text = args.get("query") or ""
@@ -1077,7 +1122,14 @@ def _calc_rewards_v12_trajectory(
                 # present, classify the chunk as kind="recall" (its semantic
                 # action), and keep the answer_text from second-pass for
                 # outcome scoring.
-                first_pass_text = cr.get("recall_first_pass_text", "") or ""
+                # v12.11 audit-3: recall_first_pass_text is now a per-gen
+                # list (merged in rollout step). Index by g; tolerate the
+                # legacy scalar shape for back-compat with cached rollouts.
+                fpt_field = cr.get("recall_first_pass_text", "")
+                if isinstance(fpt_field, list):
+                    first_pass_text = fpt_field[g] if g < len(fpt_field) else ""
+                else:
+                    first_pass_text = fpt_field or ""
                 first_pass_parsed = (
                     parse_agent_output_v12(first_pass_text)
                     if first_pass_text else None
