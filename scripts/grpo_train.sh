@@ -33,7 +33,15 @@
 #                         Cap=100 covers ~95% of RL trajectories.
 #                         Lower to 30 if compute-bound and using
 #                         legacy stream_agent_rl single-question dataset.
-#   ROLLOUT_MAX_NEW_TOK - max new tokens per chunk generation (128)
+#   ROLLOUT_MAX_NEW_TOK - max new tokens per chunk generation (512).
+#                         v12.11 hotfix (2026-05-01): bumped 128 → 512.
+#                         Compress action emits a <tool_call>compress(...)</tool_call>
+#                         containing summary text up to SUMMARY_TOKENS_MAX=280
+#                         + tags + JSON wrapper + leading think (60) ≈ 400 tok.
+#                         128 truncated mid-JSON → parse failure → memory
+#                         compression silently skipped → recent_thinks grew
+#                         past hysteresis. 512 = 25% margin on the 400 worst
+#                         case; enough for descriptive recall answers too.
 #   ROLLOUT_TEMP        - rollout temperature (1.0)
 #   LR                  - learning rate (5e-7)
 #   EPOCHS              - num train epochs (2)
@@ -59,7 +67,7 @@ NPROC=${NPROC:-8}
 GROUP_SIZE=${GROUP_SIZE:-4}
 MICRO_BATCH=${MICRO_BATCH:-4}
 ROLLOUT_MAX_CHUNKS=${ROLLOUT_MAX_CHUNKS:-100}
-ROLLOUT_MAX_NEW_TOK=${ROLLOUT_MAX_NEW_TOK:-128}
+ROLLOUT_MAX_NEW_TOK=${ROLLOUT_MAX_NEW_TOK:-512}
 ROLLOUT_TEMP=${ROLLOUT_TEMP:-1.0}
 LR=${LR:-5e-7}
 EPOCHS=${EPOCHS:-2}
