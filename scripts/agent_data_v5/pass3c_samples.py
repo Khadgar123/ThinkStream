@@ -125,12 +125,29 @@ def _silent_sample(
     trajectory_id: str, *, card_id: str = "",
     sequence_type: str = "", base_role: str = "active_silent",
     sample_subtype: str = "silent", user_input: str = "",
+    compress_event: Optional[Dict] = None,
 ) -> Dict:
+    """Build silent sample. compress_event (when provided) injects
+    <compress_trigger range='a-b'/> into user_input so the model can see
+    the system event. Mirrors old pass3c compress sample's user_input
+    convention so the model learns: trigger appears → observe silently.
+    """
     sample_type = "recall_silent" if sample_subtype == "recall+silent" else "silent"
     output_text = build_assistant_content_v12(
         think=think, kind="answer", answer_text="",
     )
-    return {
+    final_user_input = user_input
+    inter_chunk = False
+    if compress_event:
+        tr = compress_event.get("summary", {}).get("time_range", [])
+        if isinstance(tr, list) and len(tr) == 2:
+            trigger_tag = f"<compress_trigger range='{int(tr[0])}-{int(tr[1])}'/>"
+        else:
+            trigger_tag = "<compress_trigger/>"
+        final_user_input = (trigger_tag +
+                             (("\n" + user_input) if user_input else ""))
+        inter_chunk = True
+    sample = {
         "chunk_idx": chunk_idx,
         "sample_type": sample_type,
         "prompt_type": "SYSTEM_PROMPT",
@@ -140,10 +157,14 @@ def _silent_sample(
         "action": "silent",
         "output": output_text,
         "queries": deepcopy(queries),
-        "user_input": user_input,
+        "user_input": final_user_input,
         "recall_result": None,
         "base_role": base_role,
     }
+    if inter_chunk:
+        # System-event chunks render WITHOUT visual_window in pass5
+        sample["v12_inter_chunk"] = True
+    return sample
 
 
 def _response_sample(
@@ -235,6 +256,12 @@ async def generate_trajectory_samples(
     compress_chunks = [int(e.get("trigger_chunk", -1))
                        for e in rollout.get("compression_events", [])
                        if e.get("trigger_chunk", -1) >= 0]
+    # Map trigger_chunk → full event so we can inject <compress_trigger>
+    compress_event_by_chunk: Dict[int, Dict] = {
+        int(e.get("trigger_chunk", -1)): e
+        for e in rollout.get("compression_events", [])
+        if e.get("trigger_chunk", -1) >= 0
+    }
 
     # Run design's gold-action pipeline (handles patrol stratification,
     # compress_silent, priority resolution).
@@ -286,6 +313,7 @@ async def generate_trajectory_samples(
             raw.append(_silent_sample(
                 c, _think_for_chunk(rollout, c), queries_state, traj_id,
                 base_role="compress_event", sample_subtype="compress_silent",
+                compress_event=compress_event_by_chunk.get(c),
             ))
         elif ds.sample_kind == "silent":
             raw.append(_silent_sample(

@@ -74,12 +74,15 @@ def dict_to_card(d: Dict) -> Card:
 
 
 async def generate_cards(
-    evidence: List[Dict],
-    client=None,                     # kept for API compat; LLM hook below
-    video_id: str = "",
+    *args,
     seed: int = 42,
+    **kwargs,
 ) -> List[Dict]:
     """Generate v2 cards from evidence.
+
+    Accepts both call styles to stay drop-in:
+      - new:      generate_cards(evidence, client=..., video_id=...)
+      - pipeline: generate_cards(video_id, evidence, client)         ← pipeline.py:677
 
     Currently uses heuristic from v2/cards.py. To switch to 397B:
     1. Build prompts that ask the teacher for {family, question, gold_emits,
@@ -87,8 +90,36 @@ async def generate_cards(
     2. Replace the body of `_generate_via_llm` with the real call.
     3. Card schema stays identical — no downstream changes needed.
     """
+    video_id, evidence, _client = _parse_card_args(args, kwargs)
     cards = _generate_via_heuristic(evidence, video_id, seed)
     return [_card_to_dict(c) for c in cards]
+
+
+def _parse_card_args(args, kwargs):
+    """Disambiguate (evidence, client, video_id) vs (video_id, evidence, client).
+
+    pipeline.py uses positional (vid, evidence, client) — we detect that
+    by the FIRST positional being a str (video_id) instead of a list.
+    """
+    video_id = kwargs.get("video_id", "")
+    evidence = kwargs.get("evidence", None)
+    client = kwargs.get("client", None)
+    if args:
+        if isinstance(args[0], str):
+            # (video_id, evidence, client) form
+            video_id = args[0]
+            if len(args) > 1:
+                evidence = args[1]
+            if len(args) > 2:
+                client = args[2]
+        else:
+            # (evidence, client, video_id) form
+            evidence = args[0]
+            if len(args) > 1:
+                client = args[1]
+            if len(args) > 2:
+                video_id = args[2]
+    return video_id, (evidence or []), client
 
 
 def _generate_via_heuristic(evidence: List[Dict], video_id: str, seed: int) -> List[Card]:
@@ -105,14 +136,22 @@ async def _generate_via_llm(
     )
 
 
-async def verify_cards(
-    cards: List[Dict],
-    client=None,
-    video_id: str = "",
-) -> List[Dict]:
-    """No-op in v2: schema is teacher-validated at generation; pass3e still
-    runs sanity tags on rendered samples. Kept for pipeline.py API compat."""
-    return cards
+async def verify_cards(*args, **kwargs) -> List[Dict]:
+    """No-op in v2.
+
+    Accepts both:
+      - verify_cards(cards, client, video_id)                  (legacy)
+      - verify_cards(video_id, cards, evidence, client)        (pipeline.py:679)
+    Returns the cards list unchanged.
+    """
+    cards = kwargs.get("cards")
+    if cards is None:
+        # Find the first list arg (cards is always a list of dicts)
+        for a in args:
+            if isinstance(a, list):
+                cards = a
+                break
+    return cards or []
 
 
 def save_cards(video_id: str, cards: List[Dict],
