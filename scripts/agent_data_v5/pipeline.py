@@ -497,88 +497,138 @@ async def run_pipeline(
                 rollout_map[v["video_id"]] = cached
 
     if run_1 or run_2:
-        async def process_video_pipeline(video):
-            vid = video["video_id"]
-            caps = None
-            ev = None
-            roll = None
+        # v12.11 (2026-05-01): refactor — replace per-video chained pipeline
+        # with three sequential WAVES (1a → 1b → 2), each fully parallel
+        # across all videos.
+        #
+        # Why: the prior `process_video_pipeline` chained 1a → 1b → 2 per
+        # video and gathered all videos. That meant the SHARED vLLM endpoint
+        # saw a mix of (pass1a long-prefill / pass1b very-long-prefill /
+        # pass2 short-fast) requests at the same time. vLLM's batching
+        # scheduler prioritized short requests → pass1b's long sequences
+        # got starved → wall-clock dominated by tail of pass1b. User's
+        # measurement: chained > 8h vs. waves ~4h on 320 batch1 videos.
+        #
+        # Trade-off: waves require all 320 to finish stage N before stage
+        # N+1 starts. The slowest video in stage N gates stage N+1. But
+        # this is FAR better than vLLM internal starvation, because each
+        # wave runs with uniform request length distribution → vLLM can
+        # batch optimally without head-of-line blocking from short tasks.
+        #
+        # Each wave still uses its dedicated client + semaphore (defined
+        # above), so per-pass concurrency caps are unchanged.
 
-            # --- Pass 1a ---
-            if run_1:
+        evidence_1a_map: Dict[str, list] = {}
+        evidence_map: Dict[str, list] = {}
+        rollout_per_video: Dict[str, dict] = {}
+
+        # ─── Wave 1: Pass 1a (per-chunk evidence) ───────────────────────
+        if run_1:
+            async def _do_pass1a(video):
+                vid = video["video_id"]
                 cached = load_1a(vid)
                 if cached:
-                    caps = cached
-                else:
-                    async with video_semaphore_1a:
-                        caps = await run_pass1a(
-                            video_id=vid,
-                            frame_paths=video_frames.get(vid, []),
-                            num_chunks=video["num_chunks"],
-                            client=client_1a,
-                        )
-                    save_1a(vid, caps)
-                    n_ok = sum(1 for c in caps if c.get("parse_success"))
-                    await tracker_1a.record(success=n_ok > 0, video_id=vid, chunks=len(caps), parsed=n_ok)
-
-            # --- Pass 1b ---
-            if run_1 and caps:
-                cached = load_1b(vid)
-                if cached:
-                    ev = cached
-                else:
-                    async with video_semaphore_1b:
-                        ev = await run_pass1b(
-                            evidence=caps,
-                            client=client_1b,
-                            video_id=vid,
-                        )
-                    save_1b(vid, ev)
-                    n_sc = sum(1 for c in ev if c.get("state_changes"))
-                    await tracker_1b.record(success=True, video_id=vid, state_changes=n_sc)
-            elif run_2:
-                # --skip_pass 1 + run pass2 → still need 1b evidence on disk
-                # for pass2's compression boundary scoring (state_change-aware
-                # range selection in score_range_for_compression). Without
-                # this, pass2 falls back to evidence=None and degrades.
-                ev = load_1b(vid)
-
-            # --- Pass 2 ---
-            if run_2:
-                cached = load_rollout(vid)
-                if cached:
-                    roll = cached
-                else:
-                    rollout = await run_pass2_single_video(
+                    return vid, cached
+                async with video_semaphore_1a:
+                    caps = await run_pass1a(
                         video_id=vid,
                         frame_paths=video_frames.get(vid, []),
                         num_chunks=video["num_chunks"],
-                        client=client_2,
-                        evidence=ev,
-                        chunk_log_path=pass2_chunk_log,
+                        client=client_1a,
                     )
-                    save_rollout(vid, rollout)
-                    await tracker_p2.record(
-                        success=True, video_id=vid,
-                        thinks=len(rollout["thinks"]),
-                        compressions=len(rollout["compression_events"]),
-                    )
-                    roll = rollout
+                save_1a(vid, caps)
+                n_ok = sum(1 for c in caps if c.get("parse_success"))
+                await tracker_1a.record(
+                    success=n_ok > 0, video_id=vid,
+                    chunks=len(caps), parsed=n_ok,
+                )
+                return vid, caps
 
-            return vid, caps, ev, roll
-
-        results = await asyncio.gather(*[process_video_pipeline(v) for v in videos])
-
-        if run_1:
-            evidence_1a_map = {vid: caps for vid, caps, ev, roll in results}
-            evidence_map = {vid: ev for vid, caps, ev, roll in results if ev is not None}
+            logger.info("=" * 60)
+            logger.info(f"WAVE 1: Pass 1a — {len(videos)} videos in parallel "
+                        f"(video_concurrency={VIDEO_CONCURRENCY_1A})")
+            logger.info("=" * 60)
+            wave1_results = await asyncio.gather(*[_do_pass1a(v) for v in videos])
+            evidence_1a_map = {vid: caps for vid, caps in wave1_results}
             tracker_1a.summary()
+
+        # ─── Wave 2: Pass 1b (entity link + state changes) ───────────────
+        if run_1:
+            async def _do_pass1b(video):
+                vid = video["video_id"]
+                caps = evidence_1a_map.get(vid)
+                if not caps:
+                    # 1a failed for this video → skip 1b
+                    return vid, None
+                cached = load_1b(vid)
+                if cached:
+                    return vid, cached
+                async with video_semaphore_1b:
+                    ev = await run_pass1b(
+                        evidence=caps,
+                        client=client_1b,
+                        video_id=vid,
+                    )
+                save_1b(vid, ev)
+                n_sc = sum(1 for c in ev if c.get("state_changes"))
+                await tracker_1b.record(
+                    success=True, video_id=vid, state_changes=n_sc,
+                )
+                return vid, ev
+
+            logger.info("=" * 60)
+            logger.info(f"WAVE 2: Pass 1b — {len(videos)} videos in parallel "
+                        f"(video_concurrency={VIDEO_CONCURRENCY_1B})")
+            logger.info("=" * 60)
+            wave2_results = await asyncio.gather(*[_do_pass1b(v) for v in videos])
+            evidence_map = {vid: ev for vid, ev in wave2_results if ev is not None}
             tracker_1b.summary()
             from .cache_version import write_stage_version
             write_stage_version("1a")
             write_stage_version("1b")
+        elif run_2:
+            # --skip_pass 1 + run pass2: still need 1b evidence on disk for
+            # pass2's compression boundary scoring (state_change-aware range
+            # selection in score_range_for_compression).
+            for v in videos:
+                ev = load_1b(v["video_id"])
+                if ev is not None:
+                    evidence_map[v["video_id"]] = ev
+
+        # ─── Wave 3: Pass 2 (streaming rollout) ───────────────────────────
+        if run_2:
+            async def _do_pass2(video):
+                vid = video["video_id"]
+                cached = load_rollout(vid)
+                if cached:
+                    return vid, cached
+                rollout = await run_pass2_single_video(
+                    video_id=vid,
+                    frame_paths=video_frames.get(vid, []),
+                    num_chunks=video["num_chunks"],
+                    client=client_2,
+                    evidence=evidence_map.get(vid),
+                    chunk_log_path=pass2_chunk_log,
+                )
+                save_rollout(vid, rollout)
+                await tracker_p2.record(
+                    success=True, video_id=vid,
+                    thinks=len(rollout["thinks"]),
+                    compressions=len(rollout["compression_events"]),
+                )
+                return vid, rollout
+
+            logger.info("=" * 60)
+            logger.info(f"WAVE 3: Pass 2 — {len(videos)} videos in parallel "
+                        f"(chunk_concurrency={client_2.max_concurrent})")
+            logger.info("=" * 60)
+            wave3_results = await asyncio.gather(*[_do_pass2(v) for v in videos])
+            rollout_per_video = {vid: r for vid, r in wave3_results if r is not None}
 
         if run_2:
-            rollout_map = {vid: roll for vid, caps, ev, roll in results if roll is not None}
+            # v12.11: rollout_map now sourced from rollout_per_video (wave 3
+            # output) instead of the legacy 4-tuple-from-process_video_pipeline.
+            rollout_map = dict(rollout_per_video)
             tracker_p2.summary()
             from .cache_version import write_stage_version
             write_stage_version("2")
