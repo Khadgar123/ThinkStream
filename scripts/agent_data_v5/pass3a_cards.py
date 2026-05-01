@@ -20,9 +20,17 @@ import re
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from .config import TASK_CARDS_DIR
+import asyncio
+
+from .config import TASK_CARDS_DIR, PASS_CONFIG
 from .v2.cards import generate_cards as _heuristic_generate
 from .v2.design import Card, GoldEmit
+from .v2.llm_prompts import (
+    FAMILY_RULES,
+    QUESTION_TYPE_BY_FAMILY,
+    card_generation_prompt,
+    parse_card_response,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -84,15 +92,15 @@ async def generate_cards(
       - new:      generate_cards(evidence, client=..., video_id=...)
       - pipeline: generate_cards(video_id, evidence, client)         ← pipeline.py:677
 
-    Currently uses heuristic from v2/cards.py. To switch to 397B:
-    1. Build prompts that ask the teacher for {family, question, gold_emits,
-       grounding_frames, options, correct_option} JSON.
-    2. Replace the body of `_generate_via_llm` with the real call.
-    3. Card schema stays identical — no downstream changes needed.
+    Routing:
+      - client is not None  → 397B per-family LLM generation (production)
+      - client is None      → heuristic (offline/simulator)
     """
-    video_id, evidence, _client = _parse_card_args(args, kwargs)
-    cards = _generate_via_heuristic(evidence, video_id, seed)
-    return [_card_to_dict(c) for c in cards]
+    video_id, evidence, client = _parse_card_args(args, kwargs)
+    if client is None:
+        cards = _generate_via_heuristic(evidence, video_id, seed)
+        return [_card_to_dict(c) for c in cards]
+    return await _generate_via_llm(evidence, client, video_id, seed)
 
 
 def _parse_card_args(args, kwargs):
@@ -128,12 +136,60 @@ def _generate_via_heuristic(evidence: List[Dict], video_id: str, seed: int) -> L
 
 async def _generate_via_llm(
     evidence: List[Dict], client, video_id: str, seed: int,
-) -> List[Card]:
-    """Stub for 397B-driven card generation. Not yet wired."""
-    raise NotImplementedError(
-        "LLM-based card generation not yet implemented; "
-        "use heuristic via generate_cards() default path."
-    )
+) -> List[Dict]:
+    """397B-driven card generation. Per-family parallel via asyncio.gather.
+
+    Each family fires ONE request that returns 1 card (target_n=1). 16
+    families per video × 1 card ≈ 16 cards/video, matches the heuristic
+    target. The trajectory selector then picks the best 6-14 per video.
+
+    On parse failure for a family, falls back to that family's heuristic
+    output so we never lose coverage entirely.
+    """
+    cfg = PASS_CONFIG.get("pass3a", {})
+    max_tokens = int(cfg.get("max_tokens", 16384))
+    temperature = float(cfg.get("temperature", 0.7))
+    enable_thinking = cfg.get("thinking", False)
+
+    families = list(FAMILY_RULES.keys())
+    fallback_cards = _generate_via_heuristic(evidence, video_id, seed)
+    fallback_by_family: Dict[str, List[Card]] = {}
+    for c in fallback_cards:
+        fallback_by_family.setdefault(c.family, []).append(c)
+
+    async def _one_family(family: str) -> List[Dict]:
+        prompt = card_generation_prompt(family, evidence, target_n=1)
+        try:
+            raw = await client._call_one(
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=max_tokens,
+                temperature=temperature,
+                request_id=f"{video_id}_3a_{family}",
+                enable_thinking=enable_thinking,
+            )
+        except Exception as exc:
+            logger.warning(f"[{video_id}] 3a {family}: LLM call failed: {exc}")
+            raw = None
+        cards = parse_card_response(raw or "", family) if raw else []
+        if not cards:
+            # Fallback to heuristic for this family
+            return [_card_to_dict(c) for c in fallback_by_family.get(family, [])]
+        # Assign card_id deterministically
+        out = []
+        for i, c in enumerate(cards):
+            c["card_id"] = f"{video_id}_{family}_{seed:04d}_{i}"
+            # Default placeholder; pass3c may override on demand
+            c.setdefault("recall_query", None)
+            out.append(c)
+        return out
+
+    results = await asyncio.gather(*[_one_family(f) for f in families])
+    all_cards: List[Dict] = []
+    for fam_cards in results:
+        all_cards.extend(fam_cards)
+    logger.info(f"[{video_id}] 3a: LLM generated {len(all_cards)} cards "
+                f"across {len(families)} families")
+    return all_cards
 
 
 async def verify_cards(*args, **kwargs) -> List[Dict]:

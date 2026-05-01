@@ -22,12 +22,17 @@ from typing import Dict, List, Optional
 
 from thinkstream.data.agent_protocol import build_assistant_content_v12
 
-from .config import AGENT_CHUNK_SEC, SAMPLES_3C_DIR
+from .config import AGENT_CHUNK_SEC, PASS_CONFIG, SAMPLES_3C_DIR
 from .pass3a_cards import dict_to_card
 from .pass3b_placement import _dict_to_placement
 from .v2.design import (
     Placement,
     render_video_samples as _design_render,
+)
+from .v2.llm_prompts import (
+    parse_recall_query_response,
+    recall_query_prompt,
+    response_generation_prompt,
 )
 
 logger = logging.getLogger(__name__)
@@ -47,11 +52,12 @@ def _think_for_chunk(rollout: Dict, chunk_idx: int) -> str:
 
 
 def _response_text_for(card: Dict, value: str) -> str:
-    """Map gold_emit value → assistant response text.
+    """Map gold_emit value → assistant response text (synchronous fast path).
 
     For MC: emits the option letter (A/B/C/D).
     For binary/number/short_exact: emits the value directly.
-    For descriptive: uses canonical_answer (TODO: 397B for richer text).
+    For descriptive: uses canonical_answer text.
+    Use _response_text_via_llm when client is provided for richer descriptive text.
     """
     af = card.get("answer_form", "")
     if af in ("multiple_choice", "binary", "number", "short_exact"):
@@ -59,9 +65,39 @@ def _response_text_for(card: Dict, value: str) -> str:
     return value or card.get("canonical_answer", "")
 
 
+async def _response_text_via_llm(card: Dict, value: str, client, video_id: str,
+                                  chunk_idx: int) -> str:
+    """397B-driven response text. Falls back to _response_text_for on failure.
+
+    Only fires for descriptive answers (others have deterministic mapping).
+    """
+    af = card.get("answer_form", "")
+    if af in ("multiple_choice", "binary", "number", "short_exact"):
+        return value
+    prompt = response_generation_prompt(card, chunk_idx)
+    if not prompt:
+        return _response_text_for(card, value)
+    cfg = PASS_CONFIG.get("pass3c_response", PASS_CONFIG.get("pass3c", {}))
+    try:
+        raw = await client._call_one(
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=int(cfg.get("max_tokens", 4096)),
+            temperature=float(cfg.get("temperature", 0.3)),
+            request_id=f"{video_id}_3c_resp_{card.get('card_id','?')}_{chunk_idx}",
+            enable_thinking=cfg.get("thinking", False),
+        )
+    except Exception as exc:
+        logger.warning(f"[{video_id}] 3c response LLM failed: {exc}")
+        return _response_text_for(card, value)
+    text = (raw or "").strip().strip('"').strip("'").strip()
+    return text or _response_text_for(card, value)
+
+
 def _recall_query_for(card: Dict, ask_chunk: int) -> Dict:
-    """Build recall_query payload. Uses card.recall_query if pre-generated,
-    else derives a heuristic query from question keywords + grounding span."""
+    """Build recall_query (synchronous fast path).
+
+    Returns card.recall_query if pre-generated, else heuristic.
+    """
     if card.get("recall_query"):
         return card["recall_query"]
     grounding = card.get("grounding_frames", [])
@@ -74,6 +110,36 @@ def _recall_query_for(card: Dict, ask_chunk: int) -> Dict:
     q = card.get("question", "")
     keywords = " ".join(w.lower() for w in q.split() if len(w) > 3)[:80]
     return {"query": keywords, "time_range": time_range}
+
+
+async def _recall_query_via_llm(card: Dict, client, video_id: str,
+                                  chunk_idx: int) -> Dict:
+    """397B-driven recall_query. Caches result on card so we don't re-call."""
+    if card.get("recall_query"):
+        return card["recall_query"]
+    prompt = recall_query_prompt(card)
+    cfg = PASS_CONFIG.get("pass3c_recall_query", PASS_CONFIG.get("pass3c", {}))
+    fallback_tr = ""
+    grounding = card.get("grounding_frames") or []
+    if grounding:
+        fallback_tr = (f"{int(min(grounding) * AGENT_CHUNK_SEC)}-"
+                       f"{int((max(grounding) + 1) * AGENT_CHUNK_SEC)}")
+    try:
+        raw = await client._call_one(
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=int(cfg.get("max_tokens", 4096)),
+            temperature=float(cfg.get("temperature", 0.3)),
+            request_id=f"{video_id}_3c_rq_{card.get('card_id','?')}_{chunk_idx}",
+            enable_thinking=cfg.get("thinking", False),
+        )
+    except Exception as exc:
+        logger.warning(f"[{video_id}] 3c recall_query LLM failed: {exc}")
+        return _recall_query_for(card, chunk_idx)
+    rq = parse_recall_query_response(raw or "", fallback_time_range=fallback_tr)
+    if not rq.get("query"):
+        return _recall_query_for(card, chunk_idx)
+    card["recall_query"] = rq      # cache for re-use within trajectory
+    return rq
 
 
 def _recall_result_for(card: Dict, rollout: Dict, noise_kind: str) -> Dict:
@@ -329,7 +395,11 @@ async def generate_trajectory_samples(
                 user_input=user_input,
             ))
         elif ds.sample_kind == "response":
-            resp = _response_text_for(card or {}, ds.response_text)
+            if client is not None:
+                resp = await _response_text_via_llm(
+                    card or {}, ds.response_text, client, video_id, c)
+            else:
+                resp = _response_text_for(card or {}, ds.response_text)
             raw.append(_response_sample(
                 c, _think_for_chunk(rollout, c), resp, queries_state,
                 traj_id, card_id, sequence_type, user_input=user_input,
@@ -339,8 +409,13 @@ async def generate_trajectory_samples(
                     "text": resp, "time": c * AGENT_CHUNK_SEC,
                 })
         elif ds.sample_kind == "recall+response":
-            resp = _response_text_for(card or {}, ds.response_text)
-            rq = _recall_query_for(card or {}, c)
+            if client is not None:
+                resp = await _response_text_via_llm(
+                    card or {}, ds.response_text, client, video_id, c)
+                rq = await _recall_query_via_llm(card or {}, client, video_id, c)
+            else:
+                resp = _response_text_for(card or {}, ds.response_text)
+                rq = _recall_query_for(card or {}, c)
             rr = _recall_result_for(card or {}, rollout,
                                      ds.recall_result_kind or "oracle")
             raw.append(_recall_response_sample(
