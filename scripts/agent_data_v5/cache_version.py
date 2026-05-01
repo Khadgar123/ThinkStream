@@ -36,15 +36,32 @@ from .config import (
 # ---------------------------------------------------------------------------
 
 STAGE_VERSIONS: Dict[str, str] = {
-    "1a": "v12.5",  # v12.5: 2s/chunk → 1s/chunk + FPS 1→2 + prompt overhaul
-    "1b": "v12.5",  # v12.5: 2s/chunk → 1s/chunk, state_changes scaled accordingly
-    "2":  "v12.5",  # v12.5: config overhaul (1s/chunk, 16-chunk window, 4000 tok budget)
-    "3a": "v12.5", # v12.5: 1s/chunk upstream (1a/1b/2) — all downstream
-                    #       stages invalidated to rebuild under new chunk
-                    #       granularity, FPS=2, 16-chunk window, 4000 tok.
-    "3b": "v12.5",  # v12.5: same — placement must recompute with 1s chunks.
-    "3c": "v12.5",  # v12.5: sample generation must use 1s-chunk rollouts.
-    "4":  "v12.5", # v12.5: verification must re-run on 1s-chunk samples.
+    # v12.11 audit-5 P1 #5 (2026-05-01): bumps below align with the v12.11
+    # data-construction logic changes. Without these, an existing cluster
+    # cache stamped v12.5 would silently reuse stale outputs:
+    #   1a stays v12.5 — pass1a logic unchanged; current 320 outputs OK.
+    #   1b → v12.11: compact prompt (5535555) + await fix (audit-4 P1#1) +
+    #         singleton solo_<i> ids. Old v12.5 1b is functionally OK
+    #         (verified by visual audit) but missing solo_ ids; bumping
+    #         signals downstream that 1b-derived caches need re-derivation
+    #         if you regenerate.
+    #   2 stays v12.5 — pass2 logic unchanged.
+    #   3a → v12.11: pass3a card targets bumped (N1 2→4, F6 1→2, F1 3→4),
+    #         FAMILY_TARGETS shape changed → existing card pool stale.
+    #   3b → v12.11: TIER_BONUS + answer_form bonus + PN1_PER_SEC
+    #         duration-normalize + greedy diversity bumps.
+    #   3c → v12.11: emit-every-chunk + render output-fallback fix.
+    #   3e → v12.11: _is_v12_sample detector fix (no longer mistags v12).
+    #   5  → v12.11: pass5 recall turn order + tools= for chat_template.
+    "1a": "v12.5",
+    "1b": "v12.11",
+    "2":  "v12.5",
+    "3a": "v12.11",
+    "3b": "v12.11",
+    "3c": "v12.11",
+    "3e": "v12.11",
+    "4":  "v12.5",  # legacy alias for 3e
+    "5":  "v12.11",  # NEW — pass5_messages render version
 }
 
 STAGE_DIRS: Dict[str, Path] = {

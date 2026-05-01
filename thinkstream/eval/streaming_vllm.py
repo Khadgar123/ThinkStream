@@ -1073,6 +1073,16 @@ def streaming_vllm_rollout(
                 "memory_token_count": [],
                 "compress_budget": [],
                 "recall_returned_chunks": [],
+                # v12.11 audit-5 P1 #6 fix (2026-05-01): vLLM rollout merge
+                # was dropping step_messages and recall_first_pass_text.
+                # If/when vLLM-RL is wired up, per-chunk loss reconstruction
+                # needs step_messages (loss-time prompt parity) and the
+                # trajectory reward parser needs recall_first_pass_text
+                # (n_recall counter). HF rollout merge already includes
+                # these (grpo.py:711-758); aligning here keeps both
+                # backends interchangeable.
+                "step_messages": [],
+                "recall_first_pass_text": [],
             }
             for g_idx in range(group_size):
                 if ci < len(per_gen_results[g_idx]):
@@ -1085,12 +1095,18 @@ def streaming_vllm_rollout(
                     merged["recall_returned_chunks"].append(
                         list(cr_g["recall_returned_chunks"])
                     )
+                    merged["step_messages"].append(cr_g.get("step_messages"))
+                    merged["recall_first_pass_text"].append(
+                        cr_g.get("_recall_first_text", "")
+                    )
                 else:
                     # Pad: this gen finished early (response emitted past ask_chunk).
                     merged["generated_tokens"].append(_torch.tensor([], dtype=_torch.long))
                     merged["memory_token_count"].append(0)
                     merged["compress_budget"].append(0)
                     merged["recall_returned_chunks"].append([])
+                    merged["step_messages"].append(None)
+                    merged["recall_first_pass_text"].append("")
             merged_chunk_results.append(merged)
 
         all_rollout_results.append({

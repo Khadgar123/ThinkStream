@@ -1139,16 +1139,36 @@ def _calc_rewards_v12_trajectory(
                     and first_pass_parsed.get("kind") == "recall"
                 )
 
+                # v12.11 audit-5 P0 #2 fix (2026-05-01): for shape-B recall
+                # chunks, the SECOND pass produces a real <answer> (the
+                # final answer to the question). Downstream rewards
+                # (compute_trajectory_outcome_v12 / timing /
+                # silent_quality / behavior denominator) all gate on
+                # kind == "answer" — if we tag recall chunks as
+                # kind="recall", their final answer is invisible to
+                # outcome scoring → recall trajectories never get reward
+                # credit even when they answer correctly.
+                #
+                # Fix: keep `kind` from the second-pass parser (= "answer"
+                # for shape B's final turn). Track recall via a SEPARATE
+                # boolean `is_recall_chunk` so n_recall / spam / behavior
+                # counters can still distinguish recall trajectories.
+                # Downstream outcome / timing / silent_quality now
+                # correctly count the second-pass answer.
                 chunk_outputs.append({
                     "chunk_idx": cr.get("chunk_idx"),
-                    # Effective semantic kind: "recall" if first-pass was a
-                    # recall tool_call, otherwise the second-pass kind.
-                    "kind": "recall" if is_recall_chunk else parsed.get("kind", "unknown"),
+                    # Second-pass kind = the FINAL action emitted at this
+                    # chunk. For shape-B recall this is "answer"; outcome
+                    # scoring needs this.
+                    "kind": parsed.get("kind", "unknown"),
                     "answer_text": parsed.get("answer_text"),
                     "tool_call": (
                         first_pass_parsed.get("tool_call") if is_recall_chunk
                         else parsed.get("tool_call")
                     ),
+                    # NEW: explicit recall flag for n_recall / spam / behavior
+                    # bookkeeping (replaces overloading `kind`).
+                    "is_recall_chunk": bool(is_recall_chunk),
                     # v12.11: keep both passes for downstream format-reward audit.
                     "recall_first_pass_kind": (
                         first_pass_parsed.get("kind") if first_pass_parsed
@@ -1277,11 +1297,14 @@ def _calc_rewards_v12_trajectory(
                     if model_response:
                         _BEHAVIOR_AGG["n_correct_response"] += 1
             # Recall + compress decision usage rate.
+            # v12.11 audit-5 P0 #2: recall is now tracked via the explicit
+            # is_recall_chunk flag (kind is now the second-pass action,
+            # which is "answer" for shape B's final turn).
             for co in chunk_outputs:
-                k = co.get("kind", "")
-                if k == "recall":
+                if co.get("is_recall_chunk"):
                     _BEHAVIOR_AGG["n_recall_emitted"] += 1
-                elif k == "compress":
+                k = co.get("kind", "")
+                if k == "compress":
                     if not co.get("format_error"):
                         _BEHAVIOR_AGG["n_compress_well_formed"] += 1
                     _BEHAVIOR_AGG["n_compress_emitted"] += 1

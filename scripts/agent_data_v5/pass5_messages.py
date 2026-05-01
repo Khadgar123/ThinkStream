@@ -261,13 +261,18 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
         })
 
         # Tool turn — recall_result + optional historical frames.
+        # v12.11 audit-5 P0 #1 fix (2026-05-01): order MUST mirror runtime
+        # (agent_loop.py:942-988): <recalled_frames> + video THEN
+        # <recall_result>{...}</recall_result>. Previous order put the
+        # raw recall_result JSON FIRST, then frames — train/infer drift
+        # for shape-B recall second-turn answer training.
         rr = sample.get("recall_result") or inp.get("recall_result") or {}
         rr_json = json.dumps({
             "source": rr.get("source", ""),
             "time": rr.get("time", ""),
             "text": rr.get("text_content", rr.get("text", "")),
         }, ensure_ascii=False)
-        tool_payload: List[Dict] = [{"type": "text", "text": rr_json}]
+        tool_payload: List[Dict] = []
 
         rf = inp.get("recalled_frames")
         if rf:
@@ -278,7 +283,7 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
             })
             tool_payload.append({
                 "type": "text",
-                "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
+                "text": f"<recalled_frames>{rf_header}</recalled_frames>",
             })
             if "frame_paths" in rf:
                 # v12.11 P1.1 fix (2026-05-01): attach video_metadata so the
@@ -319,6 +324,14 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                     "video_start": rf["time_range"][0],
                     "video_end": rf["time_range"][1],
                 })
+
+        # v12.11 audit-5 P0 #1: append <recall_result> AFTER frames so the
+        # token stream matches runtime: [<recalled_frames>{...}, video,
+        # <recall_result>{...}</recall_result>].
+        tool_payload.append({
+            "type": "text",
+            "text": f"<recall_result>{rr_json}</recall_result>",
+        })
 
         # DeepEyesV2-aligned ShareGPT has no `tool` role — inject as user content.
         # Qwen3-VL chat_template would otherwise nest <tool_response> under
@@ -441,8 +454,15 @@ def main() -> None:
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--input", choices=["flat", "traj", "auto"], default="auto",
-        help="'flat' = *_full.jsonl single-step rows, 'traj' = *_trajectories.jsonl, 'auto' = prefer flat.",
+        "--input", choices=["flat", "traj", "auto"], default="traj",
+        help=(
+            "'flat' = *_full.jsonl single-step rows, "
+            "'traj' = *_trajectories.jsonl (default — matches main pipeline), "
+            "'auto' = prefer flat (legacy; can produce data inconsistent with "
+            "the main `pipeline.py` invocation which forces --input traj). "
+            "v12.11 audit-5 P1 #4 fix (2026-05-01): default flipped from auto "
+            "→ traj to match pipeline.py:1266."
+        ),
     )
     parser.add_argument("--final-dir", default=str(FINAL_DIR))
     parser.add_argument("--base-path", default=str(PROJECT_ROOT),

@@ -177,6 +177,21 @@ def _format_memory_block(memory: Dict) -> str:
 def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]:
     """v12.0: Build messages for the official Qwen tool-call protocol.
 
+    DEPRECATED (v12.11 audit-5 P1 #3, 2026-05-01): the canonical builder is
+    now ``scripts/agent_data_v5/pass5_messages.py:build_messages``, which is
+    used by the main pipeline (`pass5_messages.py:convert`). This function
+    diverged in two ways and is kept only for legacy eval/debug paths:
+        - emits role="tool" (Qwen3-VL chat_template renders this as a
+          separate observation block) instead of pass5's role="user" with
+          inline <recall_result> tags. Train/infer drift if a SFT run
+          happens to use this builder.
+        - tool payload is raw recall_result JSON (pass5 wraps it in
+          <recall_result>...</recall_result> so the model can parse the
+          end of the observation deterministically).
+    Default v12.11+ SFT goes through pass5 messages → this builder is not
+    on the hot path. New code should call the pass5 path. Removing this
+    function is queued for v12.12.
+
     Three sample shapes handled (controlled by pass3c-emitted fields):
 
     A. Single-turn (silent / response / lonely recall):
