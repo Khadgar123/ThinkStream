@@ -34,8 +34,14 @@ DEFAULT_FINAL_DIR = (
     Path(__file__).resolve().parents[2] / "data" / "agent_v5" / "final"
 )
 DEFAULT_SEED = 42
-DEFAULT_RL_FRAC = 0.20
-DROP_SAMPLE_TYPES = {"recall_silent"}  # see module docstring
+# v12.11 audit-4 P1 #3 fix (2026-05-01): align defaults with the main
+# pipeline (pipeline.py emit_split). Previously this script defaulted to
+# RL=20% and dropped recall_silent — both inconsistent with v12 in-pipeline
+# logic which uses 50/50 video split and keeps recall_silent (it's a
+# legitimate v12 trajectory state). Running this offline split would
+# silently overwrite the pipeline's output with a different distribution.
+DEFAULT_RL_FRAC = 0.50
+DROP_SAMPLE_TYPES: set = set()  # keep all sample types (matches pipeline.py)
 
 
 def split_train(

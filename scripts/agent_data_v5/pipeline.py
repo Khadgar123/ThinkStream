@@ -723,9 +723,15 @@ async def run_pipeline(
             )
             vid_cards = {c["card_id"]: c for c in cards_map[vid]}
             nc = rollout_map[vid]["num_chunks"]
-            # Stable per-video seed so two runs with the same global `seed`
-            # arg produce identical trajectories without coupling videos.
-            traj_seed = seed * 10_000 + (hash(vid) & 0xFFFFFF)
+            # v12.11 audit-4 P1 #2 fix (2026-05-01): Python's built-in
+            # hash() randomizes per-process via PYTHONHASHSEED, so two runs
+            # with the same --seed produce different traj_seeds → different
+            # trajectories. Use deterministic SHA256 over video_id text.
+            import hashlib
+            vid_hash = int(
+                hashlib.sha256(str(vid).encode("utf-8")).hexdigest()[:8], 16
+            )
+            traj_seed = seed * 10_000 + (vid_hash & 0xFFFFFF)
             trajectories = plan_trajectories(
                 placements, cards_map=vid_cards,
                 num_chunks=nc, evidence=evidence_map[vid],

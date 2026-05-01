@@ -363,11 +363,16 @@ async def _generate_recall_query(card: Dict, snapshot: Dict,
     )
 
     time_range = _compute_recall_time_range(card, snapshot)
-    # Deterministic per-(video, chunk) split so re-runs of pass3c with
-    # the same video set produce the same schema choice — important for
-    # cache stability and reproducibility.
+    # v12.11 audit-4 P1 #2 fix (2026-05-01): hash() is randomized per
+    # process via PYTHONHASHSEED. Two runs of pass3c with the same input
+    # set produced different schema choices → cache invalidation + non-
+    # reproducible recall query format. Use deterministic SHA256.
+    import hashlib
     schema_seed = f"{video_id}_{chunk_idx}_{card.get('card_id', '')}"
-    use_time_range = (hash(schema_seed) % 100) < int(RECALL_TIME_RANGE_FRACTION * 100)
+    schema_hash = int(
+        hashlib.sha256(schema_seed.encode("utf-8")).hexdigest()[:8], 16
+    )
+    use_time_range = (schema_hash % 100) < int(RECALL_TIME_RANGE_FRACTION * 100)
 
     if use_time_range:
         prompt = RECALL_QUERY_PROMPT_WITH_RANGE.format(

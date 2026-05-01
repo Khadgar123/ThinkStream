@@ -169,8 +169,12 @@ async def run_pass1b(
                 desc_chunks.setdefault(desc, []).append(cidx)
 
     if len(desc_chunks) < 2:
-        # No linking possible. Still try state_change with chunk_summary.
-        _run_state_change_only(enriched, client, video_id, semaphore)
+        # v12.11 audit-4 P1 #1 fix (2026-05-01): missing await meant the
+        # coroutine was created but never executed → state_changes stayed
+        # empty for low-entity (often static / single-scene) videos.
+        # Now correctly await so the fallback state_change_only call
+        # actually runs.
+        await _run_state_change_only(enriched, client, video_id, semaphore)
         return enriched
 
     # v12.11 (2026-05-01) — pass1b prompt compaction.

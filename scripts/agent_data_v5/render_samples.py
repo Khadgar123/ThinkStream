@@ -270,11 +270,25 @@ def render_sample(
         "gold_compress_chunks": gold_compress_chunks,
     }
 
+    # v12.11 audit-4 P0 #1 fix (2026-05-01): merged shape-B recall samples
+    # had `output` popped by _merge_recall_pairs_v12 (the canonical text
+    # now lives in v12_assistant_turn_2). The previous unconditional read
+    # of sample["output"] threw KeyError → render_sample's enclosing
+    # try/except dropped the entire merged sample → recall multi-turn
+    # vanished from final SFT/RL data.
+    # Use the same fallback chain as gold_answer extraction above so
+    # both shape-A and shape-B samples render correctly.
+    output_text = (
+        sample.get("output")
+        if sample.get("output") is not None
+        else (sample.get("v12_assistant_turn_2") or "")
+    )
+
     # Build complete SFT sample
     rendered = {
         # Core fields for SFT data_processor
         "input": inp,
-        "output": sample["output"],
+        "output": output_text,
         "video_path": video_path,
         "video_id": video_id,
         "chunk_idx": chunk_idx,

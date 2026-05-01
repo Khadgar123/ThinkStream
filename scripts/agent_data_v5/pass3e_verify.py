@@ -125,12 +125,31 @@ def _is_base_sample(sample: Dict) -> bool:
 
 
 def _is_v12_sample(sample: Dict) -> bool:
-    """v12 samples either carry protocol_version=='v12' or have multi-turn fields."""
-    return (
-        sample.get("protocol_version") == "v12"
-        or "v12_assistant_turn_1" in sample
-        or sample.get("v12_inter_chunk") is True
-    )
+    """v12 samples either carry protocol_version=='v12' or have v12 markers.
+
+    v12.11 audit-4 P0 #2 fix (2026-05-01): plain silent/response samples
+    don't carry protocol_version (it's only stamped on shape-B recall and
+    inter-chunk compress). These samples DO use the v12 protocol — their
+    output is `<think>...</think><answer>...</answer>` (or empty answer
+    for silent), NOT v11's `<action>...</action>`. Without recognising
+    them as v12, the legacy verifier looks for `<action>` and reports
+    `format_check_failed` on every silent / response sample → systematic
+    false-negatives in pass3e verification.
+
+    Detect v12 reliably via: explicit marker fields OR an output that
+    contains `<answer>` / `<tool_call>` (v12-only tags) and lacks the
+    legacy `<action>` tag.
+    """
+    if (sample.get("protocol_version") == "v12"
+            or "v12_assistant_turn_1" in sample
+            or sample.get("v12_inter_chunk") is True):
+        return True
+    out = sample.get("output", "") or sample.get("v12_assistant_turn_2", "") or ""
+    if not isinstance(out, str):
+        return False
+    has_v12_tag = ("<answer>" in out) or ("<tool_call>" in out)
+    has_legacy_tag = "<action>" in out
+    return has_v12_tag and not has_legacy_tag
 
 
 def _v12_combined_assistant_text(sample: Dict) -> str:
