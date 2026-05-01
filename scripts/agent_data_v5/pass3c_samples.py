@@ -1,838 +1,213 @@
-"""
-Pass 3-C: Trajectory Sample Generation
+"""Pass 3-C — Trajectory sample rendering (v2 model-agnostic).
 
-For each trajectory, walks through key_chunks and generates SFT samples.
-Maintains queries_state as it evolves (questions enter, answers accumulate).
+For each trajectory's selected placements, walks every chunk in [0, num_chunks)
+and emits ONE raw SFT sample per chunk (silent / response / recall+response /
+patrol / compress_silent), using v2/design.py as the single source of truth
+for gold actions.
 
-397B calls: generate response text and recall queries.
-
-Output: fork_samples/{video_id}.json
-
-Uses the v12 protocol (official Qwen tool protocol with <tool_call>{json}
-</tool_call> and <answer>) — see thinkstream/data/agent_protocol.py:
-SYSTEM_PROMPT_V12.
+Pipeline contract preserved:
+  generate_trajectory_samples(trajectory, cards_map, rollout, evidence,
+                               client, video_id) -> List[Dict]    (async)
+  save_samples / load_samples
 """
 
-import asyncio
+from __future__ import annotations
+
 import json
 import logging
-import os
 import random
-import re
 from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from .config import (
-    AGENT_CHUNK_SEC,
-    SAMPLES_3C_DIR,
-    PASS_CONFIG,
-    VISUAL_WINDOW_CHUNKS,
+from thinkstream.data.agent_protocol import build_assistant_content_v12
+
+from .config import AGENT_CHUNK_SEC, SAMPLES_3C_DIR
+from .pass3a_cards import dict_to_card
+from .pass3b_placement import _dict_to_placement
+from .v2.design import (
+    Placement,
+    render_video_samples as _design_render,
 )
 
 logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
-# Response / Query Generation (397B)
+# Helpers — think text + response/recall payload generation
 # ---------------------------------------------------------------------------
 
 
-FORK_THINK_PROMPT = """You are a streaming video agent generating a think (incremental visual memory note).
-
-Current visual observation (from base rollout):
-{base_think}
-
-Active questions:
-{queries_text}
-
-Rewrite the think in 40-60 tokens. Include:
-1. What is NEW or CHANGED in the current visual (same as base observation)
-2. If any active question relates to what you currently see, note the relevant visual detail
-
-Rules:
-- Only observable visual facts
-- Describe entities by appearance (clothing, color, material), not by ID
-- NO meta-reasoning, NO "I think", NO "the question asks"
-- Do NOT answer the question — just note relevant observations
-- If no active question relates to current visual: output the base observation unchanged
-
-Output (one paragraph, 40-60 tokens):"""
-
-RECALL_THINK_PROMPT = """You are a streaming video agent that just received recall results.
-
-Question: "{question}"
-Recall result: {recall_text}
-Recall source: {recall_source}    # one of: historical_frames, distractor, failure
-
-Write a brief analysis (20-40 tokens) of the recall result. Branch by source:
-- source="historical_frames": results contain relevant evidence — note what
-  was found and how it answers the question.
-- source="distractor": results contain content but it does NOT match the
-  question (off-topic chunks). Explicitly note that the retrieved evidence
-  does not address the question, so you cannot answer from it.
-- source="failure": no results returned. Note recall found no matching
-  evidence.
-
-NO meta-reasoning ("I think"), NO sounds/smells/emotions.
-Focus on factual assessment of the retrieved content.
-
-Output (one paragraph, 20-40 tokens):"""
-
-RESPONSE_GEN_PROMPT = """Generate a response for this streaming video agent:
-- Question: "{question}"
-- Available evidence: {evidence}
-- Correct answer: {canonical_answer}
-- Answer form: {answer_form}
-{prior_answers_section}
-Requirements:
-- Base answer ONLY on the provided evidence
-- If answer_form is binary: respond Yes or No
-- If answer_form is multiple_choice: respond with the letter (A/B/C/D)
-- If answer_form is number: respond with the number
-- If answer_form is short_exact: respond in 1-5 words
-- If answer_form is descriptive: respond in 40-100 words
-{dedup_instruction}
-Output the response text only:"""
-
-_RECALL_KEYWORD_RULES = """Rules:
-- Pick 3-5 keywords that APPEAR LITERALLY in the gold evidence text below.
-  No paraphrasing, no synonyms — BM25 is lexical, "shirt" won't match "top",
-  "trailer" won't match "vehicle". If the gold says "light blue top", your
-  keyword is "blue top" or "blue", not "shirt".
-- BAN GENERIC WORDS (they appear in many chunks → no discrimination):
-    verbs:     "appears, appeared, shows, showing, stands, standing,
-                moves, moving, holding, sitting, walking, looking"
-    nouns:     "person, man, woman, thing, object, scene, view,
-                background, foreground, frame, video, camera, hand"
-    spatial:   "vertical, horizontal, left, right, top, bottom,
-                front, back, center, side"
-    status:    "visible, active, current, present, recent"
-  These add zero retrieval signal because every chunk has them.
-- INSTEAD, pick keywords that are RARE in the video — proper nouns,
-  brand/product names, specific colors+materials, distinctive object
-  parts, named actions ("braiding", "soldering", "kneading" — not
-  "doing", "working").
-- A good 3-keyword query has each keyword appearing in ≤5 chunks of
-  the full video. If "blue" appears in 30 chunks, drop it — pick
-  "denim" or "blue cap" or whatever modifier the gold uses.
-- NO answer values (don't leak the answer that the question is asking for).
-- NO pronouns ("he/she/it/they"), NO stop words.
-- Lowercase, space-separated."""
-
-RECALL_QUERY_PROMPT_WITH_RANGE = """Generate a retrieval query that BM25 can use to locate the gold evidence below.
-
-QUESTION (for context, do NOT extract keywords from this): "{question}"
-VISIBLE MEMORY (for context, NOT the source of keywords): {visible_context}
-
-GOLD EVIDENCE TEXT (extract keywords FROM THIS, literal match required):
-{gold_evidence}
-
-{rules}
-
-Output JSON: {{"query": "keyword1 keyword2 keyword3", "time_range": "{time_range}"}}"""
-
-RECALL_QUERY_PROMPT_KEYWORD_ONLY = """Generate a retrieval query that BM25 can use to locate the gold evidence below.
-
-QUESTION (for context, do NOT extract keywords from this): "{question}"
-VISIBLE MEMORY (for context, NOT the source of keywords): {visible_context}
-
-GOLD EVIDENCE TEXT (extract keywords FROM THIS, literal match required):
-{gold_evidence}
-
-{rules}
-
-Output JSON: {{"query": "keyword1 keyword2 keyword3"}}"""
-
-# Mix ratio of with-time-range vs keyword-only recall queries in SFT.
-# Both schemas are valid at inference; the retriever falls back to the
-# full archive when time_range is absent. Training on both teaches the
-# model to use time_range when it has a confident estimate of when the
-# evidence occurred (typically true for the cards in v9.4) and to skip
-# it when uncertain.
-RECALL_TIME_RANGE_FRACTION = 0.7
+def _think_for_chunk(rollout: Dict, chunk_idx: int) -> str:
+    """Pull think text from question-blind rollout (pass2 output)."""
+    for t in rollout.get("thinks", []):
+        if int(t.get("chunk_idx", -1)) == chunk_idx:
+            return str(t.get("think", "")).strip()
+    return ""
 
 
-# v9.3: forms whose canonical_answer is ALREADY the exact eval-format answer.
-# We skip the LLM call for these — using canonical_answer directly guarantees
-# OVO-strict-match format (single letter / Yes-No / digit) and saves ~70%
-# of pass3c LLM calls. Batch1's MC training labels frequently drifted to
-# "A. eggplant" from teacher LLM despite the prompt's letter-only instruction;
-# that drift is the dominant reason SFT looks 92% accurate but OVO eval
-# would crash on strict letter matching.
-_EXACT_FORMS = {"binary", "multiple_choice", "number"}
+def _response_text_for(card: Dict, value: str) -> str:
+    """Map gold_emit value → assistant response text.
 
-
-def _normalize_exact_form_answer(canonical: str, answer_form: str) -> str:
-    """Strict canonicalization of canonical_answer for binary/MC/number.
-
-    Card-generation prompts already enforce these formats, but extra defense
-    here turns any teacher-side drift (e.g. "A. eggplant", "Yes.") into the
-    eval-strict form. Returns "" if the canonical can't be normalized to the
-    expected shape — the caller must then skip the sample.
+    For MC: emits the option letter (A/B/C/D).
+    For binary/number/short_exact: emits the value directly.
+    For descriptive: uses canonical_answer (TODO: 397B for richer text).
     """
-    s = (canonical or "").strip()
-    if not s:
-        return ""
-    if answer_form == "binary":
-        head = s.split()[0].rstrip(".,;!?").lower()
-        if head in ("yes", "y", "true"):
-            return "Yes"
-        if head in ("no", "n", "false"):
-            return "No"
-        return ""
-    if answer_form == "multiple_choice":
-        # Pick first standalone letter A-D (handles "A", "A.", "A) eggplant",
-        # "(A)", "the answer is B").
-        m = re.search(r'(?:^|[^A-Za-z])([A-Da-d])(?:[^A-Za-z]|$)', s)
-        return m.group(1).upper() if m else ""
-    if answer_form == "number":
-        # First digit run; reject if it has letters attached ("3rd").
-        m = re.search(r'(?<![A-Za-z])(\d+)(?![A-Za-z])', s)
-        return m.group(1) if m else ""
-    return s
+    af = card.get("answer_form", "")
+    if af in ("multiple_choice", "binary", "number", "short_exact"):
+        return value
+    return value or card.get("canonical_answer", "")
 
 
-async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
-                              client, video_id: str, chunk_idx: int,
-                              prior_answers: List[str] = None,
-                              recall_evidence: str = None) -> Optional[str]:
-    """Generate response text.
-
-    v9.3 fast path: for binary/multiple_choice/number, skip the LLM and use
-    canonical_answer directly (after strict normalization). The teacher LLM's
-    rephrased answer adds no value for these forms — the canonical IS the
-    answer in eval format. Returns None if normalization fails so caller
-    skips the placement (rare; indicates bad pass3a output).
-
-    For short_exact / descriptive: call the teacher LLM as before.
-
-    Args:
-        prior_answers: Previously generated answers for the same question
-            (multi_response followups). Used to avoid repeating content.
-        recall_evidence: When provided (recall_success path), use this as
-            the evidence instead of the snapshot. This ensures the response
-            is derived from what recall actually returned, not from the
-            student's current memory state.
-    """
-    answer_form = card.get("answer_form", "short_exact")
-    canonical = card.get("canonical_answer", "")
-
-    # ─── Fast path: forms where canonical_answer IS the eval-format answer ───
-    if answer_form in _EXACT_FORMS:
-        normalized = _normalize_exact_form_answer(canonical, answer_form)
-        if not normalized:
-            # Bad card — skip placement rather than emit a malformed response.
-            return None
-        return normalized
-    # ─── LLM path: short_exact / descriptive ───
-
-    if recall_evidence:
-        # Recall path: response must be based on recall result
-        evidence_text = recall_evidence
+def _recall_query_for(card: Dict, ask_chunk: int) -> Dict:
+    """Build recall_query payload. Uses card.recall_query if pre-generated,
+    else derives a heuristic query from question keywords + grounding span."""
+    if card.get("recall_query"):
+        return card["recall_query"]
+    grounding = card.get("grounding_frames", [])
+    if grounding:
+        tr_start = min(grounding) * AGENT_CHUNK_SEC
+        tr_end = (max(grounding) + 1) * AGENT_CHUNK_SEC
+        time_range = f"{int(tr_start)}-{int(tr_end)}"
     else:
-        # Normal path: build evidence from what student can see
-        evidence_parts = []
-        for seg in snapshot.get("compressed_segments", []):
-            evidence_parts.append(f"[{seg['time_range']}] {seg['text'][:100]}")
-        for item in snapshot.get("recent_thinks", []):
-            evidence_parts.append(f"[{item['time']}] {item.get('text', '')}")
-        evidence_text = "\n".join(evidence_parts[-10:]) or "Current visual frames."
-
-    # Build prior-answers section for multi_response dedup
-    if prior_answers:
-        pa_text = "\n".join(f"  - {a}" for a in prior_answers)
-        prior_section = f"- Prior answers already given:\n{pa_text}\n"
-        dedup = "- Do NOT repeat information from prior answers. Only describe NEW changes or content."
-    else:
-        prior_section = ""
-        dedup = ""
-
-    prompt = RESPONSE_GEN_PROMPT.format(
-        question=card.get("question", ""),
-        evidence=evidence_text,
-        canonical_answer=canonical,
-        answer_form=answer_form,
-        prior_answers_section=prior_section,
-        dedup_instruction=dedup,
-    )
-
-    # v11.3: thinking=False per pass3c_response config. Reasons: (a) 70% of
-    # response calls skip the LLM entirely via canonical_answer fast-path;
-    # (b) the remaining 30% (short_exact / descriptive) are constrained
-    # generation where thinking budget went unused empirically. Quality is
-    # validated by Pass 4 leakage checks, so format-only failures fail-loud.
-    _resp_cfg = PASS_CONFIG.get("pass3c_response", {})
-    raw = await client._call_one(
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=_resp_cfg.get("max_tokens", 16384),
-        temperature=_resp_cfg.get("temperature", 0.3),
-        enable_thinking=_resp_cfg.get("thinking", False),
-        request_id=f"{video_id}_resp_{chunk_idx}",
-    )
-    if raw:
-        raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip().strip('"')
-    # Return None on failure — caller must skip this sample.
-    # Do NOT fallback to canonical_answer (format mismatch risk for descriptive).
-    return raw or None
+        time_range = ""
+    q = card.get("question", "")
+    keywords = " ".join(w.lower() for w in q.split() if len(w) > 3)[:80]
+    return {"query": keywords, "time_range": time_range}
 
 
-def _compute_recall_time_range(
-    card: Dict, snapshot: Dict, slack_sec: int = 2,
-) -> str:
-    """Pick a tight time_range for a recall query.
+def _recall_result_for(card: Dict, rollout: Dict, noise_kind: str) -> Dict:
+    """Build a recall_result matching the old pass3c noise vocabulary.
 
-    Uses card.support_chunks (the gold evidence chunks) when available —
-    that's the only place we have ground-truth knowledge of where the
-    answer actually lives. Falls back to "0-max(visible)" when support
-    is missing (rare, mostly silent samples).
-
-    `slack_sec` of 2s on each side (= ±1 chunk) compensates for the
-    model's natural uncertainty about exact chunk boundaries at inference
-    time. v11.3 audit data: slack=0 gives BM25_time hit@1=0.87, slack=4
-    drops it to 0.28 (audit table — the ±4s "halo" dilutes the search
-    space enough that a wrong-but-keyword-rich chunk often outscores
-    gold). slack=2 trades a small accuracy hit for inference-time
-    robustness; the inference model's predicted boundary is rarely
-    perfect at chunk granularity.
+    noise_kind ∈ {oracle, noisy, failure} (set by design.assign_recall_noise).
     """
-    support = card.get("support_chunks") or []
-    if support:
-        t0 = max(0, min(support) * AGENT_CHUNK_SEC - slack_sec)
-        t1 = (max(support) + 1) * AGENT_CHUNK_SEC + slack_sec
-        return f"{int(t0)}-{int(t1)}"
-    # Fallback: full visible history (legacy v9.2 behaviour)
-    all_times: List[int] = []
-    for seg in snapshot.get("compressed_segments", []):
-        all_times.extend(seg["time_range"])
-    for item in snapshot.get("recent_thinks", []):
-        for p in item["time"].split("-"):
-            try:
-                all_times.append(int(float(p)))
-            except (ValueError, TypeError):
-                pass
-    return f"0-{max(all_times)}" if all_times else "0-60"
-
-
-async def _generate_recall_query(card: Dict, snapshot: Dict,
-                                  client, video_id: str, chunk_idx: int,
-                                  rollout: Optional[Dict] = None) -> Optional[Dict]:
-    """Generate recall query JSON via 397B.
-
-    Two schemas are produced in mix RECALL_TIME_RANGE_FRACTION=0.7
-    (with_time_range) / 0.3 (keyword_only). Both are valid at inference —
-    the retriever uses time_range to pre-filter when present and falls
-    back to full archive when absent. Training on both teaches the model
-    to volunteer time_range only when confident.
-
-    v11.3: prompt now includes the gold-chunk think text (resolved from
-    `rollout["thinks"]` filtered to support_chunks). This anchors the
-    teacher's keyword extraction to the literal chunk text — without
-    it, BM25_keyword tops out at 21% hit@1 (audit data) because teacher
-    paraphrases ("brown hair blue shirt orange trailer" vs gold
-    "man in light blue top against vehicle"). With gold-text anchoring,
-    BM25_keyword should approach the 87% ceiling that bm25_time hits
-    when the time window is exact.
-    """
-    visible_parts = []
-    for seg in snapshot.get("compressed_segments", []):
-        visible_parts.append(f"[{seg['time_range']}] {seg['text'][:80]}")
-    for item in snapshot.get("recent_thinks", []):
-        visible_parts.append(f"[{item['time']}] {item.get('text', '')}")
-    visible_context = "\n".join(visible_parts[-10:]) or "(minimal)"
-
-    # Build gold evidence text from support_chunks of the rollout's thinks.
-    # Falls back to a generic note when rollout/support_chunks unavailable
-    # (rare; legacy callers that don't pass rollout still work but produce
-    # weaker queries).
-    gold_evidence_lines = []
-    if rollout is not None:
-        support = card.get("support_chunks") or []
-        if support:
-            obs_lookup = {o.get("chunk_idx"): o for o in rollout.get("thinks", [])}
-            for c in support:
-                obs = obs_lookup.get(c)
-                if obs and obs.get("think"):
-                    gold_evidence_lines.append(
-                        f"[chunk {c}, t={c*int(AGENT_CHUNK_SEC)}-"
-                        f"{(c+1)*int(AGENT_CHUNK_SEC)}s] {obs['think']}"
-                    )
-    gold_evidence = "\n".join(gold_evidence_lines) if gold_evidence_lines else (
-        "(no gold evidence supplied; pick keywords from the visible "
-        "memory that best describe the question's subject)"
-    )
-
-    time_range = _compute_recall_time_range(card, snapshot)
-    # v12.11 audit-4 P1 #2 fix (2026-05-01): hash() is randomized per
-    # process via PYTHONHASHSEED. Two runs of pass3c with the same input
-    # set produced different schema choices → cache invalidation + non-
-    # reproducible recall query format. Use deterministic SHA256.
-    import hashlib
-    schema_seed = f"{video_id}_{chunk_idx}_{card.get('card_id', '')}"
-    schema_hash = int(
-        hashlib.sha256(schema_seed.encode("utf-8")).hexdigest()[:8], 16
-    )
-    use_time_range = (schema_hash % 100) < int(RECALL_TIME_RANGE_FRACTION * 100)
-
-    if use_time_range:
-        prompt = RECALL_QUERY_PROMPT_WITH_RANGE.format(
-            question=card.get("question", ""),
-            visible_context=visible_context,
-            gold_evidence=gold_evidence,
-            rules=_RECALL_KEYWORD_RULES,
-            time_range=time_range,
-        )
-        fallback = {"query": card.get("question", "")[:30], "time_range": time_range}
-    else:
-        prompt = RECALL_QUERY_PROMPT_KEYWORD_ONLY.format(
-            question=card.get("question", ""),
-            visible_context=visible_context,
-            gold_evidence=gold_evidence,
-            rules=_RECALL_KEYWORD_RULES,
-        )
-        fallback = {"query": card.get("question", "")[:30]}
-
-    # v11.3: thinking=False per pass3c_recall_query config. Empirically the
-    # query is just 3-5 keywords + optional time_range — keyword extraction
-    # under format constraint, not multi-step reasoning. Pass 4's query/
-    # result consistency check (pass3c_samples.py:_query_overlaps_chunks)
-    # downgrades bad-query samples to "failure" anyway, so unhelpful
-    # queries get punished without needing thinking budget.
-    _rq_cfg = PASS_CONFIG.get("pass3c_recall_query", {})
-    raw = await client._call_one(
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=_rq_cfg.get("max_tokens", 16384),
-        temperature=_rq_cfg.get("temperature", 0.3),
-        enable_thinking=_rq_cfg.get("thinking", False),
-        request_id=f"{video_id}_query_{chunk_idx}",
-    )
-    if not raw:
-        return fallback
-
-    raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
-    parsed = None
-    try:
-        parsed = json.loads(raw)
-    except (json.JSONDecodeError, ValueError):
-        start = raw.find("{")
-        end = raw.rfind("}")
-        if start >= 0 and end > start:
-            try:
-                parsed = json.loads(raw[start:end + 1])
-            except (json.JSONDecodeError, ValueError):
-                pass
-    if parsed is None:
-        return fallback
-
-    # Enforce schema: keyword_only path must NOT carry time_range
-    # (otherwise both schemas collapse and the keyword_only training
-    # signal is lost).
-    if not use_time_range:
-        parsed.pop("time_range", None)
-    return parsed
-
-
-async def _generate_fork_think(
-    base_think: str, queries_state: List[Dict],
-    client, video_id: str, chunk_idx: int,
-) -> str:
-    """Generate query-aware think for fork points via 397B.
-
-    Takes the pass2 base think (question-blind) and rewrites it to
-    acknowledge active questions when visually relevant. Each call
-    is independent — only needs base_think + queries_state.
-    """
-    if not queries_state:
-        return base_think  # no active questions → base think is fine
-
-    # Format active queries (unanswered only)
-    # Note: answers=[] (empty list) means question is pending (asked but not answered).
-    # Must check len() explicitly — empty list is falsy in Python.
-    pending = [q for q in queries_state if len(q.get("answers", [])) == 0]
-    if not pending:
-        return base_think  # all answered → no need to rewrite
-
-    queries_text = "\n".join(
-        f"- [{q.get('ask_time', '?')}s] {q['question']}"
-        for q in pending
-    )
-
-    prompt = FORK_THINK_PROMPT.format(
-        base_think=base_think,
-        queries_text=queries_text,
-    )
-
-    # KEEP thinking (pass3c_fork_think config) — fork_think must mention the
-    # active question WITHOUT leaking the answer. This requires careful
-    # reasoning about what's visible vs what's been observed; without CoT
-    # the leakage check at Pass 4 rejects ~40% of samples in early A/B tests.
-    _fthink_cfg = PASS_CONFIG.get("pass3c_fork_think", {})
-    raw = await client._call_one(
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=_fthink_cfg.get("max_tokens", 16384),
-        temperature=_fthink_cfg.get("temperature", 0.3),
-        enable_thinking=_fthink_cfg.get("thinking", True),
-        request_id=f"{video_id}_fthink_{chunk_idx}",
-    )
-    if raw:
-        raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip().strip('"')
-    return raw or base_think
-
-
-async def _generate_recall_think(
-    card: Dict, recall_result: Dict,
-    client, video_id: str, chunk_idx: int,
-) -> str:
-    """Generate analysis think after recall via 397B.
-
-    Replaces the hardcoded "Recall returned relevant results." string.
-    Each call is independent.
-    """
-    recall_text = recall_result.get("text_content", "No results.")
-    recall_source = recall_result.get("source", "unknown")
-
-    prompt = RECALL_THINK_PROMPT.format(
-        question=card.get("question", ""),
-        recall_text=recall_text,
-        recall_source=recall_source,
-    )
-
-    # v11.3: thinking=False per pass3c_recall_think config. The task is
-    # 3-way templating: recall_source ∈ {historical_frames, distractor,
-    # failure} maps to one of three rephrasing patterns. Empirically a
-    # branching task, not a reasoning task — thinking budget went unused.
-    _rt_cfg = PASS_CONFIG.get("pass3c_recall_think", {})
-    raw = await client._call_one(
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=_rt_cfg.get("max_tokens", 16384),
-        temperature=_rt_cfg.get("temperature", 0.3),
-        enable_thinking=_rt_cfg.get("thinking", False),
-        request_id=f"{video_id}_rthink_{chunk_idx}",
-    )
-    if raw:
-        raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip().strip('"')
-    return raw or f"Recall {'returned results' if recall_source != 'failure' else 'found no matching evidence'}."
-
-
-_STOP_WORDS_RECALL = frozenset({
-    "the", "a", "an", "is", "was", "in", "on", "at", "to", "of",
-    "and", "or", "it", "are", "were", "be", "been", "has", "have",
-    "had", "do", "does", "did", "will", "would", "can", "could",
-    "should", "may", "might", "this", "that", "there", "here",
-    "not", "but", "if", "so", "what", "which", "who", "how", "when",
-    "where", "many", "much", "any", "some", "for", "from", "by", "as",
-})
-
-
-def _extract_query_keywords(query_json: Optional[Dict]) -> set:
-    """Pull lowercased content tokens from the query string of a recall query JSON."""
-    if not query_json:
-        return set()
-    q = (query_json.get("query") or "") if isinstance(query_json, dict) else str(query_json)
-    tokens = re.findall(r'\b[a-zA-Z0-9]{2,}\b', q.lower())
-    return {t for t in tokens if t not in _STOP_WORDS_RECALL}
-
-
-def _query_overlaps_chunks(
-    query_keywords: set, returned_chunks: List[int], rollout: Dict,
-    threshold: int = 1,
-) -> bool:
-    """Does the query share at least `threshold` content keywords with the
-    text of the returned chunks?  v9.4 — this validates that the LLM-generated
-    query is actually consistent with the recall result we hand back; without
-    it the agent learns "any query string works", because the simulator
-    returns oracle chunks regardless of query quality.
-    """
-    if not query_keywords or not returned_chunks:
-        return False
-    obs_lookup = {o.get("chunk_idx"): o for o in rollout.get("thinks", [])}
-    chunk_text = " ".join(
-        (obs_lookup.get(c, {}) or {}).get("think", "")
-        for c in returned_chunks
-    ).lower()
-    chunk_tokens = set(re.findall(r'\b[a-zA-Z0-9]{2,}\b', chunk_text))
-    return len(query_keywords & chunk_tokens) >= threshold
-
-
-def _simulate_recall_result(card: Dict, rollout: Dict, ask_chunk: int,
-                             noise_type: str = "oracle",
-                             query_json: Optional[Dict] = None) -> Dict:
-    """Simulate retrieval result from student-accessible content.
-
-    noise_type: oracle(70%) / noisy(20%) / distractor(5%) / failure(5%)
-
-    v9.4 — when query_json is provided, we validate that the query keywords
-    actually overlap with the returned chunks' evidence. If the LLM-generated
-    query is bogus (no overlap with the gold chunks it should be retrieving),
-    we downgrade the noise type to "failure" so the agent learns:
-      good query → relevant evidence
-      bad query  → no result
-    Without this check, the simulator returns oracle chunks regardless of
-    query quality, teaching "any query works" — a training-inference mismatch.
-    """
-    observations = rollout.get("thinks", [])
-    support_chunks = card.get("support_chunks", [])
-
-    if noise_type == "failure":
-        return {"source": "failure", "text_content": "No matching results found.",
-                "returned_chunks": []}
-
-    if noise_type == "distractor":
-        available = [o for o in observations if o["chunk_idx"] not in support_chunks
-                     and o["chunk_idx"] < ask_chunk]
-        if available:
-            pick = random.choice(available)
-            return {"source": "distractor",
-                    "text_content": f"[{pick['time']}] {pick['think']}",
-                    "returned_chunks": [pick["chunk_idx"]]}
-        return {"source": "failure", "text_content": "No results.", "returned_chunks": []}
-
-    # oracle or noisy
-    obs_lookup = {o["chunk_idx"]: o for o in observations}
-    parts = []
-    returned = []
-    for ec in support_chunks:
-        obs = obs_lookup.get(ec)
-        if obs and ec < ask_chunk:
-            parts.append(f"[{obs['time']}] {obs['think']}")
-            returned.append(ec)
-
-    # v9.4 — query/result consistency check. If a query was supplied and it
-    # has zero content-token overlap with the chunks we'd return, downgrade
-    # to failure: this is a "bad query" signal the agent should learn from.
-    if query_json is not None and returned:
-        kw = _extract_query_keywords(query_json)
-        # v11.3: threshold 1 → 2. With the new prompt anchoring keywords to
-        # gold chunk text, ≥2 lexical hits is realistic and screens out
-        # paraphrased queries that were previously accepted at the 1-hit bar.
-        if kw and not _query_overlaps_chunks(kw, returned, rollout, threshold=2):
-            return {"source": "failure",
-                    "text_content": "No matching results found.",
-                    "returned_chunks": []}
-
-    if noise_type == "noisy":
-        past_obs = [o for o in observations if o["chunk_idx"] < ask_chunk]
-        if past_obs:
-            distractor = random.choice(past_obs)
-            parts.insert(0, f"[{distractor['time']}] {distractor['think']}")
-
-    content = "\n".join(parts) if parts else "No matching results found."
-    return {"source": "historical_frames", "text_content": content,
-            "returned_chunks": returned}
-
-
-# ---------------------------------------------------------------------------
-# Sample Construction
-# ---------------------------------------------------------------------------
-
-
-def _make_sample(
-    chunk_idx: int, prompt_type: str, action: str,
-    think: str, queries: List[Dict],
-    snapshot: Dict = None,
-    response: str = None, query: Dict = None,
-    recall_result: Dict = None, user_input: str = None,
-    trajectory_id: str = "", card_id: str = "",
-    sequence_type: str = "",
-) -> Dict:
-    """Build one SFT training sample (v12 protocol).
-
-    Output format: <think>...</think><tool_call>{...}</tool_call> |
-    <answer>...</answer>. Compress samples additionally inject
-    ``<compress_trigger range='a-b'/>`` into ``user_input`` (system event,
-    not a model action choice).
-    """
-    # Derive sample_type — used for sampling/audit
-    if prompt_type == "POST_RECALL_PROMPT":
-        sample_type = "recall_response" if action == "response" else "recall_silent"
-    elif action == "recall":
-        sample_type = "recall_query"
-    elif action == "response":
-        sample_type = "response"
-    elif action == "compress":
-        sample_type = "compress"
-    else:
-        sample_type = "silent"
-
-    # Extract compress event summary upfront
-    compress_summary = None
-    if action == "compress" and snapshot:
-        compress_event = snapshot.get("_compress_event")
-        if compress_event:
-            compress_summary = compress_event.get("summary", {})
-
-    # ── Build assistant output text ─────────────────────────────────────
-    # Map (action, sample_type) → v12 emission kind:
-    #   silent              → <answer></answer> (empty answer = silent)
-    #   response            → <answer>text</answer>
-    #   recall_query        → <tool_call>{recall...}</tool_call>
-    #   recall_response     → <answer>text</answer> (after recall result returns)
-    #   recall_silent       → <answer></answer>
-    #   compress            → <tool_call>{compress...}</tool_call>
-    #                         AND inject <compress_trigger range='a-b'/> into user_input
-    from thinkstream.data.agent_protocol import build_assistant_content_v12
-
-    if action == "response":
-        output_text = build_assistant_content_v12(
-            think=think, kind="answer", answer_text=response or "",
-        )
-        final_user_input = user_input or ""
-    elif action == "recall":
-        recall_args = {
-            "query": query.get("query", "") if query else "",
-            "time_range": query.get("time_range", "") if query else "",
+    grounding = card.get("grounding_frames", [])
+    if noise_kind == "failure" or not grounding:
+        return {
+            "source": "failure",
+            "text_content": "No matching results found.",
+            "returned_chunks": [],
+            "time": "",
         }
-        output_text = build_assistant_content_v12(
-            think=think, kind="recall", recall_query=recall_args,
-        )
-        final_user_input = user_input or ""
-    elif action == "compress":
-        if compress_summary:
-            tr = compress_summary.get("time_range", [])
-            # Normalize to list of 2 ints
-            if isinstance(tr, str):
-                m = re.match(r"\s*(\d+)\s*-\s*(\d+)", tr)
-                tr = [int(m.group(1)), int(m.group(2))] if m else []
-            summary_arg = {
-                "time_range": list(tr) if tr else [],
-                "text": compress_summary.get("text", ""),
-            }
-            output_text = build_assistant_content_v12(
-                think=think, kind="compress", compress_summary=summary_arg,
-            )
-            # System event: inject <compress_trigger> into user_input. The
-            # trigger range matches the gold summary range so SFT learns
-            # the trigger→tool_call binding tightly.
-            if tr and len(tr) == 2:
-                trigger_tag = f"<compress_trigger range='{int(tr[0])}-{int(tr[1])}'/>"
-            else:
-                trigger_tag = "<compress_trigger/>"
-            final_user_input = (
-                trigger_tag + (("\n" + user_input) if user_input else "")
-            )
-        else:
-            logger.warning(
-                f"compress sample chunk={chunk_idx} traj={trajectory_id} "
-                f"missing _compress_event"
-            )
-            output_text = build_assistant_content_v12(
-                think=think, kind="compress",
-                compress_summary={"time_range": [], "text": ""},
-            )
-            final_user_input = "<compress_trigger/>" + (
-                ("\n" + user_input) if user_input else ""
-            )
-    else:  # silent / recall_silent
-        output_text = build_assistant_content_v12(
-            think=think, kind="answer", answer_text="",
-        )
-        final_user_input = user_input or ""
+    chunks = sorted(grounding)
+    if noise_kind == "noisy":
+        # Inject a distractor chunk near grounding
+        max_c = max(0, int(rollout.get("num_chunks", 1)) - 1)
+        chunks = chunks + [min(chunks[-1] + 5, max_c)]
+    tr_start = min(chunks) * AGENT_CHUNK_SEC
+    tr_end = (max(chunks) + 1) * AGENT_CHUNK_SEC
+    return {
+        "source": "historical_frames",
+        "text_content": (f"Recalled {len(chunks)} frames from "
+                         f"t={int(tr_start)}-{int(tr_end)}s."),
+        "returned_chunks": chunks,
+        "time": f"{int(tr_start)}-{int(tr_end)}",
+    }
 
-    sample = {
+
+def _mech_to_sequence_type(mech: str) -> str:
+    """Map v2 mechanism → legacy sequence_type for back-compat metadata."""
+    return {
+        "silent_then_response": "event_watch",
+        "direct": "immediate_response",
+        "recall_demo": "recall_success",
+        "multi_emit": "multi_response",
+    }.get(mech, "immediate_response")
+
+
+# ---------------------------------------------------------------------------
+# Sample builders
+# ---------------------------------------------------------------------------
+
+
+def _silent_sample(
+    chunk_idx: int, think: str, queries: List[Dict],
+    trajectory_id: str, *, card_id: str = "",
+    sequence_type: str = "", base_role: str = "active_silent",
+    sample_subtype: str = "silent", user_input: str = "",
+) -> Dict:
+    sample_type = "recall_silent" if sample_subtype == "recall+silent" else "silent"
+    output_text = build_assistant_content_v12(
+        think=think, kind="answer", answer_text="",
+    )
+    return {
         "chunk_idx": chunk_idx,
         "sample_type": sample_type,
-        "prompt_type": prompt_type,
+        "prompt_type": "SYSTEM_PROMPT",
         "trajectory_id": trajectory_id,
         "card_id": card_id,
         "sequence_type": sequence_type,
-        "action": action,
+        "action": "silent",
         "output": output_text,
         "queries": deepcopy(queries),
-        "user_input": final_user_input,
+        "user_input": user_input,
+        "recall_result": None,
+        "base_role": base_role,
+    }
+
+
+def _response_sample(
+    chunk_idx: int, think: str, response: str, queries: List[Dict],
+    trajectory_id: str, card_id: str, sequence_type: str,
+    user_input: str = "",
+) -> Dict:
+    output_text = build_assistant_content_v12(
+        think=think, kind="answer", answer_text=response,
+    )
+    return {
+        "chunk_idx": chunk_idx,
+        "sample_type": "response",
+        "prompt_type": "SYSTEM_PROMPT",
+        "trajectory_id": trajectory_id,
+        "card_id": card_id,
+        "sequence_type": sequence_type,
+        "action": "response",
+        "output": output_text,
+        "queries": deepcopy(queries),
+        "user_input": user_input,
+        "recall_result": None,
+    }
+
+
+def _recall_response_sample(
+    chunk_idx: int, think: str, response: str, queries: List[Dict],
+    recall_query: Dict, recall_result: Dict,
+    trajectory_id: str, card_id: str, sequence_type: str,
+    user_input: str = "",
+) -> Dict:
+    """Multi-turn recall sample (v12 protocol).
+
+    sample_type='recall' triggers pass5's two-turn render:
+      assistant → tool_call(recall_query)
+      tool      → recall_result + recalled_frames
+      assistant → final answer
+    """
+    turn1 = build_assistant_content_v12(
+        think=think, kind="recall", recall_query=recall_query,
+    )
+    turn2_think = "Recalled relevant frames; deriving the answer."
+    turn2 = build_assistant_content_v12(
+        think=turn2_think, kind="answer", answer_text=response,
+    )
+    return {
+        "chunk_idx": chunk_idx,
+        "sample_type": "recall",
+        "prompt_type": "SYSTEM_PROMPT",
+        "trajectory_id": trajectory_id,
+        "card_id": card_id,
+        "sequence_type": sequence_type,
+        "action": "response",
+        "output": turn2,
+        "v12_assistant_turn_1": turn1,
+        "v12_assistant_turn_2": turn2,
+        "queries": deepcopy(queries),
+        "user_input": user_input,
         "recall_result": recall_result,
     }
-    # Mark compress samples as inter-chunk turns (no visual_window in user
-    # content). Compression fires BETWEEN visual timesteps and doesn't
-    # consume a chunk's visual decision — see
-    # docs/v12.0_protocol_migration_design.md §1.
-    # data_processor.build_per_timestep_messages_v12 checks this flag and
-    # omits the visual_window section.
-    if action == "compress":
-        sample["v12_inter_chunk"] = True
-    return sample
 
 
 # ---------------------------------------------------------------------------
-# v12.0 multi-turn merge: pair (recall_query, recall_response/recall_silent)
-# samples at the same (trajectory, card, chunk_idx) into a single sample
-# whose assistant emits TWO turns separated by a tool turn. This models
-# the agentic pattern where one chunk's decision can include a tool cycle
-# (think → tool_call → tool_response → think → answer) — same pattern as
-# DeepEyes v1 (visual_toolbox_v2.py) but transposed to streaming video.
-# ---------------------------------------------------------------------------
-
-
-def _merge_recall_pairs_v12(samples: List[Dict]) -> List[Dict]:
-    """Merge (recall_query, recall_response|recall_silent) pairs.
-
-    Both samples are emitted at the same chunk_idx by generate_trajectory_samples
-    (e.g., recall_success seq). v12 collapses them into a single multi-turn
-    sample so the model trains on the full think→recall→result→think→answer
-    cycle as one cohesive unit.
-
-    Non-recall samples pass through unchanged. Returns samples in original
-    chunk_idx order.
-    """
-    from collections import defaultdict
-    by_key: Dict = defaultdict(list)
-    other: List[Dict] = []
-    for s in samples:
-        st = s.get("sample_type")
-        if st in ("recall_query", "recall_response", "recall_silent"):
-            key = (
-                s.get("trajectory_id"),
-                s.get("card_id"),
-                s.get("chunk_idx"),
-            )
-            by_key[key].append(s)
-        else:
-            other.append(s)
-
-    merged_recall: List[Dict] = []
-    for key, pair in by_key.items():
-        rq = next((s for s in pair if s["sample_type"] == "recall_query"), None)
-        rr = next((s for s in pair
-                   if s["sample_type"] in ("recall_response", "recall_silent")), None)
-
-        if rq and rr:
-            # Build merged sample. Base fields come from rq (chunk visual context),
-            # the second turn output and recall_result come from rr.
-            merged = dict(rq)
-            merged["sample_type"] = "recall"   # unified type
-            merged["v12_assistant_turn_1"] = rq["output"]    # tool_call
-            merged["v12_assistant_turn_2"] = rr["output"]    # answer (possibly empty)
-            merged["recall_result"] = rr.get("recall_result")
-            merged["v12_post_recall_was_silent"] = (
-                rr.get("sample_type") == "recall_silent"
-            )
-            # Drop legacy single-output to avoid confusion with multi-turn
-            merged.pop("output", None)
-            merged_recall.append(merged)
-        elif rq:
-            # Lonely recall_query (no matching response sample). Should not
-            # normally happen; keep as-is so trainer doesn't lose data.
-            logger.warning(
-                f"recall_query at {key} has no matching response/silent — "
-                f"keeping as single-turn sample"
-            )
-            merged_recall.append(rq)
-        else:
-            # Lonely recall_response — promote to plain response/silent.
-            assert rr is not None
-            rr_copy = dict(rr)
-            rr_copy["sample_type"] = (
-                "response" if rr["sample_type"] == "recall_response" else "silent"
-            )
-            merged_recall.append(rr_copy)
-
-    # Restore chunk-ordered output. (Stable sort by chunk_idx.)
-    combined = other + merged_recall
-    combined.sort(key=lambda s: (s.get("chunk_idx", 0), s.get("sample_type", "")))
-    return combined
-
-
-# ---------------------------------------------------------------------------
-# Trajectory Sample Generation
+# Public API (matches old pass3c interface)
 # ---------------------------------------------------------------------------
 
 
@@ -841,617 +216,128 @@ async def generate_trajectory_samples(
     cards_map: Dict[str, Dict],
     rollout: Dict,
     evidence: List[Dict],
-    client,
-    video_id: str,
+    client=None,                     # unused (no LLM call in v2 path)
+    video_id: str = "",
 ) -> List[Dict]:
-    """Generate all SFT samples for one trajectory.
+    """Render one trajectory's placements into raw per-chunk samples.
 
-    Walks key_chunks sequentially, maintains queries_state.
-    After fork samples, generates selective base samples (silent/compress)
-    around question windows and compression events.
-
-    Returns combined fork + base samples, sorted by chunk_idx.
+    Output samples carry every field render_samples.render_sample() needs
+    (chunk_idx, sample_type, action, output, queries, user_input,
+    recall_result, sequence_type, card_id, trajectory_id, optional
+    v12_assistant_turn_*). render_samples then adds the `input` dict +
+    metadata for pass3e/4/5.
     """
-    samples = []
-    queries_state = []
-    # Track queries_state at each key_chunk boundary for base sample generation
-    queries_state_at_chunks: Dict[int, List[Dict]] = {0: []}
-    observations = rollout.get("thinks", [])
-    obs_by_idx = {o["chunk_idx"]: o for o in observations}
-    traj_id = trajectory["trajectory_id"]
+    placements_dicts = trajectory.get("placements", [])
+    placements = [_dict_to_placement(p) for p in placements_dicts]
+    traj_id = trajectory.get("trajectory_id", f"{video_id}_traj0")
+    num_chunks = int(rollout.get("num_chunks", 0))
 
-    def _get_think(chunk_idx):
-        obs = obs_by_idx.get(chunk_idx)
-        if obs:
-            return obs.get("think", "")
-        return ""
+    compress_chunks = [int(e.get("trigger_chunk", -1))
+                       for e in rollout.get("compression_events", [])
+                       if e.get("trigger_chunk", -1) >= 0]
 
-    def _get_snapshot(chunk_idx):
-        snapshots = rollout["snapshots"]
-        return snapshots.get(chunk_idx) or snapshots.get(str(chunk_idx)) or {}
+    # Run design's gold-action pipeline (handles patrol stratification,
+    # compress_silent, priority resolution).
+    cards_obj = [dict_to_card(c) for c in cards_map.values()]
+    placements_by_card: Dict[str, List[Placement]] = {}
+    for p in placements:
+        placements_by_card.setdefault(p.card_id, []).append(p)
+    rng = random.Random(abs(hash(video_id + traj_id)) % (10**6))
+    design_samples = _design_render(
+        cards_obj, placements_by_card, num_chunks,
+        evidence=evidence, rng=rng,
+        compression_event_chunks=compress_chunks,
+    )
 
-    def _add_query(question, ask_chunk, answer=None, response_chunk=None):
-        """Append to queries_state. Each answer carries its own timestamp."""
-        entry = {
-            "question": question,
-            "ask_time": ask_chunk * AGENT_CHUNK_SEC,
-            "answers": [],  # list of {"text": ..., "time": ...}
-        }
-        if answer is not None:
-            entry["answers"].append({
-                "text": str(answer),
-                "time": (response_chunk or ask_chunk) * AGENT_CHUNK_SEC,
-            })
-        queries_state.append(entry)
+    # Build queries_state evolution chronologically
+    queries_state: List[Dict] = []
+    queries_idx_by_card: Dict[str, int] = {}
+    placements_sorted = sorted(placements, key=lambda p: p.ask_chunk)
+    ask_chunk_by_card = {p.card_id: p.ask_chunk for p in placements_sorted}
 
-    for placement in trajectory["placements"]:
-        card = cards_map.get(placement["card_id"])
-        if not card:
-            continue
+    raw: List[Dict] = []
+    for ds in design_samples:
+        c = ds.chunk_idx
+        # Add queries that became active by this chunk
+        for p in placements_sorted:
+            if p.ask_chunk <= c and p.card_id not in queries_idx_by_card:
+                card = cards_map.get(p.card_id) or {}
+                queries_idx_by_card[p.card_id] = len(queries_state)
+                queries_state.append({
+                    "question": card.get("question", ""),
+                    "ask_time": p.ask_chunk * AGENT_CHUNK_SEC,
+                    "answers": [],
+                })
 
-        kc = placement["key_chunks"]
-        seq = placement["sequence_type"]
-        ask = kc["ask"]
-        snapshot = _get_snapshot(ask)
-        base_think = _get_think(ask)
+        card_id = ds.card_id
+        card = cards_map.get(card_id) if card_id else None
+        sequence_type = _mech_to_sequence_type(ds.mechanism) if card_id else ""
+        # user_input fires only at the ask_chunk for that card
+        user_input = ""
+        if card_id and ask_chunk_by_card.get(card_id) == c:
+            user_input = (card or {}).get("question", "")
 
-        if seq == "immediate_response":
-            # v9.1: skip fork_think for immediate_response. The model answers
-            # in the same chunk, so query-aware think rewriting is wasted —
-            # the response itself proves the question was processed. Saves
-            # ~30% of fork_think 397B calls. Keep base_think (visual obs).
-            think = base_think
-            resp = await _generate_response(card, snapshot, evidence, client, video_id, ask)
-            if resp is None:
-                logger.warning(f"  [{video_id}] response gen failed at chunk {ask}, skipping placement")
-                continue
-            samples.append(_make_sample(
-                ask, "SYSTEM_PROMPT", "response", think, queries_state,
-                snapshot=snapshot, response=resp,
-                user_input=card["question"], trajectory_id=traj_id,
-                card_id=card["card_id"], sequence_type=seq,
+        if ds.sample_kind == "patrol":
+            raw.append(_silent_sample(
+                c, _think_for_chunk(rollout, c), queries_state, traj_id,
+                base_role="patrol", sample_subtype="patrol",
             ))
-            _add_query(card["question"], ask, answer=resp, response_chunk=ask)
-            # post_silent: base think OK (question already answered)
-            ps = kc.get("post_silent", ask + 1)
-            samples.append(_make_sample(
-                ps, "SYSTEM_PROMPT", "silent", _get_think(ps), queries_state,
-                trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
+        elif ds.sample_kind == "compress_silent":
+            raw.append(_silent_sample(
+                c, _think_for_chunk(rollout, c), queries_state, traj_id,
+                base_role="compress_event", sample_subtype="compress_silent",
             ))
-
-        elif seq == "recall_success":
-            _add_query(card["question"], ask)
-            # v9.4 — query→result coupling. Generate the recall query FIRST
-            # (one synchronous LLM call), then simulate the result with the
-            # query in hand so _simulate_recall_result can downgrade to
-            # "failure" when the query is bogus. This costs one
-            # serialization point (~0.5 s) but eliminates the v9.3 bug
-            # where any LLM-generated query string returned oracle chunks,
-            # teaching the agent that query content doesn't matter.
-            query_json = await _generate_recall_query(
-                card, snapshot, client, video_id, ask, rollout=rollout)
-
-            noise = random.random()
-            noise_type = "oracle" if noise < 0.7 else "noisy" if noise < 0.9 else "distractor" if noise < 0.95 else "failure"
-            recall_result = _simulate_recall_result(
-                card, rollout, ask, noise_type, query_json=query_json)
-            # Source may have been downgraded to "failure" by the consistency
-            # check, so re-derive is_failed from the actual result.
-            is_failed = recall_result.get("source") in ("distractor", "failure")
-
-            tasks = [
-                _generate_fork_think(base_think, queries_state, client, video_id, ask),
-                _generate_recall_think(card, recall_result, client, video_id, ask),
-            ]
-            if not is_failed:
-                tasks.append(_generate_response(
-                    card, snapshot, evidence, client, video_id, ask,
-                    recall_evidence=recall_result.get("text_content", "")))
-            results = await asyncio.gather(*tasks)
-            think = results[0]
-            recall_think = results[1]
-            if is_failed:
-                resp = "I could not find enough evidence to answer."
-                post_action = "silent"
-            else:
-                resp = results[2]
-                if resp is None:
-                    resp = "I could not find enough evidence to answer."
-                    post_action = "silent"
-                else:
-                    post_action = "response"
-
-            samples.append(_make_sample(
-                ask, "SYSTEM_PROMPT", "recall", think, queries_state,
-                snapshot=snapshot, query=query_json,
-                user_input=card["question"], trajectory_id=traj_id,
-                card_id=card["card_id"], sequence_type=seq,
+        elif ds.sample_kind == "silent":
+            raw.append(_silent_sample(
+                c, _think_for_chunk(rollout, c), queries_state, traj_id,
+                card_id=card_id or "",
+                sequence_type=sequence_type, user_input=user_input,
             ))
-            samples.append(_make_sample(
-                ask, "POST_RECALL_PROMPT", post_action, recall_think, queries_state,
-                response=resp if post_action == "response" else None,
-                recall_result=recall_result, trajectory_id=traj_id,
-                card_id=card["card_id"], sequence_type=seq,
+        elif ds.sample_kind == "recall+silent":
+            raw.append(_silent_sample(
+                c, _think_for_chunk(rollout, c), queries_state, traj_id,
+                card_id=card_id or "", sequence_type=sequence_type,
+                base_role="recall_silent", sample_subtype="recall+silent",
+                user_input=user_input,
             ))
-            if post_action == "response":
-                queries_state[-1]["answers"].append({"text": str(resp), "time": ask * AGENT_CHUNK_SEC})
-            ps = kc.get("post_silent", ask + 1)
-            samples.append(_make_sample(
-                ps, "SYSTEM_PROMPT", "silent", _get_think(ps), queries_state,
-                trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
+        elif ds.sample_kind == "response":
+            resp = _response_text_for(card or {}, ds.response_text)
+            raw.append(_response_sample(
+                c, _think_for_chunk(rollout, c), resp, queries_state,
+                traj_id, card_id, sequence_type, user_input=user_input,
             ))
-
-        elif seq == "recall_fail_then_found":
-            _add_query(card["question"], ask)
-            # v9.1: queries_state stays unchanged until found_response.
-            # Pre-compute recall_result synchronously, then gather all
-            # independent LLM calls in two batches (before/after found).
-            recall_result = _simulate_recall_result(card, rollout, ask, "failure")
-            wait_chunks = kc.get("wait_silent", [])
-            found = kc.get("found_response")
-
-            # Batch 1: ask-time think + recall_query + recall_think + wait_silent thinks
-            #          + found_think + found_response (all independent, queries_state stable).
-            tasks = [
-                _generate_fork_think(base_think, queries_state, client, video_id, ask),
-                _generate_recall_query(card, snapshot, client, video_id, ask, rollout=rollout),
-                _generate_recall_think(card, recall_result, client, video_id, ask),
-            ]
-            tasks += [
-                _generate_fork_think(_get_think(wc), queries_state, client, video_id, wc)
-                for wc in wait_chunks
-            ]
-            if found is not None:
-                tasks.append(_generate_fork_think(
-                    _get_think(found), queries_state, client, video_id, found))
-                tasks.append(_generate_response(
-                    card, _get_snapshot(found), evidence, client, video_id, found))
-            results = await asyncio.gather(*tasks)
-
-            think = results[0]
-            query_json = results[1]
-            recall_think = results[2]
-            wait_thinks = results[3:3 + len(wait_chunks)]
-
-            samples.append(_make_sample(
-                ask, "SYSTEM_PROMPT", "recall", think, queries_state,
-                snapshot=snapshot, query=query_json,
-                user_input=card["question"], trajectory_id=traj_id,
-                card_id=card["card_id"], sequence_type=seq,
+            if card_id in queries_idx_by_card:
+                queries_state[queries_idx_by_card[card_id]]["answers"].append({
+                    "text": resp, "time": c * AGENT_CHUNK_SEC,
+                })
+        elif ds.sample_kind == "recall+response":
+            resp = _response_text_for(card or {}, ds.response_text)
+            rq = _recall_query_for(card or {}, c)
+            rr = _recall_result_for(card or {}, rollout,
+                                     ds.recall_result_kind or "oracle")
+            raw.append(_recall_response_sample(
+                c, _think_for_chunk(rollout, c), resp, queries_state,
+                rq, rr, traj_id, card_id, sequence_type, user_input=user_input,
             ))
-            samples.append(_make_sample(
-                ask, "POST_RECALL_PROMPT", "silent", recall_think, queries_state,
-                recall_result=recall_result, trajectory_id=traj_id,
-                card_id=card["card_id"], sequence_type=seq,
-            ))
-            for wc, wc_think in zip(wait_chunks, wait_thinks):
-                samples.append(_make_sample(
-                    wc, "SYSTEM_PROMPT", "silent", wc_think, queries_state,
-                    trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
-                ))
-            if found is not None:
-                found_think = results[3 + len(wait_chunks)]
-                resp = results[4 + len(wait_chunks)]
-                if resp is None:
-                    logger.warning(f"  [{video_id}] found_response gen failed at chunk {found}")
-                    continue
-                samples.append(_make_sample(
-                    found, "SYSTEM_PROMPT", "response", found_think, queries_state,
-                    response=resp, trajectory_id=traj_id,
-                    card_id=card["card_id"], sequence_type=seq,
-                ))
-                queries_state[-1]["answers"].append({"text": str(resp), "time": found * AGENT_CHUNK_SEC})
-                ps = kc.get("post_silent", found + 1)
-                samples.append(_make_sample(
-                    ps, "SYSTEM_PROMPT", "silent", _get_think(ps), queries_state,
-                    trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
-                ))
+            if card_id in queries_idx_by_card:
+                queries_state[queries_idx_by_card[card_id]]["answers"].append({
+                    "text": resp, "time": c * AGENT_CHUNK_SEC,
+                })
 
-        elif seq == "event_watch":
-            _add_query(card["question"], ask)
-            # v9.1: queries_state is unchanged through ask + wait_silent + trigger
-            # (no _add_query, no answer append) — all thinks are independent of
-            # each other, so gather them all in one batch. trigger response also
-            # independent of trigger think → include in same batch.
-            wait_chunks = kc.get("wait_silent", [])
-            trigger = kc.get("trigger")
-            think_tasks = [
-                _generate_fork_think(base_think, queries_state, client, video_id, ask)
-            ]
-            think_tasks += [
-                _generate_fork_think(_get_think(wc), queries_state, client, video_id, wc)
-                for wc in wait_chunks
-            ]
-            if trigger is not None:
-                think_tasks.append(_generate_fork_think(
-                    _get_think(trigger), queries_state, client, video_id, trigger))
-                think_tasks.append(_generate_response(
-                    card, _get_snapshot(trigger), evidence, client, video_id, trigger))
-            results = await asyncio.gather(*think_tasks)
-
-            # Unpack in order: ask_think, *wait_thinks, [trigger_think, resp]
-            ask_think = results[0]
-            wait_thinks = results[1:1 + len(wait_chunks)]
-            samples.append(_make_sample(
-                ask, "SYSTEM_PROMPT", "silent", ask_think, queries_state,
-                user_input=card["question"], trajectory_id=traj_id,
-                card_id=card["card_id"], sequence_type=seq,
-            ))
-            for wc, wc_think in zip(wait_chunks, wait_thinks):
-                samples.append(_make_sample(
-                    wc, "SYSTEM_PROMPT", "silent", wc_think, queries_state,
-                    trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
-                ))
-            if trigger is not None:
-                trigger_think = results[1 + len(wait_chunks)]
-                resp = results[2 + len(wait_chunks)]
-                if resp is None:
-                    logger.warning(f"  [{video_id}] trigger response gen failed at chunk {trigger}")
-                    continue
-                samples.append(_make_sample(
-                    trigger, "SYSTEM_PROMPT", "response", trigger_think, queries_state,
-                    response=resp, trajectory_id=traj_id,
-                    card_id=card["card_id"], sequence_type=seq,
-                ))
-                queries_state[-1]["answers"].append({"text": str(resp), "time": trigger * AGENT_CHUNK_SEC})
-
-        elif seq == "multi_response":
-            # v9.1: first response at ask_chunk — skip fork_think (same logic
-            # as immediate_response). Followup chunks below STILL get fork_think
-            # because the question stays active across silent gaps.
-            think = base_think
-            resp = await _generate_response(card, snapshot, evidence, client, video_id, ask)
-            if resp is None:
-                logger.warning(f"  [{video_id}] multi_response gen failed at chunk {ask}, skipping")
-                continue
-            samples.append(_make_sample(
-                ask, "SYSTEM_PROMPT", "response", think, queries_state,
-                response=resp, user_input=card["question"],
-                trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
-            ))
-            _add_query(card["question"], ask, answer=resp, response_chunk=ask)
-            # v9.1: no_change_silent thinks all see the same queries_state
-            # (no mutation in loop) → gather them.
-            sc_chunks = kc.get("no_change_silent", [])
-            if sc_chunks:
-                sc_thinks = await asyncio.gather(*[
-                    _generate_fork_think(_get_think(sc), queries_state, client, video_id, sc)
-                    for sc in sc_chunks
-                ])
-                for sc, sc_think in zip(sc_chunks, sc_thinks):
-                    samples.append(_make_sample(
-                        sc, "SYSTEM_PROMPT", "silent", sc_think, queries_state,
-                        trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
-                    ))
-            # followup_response: queries_state mutates each iteration via answer
-            # append, so cross-iteration parallel is unsafe. Within-iteration
-            # gather of (fc_think, resp) is safe — both use the same queries_state.
-            #
-            # v9.5: progressive_answers — when placement carries a
-            # {chunk_idx: answer_str} map (F5/F7/CR5 multi_probe families),
-            # the per-probe gold answer overrides card.canonical_answer.
-            # F5 → cumulative count "1"/"2"/"3"; F7 → "No"/"Yes" flip;
-            # CR5 → silent before clue / descriptive after. Without this
-            # override every probe would reuse the same final answer
-            # (the bug that made OVO REC/SSR/CRR untrainable).
-            progressive = (kc.get("progressive_answers") or {}) if isinstance(kc, dict) else {}
-            for fc in kc.get("followup_response", []):
-                prior = [a["text"] if isinstance(a, dict) else str(a)
-                         for a in queries_state[-1]["answers"]]
-                # If the placement specified a per-chunk gold answer, use
-                # it directly (no LLM call) — these are deterministic.
-                progressive_answer = progressive.get(fc)
-                if progressive_answer is None:
-                    progressive_answer = progressive.get(str(fc))
-                if progressive_answer is not None:
-                    fc_think = await _generate_fork_think(
-                        _get_think(fc), queries_state, client, video_id, fc,
-                    )
-                    resp = str(progressive_answer)
-                else:
-                    fc_think, resp = await asyncio.gather(
-                        _generate_fork_think(_get_think(fc), queries_state, client, video_id, fc),
-                        _generate_response(card, _get_snapshot(fc), evidence,
-                                           client, video_id, fc, prior_answers=prior),
-                    )
-                if resp is None:
-                    logger.warning(f"  [{video_id}] followup response gen failed at chunk {fc}")
-                    continue
-                samples.append(_make_sample(
-                    fc, "SYSTEM_PROMPT", "response", fc_think, queries_state,
-                    response=resp, trajectory_id=traj_id,
-                    card_id=card["card_id"], sequence_type=seq,
-                ))
-                queries_state[-1]["answers"].append({"text": str(resp), "time": fc * AGENT_CHUNK_SEC})
-
-    # Record queries_state at each fork sample's chunk for base interpolation
-    for s in samples:
-        c = s["chunk_idx"]
-        queries_state_at_chunks[c] = deepcopy(s["queries"])
-
-    # Generate selective base samples (silent/compress around question windows)
-    base_samples = generate_base_samples(trajectory, rollout, cards_map, queries_state_at_chunks)
-    all_samples = samples + base_samples
-    all_samples.sort(key=lambda s: s["chunk_idx"])
-
-    # v9: enrich compress samples with gold_caption (ICAE auxiliary loss target).
-    # Done here (post-render) so we don't have to thread evidence into helpers.
-    _enrich_compress_with_gold_caption(all_samples, rollout, evidence)
-
-    # v12.5 BUG FIX (2026-04-29): merge (recall_query, recall_response|silent)
-    # pairs into multi-turn samples HERE — at the trajectory's full sample
-    # list. The OLD merge call site (inside generate_base_samples, line ~1451)
-    # ran on base samples only, which never contain recall pairs → 0 multi-turn
-    # samples were produced despite the v12 protocol claiming to support them.
-    # Audit confirmed: 144 recall pairs ALL share chunk_idx (same trajectory,
-    # same card) and would have merged correctly; they just never reached the
-    # merge function. After fix, sample_type "recall_query" / "recall_response"
-    # / "recall_silent" collapse into "recall" with v12_assistant_turn_1/2.
-    all_samples = _merge_recall_pairs_v12(all_samples)
-
-    return all_samples
+    return raw
 
 
-def _enrich_compress_with_gold_caption(
-    samples: List[Dict], rollout: Dict, evidence: List[Dict],
-) -> None:
-    """Attach gold_caption to compress samples (ICAE-style aux target).
-
-    The gold_caption is a concatenation of high-confidence atomic_facts +
-    state_changes from the chunks being compressed. The trainer can use it
-    as a reconstruction target to prevent summary degeneration into vague
-    "the person continues" platitudes.
-
-    Mutates samples in place: adds `gold_caption: str` to compress samples.
-    """
-    if not evidence:
-        return
-    ev_by_idx = {cap.get("chunk_idx", 0): cap for cap in evidence}
-    events_by_trigger = {
-        e.get("trigger_chunk"): e
-        for e in rollout.get("compression_events", [])
-    }
-
-    for s in samples:
-        if s.get("sample_type") != "compress":
-            continue
-        event = events_by_trigger.get(s["chunk_idx"])
-        if not event:
-            continue
-        compressed_chunks = event.get("compressed_thinks_chunks", [])
-        facts: List[str] = []
-        for c in compressed_chunks:
-            cap = ev_by_idx.get(c, {})
-            for f in cap.get("atomic_facts", []):
-                if f.get("confidence", 0) >= 0.75:
-                    facts.append(f["fact"])
-            for sc in cap.get("state_changes", []):
-                facts.append(str(sc))
-        # Cap at 280 tokens (~12 facts) to bound aux loss compute
-        gold_caption = " | ".join(facts[:12]).strip()
-        if gold_caption:
-            s["gold_caption"] = gold_caption
+def save_samples(video_id: str, samples: List[Dict],
+                 output_dir: Path = SAMPLES_3C_DIR) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / f"{video_id}.json").write_text(
+        json.dumps(samples, ensure_ascii=False, indent=2)
+    )
 
 
-# ---------------------------------------------------------------------------
-# Base Sample Generation (selective, not every chunk)
-# ---------------------------------------------------------------------------
-
-# v12.5 (2026-04-29) — chunk semantics changed 2s/chunk → 1s/chunk
-# (config.AGENT_CHUNK_SEC). Doubling these constants preserves the
-# semantic span (in seconds) of each window. Old: WARMUP_CHUNKS=3 → 6s.
-# New: 6 → 6s. Same applies to QUESTION/COMPRESS/EVIDENCE windows.
-WARMUP_CHUNKS = 6               # first N chunks for cold-start training (~6s)
-QUESTION_WINDOW_BEFORE = 4      # chunks before each key_chunk (~4s)
-QUESTION_WINDOW_AFTER = 6       # chunks after each key_chunk (~6s)
-COMPRESS_WINDOW = 2             # chunks around each compression event (~2s)
-# REVERTED (2026-04-29): I had changed this to 10 to lower silent rate,
-# but patrol samples teach the model "stay silent during long-silent
-# stretches" — cutting density 50% would weaken that signal.
-# v12.5: doubled (5 → 10) for new 1s/chunk to preserve 10s semantic
-# interval (same as before in seconds).
-LONG_SILENT_SAMPLE_INTERVAL = 10 # sample every Nth chunk in long silent stretches (~10s)
-EVIDENCE_WINDOW = 4             # chunks around support_chunks (~4s)
-
-
-def _select_base_chunks(
-    trajectory: Dict,
-    rollout: Dict,
-    cards_map: Dict[str, Dict],
-) -> Dict[int, str]:
-    """v12.9 (2026-04-30): emit ONE silent base sample for EVERY chunk.
-
-    Per-chunk SFT requires that each chunk decision (silent / response / recall
-    / compress) gets independent supervision. Previous logic only sampled
-    ~30 "key" chunks (warmup / evidence / question_window / patrol /
-    compress_boundary), leaving ~120 silent decisions per 150s video
-    untrained. v12.9 emits a sample for every chunk 0..num_chunks-1; chunks
-    that ALREADY have a placement (response / recall / compress) sample
-    are skipped in generate_base_samples via the `fork_chunks` set.
-
-    Net effect: silent samples per video grows from ~5-10 → ~num_chunks - placements,
-    naturally matching the runtime per-chunk silent rate (~85-95%).
-
-    Role labels are preserved for loss-weight scoring (some chunks are more
-    informative — evidence anchors, question windows). Patrol replaces
-    "no specific role" rather than gating which chunks to sample.
-
-    Returns {chunk_idx: base_role}; role ∈ {evidence_anchor, compress_boundary,
-    question_window, warmup, patrol}. ALL chunks 0..num_chunks-1 are present.
-    """
-    num_chunks = rollout["num_chunks"]
-    chunk_role: Dict[int, str] = {}
-
-    # Default role for every chunk = "patrol" (low-weight silent supervision).
-    # Higher-priority roles below override.
-    for c in range(num_chunks):
-        chunk_role[c] = "patrol"
-
-    # 1. Warmup (cold-start chunks, low priority but tagged for loss weight).
-    for c in range(min(WARMUP_CHUNKS, num_chunks)):
-        chunk_role[c] = "warmup"
-
-    # 2. Pre-compute evidence + question + compress chunks for role tagging.
-    evidence_chunks = set()
-    for placement in trajectory["placements"]:
-        card = cards_map.get(placement["card_id"], {})
-        for sc in card.get("support_chunks", []):
-            for c in range(max(0, sc - EVIDENCE_WINDOW),
-                           min(num_chunks, sc + EVIDENCE_WINDOW + 1)):
-                evidence_chunks.add(c)
-
-    question_chunks = set()
-    for placement in trajectory["placements"]:
-        kc = placement["key_chunks"]
-        for key, val in kc.items():
-            anchors = [val] if isinstance(val, int) else (val if isinstance(val, list) else [])
-            for anchor in anchors:
-                ws = max(0, anchor - QUESTION_WINDOW_BEFORE)
-                we = min(num_chunks - 1, anchor + QUESTION_WINDOW_AFTER)
-                for c in range(ws, we + 1):
-                    question_chunks.add(c)
-
-    compress_chunks = set()
-    for event in rollout.get("compression_events", []):
-        trigger = event.get("trigger_chunk", -1)
-        if trigger < 0:
-            continue
-        for c in range(max(0, trigger - COMPRESS_WINDOW),
-                       min(num_chunks, trigger + COMPRESS_WINDOW + 1)):
-            compress_chunks.add(c)
-        cc = sorted(event.get("compressed_thinks_chunks", []))
-        for c in cc[:2] + cc[-2:]:
-            compress_chunks.add(c)
-
-    # 3. Higher-priority roles override default patrol.
-    for c in question_chunks:
-        chunk_role[c] = "question_window"
-    for c in compress_chunks:
-        chunk_role[c] = "compress_boundary"
-    for c in evidence_chunks:
-        chunk_role[c] = "evidence_anchor"
-
-    return chunk_role
-
-
-def generate_base_samples(
-    trajectory: Dict,
-    rollout: Dict,
-    cards_map: Dict[str, Dict],
-    queries_state_at_chunks: Dict[int, List[Dict]],
-) -> List[Dict]:
-    """Generate base (non-fork) samples at selected chunks.
-
-    These are the silent/compress samples between question events.
-    Each sample gets the correct queries_state for its position
-    in the trajectory timeline.
-
-    Selection covers 5 categories:
-    - Warmup (cold-start)
-    - Evidence anchors (recall source chunks)
-    - Question windows (Q&A context)
-    - Compress chains (full compression context)
-    - Long-silent patrol (teach "stay silent with active queries")
-
-    Args:
-        trajectory: the trajectory dict
-        rollout: Pass 2 rollout data
-        cards_map: {card_id: card_dict} for evidence anchor lookup
-        queries_state_at_chunks: {chunk_idx: queries_state} mapping
-            built during fork sample generation, representing the
-            queries_state at each key_chunk boundary.
-    """
-    observations = rollout.get("thinks", [])
-    obs_by_idx = {o["chunk_idx"]: o for o in observations}
-    traj_id = trajectory["trajectory_id"]
-
-    # Determine which chunks already have fork samples
-    fork_chunks = set()
-    for placement in trajectory["placements"]:
-        kc = placement["key_chunks"]
-        for v in kc.values():
-            if isinstance(v, int):
-                fork_chunks.add(v)
-            elif isinstance(v, list):
-                fork_chunks.update(v)
-
-    chunk_roles = _select_base_chunks(trajectory, rollout, cards_map)
-    samples = []
-
-    # Build queries_state interpolation: for any base chunk, use the
-    # queries_state from the nearest preceding key_chunk
-    sorted_boundaries = sorted(queries_state_at_chunks.keys())
-
-    for chunk_idx, base_role in sorted(chunk_roles.items()):
-        if chunk_idx in fork_chunks:
-            continue  # already has a fork sample
-
-        # Find the correct queries_state for this chunk
-        qs = []
-        for boundary in sorted_boundaries:
-            if boundary <= chunk_idx:
-                qs = queries_state_at_chunks[boundary]
-            else:
-                break
-
-        # Get think from rollout
-        obs = obs_by_idx.get(chunk_idx)
-        think = obs.get("think", "") if obs else ""
-
-        # Check if this chunk is a compression event
-        compress_event = None
-        for event in rollout.get("compression_events", []):
-            if event.get("trigger_chunk") == chunk_idx:
-                compress_event = event
-                break
-
-        if compress_event:
-            action = "compress"
-            # Pass compress event data through snapshot for _make_sample
-            compress_snapshot = {"_compress_event": compress_event}
-        else:
-            action = "silent"
-            compress_snapshot = None
-
-        sample = _make_sample(
-            chunk_idx=chunk_idx,
-            prompt_type="COMPRESS_PROMPT" if compress_event else "SYSTEM_PROMPT",
-            action=action,
-            think=think,
-            queries=qs,
-            snapshot=compress_snapshot,
-            trajectory_id=traj_id,
-            card_id="",
-            sequence_type="base",
-        )
-        # Attach base_role for training loss weighting
-        sample["base_role"] = base_role
-        samples.append(sample)
-
-    # v12.5 — merge moved to generate_trajectory_samples (after combining
-    # base + trajectory samples) where the recall pairs actually live.
-    # Calling it here was a no-op since base_samples never contain recall.
-    return samples
-
-
-# ---------------------------------------------------------------------------
-# IO
-# ---------------------------------------------------------------------------
-
-
-def save_samples(video_id: str, samples: List[Dict]):
-    SAMPLES_3C_DIR.mkdir(parents=True, exist_ok=True)
-    path = SAMPLES_3C_DIR / f"{video_id}.json"
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(samples, f, ensure_ascii=False, indent=2)
-
-
-def load_samples(video_id: str) -> Optional[List[Dict]]:
-    from .cache_version import stage_version_ok
-    if not stage_version_ok("3c"):
+def load_samples(video_id: str,
+                 samples_dir: Path = SAMPLES_3C_DIR) -> Optional[List[Dict]]:
+    p = samples_dir / f"{video_id}.json"
+    if not p.exists():
         return None
-    path = SAMPLES_3C_DIR / f"{video_id}.json"
-    if path.exists():
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return None
+    return json.loads(p.read_text())
