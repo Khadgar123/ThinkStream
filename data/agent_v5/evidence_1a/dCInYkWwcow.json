@@ -1,0 +1,5233 @@
+[
+  {
+    "time": [
+      0,
+      1
+    ],
+    "visible_entities": [],
+    "atomic_facts": [
+      {
+        "fact": "The video frame is completely black.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The frame is entirely black with no visible entities or spatial relationships.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      1,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "Green stylized text logo reading 'eHcv' with a 3D folded ribbon effect and drop shadow",
+        "action": "forming from scattered segments",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Green geometric segments on a white background coalesce to form the text 'eHcv'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo features a gradient green color scheme.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHcv"
+    ],
+    "spatial": "The green text logo is centered on the white background.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "green text logo reading 'eHow' with a folded ribbon style and drop shadow",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The 'eHow' logo remains static in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text is colored in shades of green.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHow"
+    ],
+    "spatial": "The green 'eHow' logo is positioned in the center of a white background.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "red background with diagonal shadow lines",
+        "action": "static"
+      },
+      {
+        "desc": "white text 'od' in sans-serif font",
+        "action": "static"
+      },
+      {
+        "desc": "white text 'food' in sans-serif font",
+        "action": "static"
+      },
+      {
+        "desc": "white rectangular tag with green text 'eHow'",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'od' is visible on the red background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'food' is visible on the red background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'eHow' tag is visible above the text 'food'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "od",
+      "eHow",
+      "food"
+    ],
+    "spatial": "The text 'od' is in the center of the red background. The 'eHow' tag is above the text 'food'. The text 'food' is below the 'eHow' tag.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "white rectangular tag with green 'eHow' text",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "white lowercase text 'food' in a sans-serif font",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "solid red background with diagonal shadow lines",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'eHow' is visible on a white tag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The word 'food' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is red with geometric shadow patterns.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHow",
+      "food"
+    ],
+    "spatial": "The white tag containing the text 'eHow' is positioned above the word 'food'. The word 'food' is centered on the red background. The background is behind both the text and the tag.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple three-quarter sleeve top with an asymmetrical neckline and a dark blue apron",
+        "action": "holding a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing brown food items",
+        "action": "being held",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "wooden kitchen island",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "cream-colored wall shelves with glass doors",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "yellow teapot",
+        "action": "static",
+        "position": "background shelf"
+      },
+      {
+        "desc": "green decorative bowl",
+        "action": "static",
+        "position": "background shelf"
+      },
+      {
+        "desc": "glass jars with white contents",
+        "action": "static",
+        "position": "background counter"
+      },
+      {
+        "desc": "dark green decorative gourds",
+        "action": "static",
+        "position": "background counter"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a red baking dish with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is placed on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is sitting on the wooden kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator is located to the right of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, positioned between the stovetop on the left and the refrigerator on the right. She is holding the red baking dish in front of her torso, resting it on a silver baking sheet that sits on the wooden island. The black bowl is on the island to the right of the baking sheet. Behind the woman, there are shelves containing various kitchen items like a yellow teapot and a green bowl.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "standing behind a wooden counter",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular baking dish containing dark brown round food items",
+        "action": "resting on a silver baking sheet",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "dark grey shallow bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors displaying colorful bowls and plates",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "large cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "wooden countertop",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman stands behind a wooden counter with her hands resting on a baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red baking dish filled with food sits on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark grey bowl is placed on the counter to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The kitchen features stainless steel appliances including a stove and double oven.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the wooden counter in the center of the frame. The red baking dish is on top of the silver baking sheet, which is placed on the counter in front of the woman. The dark grey bowl is to the right of the baking sheet. The stainless steel stovetop is to the left of the counter, and the double oven is behind the stovetop on the left side.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "standing behind a kitchen island",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular baking dish containing dark brown round food items",
+        "action": "being held by the woman",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "dark grey shallow bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "wooden open shelving unit with dishes and bowls",
+        "action": "static",
+        "position": "center background"
+      },
+      {
+        "desc": "wooden countertop with drawers",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a red baking dish with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is placed on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dark grey bowl is sitting on the wooden cutting board to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, behind a wooden island. She is holding a red baking dish which rests on a silver baking sheet. To her right, a dark grey bowl sits on the counter. To her left, a stainless steel stovetop is visible in the foreground, with a double oven behind it. The cream-colored refrigerator is to the right of the woman in the background.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "holding a red baking dish",
+        "position": "right"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing brown food items",
+        "action": "being held by the woman",
+        "position": "center-right"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center-right"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored built-in refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "open wooden shelving unit with dishes and bowls",
+        "action": "static",
+        "position": "center background"
+      },
+      {
+        "desc": "white napkin",
+        "action": "static",
+        "position": "right foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a red baking dish with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is placed on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet and dish are resting on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl sits on the cutting board to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing to the right of the stovetop and in front of the refrigerator. She is holding the red baking dish, which is placed on a silver baking sheet on top of a wooden cutting board. The black bowl is to the right of the baking sheet on the same cutting board. The double oven is to the left of the woman and behind the stovetop.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "holding a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular red ceramic baking dish",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "dark brown round food items, likely meatballs",
+        "action": "static",
+        "position": "inside the red dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black gas stovetop",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a red baking dish filled with dark brown food items.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish is positioned above a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind a wooden kitchen island.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the frame, holding the red dish in front of her. The red dish is positioned directly above the silver baking sheet which rests on the wooden counter. To the woman's left is a stainless steel oven, and to her right is a tall cream-colored cabinet. A black bowl sits on the counter to the right of the baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "holding a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular baking dish containing several dark brown round food items",
+        "action": "being held by the woman",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black shallow bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass shelves displaying bowls and dishes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman holds a red baking dish filled with dark brown round food items.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman stands behind a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver baking sheet rests on the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl sits on the cutting board to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, holding a red baking dish in front of her. To her left is a stainless steel stovetop and oven. To her right is a cream-colored refrigerator. In front of her, on a wooden cutting board, sits a silver baking sheet and a black bowl. Behind her are cream-colored cabinets with open shelves displaying various kitchenware.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "holding a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing several dark brown round food items",
+        "action": "being held",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored built-in refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "open shelving unit with dishes and bowls",
+        "action": "static",
+        "position": "center background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a red baking dish with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is positioned above a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is sitting on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, holding the red dish in front of her. The red dish is directly above the silver baking sheet which rests on the wooden cutting board. To the woman's right is a black bowl on the cutting board. To the left of the woman is the stainless steel stovetop and oven. Behind the woman are open shelves and a refrigerator.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "holding a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular red ceramic baking dish",
+        "action": "being held by the woman",
+        "position": "center"
+      },
+      {
+        "desc": "dark brown round food items, likely meatballs or truffles",
+        "action": "static",
+        "position": "inside the red dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black shallow bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white ceramic jars with glass lids",
+        "action": "static",
+        "position": "background left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a red baking dish filled with dark brown round food items.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is positioned directly above a silver metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl sits on the wooden counter to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing in front of cream-colored kitchen cabinets.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the frame, holding the red dish in front of her torso. The red dish is positioned directly above the silver baking sheet on the wooden counter. To the left of the woman is a stainless steel stovetop, and to her right is a black bowl. Behind the woman are cream-colored cabinets containing various kitchenware.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved top and a dark blue apron",
+        "action": "holding a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "dark brown roasted root vegetables, likely beets",
+        "action": "static",
+        "position": "inside the dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "black stovetop grate",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a red baking dish with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish contains several dark roasted vegetables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is lifting the dish over a silver baking sheet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the red baking dish in the center of the frame. The roasted vegetables are inside the red dish. The red dish is positioned above the silver baking sheet. The black stovetop grate is to the left of the silver baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a maroon long-sleeved shirt and a dark blue apron",
+        "action": "holding a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple roasted beets with wrinkled skins",
+        "action": "static",
+        "position": "inside the red baking dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "below the red dish"
+      },
+      {
+        "desc": "black stovetop grate",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a red baking dish containing roasted beets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The beets inside the dish have dark, wrinkled skins.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish is positioned above a silver metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black stovetop grate is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the red baking dish in the center of the frame. The roasted beets are inside the red baking dish. The red dish is positioned above a silver metal baking sheet. The black stovetop grate is to the left of the baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a maroon long-sleeved shirt and a dark blue apron",
+        "action": "holding a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish with rounded corners",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple roasted beets with wrinkled skin",
+        "action": "static",
+        "position": "inside the dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "below"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a red baking dish containing roasted beets",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the beets are inside the red dish",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the red dish is positioned above a silver baking sheet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the red baking dish in the center of the frame. The roasted beets are inside the red dish. The red dish is positioned above a silver metal baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a maroon long-sleeved top and a dark blue apron",
+        "action": "holding a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple roasted beets with wrinkled skins",
+        "action": "static",
+        "position": "inside the red dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "below the red dish"
+      },
+      {
+        "desc": "black stovetop grate",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a red baking dish filled with roasted beets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish is positioned above a silver metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The beets are inside the red dish.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the red baking dish in the center of the frame. The roasted beets are inside the red dish. The red dish is positioned above a silver metal baking sheet. A black stovetop grate is visible to the left of the baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "holding a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing several dark brown roasted beets",
+        "action": "being held by the woman",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "wooden countertop",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors displaying dishes",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a red baking dish filled with roasted beets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is positioned above a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl sits on the wooden countertop to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, holding the red baking dish in front of her. The red baking dish is positioned directly above the silver baking sheet on the wooden countertop. To the right of the baking sheet is a black bowl, and to the left is the gas stovetop. The cream-colored cabinets and stainless steel appliances are in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "holding a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing several brown, round food items",
+        "action": "being held by the woman",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "wooden kitchen island counter",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "cream-colored open shelving unit with various kitchenware",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a red baking dish with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is placed on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind a wooden kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl is sitting on the wooden counter to the right of the baking sheet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the frame, behind a wooden kitchen island. She is holding a red baking dish which is positioned on top of a silver baking sheet. To the right of the baking sheet, on the counter, sits a black bowl. The stainless steel stovetop is to the left of the woman, and the cream-colored refrigerator is to her right in the background.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing several dark brown round food items",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black shallow bowl",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "wooden butcher block countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with open shelving displaying colorful bowls and a yellow teapot",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is gesturing with both hands over the food items.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is placed on top of the silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is positioned to the right of the red baking dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the wooden countertop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman stands in the center behind the wooden countertop. The red baking dish is on the silver baking sheet, which rests on the countertop. The black bowl is to the right of the baking sheet. The stovetop is to the left of the countertop, and the refrigerator is to the right of the woman.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "gesturing with hands over a red baking dish",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing dark brown food items",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black shallow bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "wooden kitchen island counter",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "open shelving unit with dishes and bowls",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is standing behind a wooden kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "She is gesturing with both hands over a red baking dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is placed on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl sits on the counter to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stainless steel stovetop is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the wooden kitchen island in the center of the frame. The red baking dish is on top of the silver baking sheet in front of her. To the right of the baking sheet is a black bowl. To the left of the woman is a stainless steel stovetop and oven. Behind the woman are open shelves and a cream-colored refrigerator.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "picking up a dark round vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing dark round vegetables",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "small black bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "open wooden shelves with colorful bowls and dishes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman picks up a dark round vegetable from the red dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish is sitting on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind a wooden kitchen island.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, behind a wooden island. To her left is a stainless steel stovetop and oven, and to her right is a cream-colored refrigerator. The red baking dish is on the island in front of her, and she is holding a vegetable from it.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "holding a beet and gesturing with her hands",
+        "position": "center"
+      },
+      {
+        "desc": "dark red round beet with a rough texture",
+        "action": "being held in the woman's right hand",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black round shallow bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "yellow teapot",
+        "action": "static",
+        "position": "background shelf"
+      },
+      {
+        "desc": "glass jars with white contents",
+        "action": "static",
+        "position": "left background counter"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a beet in her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is gesturing with her left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red baking dish containing several beets sits on a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl is placed on the wooden countertop to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow teapot is visible on a shelf in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, behind a wooden countertop. To her left is a stainless steel stovetop and oven. On the countertop in front of her, a red baking dish filled with beets rests on a silver baking sheet. A black bowl is positioned to the right of the baking sheet. Behind the woman are cream-colored cabinets with glass doors displaying various kitchen items like a yellow teapot and bowls.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "holding a dark root vegetable with both hands",
+        "position": "center"
+      },
+      {
+        "desc": "dark brown root vegetable, rough skin, oval shape",
+        "action": "being held by the woman",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with open shelves displaying colorful bowls and a yellow teapot",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "large cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman holds a dark root vegetable in front of her chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish sits on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is placed on the wooden counter to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman stands in the center of the kitchen, holding a vegetable. To her left is a stainless steel stovetop. In front of her on the counter, a red baking dish rests on a silver baking sheet, with a black bowl positioned to the right of the sheet. Behind her are cream-colored cabinets and a refrigerator.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "holding a dark brown round object",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark brown round objects, likely potatoes or root vegetables",
+        "action": "static",
+        "position": "inside the red dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black shallow bowl",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with open shelving",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "yellow teapot",
+        "action": "static",
+        "position": "background shelf"
+      },
+      {
+        "desc": "white ceramic canisters with glass lids",
+        "action": "static",
+        "position": "background counter"
+      },
+      {
+        "desc": "dark green and orange gourds",
+        "action": "static",
+        "position": "background counter"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark brown round object with both hands over a red baking dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish contains several other dark brown round objects.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is placed on top of a silver metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is resting on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl is positioned to the right of the baking sheet on the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The kitchen features cream-colored cabinetry and stainless steel appliances.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman stands in the center of the kitchen, positioned between the stainless steel oven on the left and the cream-colored refrigerator on the right. She is holding a vegetable above a red baking dish that sits on a silver tray. The silver tray is on a wooden cutting board in the foreground. To the right of the tray on the board is a black bowl. Behind the woman are open shelves displaying a yellow teapot and various bowls.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark blue apron",
+        "action": "holding a dark round vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing several dark round vegetables",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black shallow bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored built-in refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "open wooden shelving unit with dishes and a yellow teapot",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark round vegetable with both hands over a red baking dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is placed inside a larger silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is sitting on the wooden countertop to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, positioned between the stovetop on the left and the refrigerator on the right. She is holding a vegetable above the red baking dish, which rests on a silver tray on the wooden counter. The black bowl is to the right of the tray.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "peeling a dark-skinned vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark-skinned round vegetables, likely beets",
+        "action": "being peeled",
+        "position": "center"
+      },
+      {
+        "desc": "silver baking sheet",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small dark bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets and refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark vegetable and using a tool to peel its skin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red baking dish containing several dark vegetables sits on a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is placed on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small dark bowl is positioned to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stainless steel stovetop is visible in the foreground on the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind a wooden cutting board. The red baking dish is on top of a silver baking sheet, which is on the cutting board. The small dark bowl is to the right of the baking sheet. The gas stovetop is to the left of the cutting board. The cream-colored cabinets and refrigerator are behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "peeling a dark vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark-skinned round vegetables, likely beets",
+        "action": "being peeled",
+        "position": "center"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "black bowl",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling the skin off a dark vegetable with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red baking dish filled with similar dark vegetables sits on a metal tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish is placed on top of a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl is positioned to the right of the red dish.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman stands in the center of the kitchen, positioned between the stovetop on the left and the refrigerator on the right. She is holding a vegetable over a red baking dish that rests on a wooden cutting board in front of her. A black bowl is located on the cutting board to the right of the red dish.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a magenta long-sleeved top and a dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beet with rough skin",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular baking dish containing cooked beets",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black frying pan",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling the skin off a cooked beet with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on a metal tray on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black frying pan is placed on the wooden cutting board to the right of the red dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gas stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, holding a beet over a red baking dish. The red dish is on a metal tray, which is on a wooden cutting board in the foreground. To the right of the red dish on the cutting board is a black frying pan. To the left of the woman is a stainless steel gas stovetop. Behind the woman are cream-colored kitchen cabinets and a stainless steel refrigerator.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple short-sleeved shirt and a dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beet with partially removed skin",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl containing cooked beets",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a cooked beet in their hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is peeling the skin off the beet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red bowl filled with other beets sits below the person's hands.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned behind the red bowl. The person is holding the beet in front of their torso. The red bowl is located below the person's hands.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved top and a dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beet, round, cooked, with skin being removed",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "cooked beets, dark brown/red, piled together",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is peeling the skin off a cooked beet with their hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding the beet in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red bowl containing other cooked beets is located below the hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's fingers are stained red from the beet juice.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned in the center, holding a beet in their hands. The red bowl is situated below the hands and the beet being peeled. The pile of unpeeled beets is inside the red bowl.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a maroon long-sleeved shirt and a dark blue apron",
+        "action": "peeling a beetroot",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple beetroot with wet, shiny skin",
+        "action": "being peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl containing other beetroots",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using their hands to peel the skin off a beetroot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The beetroot is being held in the person's left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's right hand is pulling a piece of skin away from the beetroot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are other beetroots inside the red bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned behind the beetroot they are holding. The beetroot is held above the red bowl. The red bowl is located at the bottom of the frame, below the person's hands.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved shirt and dark blue pants",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red cooked beet, wet and shiny skin",
+        "action": "being peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "pile of dark cooked beets",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is peeling the skin off a cooked beet with their hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is holding the beet in their left hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is using their right hand to pull away the skin",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a red bowl containing more beets is positioned below the hands",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the beet in the center of the frame. The red bowl is located below the person's hands. The pile of beets is inside the red bowl.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved shirt and dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple beet, round, cooked, with skin being removed",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl, containing other cooked beets",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is peeling the skin off a cooked beet with their hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is holding the beet above a red bowl",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the bowl contains several other dark purple beets",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned in the center of the frame, holding a beet in front of their torso. The red bowl is located below the hands, resting on a surface at the bottom of the frame. The beet being peeled is held directly above the bowl.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple short-sleeved shirt and a dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red cooked beet with peeling skin",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "pile of cooked beets",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is peeling the skin off a cooked beet with their hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is holding the beet in the center of the frame",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a red bowl containing other beets is located below the hands",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the beet in the center of the frame. The red bowl filled with other beets is positioned below the person's hands.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved shirt and dark blue pants",
+        "action": "peeling a beetroot",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beetroot, round, wet, with skin being removed",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl containing other beetroots",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is peeling the skin off a beetroot with their hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person holds the beetroot in their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person uses their right hand to pull off the skin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red juice from the beetroot is visible on the person's fingers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red bowl filled with other beetroots sits below the hands.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned behind the red bowl. The person is holding the beetroot in the center of the frame, directly above the bowl. The bowl is located at the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a purple long-sleeved shirt and a dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beet, round, wet, with skin being removed",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl, containing other dark brownish-red beets",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using both hands to peel the skin off a dark red beet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's fingers are stained with red juice from the beet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The peeled beet is held above a red bowl filled with other beets.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned in the center of the frame, holding the beet in front of their torso. The red bowl is located below the person's hands at the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved shirt and a dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red cooked beet, round, wet, with skin being removed",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red bowl containing dark brown objects",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is peeling the skin off a cooked beet with their hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is holding the beet in the center of the frame",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a red bowl is positioned below the hands",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, holding the beet in front of their torso. The red bowl is located below the hands and the beet.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta three-quarter sleeve top with an asymmetrical neckline",
+        "action": "peeling a dark root vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple round root vegetable, likely a beet, with rough skin",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "light wood kitchen island countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "cream-colored built-in refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "open shelving unit with various kitchenware including a yellow teapot, green bowl, and stacked plates",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling the skin off a dark root vegetable with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish sits on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is placed on the wooden countertop to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the wooden kitchen island. The red baking dish is on the silver baking sheet in front of her. The black bowl is to the right of the baking sheet. The stainless steel stovetop is to the left of the woman. The cream-colored refrigerator is to the right of the woman in the background.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a magenta long-sleeved top with a wide collar",
+        "action": "peeling a dark vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple beet, round, raw",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "wooden cutting board, light brown",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "glass jars with white contents",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "yellow teapot",
+        "action": "static",
+        "position": "background shelf"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a beet in her left hand and peeling it with her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is placed on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind the kitchen island.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, behind a wooden cutting board. To her left is a stainless steel gas stovetop and a double oven. In front of her on the counter is a red baking dish resting on a silver baking sheet. To the right of the baking sheet is a black bowl. Behind the woman are cream-colored cabinets with glass doors displaying dishes and a yellow teapot.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "holding a dark round vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "dark round vegetable, smooth skin, held in hands",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black shallow bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator with vertical handle",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "open wooden shelving unit with dishes and bowls",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark round vegetable with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is placed on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, positioned between the stainless steel oven on the left and the cream-colored refrigerator on the right. She is holding a vegetable above a red baking dish that rests on a silver tray. The wooden cutting board with a black bowl is in front of her to the right.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "holding a dark round vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark round vegetables, likely beets",
+        "action": "being placed into dish",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "built-in stainless steel oven",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "open wooden shelving unit with bowls and dishes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark round vegetable in her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is placing the vegetable into a red baking dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish sits on a metal tray on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden cutting board is in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, positioned between the stainless steel oven on the left and the cream-colored refrigerator on the right. She is holding a vegetable above a red baking dish that rests on the wooden counter in front of her. The gas stovetop is visible in the bottom left corner, to the left of the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with a wide asymmetrical neckline and a dark apron",
+        "action": "holding a dark purple beet",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "dark purple beets",
+        "action": "static",
+        "position": "inside red dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black shallow bowl",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green and yellow ceramic bowls and teapot",
+        "action": "static",
+        "position": "inside cabinets"
+      },
+      {
+        "desc": "glass jars with white contents",
+        "action": "static",
+        "position": "left background counter"
+      },
+      {
+        "desc": "dark green acorn squash",
+        "action": "static",
+        "position": "left background counter"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark purple beet with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish containing several beets is placed on a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is resting on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl is positioned to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator is located to the right of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Kitchen cabinets with dishes are visible behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, positioned between the stovetop on her left and the refrigerator on her right. She is holding a beet over a red baking dish that sits on a baking sheet, which is placed on a wooden cutting board in front of her. A black bowl is to the right of the baking sheet on the counter.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "holding and inspecting a dark purple vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple round vegetable, likely a beet or turnip, held in hands",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing several dark purple vegetables",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black shallow bowl",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "open wooden shelving unit with dishes and bowls",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark purple vegetable with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish sits on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is placed on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, positioned between the stovetop on the left and the refrigerator on the right. She is holding a vegetable above a red baking dish that rests on a silver tray. The wooden cutting board with a black bowl is in front of her on the counter.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top and a dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beet with rough skin being peeled",
+        "action": "being held",
+        "position": "center foreground"
+      },
+      {
+        "desc": "red rectangular baking dish containing other beets",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "bottom foreground"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "stainless steel oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass shelves holding colorful bowls",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "large cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using her fingers to peel the skin off a cooked beet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on a metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is placed on the wooden cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the wooden cutting board in the center of the frame. The red baking dish is in front of her, and the black bowl is to the right of the dish on the cutting board. The gas stovetop is to the left of the cutting board in the foreground. The stainless steel oven is to the left of the woman in the background, and the cream-colored refrigerator is to her right.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved shirt and dark blue pants",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beet with wet, shiny skin and some dark roots",
+        "action": "being peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl containing dark vegetable peels",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is peeling the skin off a beet with their hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "red juice from the beet is staining the person's fingers",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the peeled beet is held in the person's hands above the red bowl",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the beet in the center of the frame. The red bowl is positioned below the person's hands. The beet is being held in front of the person's torso.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      46,
+      47
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple short-sleeved shirt and dark blue pants",
+        "action": "peeling a beetroot",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beetroot with rough, dark skin being peeled",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red bowl containing other dark brown root vegetables",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is peeling the skin off a beetroot with their hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding the beetroot in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red bowl filled with vegetables is positioned below the hands.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the beetroot in the center of the frame. The red bowl is located below the beetroot and the person's hands.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved shirt and dark blue pants",
+        "action": "peeling a beetroot",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple beetroot with rough skin, partially peeled to reveal red flesh",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl containing multiple dark brown beetroots",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is peeling the skin off a beetroot with their fingers",
+        "confidence": 1.0
+      },
+      {
+        "fact": "red juice from the beetroot has stained the person's fingertips",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a red bowl filled with other beetroots is positioned below the hands",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the beetroot in the center of the frame. The red bowl is located below the person's hands. The person's hands are positioned in front of their torso.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple short-sleeved shirt and dark blue pants",
+        "action": "peeling a beetroot",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beetroot with rough, dark skin being peeled",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl containing several dark brown cooked beetroots",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is peeling the skin off a cooked beetroot with their hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's fingers are stained red from the beetroot juice.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The peeled beetroot is held above a red bowl filled with other beetroots.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the beetroot in the center of the frame, directly above the red bowl. The bowl is positioned at the bottom of the frame, below the person's hands.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      49,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple long-sleeved top and a dark apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple beet, round, with skin being removed",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular baking dish, ceramic or plastic",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "pile of dark roasted beets",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "wooden kitchen island countertop",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets and refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black bowl",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using her fingers to peel the skin off a roasted beet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish contains several other roasted beets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish is sitting on a metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind a wooden kitchen island.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the wooden kitchen island. The red dish containing beets is on the island in front of her. The gas stovetop is to the left of the woman. The black bowl is to the right of the red dish.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      50,
+      51
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a magenta long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "peeling a dark round vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark round vegetables, likely beets",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black bowl",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with open shelving",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "decorative bowls and dishes on shelves",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "glass jars with white contents",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "small green and black squash",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling a dark round vegetable with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet and red dish are placed on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl is on the cutting board to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator is to the right of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Decorative bowls are arranged on open shelves in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, between the stovetop on her left and the refrigerator on her right. She is holding a vegetable over a red baking dish, which is placed on a silver baking sheet on top of a wooden cutting board. A black bowl is on the cutting board to the right of the baking sheet. The cream-colored cabinets with decorative items are in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      51,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple three-quarter sleeve top with an asymmetrical neckline and a dark apron",
+        "action": "holding a dark round object",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark round objects, likely beets or potatoes",
+        "action": "static",
+        "position": "inside the red dish"
+      },
+      {
+        "desc": "wooden kitchen island countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "open wooden shelving unit with dishes and bowls",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black bowl",
+        "action": "static",
+        "position": "foreground right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark round vegetable in her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish contains several dark round vegetables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind the wooden kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the frame, behind a wooden kitchen island. To her left is a stainless steel stovetop and oven. To her right is a cream-colored refrigerator. On the island in front of her is a red baking dish filled with dark vegetables. A black bowl sits on the island to the right of the red dish. Behind the woman are open shelves displaying various dishes and bowls.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "holding a dark purple beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple beet, round and smooth",
+        "action": "being held by the woman",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing several dark purple beets",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "small black round bowl",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "wooden cutting board, light brown",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "open wooden shelves with various kitchen items including a yellow teapot, green bowl, and glass jars",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark purple beet in her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is placed on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, behind a wooden cutting board. The red baking dish is on a silver tray in front of her, and the black bowl is to the right of the tray on the cutting board. The stainless steel stovetop is to the left of the woman, while the cream-colored refrigerator is to her right.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      53,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "peeling a dark root vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing several dark brown root vegetables",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "dark-skinned root vegetable, likely a beet, being held in hands",
+        "action": "being peeled",
+        "position": "center"
+      },
+      {
+        "desc": "light wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors and open shelves",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "yellow teapot and white cups on shelves",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "glass jars with white contents on a counter",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "small dark green gourds on a counter",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "black bowl on the cutting board",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "silver baking sheet under the red dish",
+        "action": "static",
+        "position": "center foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling a dark root vegetable with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet and red dish are placed on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The kitchen cabinets are behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the frame, behind a wooden cutting board. On the cutting board, a red baking dish sits on top of a silver baking sheet, and a black bowl is to the right of the dish. To the left of the woman is a stainless steel gas stovetop. Behind the woman are cream-colored kitchen cabinets with open shelves holding a yellow teapot, white cups, and other items. On the counter to the left, there are glass jars and small green gourds.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      54,
+      55
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a purple long-sleeved top with an asymmetrical neckline and a dark apron",
+        "action": "peeling a dark vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple round vegetables, likely beets",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors and open shelves",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "yellow teapot",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "black bowl",
+        "action": "static",
+        "position": "center foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling a dark purple vegetable with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish contains several other dark purple vegetables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is placed on a metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden cutting board is on the kitchen island in front of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow teapot is on a shelf in the background cabinet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the wooden cutting board. The red baking dish is on the cutting board in front of the woman. The black bowl is to the right of the red baking dish. The stovetop is to the left of the cutting board. The kitchen cabinets are behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      55,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top with a wide collar",
+        "action": "peeling a dark vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark-skinned root vegetables, likely beets",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small black bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white napkin",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark vegetable in her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is peeling the skin off the vegetable.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish is sitting on top of the silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is placed on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is to the right of the baking sheet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman stands in the center behind the wooden cutting board. The red dish containing vegetables is on a silver tray in front of her. To the left of the woman is a stainless steel stovetop. To the right of the tray is a small black bowl and a white napkin.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      56,
+      57
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple short-sleeved shirt and a dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple cooked beet, round, wet surface",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl containing multiple cooked beets",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is peeling the skin off a cooked beet with their fingers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding the beet in their left hand and pulling skin with their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are several other cooked beets inside the red bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned behind the red bowl. The person is holding the beet in front of their torso. The red bowl is located below the hands and the beet being peeled.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      57,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple short-sleeved shirt and a dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red, round beet with smooth skin",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic bowl containing several cooked beets",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is peeling the skin off a cooked beet with their fingers",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person's fingers are stained red from the beet juice",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a red bowl filled with beets sits in the foreground",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the beet in the center of the frame. The red bowl containing other beets is located below the person's hands in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved top and a dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beet, round, being held in hands",
+        "action": "being peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "cooked beets, dark brown and wrinkled",
+        "action": "static",
+        "position": "inside the red dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is peeling the skin off a cooked beet with their hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a beet in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red baking dish containing several other cooked beets sits on a metal tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hands are stained red from the beet juice.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the red baking dish. The dish is placed on top of a silver metal baking sheet. The person is holding a beet in front of their chest, above the dish.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      59,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top and a dark blue apron",
+        "action": "peeling a roasted beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple roasted beet, skin being removed",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "roasted beets, dark brown and wrinkled",
+        "action": "static",
+        "position": "inside the red dish"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "wooden countertop",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "shelves with colorful bowls and a yellow teapot",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling the skin off a roasted beet with her fingers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several other roasted beets are sitting inside the red baking dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is placed on a metal baking sheet on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl is sitting on the wooden countertop to the right of the dish.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the counter, holding the beet in front of her chest. The red dish containing other beets is on the counter directly in front of her. To the left of the dish is the gas stovetop, and to the right is a wooden cutting board area. The kitchen cabinets and shelves are visible in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      60,
+      61
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top with a wide asymmetrical collar and a dark apron",
+        "action": "peeling a dark purple vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple round vegetable, likely a beet, with smooth skin",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black shallow bowl",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets and refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "glass jars with white contents and silver lids",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling the skin off a dark purple vegetable with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is placed on the wooden cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the wooden cutting board in the center of the frame. The red baking dish is on the cutting board in front of her, and the black bowl is to the right of the dish. The gas stovetop is to the left of the woman.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      61,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with a wide asymmetrical collar",
+        "action": "peeling a dark-skinned vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "dark-skinned round vegetable, likely a beet",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black shallow bowl",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling the skin off a dark vegetable with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding the vegetable over a red baking dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish sits on a metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl is placed on the wooden cutting board in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman stands in the center of the kitchen, behind a wooden cutting board. To her left is a stainless steel gas stovetop and a double oven. The red baking dish is on the counter in front of her, and the black bowl is to the right of the dish on the cutting board. Cream-colored cabinets are visible in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      62,
+      63
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top with a wide collar",
+        "action": "holding a dark vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple round vegetable, likely a beet",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass shelves",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark purple vegetable in both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is placed on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bowl is positioned to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the wooden cutting board in the center of the frame. The red baking dish is on top of the silver baking sheet, which rests on the cutting board. The black bowl is to the right of the baking sheet, and the gas stovetop is to the left of the woman.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      63,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with a wide folded collar and a dark apron",
+        "action": "peeling a dark purple vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "dark purple round vegetables, likely beets",
+        "action": "being held and peeled",
+        "position": "center foreground"
+      },
+      {
+        "desc": "wooden cutting board, light brown",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored built-in refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "open wooden shelving unit with dishes and bowls",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black bowl, round",
+        "action": "static",
+        "position": "right foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling the skin off a dark purple vegetable with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish contains several other dark purple vegetables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on a metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind a wooden kitchen island.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, behind a wooden cutting board. To her left is a stainless steel stovetop and oven, and to her right is a cream-colored refrigerator. The red baking dish is on the cutting board in front of her, and a black bowl is to the right of the dish.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      64,
+      65
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical collar and a dark blue apron",
+        "action": "peeling a dark purple vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple round vegetable, likely a beet",
+        "action": "being peeled",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden kitchen island countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black gas stovetop",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "black bowl",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets with glass shelves displaying bowls and teapots",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using a small tool to peel the skin off a dark purple vegetable.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish contains several other dark purple vegetables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on a metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind a wooden kitchen island.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, positioned between the stainless steel oven on the left and the cream-colored refrigerator on the right. She is holding a purple vegetable over a red baking dish that rests on the wooden countertop in front of her. A black bowl is located to the right of the red dish on the counter.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      65,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top and a dark blue apron",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beets, round and raw",
+        "action": "being peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black gas stovetop with metal grates",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black bowl",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling the skin off a beet with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is placed on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the wooden cutting board in the center of the frame. The red baking dish is on top of the silver baking sheet, which rests on the cutting board. To the left of the woman, there is a black gas stovetop and a stainless steel oven built into the cream-colored cabinets.",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      66,
+      67
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved top and a dark blue apron, with a gold ring on the left ring finger",
+        "action": "peeling a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beet, round, with skin being removed",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "cooked beets, dark purple-red, round, sitting in the dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "black gas stovetop with metal grates",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is peeling the skin off a cooked beet with their hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "red stains are visible on the person's fingers",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the red dish contains several other cooked beets",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the red dish is resting on a silver baking sheet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the red baking dish. The dish is placed on top of a silver baking sheet. The stovetop is to the left of the baking sheet. The person is holding a beet above the dish.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      67,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved top and a dark blue apron, with a gold ring on their left ring finger",
+        "action": "peeling the skin off a dark red beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark red beet, round, with skin being removed",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "cooked beets, dark brownish-red, round",
+        "action": "static",
+        "position": "inside the red dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black stovetop grate",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using their hands to peel the skin off a cooked beet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish contains several other cooked beets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish is sitting on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's fingers are stained red from the beet juice.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the red baking dish. The red dish is placed on top of a silver baking sheet. To the left of the baking sheet is a black stovetop grate. The person is holding a beet in their hands above the dish.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      68,
+      69
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved top and a dark blue apron, with red nail polish and a ring on the left hand",
+        "action": "holding a beet",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple beet, round, smooth skin",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "cooked beets, dark purple, round, some with slits cut into the skin",
+        "action": "static",
+        "position": "inside the red dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black gas stovetop grate",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is holding a dark purple beet with both hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "red dish contains several cooked beets",
+        "confidence": 1.0
+      },
+      {
+        "fact": "red dish is sitting on top of a silver baking sheet",
+        "confidence": 1.0
+      },
+      {
+        "fact": "stovetop grate is visible in the bottom left corner",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the red baking dish. The red dish is placed on top of a silver baking sheet. The stovetop grate is to the left of the baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 68,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      69,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly shoulder-length hair, wearing a magenta long-sleeved top with an asymmetrical neckline",
+        "action": "peeling a dark vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish containing several dark round vegetables",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black bowl",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "stainless steel double oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "cream-colored refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "open shelving unit with various bowls and a yellow teapot",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling the skin off a dark vegetable with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish is sitting on a metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black bowl is placed on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is located to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman stands in the center of the kitchen, positioned between the stainless steel oven on the left and the refrigerator on the right. She is holding a vegetable over a red dish that rests on a baking sheet on the counter. The wooden cutting board with a black bowl is in front of her on the counter.",
+    "parse_success": true,
+    "chunk_idx": 69,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      70,
+      71
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top with a wide collar",
+        "action": "peeling a dark vegetable",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular baking dish containing dark round vegetables",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "dark purple beet",
+        "action": "being held",
+        "position": "center foreground"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "bottom foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "stainless steel oven",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "black bowl",
+        "action": "static",
+        "position": "bottom right foreground"
+      },
+      {
+        "desc": "kitchen cabinets with glass doors displaying dishes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is peeling the skin off a dark purple beet with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is sitting on a metal tray on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding a beet in her hands above the red dish.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the kitchen, positioned between the stainless steel oven on the left and the refrigerator on the right. She is holding a beet above a red baking dish which rests on a wooden cutting board in front of her. A black bowl is placed on the cutting board to the right of the red dish.",
+    "parse_success": true,
+    "chunk_idx": 70,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      71,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark curly hair, wearing a purple long-sleeved top and a dark blue apron",
+        "action": "holding a beet",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple round beets",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black round bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "cream-colored kitchen cabinets",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a dark purple beet in her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish contains several other beets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is placed on top of a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is resting on a wooden cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the wooden cutting board. The red baking dish is on the baking sheet, which is on the cutting board. The black bowl is to the right of the baking sheet. The stovetop is to the left of the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 71,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      72,
+      73
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved top and a dark blue apron",
+        "action": "holding a beet",
+        "position": "center"
+      },
+      {
+        "desc": "shiny, dark red beet",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark, roasted beets",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "black stovetop grate",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a shiny, dark red beet in their right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "several roasted beets are inside the red baking dish",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the red baking dish is on top of a silver baking sheet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the red baking dish. The person is holding a beet in their right hand, which is positioned above the dish. The red baking dish is on top of a silver baking sheet. The stovetop grate is to the left of the baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 72,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      73,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved top and a dark blue apron",
+        "action": "holding a beet and placing it into a pan",
+        "position": "center"
+      },
+      {
+        "desc": "shiny dark red beet",
+        "action": "being held and placed",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "cooked dark brown beets",
+        "action": "static",
+        "position": "inside the red dish"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dark round metal pan",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person holds a shiny dark red beet in their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person places the beet into a dark round metal pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several cooked dark brown beets are sitting inside the red rectangular baking dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is resting on top of a silver metal baking sheet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the counter. The red baking dish is in front of the person and on top of the silver baking sheet. The dark round metal pan is to the right of the red dish. The cooked beets are inside the red dish.",
+    "parse_success": true,
+    "chunk_idx": 73,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      74,
+      75
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a purple long-sleeved ribbed top and a dark blue apron",
+        "action": "arranging beets in a dish",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular ceramic baking dish",
+        "action": "holding roasted beets",
+        "position": "center"
+      },
+      {
+        "desc": "dark purple roasted beets with wrinkled skins",
+        "action": "being placed into the dish",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "black stovetop grate",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is placing a roasted beet into the red baking dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red baking dish is resting on top of a silver metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a purple top and a blue apron.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the red baking dish. The red baking dish is placed on top of the silver baking sheet. The black stovetop grate is visible to the left of the baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 74,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      75,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a dark blue short-sleeved top",
+        "action": "holding a bowl",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey ceramic bowl with a glossy finish, containing two large cooked beets",
+        "action": "being held",
+        "position": "foreground"
+      },
+      {
+        "desc": "red rectangular baking dish containing several cooked beets",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "light brown wooden countertop",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "black metal stovetop grate",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a dark grey bowl with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl contains two large, dark purple cooked beets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red baking dish sits on the counter behind the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red dish contains additional cooked beets.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the dark grey bowl in the center foreground, positioning it above the wooden countertop. The red baking dish is located behind the bowl. The black stovetop grate is visible to the left of the person's hands.",
+    "parse_success": true,
+    "chunk_idx": 75,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      76,
+      77
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark curly hair, wearing a magenta long-sleeved top with an asymmetrical collar",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey ceramic bowl containing two large, dark red, shiny cooked beets",
+        "action": "being held",
+        "position": "foreground"
+      },
+      {
+        "desc": "red rectangular baking dish containing additional cooked beets",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "light-colored wooden countertop",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "black metal stovetop grate",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a dark grey bowl with two cooked beets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl is positioned over a wooden countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red baking dish with more beets sits behind the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the grey bowl in the foreground, positioned above the wooden countertop. The red baking dish is behind the bowl. The stovetop grate is to the left of the countertop.",
+    "parse_success": true,
+    "chunk_idx": 76,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      77,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length dark curly hair, fair skin, wearing a magenta long-sleeved knit sweater with an asymmetrical collar",
+        "action": "speaking",
+        "position": "center"
+      },
+      {
+        "desc": "cream-colored wooden kitchen cabinet with glass shelves displaying colorful bowls and jars",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "glass jars with white contents on a counter",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is positioned in front of the kitchen cabinets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Colorful bowls are arranged on the shelves behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the center foreground, positioned in front of the wooden kitchen cabinets. The glass jars are located on the counter to the bottom left of the woman. The colorful bowls are on the shelves behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 77,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      78,
+      79
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length dark curly hair, wearing a magenta long-sleeved sweater with an asymmetrical fold-over collar",
+        "action": "smiling and looking forward",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden kitchen cabinet with glass doors",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green bowl",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "red pot with lid",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "glass jars containing dry goods",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white cup and saucer",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "cream-colored refrigerator door",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman with dark curly hair smiles while facing the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a magenta sweater.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Kitchen cabinets with various items are visible in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A refrigerator is positioned to the right of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the center foreground, positioned in front of the kitchen cabinets. The cabinets are behind her and contain various kitchen items like a green bowl and a red pot. The refrigerator is to the right of the woman.",
+    "parse_success": true,
+    "chunk_idx": 78,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      79,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "green stylized text logo reading 'eHov' with a ribbon-like 3D effect and drop shadow",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The green text 'eHov' is displayed on a white background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo features a stylized font where the letters appear to be made of folded ribbon.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHov"
+    ],
+    "spatial": "The green text 'eHov' is centered on the white background.",
+    "parse_success": true,
+    "chunk_idx": 79,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      80,
+      81
+    ],
+    "visible_entities": [
+      {
+        "desc": "The text 'eHow' rendered in a stylized, sans-serif font with a gradient of light to medium green colors, featuring a folded ribbon effect on the letters 'H' and 'w' and a subtle drop shadow.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The 'eHow' logo remains static in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'eHow' is displayed in green against a white background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHow"
+    ],
+    "spatial": "The green 'eHow' logo is centered horizontally and vertically on the white background.",
+    "parse_success": true,
+    "chunk_idx": 80,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      81,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "The text 'eHow' in a stylized, sans-serif font. The letters are bright green with a folded ribbon effect creating darker green shadows and gradients, giving a 3D appearance.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The 'eHow' logo is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo remains static throughout the clip.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHow"
+    ],
+    "spatial": "The green 'eHow' logo is centered on a plain white background.",
+    "parse_success": true,
+    "chunk_idx": 81,
+    "video_id": "dCInYkWwcow"
+  },
+  {
+    "time": [
+      82,
+      83
+    ],
+    "visible_entities": [
+      {
+        "desc": "The text 'eHow' rendered in a stylized, sans-serif font with a gradient green color scheme and a 3D folded ribbon effect.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The green 'eHow' logo remains static in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background color transitions from white to grey.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHow"
+    ],
+    "spatial": "The 'eHow' logo is centered on the screen. The background is behind the text.",
+    "parse_success": true,
+    "chunk_idx": 82,
+    "video_id": "dCInYkWwcow"
+  }
+]

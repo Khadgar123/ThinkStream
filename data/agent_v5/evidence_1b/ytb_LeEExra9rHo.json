@@ -1,0 +1,4932 @@
+[
+  {
+    "time": [
+      0,
+      1
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue stress ball with white mesh netting and glittery texture",
+        "action": "static",
+        "position": "left",
+        "id": "stress_ball_blue_1"
+      },
+      {
+        "desc": "purple stress ball with white mesh netting and glittery texture",
+        "action": "static",
+        "position": "right",
+        "id": "stress_ball_purple_1"
+      },
+      {
+        "desc": "black rubber tire with visible tread pattern",
+        "action": "static",
+        "position": "background",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A blue stress ball sits on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A purple stress ball sits on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tire is positioned behind the stress balls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue stress ball is to the left of the purple stress ball. Both balls are on the ground in front of a black tire.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      1,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue stress ball with white mesh netting and glittery texture",
+        "action": "static",
+        "position": "left foreground",
+        "id": "stress_ball_blue_1"
+      },
+      {
+        "desc": "purple stress ball with white mesh netting and glittery texture",
+        "action": "static",
+        "position": "right foreground",
+        "id": "stress_ball_purple_1"
+      },
+      {
+        "desc": "black rubber car tire with visible tread pattern",
+        "action": "static",
+        "position": "background",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A blue stress ball and a purple stress ball are resting on a paved surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black car tire is positioned behind the stress balls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue stress ball is to the left of the purple stress ball. Both stress balls are in front of the black car tire. The tire is positioned behind the stress balls on the ground.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with a silver rim",
+        "action": "rolling forward",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "blue stress ball with a white mesh net and glittery gel interior",
+        "action": "being crushed",
+        "position": "center",
+        "id": "stress_ball_blue_1"
+      },
+      {
+        "desc": "purple gel-like substance",
+        "action": "oozing out",
+        "position": "right",
+        "id": "gel_purple_1"
+      },
+      {
+        "desc": "grey asphalt ground",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls over the blue mesh stress ball.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue stress ball bursts, releasing blue glittery gel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Purple gel is squeezed out from under the tire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is positioned above the blue stress ball and the purple gel. The blue stress ball is to the left of the purple gel. Both objects are on the grey asphalt ground.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Blue stress ball begins being crushed; purple gel starts oozing; car tire starts rolling forward."
+    ]
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "purple stress ball with a white hexagonal mesh net, containing purple gel beads",
+        "action": "static",
+        "position": "right",
+        "id": "stress_ball_purple_1"
+      },
+      {
+        "desc": "blue stress ball with a white hexagonal mesh net, containing blue gel beads",
+        "action": "being crushed",
+        "position": "left",
+        "id": "stress_ball_blue_1"
+      },
+      {
+        "desc": "black rubber tire",
+        "action": "rolling over the blue stress ball",
+        "position": "left",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black rubber tire rolls over a blue stress ball, crushing it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue stress ball bursts, releasing blue gel beads onto the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A purple stress ball sits intact on the ground next to the crushed blue one.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black tire is on the left side of the frame, positioned over the crushed blue stress ball. The intact purple stress ball is to the right of the blue stress ball. Both stress balls are on a paved surface.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire rolls over and crushes the blue stress ball."
+    ]
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue stress ball with white mesh netting, filled with clear gel beads",
+        "action": "static",
+        "position": "left foreground",
+        "id": "stress_ball_blue_1"
+      },
+      {
+        "desc": "purple stress ball with white mesh netting, filled with clear gel beads",
+        "action": "static",
+        "position": "right foreground",
+        "id": "stress_ball_purple_1"
+      },
+      {
+        "desc": "five pink paper cups with white polka dots",
+        "action": "static",
+        "position": "center foreground",
+        "id": "cups_pink_polka_1"
+      },
+      {
+        "desc": "black car undercarriage and tires",
+        "action": "static",
+        "position": "background",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two mesh-covered stress balls are resting on a paved surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A row of five pink polka-dot cups is positioned on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cups are placed directly in front of a vehicle's tires.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue stress ball is to the left of the purple stress ball. The row of pink cups is positioned in front of the black car undercarriage and tires.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "five pink paper cups with white polka dots, inverted",
+        "action": "static",
+        "position": "center foreground",
+        "id": "cups_pink_polka_1"
+      },
+      {
+        "desc": "black car undercarriage and tires",
+        "action": "static",
+        "position": "top background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "gray asphalt ground",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Five pink paper cups with white polka dots are arranged in a line on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cups are positioned directly under the chassis of a black car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cups are inverted with their open rims facing the ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pink paper cups are arranged in a row on the gray asphalt ground. The cups are located under the black car undercarriage. The car tires are visible in the background behind the cups.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with a silver alloy rim",
+        "action": "rolling forward and crushing cups",
+        "position": "right/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "red paper cups with white polka dots",
+        "action": "being crushed and flattened",
+        "position": "center/foreground",
+        "id": "cups_pink_polka_1"
+      },
+      {
+        "desc": "gray asphalt ground surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over a row of red paper cups.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cups are being crushed and flattened by the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cups are arranged in a line on the asphalt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is to the right of the cups and is moving over them. The cups are arranged in a line on the ground, with the tire positioned above the ones on the right side.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire crushes pink paper cups; red cups appear and are flattened."
+    ]
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with a silver alloy wheel rim",
+        "action": "rolling forward",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "small pink fabric shoes with white polka dots and white soles",
+        "action": "being crushed",
+        "position": "center/right",
+        "id": "shoes_pink_polka_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom/background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over a line of pink shoes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pink shoes are flattened and crushed under the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shoes are arranged in a row on the asphalt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is to the left of the line of pink shoes. The shoes are on the grey asphalt road surface. The tire is rolling over the shoes, positioning itself above and then on top of them.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing small pink fabric shoes."
+    ]
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "five small pink fabric shoes with white polka dots and white soles",
+        "action": "static",
+        "position": "center",
+        "id": "shoes_pink_polka_1"
+      },
+      {
+        "desc": "yellow banana with green tips, appearing to be a toy or plastic model",
+        "action": "static",
+        "position": "center",
+        "id": "banana_yellow_toy_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Five pink polka-dot shoes are arranged in a diagonal line on the asphalt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow banana with green tips is lying on the ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The five pink shoes are arranged in a line on the grey asphalt surface. The yellow banana is positioned on the ground, likely in the same setting but shown in a separate view.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow banana-shaped object with green tips, smooth surface",
+        "action": "being crushed by a tire",
+        "position": "center",
+        "id": "banana_yellow_toy_1"
+      },
+      {
+        "desc": "black rubber car tire with a cream-colored rim",
+        "action": "rolling over the banana",
+        "position": "right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt ground surface",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A car tire rolls over a yellow banana-shaped object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The banana is flattened under the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is positioned on the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The yellow banana is on the grey asphalt ground. The black car tire is to the right of the banana and is rolling over it.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire rolls over and crushes the yellow banana toy."
+    ]
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber tire with a white rim, showing embossed lettering on the sidewall",
+        "action": "rolling forward",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "elongated, soft, yellow object with green tips, resembling a banana or clay model",
+        "action": "being crushed",
+        "position": "center",
+        "id": "banana_yellow_toy_1"
+      },
+      {
+        "desc": "rough, grey asphalt ground surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The black tire rolls forward over the yellow and green object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow object is flattened and deformed by the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is positioned on top of the asphalt ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "HANKOOK"
+    ],
+    "spatial": "The black tire is above the yellow and green object. The yellow object is on the grey asphalt ground. The tire is rolling over the object.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow and green banana-shaped object, likely made of modeling clay or plasticine, with a smooth texture and curved form",
+        "action": "static",
+        "position": "center",
+        "id": "banana_yellow_toy_1"
+      },
+      {
+        "desc": "grey asphalt ground with a rough, pebbled texture",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "black rubber car tire with visible tread pattern",
+        "action": "static",
+        "position": "top left",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A yellow and green banana-shaped object is lying on the grey asphalt ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The banana-shaped object remains static on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A car tire is visible in the top left corner of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The yellow and green banana-shaped object is in the center of the frame, resting on the grey asphalt ground. The black car tire is positioned in the top left corner, above and to the left of the banana-shaped object.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "black wired computer mouse with a glossy top shell, a grey textured rubber grip on the side, and a white logo near the front",
+        "action": "being crushed by a tire",
+        "position": "center",
+        "id": "mouse_computer_black_1"
+      },
+      {
+        "desc": "large black rubber tire with visible tread pattern",
+        "action": "rolling over the mouse",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black computer mouse is resting on a grey asphalt surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large tire rolls over the computer mouse, crushing it against the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mouse is flattened under the weight of the tire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "A4TECH"
+    ],
+    "spatial": "The black computer mouse is on the ground, positioned directly under the large rubber tire. The tire is above the mouse and moves down to cover it.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the black computer mouse."
+    ]
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "broken black computer mouse with exposed orange circuit board and shattered plastic casing",
+        "action": "lying on the ground",
+        "position": "left",
+        "id": "mouse_computer_black_1"
+      },
+      {
+        "desc": "black USB cable with coiled wire and silver connector",
+        "action": "lying on the ground",
+        "position": "right",
+        "id": "usb_cable_black_1"
+      },
+      {
+        "desc": "grey asphalt surface with small stones and debris",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black computer mouse is shattered into multiple pieces on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The internal orange circuit board of the mouse is visible through the broken casing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black USB cable is attached to the broken mouse and lies coiled on the asphalt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The broken black mouse is located on the left side of the frame, lying on the grey asphalt. The attached black USB cable extends from the mouse towards the right side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Computer mouse is now fully broken with exposed circuit board; USB cable appears."
+    ]
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "shattered black plastic computer mouse with exposed orange circuit board and internal components",
+        "action": "lying broken on the ground",
+        "position": "left",
+        "id": "mouse_computer_black_1"
+      },
+      {
+        "desc": "black USB cable with a silver connector, coiled loosely",
+        "action": "extending from the broken mouse",
+        "position": "center to right",
+        "id": "usb_cable_black_1"
+      },
+      {
+        "desc": "white foil balloon with blue text and colorful confetti patterns, partially deflated",
+        "action": "being crushed under a car tire",
+        "position": "center",
+        "id": "balloon_foil_birthday_1"
+      },
+      {
+        "desc": "black car tire and lower bumper",
+        "action": "pressing down on the balloon",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black computer mouse is shattered into pieces on the asphalt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The internal orange circuit board of the mouse is exposed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A car tire is crushing a white foil balloon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The balloon has the word 'Birthday' printed on it.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Birthday"
+    ],
+    "spatial": "The shattered mouse is to the left of the coiled USB cable. The white balloon is positioned under the black car tire. The car bumper is above the balloon.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the white foil birthday balloon."
+    ]
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "white foil balloon with blue 'Birthday' text and colorful confetti pattern",
+        "action": "being crushed by tire",
+        "position": "center",
+        "id": "balloon_foil_birthday_1"
+      },
+      {
+        "desc": "black rubber car tire with silver alloy rim",
+        "action": "rolling over balloon",
+        "position": "right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "white plastic stick attached to balloon",
+        "action": "static",
+        "position": "right",
+        "id": "stick_plastic_white_1"
+      },
+      {
+        "desc": "grey asphalt ground",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls over the white foil balloon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The balloon is flattened under the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The balloon features the text 'Birthday' in blue script.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Birthday"
+    ],
+    "spatial": "The white foil balloon is positioned under the black car tire on the grey asphalt ground. The white plastic stick extends from the right side of the balloon. The tire is to the right of the balloon's main body.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "deflated silver foil balloon with colorful confetti-like patterns and a white plastic stick attached",
+        "action": "lying on the road",
+        "position": "foreground",
+        "id": "balloon_foil_birthday_1"
+      },
+      {
+        "desc": "asphalt road surface with small stones and debris",
+        "action": "static",
+        "position": "center",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "green leafy vegetation and bushes",
+        "action": "static",
+        "position": "background",
+        "id": "vegetable_green_leafy_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A deflated silver foil balloon with colorful patterns is lying on the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The balloon has a white plastic stick attached to its base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The balloon is in the foreground of the shot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The deflated silver foil balloon is in the foreground on the asphalt road. The green leafy vegetation is in the background behind the road.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Balloon is fully deflated and lying on the road."
+    ]
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "white plastic bag with colorful dots, crumpled and torn, attached to a white stick",
+        "action": "lying on the ground",
+        "position": "foreground left",
+        "id": "bag_plastic_white_1"
+      },
+      {
+        "desc": "pile of small, round, brown chocolate candies",
+        "action": "static",
+        "position": "center",
+        "id": "candy_chocolate_brown_1"
+      },
+      {
+        "desc": "black car tire with visible tread pattern",
+        "action": "static",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "green leafy bushes",
+        "action": "static",
+        "position": "background top",
+        "id": "vegetable_green_leafy_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pile of brown chocolate candies is scattered on the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A car tire is positioned directly above the pile of candies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white plastic bag attached to a stick is lying on the road in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place on a paved road next to a grassy verge.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of brown candies is located in the center of the frame, directly below the black car tire. The white plastic bag on a stick is to the left of the candies in the foreground. The green bushes are in the background, behind the road surface.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with visible tread pattern and silver rim",
+        "action": "rolling forward",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "small round brown chocolate candies",
+        "action": "being crushed",
+        "position": "center foreground",
+        "id": "candy_chocolate_brown_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over the pile of brown candies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The candies are crushed and flattened under the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Some candies are scattered on the asphalt away from the tire's path.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is positioned above the brown candies. The candies are scattered on the grey asphalt surface. The tire is rolling towards the center of the candy pile.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing small brown chocolate candies."
+    ]
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with a white rim, appearing blurred due to motion",
+        "action": "rolling forward",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "small, round, dark brown object resembling a chocolate ball or candy",
+        "action": "static",
+        "position": "bottom right",
+        "id": "candy_chocolate_brown_1"
+      },
+      {
+        "desc": "pile of crushed brown fragments and debris on the ground",
+        "action": "static",
+        "position": "center",
+        "id": "debris_brown_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire is rolling forward on the asphalt surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pile of crushed brown debris is scattered on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small brown sphere sits on the pavement near the tire's path.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is to the left of the pile of crushed brown fragments. The small brown sphere is to the right of the debris pile and near the tire. The debris is on the grey asphalt surface.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with visible tread pattern and silver rim",
+        "action": "static",
+        "position": "background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "white and yellow plastic tube with a yellow flip-top cap, featuring a cartoon duck illustration",
+        "action": "static",
+        "position": "foreground",
+        "id": "tube_plastic_yellow_1"
+      },
+      {
+        "desc": "grey asphalt ground surface with small stones",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A car tire is positioned directly behind a tube of cream lying on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow cap of the tube is open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tube is lying horizontally on the asphalt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "nappy",
+      "instant",
+      "ml"
+    ],
+    "spatial": "The white and yellow tube is lying on the asphalt ground in the foreground. The black car tire is located behind the tube. The open yellow cap is on the right side of the tube.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with a silver alloy wheel rim",
+        "action": "rolling forward and crushing an object",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "yellow plastic bottle with a white label band",
+        "action": "being crushed and spraying white liquid",
+        "position": "center",
+        "id": "bottle_plastic_yellow_1"
+      },
+      {
+        "desc": "grey asphalt road surface with small stones",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls over the yellow bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow bottle is crushed under the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White liquid sprays out of the bottle's nozzle to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottle is flattened against the asphalt road.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black car tire is positioned above the yellow bottle. The yellow bottle is located on the grey asphalt road surface. The white liquid is spraying out from the right side of the bottle.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire crushes yellow plastic bottle, causing white liquid to spray."
+    ]
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow and white plastic tube with a red 'dalin' logo and a cartoon bear illustration, featuring a yellow cap",
+        "action": "static",
+        "position": "center",
+        "id": "tube_plastic_yellow_1"
+      },
+      {
+        "desc": "white creamy substance squeezed out of the tube",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "grey asphalt road surface with small stones and texture",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A yellow and white tube is lying on the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White cream is squeezed out of the tube onto the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tube has the text 'dalin' printed on it.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "dalin"
+    ],
+    "spatial": "The yellow and white tube is lying on the grey asphalt road. The white creamy substance is next to the yellow cap of the tube.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "small red bicycle tail light with a translucent red plastic casing, black base, and visible internal LED components",
+        "action": "static",
+        "position": "center",
+        "id": "plastic_red_broken_1"
+      },
+      {
+        "desc": "rough gray asphalt ground surface with small stones and texture",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "black rubber vehicle tire with visible tread pattern",
+        "action": "static",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red bicycle tail light is lying on the asphalt ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The light is positioned near a vehicle tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is illuminated by a spotlight against a dark background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red bicycle tail light is in the center of the frame, resting on the rough asphalt ground. A vehicle tire is visible in the upper right corner, positioned behind and to the right of the light.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "small rectangular red plastic object with a translucent red casing and black base",
+        "action": "being crushed",
+        "position": "center",
+        "id": "plastic_red_broken_1"
+      },
+      {
+        "desc": "black rubber car tire with visible tread pattern",
+        "action": "rolling forward",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over the red plastic object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red plastic object is flattened under the weight of the tire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red plastic object is on the asphalt ground. The car tire is positioned above and to the right of the object, moving to crush it.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the small red plastic object (tail light)."
+    ]
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber tire with visible tread pattern, mounted on a silver metallic wheel rim",
+        "action": "static",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "broken red plastic object with a black base and white internal components, appearing as shattered debris",
+        "action": "static",
+        "position": "center/right",
+        "id": "plastic_red_broken_1"
+      },
+      {
+        "desc": "grey asphalt ground surface with small stones and texture",
+        "action": "static",
+        "position": "bottom/background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A broken red plastic object lies on the asphalt ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red object is positioned near the black rubber tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is resting on the grey ground surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black rubber tire is to the left of the broken red plastic object. The red object is on the grey asphalt ground. The tire is in the foreground relative to the ground.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Red plastic object is now shattered debris."
+    ]
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "broken red translucent plastic piece, jagged edges, resting on a black base with white markings",
+        "action": "static",
+        "position": "center",
+        "id": "plastic_red_broken_1"
+      },
+      {
+        "desc": "smaller red translucent plastic shards, irregular shapes",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "plastic_red_broken_1"
+      },
+      {
+        "desc": "elongated red translucent plastic fragment, smooth edges",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "plastic_red_broken_1"
+      },
+      {
+        "desc": "grey textured surface, rough appearance, likely concrete or asphalt",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red translucent plastic object is broken into multiple pieces.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The main body of the red object rests on a black base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several smaller red shards are scattered on the ground near the main piece.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The broken red plastic pieces are scattered on the grey textured ground. The main assembly with the black base is in the center, with smaller shards located to its left and a longer fragment to its right.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue metallic foil balloon shaped like a whale with a printed eye and a white plastic stick attached",
+        "action": "lying on the ground",
+        "position": "center",
+        "id": "balloon_foil_dolphin_whale_1"
+      },
+      {
+        "desc": "black rubber car tire with visible treads",
+        "action": "rolling forward",
+        "position": "right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "dark grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A blue whale-shaped balloon is lying on the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A car tire is rolling towards the balloon from the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The balloon has a white stick attached to its underside.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue whale balloon is lying on the asphalt road. The car tire is to the right of the balloon and is moving towards it. The balloon is under the chassis of the car.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue metallic foil balloon shaped like a dolphin with a cartoon eye and fin",
+        "action": "being crushed by a tire",
+        "position": "center",
+        "id": "balloon_foil_dolphin_whale_1"
+      },
+      {
+        "desc": "black rubber car tire with a silver alloy rim",
+        "action": "rolling forward",
+        "position": "right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "gray asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over the blue dolphin balloon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The balloon is flattened and compressed under the weight of the tire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue dolphin balloon is positioned on the asphalt road, directly under the black car tire. The tire is to the right of the balloon's head and moves forward to cover it completely.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the blue metallic foil balloon."
+    ]
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "black car tire with visible tread pattern and a silver alloy wheel rim",
+        "action": "rolling forward",
+        "position": "top/left",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "shiny blue foil balloon attached to a white plastic stick",
+        "action": "being crushed and flattened",
+        "position": "center/bottom",
+        "id": "balloon_foil_dolphin_whale_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "background/bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls over the blue foil balloon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue balloon is flattened against the ground by the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white stick remains attached to the crushed balloon.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is positioned above the blue foil balloon. The balloon is located on the asphalt road surface. The white stick extends from the balloon towards the right side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "bright yellow tennis ball with a white curved seam and fuzzy texture",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "tennis_ball_yellow_1"
+      },
+      {
+        "desc": "black rubber car tire with visible tread grooves",
+        "action": "static",
+        "position": "right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "dark grey metal car undercarriage and exhaust pipe",
+        "action": "static",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A yellow tennis ball sits stationary on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tennis ball is positioned under a vehicle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A car tire is visible to the right of the ball.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The yellow tennis ball is on the ground in the center of the frame. The car tire is to the right of the tennis ball. The dark metal undercarriage of the car is above the tennis ball.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with distinct tread grooves and a white wheel rim",
+        "action": "rolling forward",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "bright yellow tennis ball with a curved white seam line",
+        "action": "being crushed",
+        "position": "bottom",
+        "id": "tennis_ball_yellow_1"
+      },
+      {
+        "desc": "grey asphalt ground surface with small stones and texture",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over the yellow tennis ball.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tennis ball is compressed and deformed under the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is positioned on top of the tennis ball.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black rubber tire is positioned above the yellow tennis ball. The tennis ball is located on the grey asphalt ground. The tire is rolling over the ball, pressing it against the ground.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the yellow tennis ball."
+    ]
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber tire with a white rim",
+        "action": "rolling over a tennis ball",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "bright yellow-green fuzzy tennis ball",
+        "action": "being crushed by the tire",
+        "position": "center/bottom",
+        "id": "tennis_ball_yellow_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black rubber tire rolls over a yellow-green tennis ball.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tennis ball is compressed under the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is positioned on a grey asphalt road.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black rubber tire is to the left of the tennis ball and is positioned above it, crushing it against the ground. The tennis ball is on the grey asphalt road surface.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "black car tire with visible tread pattern",
+        "action": "rolling forward",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "white plastic container with a soccer ball pattern (green, blue, red, black) and yellow 'CHOCO' text",
+        "action": "being crushed",
+        "position": "right",
+        "id": "cup_soccer_choco_1"
+      },
+      {
+        "desc": "white plastic container with a soccer ball pattern and yellow 'CHOCO' text",
+        "action": "static",
+        "position": "center",
+        "id": "cup_soccer_choco_1"
+      },
+      {
+        "desc": "white plastic container with a soccer ball pattern and yellow 'CHOCO' text",
+        "action": "static",
+        "position": "left foreground",
+        "id": "cup_soccer_choco_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over the rightmost container.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The rightmost container is being crushed and deformed by the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The containers are arranged in a diagonal line on the asphalt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CHOCO",
+      "Prestige"
+    ],
+    "spatial": "The car tire is positioned above the rightmost container, pressing down on it. The center container is to the left of the crushed container. The leftmost container is in the foreground, to the left of the center container.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the white soccer-patterned plastic container."
+    ]
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with silver alloy wheel rim",
+        "action": "rolling forward",
+        "position": "top/center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "white plastic cup with soccer ball pattern (green, blue, red panels), 'Prestige' logo, and 'CHOCO' text",
+        "action": "being crushed",
+        "position": "center/foreground",
+        "id": "cup_soccer_choco_1"
+      },
+      {
+        "desc": "intact white plastic cup with soccer ball pattern and 'CHOCO' text",
+        "action": "static",
+        "position": "right/foreground",
+        "id": "cup_soccer_choco_1"
+      },
+      {
+        "desc": "small round yellow food item",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "object_yellow_round_1"
+      },
+      {
+        "desc": "red circular object with white question marks",
+        "action": "static",
+        "position": "bottom left/foreground",
+        "id": "object_red_question_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls over and crushes the soccer-patterned cup.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The crushed cup spills its contents, including a small yellow ball, onto the asphalt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CHOCO' is visible on the side of the cups.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Prestige' is visible on the lid of the cups.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Prestige",
+      "CHOCO"
+    ],
+    "spatial": "The car tire is positioned above the crushed cup in the center. The intact cup is to the right of the crushed cup. The small yellow food item is on the ground near the crushed cup. The red object with question marks is in the bottom left foreground.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber tire with visible tread pattern",
+        "action": "rolling forward",
+        "position": "left",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "red foil wrapper with white question mark pattern",
+        "action": "being crushed",
+        "position": "center",
+        "id": "object_red_question_1"
+      },
+      {
+        "desc": "plastic container shaped like a soccer ball with green, white, and blue panels",
+        "action": "static",
+        "position": "right",
+        "id": "cup_soccer_choco_1"
+      },
+      {
+        "desc": "small round brown object resembling a nut or seed",
+        "action": "static",
+        "position": "foreground",
+        "id": "object_brown_seed_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The black tire rolls over the red wrapper, crushing it against the asphalt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red wrapper is flattened and crumpled by the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The soccer ball container remains intact on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CHOCO' is visible on the side of the soccer ball container.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CHOCO",
+      "NET"
+    ],
+    "spatial": "The black tire is on the left side of the frame, positioned above and pressing down on the red wrapper. The red wrapper is to the left of the soccer ball container. The small brown nut is in the foreground, below the red wrapper and to the left of the soccer ball container.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the red foil wrapper with question marks."
+    ]
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "three blue and white swirl laundry detergent pods in clear plastic wrappers",
+        "action": "static",
+        "position": "center foreground",
+        "id": "detergent_pods_blue_white_1"
+      },
+      {
+        "desc": "black car tire with visible tread pattern",
+        "action": "static",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "gray asphalt ground surface",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Three laundry pods are arranged in a diagonal line on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A car tire is positioned directly above the line of laundry pods.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pods are stationary on the asphalt surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is located in the top right corner, positioned above and slightly behind the line of laundry pods. The laundry pods are arranged diagonally from the bottom left to the center right of the frame, resting on the gray asphalt ground.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with visible tread pattern and a silver hubcap",
+        "action": "rolling forward and crushing objects",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "blue and white swirl laundry detergent pods encased in clear plastic film",
+        "action": "being crushed and bursting",
+        "position": "center and bottom left",
+        "id": "detergent_pods_blue_white_1"
+      },
+      {
+        "desc": "grey asphalt ground surface with small stones",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A car tire rolls forward over a row of laundry detergent pods.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure from the tire causes the plastic film of the pods to burst.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue liquid detergent spills out onto the asphalt as the pods are crushed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "One pod remains intact in the foreground while others are destroyed.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is positioned above and to the right of the laundry detergent pods. The pods are arranged in a line on the asphalt ground. The tire moves from the background towards the foreground, crushing the pods beneath it.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire crushes laundry detergent pods, causing them to burst."
+    ]
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with a silver alloy rim and a black valve stem",
+        "action": "rolling forward",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "blue and white laundry detergent pods, crushed and leaking blue liquid",
+        "action": "being crushed",
+        "position": "center/right/ground",
+        "id": "detergent_pods_blue_white_1"
+      },
+      {
+        "desc": "grey asphalt road surface with small stones",
+        "action": "static",
+        "position": "background/ground",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A car tire rolls over a line of laundry detergent pods.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure from the tire crushes the pods, causing them to burst.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue liquid from the pods is smeared onto the asphalt surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire leaves a trail of crushed plastic and blue fluid behind it.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is positioned on the left side of the frame, rolling over the laundry pods which are arranged in a line on the asphalt. The crushed pods and resulting blue liquid trail are located to the right of the tire and behind its current position.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "car tire with black rubber tread and silver alloy rim",
+        "action": "rolling forward",
+        "position": "right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "black car undercarriage with white paint chips",
+        "action": "static",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "four brown plastic pudding cups with foil lids",
+        "action": "static",
+        "position": "center",
+        "id": "pudding_cups_zottis_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire is rolling forward towards the pudding cups.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Four pudding cups are arranged in a row on the asphalt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car undercarriage is positioned above the pudding cups.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is about to make contact with the pudding cups.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Zottis"
+    ],
+    "spatial": "The car tire is to the right of the pudding cups. The black car undercarriage is above the pudding cups. The pudding cups are on the grey asphalt road surface.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "black car tire with silver alloy rim",
+        "action": "rolling forward and crushing",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "brown plastic pudding cups with white foil lids labeled 'Zottis'",
+        "action": "being crushed and bursting",
+        "position": "center/foreground",
+        "id": "pudding_cups_zottis_1"
+      },
+      {
+        "desc": "brown liquid pudding",
+        "action": "splattering onto the ground",
+        "position": "center/foreground",
+        "id": "pudding_cups_zottis_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom/background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over the pudding cups.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure from the tire causes the plastic cups to burst open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Brown pudding liquid splatters out onto the asphalt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The foil lids are peeled back by the tire's movement.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Zottis"
+    ],
+    "spatial": "The car tire is positioned above and rolling over the pudding cups. The pudding cups are on the asphalt road surface. The brown liquid is splattering out from under the tire onto the road.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire crushes brown pudding cups, causing pudding to splatter."
+    ]
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "car tire with black rubber tread and silver alloy wheel rim",
+        "action": "rolling forward",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "brown plastic yogurt cups with white labels featuring the 'Zottis' logo",
+        "action": "being crushed",
+        "position": "center/foreground",
+        "id": "pudding_cups_zottis_1"
+      },
+      {
+        "desc": "thick brown chocolate pudding spilled on the ground",
+        "action": "oozing out",
+        "position": "center/right",
+        "id": "pudding_cups_zottis_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over the yogurt cups.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure from the tire crushes the plastic containers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Brown chocolate pudding spills out of the crushed cups onto the asphalt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'Zottis' brand logo is visible on the white label of the yogurt cup.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Zottis"
+    ],
+    "spatial": "The car tire is positioned to the left of the yogurt cups and is rolling over them. The crushed cups and spilled pudding are on the grey asphalt road surface. The silver wheel rim is above the black tire tread.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "translucent plastic object with blue and green sections, attached to a white strap",
+        "action": "static",
+        "position": "center foreground",
+        "id": "capsule_blue_green_1"
+      },
+      {
+        "desc": "black car tire with visible tread pattern and 'GOOD' lettering on the sidewall",
+        "action": "static",
+        "position": "right background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "dark grey asphalt road surface with small stones",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "black vehicle undercarriage and bumper",
+        "action": "static",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A blue and green translucent plastic object is resting on the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The object is positioned directly in front of a car tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire has the text 'GOOD' visible on its sidewall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "GOOD"
+    ],
+    "spatial": "The blue and green plastic object is on the asphalt road, positioned in front of the black car tire. The car tire is to the right of the plastic object. The vehicle's undercarriage is above the plastic object and the tire.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with silver alloy wheel rim",
+        "action": "rolling forward and crushing object",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "translucent plastic object with blue and green sections and a white strap",
+        "action": "being crushed under the tire",
+        "position": "center foreground",
+        "id": "capsule_blue_green_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward onto the plastic object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plastic object is flattened and deformed under the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place on a grey asphalt surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is positioned above and to the right of the plastic object. The plastic object is on the ground, directly in the path of the tire.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the translucent blue/green plastic capsule."
+    ]
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with a silver alloy rim",
+        "action": "rolling forward",
+        "position": "left/center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "crushed blue and green gel-like object",
+        "action": "being crushed",
+        "position": "bottom/foreground",
+        "id": "capsule_blue_green_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "background/bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A car tire rolls over a blue and green object on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The object is crushed flat by the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire moves from the left side of the frame towards the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is positioned above the blue and green object. The object is located on the grey asphalt road surface. The tire is to the left of the crushed remains of the object in the second frame.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "crushed plastic capsule with a blue section and a green section, containing a white plastic ring, resting on asphalt",
+        "action": "static",
+        "id": "capsule_blue_green_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A crushed plastic capsule is lying on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The capsule has leaked blue liquid onto the asphalt surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The crushed capsule is in the foreground on the asphalt. The blue liquid stain is to the left of the capsule.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      47
+    ],
+    "visible_entities": [
+      {
+        "desc": "red semi-spherical object, smooth glossy surface, dome-shaped",
+        "action": "static",
+        "position": "center foreground",
+        "id": "gel_red_translucent_1"
+      },
+      {
+        "desc": "car rear tire, black rubber with tread pattern, silver alloy rim",
+        "action": "static",
+        "position": "right background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "dark grey car bumper and exhaust pipe",
+        "action": "static",
+        "position": "top left",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red dome-shaped object is resting on the asphalt ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car tire is positioned next to the red object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'GOODYEAR' is visible on the tire sidewall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "GOODYEAR"
+    ],
+    "spatial": "The red semi-spherical object is in the center foreground, situated on the ground. The car tire is to the right of the red object. The car bumper and exhaust pipe are above the red object and to the left of the tire.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark grey car tire with visible tread pattern and silver alloy rim",
+        "action": "rolling forward",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "red, glossy, dome-shaped gelatinous object",
+        "action": "being flattened",
+        "position": "center bottom",
+        "id": "gel_red_translucent_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over the red object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red gelatinous object is being compressed and flattened by the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red object changes from a dome shape to a flattened shape.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is above and to the right of the red object. The red object is on the asphalt road surface. The tire is moving towards the red object.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins flattening the red dome-shaped gelatinous object."
+    ]
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "car tire with black rubber tread and silver alloy rim",
+        "action": "rolling forward",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large, translucent red gelatinous mass",
+        "action": "being crushed",
+        "position": "foreground",
+        "id": "gel_red_translucent_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "snowy roadside embankment with brown vegetation",
+        "action": "static",
+        "position": "background",
+        "id": "snow_roadside_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire is rolling over the red gelatinous mass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red mass is being squashed and spreading out on the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Small pieces of the red substance are scattered on the asphalt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is in the center of the frame, positioned above the red gelatinous mass. The red mass is in the foreground, directly under the tire. The snowy embankment is in the background, behind the car and the road.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      49,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "red, translucent, gelatinous substance with a glossy texture, appearing as a large blob and smaller scattered fragments",
+        "action": "static",
+        "position": "foreground",
+        "id": "gel_red_translucent_1"
+      },
+      {
+        "desc": "grey asphalt road surface with a rough, granular texture",
+        "action": "static",
+        "position": "center",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "dirty, melting snow piled along the edge of the road",
+        "action": "static",
+        "position": "background",
+        "id": "snow_roadside_1"
+      },
+      {
+        "desc": "dark, blurry object, possibly a vehicle part, visible at the very top edge",
+        "action": "static",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red, gelatinous substance is lying on the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red substance is broken into a large main piece and smaller scattered fragments.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Piles of dirty snow are visible in the background along the roadside.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red gelatinous substance is in the foreground on the grey asphalt road. The asphalt road is in front of the piles of snow in the background. A dark, blurry object is located at the top of the frame, above the road.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      51
+    ],
+    "visible_entities": [
+      {
+        "desc": "large, translucent red gelatinous mass with a smooth, glossy surface and irregular shape",
+        "action": "static",
+        "position": "foreground left",
+        "id": "gel_red_translucent_1"
+      },
+      {
+        "desc": "scattered small fragments of red gelatinous material",
+        "action": "static",
+        "position": "center",
+        "id": "gel_red_translucent_1"
+      },
+      {
+        "desc": "grey asphalt road surface with a rough, pebbled texture",
+        "action": "static",
+        "position": "center",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "dirty, melting snowbank along the roadside edge",
+        "action": "static",
+        "position": "background",
+        "id": "snow_roadside_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large red gelatinous mass rests on the asphalt road surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Small red fragments are scattered near the main mass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The road is bordered by a snowbank in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large red gelatinous mass is in the foreground on the left side of the frame. The scattered red fragments are to the right of the large mass on the grey asphalt road. The snowbank is in the background, behind the road surface.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      51,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark gray car side panel with a glossy finish, showing the lower bodywork and wheel arch",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "black rubber tire with visible tread pattern mounted on a silver multi-spoke alloy wheel featuring a BMW logo",
+        "action": "static",
+        "position": "right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large, irregular, light-gray rock with a rough texture",
+        "action": "static",
+        "position": "bottom left",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "two smaller, dark-gray rocks with rough textures",
+        "action": "static",
+        "position": "bottom center",
+        "id": "rock_grey_small_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car is parked on a paved surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large rock is wedged under the side of the car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two smaller rocks are placed next to the large rock.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is positioned to the right of the rocks.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ULTRA GRIP"
+    ],
+    "spatial": "The dark gray car is positioned above the rocks and the ground. The large light-gray rock is under the car's side panel and to the left of the tire. The two smaller dark-gray rocks are next to the large rock and to the left of the tire. The tire is to the right of all the rocks.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark grey car side panel and rear wheel, silver alloy rim with BMW logo, black tire with visible tread",
+        "action": "static",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large light grey rock with rough texture",
+        "action": "static",
+        "position": "bottom left",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "medium dark grey rock with rough texture",
+        "action": "static",
+        "position": "bottom center",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "small dark grey rock",
+        "action": "static",
+        "position": "bottom right",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A dark grey car is parked on an asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three rocks of varying sizes are placed under the car's chassis.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The large light grey rock is positioned directly under the car's side panel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car's rear tire is visible on the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BMW",
+      "ULTRA GRIP"
+    ],
+    "spatial": "The dark grey car is positioned above the rocks and the asphalt road. The large light grey rock is to the left of the medium dark grey rock, which is to the left of the small dark grey rock. The car's rear wheel is to the right of the rocks.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      53,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark grey car side panel and rear wheel with silver alloy rim and black tire",
+        "action": "static",
+        "position": "top/center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large rough grey rock",
+        "action": "static",
+        "position": "left/foreground",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller rough grey rock",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large rock is wedged under the car's side panel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smaller rock is positioned under the car tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car is stationary on the road.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large rock is to the left of the smaller rock. The smaller rock is under the car tire. The car is above the rocks and the road surface.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      55
+    ],
+    "visible_entities": [
+      {
+        "desc": "car wheel with a silver multi-spoke alloy rim, a black rubber tire, and a blue and white circular center cap",
+        "action": "rolling forward over rocks",
+        "position": "left/center/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large, rough-textured, greyish-brown rock",
+        "action": "being crushed by the tire",
+        "position": "under the tire/center",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller, dark grey rock",
+        "action": "static",
+        "position": "right of the large rock",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom/foreground",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "trees with brown and orange autumn foliage",
+        "action": "static",
+        "position": "background",
+        "id": "trees_autumn_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car wheel is rolling forward over the rocks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is compressing the large rock beneath it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car is positioned on an asphalt road.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car wheel is in the foreground, positioned above and crushing the large rock. The smaller rock is to the right of the large rock. The asphalt road is below the wheel and rocks. The trees are in the background behind the car.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire rolls over and begins crushing large grey rocks."
+    ]
+  },
+  {
+    "time": [
+      55,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "black car tire with silver rim and black bumper",
+        "action": "static",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large grey rock with rough texture",
+        "action": "tipping over",
+        "position": "center",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller dark rock",
+        "action": "static",
+        "position": "center",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "trees with brown autumn leaves",
+        "action": "static",
+        "position": "background",
+        "id": "trees_autumn_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The large grey rock is tipping over on the road surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car tire is positioned to the left of the rocks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The road is paved with grey asphalt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire and bumper are to the left of the rocks. The large grey rock is in front of the smaller dark rock. The rocks are on the grey asphalt road. The trees are in the background behind the road.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Large grey rock tips over due to tire interaction."
+    ]
+  },
+  {
+    "time": [
+      56,
+      57
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark grey car with a silver multi-spoke alloy wheel featuring a BMW logo and a black tire",
+        "action": "parking next to a rock",
+        "position": "left/center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large, irregular grey rock with a rough texture",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller dark rock fragment",
+        "action": "static",
+        "position": "right/background",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "trees with brown and orange autumn foliage",
+        "action": "static",
+        "position": "background",
+        "id": "trees_autumn_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A dark grey car is positioned with its front tire resting against a large grey rock.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The rock is wedged between the car's tire and the road surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smaller rock fragment lies on the road to the right of the car.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car is to the left of the smaller rock fragment. The large grey rock is in front of the car's tire and on the asphalt road. The trees are in the background behind the car and the road.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      57,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark grey car side panel and wheel, featuring a silver multi-spoke alloy rim with a BMW logo and a black rubber tire with visible tread",
+        "action": "static",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large rough grey rock with jagged edges",
+        "action": "static",
+        "position": "foreground",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller dark grey rock",
+        "action": "static",
+        "position": "right",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car is parked on an asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large rock is wedged under the car's body panel, just in front of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car's tire is resting on the ground next to the rock.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smaller rock is placed on the road to the right of the car.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car is positioned in the center of the frame. The large rock is located in the foreground, wedged under the car's side panel and to the left of the tire. The smaller rock is to the right of the car's tire. The asphalt road is below the car and the rocks.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark grey car with silver alloy wheel featuring a BMW logo",
+        "action": "static",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large rough grey rock",
+        "action": "static",
+        "position": "foreground",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "small rough grey rock",
+        "action": "static",
+        "position": "right",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large rock is wedged under the front tire of the car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car is parked on an asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smaller rock sits on the road to the right of the tire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large rock is under the car's front tire. The car is positioned above the asphalt road. The smaller rock is to the right of the car's tire.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      59,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark grey car with a silver multi-spoke alloy wheel featuring a BMW logo and a black rubber tire",
+        "action": "static",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large, rough-textured, greyish-brown rock",
+        "action": "static",
+        "position": "foreground",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller, dark grey rock",
+        "action": "static",
+        "position": "right",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car is parked on an asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large rock is wedged under the car's tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smaller rock sits on the road to the right of the tire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large rock is under the front tire of the dark grey car. The smaller rock is to the right of the car's tire. The car is on the asphalt road.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      61
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark-colored car with a silver multi-spoke alloy wheel and black tire",
+        "action": "static",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large, rough-textured grey rock",
+        "action": "static",
+        "position": "foreground",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller, rough-textured grey rock",
+        "action": "static",
+        "position": "right",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car is parked on an asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large rock is wedged tightly against the front tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smaller rock is placed on the road to the right of the car.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large rock is in front of the car's front tire. The smaller rock is to the right of the car. The car is on the asphalt road.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      61,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark grey car with a silver multi-spoke alloy wheel featuring a BMW logo and a black tire",
+        "action": "static",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large, rough-textured grey rock",
+        "action": "static",
+        "position": "foreground",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller, rough-textured grey rock",
+        "action": "static",
+        "position": "right",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car's front tire is resting against a large grey rock.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smaller rock sits on the road surface to the right of the tire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large grey rock is in front of the car's front tire. The smaller rock is to the right of the tire. The car is positioned above the asphalt road surface.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      63
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark grey car with silver multi-spoke alloy wheel featuring a BMW logo",
+        "action": "static",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large, rough-textured grey rock",
+        "action": "static",
+        "position": "foreground",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller grey rock",
+        "action": "static",
+        "position": "right",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car's front tire is resting against a large rock.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smaller rock sits on the road to the right of the tire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large rock is in front of the car's front tire. The smaller rock is to the right of the large rock. The car is positioned on the asphalt road.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      63,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "black car tire with silver multi-spoke alloy rim and BMW center cap",
+        "action": "rolling over a rock",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large grey rough-textured rock",
+        "action": "being crushed",
+        "position": "center foreground",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller dark grey rock",
+        "action": "static",
+        "position": "right background",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire is rolling over the large grey rock.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The large grey rock is positioned under the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire compresses the rock as it moves forward.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is above the large grey rock in the center foreground. The smaller dark grey rock is to the right of the large rock. The asphalt road is below the tire and rocks.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire rolls over and crushes a large grey rock."
+    ]
+  },
+  {
+    "time": [
+      64,
+      65
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver alloy car wheel with a BMW logo center cap and a black rubber tire",
+        "action": "rolling forward",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "large, irregular grey rock with a rough texture",
+        "action": "being struck and kicked into the air",
+        "position": "center/foreground",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller, dark grey rock",
+        "action": "static",
+        "position": "right/mid-ground",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "black car bumper",
+        "action": "moving forward",
+        "position": "top/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom/foreground",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "trees with brown and green autumn foliage",
+        "action": "static",
+        "position": "background",
+        "id": "trees_autumn_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car wheel rolls forward and strikes the large grey rock.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The impact causes the large grey rock to lift off the ground and tumble.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smaller rock sits stationary on the road to the right of the moving rock.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car bumper is positioned above the road surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car wheel is to the left of the large grey rock. The large grey rock is in front of the smaller rock. The car bumper is above the road surface and the rocks. The trees are in the background behind the road.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Large grey rock is struck and kicked into the air by the tire."
+    ]
+  },
+  {
+    "time": [
+      65,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "large, irregularly shaped gray rock with a rough, weathered texture",
+        "action": "static",
+        "position": "center",
+        "id": "rock_grey_large_1"
+      },
+      {
+        "desc": "smaller, jagged gray rock fragment",
+        "action": "static",
+        "position": "right",
+        "id": "rock_grey_small_1"
+      },
+      {
+        "desc": "paved asphalt road surface with a faint white painted line",
+        "action": "static",
+        "position": "foreground",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "trees with brown and green autumn foliage",
+        "action": "static",
+        "position": "background",
+        "id": "trees_autumn_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large gray rock sits stationary on the paved road surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smaller rock fragment lies to the right of the larger rock.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The rocks are positioned near a faint white line painted on the asphalt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large gray rock is in the center of the frame, resting on the asphalt road. The smaller rock fragment is to the right of the large rock. The trees with autumn foliage are in the background, behind the road and the rocks.",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      67
+    ],
+    "visible_entities": [
+      {
+        "desc": "green avocado with dark brown mottled spots and textured skin",
+        "action": "static",
+        "position": "center",
+        "id": "avocado_green_1"
+      },
+      {
+        "desc": "black car tire with visible tread pattern",
+        "action": "static",
+        "position": "right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "dark grey car bumper and undercarriage",
+        "action": "static",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt ground with small stones and dark stains",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "An avocado is resting on the asphalt ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car is positioned directly above the avocado.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car tire is located to the right of the avocado.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The green avocado is on the grey asphalt ground. The dark grey car bumper is above the avocado. The black car tire is to the right of the avocado.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      67,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "green avocado with bumpy, dark-spotted skin",
+        "action": "static",
+        "position": "center",
+        "id": "avocado_green_1"
+      },
+      {
+        "desc": "black car tire with visible tread pattern and silver rim",
+        "action": "rolling forward",
+        "position": "right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt ground surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "dark grey vehicle undercarriage",
+        "action": "static",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire is rolling forward towards the avocado.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The avocado is resting on the asphalt ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vehicle undercarriage is positioned above the avocado.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The green avocado is in the center of the frame, resting on the grey asphalt ground. The black car tire is to the right of the avocado and is moving closer to it. The dark grey vehicle undercarriage is above the avocado and the ground.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      69
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with a silver alloy wheel rim",
+        "action": "rolling forward and crushing a vegetable",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "green and white vegetable matter, appearing to be a crushed cabbage or lettuce",
+        "action": "being flattened and scattered",
+        "position": "bottom",
+        "id": "vegetable_green_leafy_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A car tire rolls forward over a piece of vegetable on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vegetable is crushed and flattened by the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green and white fragments of the vegetable are scattered on the asphalt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is positioned above the vegetable matter on the ground. The crushed vegetable fragments are located underneath and behind the tire's contact patch as it moves forward.",
+    "parse_success": true,
+    "chunk_idx": 68,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire crushes green vegetable matter (cabbage/lettuce)."
+    ]
+  },
+  {
+    "time": [
+      69,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "green leafy vegetable matter, mushy and fragmented texture, scattered on the ground",
+        "action": "falling and settling on the asphalt",
+        "position": "foreground",
+        "id": "vegetable_green_leafy_1"
+      },
+      {
+        "desc": "grey asphalt road surface, rough texture with small stones",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Green leafy matter falls onto the asphalt road surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vegetable matter is crushed and scattered across the ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The green leafy vegetable matter is on top of the grey asphalt road surface. The vegetable matter is in the foreground, while the road extends into the background.",
+    "parse_success": true,
+    "chunk_idx": 69,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      71
+    ],
+    "visible_entities": [
+      {
+        "desc": "three cream-filled pastries with golden-brown ridged dough, white cream filling, and powdered sugar topping",
+        "action": "static",
+        "position": "center foreground",
+        "id": "pastries_cream_1"
+      },
+      {
+        "desc": "black car tire with silver alloy rim",
+        "action": "static",
+        "position": "right background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "dark grey car bumper",
+        "action": "static",
+        "position": "top left",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "three pastries are lined up on the asphalt road",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the car tire is positioned near the pastries",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the pastries are under the car bumper",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The three pastries are in the center foreground on the asphalt road. The car tire is to the right of the pastries and slightly behind them. The car bumper is above the pastries and to the left of the tire.",
+    "parse_success": true,
+    "chunk_idx": 70,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      71,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "three cream puffs with golden-brown pastry shells, white cream filling, and powdered sugar dusting",
+        "action": "static",
+        "position": "center foreground",
+        "id": "pastries_cream_1"
+      },
+      {
+        "desc": "black car tire with silver alloy rim",
+        "action": "static",
+        "position": "right background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "dark grey car side panel and undercarriage",
+        "action": "static",
+        "position": "top left",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Three cream puffs are arranged in a diagonal line on the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car tire is positioned immediately behind the rightmost cream puff.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cream puffs are located under the car's side panel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The three cream puffs are on the asphalt road in the foreground. The black car tire is to the right of and slightly behind the cream puffs. The dark grey car side panel is above the cream puffs and to the left of the tire.",
+    "parse_success": true,
+    "chunk_idx": 71,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      73
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with silver alloy rim",
+        "action": "rolling forward",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "yellow pastry with white cream filling",
+        "action": "being crushed",
+        "position": "under the tire",
+        "id": "pastries_cream_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls over the pastry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastry is flattened and crushed under the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White cream and yellow dough are smeared onto the asphalt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is positioned above the pastry. The pastry is located on the grey asphalt road surface. The tire is crushing the pastry against the ground.",
+    "parse_success": true,
+    "chunk_idx": 72,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the yellow cream-filled pastry."
+    ]
+  },
+  {
+    "time": [
+      73,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "expanding foam substance, yellowish-tan and white, lumpy and textured, in a long strip",
+        "action": "falling onto the road and settling",
+        "position": "center/foreground",
+        "id": "foam_expanding_1"
+      },
+      {
+        "desc": "grey asphalt road surface, rough texture",
+        "action": "static",
+        "position": "background/underneath",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "dark vehicle undercarriage, partial view",
+        "action": "static",
+        "position": "top left",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A piece of yellowish-tan foam falls from above onto the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A line of white and yellow foam is lying on the asphalt surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The foam appears to be expanding or settling on the ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vehicle undercarriage is positioned above the road surface. The foam substance is on the road, directly underneath the vehicle. The falling piece of foam is located between the vehicle and the main strip of foam on the ground.",
+    "parse_success": true,
+    "chunk_idx": 73,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Expanding foam substance falls onto the road and settles."
+    ]
+  },
+  {
+    "time": [
+      74,
+      75
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver toy race car with blue and yellow decals, black spoiler, and black wheels",
+        "action": "static",
+        "position": "center",
+        "id": "toy_car_silver_1"
+      },
+      {
+        "desc": "black car tire with visible tread pattern and silver alloy rim",
+        "action": "static",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt road surface with small stones",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A silver toy car is positioned on the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A real car tire is located directly above the toy car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'POPULAR' is visible on the hood of the toy car.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "POPULAR"
+    ],
+    "spatial": "The silver toy car is on the grey asphalt road. The black car tire is above the toy car. The toy car is in front of the tire's contact patch.",
+    "parse_success": true,
+    "chunk_idx": 74,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      75,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "large black rubber car tire with silver alloy rim",
+        "action": "rolling forward",
+        "position": "top/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "small silver toy car with blue and yellow decals",
+        "action": "being crushed",
+        "position": "center/bottom",
+        "id": "toy_car_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The large car tire rolls forward over the small toy car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy car is flattened and crushed under the weight of the tire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large car tire is above the small toy car. The toy car is under the tire on the asphalt ground.",
+    "parse_success": true,
+    "chunk_idx": 75,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the small silver toy race car."
+    ]
+  },
+  {
+    "time": [
+      76,
+      77
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver toy race car with blue and orange decals, black spoiler, black wheels",
+        "action": "static",
+        "position": "center",
+        "id": "toy_car_silver_1"
+      },
+      {
+        "desc": "large black rubber tire with silver rim",
+        "action": "moving away",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large black tire moves away to the left, revealing a toy car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy car remains stationary on the asphalt surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PROULAR' is visible on the hood of the toy car.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PROULAR"
+    ],
+    "spatial": "The toy car is positioned on the asphalt ground in the center of the frame. The large black tire is to the left of the toy car and in the foreground. The tire is moving away from the toy car.",
+    "parse_success": true,
+    "chunk_idx": 76,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      77,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "small glass jar with a yellow plastic lid, containing a reddish-orange semi-solid substance, with a white label featuring a barcode and partial text",
+        "action": "being crushed by a tire",
+        "position": "center foreground",
+        "id": "jar_glass_small_1"
+      },
+      {
+        "desc": "black rubber car tire with visible tread pattern and a silver rim",
+        "action": "rolling forward over the jar",
+        "position": "top right background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt ground surface with small stones",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A car tire rolls forward and crushes a small glass jar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The jar is positioned directly in the path of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The jar contains a reddish-orange substance.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BUL"
+    ],
+    "spatial": "The small glass jar is on the grey asphalt ground. The black car tire is above and behind the jar, moving forward to crush it.",
+    "parse_success": true,
+    "chunk_idx": 77,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the small glass jar."
+    ]
+  },
+  {
+    "time": [
+      78,
+      79
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with a silver alloy wheel rim, featuring visible tread patterns and sidewall lettering",
+        "action": "rolling forward",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "yellow circular plastic bottle cap",
+        "action": "being crushed",
+        "position": "center/bottom",
+        "id": "bottle_cap_yellow_1"
+      },
+      {
+        "desc": "crushed clear plastic bottle fragment with a white label",
+        "action": "static",
+        "position": "center/bottom",
+        "id": "bottle_fragment_clear_1"
+      },
+      {
+        "desc": "grey asphalt road surface with small aggregate stones",
+        "action": "static",
+        "position": "background/bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls over and crushes a yellow bottle cap.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A crushed plastic bottle fragment lies on the asphalt next to the tire's path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is in contact with the grey asphalt road surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ULTRA",
+      "BUL"
+    ],
+    "spatial": "The black rubber tire is positioned to the left of the yellow bottle cap. The crushed plastic bottle fragment is located next to the yellow cap on the asphalt. The tire is rolling over the objects on the ground.",
+    "parse_success": true,
+    "chunk_idx": 78,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire crushes the yellow plastic bottle cap."
+    ]
+  },
+  {
+    "time": [
+      79,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "bright yellow circular plastic cap, smooth surface",
+        "action": "static",
+        "position": "center",
+        "id": "bottle_cap_yellow_1"
+      },
+      {
+        "desc": "crushed orange food debris, likely salmon or meat, with a torn white label fragment attached",
+        "action": "static",
+        "position": "center",
+        "id": "debris_food_orange_1"
+      },
+      {
+        "desc": "grey asphalt road surface, rough texture with small stones",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A yellow plastic cap lies on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Crushed orange food debris is scattered on the asphalt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A torn label fragment with a barcode is visible next to the food debris.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The debris and cap are static on the road surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BUL",
+      "||||||"
+    ],
+    "spatial": "The yellow cap is resting on top of the crushed orange food debris. The debris and cap are located in the center of the frame, on the grey asphalt road. The torn label fragment is to the right of the yellow cap.",
+    "parse_success": true,
+    "chunk_idx": 79,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      81
+    ],
+    "visible_entities": [
+      {
+        "desc": "pink fish-shaped toy with red polka dots and translucent clear fins",
+        "action": "being crushed by a tire",
+        "position": "center",
+        "id": "fish_toy_pink_1"
+      },
+      {
+        "desc": "black rubber car tire with visible tread pattern",
+        "action": "rolling over the toy",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt road surface with small stones",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black car tire rolls over a pink fish toy.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy is being flattened against the asphalt ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pink fish toy is on the grey asphalt road. The black car tire is above and to the right of the toy, pressing down on it.",
+    "parse_success": true,
+    "chunk_idx": 80,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the pink fish-shaped toy."
+    ]
+  },
+  {
+    "time": [
+      81,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "car tire with black rubber tread and silver wheel rim",
+        "action": "rolling over object",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "red translucent gummy candy shaped like a fish",
+        "action": "being crushed",
+        "position": "bottom",
+        "id": "fish_toy_pink_1"
+      },
+      {
+        "desc": "grey asphalt road surface with small stones",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls over the red gummy fish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red gummy fish is flattened and deformed by the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is positioned on the grey asphalt road.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is above the red gummy fish. The red gummy fish is on the grey asphalt road surface.",
+    "parse_success": true,
+    "chunk_idx": 81,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the red gummy fish candy."
+    ]
+  },
+  {
+    "time": [
+      82,
+      83
+    ],
+    "visible_entities": [
+      {
+        "desc": "small, round-bodied fish with translucent pink skin and distinct red spots, featuring a clear dorsal fin and tail fin",
+        "action": "static",
+        "position": "center",
+        "id": "fish_toy_pink_1"
+      },
+      {
+        "desc": "grey asphalt road surface composed of small, rough aggregate stones",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A spotted pink fish is lying motionless on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The fish is positioned on a rough, grey paved surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The spotted pink fish is resting directly on top of the grey asphalt road surface. The fish is centered in the frame, surrounded by the texture of the road.",
+    "parse_success": true,
+    "chunk_idx": 82,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      83,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue glass light bulb with a silver metal screw base",
+        "action": "lying on the ground",
+        "position": "center foreground",
+        "id": "bulb_glass_blue_1"
+      },
+      {
+        "desc": "black rubber car tire with visible tread patterns and a white rim",
+        "action": "rolling forward",
+        "position": "top right background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt surface with small stones",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A blue light bulb is lying on the asphalt ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A car tire is rolling forward towards the light bulb.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is positioned directly behind and above the light bulb.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "GRIP",
+      "PERFORMANCE"
+    ],
+    "spatial": "The blue light bulb is on the asphalt ground in the foreground. The black car tire is above and behind the light bulb, moving towards it from the right side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 83,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire rolls towards the blue glass light bulb."
+    ]
+  },
+  {
+    "time": [
+      84,
+      85
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber tire with a white rim",
+        "action": "rolling over debris",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "broken blue plastic fragments and a silver metallic piece",
+        "action": "lying on the ground",
+        "position": "center/right",
+        "id": "plastic_blue_broken_1"
+      },
+      {
+        "desc": "grey asphalt surface with small stones",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black rubber tire rolls over the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire passes over a pile of broken blue plastic and silver debris.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The debris is scattered on the grey asphalt surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black rubber tire is to the left of the blue plastic fragments. The debris is on the grey asphalt surface. The tire is in the foreground, partially obscuring the view of the ground behind it.",
+    "parse_success": true,
+    "chunk_idx": 84,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Blue glass light bulb is crushed into fragments."
+    ]
+  },
+  {
+    "time": [
+      85,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "broken blue plastic object with jagged edges and a white component, lying on asphalt",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "plastic_blue_broken_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A broken blue plastic object is lying on the asphalt road surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue plastic object is shattered into multiple pieces.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The broken blue plastic object is in the center foreground of the frame, lying on the asphalt road surface.",
+    "parse_success": true,
+    "chunk_idx": 85,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      86,
+      87
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with silver rim",
+        "action": "static",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "pile of colorful round candies (red, blue, green, yellow, orange, brown)",
+        "action": "static",
+        "position": "center bottom",
+        "id": "candies_colorful_round_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A car tire is positioned directly above a pile of colorful candies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The candies are scattered on the asphalt ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is stationary in the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is above and to the right of the pile of candies. The candies are on the asphalt road surface. The tire is next to the car's body panel.",
+    "parse_success": true,
+    "chunk_idx": 86,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      87,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with a silver alloy rim",
+        "action": "rolling forward and crushing",
+        "position": "top right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "pile of colorful round candies (red, blue, yellow, green, orange, brown)",
+        "action": "being crushed and scattered",
+        "position": "center foreground",
+        "id": "candies_colorful_round_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over the pile of candies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The candies are being crushed and flattened under the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The candies are scattered across the grey asphalt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is positioned above and to the right of the pile of candies. The candies are scattered on the asphalt road surface, directly in the path of the tire.",
+    "parse_success": true,
+    "chunk_idx": 87,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing and scattering the pile of colorful round candies."
+    ]
+  },
+  {
+    "time": [
+      88,
+      89
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber car tire with a silver alloy rim",
+        "action": "rolling forward and crushing",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "pile of colorful round coated candies (red, blue, yellow, green, orange, brown)",
+        "action": "being crushed and scattered",
+        "position": "center/bottom",
+        "id": "candies_colorful_round_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom/background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over the pile of colorful candies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The candies are crushed and scattered across the asphalt as the tire moves.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire is positioned on the left side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car tire is on the left side of the frame and is positioned above the pile of colorful candies. The candies are scattered on the grey asphalt road surface, extending from under the tire towards the right.",
+    "parse_success": true,
+    "chunk_idx": 88,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      89,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "large pile of colorful round candies (red, yellow, blue, green, orange, brown) mixed with crushed shells and debris",
+        "action": "static",
+        "position": "center foreground",
+        "id": "candies_colorful_round_1"
+      },
+      {
+        "desc": "gray asphalt road surface",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "dark shadow cast by a vehicle",
+        "action": "static",
+        "position": "top left",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large pile of colorful candies is scattered on the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The candies are mixed with crushed shells and debris.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of colorful candies is in the center foreground on the gray asphalt road. A dark shadow is cast above and to the left of the candy pile.",
+    "parse_success": true,
+    "chunk_idx": 89,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      90,
+      91
+    ],
+    "visible_entities": [
+      {
+        "desc": "pink rectangular gift box with a textured surface, a light green maple leaf design on the lid, and a small pink ribbon bow",
+        "action": "static",
+        "position": "center",
+        "id": "gift_box_pink_1"
+      },
+      {
+        "desc": "black car undercarriage and tire tread",
+        "action": "static",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pink gift box is placed on the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box is positioned directly underneath the rear bumper of a car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car tire is visible to the right of the box.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pink gift box is on the grey asphalt road. The car undercarriage is above the box. The car tire is to the right of the box.",
+    "parse_success": true,
+    "chunk_idx": 90,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      91,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "pink rectangular gift box with a textured, woven-like surface, featuring a white maple leaf design and a small pink ribbon on the lid",
+        "action": "static",
+        "position": "center",
+        "id": "gift_box_pink_1"
+      },
+      {
+        "desc": "black rubber car tire with visible tread pattern and a silver rim",
+        "action": "moving towards the box",
+        "position": "right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "dark grey asphalt ground with small stones and texture",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      },
+      {
+        "desc": "dark undercarriage of a vehicle",
+        "action": "static",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire is moving towards the pink box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pink box is positioned on the asphalt ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box is located under the vehicle's undercarriage.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pink gift box is centered on the asphalt ground, positioned directly under the dark undercarriage of the vehicle. The car tire is to the right of the box and is moving closer to it.",
+    "parse_success": true,
+    "chunk_idx": 91,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      92,
+      93
+    ],
+    "visible_entities": [
+      {
+        "desc": "black car tire with silver alloy rim",
+        "action": "rolling forward",
+        "position": "center",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "pink rectangular foam block",
+        "action": "being crushed",
+        "position": "under the tire",
+        "id": "foam_block_pink_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls over the pink foam block.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pink foam block is compressed and deformed by the weight of the tire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black car tire is positioned above the pink foam block. The pink foam block is underneath the tire and rests on the asphalt ground.",
+    "parse_success": true,
+    "chunk_idx": 92,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the pink rectangular foam block."
+    ]
+  },
+  {
+    "time": [
+      93,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rubber tire with a silver metal rim",
+        "action": "rolling over the package",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "pink rectangular package with a textured surface, white label, and pink ribbon bow",
+        "action": "being crushed",
+        "position": "center/bottom",
+        "id": "gift_box_pink_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The black tire rolls over the pink package, crushing it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The package is flattened against the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The package features a white label and a pink ribbon.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black tire is positioned on the left side of the frame, directly above and pressing down on the pink package. The pink package lies on the grey asphalt road surface in the center foreground.",
+    "parse_success": true,
+    "chunk_idx": 93,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the pink rectangular gift box/package."
+    ]
+  },
+  {
+    "time": [
+      94,
+      95
+    ],
+    "visible_entities": [
+      {
+        "desc": "pink textured paper box with a white leaf-shaped cutout and a small pink ribbon bow, appearing crushed and damaged",
+        "action": "static",
+        "position": "foreground",
+        "id": "gift_box_pink_1"
+      },
+      {
+        "desc": "four colorful plastic toy cubes with numbers cut out on their faces (orange, green, blue, pink, yellow)",
+        "action": "static",
+        "position": "foreground",
+        "id": "toy_cubes_colorful_1"
+      },
+      {
+        "desc": "black car tire and silver alloy wheel rim",
+        "action": "static",
+        "position": "right",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "black car bumper and exhaust pipe",
+        "action": "static",
+        "position": "background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A crushed pink box lies on the asphalt road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Four colorful toy cubes are lined up on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy cubes are positioned near the car tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car tire is stationary next to the toy cubes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "9",
+      "7",
+      "5",
+      "6"
+    ],
+    "spatial": "The crushed pink box is in the foreground on the left side of the frame. The four colorful toy cubes are arranged in a row to the right of the box. The car tire is to the right of the toy cubes. The car bumper and exhaust pipe are above and behind the toy cubes.",
+    "parse_success": true,
+    "chunk_idx": 94,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      95,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "black car tire with silver alloy rim and green valve stem cap",
+        "action": "static",
+        "position": "right background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "black car undercarriage and mud flap",
+        "action": "static",
+        "position": "top background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "colorful plastic interlocking cube with orange face showing number 9 and green face showing number 5",
+        "action": "static",
+        "position": "left foreground",
+        "id": "toy_cubes_colorful_1"
+      },
+      {
+        "desc": "colorful plastic interlocking cube with green face showing number 7",
+        "action": "static",
+        "position": "center foreground",
+        "id": "toy_cubes_colorful_1"
+      },
+      {
+        "desc": "colorful plastic interlocking cube with blue face showing number 5 and yellow face showing number 8",
+        "action": "static",
+        "position": "center foreground",
+        "id": "toy_cubes_colorful_1"
+      },
+      {
+        "desc": "colorful plastic interlocking cube with pink face showing number 9 and yellow face showing number 4",
+        "action": "static",
+        "position": "right foreground",
+        "id": "toy_cubes_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Four colorful plastic cubes are arranged in a row on the asphalt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cubes display numbers 9, 7, 5, 8, and 4 on their visible faces.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A car tire is positioned directly behind the row of cubes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "9",
+      "5",
+      "7",
+      "5",
+      "8",
+      "9",
+      "4"
+    ],
+    "spatial": "The row of four colorful plastic cubes is in front of the black car tire. The cube with the number 9 is to the left of the cube with the number 7. The cube with the number 5 and 8 is to the right of the cube with the number 7. The car undercarriage is above the cubes.",
+    "parse_success": true,
+    "chunk_idx": 95,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      96,
+      97
+    ],
+    "visible_entities": [
+      {
+        "desc": "black car tire with silver alloy rim",
+        "action": "rolling forward",
+        "position": "background",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "colorful plastic toy cubes with interlocking gears and numbers",
+        "action": "being crushed",
+        "position": "foreground",
+        "id": "toy_cubes_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car tire rolls forward over the plastic toy cubes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy cubes are crushed and flattened by the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy cubes are arranged in a cluster on the asphalt ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "9",
+      "5",
+      "6",
+      "2"
+    ],
+    "spatial": "The car tire is positioned behind and above the colorful plastic toy cubes. The toy cubes are located on the ground in front of the tire.",
+    "parse_success": true,
+    "chunk_idx": 96,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": [
+      "Car tire begins crushing the colorful plastic interlocking toy cubes."
+    ]
+  },
+  {
+    "time": [
+      97,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "car wheel with silver multi-spoke alloy rim and black rubber tire",
+        "action": "rolling forward",
+        "position": "left/foreground",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "colorful plastic fidget cubes with interlocking gears in pink, yellow, green, orange, and white",
+        "action": "being crushed",
+        "position": "center/foreground",
+        "id": "toy_cubes_colorful_1"
+      },
+      {
+        "desc": "grey asphalt road surface",
+        "action": "static",
+        "position": "bottom/background",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The car wheel rolls forward over the plastic cubes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plastic cubes are being crushed and flattened under the weight of the tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wheel is positioned directly on top of the cubes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The car wheel is to the left of the plastic cubes and is rolling over them. The cubes are on the asphalt road surface. The car body is above the wheel and the cubes.",
+    "parse_success": true,
+    "chunk_idx": 97,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      98,
+      99
+    ],
+    "visible_entities": [
+      {
+        "desc": "black car undercarriage with a dirty, textured surface",
+        "action": "static",
+        "position": "top",
+        "id": "car_bmw_dark_grey_1"
+      },
+      {
+        "desc": "colorful plastic building block cubes (green, yellow, pink, orange, white, blue) with grid patterns",
+        "action": "static",
+        "position": "center",
+        "id": "toy_cubes_colorful_1"
+      },
+      {
+        "desc": "orange plastic gear-shaped toy piece",
+        "action": "static",
+        "position": "bottom left",
+        "id": "gear_toy_orange_1"
+      },
+      {
+        "desc": "grey asphalt ground surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "asphalt_road_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black car undercarriage is positioned directly above the toys.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two colorful plastic cube structures are sitting on the asphalt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange gear-shaped toy lies on the ground to the left of the cubes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black car undercarriage is above the colorful plastic toys. The orange gear-shaped toy is to the left of the plastic cubes. The toys are on the grey asphalt ground.",
+    "parse_success": true,
+    "chunk_idx": 98,
+    "video_id": "ytb_LeEExra9rHo",
+    "state_changes": []
+  }
+]
