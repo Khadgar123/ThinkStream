@@ -40,6 +40,79 @@ from .pass1a_evidence import build_vision_content, get_chunk_frame_paths
 logger = logging.getLogger(__name__)
 
 
+# v12.11 hotfix (2026-05-01): vLLM rejects requests where the server-side
+# `max_model_len - prompt_tokens` < requested max_tokens with the misleading
+# error "max_tokens must be at least 1, got -<N>". For pass2's long-memory
+# rollouts the prompt grows ~14 tok/chunk; without client-side capping a
+# 100-chunk video accumulates >2K tokens of memory text past the server's
+# usable budget.
+#
+# User intent (2026-05-01): pass2 runs with max_tokens=16K and
+# concurrent_videos=1024 against a vLLM with VLLM_MAX_MODEL_LEN=65536
+# (config.py:279). Under that deployment the cap is 65536 - input - margin,
+# which only kicks in when input > ~49K (rare; long videos with full memory
+# can approach this). For deployments with smaller max_model_len, override
+# via THINKSTREAM_VLLM_MAX_MODEL_LEN env so this client-side cap matches
+# the server's actual context window.
+#
+# Conservative input estimate per pass2 observation request:
+#   visual:  32 frames × ~196 tok/frame = ~6300 tok (16-chunk window @ 2fps)
+#   memory:  recent_thinks ≤ 4000 tok + compressed ≤ 1400 tok = ~5400 tok
+#   prompt template + safety: ~700 tok
+#   ─────────────────────────────────────────────────
+#   estimated input ~12500 tok worst case → max_tokens=16K fits in 64K cap.
+import os as _os
+_PASS2_SAFE_MAX_MODEL_LEN = int(
+    _os.environ.get("THINKSTREAM_VLLM_MAX_MODEL_LEN", "65536")
+)
+_PASS2_INPUT_MARGIN = 1500           # tokenizer drift + safety margin
+
+
+def _safe_max_tokens_for_pass2(
+    request: Dict,
+    configured_max: int,
+    *,
+    floor: int = 512,
+) -> int:
+    """Compute a max_tokens value that won't trip the vLLM context cap.
+
+    Estimates input tokens from message content (text via len/3, vision via
+    count × 196). Returns max(floor, min(configured, max_model_len - input - margin)).
+    """
+    msgs = request.get("messages", [])
+    n_text_chars = 0
+    n_video_frames = 0
+    for m in msgs:
+        c = m.get("content")
+        if isinstance(c, str):
+            n_text_chars += len(c)
+        elif isinstance(c, list):
+            for it in c:
+                if not isinstance(it, dict):
+                    continue
+                if it.get("type") in ("text",):
+                    n_text_chars += len(it.get("text", ""))
+                elif it.get("type") in ("video", "image_url", "image"):
+                    # Vision item: each frame ~196 vision tokens at 100k pixel
+                    # min (matches our pass2 visual setup).
+                    if it.get("type") == "video":
+                        v = it.get("video")
+                        if isinstance(v, list):
+                            n_video_frames += len(v)
+                        elif isinstance(v, str):
+                            n_video_frames += 1
+                    else:
+                        n_video_frames += 1
+    estimated_input = (
+        n_text_chars // 3
+        + n_video_frames * 196
+        + _PASS2_INPUT_MARGIN
+    )
+    available = _PASS2_SAFE_MAX_MODEL_LEN - estimated_input
+    safe = max(floor, min(int(configured_max), int(available)))
+    return safe
+
+
 # ---------------------------------------------------------------------------
 # Memory State
 # ---------------------------------------------------------------------------
@@ -596,9 +669,12 @@ async def run_pass2_single_video(
 
         # --- 2. Generate think for current chunk ---
         request = build_observation_request(chunk_idx, frame_paths, memory, video_id)
+        # v12.11 hotfix: cap max_tokens client-side so long-memory chunks
+        # don't trip vLLM's "max_tokens must be at least 1, got -<N>" error.
+        safe_obs_max = _safe_max_tokens_for_pass2(request, request["max_tokens"])
         raw = await client._call_one(
             messages=request["messages"],
-            max_tokens=request["max_tokens"],
+            max_tokens=safe_obs_max,
             temperature=request["temperature"],
             request_id=request["id"],
         )
@@ -618,9 +694,13 @@ async def run_pass2_single_video(
             if comp_request is None:
                 memory.add_think(chunk_idx, think_text)
                 continue
+            # v12.11 hotfix: same client-side cap for compress request.
+            safe_comp_max = _safe_max_tokens_for_pass2(
+                comp_request, comp_request["max_tokens"],
+            )
             comp_raw = await client._call_one(
                 messages=comp_request["messages"],
-                max_tokens=comp_request["max_tokens"],
+                max_tokens=safe_comp_max,
                 temperature=comp_request["temperature"],
                 request_id=comp_request["id"],
             )
