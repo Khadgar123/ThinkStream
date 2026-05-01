@@ -8,6 +8,87 @@ from pathlib import Path
 from typing import List, Any, Dict, Optional, Tuple
 import torch
 
+# v12.11 (2026-05-01): Loss-time batching mode toggle.
+#
+# "trajectory" (legacy / safe default):
+#   1 batch item = 1 (sample_idx, gen_idx) trajectory rollout.
+#   _build_rollout_messages concatenates N chunks → single 50K-token sample.
+#   Original behavior; reproduces production runs prior to v12.11.
+#
+# "per_chunk" (MemAgent / ReMemR1 aligned):
+#   1 batch item = 1 (sample_idx, gen_idx, chunk_idx) chunk decision.
+#   _build_rollout_messages_single_chunk builds short ~6K prompts per chunk.
+#   Eliminates OOM + truncation on long-trajectory rollouts.
+#
+# Switch via env: THINKSTREAM_LOSS_BATCH_MODE=trajectory
+# Default flipped to per_chunk in v12.11 — the audit on 2026-05-01 found
+# trajectory mode produces 50K+ token concatenated samples on long-trajectory
+# rollouts, which OOM under 16K context cap. per_chunk is now the corrected
+# default; trajectory remains opt-in for ablation against the legacy v12.10
+# behavior. Any value other than "per_chunk"/"trajectory" falls back to per_chunk.
+LOSS_BATCH_MODE = os.environ.get("THINKSTREAM_LOSS_BATCH_MODE", "per_chunk").lower()
+if LOSS_BATCH_MODE not in ("trajectory", "per_chunk"):
+    LOSS_BATCH_MODE = "per_chunk"
+
+# v12.11: ReMemR1-style mixed advantage. When enabled, per-step state
+# rewards (format + action) get group-normalized at (uid, step_id) level
+# and blended with the trajectory outcome advantage:
+#   advantage = α × outcome_adv + (1-α) × state_adv
+# Default α matches our docs/v12.0_protocol_migration_design.md §5.7
+# (we found α=0.7 worked better than ReMemR1's 0.8 because our per-step
+# signal is denser).
+USE_STATE_ADVANTAGE = (
+    os.environ.get("THINKSTREAM_USE_STATE_ADVANTAGE", "0") == "1"
+)
+STATE_ADVANTAGE_ALPHA = float(
+    os.environ.get("THINKSTREAM_STATE_ADV_ALPHA", "0.7")
+)
+
+# v12.11: Dynamic-bsz token packing (MemAgent verl/utils/seqlen_balancing.py).
+# When enabled, prepare_grpo_micro_batches groups samples by total token
+# count (max_token_len_per_gpu) instead of fixed micro_batch_size, balancing
+# per-batch sequence length so OOM is bounded by token budget not item count.
+USE_DYNAMIC_BSZ = (
+    os.environ.get("THINKSTREAM_USE_DYNAMIC_BSZ", "0") == "1"
+)
+DYNAMIC_BSZ_MAX_TOKEN_LEN = int(
+    os.environ.get("THINKSTREAM_DYNAMIC_BSZ_MAX_TOKEN", "16384")
+)
+
+# v12.11: Advantage aggregation mode — the EXISTING gdpo / grpo dispatch
+# in `gdpo_advantage.aggregate_advantages` is already switchable via the
+# `mode` arg, but until now it was only exposed as a positional kwarg.
+# Lift it to env so operators can A/B without touching configs:
+#   THINKSTREAM_ADVANTAGE_MODE=gdpo    (default — per-reward group-norm)
+#   THINKSTREAM_ADVANTAGE_MODE=grpo    (DeepSeekMath baseline — single scalar)
+#   THINKSTREAM_ADVANTAGE_MODE=remem   (gdpo outcome × α + state × (1-α),
+#                                       requires USE_STATE_ADVANTAGE=1)
+ADVANTAGE_MODE = os.environ.get("THINKSTREAM_ADVANTAGE_MODE", "gdpo").lower()
+if ADVANTAGE_MODE not in ("gdpo", "grpo", "remem"):
+    ADVANTAGE_MODE = "gdpo"
+
+# v12.11 P1.1 full: state reward computation mode (used when ADVANTAGE_MODE=remem
+# AND USE_STATE_ADVANTAGE=1). Four levels of completeness:
+#
+#   "format_only"   (default, cheapest): per-chunk format reward only.
+#                                         Tag well-formedness 0/1 — no teacher
+#                                         lookup, parses generated text.
+#   "format_action": + per-chunk teacher-action match (silent/response/recall/
+#                    compress agreement). Requires gold_action_per_chunk in
+#                    raw_sample (already provided by trajectory data).
+#   "remem_full"   : full ReMemR1 metric_utils.py port — adds word-level
+#                    recall increment for memory-update / recall steps.
+#                    Requires ground_truth tokens (raw_sample.gold_answer).
+#   "with_silent_q": format_action + per-chunk silent_quality (our
+#                    streaming-specific signal — hallucinate/miss penalty).
+STATE_REWARD_MODE = os.environ.get(
+    "THINKSTREAM_STATE_REWARD_MODE", "format_only"
+).lower()
+if STATE_REWARD_MODE not in (
+    "format_only", "format_action", "remem_full", "with_silent_q",
+):
+    STATE_REWARD_MODE = "format_only"
+
 # deepspeed / transformers / slyme are only required for the training nodes
 # (rollout / loss / model loading). The pure-tensor reward + advantage helpers
 # (`_gdpo_per_reward_group_norm`, `_compute_*_reward`) must remain importable
@@ -366,6 +447,24 @@ def rollout(
                 f"{e}. Install vllm + qwen_vl_utils or fall back to "
                 "use_vllm_rollout=False."
             ) from e
+        # v12.11 P0.5 (2026-05-01): inference_engine is currently always None
+        # because there is no vLLM construction node wired into the trainer
+        # init path (init_grpo_refs only sets it to None). Surface this as
+        # an explicit error rather than letting streaming_vllm_rollout crash
+        # with a less-informative AttributeError on llm.generate().
+        # Proper fix requires:
+        #   1. Construct vLLM LLM(model=args.model.name_or_path, ...) at init
+        #   2. After each train step, sync weights from training model to
+        #      vLLM workers (NCCL bridge or LLM.load_weights)
+        #   3. Free vLLM cache + restore at rollout boundary
+        # Tracked as a follow-up commit; meanwhile, keep use_vllm_rollout=False.
+        if inference_engine is None:
+            raise RuntimeError(
+                "use_vllm_rollout=True but inference_engine is None. The vLLM "
+                "construction path is not yet implemented for RL training "
+                "(see grpo.init_grpo_refs). Use use_vllm_rollout=False (HF "
+                "generate path) or wait for the dedicated vLLM-RL PR."
+            )
         # `inference_engine` is the vLLM LLM handle owned by the trainer
         # (unwrap_model_for_generation injects it on ZeRO-3 unwrap).
         all_rollout_results = streaming_vllm_rollout(
@@ -540,19 +639,38 @@ def rollout(
                     video_path=abs_video_path,
                     user_question=q,
                 )
+                # v12.11 P0.6 fix: for recall multi-turn, the FINAL assistant
+                # turn that loss-time message reconstruction appends should be
+                # the SECOND-pass answer, not the first-pass tool_call. The
+                # first-pass tool_call already lives inside step_messages
+                # (captured by agent_loop). Storing first-pass here meant:
+                #   loss messages = [..., user, assistant(tool_call from step_msgs),
+                #                    user(recall_result), assistant(tool_call AGAIN)]
+                # → no final answer was ever trained, recall got trained twice.
+                final_text = result.get("raw", "") or ""
+                if (result.get("action") == "recall"
+                        and result.get("recall_step2") is not None):
+                    second_pass = result.get("recall_step2_raw_text", "") or ""
+                    if second_pass:
+                        final_text = second_pass
                 # Store result with generated tokens for reward/loss computation
                 chunk_results_g.append({
                     "chunk_idx": chunk_idx,
                     "action": result.get("action", "unknown"),
                     "think": result.get("think", ""),
                     "payload": result.get("payload", {}),
-                    # v12.6 fix: parsed dict carries `raw` (set in
-                    # agent_loop._parse_agent_output line 41); reading
-                    # `raw_output` produced empty string → empty
-                    # generated_tokens → no logprob signal at training time.
-                    "raw_output": result.get("raw", ""),
+                    "raw_output": final_text,
                     "generated_tokens": tokenizer.encode(
-                        result.get("raw", ""), add_special_tokens=False,
+                        final_text, add_special_tokens=False,
+                    ),
+                    # v12.11 P0.6: keep first-pass for diagnostics / format-reward
+                    # if needed (recall tool_call format check), but it's NOT
+                    # used as the final assistant turn.
+                    "recall_first_pass_text": (
+                        result.get("raw", "")
+                        if result.get("action") == "recall"
+                        and result.get("recall_step2") is not None
+                        else ""
                     ),
                     # Post-step memory bookkeeping (used by overflow_pen reward).
                     "memory_token_count": int(result.get("memory_token_count", 0)),
@@ -949,13 +1067,50 @@ def _calc_rewards_v12_trajectory(
                 text = tokenizer.decode(tokens, skip_special_tokens=False)
                 chunk_texts.append(text)
                 parsed = parse_agent_output_v12(text)
+
+                # v12.11 audit fix #3 (2026-05-01): generated_tokens for recall
+                # chunks now stores ONLY the second-pass answer (P0.6 fix).
+                # The first-pass tool_call lives separately on the chunk_result
+                # under "recall_first_pass_text". Without re-parsing it here,
+                # n_recall / spam / behavior_recall_used_rate would all read
+                # zero for actual recall trajectories. Parse first-pass when
+                # present, classify the chunk as kind="recall" (its semantic
+                # action), and keep the answer_text from second-pass for
+                # outcome scoring.
+                first_pass_text = cr.get("recall_first_pass_text", "") or ""
+                first_pass_parsed = (
+                    parse_agent_output_v12(first_pass_text)
+                    if first_pass_text else None
+                )
+                is_recall_chunk = (
+                    first_pass_parsed is not None
+                    and first_pass_parsed.get("kind") == "recall"
+                )
+
                 chunk_outputs.append({
                     "chunk_idx": cr.get("chunk_idx"),
-                    "kind": parsed.get("kind", "unknown"),
+                    # Effective semantic kind: "recall" if first-pass was a
+                    # recall tool_call, otherwise the second-pass kind.
+                    "kind": "recall" if is_recall_chunk else parsed.get("kind", "unknown"),
                     "answer_text": parsed.get("answer_text"),
-                    "tool_call": parsed.get("tool_call"),
+                    "tool_call": (
+                        first_pass_parsed.get("tool_call") if is_recall_chunk
+                        else parsed.get("tool_call")
+                    ),
+                    # v12.11: keep both passes for downstream format-reward audit.
+                    "recall_first_pass_kind": (
+                        first_pass_parsed.get("kind") if first_pass_parsed
+                        else None
+                    ),
+                    "recall_first_pass_format_error": (
+                        bool(first_pass_parsed.get("format_error")) if first_pass_parsed
+                        else None
+                    ),
+                    "format_error": bool(parsed.get("format_error")),
                 })
-                if parsed.get("kind") == "recall":
+                # Counters: recall counted by first-pass presence; compress by
+                # second-pass parser output (compress is single-turn).
+                if is_recall_chunk:
                     n_recall += 1
                 elif parsed.get("kind") == "compress":
                     n_compress += 1
@@ -1040,6 +1195,45 @@ def _calc_rewards_v12_trajectory(
             all_masks["silent_quality"].append(
                 1.0 if silent_res["n_chunks_scored"] > 0 else 0.0
             )
+            # v12.11 P1.3 (2026-05-01) + audit fix #5: aggregate per-rollout
+            # behavior counters with class-specific denominators. n_correct_*
+            # use gold-class as denominator, not n_chunks_scored.
+            _BEHAVIOR_AGG["n_chunks_scored"] += silent_res.get("n_chunks_scored", 0)
+            _BEHAVIOR_AGG["n_correct_silent"] += silent_res.get("n_correct_silent", 0)
+            _BEHAVIOR_AGG["n_hallucinate"] += silent_res.get("n_hallucinate", 0)
+            _BEHAVIOR_AGG["n_missed"] += silent_res.get("n_missed", 0)
+            # Compute gold-class denominators + n_correct_response from
+            # gold_action_per_chunk + chunk_outputs. silent_quality scoring
+            # didn't expose n_correct_response (its score is "0.0 — outcome
+            # handles correctness"); we re-derive here.
+            by_chunk = {int(o.get("chunk_idx", -1)): o for o in chunk_outputs}
+            for ci_str, gold_action in (gold_action_per_chunk or {}).items():
+                try:
+                    ci = int(ci_str)
+                except Exception:
+                    continue
+                if ci not in by_chunk:
+                    continue
+                model_kind = by_chunk[ci].get("kind", "unknown")
+                model_ans = (by_chunk[ci].get("answer_text") or "").strip()
+                model_silent = (model_kind == "answer" and not model_ans)
+                model_response = (model_kind == "answer" and bool(model_ans))
+                if gold_action in ("silent", "recall_silent"):
+                    _BEHAVIOR_AGG["n_gold_silent"] += 1
+                elif gold_action in ("response", "recall_response"):
+                    _BEHAVIOR_AGG["n_gold_response"] += 1
+                    if model_response:
+                        _BEHAVIOR_AGG["n_correct_response"] += 1
+            # Recall + compress decision usage rate.
+            for co in chunk_outputs:
+                k = co.get("kind", "")
+                if k == "recall":
+                    _BEHAVIOR_AGG["n_recall_emitted"] += 1
+                elif k == "compress":
+                    if not co.get("format_error"):
+                        _BEHAVIOR_AGG["n_compress_well_formed"] += 1
+                    _BEHAVIOR_AGG["n_compress_emitted"] += 1
+                _BEHAVIOR_AGG["n_chunks_total"] += 1
 
     rewards_dict = {
         k: torch.tensor(all_rewards[k], dtype=torch.float) for k in keys
@@ -1126,6 +1320,59 @@ def calc_rewards(
 # Stash for grpo_global_metrics — populated each step by the GDPO node.
 _LAST_GDPO_DIAG: Dict[str, float] = {}
 
+# v12.11 P1.3 (2026-05-01): per-step behavior counters aggregated across
+# rollouts in the same training step. Reset by grpo_global_metrics after
+# emitting. Read by ablation_runner via behavior_* keys in grpo_step.jsonl.
+_BEHAVIOR_AGG: Dict[str, int] = {
+    "n_chunks_total": 0,
+    "n_chunks_scored": 0,
+    # v12.11 audit fix #5 (2026-05-01): split denominators to keep
+    # behavior_*_acc semantically clean. Previously response/silent acc
+    # both used n_chunks_scored as denominator → "mixed correctness", not
+    # per-class accuracy. Now we count gold-class denominators separately.
+    "n_gold_silent": 0,        # gold action ∈ {silent, recall_silent}
+    "n_gold_response": 0,      # gold action ∈ {response, recall_response}
+    "n_correct_silent": 0,     # gold-silent ∧ model emits empty answer
+    "n_correct_response": 0,   # gold-response ∧ model emits non-empty answer
+    "n_hallucinate": 0,        # gold-silent ∧ model talked
+    "n_missed": 0,             # gold-response ∧ model silent
+    "n_recall_emitted": 0,
+    "n_compress_emitted": 0,
+    "n_compress_well_formed": 0,
+}
+
+
+def _drain_behavior_metrics() -> Dict[str, float]:
+    """Pop & reset _BEHAVIOR_AGG counters; return the behavior_* metric dict.
+
+    v12.11 audit fix #5: per-class accuracies now use the proper class-specific
+    denominator (gold-silent / gold-response), not all-scored-chunks. This is
+    what ablation_runner needs to compare A0 vs A1 cleanly.
+    """
+    global _BEHAVIOR_AGG
+    n_total = max(1, _BEHAVIOR_AGG["n_chunks_total"])
+    n_gold_silent = max(1, _BEHAVIOR_AGG["n_gold_silent"])
+    n_gold_response = max(1, _BEHAVIOR_AGG["n_gold_response"])
+    n_compress_chunks = max(1, _BEHAVIOR_AGG["n_compress_emitted"])
+    out = {
+        "behavior_n_chunks_total": _BEHAVIOR_AGG["n_chunks_total"],
+        "behavior_n_gold_silent": _BEHAVIOR_AGG["n_gold_silent"],
+        "behavior_n_gold_response": _BEHAVIOR_AGG["n_gold_response"],
+        # Class-conditional accuracies (proper denominators).
+        "behavior_silent_acc": _BEHAVIOR_AGG["n_correct_silent"] / n_gold_silent,
+        "behavior_response_acc": _BEHAVIOR_AGG["n_correct_response"] / n_gold_response,
+        # Error rates: hallucinate normalized by gold-silent; missed by gold-response.
+        "behavior_hallucinate_rate": _BEHAVIOR_AGG["n_hallucinate"] / n_gold_silent,
+        "behavior_missed_rate": _BEHAVIOR_AGG["n_missed"] / n_gold_response,
+        # Tool usage rates (across all chunks).
+        "behavior_recall_used_rate": _BEHAVIOR_AGG["n_recall_emitted"] / n_total,
+        "behavior_compress_format_rate": (
+            _BEHAVIOR_AGG["n_compress_well_formed"] / n_compress_chunks
+        ),
+    }
+    _BEHAVIOR_AGG = {k: 0 for k in _BEHAVIOR_AGG}
+    return out
+
 
 def _gdpo_per_reward_group_norm(
     reward_col: torch.Tensor,
@@ -1170,12 +1417,20 @@ def compute_gdpo_advantages(
     rewards_masks: Auto[torch.Tensor],
     advantages: Ref[torch.Tensor],
     group_size: Auto[int],
-    advantage_mode: Auto[str] = "gdpo",
+    advantage_mode: Auto[str] = ADVANTAGE_MODE,
 ) -> Context:
     """Compute per-rollout advantages from the 8-reward dict + masks.
 
-    v11.4: dispatch to aggregate_gdpo (default) or aggregate_grpo based on
-    ``advantage_mode``. Pure-tensor algorithms in ``gdpo_advantage.py``.
+    v12.11: ``advantage_mode`` now defaults to env-driven ADVANTAGE_MODE
+    (set via THINKSTREAM_ADVANTAGE_MODE). Three values:
+
+      "gdpo"  — per-reward group-norm + weighted sum + batch-whiten.
+      "grpo"  — DeepSeekMath: weighted scalar reward → group z-norm.
+      "remem" — gdpo outcome advantage × α blended with per-step state
+                advantage × (1-α); requires THINKSTREAM_USE_STATE_ADVANTAGE=1
+                AND per-step state rewards present in rewards_dict.
+
+    Pure-tensor algorithms in ``gdpo_advantage.py``.
     Per-reward / per-component diagnostics are stashed in module-level
     ``_LAST_GDPO_DIAG`` so ``grpo_global_metrics`` can log them without
     adding another slyme Ref.
@@ -1266,6 +1521,137 @@ def _extract_questions_at_chunks(raw_sample) -> Dict[int, str]:
         return out
 
     return out
+
+
+def _build_rollout_messages_single_chunk(
+    raw_sample, chunk_result, gen_idx, tokenizer, frames_per_chunk,
+):
+    """v12.11 (2026-05-01): MemAgent-style per-chunk message builder.
+
+    Returns messages for ONE chunk decision only (3-turn standard, or 5-turn
+    shape B for recall multi-turn). This mirrors MemAgent's
+    ``MemoryAgent.action()`` which constructs a fresh prompt each step (see
+    /tmp/refs/MemAgent/recurrent/impls/memory.py:175). Memory flows across
+    chunks via TEXT inside ``step_messages`` (the policy already saw the
+    compressed memory state token at rollout time); we simply replay that
+    captured prompt and append the chunk's actual generated assistant turn.
+
+    Loss-time KV is bounded by per-chunk prompt length (~3-6K tokens) instead
+    of N × that for the legacy concatenated path. This is the same trick
+    ReMemR1 uses (verl/trainer/ppo/ray_trainer.py:1278) where each action
+    is its own batch entry, indexed by ``step_uid = uid + str(step_id)``.
+
+    The legacy ``_build_rollout_messages`` (concatenated trajectory) is
+    retained for diagnostics; not used in the per-chunk build path.
+
+    Args:
+        raw_sample: original sample dict (for video_path / data_path).
+        chunk_result: one entry from chunk_results (carries step_messages,
+            generated_tokens, window_start/end, chunk_idx).
+        gen_idx: which group rollout to replay.
+        tokenizer: HF tokenizer (for decoding generated_tokens).
+        frames_per_chunk: matches FRAMES_PER_CHUNK (used for video_meta).
+
+    Returns:
+        (messages, video_meta, video_chunk_size) — same shape as the
+        legacy multi-chunk builder, but for a single-chunk slice.
+    """
+    data_path = raw_sample.get("data_path", "")
+    video_path = raw_sample.get("video_path", "")
+    abs_video_path = str(_make_abs_paths(Path(data_path), video_path))
+
+    # Pull the captured prompt the policy actually saw for this chunk + gen.
+    sm = chunk_result.get("step_messages")
+    step_msgs = None
+    if isinstance(sm, list) and gen_idx < len(sm):
+        v = sm[gen_idx]
+        if isinstance(v, list) and v:
+            step_msgs = v
+    elif isinstance(sm, list) and sm and isinstance(sm[0], dict):
+        # Pre-merge legacy format: single list (gen_idx not split yet).
+        step_msgs = sm
+
+    if step_msgs is None:
+        # Fallback: legacy reconstruction. Will drop <memory>/<queries>
+        # context — train/infer logprobs will diverge. Same warning as the
+        # multi-chunk builder.
+        logger.warning(
+            "_build_rollout_messages_single_chunk: chunk %d missing step_messages "
+            "for gen %d — using legacy reconstruction (logprob drift).",
+            int(chunk_result.get("chunk_idx", -1)), gen_idx,
+        )
+        question_at_chunk = _extract_questions_at_chunks(raw_sample)
+        cur_chunk_idx = int(chunk_result.get("chunk_idx", 0))
+        q_text = question_at_chunk.get(cur_chunk_idx)
+        user_content: List[Dict] = [{
+            "type": "video",
+            "video": abs_video_path,
+            "video_start": chunk_result["window_start"],
+            "video_end": chunk_result["window_end"],
+        }]
+        if q_text:
+            user_content.append({"type": "text", "text": "\n" + q_text})
+        messages = [
+            {"role": "system", "content": SYSTEM_PROMPT_V12},
+            {"role": "user", "content": user_content},
+        ]
+    else:
+        # Replay the captured prompt verbatim. Its system head stays as the
+        # FIRST element (we don't dedup since this is a fresh per-chunk
+        # conversation, not a concatenation across chunks).
+        messages = list(step_msgs)
+        if not messages or messages[0].get("role") != "system":
+            # Rare case: captured prompt had no system; prepend ours.
+            messages = [
+                {"role": "system", "content": SYSTEM_PROMPT_V12}
+            ] + messages
+
+    # Append the chunk's actual generated assistant turn (the model's output).
+    gen_tokens_list = chunk_result.get("generated_tokens", [])
+    if gen_idx < len(gen_tokens_list):
+        gt = gen_tokens_list[gen_idx]
+        # Tolerate both torch.Tensor and list[int] shapes.
+        if hasattr(gt, "tolist"):
+            gt = gt.tolist()
+        gen_text = tokenizer.decode(gt, skip_special_tokens=False)
+    else:
+        gen_text = ""
+    for _sp in ("<|im_end|>", "<|endoftext|>"):
+        if gen_text.endswith(_sp):
+            gen_text = gen_text[: -len(_sp)]
+    messages.append(
+        {"role": "assistant", "content": [{"type": "text", "text": gen_text}]}
+    )
+
+    # v12.11 (2026-05-01) — TWO-step fix for the per-chunk video reconstruction:
+    #
+    # Original P0.7 (d50e565): set num_chunks=VISUAL_WINDOW_CHUNKS so loader
+    # would produce 16 splits of 2 frames each. CAUGHT in audit (this commit):
+    # the captured step_messages user turn contains a SINGLE video item with
+    # 32 frames, and Qwen3-VL chat-templated text has only ONE <video_pad>
+    # placeholder. The processor needs split_videos length == placeholder
+    # count → 16 != 1 → tokenization explodes or silently truncates.
+    #
+    # Correct fix: num_chunks=1 with frames_per_chunk=32 (= VISUAL_WINDOW_CHUNKS
+    # × frames_per_chunk_runtime). Loader produces ONE video tensor of 32
+    # frames matching the single placeholder. Range still covers the 16s
+    # visual_window so MROPE timestamps align with rollout.
+    from thinkstream.data.agent_protocol import VISUAL_WINDOW_CHUNKS
+    chunk_idx = int(chunk_result.get("chunk_idx", 0))
+    chunk_sec = chunk_result["window_end"] - chunk_result["window_start"]
+    visual_window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
+    visual_window_end_exclusive = chunk_idx + 1
+    n_window_chunks = visual_window_end_exclusive - visual_window_start
+
+    video_meta = build_video_meta(
+        abs_path=abs_video_path,
+        total_start=visual_window_start * chunk_sec,
+        total_end=visual_window_end_exclusive * chunk_sec,
+        num_chunks=1,                                      # ← one video item
+        frames_per_chunk=n_window_chunks * frames_per_chunk,  # ← all frames in it
+    )
+    video_chunk_size = chunk_sec  # per-RoPE-chunk size unchanged
+    return messages, video_meta, video_chunk_size
 
 
 def _build_rollout_messages(
@@ -1416,23 +1802,64 @@ def build_grpo_inputs(
     all_items = []
     _preloaded_cache = {}
 
+    # v12.11 (2026-05-01): mode-aware dispatch.
+    # - LOSS_BATCH_MODE="trajectory" → legacy concat builder (item carries no chunk_idx)
+    # - LOSS_BATCH_MODE="per_chunk"  → MemAgent-style single-chunk builder
+    # Both paths share the same downstream tokenization + collation pipeline.
+    use_per_chunk = LOSS_BATCH_MODE == "per_chunk"
+
     for item_desc in micro_items:
-        sample_idx, gen_idx = item_desc["sample_idx"], item_desc["gen_idx"]
+        sample_idx = item_desc["sample_idx"]
+        gen_idx = item_desc["gen_idx"]
         sample_data = rollout_data[sample_idx]
-        messages, video_meta, video_chunk_size = _build_rollout_messages(
-            raw_sample=sample_data["raw_sample"],
-            chunk_results=sample_data["chunk_results"],
-            gen_idx=gen_idx,
-            tokenizer=tokenizer,
-            frames_per_chunk=int(rollout_fpc),
-        )
-        if sample_idx not in _preloaded_cache:
-            pv = sample_data.get("_preloaded_video")
-            _preloaded_cache[sample_idx] = (
-                (pv["split_videos"], pv["video_kwargs"], pv["chunk_metadatas"])
-                if pv
-                else None
+
+        if use_per_chunk:
+            chunk_idx = item_desc.get("chunk_idx", 0)
+            chunk_results = sample_data.get("chunk_results", [])
+            if chunk_idx >= len(chunk_results):
+                logger.warning(
+                    "build_grpo_inputs[per_chunk]: chunk_idx %d out of range for "
+                    "sample %d (only %d chunks); skipping.",
+                    chunk_idx, sample_idx, len(chunk_results),
+                )
+                continue
+            messages, video_meta, video_chunk_size = (
+                _build_rollout_messages_single_chunk(
+                    raw_sample=sample_data["raw_sample"],
+                    chunk_result=chunk_results[chunk_idx],
+                    gen_idx=gen_idx,
+                    tokenizer=tokenizer,
+                    frames_per_chunk=int(rollout_fpc),
+                )
             )
+        else:
+            # Legacy: concatenate all chunks into one trajectory message list.
+            messages, video_meta, video_chunk_size = _build_rollout_messages(
+                raw_sample=sample_data["raw_sample"],
+                chunk_results=sample_data["chunk_results"],
+                gen_idx=gen_idx,
+                tokenizer=tokenizer,
+                frames_per_chunk=int(rollout_fpc),
+            )
+
+        # v12.11 P0.7 fix (2026-05-01): per-chunk path can NOT reuse the
+        # trajectory-level preloaded_frames cache. The cache splits the
+        # FULL video into N trajectory chunks (1 chunk each); per-chunk
+        # loss needs the 16s visual_window (16 chunks) at this chunk's
+        # position. Pass preloaded_frames=None so the loader reads from
+        # disk using the corrected video_meta range. Trajectory mode keeps
+        # the cache (its split aligns with rollout's per-turn videos).
+        if use_per_chunk:
+            preloaded_for_call = None
+        else:
+            if sample_idx not in _preloaded_cache:
+                pv = sample_data.get("_preloaded_video")
+                _preloaded_cache[sample_idx] = (
+                    (pv["split_videos"], pv["video_kwargs"], pv["chunk_metadatas"])
+                    if pv
+                    else None
+                )
+            preloaded_for_call = _preloaded_cache[sample_idx]
 
         result = process_messages_to_model_inputs(
             messages=messages,
@@ -1441,33 +1868,47 @@ def build_grpo_inputs(
             processor=processor,
             model_type=model_type,
             add_generation_prompt=False,
-            preloaded_frames=_preloaded_cache[sample_idx],
+            preloaded_frames=preloaded_for_call,
         )
         result["position_ids"] = compute_position_ids(result, processor, model_type)
 
-        # v12.6 length guard: _build_rollout_messages concatenates N chunks ×
-        # (user + assistant). Each chunk ~3-5k tokens, so trajectories with
-        # rollout_max_chunks=100 easily exceed cutoff_len=16384. The downstream
-        # collator silently truncates → late chunks' assistant spans get cut →
-        # completion_mask + ref logprobs both lose those positions. Warn loudly
-        # so operators can lower rollout_max_chunks or shorten per-chunk budget.
+        # Length guard. trajectory mode warns at 50K (legacy concat); per_chunk
+        # mode warns if anything > 85% (should never happen with 6K samples).
         seq_len = int(result["input_ids"].shape[-1])
         max_len = int(getattr(tokenizer, "model_max_length", 16384) or 16384)
         n_chunks = len(sample_data.get("chunk_results", []))
-        if seq_len > max_len:
-            logger.warning(
-                "GRPO rollout sample exceeds tokenizer.model_max_length "
-                "(seq_len=%d > %d) over %d chunks — collator will truncate, "
-                "completion_mask + ref logprobs on truncated chunks will be "
-                "DROPPED. Lower rollout_max_chunks or per-chunk visual_tokens.",
-                seq_len, max_len, n_chunks,
-            )
-        elif seq_len > 0.85 * max_len:
-            logger.info(
-                "GRPO rollout sample at %.0f%% of cutoff (seq_len=%d, max=%d, "
-                "n_chunks=%d) — close to truncation threshold.",
-                100 * seq_len / max_len, seq_len, max_len, n_chunks,
-            )
+        if use_per_chunk:
+            chunk_idx = item_desc.get("chunk_idx", 0)
+            if seq_len > max_len:
+                logger.warning(
+                    "GRPO per-chunk sample %d/gen %d/chunk %d exceeds "
+                    "model_max_length (seq_len=%d > %d). Per-chunk should never "
+                    "exceed; check visual/memory config.",
+                    sample_idx, gen_idx, chunk_idx, seq_len, max_len,
+                )
+            elif seq_len > 0.85 * max_len:
+                logger.info(
+                    "GRPO per-chunk sample %d/gen %d/chunk %d at %.0f%% of cutoff "
+                    "(seq_len=%d, max=%d).",
+                    sample_idx, gen_idx, chunk_idx,
+                    100 * seq_len / max_len, seq_len, max_len,
+                )
+        else:
+            if seq_len > max_len:
+                logger.warning(
+                    "GRPO trajectory sample exceeds model_max_length "
+                    "(seq_len=%d > %d) over %d chunks — collator will truncate, "
+                    "completion_mask + ref logprobs on truncated chunks will be "
+                    "DROPPED. Lower rollout_max_chunks or switch to "
+                    "THINKSTREAM_LOSS_BATCH_MODE=per_chunk.",
+                    seq_len, max_len, n_chunks,
+                )
+            elif seq_len > 0.85 * max_len:
+                logger.info(
+                    "GRPO trajectory sample at %.0f%% of cutoff (seq_len=%d, "
+                    "max=%d, n_chunks=%d) — close to truncation threshold.",
+                    100 * seq_len / max_len, seq_len, max_len, n_chunks,
+                )
 
         all_items.append(result)
 
@@ -1686,6 +2127,9 @@ def grpo_global_metrics(
         "reward_var": reward_var,
         **component_means,
         **dict(_LAST_GDPO_DIAG),
+        # v12.11 P1.3: drain per-step behavior counters → behavior_* keys
+        # consumed by ablation_runner.compute_summary.
+        **_drain_behavior_metrics(),
     }
 
     # v12.6: persist per-step metrics to grpo_step.jsonl (audit writer set
@@ -1701,6 +2145,226 @@ def grpo_global_metrics(
     return metrics
 
 
+def _format_score_for_chunk(text: str) -> float:
+    """ReMemR1-style format reward (metric_utils.py:86): 1.0 if parsable."""
+    from thinkstream.data.agent_protocol import parse_agent_output_v12
+    parsed = parse_agent_output_v12(text or "")
+    return 0.0 if parsed.get("format_error") else 1.0
+
+
+def _model_action_kind(text: str) -> str:
+    """Parse model output → coarse action label: silent/response/recall/compress/unknown."""
+    from thinkstream.data.agent_protocol import parse_agent_output_v12
+    p = parse_agent_output_v12(text or "")
+    kind = p.get("kind", "unknown")
+    if kind == "answer":
+        ans = (p.get("answer_text") or "").strip()
+        return "response" if ans else "silent"
+    if kind in ("recall", "compress"):
+        return kind
+    return "unknown"
+
+
+def _action_match_score(model_kind: str, gold_action: str) -> float:
+    """Per-chunk teacher-action match reward.
+
+    Aligns with v12_rewards.compute_per_chunk_silent_quality_v12 weights but
+    extends to all 4 action types instead of just silent/response.
+
+      both silent    → +1.0   (correct silence)
+      both response  → +0.5   (full credit handled by outcome reward)
+      both recall    → +0.5   (recall_quality reward handles details)
+      both compress  → +0.5
+      gold silent / model talked → -0.5  (false positive)
+      gold response / model silent → -0.5  (false negative)
+      mismatches across action types → 0.0
+    """
+    if not gold_action:
+        return 0.0
+    g = gold_action.lower()
+    if g in ("silent", "recall_silent"):
+        return 1.0 if model_kind == "silent" else -0.5
+    if g in ("response", "recall_response"):
+        return 0.5 if model_kind == "response" else -0.5
+    if g == "recall":
+        return 0.5 if model_kind == "recall" else 0.0
+    if g == "compress":
+        return 0.5 if model_kind == "compress" else 0.0
+    return 0.0
+
+
+def _word_recall_increment(generated: str, ground_truth_words: List[str]) -> float:
+    """ReMemR1 metric_utils.py:139 word-level recall: fraction of GT tokens present."""
+    if not ground_truth_words:
+        return 0.0
+    text = (generated or "").lower()
+    hits = sum(1 for w in ground_truth_words if w.lower() in text)
+    return hits / len(ground_truth_words)
+
+
+def _gold_action_at(raw_sample: Dict, chunk_idx: int) -> str:
+    """Pull teacher's expected action for this chunk from raw_sample.
+
+    Trajectory data carries `gold_action_per_chunk` as a dict {str(chunk_idx): action}.
+    Flat data may have it under top-level or under each card. Returns "" if absent.
+    """
+    gap = raw_sample.get("gold_action_per_chunk")
+    if isinstance(gap, dict):
+        v = gap.get(str(chunk_idx)) or gap.get(chunk_idx)
+        if v:
+            return str(v)
+    # Fallback: try sample_type field on the matching chunk record.
+    return ""
+
+
+def _estimate_chunk_token_len(chunk_result: Dict, gen_idx: int) -> int:
+    """v12.11 P1.2: cheap pre-tokenization estimate for dynamic bsz packing.
+
+    No actual tokenization — just heuristic from step_messages structure.
+    Recall multi-turn (shape B with 5 message turns) samples are ~30% longer
+    than non-recall (3 turns).
+
+    Tunable estimates calibrated to v12.10 production sampling:
+      base       (3-turn): ~5500 tokens (system+tools+visual_window+memory+ans)
+      recall     (5-turn): ~8000 tokens (adds <recall_result> + recalled frames)
+    """
+    sm = chunk_result.get("step_messages")
+    is_recall = False
+    if isinstance(sm, list) and gen_idx < len(sm):
+        v = sm[gen_idx]
+        if isinstance(v, list) and len(v) > 3:
+            is_recall = True
+    return 8000 if is_recall else 5500
+
+
+def _greedy_pack_by_token_budget(
+    seqlens: List[int], max_token_len: int,
+) -> List[List[int]]:
+    """v12.11 P1.2: greedy bin-pack items into batches by total token budget.
+
+    Approximates MemAgent's `rearrange_micro_batches` (Karmarkar-Karp) with
+    a simpler best-fit decreasing greedy. For per-chunk batching with
+    relatively uniform item sizes, the greedy gets within 5-10% of optimal.
+
+    Args:
+        seqlens: per-item estimated seq length
+        max_token_len: total budget per batch (≥ max(seqlens))
+
+    Returns:
+        list of batches; each batch is a list of original indices.
+
+    Algorithm (best-fit decreasing):
+      1. Sort items by length descending
+      2. For each item, place in the LIGHTEST existing batch that still
+         has room. If none, open a new batch.
+    """
+    if not seqlens:
+        return []
+    if max_token_len < max(seqlens):
+        # Single item exceeds budget — treat each item as its own batch.
+        return [[i] for i in range(len(seqlens))]
+    sorted_idx = sorted(range(len(seqlens)), key=lambda i: -seqlens[i])
+    bins: List[Tuple[List[int], int]] = []  # (indices, total_seqlen)
+    for idx in sorted_idx:
+        s = seqlens[idx]
+        # Find lightest bin that fits.
+        best = None
+        for b_idx in range(len(bins)):
+            if bins[b_idx][1] + s <= max_token_len:
+                if best is None or bins[b_idx][1] < bins[best][1]:
+                    best = b_idx
+        if best is not None:
+            bins[best] = (bins[best][0] + [idx], bins[best][1] + s)
+        else:
+            bins.append(([idx], s))
+    # Restore original-order indexing within each bin.
+    return [sorted(b[0]) for b in bins]
+
+
+def _per_chunk_state_reward(flat_items, rollout_data, tokenizer, mode: str):
+    """v12.11 P1.1 full: per-chunk state reward in 4 selectable modes.
+
+    Mode dispatch:
+      "format_only"   — format reward only (ReMemR1 lite). Returns 0/1.
+      "format_action" — format + teacher-action match. Returns ∈ [-0.5, 2.0].
+      "remem_full"    — format + action + word-level recall increment for
+                        recall/response steps. Returns ∈ [-0.5, 3.0].
+      "with_silent_q" — format + action + per-chunk silent_quality fold-in
+                        (our streaming-specific hallucinate/miss penalty).
+                        Returns ∈ [-1.1, 2.3].
+
+    Direct port of /tmp/refs/ReMemR1/verl/trainer/ppo/metric_utils.py:86,134
+    with extensions for streaming-video specific signals.
+
+    The mode is read from THINKSTREAM_STATE_REWARD_MODE; this function
+    accepts the resolved `mode` string for unit-testability.
+    """
+    out = []
+    for it in flat_items:
+        s = it["sample_idx"]; g = it["gen_idx"]; c = it["chunk_idx"]
+        # v12.11 P0.3 fix: rollout_data is List, not Dict.
+        sample_data = rollout_data[s] if s < len(rollout_data) else {}
+        chunks = sample_data.get("chunk_results", []) if sample_data else []
+        if c >= len(chunks):
+            out.append(0.0); continue
+        gt_list = chunks[c].get("generated_tokens", [])
+        if g >= len(gt_list):
+            out.append(0.0); continue
+        gt = gt_list[g]
+        if hasattr(gt, "tolist"):
+            gt = gt.tolist()
+        if not gt:
+            out.append(0.0); continue
+        text = tokenizer.decode(gt, skip_special_tokens=False)
+
+        # 1. format component (always applied)
+        score = _format_score_for_chunk(text)
+        if mode == "format_only":
+            out.append(score); continue
+
+        # 2. action match component
+        raw_sample = sample_data.get("raw_sample", {})
+        gold = _gold_action_at(raw_sample, chunks[c].get("chunk_idx", c))
+        model_kind = _model_action_kind(text)
+        score += _action_match_score(model_kind, gold)
+
+        if mode == "format_action":
+            out.append(score); continue
+
+        # 3. word-level recall increment (ReMemR1 full)
+        if mode == "remem_full":
+            gold_answer = raw_sample.get("gold_answer") or raw_sample.get("answer") or ""
+            gt_words = [w for w in str(gold_answer).split() if w.strip()]
+            if model_kind in ("response", "recall") and gt_words:
+                score += _word_recall_increment(text, gt_words)
+            out.append(score); continue
+
+        # 4. silent_quality fold-in (streaming-specific)
+        if mode == "with_silent_q":
+            from thinkstream.trainer.v12_rewards import (
+                compute_per_chunk_silent_quality_v12 as _per_chunk_sq,
+            )
+            from thinkstream.data.agent_protocol import parse_agent_output_v12
+            parsed_out = parse_agent_output_v12(text)
+            sq_input = [{
+                "chunk_idx": chunks[c].get("chunk_idx", c),
+                "kind": parsed_out.get("kind", "unknown"),
+                "answer_text": parsed_out.get("answer_text", ""),
+            }]
+            gap = raw_sample.get("gold_action_per_chunk", {}) or {}
+            try:
+                sq = _per_chunk_sq(sq_input, gap)
+                score += float(sq.get("silent_quality", 0.0))
+            except Exception:
+                pass
+            out.append(score); continue
+
+        # Unknown mode → fall back to format_only score
+        out.append(_format_score_for_chunk(text))
+
+    return torch.tensor(out, dtype=torch.float)
+
+
 @node
 def prepare_grpo_micro_batches(
     ctx: Context,
@@ -1709,6 +2373,8 @@ def prepare_grpo_micro_batches(
     advantages: Auto[torch.Tensor],
     rewards: Auto[torch.Tensor],
     rewards_dict: Auto[Dict[str, torch.Tensor]],
+    rollout_data: Auto[Dict[str, Any]],
+    tokenizer: Auto[Any],
     micro_batch_size: Auto[int],
     group_size: Auto[int],
     step_advantages: Ref[torch.Tensor],
@@ -1717,31 +2383,223 @@ def prepare_grpo_micro_batches(
     step_micro_items: Ref[List],
     step_micro_batches: Ref[list[dict[Ref, Any]]],
 ) -> Context:
-    total_samples = advantages.shape[0]
-    num_micro_batches = math.ceil(total_samples / micro_batch_size)
-    micro_batches = []
+    """v12.11 (2026-05-01): switchable micro-batching mode.
 
+    LOSS_BATCH_MODE="trajectory" (default, legacy):
+        1 item = 1 (sample_idx, gen_idx) trajectory rollout. Original
+        behavior — produces concatenated N-chunk samples that may exceed
+        model_max_length on long trajectories. SAFE DEFAULT for reproducing
+        prior runs / A/B comparison.
+
+    LOSS_BATCH_MODE="per_chunk" (MemAgent-style):
+        1 item = 1 (sample_idx, gen_idx, chunk_idx) chunk decision. N chunks
+        become N independent loss-batch entries, each ~6K tokens. Trajectory
+        advantage broadcasts to every chunk; ReMemR1 state advantage can be
+        added on top via USE_STATE_ADVANTAGE / ADVANTAGE_MODE=remem.
+        Eliminates OOM + truncation on long-trajectory rollouts.
+
+    Switch via env: THINKSTREAM_LOSS_BATCH_MODE=per_chunk.
+
+    Operator notes for per_chunk mode:
+        - micro_batch_size now counts CHUNKS, not trajectories.
+        - For 8 H20 + 8B + 6K avg chunk: micro_batch=4-8 is comfortable.
+        - The trainer logs the expansion count.
+    """
+    total_samples = advantages.shape[0]  # = num_videos × group_size
+
+    if LOSS_BATCH_MODE == "trajectory":
+        # ─── LEGACY PATH ─────────────────────────────────────────────────
+        # 1 item per (sample_idx, gen_idx). Original v12.10 behavior.
+        num_micro_batches = math.ceil(total_samples / micro_batch_size)
+        micro_batches = []
+        for mb_idx in range(num_micro_batches):
+            start_idx = mb_idx * micro_batch_size
+            end_idx = min(start_idx + micro_batch_size, total_samples)
+            micro_items = [
+                {
+                    "sample_idx": flat_idx // group_size,
+                    "gen_idx": flat_idx % group_size,
+                }
+                for flat_idx in range(start_idx, end_idx)
+            ]
+            mb_updates = {
+                step_advantages: advantages[start_idx:end_idx],
+                step_micro_rewards: rewards[start_idx:end_idx],
+                step_micro_rewards_dict: {
+                    k: v[start_idx:end_idx] for k, v in rewards_dict.items()
+                },
+                step_micro_items: micro_items,
+            }
+            micro_batches.append(mb_updates)
+        logger.info(
+            "GRPO micro-batches mode=trajectory (legacy): %d items → %d batches × %d",
+            total_samples, num_micro_batches, micro_batch_size,
+        )
+        return ctx.set(step_micro_batches, micro_batches)
+
+    # ─── PER-CHUNK PATH (v12.11) ─────────────────────────────────────────
+    # Build flat list of per-chunk items by enumerating chunk_results from
+    # each (sample_idx, gen_idx) pair. Chunk count varies per trajectory
+    # (depends on rollout_max_chunks + early-stop).
+    flat_items: List[Dict[str, int]] = []
+    flat_advantages: List[torch.Tensor] = []
+    flat_rewards: List[torch.Tensor] = []
+    flat_rewards_dict: Dict[str, List[torch.Tensor]] = {k: [] for k in rewards_dict}
+    # v12.11 P0.3 fix: rollout_data is List[dict] (one entry per video),
+    # not a dict — earlier `if sample_idx not in rollout_data` was checking
+    # membership against the LIST and silently skipping every chunk.
+    for flat_idx in range(total_samples):
+        sample_idx = flat_idx // group_size
+        gen_idx = flat_idx % group_size
+        if sample_idx >= len(rollout_data):
+            continue
+        sample_data = rollout_data[sample_idx]
+        chunk_results = sample_data.get("chunk_results", [])
+        active_chunk_count = 0
+        for cr in chunk_results:
+            gt_list = cr.get("generated_tokens", [])
+            if gen_idx < len(gt_list):
+                gt = gt_list[gen_idx]
+                length = len(gt) if not hasattr(gt, "numel") else int(gt.numel())
+                if length > 0:
+                    active_chunk_count += 1
+        active_chunk_count = max(1, active_chunk_count)
+        for chunk_idx in range(active_chunk_count):
+            flat_items.append({
+                "sample_idx": sample_idx,
+                "gen_idx": gen_idx,
+                "chunk_idx": chunk_idx,
+            })
+            flat_advantages.append(advantages[flat_idx:flat_idx + 1])
+            flat_rewards.append(rewards[flat_idx:flat_idx + 1])
+            for k in rewards_dict:
+                flat_rewards_dict[k].append(rewards_dict[k][flat_idx:flat_idx + 1])
+
+    if not flat_items:
+        flat_items = [
+            {"sample_idx": flat_idx // group_size, "gen_idx": flat_idx % group_size, "chunk_idx": 0}
+            for flat_idx in range(total_samples)
+        ]
+        flat_adv_tensor = advantages
+        flat_rew_tensor = rewards
+        flat_rd = rewards_dict
+    else:
+        flat_adv_tensor = torch.cat(flat_advantages, dim=0)
+        flat_rew_tensor = torch.cat(flat_rewards, dim=0)
+        flat_rd = {k: torch.cat(v, dim=0) for k, v in flat_rewards_dict.items()}
+
+    # ─── v12.11 P1.1: ReMemR1 mixed advantage ─────────────────────────────
+    # When ADVANTAGE_MODE=remem AND USE_STATE_ADVANTAGE=1, replace the
+    # broadcast trajectory advantage with α·outcome_adv + (1-α)·state_adv
+    # (line-by-line port of ReMemR1 ray_trainer.py:1287-1314 via the
+    # already-existing compute_mixed_advantage_v12 helper).
+    if ADVANTAGE_MODE == "remem" and USE_STATE_ADVANTAGE and flat_items:
+        try:
+            video_uid_per_row = [str(it["sample_idx"]) for it in flat_items]
+            chunk_idx_per_row = [int(it["chunk_idx"]) for it in flat_items]
+            # outcome reward = trajectory's broadcast outcome reward.
+            # rewards is [num_traj]; sample at flat_idx = sample_idx*group_size + gen_idx
+            outcome_rew = torch.stack([
+                rewards[it["sample_idx"] * group_size + it["gen_idx"]]
+                for it in flat_items
+            ])
+            state_rew = _per_chunk_state_reward(
+                flat_items, rollout_data, tokenizer, mode=STATE_REWARD_MODE,
+            )
+            # Use the canonical port from v12_rollout (line 393).
+            mixed_adv = _compute_mixed_advantage_v12_remem(
+                outcome_reward=outcome_rew,
+                state_reward=state_rew,
+                video_uid_per_row=video_uid_per_row,
+                chunk_idx_per_row=chunk_idx_per_row,
+                alpha=STATE_ADVANTAGE_ALPHA,
+                use_adv=True,
+            )
+            flat_adv_tensor = mixed_adv
+            logger.info(
+                "GRPO advantage mode=remem state=%s: α=%.2f outcome + (1-α) "
+                "state over %d per-chunk items (state mean=%.3f, std=%.3f).",
+                STATE_REWARD_MODE, STATE_ADVANTAGE_ALPHA, len(flat_items),
+                float(state_rew.mean()), float(state_rew.std() + 1e-9),
+            )
+        except Exception as e:
+            logger.warning(
+                "GRPO ReMemR1 mixed advantage failed (%s); falling back to "
+                "broadcast trajectory advantage.", e,
+            )
+
+    total_chunk_items = len(flat_items)
+
+    # ─── v12.11 P1.2: dynamic-bsz token packing ─────────────────────────
+    # When USE_DYNAMIC_BSZ=1, bin-pack chunk items into batches by total
+    # estimated token count instead of fixed item count. Mirrors MemAgent's
+    # rearrange_micro_batches (verl/utils/seqlen_balancing.py:216) but at
+    # item granularity (pre-tokenization estimate). Eliminates the OOM
+    # spikes from variable-length chunks (recall multi-turn ~8K vs base
+    # ~5.5K) clumping into the same micro batch.
+    if USE_DYNAMIC_BSZ and flat_items:
+        seqlens = []
+        for it in flat_items:
+            # v12.11 P0.3 fix: rollout_data is List, not Dict.
+            sample_data = (
+                rollout_data[it["sample_idx"]]
+                if it["sample_idx"] < len(rollout_data)
+                else {}
+            )
+            chunks = sample_data.get("chunk_results", []) if sample_data else []
+            if it["chunk_idx"] < len(chunks):
+                seqlens.append(_estimate_chunk_token_len(
+                    chunks[it["chunk_idx"]], it["gen_idx"]
+                ))
+            else:
+                seqlens.append(5500)
+        partitions = _greedy_pack_by_token_budget(
+            seqlens, DYNAMIC_BSZ_MAX_TOKEN_LEN,
+        )
+        micro_batches = []
+        for part_idxs in partitions:
+            sel = torch.tensor(part_idxs, dtype=torch.long)
+            mb_updates = {
+                step_advantages: flat_adv_tensor[sel],
+                step_micro_rewards: flat_rew_tensor[sel],
+                step_micro_rewards_dict: {
+                    k: v[sel] for k, v in flat_rd.items()
+                },
+                step_micro_items: [flat_items[i] for i in part_idxs],
+            }
+            micro_batches.append(mb_updates)
+        logger.info(
+            "GRPO micro-batches mode=per_chunk dynamic-bsz: %d items → "
+            "%d batches (max_token_len=%d, sizes=%s, total_tokens=%d)",
+            total_chunk_items, len(partitions), DYNAMIC_BSZ_MAX_TOKEN_LEN,
+            [len(p) for p in partitions[:8]] + (["..."] if len(partitions) > 8 else []),
+            sum(seqlens),
+        )
+        return ctx.set(step_micro_batches, micro_batches)
+
+    # ─── Fixed micro_batch_size path (legacy / dynamic-bsz off) ─────────
+    num_micro_batches = math.ceil(total_chunk_items / micro_batch_size)
+    micro_batches = []
     for mb_idx in range(num_micro_batches):
         start_idx = mb_idx * micro_batch_size
-        end_idx = min(start_idx + micro_batch_size, total_samples)
-        micro_items = [
-            {
-                "sample_idx": flat_idx // group_size,
-                "gen_idx": flat_idx % group_size,
-            }
-            for flat_idx in range(start_idx, end_idx)
-        ]
-
+        end_idx = min(start_idx + micro_batch_size, total_chunk_items)
+        micro_items = flat_items[start_idx:end_idx]
         mb_updates = {
-            step_advantages: advantages[start_idx:end_idx],
-            step_micro_rewards: rewards[start_idx:end_idx],
+            step_advantages: flat_adv_tensor[start_idx:end_idx],
+            step_micro_rewards: flat_rew_tensor[start_idx:end_idx],
             step_micro_rewards_dict: {
-                k: v[start_idx:end_idx] for k, v in rewards_dict.items()
+                k: v[start_idx:end_idx] for k, v in flat_rd.items()
             },
             step_micro_items: micro_items,
         }
         micro_batches.append(mb_updates)
 
+    logger.info(
+        "GRPO micro-batches mode=per_chunk: %d trajectories × group %d = %d "
+        "rollouts → %d per-chunk items → %d micro-batches × %d",
+        total_samples // group_size, group_size, total_samples,
+        total_chunk_items, num_micro_batches, micro_batch_size,
+    )
     return ctx.set(step_micro_batches, micro_batches)
 
 

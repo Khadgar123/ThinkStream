@@ -355,4 +355,18 @@ def aggregate_advantages(
             rewards_per_func, rewards_masks, group_size,
             weights=weights, keys=keys,
         )
-    raise ValueError(f"unknown advantage mode: {mode!r} (choose 'gdpo' | 'grpo')")
+    if mode == "remem":
+        # v12.11 P0.4 fix (2026-05-01): "remem" mode — produce trajectory-level
+        # advantage via gdpo (the canonical outcome path), then let the
+        # downstream prepare_grpo_micro_batches REPLACE this with the proper
+        # ReMemR1 mixed advantage (outcome × α + state × (1-α)) computed
+        # against per-chunk state rewards. This dispatch returns a usable
+        # placeholder so the upstream node doesn't crash; the actual mixed
+        # advantage is computed later when chunk-level structure is known.
+        return aggregate_gdpo(
+            rewards_per_func, rewards_masks, group_size,
+            weights=weights, keys=keys,
+        )
+    raise ValueError(
+        f"unknown advantage mode: {mode!r} (choose 'gdpo' | 'grpo' | 'remem')"
+    )

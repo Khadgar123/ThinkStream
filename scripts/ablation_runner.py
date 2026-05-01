@@ -240,6 +240,16 @@ def compute_summary(metrics_a0: List[Dict], metrics_a1: List[Dict]) -> Dict:
         "reward_spam_mean",
         "reward_mean",
         "reward_var",
+        # v12.11 P1.3 (2026-05-01): explicit behavior metrics — emitted by
+        # grpo.grpo_global_metrics from per-chunk silent_quality counters.
+        # These let A0 vs A1 actually compare DECISION quality, not just
+        # aggregate reward variance.
+        "behavior_response_acc",      # response chunks where model emitted answer
+        "behavior_silent_acc",        # silent chunks where model stayed silent
+        "behavior_hallucinate_rate",  # gold-silent / model-talked
+        "behavior_missed_rate",       # gold-response / model-silent
+        "behavior_recall_used_rate",  # frac of recall-required chunks model recalled
+        "behavior_compress_format_rate",  # frac of compress chunks with valid summary
     ]
     out = {"A0_turn_on": {}, "A1_turn_off": {}}
     for k in keys:

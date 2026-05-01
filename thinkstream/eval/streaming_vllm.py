@@ -1027,10 +1027,16 @@ def streaming_vllm_rollout(
                             entry["action"] = rc_parsed.get("action") or "unknown"
                             entry["think"] = rc_parsed.get("think", entry.get("think", ""))
                             entry["payload"] = rc_parsed.get("payload", {})
-                            # Concatenate generated_tokens so loss-time logprob
-                            # accounting covers both assistant turns even when
-                            # the merger ignores step_messages.
-                            entry["generated_tokens"] = list(first_pass_tokens) + list(
+                            # v12.11 P0.6 fix (2026-05-01): generated_tokens
+                            # MUST be ONLY the second-pass tokens. The
+                            # previous concat (first + second) caused the
+                            # loss-time merger to render an assistant turn
+                            # containing BOTH <tool_call> and <answer>,
+                            # which v12 parser flags as format_error. The
+                            # first-pass tool_call already lives in
+                            # step_messages; the loss reconstruction
+                            # appends ONE final assistant turn = second-pass.
+                            entry["generated_tokens"] = list(
                                 tokenizer.encode(rc_text, add_special_tokens=False)
                             )
                             entry["memory_token_count"] = r.memory.count_recent_tokens()

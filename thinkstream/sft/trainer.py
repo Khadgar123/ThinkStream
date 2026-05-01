@@ -240,9 +240,26 @@ class WeightedSFTTrainer(Trainer):
                 # the model's argmax match the gold next token across
                 # every assistant token?". Free-gen gate is the primary
                 # behavioural eval (scripts/eval/v12_freegen_gate.py).
-                ans_start = meta.get("ans_start")
-                ans_end = meta.get("ans_end")
-                if ans_start is not None and ans_end is not None:
+                # v12.11 audit fix #4 (2026-05-01): iterate ALL assistant
+                # spans, not just the first. Multi-turn recall samples have
+                # 2 assistant turns (tool_call + final answer); the
+                # legacy single-span loop missed the final-answer turn
+                # in eval metrics even though loss did train it.
+                # data_processor.py:eval_meta now exposes "ans_spans" (list
+                # of (start, end) tuples). Fall back to single-span tuple
+                # for backward compat with older cached eval batches.
+                ans_spans = meta.get("ans_spans")
+                if not ans_spans:
+                    ans_start = meta.get("ans_start")
+                    ans_end = meta.get("ans_end")
+                    ans_spans = (
+                        [(ans_start, ans_end)]
+                        if ans_start is not None and ans_end is not None
+                        else []
+                    )
+                for ans_start, ans_end in ans_spans:
+                    if ans_start is None or ans_end is None:
+                        continue
                     s = max(1, int(ans_start))   # logits[p-1] predicts pos p
                     e = min(L, int(ans_end) + 1)
                     matched = 0
@@ -260,12 +277,9 @@ class WeightedSFTTrainer(Trainer):
 
                     # v12.1 BEHAVIORAL METRICS — decode argmax tokens →
                     # parse v12 protocol → emit kind/format counters per
-                    # sample_type. Lets us see at SFT time:
-                    #   "did silent samples emit empty <answer>?"
-                    #   "did compress samples emit a compress tool_call?"
-                    #   "did the model recall when expected to recall?"
-                    # answers free-gen gate's questions WITHOUT vLLM
-                    # rollout (only single forward pass already done).
+                    # sample_type. v12.11: now invoked per assistant turn,
+                    # so multi-turn recall samples get BOTH tool_call and
+                    # final-answer turns counted toward behavioral stats.
                     self._accumulate_v12_behavioral(
                         preds, input_ids, b, s, e, stype,
                     )
