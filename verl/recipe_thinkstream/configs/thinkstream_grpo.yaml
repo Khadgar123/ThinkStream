@@ -69,13 +69,16 @@ actor_rollout_ref:
       # frames_root: directory of pre-extracted JPEG frames (one subdir
       #   per video stem). pass1a writes frame_000000.jpg etc. Empty string
       #   = run text-only (visual SFT prior carries the model).
-      # frames_per_chunk: must match scripts.agent_data_v5.config.FRAMES_PER_CHUNK
-      # vis_tokens_per_frame: conservative estimate of Qwen3-VL vision
-      #   tokens per image after spatial merge — used for budget gating.
+      # frames_per_chunk: must match scripts.agent_data_v5.config.FRAMES_PER_CHUNK.
+      # visual_window_chunks: sliding window size in chunks. Each chunk N's
+      #   prompt contains frames for chunks [max(0,N-window+1)..N]. Frames
+      #   from chunks < N-window+1 are NOT in vLLM's KV for chunk N's
+      #   generate request — they're truly evicted. Must match SFT's
+      #   VISUAL_WINDOW_CHUNKS so train/RL distributions line up.
       # recall_stub_text: returned when retrieval finds nothing.
       frames_root: ""
       frames_per_chunk: 2
-      vis_tokens_per_frame: 200
+      visual_window_chunks: 16
       recall_stub_text: "(no relevant past observation found)"
 
 custom_reward_function:
