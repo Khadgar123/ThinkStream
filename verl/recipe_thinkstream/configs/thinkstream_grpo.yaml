@@ -1,0 +1,89 @@
+# ThinkStream streaming-video GRPO recipe — verl 0.4+.
+#
+# Inherits ppo_trainer defaults; overrides only what's specific to
+# Qwen3-VL-8B + per-chunk multi-turn rollout + v12 reward.
+#
+# Launch:
+#   bash recipe_thinkstream/run_thinkstream_grpo.sh
+#   (or, from ThinkStream/, bash scripts/grpo_train_verl.sh)
+#
+# Streaming-video chunk-level rollout is wired via the custom AgentLoop
+# in recipe_thinkstream/streaming_agent_loop.py (registered as
+# `thinkstream_streaming_agent`). Per-chunk visual frame injection is
+# enabled when `multi_turn.frames_root` (or env THINKSTREAM_FRAMES_ROOT)
+# points at the pre-extracted JPEG frames directory.
+hydra:
+  searchpath:
+    - file://verl/trainer/config
+
+defaults:
+  - ppo_trainer
+  - _self_
+
+data:
+  max_prompt_length: 16384
+  max_response_length: 2048
+  train_batch_size: 8
+  return_raw_chat: True
+  return_multi_modal_inputs: True
+  filter_overlong_prompts: True
+  truncation: left
+  custom_cls:
+    path: "recipe_thinkstream/thinkstream.py"
+    name: CustomRLHFDataset
+
+actor_rollout_ref:
+  hybrid_engine: True
+  model:
+    # Qwen3-VL chat template with tool-calling protocol — matches
+    # SYSTEM_PROMPT_V12 / TOOLS_SCHEMA in thinkstream.data.agent_protocol.
+    # Reused verbatim from recipe/deepeyes/configs (Qwen2/3-VL share
+    # this template family).
+    custom_chat_template: "{% set image_count = namespace(value=0) %}{% set video_count = namespace(value=0) %}{%- if tools %}{{- '<|im_start|>system\\n' }}{%- if messages[0]['role'] == 'system' %}{%- if messages[0]['content'] is string %}{{- messages[0]['content'] }}{%- else %}{{- messages[0]['content'][0]['text'] }}{%- endif %}{%- else %}{{- 'You are a helpful assistant.' }}{%- endif %}{{- \"\\n\\n# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>\" }}{%- for tool in tools %}{{- \"\\n\" }}{{- tool | tojson }}{%- endfor %}{{- \"\\n</tools>\\n\\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\\n<tool_call>\\n{\\\"name\\\": <function-name>, \\\"arguments\\\": <args-json-object>}\\n</tool_call><|im_end|>\\n\" }}{% for message in messages %}{% if message['role'] != 'system' or loop.first == false %}{%- if (message.role == \"user\") or (message.role == \"system\" and not loop.first) or (message.role == \"assistant\" and not message.tool_calls) %}<|im_start|>{{ message['role'] }}\n{% if message['content'] is string %}{{ message['content'] }}<|im_end|>\n{% else %}{% for content in message['content'] %}{% if content['type'] == 'image' or 'image' in content or 'image_url' in content %}{% set image_count.value = image_count.value + 1 %}{% if add_vision_id %}Picture {{ image_count.value }}: {% endif %}<|vision_start|><|image_pad|><|vision_end|>{% elif content['type'] == 'video' or 'video' in content %}{% set video_count.value = video_count.value + 1 %}{% if add_vision_id %}Video {{ video_count.value }}: {% endif %}<|vision_start|><|video_pad|><|vision_end|>{% elif 'text' in content %}{{ content['text'] }}{% endif %}{% endfor %}<|im_end|>\n{% endif %}{%- elif message.role == \"assistant\" %}{{- '<|im_start|>' + message.role }}{%- if message.content %}{{- '\\n' + message.content }}{%- endif %}{%- for tool_call in message.tool_calls %}{%- if tool_call.function is defined %}{%- set tool_call = tool_call.function %}{%- endif %}{{- '\\n<tool_call>\\n{\"name\": \"' }}{{- tool_call.name }}{{- '\", \"arguments\": ' }}{{- tool_call.arguments | tojson }}{{- '}\\n</tool_call>' }}{%- endfor %}{{- '<|im_end|>\\n' }}{%- elif message.role == \"tool\" %}{%- if (loop.index0 == 0) or (messages[loop.index0 - 1].role != \"tool\") %}{{- '<|im_start|>user' }}{%- endif %}{{- '\\n<tool_response>\\n' }}{% if message['content'] is string %}{{ message.content }}{% else %}{% for content in message['content'] %}{% if content['type'] == 'image' or 'image' in content or 'image_url' in content %}{% set image_count.value = image_count.value + 1 %}{% if add_vision_id %}Picture {{ image_count.value }}: {% endif %}<|vision_start|><|image_pad|><|vision_end|>{% elif content['type'] == 'video' or 'video' in content %}{% set video_count.value = video_count.value + 1 %}{% if add_vision_id %}Video {{ video_count.value }}: {% endif %}<|vision_start|><|video_pad|><|vision_end|>{% elif content['type'] == 'text' or 'text' in content %}{{ content['text'] }}{% endif %}{% endfor %}{% endif %}{{- '\\n</tool_response>' }}{%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}{{- '<|im_end|>\\n' }}{%- endif %}{%- endif %}{% endif %}{% endfor %}{%- else %}{% for message in messages %}{% if loop.first and message['role'] != 'system' %}<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n{% endif %}{%- if (message.role == \"user\") or (message.role == \"system\" and not loop.first) or (message.role == \"assistant\" and not message.tool_calls) %}<|im_start|>{{ message['role'] }}\n{% if message['content'] is string %}{{ message['content'] }}<|im_end|>\n{% else %}{% for content in message['content'] %}{% if content['type'] == 'image' or 'image' in content or 'image_url' in content %}{% set image_count.value = image_count.value + 1 %}{% if add_vision_id %}Picture {{ image_count.value }}: {% endif %}<|vision_start|><|image_pad|><|vision_end|>{% elif content['type'] == 'video' or 'video' in content %}{% set video_count.value = video_count.value + 1 %}{% if add_vision_id %}Video {{ video_count.value }}: {% endif %}<|vision_start|><|video_pad|><|vision_end|>{% elif 'text' in content %}{{ content['text'] }}{% endif %}{% endfor %}<|im_end|>\n{% endif %}{%- elif message.role == \"assistant\" %}{{- '<|im_start|>' + message.role }}{%- if message.content %}{{- '\\n' + message.content }}{%- endif %}{%- for tool_call in message.tool_calls %}{%- if tool_call.function is defined %}{%- set tool_call = tool_call.function %}{%- endif %}{{- '\\n<tool_call>\\n{\"name\": \"' }}{{- tool_call.name }}{{- '\", \"arguments\": ' }}{{- tool_call.arguments | tojson }}{{- '}\\n</tool_call>' }}{%- endfor %}{{- '<|im_end|>\\n' }}{%- elif message.role == \"tool\" %}{%- if (loop.index0 == 0) or (messages[loop.index0 - 1].role != \"tool\") %}{{- '<|im_start|>user' }}{%- endif %}{{- '\\n<tool_response>\\n' }}{% if message['content'] is string %}{{ message.content }}{% else %}{% for content in message['content'] %}{% if content['type'] == 'image' or 'image' in content or 'image_url' in content %}{% set image_count.value = image_count.value + 1 %}{% if add_vision_id %}Picture {{ image_count.value }}: {% endif %}<|vision_start|><|image_pad|><|vision_end|>{% elif content['type'] == 'video' or 'video' in content %}{% set video_count.value = video_count.value + 1 %}{% if add_vision_id %}Video {{ video_count.value }}: {% endif %}<|vision_start|><|video_pad|><|vision_end|>{% elif content['type'] == 'text' or 'text' in content %}{{ content['text'] }}{% endif %}{% endfor %}{% endif %}{{- '\\n</tool_response>' }}{%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}{{- '<|im_end|>\\n' }}{%- endif %}{%- endif %}{% endfor %}{%- endif %}{% if add_generation_prompt %}<|im_start|>assistant\n{% endif %}"
+    use_remove_padding: True
+    use_fused_kernels: True
+  rollout:
+    name: vllm
+    mode: async
+    n: 8
+    tensor_model_parallel_size: 2
+    gpu_memory_utilization: 0.55
+    max_num_batched_tokens: 32768
+    enforce_eager: True
+    free_cache_engine: True
+    enable_chunked_prefill: True
+    response_length: 2048
+    prompt_length: 16384
+    agent:
+      # Registers the chunk-level streaming loop. `name` matches what
+      # CustomRLHFDataset writes to row["agent_name"]; verl dispatches by
+      # that key.
+      agent_loop_config_path: recipe_thinkstream/configs/agent_loops.yaml
+    multi_turn:
+      enable: True
+      max_turns: 360            # 6 min × 1s/chunk for streaming videos
+      max_assistant_turns: 360
+      max_user_turns: 360
+      max_parallel_calls: 1
+      # ── ThinkStream-specific keys read by ThinkStreamStreamingAgentLoop.
+      # frames_root: directory of pre-extracted JPEG frames (one subdir
+      #   per video stem). pass1a writes frame_000000.jpg etc. Empty string
+      #   = run text-only (visual SFT prior carries the model).
+      # frames_per_chunk: must match scripts.agent_data_v5.config.FRAMES_PER_CHUNK
+      # vis_tokens_per_frame: conservative estimate of Qwen3-VL vision
+      #   tokens per image after spatial merge — used for budget gating.
+      # recall_stub_text: returned when retrieval finds nothing.
+      frames_root: ""
+      frames_per_chunk: 2
+      vis_tokens_per_frame: 200
+      recall_stub_text: "(no relevant past observation found)"
+
+custom_reward_function:
+  path: "recipe_thinkstream/thinkstream.py"
+  name: compute_score
+
+algorithm:
+  adv_estimator: grpo
+  use_kl_in_reward: False
+  kl_ctrl:
+    kl_coef: 0.0

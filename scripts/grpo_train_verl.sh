@@ -10,7 +10,7 @@
 #     long-trajectory rollouts. Cross-validates slyme algorithmically.
 #
 # verl is vendored at ThinkStream/verl/ (a customized fork of
-# verl-project/verl with our recipe at verl/thinkstream/). We do NOT
+# verl-project/verl with our recipe at verl/recipe_thinkstream/). We do NOT
 # `pip install verl`; instead we run it in-place via PYTHONPATH so that
 # (a) recipe edits take effect without reinstall and (b) verl can import
 # `thinkstream.*` from the parent ThinkStream checkout.
@@ -75,7 +75,7 @@ DATASET=${DATASET:-stream_agent_rl_traj}
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 VERL_DIR="${PROJECT_DIR}/verl"
-RECIPE_DIR="${VERL_DIR}/thinkstream/configs"
+RECIPE_DIR="${VERL_DIR}/recipe_thinkstream/configs"
 RECIPE_NAME="thinkstream_grpo"
 
 OUTPUT_DIR="${THINKSTREAM_OUTPUT_DIR:-${PROJECT_DIR}/output/${RUN_NAME}}"
@@ -125,7 +125,7 @@ echo "FSDP opt offload:   ${OPTIMIZER_OFFLOAD}"
 echo "================================="
 
 # verl uses Ray; let it handle multi-GPU orchestration.
-# We pass per-flag overrides on top of verl/thinkstream/configs/thinkstream_grpo.yaml.
+# We pass per-flag overrides on top of verl/recipe_thinkstream/configs/thinkstream_grpo.yaml.
 #
 # PYTHONPATH ordering matters:
 #   ${VERL_DIR}     — vendored verl python package (in-place, no pip install)
@@ -139,6 +139,11 @@ export VLLM_LOGGING_LEVEL=WARN
 # Lets the recipe's compute_score read trajectory metadata (gold_action_per_chunk,
 # ask_chunks) when verl's parquet column flattening drops nested dicts.
 export THINKSTREAM_TRAJ_INDEX_PATH="${TRAIN_JSONL}"
+# Where pre-extracted JPEG frames live (one subdir per video stem). The
+# streaming agent loop reads this to inject per-chunk visual frames every
+# turn. Empty / unset → loop falls back to text-only RL.
+FRAMES_ROOT="${FRAMES_ROOT:-${PROJECT_DIR}/data/agent_v5/frames}"
+export THINKSTREAM_FRAMES_ROOT="${FRAMES_ROOT}"
 
 cd "${VERL_DIR}"
 
@@ -159,13 +164,14 @@ python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.multi_turn.max_turns=${MAX_CHUNKS} \
     actor_rollout_ref.rollout.multi_turn.max_assistant_turns=${MAX_CHUNKS} \
     actor_rollout_ref.rollout.multi_turn.max_user_turns=${MAX_CHUNKS} \
+    actor_rollout_ref.rollout.multi_turn.frames_root="${FRAMES_ROOT}" \
     data.train_files="${TRAIN_PARQUET}" \
     data.val_files="[${VAL_PARQUET}]" \
     data.train_batch_size=${BATCH_SIZE} \
     data.val_batch_size=${BATCH_SIZE} \
     data.max_prompt_length=${MAXLEN} \
     data.max_response_length=${MAX_NEW_TOKEN} \
-    custom_reward_function.path="${VERL_DIR}/thinkstream/thinkstream.py" \
+    custom_reward_function.path="${VERL_DIR}/recipe_thinkstream/thinkstream.py" \
     custom_reward_function.name=compute_score \
     trainer.total_epochs=${EPOCHS} \
     trainer.save_freq=${SAVE_FREQ} \
