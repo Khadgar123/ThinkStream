@@ -53,6 +53,7 @@ actor_rollout_ref:
     use_fused_kernels: True
   rollout:
     name: vllm
+    mode: async
     n: 8
     tensor_model_parallel_size: 2
     gpu_memory_utilization: 0.55
@@ -62,6 +63,11 @@ actor_rollout_ref:
     enable_chunked_prefill: True
     response_length: 2048
     prompt_length: 16384
+    agent:
+      # Registers the chunk-level streaming loop. `name` matches what
+      # CustomRLHFDataset writes to row["agent_name"]; verl dispatches by
+      # that key.
+      agent_loop_config_path: thinkstream/configs/agent_loops.yaml
     multi_turn:
       enable: True
       max_turns: 360            # 6 min × 1s/chunk for streaming videos

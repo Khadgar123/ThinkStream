@@ -1,0 +1,9 @@
+# verl agent_loop registry overrides for ThinkStream.
+#
+# Points the registry key `thinkstream_streaming_agent` (set by our
+# CustomRLHFDataset on every row) at the streaming chunk-level loop in
+# verl/thinkstream/streaming_agent_loop.py.
+#
+# Loaded via rollout.agent.agent_loop_config_path in thinkstream_grpo.yaml.
+- name: thinkstream_streaming_agent
+  _target_: thinkstream.streaming_agent_loop.ThinkStreamStreamingAgentLoop

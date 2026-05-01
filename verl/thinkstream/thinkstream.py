@@ -33,6 +33,24 @@ try:
 except ImportError:
     Image = None  # noqa: N816  — only the dataset path needs PIL.
 
+# Side-effect import: registers ThinkStreamStreamingAgentLoop under
+# `thinkstream_streaming_agent` in verl's _agent_loop_registry. verl loads
+# THIS file at training start (via custom_cls.path / custom_reward_function.path),
+# so the agent loop is wired in automatically without any extra config.
+try:
+    from . import streaming_agent_loop  # noqa: F401
+except ImportError:
+    # When this file is loaded outside of a package context (e.g., hydra
+    # spec_from_file_location), the relative import fails. Fall back to
+    # absolute import via the parent dir on sys.path.
+    try:
+        import os as _os
+        import sys as _sys
+        _sys.path.insert(0, _os.path.dirname(__file__))
+        import streaming_agent_loop  # type: ignore  # noqa: F401
+    except Exception:
+        pass
+
 # verl is imported lazily inside CustomRLHFDataset so that compute_score
 # can be exercised without the full verl/ray runtime (e.g., in unit tests).
 
