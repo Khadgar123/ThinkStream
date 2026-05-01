@@ -66,11 +66,13 @@ def _side_effect_import(sibling_module: str, alias: str):
         pass
 
 
-# Register sibling modules whose @register decorators verl needs at runtime:
-#   streaming_agent_loop → registers `thinkstream_streaming_agent` agent loop
-#   reward_manager       → registers `thinkstream_per_chunk` reward manager
+# Register the sibling streaming_agent_loop module so its @register
+# decorator runs and the `thinkstream_streaming_agent` AgentLoop key is
+# wired into verl's _agent_loop_registry.
+# (We use the built-in `naive` reward_manager from verl.experimental.
+# reward_loop — no custom one needed; per-chunk shaping is folded into
+# compute_score's returned `score`.)
 _side_effect_import("streaming_agent_loop", "thinkstream_recipe_streaming_agent_loop")
-_side_effect_import("reward_manager", "thinkstream_recipe_reward_manager")
 
 # verl is imported lazily inside CustomRLHFDataset so that compute_score
 # can be exercised without the full verl/ray runtime (e.g., in unit tests).
@@ -174,152 +176,79 @@ except Exception:  # noqa: BLE001 — local dev without verl installed.
 
 
 class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
-    """ThinkStream trajectory dataset.
+    """ThinkStream trajectory dataset for verl 0.4 agent-loop mode.
 
-    Each row is one (video, question) seed. The pass5 JSONL has shape:
-        {
-          "video_id": str,
-          "video_path": str,
-          "questions": [
-              {"question": str, "gold_answer": str, "answer_form": str,
-               "ask_chunks": [int], ...},
-          ],
-          "gold_action_per_chunk": {str: str},
-          "stats": {"n_chunks_covered": int, ...},
-        }
+    verl 0.4 moved chat-template + tokenization into the AgentLoop side
+    (see verl/utils/dataset/rl_dataset.py:359). The dataset MUST return
+    only `raw_prompt` + a dummy tensor + the data_source / reward_model /
+    extra_info passthroughs. Returning input_ids / attention_mask /
+    position_ids would conflict with rollout's gen_batch_output union
+    (see verl/trainer/ppo/ray_trainer.py:1411 — same-name keys collide).
 
-    We emit verl's expected dict with `prompt` (system + user), an `images`
-    list (empty — frames are loaded per-chunk by the rollout adapter), and
-    an `extra_info` bundle that the reward function reads back at scoring time.
+    Each row is one (video, question) seed produced by
+    scripts/agent_data_v5/build_verl_parquet.py. Columns expected:
+      prompt:                 List[Dict] — [system, user(question)]
+      video_id:               str
+      video_path:             str
+      question:               str
+      gold_answer:            str
+      answer_form:            str
+      ask_chunks:             List[int]
+      gold_action_per_chunk:  Dict[str, str]    (already filtered to this
+                                                 question's chunk range)
+      n_chunks:               int
+      extra_info:             Dict
+      reward_model:           {"ground_truth": JSON-string, "style": ...}
+      data_source:            "thinkstream_v12_streaming"
     """
 
     def __getitem__(self, item):
-        # Lazy verl imports — this method only runs in a verl runtime.
-        import verl.utils.torch_functional as verl_F  # type: ignore
-        from verl.utils.model import compute_position_id_with_mask  # type: ignore
-
+        import torch  # type: ignore
         row_dict: dict = self.dataframe[item]
 
-        # Pull the question out of the source row. We expect the upstream
-        # parquet builder (scripts/agent_data_v5/build_verl_parquet.py) to
-        # flatten one (video, question) into one parquet row with columns:
-        # prompt, video_id, question, gold_answer, answer_form, ask_chunks,
-        # gold_action_per_chunk, n_chunks.
-        from thinkstream.data.agent_protocol import (  # type: ignore
-            SYSTEM_PROMPT_V12,
-        )
-
-        question_text = row_dict.get("question", "")
-        row_dict[self.prompt_key] = [
-            {"role": "system", "content": SYSTEM_PROMPT_V12},
-            {"role": "user", "content": question_text},
+        # raw_prompt is the chat-format messages. Parquet stored it as
+        # numpy array of {role, content}; ensure plain Python list-of-dict.
+        prompt = row_dict.get(self.prompt_key, [])
+        if hasattr(prompt, "tolist"):
+            prompt = prompt.tolist()
+        # Each element may be a dict already; force plain dicts.
+        prompt = [
+            {"role": m.get("role"), "content": m.get("content")}
+            if isinstance(m, dict) else m
+            for m in prompt
         ]
+        row_dict["raw_prompt"] = prompt
 
-        images: List[Image.Image] = []
-        row_dict_images = row_dict.get(self.image_key, None)
-        if row_dict_images:
-            images = [
-                Image.open(io.BytesIO(image["bytes"])) for image in row_dict_images
-            ]
-        messages = self._build_messages(row_dict)
+        # Dummy tensor — DataProto.batch can't be empty; verl removes
+        # this constraint after the TensorDict migration but until then
+        # we follow the upstream convention.
+        row_dict["dummy_tensor"] = torch.tensor([0], dtype=torch.uint8)
 
-        if self.processor is not None:
-            raw_prompt = self.processor.apply_chat_template(
-                messages, add_generation_prompt=True, tokenize=False
-            )
-            model_inputs = self.processor(
-                text=[raw_prompt], images=images or None, return_tensors="pt"
-            )
-            input_ids = model_inputs.pop("input_ids")
-            attention_mask = model_inputs.pop("attention_mask")
-            if "second_per_grid_ts" in model_inputs:
-                model_inputs.pop("second_per_grid_ts")
-        else:
-            raw_prompt = self.tokenizer.apply_chat_template(
-                messages, add_generation_prompt=True, tokenize=False
-            )
-            model_inputs = self.tokenizer(
-                raw_prompt, return_tensors="pt", add_special_tokens=False
-            )
-            input_ids = model_inputs.pop("input_ids")
-            attention_mask = model_inputs.pop("attention_mask")
-
-        input_ids, attention_mask = verl_F.postprocess_data(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-            max_length=self.max_prompt_length,
-            pad_token_id=self.tokenizer.pad_token_id,
-            left_pad=True,
-            truncation=self.truncation,
-        )
-
-        # Qwen3-VL uses the Qwen2VL image processor internals; rope index
-        # pathway matches deepeyes.
-        if (
-            self.processor is not None
-            and "Qwen2VLImageProcessor"
-            in self.processor.image_processor.__class__.__name__
-        ):
-            from verl.models.transformers.qwen2_vl import get_rope_index
-
-            position_ids = [
-                get_rope_index(
-                    self.processor,
-                    input_ids=input_ids[0],
-                    image_grid_thw=model_inputs.get("image_grid_thw"),
-                    video_grid_thw=model_inputs.get("video_grid_thw"),
-                    second_per_grid_ts=model_inputs.get("second_per_grid_ts"),
-                    attention_mask=attention_mask[0],
-                )
-            ]
-        else:
-            position_ids = compute_position_id_with_mask(attention_mask)
-
-        row_dict["input_ids"] = input_ids[0]
-        row_dict["attention_mask"] = attention_mask[0]
-        row_dict["position_ids"] = position_ids[0]
-
-        raw_prompt_ids = self.tokenizer.encode(raw_prompt, add_special_tokens=False)
-        if len(raw_prompt_ids) > self.max_prompt_length:
-            if self.truncation == "left":
-                raw_prompt_ids = raw_prompt_ids[-self.max_prompt_length :]
-            elif self.truncation == "right":
-                raw_prompt_ids = raw_prompt_ids[: self.max_prompt_length]
-            elif self.truncation == "middle":
-                left_half = self.max_prompt_length // 2
-                right_half = self.max_prompt_length - left_half
-                raw_prompt_ids = (
-                    raw_prompt_ids[:left_half] + raw_prompt_ids[-right_half:]
-                )
-            elif self.truncation == "error":
-                raise RuntimeError(
-                    f"Prompt length {len(raw_prompt_ids)} > {self.max_prompt_length}."
-                )
-
-        row_dict["raw_prompt_ids"] = raw_prompt_ids
-        if self.return_raw_chat:
-            row_dict["raw_prompt"] = messages
-        if self.return_full_prompt:
-            row_dict["full_prompts"] = raw_prompt
-
-        # Stash everything the reward fn needs into extra_info.
+        # Stash everything the reward fn needs into extra_info. The
+        # streaming agent loop reads video_id/video_path/n_chunks from
+        # here every chunk; compute_score reads gold_answer/ask_chunks/
+        # gold_action_per_chunk for shaping.
         extra = row_dict.get("extra_info", {}) or {}
-        extra.update(
-            {
-                "video_id": row_dict.get("video_id", ""),
-                "video_path": row_dict.get("video_path", ""),
-                "question": question_text,
-                "gold_answer": row_dict.get("gold_answer", ""),
-                "answer_form": row_dict.get("answer_form", ""),
-                "ask_chunks": row_dict.get("ask_chunks", []),
-                "gold_action_per_chunk": row_dict.get(
-                    "gold_action_per_chunk", {}
-                ),
-                "n_chunks": row_dict.get("n_chunks", 0),
-            }
-        )
+        if hasattr(extra, "tolist"):
+            extra = extra.tolist()
+        if not isinstance(extra, dict):
+            extra = {}
+        extra.update({
+            "video_id": str(row_dict.get("video_id", "")),
+            "video_path": str(row_dict.get("video_path", "")),
+            "question": str(row_dict.get("question", "")),
+            "gold_answer": str(row_dict.get("gold_answer", "")),
+            "answer_form": str(row_dict.get("answer_form", "")),
+            "ask_chunks": list(row_dict.get("ask_chunks") or []),
+            "gold_action_per_chunk": dict(row_dict.get("gold_action_per_chunk") or {}),
+            "n_chunks": int(row_dict.get("n_chunks") or 0),
+        })
         row_dict["extra_info"] = extra
-        row_dict["index"] = extra.get("index", row_dict.get("video_id", ""))
+        row_dict["index"] = extra.get("index", str(row_dict.get("video_id", "")))
+        row_dict["tools_kwargs"] = extra.get("tools_kwargs", {}) or {}
+        row_dict["interaction_kwargs"] = extra.get("interaction_kwargs", {}) or {}
+
+        # agent_name must match the @register key on our AgentLoop class.
         row_dict["agent_name"] = "thinkstream_streaming_agent"
         return row_dict
 
@@ -558,13 +487,12 @@ def compute_score(
             total = alpha * total + (1.0 - alpha) * state_avg
             parts["per_chunk_action_avg"] = state_avg
 
-    result = {"score": total, **{k: float(v) for k, v in parts.items()}}
-    # The reward_manager will pick this up and broadcast to per-chunk
-    # token positions. Keys prefixed with `_` are passthroughs that don't
-    # show up as wandb scalars.
-    if per_chunk_action:
-        result["_per_chunk_action_rewards"] = per_chunk_action
-    return result
+    # NaiveRewardManager places ONE scalar at the trajectory's last
+    # assistant token (verl 0.4 reward_loop framework). Per-chunk shaping
+    # has already been folded into `total` via the GDPO α-mix above —
+    # we don't return a separate per-chunk vector because there's no
+    # per-token broadcast hook in the new framework.
+    return {"score": total, **{k: float(v) for k, v in parts.items()}}
 
 
 if __name__ == "__main__":

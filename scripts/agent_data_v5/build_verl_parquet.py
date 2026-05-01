@@ -82,6 +82,37 @@ def _iter_rows(jsonl_path: Path, max_questions_per_traj: int) -> Iterator[Dict[s
                 answer_form = q.get("answer_form", "")
                 ask_chunks = list(q.get("ask_chunks") or [])
 
+                # ── Per-question gold_action_per_chunk (P1.9 fix).
+                # The trajectory-level gold_action carries actions for
+                # ALL questions' chunks. When this row is one (video,
+                # question) pair, only the chunks within THIS question's
+                # answerable range should be scored — otherwise question A's
+                # rollout gets penalised for not emitting question B's
+                # response at chunk where question B was supposed to fire.
+                # Strategy: keep gold_action ONLY for chunks within
+                # [min(ask_chunks), max(ask_chunks)] (the question's
+                # answerable window); for chunks outside that range we
+                # treat the gold as "silent" so off-question chunks
+                # don't penalise correct silent behaviour.
+                q_gold_action: Dict[str, str] = {}
+                if ask_chunks:
+                    q_lo, q_hi = min(ask_chunks), max(ask_chunks)
+                    for ck, gold in (gold_action or {}).items():
+                        try:
+                            ck_int = int(ck)
+                        except (TypeError, ValueError):
+                            continue
+                        if q_lo <= ck_int <= q_hi:
+                            # In range — keep the original action.
+                            q_gold_action[ck] = gold
+                        else:
+                            # Out of range — silent is the correct
+                            # action for this question at this chunk.
+                            q_gold_action[ck] = "silent"
+                else:
+                    # No ask_chunks → treat as no actionable supervision.
+                    q_gold_action = {ck: "silent" for ck in (gold_action or {}).keys()}
+
                 prompt = [
                     {"role": "system", "content": SYSTEM_PROMPT_V12},
                     {"role": "user", "content": question},
@@ -95,7 +126,7 @@ def _iter_rows(jsonl_path: Path, max_questions_per_traj: int) -> Iterator[Dict[s
                     "gold_answer": gold_answer,
                     "answer_form": answer_form,
                     "ask_chunks": ask_chunks,
-                    "gold_action_per_chunk": gold_action,
+                    "gold_action_per_chunk": q_gold_action,
                     "n_chunks": n_chunks,
                     "extra_info": {
                         "index": f"{video_id}#{q_idx}",
@@ -115,7 +146,7 @@ def _iter_rows(jsonl_path: Path, max_questions_per_traj: int) -> Iterator[Dict[s
                             "ask_chunks": ask_chunks,
                             "visible_start_chunk": min(ask_chunks) if ask_chunks else None,
                             "visible_end_chunk":   max(ask_chunks) if ask_chunks else None,
-                            "gold_action_per_chunk": gold_action,
+                            "gold_action_per_chunk": q_gold_action,
                         }, ensure_ascii=False),
                         "style": "thinkstream_v12",
                     },

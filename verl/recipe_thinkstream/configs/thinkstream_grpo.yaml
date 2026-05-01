@@ -22,7 +22,12 @@ defaults:
 
 data:
   max_prompt_length: 16384
-  max_response_length: 2048
+  # P0.3 — response_length is the TOTAL stitched length across all chunk
+  # turns (each chunk contributes its user_block + assistant turn). For
+  # the first-run conservative MAX_CHUNKS=60 + ~40 vis tokens/chunk text
+  # + ~80 tokens/chunk assistant ≈ 60*120 = 7200 tokens. Bump default
+  # well above that. For full 360-chunk trajectories raise to 32768+.
+  max_response_length: 16384
   train_batch_size: 8
   return_raw_chat: True
   return_multi_modal_inputs: True
@@ -52,7 +57,7 @@ actor_rollout_ref:
     enforce_eager: True
     free_cache_engine: True
     enable_chunked_prefill: True
-    response_length: 2048
+    response_length: 16384
     prompt_length: 16384
     agent:
       # Registers the chunk-level streaming loop. `name` matches what
@@ -81,21 +86,26 @@ actor_rollout_ref:
       visual_window_chunks: 16
       recall_stub_text: "(no relevant past observation found)"
 
-custom_reward_function:
-  path: "recipe_thinkstream/thinkstream.py"
-  name: compute_score
-
 algorithm:
   adv_estimator: grpo
   use_kl_in_reward: False
   kl_ctrl:
     kl_coef: 0.0
 
-reward_model:
-  # ThinkStreamPerChunkRewardManager broadcasts per-chunk action shaping
-  # rewards to each chunk's last assistant token (using ts_chunk_asst_spans
-  # from the agent loop) and adds the trajectory outcome at the trajectory
-  # end. Without this, rewards collapse to a single end-of-trajectory
-  # scalar and per-chunk action signal is lost.
-  reward_manager: thinkstream_per_chunk
-  launch_reward_fn_async: false
+# verl 0.4 reward config (new schema under top-level `reward`, not the
+# legacy `reward_model`). The built-in NaiveRewardManager in
+# verl.experimental.reward_loop.reward_manager already merges
+# tool_extra_fields (the agent loop's extra_fields) into compute_score's
+# extra_info — that's how `ts_chunk_kinds`, `ts_chunk_asst_texts` etc.
+# reach our compute_score. The new framework only places ONE scalar at
+# the trajectory's last assistant token, so per-chunk shaping is folded
+# into compute_score's returned `score` (GDPO α-mix of outcome + state_avg)
+# rather than broadcast to per-chunk token positions.
+reward:
+  num_workers: 8
+  custom_reward_function:
+    path: "recipe_thinkstream/thinkstream.py"
+    name: compute_score
+  reward_manager:
+    source: register
+    name: naive

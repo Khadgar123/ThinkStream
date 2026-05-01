@@ -11,55 +11,70 @@
 # DESIGN — MemAgent-style sliding window with per-chunk independent generate:
 # ────────────────────────────────────────────────────────────────────────────
 # Each chunk is one INDEPENDENT vLLM generate request whose prompt is freshly
-# constructed every turn:
+# constructed every turn (mirrors SFT pass5_messages.py exactly):
 #
 #     prompt_chunk_N = [
 #       <|im_start|>system\n{SYSTEM_PROMPT_V12}\n<|im_end|>     ← common prefix
 #       <|im_start|>user\n{question}\n<|im_end|>                ← common prefix
 #       <|im_start|>user\n
-#         {visual_window: chunks[max(0,N-15)..N]'s frames}      ← turn-specific
-#         {memory: state.compressed + state.recent_thinks}       ← turn-specific
-#         {optional <recall_result>...}                          ← turn-specific
-#         {optional <query>...}                                  ← turn-specific
+#         <visual_window>{header}</visual_window>               ← turn-specific
+#         {video block: chunks[max(0,N-15)..N]'s frames + video_metadata}
+#         <memory>...</memory>
+#         <queries>...</queries>           (when ask_chunks fired)
+#         <user_input>...</user_input>     (the question text)
+#         OR <compress_trigger range='a-b'/>   (compress turn — system-injected)
 #       <|im_end|>
 #       <|im_start|>assistant\n
 #     ]
 #
-# This matches what SFT trains on (build_per_timestep_messages_v12) — each
-# chunk is its own conditioning context, no monotonic accumulation.
-#
 # KV CACHE BEHAVIOUR:
 #   - The [system + user_q] prefix is byte-identical across all chunk turns
-#     of one trajectory → vLLM's async server prefix cache hits it once and
-#     serves it for free for the rest of the trajectory.
+#     of one trajectory → vLLM's async server prefix cache hits it once.
 #   - The visual_window + memory portion changes every turn (sliding window
 #     means chunk 0's frames drop out at turn 16) → that suffix is a cache
-#     miss. We pay one prefill of ~16 chunks worth of vis tokens per turn
-#     instead of monotonically growing the cache.
+#     miss. Constant per-turn vis-token cost ≈ 16 chunks × 2 frames.
 #   - Chunk 0's frames are NOT in turn 16+'s prompt → they're truly out of
-#     the KV cache for those generates. This is the user's explicit ask.
+#     the KV cache for those generates.
 #
-# verl INTEGRATION:
-#   verl's AgentLoopOutput expects ONE prompt_ids + ONE response_ids. We
-#   stitch the per-chunk independent generates into that shape by:
-#     output.prompt_ids   = [system + user_q]   (the COMMON prefix only)
-#     output.response_ids = [user_block_0 + asst_0 + user_block_1 + asst_1 + ...]
-#     output.response_mask = [0...0 | 1...1 | 0...0 | 1...1 | ...]
-#                            ^user blocks  ^asst   ^user blocks ^asst
-#   So at training time the actor sees ONE long sequence: system + user_q
-#   followed by the concatenated chunk turns. This DIFFERS from rollout
-#   topology (where each turn was an independent forward in vLLM) — at
-#   training time the actor's attention DOES see prior chunks' user_blocks
-#   when processing later chunks' tokens. This is a known SFT↔RL drift
-#   inherent to mapping N independent rollout turns onto one verl sample.
-#   Mitigations on the trainer side (per-chunk forward via attention mask
-#   reset) can be added later — for now we accept the drift, since the
-#   user-block portion has mask=0 and only assistant tokens contribute to
-#   the loss.
+# SFT ALIGNMENT (the 5 things that must match pass5_messages.py):
+#   1. Frame paths use 1-indexed numbering: frame_{ci*FPC + fi + 1:06d}.jpg
+#   2. Single video block per chunk (not multiple image blocks) — Qwen3-VL
+#      needs a single <|video_pad|> with video_metadata for MROPE temporal
+#      alignment.
+#   3. video_metadata.frames_indices = [window_start*FPC + i for i in range(n)]
+#      — drives Qwen3-VL's per-frame `<X.X seconds>` temporal MROPE token.
+#   4. Compress turn uses <compress_trigger range='a-b'/> with INTEGER
+#      chunk indices, no visual_window.
+#   5. Recall result rendering as <recall_result>{...}</recall_result>
+#      JSON dict (source/time/text).
 #
-# Registered under `"thinkstream_streaming_agent"` — that name is set by
-# CustomRLHFDataset.__getitem__ in thinkstream.py so verl picks this loop
-# up automatically for our rows.
+# DEFERRED (must be addressed before claiming SFT-RL parity):
+#   D1. Intra-chunk recall multi-turn shape (P0.6 from review).
+#       SFT shape B is: assistant→tool(recall_result + recalled_frames)
+#       →assistant within ONE chunk. Current loop puts recall_result on
+#       the NEXT chunk's user message AND drops recalled_frames. Effect:
+#       model trains on a different recall topology than SFT — recall is
+#       still learnable but with one-chunk delay and missing visual
+#       context. Fix needs: when kind=recall, immediately build a tool
+#       turn with recall_result + recalled_frames video block, append to
+#       prompt_ids with mask=0, generate again before advancing chunk_idx.
+#   D2. Per-chunk attention reset / training-time per-chunk forward
+#       (P0.4 / P0.3). At training time verl's actor sees the stitched
+#       long sequence; user-block tokens have mask=0 so they don't
+#       contribute to loss, but attention activations at assistant
+#       positions still see prior chunks' user_blocks. Real fix is a
+#       block-diagonal attention mask in actor forward, which is a verl
+#       trainer change (not local to the recipe). Until then, the
+#       gradient is correct for the loss but attention context differs
+#       from rollout-time per-chunk independence.
+#
+# verl AgentLoopOutput stitching:
+#   output.prompt_ids   = [system + user_q]  (the COMMON prefix)
+#   output.response_ids = [user_block_0 + asst_0 + user_block_1 + asst_1 + ...]
+#   output.response_mask = [0...0 | 1...1 | 0...0 | 1...1 | ...]
+#   output.multi_modal_data["videos"] = list of (video_tensor, metadata) per chunk
+#
+# Registered under `"thinkstream_streaming_agent"`.
 from __future__ import annotations
 
 import json
@@ -74,12 +89,14 @@ logger = logging.getLogger(__file__)
 logger.setLevel(os.getenv("VERL_LOGGING_LEVEL", "WARN"))
 
 
-# ---------------------------------------------------------------------------
-# Frame loading — pure helpers, no verl dependency.
-# ---------------------------------------------------------------------------
+# Token budget for compress system trigger (matches SFT default in
+# scripts.agent_data_v5.config.RECENT_THINKS_TOKEN_BUDGET; we estimate
+# tokens at ~1.3× whitespace word count to avoid pulling in tiktoken).
+DEFAULT_COMPRESS_TOKEN_THRESHOLD = 3200
+
+
 def _resolve_frame_dir(video_path: str, frames_root: str) -> Optional[Path]:
-    """Find the pre-extracted frame directory for a video (matches the
-    layout pass1a writes: frames_root/<video_stem>/frame_*.jpg)."""
+    """Find the pre-extracted frame directory for a video."""
     if not video_path or not frames_root:
         return None
     root = Path(frames_root)
@@ -95,60 +112,84 @@ def _resolve_frame_dir(video_path: str, frames_root: str) -> Optional[Path]:
     return None
 
 
-def _load_chunk_frames(
+def _chunk_frame_paths(
     video_path: str,
     frames_root: str,
     chunk_idx: int,
     frames_per_chunk: int = 2,
-) -> List[Any]:
-    """Load `frames_per_chunk` PIL Images for chunk `chunk_idx`.
-    Frame indexing: frame_dir / "frame_{i:06d}.jpg", chunk_idx maps to
-    indices [chunk_idx*fpc, (chunk_idx+1)*fpc). Returns [] if the dir is
-    missing or doesn't have enough frames — caller falls back to text-only.
+) -> List[str]:
+    """Return absolute frame_path strings for chunk `chunk_idx`.
+
+    Frame numbering matches SFT (pass5_messages.py:134, pipeline.py:321):
+      frame_{ci * FPC + fi + 1:06d}.jpg     (1-indexed!)
+    Returns [] if any frame is missing — caller falls back to text-only.
     """
-    try:
-        from PIL import Image
-    except ImportError:
-        return []
     frame_dir = _resolve_frame_dir(video_path, frames_root)
     if frame_dir is None:
         return []
-    start = chunk_idx * frames_per_chunk
-    images: List[Any] = []
-    for offset in range(frames_per_chunk):
-        idx = start + offset
-        for name in (f"frame_{idx:06d}.jpg", f"frame_{idx:05d}.jpg",
-                     f"frame_{idx:04d}.jpg", f"frame_{idx}.jpg"):
-            p = frame_dir / name
-            if p.exists():
-                try:
-                    img = Image.open(p).convert("RGB")
-                    images.append(img)
-                except Exception:
-                    pass
+    paths: List[str] = []
+    for fi in range(frames_per_chunk):
+        # 1-indexed file numbering — pass1a's ffmpeg `frame_%06d.jpg`
+        # default starts at frame_000001. Older test harnesses with
+        # 0-indexed dumps fall back to the next probe.
+        idx_one = chunk_idx * frames_per_chunk + fi + 1
+        candidates = [
+            frame_dir / f"frame_{idx_one:06d}.jpg",
+            frame_dir / f"frame_{idx_one:05d}.jpg",
+            frame_dir / f"frame_{idx_one:04d}.jpg",
+        ]
+        # 0-indexed legacy fallback
+        idx_zero = chunk_idx * frames_per_chunk + fi
+        candidates.extend([
+            frame_dir / f"frame_{idx_zero:06d}.jpg",
+            frame_dir / f"frame_{idx_zero:05d}.jpg",
+        ])
+        chosen: Optional[Path] = None
+        for c in candidates:
+            if c.exists():
+                chosen = c
                 break
-    if len(images) != frames_per_chunk:
-        return []
-    return images
+        if chosen is None:
+            return []
+        paths.append(str(chosen))
+    return paths
 
 
-def _load_visual_window(
+def _build_visual_window(
     video_path: str,
     frames_root: str,
     chunk_idx: int,
     visual_window_chunks: int,
     frames_per_chunk: int,
-) -> Tuple[List[Any], int, int]:
-    """Load the sliding visual window covering chunks [start..chunk_idx]
-    where start = max(0, chunk_idx - visual_window_chunks + 1).
-    Returns (flat_frames, window_start_chunk, window_end_chunk).
+    chunk_sec: float = 1.0,
+) -> Tuple[List[str], Dict[str, Any], int, int]:
+    """Build the sliding visual window for chunk N.
+
+    Returns:
+      flat_paths:     all frame paths in window order (window_start..N)
+      video_metadata: Qwen3-VL metadata dict (fps, frames_indices,
+                      total_num_frames) — drives MROPE temporal anchor
+      window_start_chunk, window_end_chunk
+
+    Mirrors SFT's pass5_messages.py:140-161 exactly.
     """
-    start = max(0, chunk_idx - visual_window_chunks + 1)
-    end = chunk_idx
-    flat: List[Any] = []
-    for c in range(start, end + 1):
-        flat.extend(_load_chunk_frames(video_path, frames_root, c, frames_per_chunk))
-    return flat, start, end
+    window_start = max(0, chunk_idx - visual_window_chunks + 1)
+    window_end = chunk_idx
+    flat_paths: List[str] = []
+    for c in range(window_start, window_end + 1):
+        cf = _chunk_frame_paths(video_path, frames_root, c, frames_per_chunk)
+        if not cf:
+            return [], {}, window_start, window_end
+        flat_paths.extend(cf)
+    n_frames = len(flat_paths)
+    metadata = {
+        "fps": float(frames_per_chunk) / float(chunk_sec),
+        "frames_indices": [
+            window_start * frames_per_chunk + i for i in range(n_frames)
+        ],
+        "total_num_frames": (chunk_idx + 1) * frames_per_chunk,
+    }
+    return flat_paths, metadata, window_start, window_end
 
 
 # ---------------------------------------------------------------------------
@@ -160,12 +201,17 @@ def _retrieve_from_memory(
     query_text: str,
     time_range: Optional[Tuple[float, float]] = None,
     top_k: int = 3,
-) -> str:
+) -> Dict[str, Any]:
+    """Return a recall_result dict (source/time/text) for inline JSON
+    serialisation as <recall_result>...</recall_result> on the NEXT chunk's
+    user message. (True intra-chunk multi-turn recall — assistant tool_call
+    → user/tool recall_result+frames → assistant answer — is deferred.)
+    """
     qtext = (query_text or "").lower()
     keywords = [w for w in re.findall(r"[a-z0-9]+", qtext) if len(w) >= 3]
     if not keywords:
-        return "(empty query — nothing to retrieve)"
-    candidates: List[Tuple[float, str]] = []
+        return {"source": "memory", "time": "", "text": ""}
+    candidates: List[Tuple[float, str, str]] = []
     for entry in state_compressed or []:
         text = entry.get("text", "") or ""
         if not text:
@@ -182,8 +228,8 @@ def _retrieve_from_memory(
             continue
         tr_str = ""
         if entry.get("time_range"):
-            tr_str = f"[{entry['time_range'][0]}-{entry['time_range'][1]}s] "
-        candidates.append((score, f"{tr_str}{text}"))
+            tr_str = f"{entry['time_range'][0]}-{entry['time_range'][1]}s"
+        candidates.append((score, tr_str, text))
     for entry in state_recent or []:
         text = entry.get("text", "") or ""
         if not text:
@@ -196,16 +242,33 @@ def _retrieve_from_memory(
         score = sum(1 for kw in keywords if kw in text.lower())
         if score == 0:
             continue
-        candidates.append((score, f"[chunk {chunk}] {text}"))
+        candidates.append((score, f"chunk {chunk}", text))
     if not candidates:
-        return "(no relevant past observation found for these keywords)"
+        return {"source": "memory", "time": "", "text": "(no relevant past observation)"}
     candidates.sort(key=lambda x: x[0], reverse=True)
-    return "\n".join(text for _, text in candidates[:top_k])
+    top = candidates[:top_k]
+    return {
+        "source": "memory",
+        "time": "; ".join(t for _, t, _ in top if t),
+        "text": " | ".join(t for _, _, t in top),
+    }
+
+
+def _estimate_recent_thinks_tokens(recent_thinks: List[Dict[str, Any]]) -> int:
+    """Rough word-based token count for the compress trigger threshold.
+    Matches SFT's RECENT_THINKS_TOKEN_BUDGET semantics — a coarse upper
+    bound is fine since vLLM has its own tokenizer for the actual text."""
+    total_words = 0
+    for t in recent_thinks or []:
+        text = t.get("text") if isinstance(t, dict) else str(t)
+        if text:
+            total_words += len(text.split())
+    return int(total_words * 1.3)  # ~1.3 tokens per word for English
 
 
 # ---------------------------------------------------------------------------
-# verl-side registration. Wrapped in a function so the module is importable
-# in dev environments that lack verl/ray/torch.
+# verl-side registration. Wrapped so the module is importable in dev
+# environments lacking verl/ray/torch.
 # ---------------------------------------------------------------------------
 def _register_streaming_agent_loop():
     from verl.experimental.agent_loop.agent_loop import (  # type: ignore
@@ -228,12 +291,7 @@ def _register_streaming_agent_loop():
 
     @register("thinkstream_streaming_agent")
     class ThinkStreamStreamingAgentLoop(AgentLoopBase):
-        """MemAgent-style chunk-level rollout for streaming video.
-
-        Each chunk = one independent vLLM generate request with a freshly
-        constructed prompt that includes a sliding visual window. See the
-        file header for the KV-cache reasoning.
-        """
+        """MemAgent-style chunk-level rollout for streaming video."""
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
@@ -246,44 +304,64 @@ def _register_streaming_agent_loop():
                 os.environ.get("THINKSTREAM_FRAMES_ROOT", "")
             )
             self.frames_per_chunk = int(getattr(mt, "frames_per_chunk", 2) or 2)
-            # Sliding visual window — must match SFT's VISUAL_WINDOW_CHUNKS
-            # (16 in scripts.agent_data_v5.config) so RL's chunk N sees the
-            # same frame distribution that SFT trained chunk N on.
             self.visual_window_chunks = int(
                 getattr(mt, "visual_window_chunks", 16) or 16
             )
-            self.recall_stub_text = getattr(
-                mt, "recall_stub_text",
-                "(no relevant past observation found)",
+            self.chunk_sec = float(getattr(mt, "chunk_sec", 1.0) or 1.0)
+            self.compress_token_threshold = int(
+                getattr(mt, "compress_token_threshold",
+                        DEFAULT_COMPRESS_TOKEN_THRESHOLD)
+                or DEFAULT_COMPRESS_TOKEN_THRESHOLD
             )
 
         # -------------------------------------------------------------------
         # Per-chunk user-side text. Mirrors SFT's
         # build_per_timestep_messages_v12 layout so train/RL distributions
-        # line up. Visual frames are inserted as image content blocks
-        # ahead of this text in the same user message.
+        # line up. The video block is rendered separately as a content
+        # block of type "video" (Qwen3-VL <|video_pad|> with frames_indices).
         # -------------------------------------------------------------------
-        def _render_chunk_user_text(
+        def _build_chunk_user_content(
             self,
             *,
             state: "VideoTrajectoryState",
             chunk_idx: int,
+            window_paths: List[str],
+            window_metadata: Dict[str, Any],
             window_start_chunk: int,
             window_end_chunk: int,
             question: str,
             ask_chunks: List[int],
-            recall_result: Optional[str],
-            compress_trigger: bool,
-            visual_injected: bool,
-        ) -> str:
-            parts: List[str] = []
-            marker = (
-                f"<chunk_update idx={chunk_idx} t={chunk_idx}-{chunk_idx + 1}s "
-                f"visual_window={window_start_chunk}-{window_end_chunk}/>"
-            )
-            if not visual_injected:
-                marker += " (no_frames — frames_root unset or files missing)"
-            parts.append(marker)
+            recall_result: Optional[Dict[str, Any]],
+            compress_trigger_range: Optional[Tuple[int, int]],
+            inter_chunk: bool,
+        ) -> List[Dict[str, Any]]:
+            """Build the user content list for chunk N. inter_chunk=True
+            (compress turn) skips the visual_window — matches SFT shape C."""
+            content: List[Dict[str, Any]] = []
+
+            if not inter_chunk:
+                # Visual window header (text) + video block (frames+metadata).
+                vw_header = json.dumps({
+                    "start": window_start_chunk * self.chunk_sec,
+                    "end": (window_end_chunk + 1) * self.chunk_sec,
+                    "frames": len(window_paths),
+                    "current_time": [
+                        chunk_idx * self.chunk_sec,
+                        (chunk_idx + 1) * self.chunk_sec,
+                    ],
+                })
+                content.append({
+                    "type": "text",
+                    "text": f"<visual_window>{vw_header}</visual_window>",
+                })
+                if window_paths:
+                    content.append({
+                        "type": "video",
+                        "video": window_paths,
+                        "video_metadata": window_metadata,
+                    })
+
+            # Memory block (always; even on compress turn).
             try:
                 mem_text = format_memory_block({
                     "compressed_summaries": state.compressed_summaries,
@@ -291,22 +369,44 @@ def _register_streaming_agent_loop():
                 })
             except Exception:
                 mem_text = ""
-            if mem_text:
-                parts.append(f"<memory>\n{mem_text}\n</memory>")
-            if question and ask_chunks and chunk_idx >= min(ask_chunks):
-                parts.append(f"<query>{question}</query>")
-            if recall_result is not None:
-                parts.append(f"<recall_result>{recall_result}</recall_result>")
-            if compress_trigger:
-                parts.append(
-                    "<compress_trigger range='recent'/>  "
-                    "(memory token-budget exceeded; emit a compress tool_call this turn)"
-                )
-            return "\n".join(parts)
+            mem_prefix = "\n" if not inter_chunk else ""
+            content.append({
+                "type": "text",
+                "text": f"{mem_prefix}<memory>\n{mem_text}\n</memory>",
+            })
+
+            # Recall result (single-turn legacy form — SFT shape A inline).
+            # True shape-B intra-chunk multi-turn is a deferred follow-up.
+            if recall_result is not None and not inter_chunk:
+                rr_json = json.dumps({
+                    "source": recall_result.get("source", ""),
+                    "time": recall_result.get("time", ""),
+                    "text": recall_result.get("text", ""),
+                }, ensure_ascii=False)
+                content.append({
+                    "type": "text",
+                    "text": f"\n<recall_result>{rr_json}</recall_result>",
+                })
+
+            # User input — either the question (when it fires) or the
+            # compress_trigger system event.
+            if compress_trigger_range is not None:
+                tr0, tr1 = compress_trigger_range
+                content.append({
+                    "type": "text",
+                    "text": f"<compress_trigger range='{int(tr0)}-{int(tr1)}'/>",
+                })
+            elif question and ask_chunks and chunk_idx >= min(ask_chunks):
+                content.append({
+                    "type": "text",
+                    "text": f"\n<user_input>{question}</user_input>",
+                })
+
+            return content
 
         async def _execute_recall(
             self, args: Dict[str, Any], state: "VideoTrajectoryState"
-        ) -> str:
+        ) -> Dict[str, Any]:
             query = (args.get("query") or args.get("keywords") or
                      args.get("text") or "")
             time_range = args.get("time_range")
@@ -322,16 +422,29 @@ def _register_streaming_agent_loop():
                     state.recent_thinks or [],
                     query_text=query,
                     time_range=tr_tuple,
-                    top_k=3,
                 )
             except Exception as e:
                 logger.warning("recall retrieval failed: %s", e)
-                return self.recall_stub_text
+                return {"source": "memory", "time": "", "text": "(retrieval error)"}
 
-        async def _execute_compress(
-            self, args: Dict[str, Any], state: "VideoTrajectoryState"
-        ) -> None:
-            return None
+        def _check_compress_trigger(
+            self, state: "VideoTrajectoryState"
+        ) -> Optional[Tuple[int, int]]:
+            """Return (start_chunk, end_chunk) range to compress, or None.
+            Fires when recent_thinks token estimate exceeds threshold."""
+            est = _estimate_recent_thinks_tokens(state.recent_thinks)
+            if est < self.compress_token_threshold:
+                return None
+            if not state.recent_thinks:
+                return None
+            chunks = [
+                int(t.get("chunk", -1))
+                for t in state.recent_thinks
+                if isinstance(t, dict) and t.get("chunk", -1) >= 0
+            ]
+            if not chunks:
+                return None
+            return (min(chunks), max(chunks))
 
         async def run(self, sampling_params: dict[str, Any], **kwargs) -> "AgentLoopOutput":
             metrics: Dict[str, Any] = {}
@@ -345,10 +458,8 @@ def _register_streaming_agent_loop():
             question = extra_info.get("question", "")
             ask_chunks = list(extra_info.get("ask_chunks") or [])
 
-            # ── COMMON PREFIX: [system + user(question)]. Tokenized once.
-            # Every chunk's generate request shares this byte-identical
-            # prefix, so vLLM's prefix cache serves it for the rest of the
-            # trajectory at zero prefill cost.
+            # ── Initial prompt: [system + user(question)]. Cached on vLLM
+            # side; never re-prefilled across chunks.
             initial_messages = list(kwargs["raw_prompt"])
             initial_mm = await self.process_vision_info(initial_messages)
             initial_videos: List[Any] = list(initial_mm.get("videos") or [])
@@ -359,104 +470,86 @@ def _register_streaming_agent_loop():
                 videos=initial_videos if initial_videos else None,
             )
 
-            # Accumulators: everything AFTER initial_prompt_ids that verl
-            # will treat as response_ids. user-block tokens get mask=0,
-            # assistant tokens get mask=1.
             response_ids: List[int] = []
             response_mask: List[int] = []
             response_logprobs: List[float] = []
             any_logprobs_returned = False
-
-            # multi_modal_data alignment: every chunk's user_block contains
-            # `len(chunk_window_frames)` <|image_pad|> tokens. The actor
-            # forward at training time will see all those image_pad tokens
-            # in the concatenated response_ids, and verl matches them to
-            # multi_modal_data["images"] BY POSITION. So we accumulate the
-            # window frames in chunk order — repeats included — to keep the
-            # image_pad ↔ PIL.Image alignment exact.
-            accumulated_images: List[Any] = list(initial_mm.get("images") or [])
-
-            # Per-chunk assistant token spans within response_ids — used by
-            # the thinkstream_per_chunk reward_manager to broadcast per-
-            # chunk reward to the correct token positions. (start, end)
-            # are slice indices into response_ids; the actor's last
-            # generated token of chunk N lives at response_ids[end-1].
             chunk_asst_spans: List[Tuple[int, int]] = []
-
-            state = VideoTrajectoryState(video_uid=str(video_id), chunk_idx=0)
-            recall_result_for_next: Optional[str] = None
-            compress_trigger_for_next = False
-            num_assistant_turns = 0
-            n_chunks_with_frames = 0
-            n_chunks_text_only = 0
-            window_frames: List[Any] = []
-
-            # Track per-chunk parsed kinds + assistant text inline so the
-            # reward_manager doesn't re-decode response_ids slices.
             chunk_kinds: List[str] = []
             chunk_asst_texts: List[str] = []
 
-            for chunk_idx in range(n_chunks):
+            # multi_modal_data accumulator: one (tensor, metadata) per
+            # chunk that injected a video block. NOT a flat per-frame
+            # PIL list, so memory cost is O(n_chunks) tensors not
+            # O(n_chunks × window × fpc) PIL images. (P1.11 fix.)
+            accumulated_videos: List[Any] = list(initial_videos)
+
+            state = VideoTrajectoryState(video_uid=str(video_id), chunk_idx=0)
+            recall_result_for_next: Optional[Dict[str, Any]] = None
+            num_assistant_turns = 0
+            n_chunks_with_frames = 0
+            n_chunks_text_only = 0
+            n_chunks_compress_inter = 0
+
+            chunk_idx = 0
+            while chunk_idx < n_chunks:
                 if not state.is_active:
                     break
 
-                # ── Sliding visual window: load frames for chunks
-                # [max(0, chunk_idx - visual_window_chunks + 1) .. chunk_idx].
-                # chunk 0's frames roll out of this window once chunk_idx
-                # exceeds visual_window_chunks - 1. Those frames appear in
-                # NO subsequent chunk's prompt → not in vLLM's KV for
-                # those turns.
-                window_frames = []
+                # ── Decide turn type: compress trigger fires BETWEEN
+                # chunks (inter_chunk=True, no visual_window).
+                compress_range = self._check_compress_trigger(state)
+                inter_chunk = compress_range is not None
+
+                # ── Sliding visual window (skipped for compress turns).
+                window_paths: List[str] = []
+                window_metadata: Dict[str, Any] = {}
                 window_start_chunk = chunk_idx
                 window_end_chunk = chunk_idx
-                if self.frames_root and video_path:
-                    window_frames, window_start_chunk, window_end_chunk = _load_visual_window(
-                        video_path, self.frames_root, chunk_idx,
-                        visual_window_chunks=self.visual_window_chunks,
-                        frames_per_chunk=self.frames_per_chunk,
+                if not inter_chunk and self.frames_root and video_path:
+                    window_paths, window_metadata, window_start_chunk, window_end_chunk = (
+                        _build_visual_window(
+                            video_path, self.frames_root, chunk_idx,
+                            visual_window_chunks=self.visual_window_chunks,
+                            frames_per_chunk=self.frames_per_chunk,
+                            chunk_sec=self.chunk_sec,
+                        )
                     )
-                visual_injected = bool(window_frames)
-                if visual_injected:
-                    n_chunks_with_frames += 1
-                else:
-                    n_chunks_text_only += 1
+                visual_injected = bool(window_paths) and not inter_chunk
 
-                # ── Build chunk N's INDEPENDENT user message.
-                user_text = self._render_chunk_user_text(
+                # ── Build user content + chunk_messages.
+                user_content = self._build_chunk_user_content(
                     state=state,
                     chunk_idx=chunk_idx,
+                    window_paths=window_paths,
+                    window_metadata=window_metadata,
                     window_start_chunk=window_start_chunk,
                     window_end_chunk=window_end_chunk,
                     question=question,
                     ask_chunks=ask_chunks,
                     recall_result=recall_result_for_next,
-                    compress_trigger=compress_trigger_for_next,
-                    visual_injected=visual_injected,
+                    compress_trigger_range=compress_range,
+                    inter_chunk=inter_chunk,
                 )
                 recall_result_for_next = None
-                compress_trigger_for_next = False
-
-                if visual_injected:
-                    user_content: List[Dict[str, Any]] = (
-                        [{"type": "image"} for _ in window_frames]
-                        + [{"type": "text", "text": user_text}]
-                    )
-                else:
-                    user_content = [{"type": "text", "text": user_text}]
 
                 chunk_messages = list(initial_messages) + [
                     {"role": "user", "content": user_content},
                 ]
 
-                # ── Tokenize the FULL chunk prompt (system + user_q + this
-                # turn's user block). Independent each turn — no carry-over
-                # of prior turns' user blocks. vLLM matches the
-                # initial_prompt_ids prefix in its KV cache.
+                # Resolve images/videos for THIS chunk (the new user msg
+                # only — initial_messages were already processed once).
+                chunk_extra_mm = await self.process_vision_info([chunk_messages[-1]])
+                chunk_images = chunk_extra_mm.get("images") or []
+                chunk_videos = chunk_extra_mm.get("videos") or []
+
                 chunk_prompt_ids = await self.apply_chat_template(
                     chunk_messages,
                     tools=TOOLS_SCHEMA,
-                    images=window_frames if window_frames else None,
-                    videos=initial_videos if initial_videos else None,
+                    images=chunk_images if chunk_images else None,
+                    videos=(initial_videos + chunk_videos) if chunk_videos else (
+                        initial_videos if initial_videos else None
+                    ),
                 )
 
                 # Prompt-budget guard.
@@ -464,30 +557,27 @@ def _register_streaming_agent_loop():
                     break
                 user_block_len = len(chunk_prompt_ids) - len(initial_prompt_ids)
                 if user_block_len < 0:
-                    # apply_chat_template renormalised something unexpected — bail.
                     break
                 if len(response_mask) + user_block_len + 1 >= self.response_length:
                     break
 
                 # ── Generate INDEPENDENTLY. KV cache hits initial_prompt_ids
-                # prefix; visual_window + memory portion is a cache miss
-                # and gets prefilled fresh.
+                # prefix; visual_window + memory portion is a cache miss.
                 with simple_timer("generate_sequences", metrics):
                     output: TokenOutput = await self.server_manager.generate(
                         request_id=request_id,
                         prompt_ids=chunk_prompt_ids,
                         sampling_params=sampling_params,
-                        image_data=window_frames if window_frames else None,
-                        video_data=initial_videos if initial_videos else None,
+                        image_data=chunk_images if chunk_images else None,
+                        video_data=(initial_videos + chunk_videos) if chunk_videos else (
+                            initial_videos if initial_videos else None
+                        ),
                     )
                 assistant_ids = list(output.token_ids)
                 if not assistant_ids:
                     break
 
-                # ── Stitch into verl's expected (prompt + response) shape.
-                # The user-side block (everything in chunk_prompt_ids after
-                # initial_prompt_ids) gets mask=0 — verl won't compute
-                # actor loss on these. The assistant tokens get mask=1.
+                # ── Stitch into verl's expected shape.
                 user_block_ids = chunk_prompt_ids[len(initial_prompt_ids):]
                 response_ids.extend(user_block_ids)
                 response_mask.extend([0] * len(user_block_ids))
@@ -504,11 +594,13 @@ def _register_streaming_agent_loop():
                 asst_end = len(response_ids)
                 chunk_asst_spans.append((asst_start, asst_end))
 
-                # Accumulate this chunk's window frames into multi_modal_data
-                # so the actor's forward at training time can match every
-                # <|image_pad|> token in user_block_ids to a PIL.Image.
                 if visual_injected:
-                    accumulated_images.extend(window_frames)
+                    accumulated_videos.extend(chunk_videos)
+                    n_chunks_with_frames += 1
+                elif inter_chunk:
+                    n_chunks_compress_inter += 1
+                else:
+                    n_chunks_text_only += 1
 
                 num_assistant_turns += 1
 
@@ -521,42 +613,46 @@ def _register_streaming_agent_loop():
                 chunk_kinds.append(kind)
                 chunk_asst_texts.append(response_text)
 
+                # default_v12_update_state advances chunk_idx by +1 on
+                # EVERY turn — including compress. For inter-chunk
+                # compress turns we DON'T want to skip ahead in the
+                # video timeline, so we revert state.chunk_idx after.
+                pre_chunk_idx = state.chunk_idx
                 state = default_v12_update_state(state, response_text, chunk_idx)
-                # Append THIS turn's think to recent_thinks so the NEXT
-                # chunk's memory snapshot includes it. default_v12_update_state
-                # is a pure function shared with slyme — it intentionally
-                # doesn't do this so we do it here.
-                think_text = parsed.get("think") or ""
-                if think_text and kind in ("answer", "recall", "unknown"):
-                    state.recent_thinks.append({
-                        "chunk": chunk_idx, "text": think_text,
-                    })
+                if inter_chunk:
+                    # System event — don't consume a video chunk.
+                    state.chunk_idx = pre_chunk_idx
+                else:
+                    # Append think to recent_thinks for next turn's memory.
+                    think_text = parsed.get("think") or ""
+                    if think_text and kind in ("answer", "recall", "unknown"):
+                        state.recent_thinks.append({
+                            "chunk": chunk_idx, "text": think_text,
+                        })
 
                 if kind == "recall":
                     args = (parsed.get("tool_call") or {}).get("arguments") or {}
                     recall_result_for_next = await self._execute_recall(args, state)
-                elif kind == "compress":
-                    args = (parsed.get("tool_call") or {}).get("arguments") or {}
-                    await self._execute_compress(args, state)
 
                 if not state.is_active or state.is_done:
                     break
                 if len(response_mask) >= self.response_length:
                     break
 
-            num_turns = num_assistant_turns + 1  # +1 for initial system+user
+                # Advance video chunk pointer ONLY on non-compress turns.
+                if not inter_chunk:
+                    chunk_idx += 1
+                # On compress turn we re-enter the loop at the same
+                # chunk_idx; default_v12_update_state cleared the
+                # compressed range from recent_thinks already, so the
+                # next iteration's _check_compress_trigger should return
+                # None (loop progresses).
 
-            # multi_modal_data: hand verl the EXACT image list aligned to
-            # the <|image_pad|> tokens that appear in response_ids. Each
-            # chunk's user_block contributes len(chunk_window_frames)
-            # image_pad tokens; they appear in the same chronological order
-            # as the chunks they came from, so accumulated_images (which we
-            # extended in chunk order) is correctly aligned.
-            multi_modal_data = {}
-            if accumulated_images:
-                multi_modal_data["images"] = accumulated_images
-            if initial_videos:
-                multi_modal_data["videos"] = initial_videos
+            num_turns = num_assistant_turns + 1
+
+            multi_modal_data: Dict[str, Any] = {}
+            if accumulated_videos:
+                multi_modal_data["videos"] = accumulated_videos
 
             output_obj = AgentLoopOutput(
                 prompt_ids=initial_prompt_ids,
@@ -579,15 +675,14 @@ def _register_streaming_agent_loop():
                 "ts_chunks_used": float(num_assistant_turns),
                 "ts_chunks_with_frames": float(n_chunks_with_frames),
                 "ts_chunks_text_only": float(n_chunks_text_only),
+                "ts_chunks_compress_inter": float(n_chunks_compress_inter),
                 "ts_answer_chunk": float(
                     state.final_answer_chunk
                     if state.final_answer_chunk is not None else -1
                 ),
                 "ts_final_answer": state.final_answer or "",
-                # Per-chunk spans (start,end) into response_ids and the
-                # parsed action kind per chunk — consumed by
-                # ThinkStreamPerChunkRewardManager and compute_score's
-                # per-chunk action shaping.
+                # Per-chunk metadata for compute_score's per-chunk action
+                # shaping (folded into total `score` via GDPO α-mix).
                 "ts_chunk_asst_spans": chunk_asst_spans,
                 "ts_chunk_kinds": chunk_kinds,
                 "ts_chunk_asst_texts": chunk_asst_texts,
@@ -599,5 +694,5 @@ def _register_streaming_agent_loop():
 
 try:
     _register_streaming_agent_loop()
-except Exception as e:  # noqa: BLE001 — local dev tooling shouldn't crash.
+except Exception as e:  # noqa: BLE001
     logger.debug("ThinkStreamStreamingAgentLoop not registered: %s", e)
