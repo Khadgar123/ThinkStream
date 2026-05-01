@@ -173,11 +173,31 @@ async def run_pass1b(
         _run_state_change_only(enriched, client, video_id, semaphore)
         return enriched
 
+    # v12.11 (2026-05-01) — pass1b prompt compaction.
+    #
+    # Pre-fix audit (320 batch1 videos): prompt mean=22K tok, p90=41K tok,
+    # max=194K tok. Two compounding bloat sources:
+    #   (a) entity_list contains EVERY unique desc (~450/video), but
+    #       linking only matters for multi-chunk descs — singletons can't
+    #       link to anything and are deterministically id="desc_<i>".
+    #   (b) chunk_summary repeats full desc text in every chunk (~146 lines
+    #       × ~200 chars/line = 30K chars).
+    #
+    # Compaction:
+    #   1. Filter entity_list to multi-chunk descs only (≥2 distinct chunks).
+    #      Cuts entity count ~50% on most videos.
+    #   2. Assign short IDs (e0/e1/...) to those multi descs. chunk_summary
+    #      now references e<N>(action) instead of "<full desc> (action)".
+    #      Cuts chunk_summary ~5-8×.
+    #   3. Expected total: 22K tok median → ~4-5K tok (~4× faster TTFT).
+    multi_descs = sorted([d for d, c in desc_chunks.items() if len(set(c)) >= 2])
+    desc_to_short = {d: f"e{i}" for i, d in enumerate(multi_descs)}
+
     entity_list = "\n".join(
-        f"- chunks={sorted(set(chunks))} | desc: {desc}"
-        for desc, chunks in sorted(desc_chunks.items())
+        f"- {desc_to_short[d]} chunks={sorted(set(desc_chunks[d]))} | desc: {d}"
+        for d in multi_descs
     )
-    chunk_summary = _build_chunk_summary(enriched)
+    chunk_summary = _build_chunk_summary_compact(enriched, desc_to_short)
     prompt = COMBINED_LINK_AND_STATE_PROMPT.format(
         entity_list=entity_list,
         chunk_summary=chunk_summary,
@@ -213,6 +233,18 @@ async def run_pass1b(
                 if cidx is not None and cidx in chunk_map:
                     chunk_map[cidx]["state_changes"].append(change)
                     state_changes_applied = True
+
+    # v12.11 (2026-05-01): assign local IDs to singleton descs that the LLM
+    # never saw (we filtered them from entity_list to compact the prompt).
+    # Each singleton gets `solo_<i>` so downstream pass3a / search keys can
+    # still reference a stable id, and the model's group ids stay clean.
+    singleton_idx = 0
+    for desc, chunks in desc_chunks.items():
+        if desc in desc_to_id:
+            continue  # LLM already grouped this
+        # Single-chunk descs: assign local solo id deterministically.
+        desc_to_id[desc] = f"solo_{singleton_idx}"
+        singleton_idx += 1
 
     if desc_to_id:
         for cap in enriched:
@@ -375,6 +407,7 @@ async def _call_with_semaphore(client, prompt, max_tokens, temperature, request_
 
 
 def _build_chunk_summary(evidence: List[Dict]) -> str:
+    """Legacy full-desc chunk_summary (kept for run_pass1b_legacy + diagnostics)."""
     lines = []
     for cap in evidence:
         idx = cap.get("chunk_idx", 0)
@@ -389,6 +422,41 @@ def _build_chunk_summary(evidence: List[Dict]) -> str:
                 entities.append(desc)
         entity_str = ", ".join(entities) if entities else "(empty)"
         lines.append(f"chunk {idx} [{t[0]}-{t[1]}s]: {entity_str}")
+    return "\n".join(lines)
+
+
+def _build_chunk_summary_compact(
+    evidence: List[Dict],
+    desc_to_short: Dict[str, str],
+) -> str:
+    """v12.11 (2026-05-01): compact chunk_summary using short entity IDs.
+
+    Multi-chunk descs are referenced by their `e<N>` short id (defined in the
+    legend at the top of the prompt). Singleton descs (only 1 chunk) and
+    descs absent from the legend are emitted with abbreviated text (first
+    40 chars) to keep them identifiable while bounding line length.
+
+    Compression vs full-desc chunk_summary: typically 5-8× shorter.
+    """
+    lines = []
+    for cap in evidence:
+        idx = cap.get("chunk_idx", 0)
+        t = cap.get("time", [idx * AGENT_CHUNK_SEC, (idx + 1) * AGENT_CHUNK_SEC])
+        entities = []
+        for e in cap.get("visible_entities", []):
+            desc = e.get("desc", "unknown")
+            action = e.get("action", "")
+            short = desc_to_short.get(desc)
+            if short:
+                # Multi-chunk desc → reference by short id.
+                entities.append(f"{short}({action})" if action else short)
+            else:
+                # Singleton desc → keep abbreviated text so state_changes
+                # task can still see novel content. 40-char cap.
+                d_short = desc[:40] + ("…" if len(desc) > 40 else "")
+                entities.append(f"{d_short}({action})" if action else d_short)
+        entity_str = ", ".join(entities) if entities else "(empty)"
+        lines.append(f"c{idx}[{t[0]}-{t[1]}s]: {entity_str}")
     return "\n".join(lines)
 
 
