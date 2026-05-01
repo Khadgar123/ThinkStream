@@ -1067,13 +1067,50 @@ def _calc_rewards_v12_trajectory(
                 text = tokenizer.decode(tokens, skip_special_tokens=False)
                 chunk_texts.append(text)
                 parsed = parse_agent_output_v12(text)
+
+                # v12.11 audit fix #3 (2026-05-01): generated_tokens for recall
+                # chunks now stores ONLY the second-pass answer (P0.6 fix).
+                # The first-pass tool_call lives separately on the chunk_result
+                # under "recall_first_pass_text". Without re-parsing it here,
+                # n_recall / spam / behavior_recall_used_rate would all read
+                # zero for actual recall trajectories. Parse first-pass when
+                # present, classify the chunk as kind="recall" (its semantic
+                # action), and keep the answer_text from second-pass for
+                # outcome scoring.
+                first_pass_text = cr.get("recall_first_pass_text", "") or ""
+                first_pass_parsed = (
+                    parse_agent_output_v12(first_pass_text)
+                    if first_pass_text else None
+                )
+                is_recall_chunk = (
+                    first_pass_parsed is not None
+                    and first_pass_parsed.get("kind") == "recall"
+                )
+
                 chunk_outputs.append({
                     "chunk_idx": cr.get("chunk_idx"),
-                    "kind": parsed.get("kind", "unknown"),
+                    # Effective semantic kind: "recall" if first-pass was a
+                    # recall tool_call, otherwise the second-pass kind.
+                    "kind": "recall" if is_recall_chunk else parsed.get("kind", "unknown"),
                     "answer_text": parsed.get("answer_text"),
-                    "tool_call": parsed.get("tool_call"),
+                    "tool_call": (
+                        first_pass_parsed.get("tool_call") if is_recall_chunk
+                        else parsed.get("tool_call")
+                    ),
+                    # v12.11: keep both passes for downstream format-reward audit.
+                    "recall_first_pass_kind": (
+                        first_pass_parsed.get("kind") if first_pass_parsed
+                        else None
+                    ),
+                    "recall_first_pass_format_error": (
+                        bool(first_pass_parsed.get("format_error")) if first_pass_parsed
+                        else None
+                    ),
+                    "format_error": bool(parsed.get("format_error")),
                 })
-                if parsed.get("kind") == "recall":
+                # Counters: recall counted by first-pass presence; compress by
+                # second-pass parser output (compress is single-turn).
+                if is_recall_chunk:
                     n_recall += 1
                 elif parsed.get("kind") == "compress":
                     n_compress += 1
@@ -1158,15 +1195,36 @@ def _calc_rewards_v12_trajectory(
             all_masks["silent_quality"].append(
                 1.0 if silent_res["n_chunks_scored"] > 0 else 0.0
             )
-            # v12.11 P1.3 (2026-05-01): aggregate per-rollout behavior counters
-            # for ablation_runner. Stashed into module-global; emitted by
-            # grpo_global_metrics under behavior_* keys.
+            # v12.11 P1.3 (2026-05-01) + audit fix #5: aggregate per-rollout
+            # behavior counters with class-specific denominators. n_correct_*
+            # use gold-class as denominator, not n_chunks_scored.
             _BEHAVIOR_AGG["n_chunks_scored"] += silent_res.get("n_chunks_scored", 0)
             _BEHAVIOR_AGG["n_correct_silent"] += silent_res.get("n_correct_silent", 0)
             _BEHAVIOR_AGG["n_hallucinate"] += silent_res.get("n_hallucinate", 0)
             _BEHAVIOR_AGG["n_missed"] += silent_res.get("n_missed", 0)
-            # Recall + compress decision usage rate (any chunk where model
-            # actually emitted recall/compress, regardless of correctness).
+            # Compute gold-class denominators + n_correct_response from
+            # gold_action_per_chunk + chunk_outputs. silent_quality scoring
+            # didn't expose n_correct_response (its score is "0.0 — outcome
+            # handles correctness"); we re-derive here.
+            by_chunk = {int(o.get("chunk_idx", -1)): o for o in chunk_outputs}
+            for ci_str, gold_action in (gold_action_per_chunk or {}).items():
+                try:
+                    ci = int(ci_str)
+                except Exception:
+                    continue
+                if ci not in by_chunk:
+                    continue
+                model_kind = by_chunk[ci].get("kind", "unknown")
+                model_ans = (by_chunk[ci].get("answer_text") or "").strip()
+                model_silent = (model_kind == "answer" and not model_ans)
+                model_response = (model_kind == "answer" and bool(model_ans))
+                if gold_action in ("silent", "recall_silent"):
+                    _BEHAVIOR_AGG["n_gold_silent"] += 1
+                elif gold_action in ("response", "recall_response"):
+                    _BEHAVIOR_AGG["n_gold_response"] += 1
+                    if model_response:
+                        _BEHAVIOR_AGG["n_correct_response"] += 1
+            # Recall + compress decision usage rate.
             for co in chunk_outputs:
                 k = co.get("kind", "")
                 if k == "recall":
@@ -1268,9 +1326,16 @@ _LAST_GDPO_DIAG: Dict[str, float] = {}
 _BEHAVIOR_AGG: Dict[str, int] = {
     "n_chunks_total": 0,
     "n_chunks_scored": 0,
-    "n_correct_silent": 0,
-    "n_hallucinate": 0,
-    "n_missed": 0,
+    # v12.11 audit fix #5 (2026-05-01): split denominators to keep
+    # behavior_*_acc semantically clean. Previously response/silent acc
+    # both used n_chunks_scored as denominator → "mixed correctness", not
+    # per-class accuracy. Now we count gold-class denominators separately.
+    "n_gold_silent": 0,        # gold action ∈ {silent, recall_silent}
+    "n_gold_response": 0,      # gold action ∈ {response, recall_response}
+    "n_correct_silent": 0,     # gold-silent ∧ model emits empty answer
+    "n_correct_response": 0,   # gold-response ∧ model emits non-empty answer
+    "n_hallucinate": 0,        # gold-silent ∧ model talked
+    "n_missed": 0,             # gold-response ∧ model silent
     "n_recall_emitted": 0,
     "n_compress_emitted": 0,
     "n_compress_well_formed": 0,
@@ -1278,23 +1343,28 @@ _BEHAVIOR_AGG: Dict[str, int] = {
 
 
 def _drain_behavior_metrics() -> Dict[str, float]:
-    """Pop & reset _BEHAVIOR_AGG counters; return the behavior_* metric dict."""
+    """Pop & reset _BEHAVIOR_AGG counters; return the behavior_* metric dict.
+
+    v12.11 audit fix #5: per-class accuracies now use the proper class-specific
+    denominator (gold-silent / gold-response), not all-scored-chunks. This is
+    what ablation_runner needs to compare A0 vs A1 cleanly.
+    """
     global _BEHAVIOR_AGG
-    n_scored = _BEHAVIOR_AGG["n_chunks_scored"]
     n_total = max(1, _BEHAVIOR_AGG["n_chunks_total"])
-    n_recall_chunks = max(1, _BEHAVIOR_AGG["n_recall_emitted"])
+    n_gold_silent = max(1, _BEHAVIOR_AGG["n_gold_silent"])
+    n_gold_response = max(1, _BEHAVIOR_AGG["n_gold_response"])
     n_compress_chunks = max(1, _BEHAVIOR_AGG["n_compress_emitted"])
     out = {
         "behavior_n_chunks_total": _BEHAVIOR_AGG["n_chunks_total"],
-        "behavior_response_acc": (
-            (_BEHAVIOR_AGG["n_correct_silent"]
-             + (n_scored - _BEHAVIOR_AGG["n_correct_silent"]
-                - _BEHAVIOR_AGG["n_hallucinate"]
-                - _BEHAVIOR_AGG["n_missed"])) / max(1, n_scored)
-        ),
-        "behavior_silent_acc": _BEHAVIOR_AGG["n_correct_silent"] / max(1, n_scored),
-        "behavior_hallucinate_rate": _BEHAVIOR_AGG["n_hallucinate"] / max(1, n_scored),
-        "behavior_missed_rate": _BEHAVIOR_AGG["n_missed"] / max(1, n_scored),
+        "behavior_n_gold_silent": _BEHAVIOR_AGG["n_gold_silent"],
+        "behavior_n_gold_response": _BEHAVIOR_AGG["n_gold_response"],
+        # Class-conditional accuracies (proper denominators).
+        "behavior_silent_acc": _BEHAVIOR_AGG["n_correct_silent"] / n_gold_silent,
+        "behavior_response_acc": _BEHAVIOR_AGG["n_correct_response"] / n_gold_response,
+        # Error rates: hallucinate normalized by gold-silent; missed by gold-response.
+        "behavior_hallucinate_rate": _BEHAVIOR_AGG["n_hallucinate"] / n_gold_silent,
+        "behavior_missed_rate": _BEHAVIOR_AGG["n_missed"] / n_gold_response,
+        # Tool usage rates (across all chunks).
         "behavior_recall_used_rate": _BEHAVIOR_AGG["n_recall_emitted"] / n_total,
         "behavior_compress_format_rate": (
             _BEHAVIOR_AGG["n_compress_well_formed"] / n_compress_chunks
@@ -1553,30 +1623,34 @@ def _build_rollout_messages_single_chunk(
         {"role": "assistant", "content": [{"type": "text", "text": gen_text}]}
     )
 
-    # v12.11 P0.7 fix (2026-05-01): video_meta must describe the FULL 16s
-    # visual_window (VISUAL_WINDOW_CHUNKS × frames_per_chunk frames), not the
-    # 1-second window stored on chunk_result. The rollout-time visual context
-    # at chunk N is [max(0, N-15), N+1] (16s sliding window); video_meta
-    # below mirrors that range so loader produces the correct frame count
-    # and chunk_metadatas (used for Qwen3-VL `<X.X seconds>` text tokens).
+    # v12.11 (2026-05-01) — TWO-step fix for the per-chunk video reconstruction:
     #
-    # NOTE: this fixes the train/infer divergence where video_meta said
-    # num_chunks=1 (1s of frames) but step_messages had 32 frames from the
-    # 16s window — placeholder count mismatch caused MROPE drift.
+    # Original P0.7 (d50e565): set num_chunks=VISUAL_WINDOW_CHUNKS so loader
+    # would produce 16 splits of 2 frames each. CAUGHT in audit (this commit):
+    # the captured step_messages user turn contains a SINGLE video item with
+    # 32 frames, and Qwen3-VL chat-templated text has only ONE <video_pad>
+    # placeholder. The processor needs split_videos length == placeholder
+    # count → 16 != 1 → tokenization explodes or silently truncates.
+    #
+    # Correct fix: num_chunks=1 with frames_per_chunk=32 (= VISUAL_WINDOW_CHUNKS
+    # × frames_per_chunk_runtime). Loader produces ONE video tensor of 32
+    # frames matching the single placeholder. Range still covers the 16s
+    # visual_window so MROPE timestamps align with rollout.
     from thinkstream.data.agent_protocol import VISUAL_WINDOW_CHUNKS
     chunk_idx = int(chunk_result.get("chunk_idx", 0))
+    chunk_sec = chunk_result["window_end"] - chunk_result["window_start"]
     visual_window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
-    visual_window_end_exclusive = chunk_idx + 1  # exclusive in chunk units
+    visual_window_end_exclusive = chunk_idx + 1
     n_window_chunks = visual_window_end_exclusive - visual_window_start
 
     video_meta = build_video_meta(
         abs_path=abs_video_path,
-        total_start=visual_window_start * (chunk_result["window_end"] - chunk_result["window_start"]),
-        total_end=visual_window_end_exclusive * (chunk_result["window_end"] - chunk_result["window_start"]),
-        num_chunks=n_window_chunks,
-        frames_per_chunk=frames_per_chunk,
+        total_start=visual_window_start * chunk_sec,
+        total_end=visual_window_end_exclusive * chunk_sec,
+        num_chunks=1,                                      # ← one video item
+        frames_per_chunk=n_window_chunks * frames_per_chunk,  # ← all frames in it
     )
-    video_chunk_size = chunk_result["window_end"] - chunk_result["window_start"]
+    video_chunk_size = chunk_sec  # per-RoPE-chunk size unchanged
     return messages, video_meta, video_chunk_size
 
 
