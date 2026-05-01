@@ -324,8 +324,20 @@ PASS_CONFIG = {
         # COMPRESS_PROMPT — both are template-driven with hard rules
         # (length, "what's NEW only", structured summary JSON), no CoT
         # required. Removing thinking matches pass3 family + cuts wall-time.
-        "max_tokens_observation": 16384,
-        "max_tokens_compress": 16384,
+        # v12.11 hotfix (2026-05-01): 16384 → tight values right-sized to
+        # actual output target. KV cache reservation per request is bounded
+        # by max_tokens; reducing 16K → 1024/4096 frees ~75% of reserved KV
+        # → vLLM batches more concurrently → throughput up 2-3×.
+        # User-confirmed safety margins:
+        #   observation: think target 40-80 tok → 1024 = 12× margin.
+        #   compress:    summary text ≤ SUMMARY_TOKENS_MAX=280 + tags +
+        #     optional JSON wrapper ≈ 320 tok worst case. 4096 = 13× margin
+        #     (JSON CANNOT be truncated mid-way; keep generous; user
+        #     directive 2026-05-01).
+        # Visual window NOT touched (kept at VISUAL_WINDOW_CHUNKS=16) to
+        # preserve teacher think distribution match with SFT/RL inference.
+        "max_tokens_observation": 1024,
+        "max_tokens_compress": 4096,
         "temperature": 0.3,
         "thinking": False,
         "concurrent_videos": 1024,

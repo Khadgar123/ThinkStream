@@ -72,7 +72,10 @@ def _safe_max_tokens_for_pass2(
     request: Dict,
     configured_max: int,
     *,
-    floor: int = 512,
+    floor: int = 1024,  # v12.11: matches observation min target (think
+                        # output 40-80 tok with 12× safety). Compress
+                        # callers pass configured_max=4096 which also
+                        # stays ≥ floor; JSON-output truncation prevention.
 ) -> int:
     """Compute a max_tokens value that won't trip the vLLM context cap.
 
