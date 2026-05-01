@@ -250,18 +250,24 @@ def main():
             print(f"[{idx}] error: {e}")
             output_text = ""
 
-        # Parse response (try agent protocol first, then fallback)
+        # Parse response. v12 protocol: <answer>...</answer>. Legacy v11
+        # used <response>...</response>; we still accept it as fallback for
+        # comparing against old checkpoints.
         import re
-        resp_match = re.search(r"<response>(.*?)</response>", output_text, re.DOTALL)
-        if resp_match:
-            resp_text = resp_match.group(1).strip()
+        ans_match = re.search(r"<answer>(.*?)</answer>", output_text, re.DOTALL)
+        if ans_match:
+            resp_text = ans_match.group(1).strip()
         else:
-            # Fallback: take text after </think> or last think
-            think_end = output_text.rfind("</think>")
-            if think_end >= 0:
-                resp_text = output_text[think_end + len("</think>"):].strip()
+            resp_match = re.search(r"<response>(.*?)</response>", output_text, re.DOTALL)
+            if resp_match:
+                resp_text = resp_match.group(1).strip()
             else:
-                resp_text = output_text.strip()
+                # Fallback: take text after </think> or last think
+                think_end = output_text.rfind("</think>")
+                if think_end >= 0:
+                    resp_text = output_text[think_end + len("</think>"):].strip()
+                else:
+                    resp_text = output_text.strip()
 
         pred_letter = _extract_letter(resp_text, options=sample.get("options"))
         gt_idx = sample.get("gt", 0)

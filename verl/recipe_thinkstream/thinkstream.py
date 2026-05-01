@@ -44,21 +44,33 @@ except ImportError:
 # only works when this module is loaded as part of the recipe_thinkstream
 # package; the importlib fallback handles the spec_from_file_location
 # path hydra uses without polluting sys.path.
-try:
-    from . import streaming_agent_loop  # noqa: F401  — works when loaded as a real package
-except ImportError:
+def _side_effect_import(sibling_module: str, alias: str):
+    """Import a sibling module of this recipe with explicit naming so we
+    don't pollute sys.path. Triggers @register decorators."""
+    try:
+        # Works when this file is loaded as recipe_thinkstream.thinkstream
+        import importlib
+        importlib.import_module(f".{sibling_module}", package=__package__)
+        return
+    except Exception:
+        pass
     try:
         import os as _os
         import importlib.util as _ilu
-        _path = _os.path.join(_os.path.dirname(__file__), "streaming_agent_loop.py")
-        _spec = _ilu.spec_from_file_location(
-            "thinkstream_recipe_streaming_agent_loop", _path,
-        )
+        _path = _os.path.join(_os.path.dirname(__file__), f"{sibling_module}.py")
+        _spec = _ilu.spec_from_file_location(alias, _path)
         if _spec and _spec.loader:
             _mod = _ilu.module_from_spec(_spec)
             _spec.loader.exec_module(_mod)
     except Exception:
         pass
+
+
+# Register sibling modules whose @register decorators verl needs at runtime:
+#   streaming_agent_loop → registers `thinkstream_streaming_agent` agent loop
+#   reward_manager       → registers `thinkstream_per_chunk` reward manager
+_side_effect_import("streaming_agent_loop", "thinkstream_recipe_streaming_agent_loop")
+_side_effect_import("reward_manager", "thinkstream_recipe_reward_manager")
 
 # verl is imported lazily inside CustomRLHFDataset so that compute_score
 # can be exercised without the full verl/ray runtime (e.g., in unit tests).
@@ -500,7 +512,59 @@ def compute_score(
                 "format": 0.0, "spam": 0.0, "silent_quality": 0.0}
 
     total = float(sum(weights.get(k, 0.0) * v for k, v in parts.items()))
-    return {"score": total, **{k: float(v) for k, v in parts.items()}}
+
+    # ── Per-chunk action reward (P1.5).
+    # The streaming agent loop drops `ts_chunk_kinds` (a list[str] of
+    # parsed action kinds for each chunk) and `ts_chunk_asst_texts` into
+    # extra_fields → reward_manager surfaces them via extra_info. Compare
+    # each chunk's parsed kind against gold_action_per_chunk[chunk_idx]
+    # and emit a per-chunk shaping reward. This goes through to the
+    # reward_manager which broadcasts to that chunk's last assistant
+    # token position.
+    chunk_kinds = extra.get("ts_chunk_kinds") or []
+    chunk_texts = extra.get("ts_chunk_asst_texts") or []
+    per_chunk_action: List[float] = []
+    if chunk_kinds and gold_action_per_chunk:
+        for chunk_idx, kind in enumerate(chunk_kinds):
+            gold_action = (gold_action_per_chunk or {}).get(str(chunk_idx), "")
+            if not gold_action:
+                per_chunk_action.append(0.0)
+                continue
+            # Map model output to canonical action label.
+            if kind == "answer":
+                txt = chunk_texts[chunk_idx] if chunk_idx < len(chunk_texts) else ""
+                m = re.search(r"<answer>(.*?)</answer>", txt, re.DOTALL)
+                ans = m.group(1).strip() if m else ""
+                model_action = "silent" if not ans else "response"
+            elif kind == "recall":
+                model_action = "recall"
+            elif kind == "compress":
+                model_action = "compress"
+            else:
+                model_action = "unknown"
+            # Symmetric per-chunk shaping. Match → +0.1, mismatch → -0.05.
+            # Calibrated so that 360 chunks of all-correct contributes at
+            # most +36 to the total reward — comparable scale to outcome*1.0.
+            if model_action == gold_action:
+                per_chunk_action.append(0.1)
+            else:
+                per_chunk_action.append(-0.05)
+        # Average state reward folded into the trajectory-level scalar so
+        # plain GRPO (no token-level broadcast) still benefits.
+        if per_chunk_action:
+            state_avg = sum(per_chunk_action) / len(per_chunk_action)
+            # GDPO mix (P1.4): α=0.7 outcome + (1-α)=0.3 state.
+            alpha = float(extra.get("gdpo_alpha", 0.7))
+            total = alpha * total + (1.0 - alpha) * state_avg
+            parts["per_chunk_action_avg"] = state_avg
+
+    result = {"score": total, **{k: float(v) for k, v in parts.items()}}
+    # The reward_manager will pick this up and broadcast to per-chunk
+    # token positions. Keys prefixed with `_` are passthroughs that don't
+    # show up as wandb scalars.
+    if per_chunk_action:
+        result["_per_chunk_action_rewards"] = per_chunk_action
+    return result
 
 
 if __name__ == "__main__":

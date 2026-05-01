@@ -367,13 +367,34 @@ def _register_streaming_agent_loop():
             response_logprobs: List[float] = []
             any_logprobs_returned = False
 
+            # multi_modal_data alignment: every chunk's user_block contains
+            # `len(chunk_window_frames)` <|image_pad|> tokens. The actor
+            # forward at training time will see all those image_pad tokens
+            # in the concatenated response_ids, and verl matches them to
+            # multi_modal_data["images"] BY POSITION. So we accumulate the
+            # window frames in chunk order — repeats included — to keep the
+            # image_pad ↔ PIL.Image alignment exact.
+            accumulated_images: List[Any] = list(initial_mm.get("images") or [])
+
+            # Per-chunk assistant token spans within response_ids — used by
+            # the thinkstream_per_chunk reward_manager to broadcast per-
+            # chunk reward to the correct token positions. (start, end)
+            # are slice indices into response_ids; the actor's last
+            # generated token of chunk N lives at response_ids[end-1].
+            chunk_asst_spans: List[Tuple[int, int]] = []
+
             state = VideoTrajectoryState(video_uid=str(video_id), chunk_idx=0)
             recall_result_for_next: Optional[str] = None
             compress_trigger_for_next = False
             num_assistant_turns = 0
             n_chunks_with_frames = 0
             n_chunks_text_only = 0
-            window_frames: List[Any] = []  # for multi_modal_data fallback
+            window_frames: List[Any] = []
+
+            # Track per-chunk parsed kinds + assistant text inline so the
+            # reward_manager doesn't re-decode response_ids slices.
+            chunk_kinds: List[str] = []
+            chunk_asst_texts: List[str] = []
 
             for chunk_idx in range(n_chunks):
                 if not state.is_active:
@@ -472,6 +493,7 @@ def _register_streaming_agent_loop():
                 response_mask.extend([0] * len(user_block_ids))
                 response_logprobs.extend([0.0] * len(user_block_ids))
 
+                asst_start = len(response_ids)
                 response_ids.extend(assistant_ids)
                 response_mask.extend([1] * len(assistant_ids))
                 if output.log_probs and len(output.log_probs) == len(assistant_ids):
@@ -479,6 +501,14 @@ def _register_streaming_agent_loop():
                     any_logprobs_returned = True
                 else:
                     response_logprobs.extend([0.0] * len(assistant_ids))
+                asst_end = len(response_ids)
+                chunk_asst_spans.append((asst_start, asst_end))
+
+                # Accumulate this chunk's window frames into multi_modal_data
+                # so the actor's forward at training time can match every
+                # <|image_pad|> token in user_block_ids to a PIL.Image.
+                if visual_injected:
+                    accumulated_images.extend(window_frames)
 
                 num_assistant_turns += 1
 
@@ -488,6 +518,8 @@ def _register_streaming_agent_loop():
                 )
                 parsed = parse_agent_output_v12(response_text)
                 kind = parsed.get("kind", "unknown")
+                chunk_kinds.append(kind)
+                chunk_asst_texts.append(response_text)
 
                 state = default_v12_update_state(state, response_text, chunk_idx)
                 # Append THIS turn's think to recent_thinks so the NEXT
@@ -514,13 +546,15 @@ def _register_streaming_agent_loop():
 
             num_turns = num_assistant_turns + 1  # +1 for initial system+user
 
-            # multi_modal_data: report the LATEST chunk's window frames.
-            # Per-chunk slot reconstruction at training time isn't
-            # supported by verl's actor forward — that's a known SFT-vs-RL
-            # drift documented in the file header.
+            # multi_modal_data: hand verl the EXACT image list aligned to
+            # the <|image_pad|> tokens that appear in response_ids. Each
+            # chunk's user_block contributes len(chunk_window_frames)
+            # image_pad tokens; they appear in the same chronological order
+            # as the chunks they came from, so accumulated_images (which we
+            # extended in chunk order) is correctly aligned.
             multi_modal_data = {}
-            if window_frames:
-                multi_modal_data["images"] = window_frames
+            if accumulated_images:
+                multi_modal_data["images"] = accumulated_images
             if initial_videos:
                 multi_modal_data["videos"] = initial_videos
 
@@ -550,6 +584,13 @@ def _register_streaming_agent_loop():
                     if state.final_answer_chunk is not None else -1
                 ),
                 "ts_final_answer": state.final_answer or "",
+                # Per-chunk spans (start,end) into response_ids and the
+                # parsed action kind per chunk — consumed by
+                # ThinkStreamPerChunkRewardManager and compute_score's
+                # per-chunk action shaping.
+                "ts_chunk_asst_spans": chunk_asst_spans,
+                "ts_chunk_kinds": chunk_kinds,
+                "ts_chunk_asst_texts": chunk_asst_texts,
             })
             return output_obj
 

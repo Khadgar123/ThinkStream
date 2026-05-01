@@ -53,14 +53,19 @@ set -euo pipefail
 LLM=${LLM:?'LLM= required (path to SFT checkpoint, e.g. output/agent-sft)'}
 
 NPROC=${NPROC:-8}
-GROUP_SIZE=${GROUP_SIZE:-8}
+# Conservative first-run defaults. Tune up after smoke-testing.
+#   GROUP_SIZE × MAX_CHUNKS × BATCH_SIZE = vLLM requests per training step.
+#   8 × 60 × 4 = 1920 reqs/step ≈ 5-15 min on 8×H20 with prefix cache.
+#   8 × 360 × 8 = 23040 reqs/step → 60-90 min/step. Only enable once
+#   smoke confirmed.
+GROUP_SIZE=${GROUP_SIZE:-4}
 MAXLEN=${MAXLEN:-16384}
 MAX_NEW_TOKEN=${MAX_NEW_TOKEN:-2048}
-MAX_CHUNKS=${MAX_CHUNKS:-360}
+MAX_CHUNKS=${MAX_CHUNKS:-60}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
 TP_SIZE=${TP_SIZE:-2}
-BATCH_SIZE=${BATCH_SIZE:-8}
-PPO_MINI_BS=${PPO_MINI_BS:-32}
+BATCH_SIZE=${BATCH_SIZE:-4}
+PPO_MINI_BS=${PPO_MINI_BS:-16}
 LR=${LR:-1e-6}
 EPOCHS=${EPOCHS:-1}
 SAVE_FREQ=${SAVE_FREQ:-50}

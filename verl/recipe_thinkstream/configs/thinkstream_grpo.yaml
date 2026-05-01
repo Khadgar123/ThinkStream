@@ -90,3 +90,12 @@ algorithm:
   use_kl_in_reward: False
   kl_ctrl:
     kl_coef: 0.0
+
+reward_model:
+  # ThinkStreamPerChunkRewardManager broadcasts per-chunk action shaping
+  # rewards to each chunk's last assistant token (using ts_chunk_asst_spans
+  # from the agent loop) and adds the trajectory outcome at the trajectory
+  # end. Without this, rewards collapse to a single end-of-trajectory
+  # scalar and per-chunk action signal is lost.
+  reward_manager: thinkstream_per_chunk
+  launch_reward_fn_async: false

@@ -14,9 +14,33 @@ from collections import defaultdict, Counter
 
 
 def get_action(raw_output):
-    """Extract action type from raw model output."""
+    """Extract action type from raw model output (v12 protocol).
+
+    v12 emits one of:
+      <answer></answer>                                   → silent
+      <answer>text</answer>                               → response
+      <tool_call>{"name":"recall",...}</tool_call>        → recall
+      <tool_call>{"name":"compress",...}</tool_call>      → compress
+    Legacy v11 used <action>X</action> — kept as fallback for old result
+    JSONs (v12.11 audit-5 P1 #7).
+    """
     if not raw_output:
         return "empty"
+    # v12 path
+    if re.search(r"<answer>(.*?)</answer>", raw_output, re.DOTALL):
+        m = re.search(r"<answer>(.*?)</answer>", raw_output, re.DOTALL)
+        return "silent" if not m.group(1).strip() else "response"
+    tc = re.search(r"<tool_call>\s*(\{.*?\})\s*</tool_call>", raw_output, re.DOTALL)
+    if tc:
+        try:
+            obj = json.loads(tc.group(1))
+            name = obj.get("name", "")
+            if name in ("recall", "compress"):
+                return name
+        except (json.JSONDecodeError, ValueError):
+            pass
+        return "tool_call_malformed"
+    # v11 legacy fallback
     m = re.search(r"<action>(.*?)</action>", raw_output, re.DOTALL)
     if m:
         return m.group(1).strip()
@@ -32,7 +56,10 @@ def get_think(raw_output):
 
 
 def get_response_text(raw_output):
-    """Extract response payload."""
+    """Extract response payload (v12 <answer>; v11 <response> fallback)."""
+    m = re.search(r"<answer>(.*?)</answer>", raw_output, re.DOTALL)
+    if m:
+        return m.group(1).strip()
     m = re.search(r"<response>(.*?)</response>", raw_output, re.DOTALL)
     if m:
         return m.group(1).strip()
