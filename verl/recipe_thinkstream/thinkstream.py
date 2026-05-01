@@ -452,16 +452,30 @@ def compute_score(
     # token position.
     chunk_kinds = extra.get("ts_chunk_kinds") or []
     chunk_texts = extra.get("ts_chunk_asst_texts") or []
+    # P1.7 fix (post-review): the agent loop's chunk_kinds includes
+    # inter-chunk compress turns that don't consume a video chunk_idx.
+    # Use ts_chunk_video_indices (-1 = compress) as the authoritative
+    # mapping from turn-index → video chunk_idx, instead of enumerate.
+    chunk_vidx = extra.get("ts_chunk_video_indices") or []
     per_chunk_action: List[float] = []
     if chunk_kinds and gold_action_per_chunk:
-        for chunk_idx, kind in enumerate(chunk_kinds):
-            gold_action = (gold_action_per_chunk or {}).get(str(chunk_idx), "")
+        for turn_i, kind in enumerate(chunk_kinds):
+            video_chunk_idx = (
+                int(chunk_vidx[turn_i]) if turn_i < len(chunk_vidx) else turn_i
+            )
+            if video_chunk_idx < 0:
+                # Compress inter-turn — system event, no video gold.
+                per_chunk_action.append(0.0)
+                continue
+            gold_action = (gold_action_per_chunk or {}).get(str(video_chunk_idx), "")
             if not gold_action:
                 per_chunk_action.append(0.0)
                 continue
-            # Map model output to canonical action label.
+            # Map model output to canonical action label. (Use turn_i
+            # for chunk_texts indexing since chunk_texts is parallel to
+            # chunk_kinds, not to video_chunk_idx.)
             if kind == "answer":
-                txt = chunk_texts[chunk_idx] if chunk_idx < len(chunk_texts) else ""
+                txt = chunk_texts[turn_i] if turn_i < len(chunk_texts) else ""
                 m = re.search(r"<answer>(.*?)</answer>", txt, re.DOTALL)
                 ans = m.group(1).strip() if m else ""
                 model_action = "silent" if not ans else "response"

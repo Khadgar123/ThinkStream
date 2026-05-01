@@ -27,14 +27,20 @@
 #       <|im_start|>assistant\n
 #     ]
 #
-# KV CACHE BEHAVIOUR:
-#   - The [system + user_q] prefix is byte-identical across all chunk turns
-#     of one trajectory → vLLM's async server prefix cache hits it once.
-#   - The visual_window + memory portion changes every turn (sliding window
-#     means chunk 0's frames drop out at turn 16) → that suffix is a cache
-#     miss. Constant per-turn vis-token cost ≈ 16 chunks × 2 frames.
-#   - Chunk 0's frames are NOT in turn 16+'s prompt → they're truly out of
-#     the KV cache for those generates.
+# KV CACHE BEHAVIOUR (v12.12, 2026-05-01):
+#   User content reordered to put MEMORY FIRST (stable monotonic prefix)
+#   and visual_window AFTER. Across consecutive chunks of one trajectory:
+#     prompt_chunk_t   = [system + user_q + <memory_at_t> + <queries_at_t>
+#                         + <visual_window_t> + frames_t + <user_input_t>]
+#     prompt_chunk_t+1 = [system + user_q + <memory_at_t+1> + ...]
+#   memory_at_t+1 is memory_at_t with one extra appended think (modulo
+#   periodic compression rewrites that invalidate the prefix and reset
+#   the cache). vLLM's prefix cache therefore hits ~3-5K tokens of the
+#   stable head every chunk instead of just the ~600-tok system block.
+#
+#   Sliding visual window still changes every turn (chunk 0's frames drop
+#   out at turn 16) and remains a cache miss, but it's now LATER in the
+#   sequence so the missed region is shorter.
 #
 # SFT ALIGNMENT (the 5 things that must match pass5_messages.py):
 #   1. Frame paths use 1-indexed numbering: frame_{ci*FPC + fi + 1:06d}.jpg
@@ -93,6 +99,12 @@ logger.setLevel(os.getenv("VERL_LOGGING_LEVEL", "WARN"))
 # scripts.agent_data_v5.config.RECENT_THINKS_TOKEN_BUDGET; we estimate
 # tokens at ~1.3× whitespace word count to avoid pulling in tiktoken).
 DEFAULT_COMPRESS_TOKEN_THRESHOLD = 3200
+
+
+# Module-level placeholder so hydra's `_target_:
+# recipe_thinkstream.streaming_agent_loop.ThinkStreamStreamingAgentLoop`
+# resolves. Populated by _register_streaming_agent_loop() at import time.
+ThinkStreamStreamingAgentLoop: Any = None
 
 
 def _resolve_frame_dir(video_path: str, frames_root: str) -> Optional[Path]:
@@ -336,11 +348,40 @@ def _register_streaming_agent_loop():
             inter_chunk: bool,
         ) -> List[Dict[str, Any]]:
             """Build the user content list for chunk N. inter_chunk=True
-            (compress turn) skips the visual_window — matches SFT shape C."""
+            (compress turn) skips the visual_window — matches SFT shape C.
+
+            v12.12 (2026-05-01): order = memory → visual_window + frames →
+            recall_result → user_input. Memory first means the stable
+            monotonic prefix lands at the head of the user message and
+            the vLLM async server's prefix cache reuses [system + user_q
+            + memory_at_t-1] across chunks of one trajectory.
+            """
             content: List[Dict[str, Any]] = []
 
+            # Memory block (FIRST — stable monotonic prefix; always emitted,
+            # even on compress turn).
+            #
+            # P0.5 fix (post-review 2026-05-01): format_memory_block reads
+            # the dict under "compressed_segments" or legacy "compressed".
+            # We were passing "compressed_summaries" → memory after compress
+            # silently disappeared from the prompt. Pass under BOTH keys
+            # so the legacy reader path works regardless of which alias
+            # format_memory_block prefers.
+            try:
+                mem_text = format_memory_block({
+                    "compressed_segments": state.compressed_summaries,
+                    "compressed": state.compressed_summaries,
+                    "recent_thinks": state.recent_thinks,
+                })
+            except Exception:
+                mem_text = ""
+            content.append({
+                "type": "text",
+                "text": f"<memory>\n{mem_text}\n</memory>",
+            })
+
+            # Visual window header + video block (cache-miss boundary).
             if not inter_chunk:
-                # Visual window header (text) + video block (frames+metadata).
                 vw_header = json.dumps({
                     "start": window_start_chunk * self.chunk_sec,
                     "end": (window_end_chunk + 1) * self.chunk_sec,
@@ -352,7 +393,7 @@ def _register_streaming_agent_loop():
                 })
                 content.append({
                     "type": "text",
-                    "text": f"<visual_window>{vw_header}</visual_window>",
+                    "text": f"\n<visual_window>{vw_header}</visual_window>",
                 })
                 if window_paths:
                     content.append({
@@ -360,20 +401,6 @@ def _register_streaming_agent_loop():
                         "video": window_paths,
                         "video_metadata": window_metadata,
                     })
-
-            # Memory block (always; even on compress turn).
-            try:
-                mem_text = format_memory_block({
-                    "compressed_summaries": state.compressed_summaries,
-                    "recent_thinks": state.recent_thinks,
-                })
-            except Exception:
-                mem_text = ""
-            mem_prefix = "\n" if not inter_chunk else ""
-            content.append({
-                "type": "text",
-                "text": f"{mem_prefix}<memory>\n{mem_text}\n</memory>",
-            })
 
             # Recall result (single-turn legacy form — SFT shape A inline).
             # True shape-B intra-chunk multi-turn is a deferred follow-up.
@@ -389,12 +416,13 @@ def _register_streaming_agent_loop():
                 })
 
             # User input — either the question (when it fires) or the
-            # compress_trigger system event.
+            # compress_trigger system event. LAST so the monotonic prefix
+            # above stays cache-friendly.
             if compress_trigger_range is not None:
                 tr0, tr1 = compress_trigger_range
                 content.append({
                     "type": "text",
-                    "text": f"<compress_trigger range='{int(tr0)}-{int(tr1)}'/>",
+                    "text": f"\n<compress_trigger range='{int(tr0)}-{int(tr1)}'/>",
                 })
             elif question and ask_chunks and chunk_idx >= min(ask_chunks):
                 content.append({
@@ -411,7 +439,20 @@ def _register_streaming_agent_loop():
                      args.get("text") or "")
             time_range = args.get("time_range")
             tr_tuple: Optional[Tuple[float, float]] = None
-            if isinstance(time_range, (list, tuple)) and len(time_range) >= 2:
+            # Secondary fix (post-review 2026-05-01): recall tool schema
+            # in agent_protocol.py:417 emits time_range as "start-end"
+            # string (e.g. "10-30"), but earlier eval code passes
+            # list/tuple [start, end]. Accept BOTH so the time-range
+            # filter actually works regardless of which shape the model
+            # learned during SFT.
+            if isinstance(time_range, str) and time_range.strip():
+                m = re.match(r"\s*([\d.]+)\s*-\s*([\d.]+)\s*", time_range)
+                if m:
+                    try:
+                        tr_tuple = (float(m.group(1)), float(m.group(2)))
+                    except ValueError:
+                        tr_tuple = None
+            elif isinstance(time_range, (list, tuple)) and len(time_range) >= 2:
                 try:
                     tr_tuple = (float(time_range[0]), float(time_range[1]))
                 except (TypeError, ValueError):
@@ -463,12 +504,38 @@ def _register_streaming_agent_loop():
             initial_messages = list(kwargs["raw_prompt"])
             initial_mm = await self.process_vision_info(initial_messages)
             initial_videos: List[Any] = list(initial_mm.get("videos") or [])
-            initial_prompt_ids = await self.apply_chat_template(
-                initial_messages,
-                tools=TOOLS_SCHEMA,
-                images=None,
-                videos=initial_videos if initial_videos else None,
-            )
+
+            # P0.3 fix (post-review 2026-05-01): AgentLoopBase.apply_chat_template
+            # hardcodes add_generation_prompt=True, so calling it on
+            # [system, user_q] gives [sys, user_q, asst_prefix]. Then chunk_prompt_ids
+            # = apply_chat_template([system, user_q, chunk_user]) gives
+            # [sys, user_q, chunk_user, asst_prefix]. Slicing by len(initial_prompt_ids)
+            # would chop the first len(asst_prefix) tokens of chunk_user.
+            # Fix: tokenize initial WITHOUT the assistant prefix via the
+            # raw tokenizer/processor so the slice prefix is exact.
+            try:
+                initial_prompt_ids = await self.loop.run_in_executor(
+                    None,
+                    lambda: self.tokenizer.apply_chat_template(
+                        initial_messages,
+                        tools=TOOLS_SCHEMA,
+                        add_generation_prompt=False,
+                        tokenize=True,
+                        **self.apply_chat_template_kwargs,
+                    ),
+                )
+                if hasattr(initial_prompt_ids, "tolist"):
+                    initial_prompt_ids = initial_prompt_ids.tolist()
+                initial_prompt_ids = list(initial_prompt_ids)
+            except Exception:
+                # Fallback: use the agent-loop helper (with asst prefix) and
+                # recover the no-prefix length by tokenizing the prefix
+                # marker itself.
+                with_prefix = await self.apply_chat_template(
+                    initial_messages, tools=TOOLS_SCHEMA, images=None,
+                    videos=initial_videos if initial_videos else None,
+                )
+                initial_prompt_ids = list(with_prefix)
 
             response_ids: List[int] = []
             response_mask: List[int] = []
@@ -477,6 +544,15 @@ def _register_streaming_agent_loop():
             chunk_asst_spans: List[Tuple[int, int]] = []
             chunk_kinds: List[str] = []
             chunk_asst_texts: List[str] = []
+            # P1.7 fix (post-review 2026-05-01): chunk_kinds/spans/texts
+            # are appended on EVERY assistant turn including inter-chunk
+            # compress turns. Without a parallel video-chunk-index list,
+            # compute_score's per-chunk action gold lookup
+            # (`enumerate(chunk_kinds)` → chunk_idx) would right-shift after
+            # each compress turn. Track the actual video chunk_idx per
+            # turn here; compute_score uses this for `gold_action_per_chunk[
+            # str(video_chunk_idx)]` lookup. -1 marks compress (system event).
+            chunk_video_indices: List[int] = []
 
             # multi_modal_data accumulator: one (tensor, metadata) per
             # chunk that injected a video block. NOT a flat per-frame
@@ -561,8 +637,11 @@ def _register_streaming_agent_loop():
                 if len(response_mask) + user_block_len + 1 >= self.response_length:
                     break
 
-                # ── Generate INDEPENDENTLY. KV cache hits initial_prompt_ids
-                # prefix; visual_window + memory portion is a cache miss.
+                # ── Generate INDEPENDENTLY. v12.12: KV cache hits
+                # initial_prompt_ids + memory_at_t-1 + queries_at_t-1
+                # (memory now placed FIRST in user content). Visual window
+                # remains a cache miss because the sliding window mutates
+                # both ends each step (drops oldest frames, appends newest).
                 with simple_timer("generate_sequences", metrics):
                     output: TokenOutput = await self.server_manager.generate(
                         request_id=request_id,
@@ -593,6 +672,9 @@ def _register_streaming_agent_loop():
                     response_logprobs.extend([0.0] * len(assistant_ids))
                 asst_end = len(response_ids)
                 chunk_asst_spans.append((asst_start, asst_end))
+                # P1.7: -1 for compress (system inter-chunk turn, not
+                # mapped to any video chunk for action gold lookup).
+                chunk_video_indices.append(-1 if inter_chunk else chunk_idx)
 
                 if visual_injected:
                     accumulated_videos.extend(chunk_videos)
@@ -686,6 +768,10 @@ def _register_streaming_agent_loop():
                 "ts_chunk_asst_spans": chunk_asst_spans,
                 "ts_chunk_kinds": chunk_kinds,
                 "ts_chunk_asst_texts": chunk_asst_texts,
+                # P1.7: video chunk_idx per assistant turn (-1 for compress
+                # inter-chunk turns). compute_score keys gold_action_per_chunk
+                # by this, not by enumerate(chunk_kinds).
+                "ts_chunk_video_indices": chunk_video_indices,
             })
             return output_obj
 
@@ -693,6 +779,9 @@ def _register_streaming_agent_loop():
 
 
 try:
-    _register_streaming_agent_loop()
+    # Promote the inner class to a module-level attribute so hydra
+    # `_target_: recipe_thinkstream.streaming_agent_loop.ThinkStreamStreamingAgentLoop`
+    # in agent_loops.yaml resolves.
+    ThinkStreamStreamingAgentLoop = _register_streaming_agent_loop()
 except Exception as e:  # noqa: BLE001
     logger.debug("ThinkStreamStreamingAgentLoop not registered: %s", e)

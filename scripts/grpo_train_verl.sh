@@ -60,7 +60,12 @@ NPROC=${NPROC:-8}
 #   smoke confirmed.
 GROUP_SIZE=${GROUP_SIZE:-4}
 MAXLEN=${MAXLEN:-16384}
-MAX_NEW_TOKEN=${MAX_NEW_TOKEN:-2048}
+# P0.4 fix (post-review 2026-05-01): MAX_NEW_TOKEN sets verl's
+# rollout.response_length, which is the TOTAL stitched length across
+# all chunks' user_blocks + assistant turns. NOT a per-turn budget.
+# 60 chunks × ~120 tok/chunk ≈ 7K so we need ≥ 8K. Old default 2048
+# would force the loop to break after ~16 chunks.
+MAX_NEW_TOKEN=${MAX_NEW_TOKEN:-16384}
 MAX_CHUNKS=${MAX_CHUNKS:-60}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
 TP_SIZE=${TP_SIZE:-2}
@@ -176,8 +181,8 @@ python3 -m verl.trainer.main_ppo \
     data.val_batch_size=${BATCH_SIZE} \
     data.max_prompt_length=${MAXLEN} \
     data.max_response_length=${MAX_NEW_TOKEN} \
-    custom_reward_function.path="${VERL_DIR}/recipe_thinkstream/thinkstream.py" \
-    custom_reward_function.name=compute_score \
+    reward.custom_reward_function.path="${VERL_DIR}/recipe_thinkstream/thinkstream.py" \
+    reward.custom_reward_function.name=compute_score \
     trainer.total_epochs=${EPOCHS} \
     trainer.save_freq=${SAVE_FREQ} \
     trainer.test_freq=${TEST_FREQ} \
