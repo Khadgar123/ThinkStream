@@ -28,6 +28,7 @@ from .config import (
     PLACEMENTS_DIR,
     SAMPLES_3C_DIR,
     VERIFIED_DIR,
+    FINAL_DIR,
 )
 
 # ---------------------------------------------------------------------------
@@ -59,10 +60,14 @@ STAGE_VERSIONS: Dict[str, str] = {
     "3a": "v12.11",
     "3b": "v12.11",
     "3c": "v12.11",
-    "3e": "v12.11",
-    "4":  "v12.5",  # legacy alias for 3e
+    "4":  "v12.11",  # canonical key — verification
     "5":  "v12.11",  # NEW — pass5_messages render version
 }
+# v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
+# semantic alias for verification, but STAGE_DIRS has no "3e" entry → any
+# code calling _version_path("3e") would KeyError. Removed the alias key;
+# the verification stage uses the canonical "4" key everywhere (matches
+# pipeline.py's existing write_stage_version("4") call sites).
 
 STAGE_DIRS: Dict[str, Path] = {
     "1a": EVIDENCE_1A_DIR,
@@ -72,10 +77,12 @@ STAGE_DIRS: Dict[str, Path] = {
     "3b": PLACEMENTS_DIR,
     "3c": SAMPLES_3C_DIR,
     "4":  VERIFIED_DIR,
+    "5":  FINAL_DIR,  # v12.11: pass5_messages writes *_messages.jsonl here
 }
 
 # Downstream invalidation: changing stage X invalidates X and everything after.
-PIPELINE_ORDER = ["1a", "1b", "2", "3a", "3b", "3c", "4"]
+# v12.11: "5" is post-verification render; downstream of "4".
+PIPELINE_ORDER = ["1a", "1b", "2", "3a", "3b", "3c", "4", "5"]
 
 
 def _version_path(stage: str) -> Path:

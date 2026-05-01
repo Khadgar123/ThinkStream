@@ -913,6 +913,12 @@ async def run_pipeline(
     for vid, vid_samples in verified_by_vid.items():
         save_verified(vid, vid_samples, {"video_id": vid, "count": len(vid_samples)})
 
+    # v12.11 review-fix (2026-05-01): stamp verifier stage version. Audit-5
+    # bumped STAGE_VERSIONS["4"] to v12.11 but no caller wrote the marker
+    # → existing v12.5-stamped caches were never re-validated as up-to-date.
+    from .cache_version import write_stage_version as _write_stage_version_4
+    _write_stage_version_4("4")
+
     # Carry forward as `passed_samples` for naming compat with old caps/split
     # logic below (the variable name is misleading post-v12.5 but keeping it
     # avoids touching ~250 lines of downstream code).
@@ -1268,6 +1274,9 @@ async def run_pipeline(
             _sys.argv = ["pass5_messages", "--input", "traj"]
             try:
                 _pass5_mod.main()
+                # v12.11 review-fix: stamp pass5 stage version on success.
+                from .cache_version import write_stage_version as _write_v5
+                _write_v5("5")
             finally:
                 _sys.argv = _argv_backup
         except SystemExit as _e:

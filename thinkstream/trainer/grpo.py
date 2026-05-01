@@ -2401,6 +2401,21 @@ def _per_chunk_state_reward(flat_items, rollout_data, tokenizer, mode: str):
         raw_sample = sample_data.get("raw_sample", {})
         gold = _gold_action_at(raw_sample, chunks[c].get("chunk_idx", c))
         model_kind = _model_action_kind(text)
+        # v12.11 review-fix (2026-05-01): for shape-B recall chunks the
+        # generated_tokens text is the SECOND-pass answer (kind="answer"),
+        # but the chunk's true semantic action was "recall+answer". The
+        # raw text alone can't reveal this; inject the upstream recall
+        # signal (recall_first_pass_text on chunk_result) so action_match
+        # recognizes recall trajectories instead of treating them as
+        # plain "response".
+        first_pass_text = chunks[c].get("recall_first_pass_text", "") or ""
+        if isinstance(first_pass_text, list):
+            first_pass_text = first_pass_text[g] if g < len(first_pass_text) else ""
+        if first_pass_text:
+            from thinkstream.data.agent_protocol import parse_agent_output_v12
+            fp = parse_agent_output_v12(first_pass_text)
+            if fp.get("kind") == "recall":
+                model_kind = "recall"
         score += _action_match_score(model_kind, gold)
 
         if mode == "format_action":
@@ -2460,20 +2475,24 @@ def prepare_grpo_micro_batches(
 ) -> Context:
     """v12.11 (2026-05-01): switchable micro-batching mode.
 
-    LOSS_BATCH_MODE="trajectory" (default, legacy):
-        1 item = 1 (sample_idx, gen_idx) trajectory rollout. Original
-        behavior — produces concatenated N-chunk samples that may exceed
-        model_max_length on long trajectories. SAFE DEFAULT for reproducing
-        prior runs / A/B comparison.
-
-    LOSS_BATCH_MODE="per_chunk" (MemAgent-style):
+    LOSS_BATCH_MODE="per_chunk" (DEFAULT, MemAgent-style):
         1 item = 1 (sample_idx, gen_idx, chunk_idx) chunk decision. N chunks
         become N independent loss-batch entries, each ~6K tokens. Trajectory
         advantage broadcasts to every chunk; ReMemR1 state advantage can be
         added on top via USE_STATE_ADVANTAGE / ADVANTAGE_MODE=remem.
-        Eliminates OOM + truncation on long-trajectory rollouts.
+        Eliminates OOM + truncation on long-trajectory rollouts. Default
+        flipped from "trajectory" in v12.11 (audit-1 P0.2) once the path's
+        bugs were fixed (rollout_data list handling, recall token swap,
+        video_meta consistency, recall first-pass merge).
 
-    Switch via env: THINKSTREAM_LOSS_BATCH_MODE=per_chunk.
+    LOSS_BATCH_MODE="trajectory" (legacy):
+        1 item = 1 (sample_idx, gen_idx) trajectory rollout. Original
+        v12.10 behavior — produces concatenated N-chunk samples that may
+        exceed model_max_length on long trajectories. Opt-in for ablation
+        comparison against the legacy baseline.
+
+    Switch via env: THINKSTREAM_LOSS_BATCH_MODE=trajectory (to reproduce
+    legacy) or per_chunk (default).
 
     Operator notes for per_chunk mode:
         - micro_batch_size now counts CHUNKS, not trajectories.
