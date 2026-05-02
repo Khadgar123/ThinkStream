@@ -167,7 +167,6 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.log_prob_use_dynamic_bsz=True \
     actor_rollout_ref.rollout.log_prob_max_token_len_per_gpu=8192 \
     actor_rollout_ref.rollout.multi_turn.enable=True \
-    actor_rollout_ref.rollout.multi_turn.max_turns=${MAX_TURNS} \
     actor_rollout_ref.rollout.multi_turn.max_assistant_turns=${MAX_TURNS} \
     actor_rollout_ref.rollout.multi_turn.max_user_turns=${MAX_TURNS} \
     actor_rollout_ref.rollout.multi_turn.max_parallel_calls=1 \

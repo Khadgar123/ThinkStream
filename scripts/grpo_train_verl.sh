@@ -171,10 +171,8 @@ python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.gpu_memory_utilization=${GPU_MEM_UTIL} \
     actor_rollout_ref.rollout.response_length=${MAX_NEW_TOKEN} \
     actor_rollout_ref.rollout.prompt_length=${MAXLEN} \
-    actor_rollout_ref.rollout.multi_turn.max_turns=${MAX_CHUNKS} \
     actor_rollout_ref.rollout.multi_turn.max_assistant_turns=${MAX_CHUNKS} \
     actor_rollout_ref.rollout.multi_turn.max_user_turns=${MAX_CHUNKS} \
-    actor_rollout_ref.rollout.multi_turn.frames_root="${FRAMES_ROOT}" \
     data.train_files="${TRAIN_PARQUET}" \
     data.val_files="[${VAL_PARQUET}]" \
     data.train_batch_size=${BATCH_SIZE} \
