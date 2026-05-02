@@ -194,21 +194,37 @@ def _build_trajectory_record(
         if not meta.get("gold_answer"):
             # Base/silent samples without a real question — skip.
             continue
-        # Find this card's answer-bearing chunk(s).
-        # v12.6: pass3c._merge_recall_pairs_v12 collapses
-        #   recall_query + recall_response/recall_silent → sample_type="recall"
-        # so that label is the v12.5+ equivalent of "recall_response" for the
-        # purpose of "the chunk where the answer lands". Without "recall" in
-        # this set, recall-multi-turn questions appear with empty ask_chunks
-        # and outcome/timing rewards score them at 0 incorrectly.
-        # Also include "recall_response" (legacy unmerged pre-v12.5 trajectories)
-        # for backward-compat with archived data.
-        ask_chunks = sorted({
+        # v12.12 fix (P0-1): pass3c stamps each card-bearing sample with the
+        # REAL placement.ask_chunk. Use it as the canonical question time.
+        # Older trajectories without metadata.ask_chunk fall back to the
+        # legacy "answer chunk inference", but log a warning so the gap is
+        # visible.
+        canonical_ask = -1
+        for x in sorted_samples:
+            if x.get("card_id") == cid:
+                xa = (x.get("metadata") or {}).get("ask_chunk", -1)
+                if isinstance(xa, int) and xa >= 0:
+                    canonical_ask = xa
+                    break
+
+        # answer_chunks: where this card's answer actually lands. For
+        # silent_then_response cards this differs from ask_chunk; both
+        # need to be preserved for outcome+timing reward computation.
+        answer_chunks = sorted({
             int(x.get("chunk_idx", 0))
             for x in sorted_samples
             if x.get("card_id") == cid
             and x.get("sample_type") in ("response", "recall_response", "recall")
         })
+        if canonical_ask < 0 and answer_chunks:
+            # Fallback for legacy trajectories without ask_chunk metadata
+            canonical_ask = answer_chunks[0]
+            logger.warning(
+                f"[{video_id}] card {cid}: missing metadata.ask_chunk; "
+                f"falling back to first answer chunk {canonical_ask} "
+                f"(forward / silent_then_response timing supervision will be wrong)."
+            )
+
         questions.append({
             "card_id": cid,
             "family": meta.get("family", ""),
@@ -218,9 +234,24 @@ def _build_trajectory_record(
             "availability": meta.get("availability", ""),
             "support_chunks": list(meta.get("support_chunks") or []),
             "gold_compress_chunks": list(meta.get("gold_compress_chunks") or []),
-            # ask_chunks: list because some cards have multi_response
-            # (e.g., F7 step-progress probes). Most are length-1.
-            "ask_chunks": ask_chunks,
+            # v12.12 fix (P0-1): canonical question time = placement.ask_chunk.
+            # ask_chunks remains a list for legacy multi_response cards
+            # (only F7-style multi-emit families); kept for backward compat
+            # but most cards have length-1.
+            "ask_chunk": canonical_ask,
+            "ask_chunks": ([canonical_ask] if canonical_ask >= 0
+                            else answer_chunks),
+            # answer_chunks separate so reward functions can detect
+            # silent-before-respond patterns (forward families).
+            "answer_chunks": answer_chunks,
+            # v12.12 fix (P0-2): question / options / correct_option needed
+            # by RL/eval to (a) re-render the prompt at evaluation time and
+            # (b) score MC outputs against the gold letter. Without these,
+            # downstream code falls back to gold_answer for the question
+            # text — i.e. asks the model to predict its own answer.
+            "question": meta.get("question", ""),
+            "options": list(meta.get("options") or []),
+            "correct_option": meta.get("correct_option", ""),
         })
 
     # ── v12.4: per-chunk gold_action map ──

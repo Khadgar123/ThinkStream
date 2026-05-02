@@ -402,6 +402,12 @@ def _iter_trajectories(path: Path) -> Iterable[Dict]:
 
 
 def _emit_row(sample: Dict, messages: List[Dict]) -> Dict:
+    # v12.12 fix (P0-5): propagate verification verdict + metadata so SFT
+    # data_processor can filter / downweight failed samples. pipeline.py
+    # tags every sample via pass3e with verification.passed/.fail_reasons
+    # but keeps all samples in the trajectory; the consumer (SFT loader)
+    # is responsible for the actual drop policy.
+    verification = sample.get("verification") or {}
     return {
         "trajectory_id": sample.get("trajectory_id", ""),
         "video_id": sample.get("video_id", ""),
@@ -411,6 +417,14 @@ def _emit_row(sample: Dict, messages: List[Dict]) -> Dict:
         "v12_inter_chunk": bool(sample.get("v12_inter_chunk", False)),
         "messages": messages,
         "videos": None,
+        "verification": {
+            "passed": bool(verification.get("passed", True)),
+            "fail_reasons": list(verification.get("fail_reasons") or []),
+        },
+        # Forward metadata so consumers can compute reward / question lookup
+        # without re-running render_samples. (pass4 already reads this; SFT
+        # filter consults verification.passed.)
+        "metadata": sample.get("metadata") or {},
     }
 
 

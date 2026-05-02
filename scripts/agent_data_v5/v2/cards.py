@@ -311,6 +311,29 @@ def gen_mc_card(
             bins.append(candidates[idx])
             seen.add(candidates[idx][0])
 
+    # v12.12 fix (P0-3): collect distractor pool from OTHER chunks' entities
+    # / facts so the heuristic can emit plausible MC choices instead of the
+    # placeholder string "distractor placeholder" (which made every card a
+    # giveaway: 3/4 options are obviously wrong, MC reduces to "pick the
+    # only non-placeholder text"). Fallback to short_exact when the pool
+    # is too thin to pick 3 unique distractors.
+    distractor_pool: List[str] = []
+    for cap in evidence:
+        for e in (cap.get("visible_entities") or []):
+            d = e.get("desc", "")
+            if d:
+                distractor_pool.append(d[:40])
+        for f in (cap.get("atomic_facts") or []):
+            if isinstance(f, dict) and f.get("confidence", 0) >= 0.7:
+                txt = _canonical_short(f.get("fact", ""), 6)
+                if txt:
+                    distractor_pool.append(txt)
+    # de-dup while preserving order
+    seen_d = set()
+    distractor_pool = [
+        x for x in distractor_pool if not (x in seen_d or seen_d.add(x))
+    ]
+
     rotation = ["A", "B", "C", "D"]
     family_offset = abs(hash(video_id + family)) % 4
     cards = []
@@ -321,9 +344,34 @@ def gen_mc_card(
             correct_text = _canonical_short(facts[0].get("fact", ""), 6)
         if not correct_text:
             continue
+
+        # Sample 3 distractors that aren't the correct answer.
+        candidates_d = [d for d in distractor_pool
+                        if d.strip().lower() != correct_text.strip().lower()]
+        if len(candidates_d) < 3:
+            # Heuristic pool too thin → fall back to short_exact (entity name)
+            # so reward+eval stay valid (no MC letter without real options).
+            cards.append(Card(
+                card_id=f"{video_id}_{family}_{_hash_id(video_id, family, c)}",
+                family=family,
+                question=f"[{family}] What is the key entity at chunk {c}?",
+                answer_form="short_exact",
+                question_type="single_emit",
+                gold_emits=[GoldEmit(chunk=c, value=correct_text)],
+                grounding_frames=[c],
+                options=None,
+                correct_option=None,
+            ))
+            continue
+
+        # Deterministic distractor pick by chunk hash (stable across runs)
+        chunk_rng = random.Random(_hash_id(video_id, family, c))
+        distractors = chunk_rng.sample(candidates_d, 3)
         correct_pos = rotation[(i + family_offset) % 4]
-        options = ["distractor placeholder"] * 4
-        options[ord(correct_pos) - ord("A")] = correct_text
+        options = list(distractors)
+        options.insert(ord(correct_pos) - ord("A"), correct_text)
+        # Drop the surplus item that pushed list to length 5 (insert grew it)
+        options = options[:4]
         opts_with_letter = [f"{chr(65+j)}) {o}" for j, o in enumerate(options)]
         emits = [GoldEmit(chunk=c, value=correct_pos)]
         cards.append(Card(

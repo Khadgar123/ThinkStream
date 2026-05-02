@@ -404,10 +404,20 @@ async def generate_trajectory_samples(
         card_id = ds.card_id
         card = cards_map.get(card_id) if card_id else None
         sequence_type = _mech_to_sequence_type(ds.mechanism) if card_id else ""
-        # user_input fires only at the ask_chunk for that card
+        # user_input fires only at the ask_chunk for that card.
+        #
+        # v12.12 fix (P0-3): for multiple_choice cards, append options to the
+        # question text so the model can see the choices. Reward expects a
+        # bare letter A-D (v12_rewards.py:65 "multiple_choice" branch); the
+        # letter has no semantics if the options aren't shown.
         user_input = ""
-        if card_id and ask_chunk_by_card.get(card_id) == c:
-            user_input = (card or {}).get("question", "")
+        if card_id and ask_chunk_by_card.get(card_id) == c and card:
+            q = card.get("question", "")
+            if card.get("answer_form") == "multiple_choice" and card.get("options"):
+                opts_text = "\n".join(card["options"])
+                user_input = f"{q}\n\nOptions:\n{opts_text}"
+            else:
+                user_input = q
 
         if ds.sample_kind == "patrol":
             raw.append(_silent_sample(
@@ -475,6 +485,17 @@ async def generate_trajectory_samples(
                 queries_state[queries_idx_by_card[card_id]]["answers"].append({
                     "text": resp, "time": c * AGENT_CHUNK_SEC,
                 })
+
+    # v12.12 fix (P0-1): stamp every card-bearing sample with its REAL
+    # ask_chunk from placement (not the answer chunk). pass4 currently
+    # infers ask_chunk from response sample's chunk_idx, which collapses
+    # forward/silent_then_response timing supervision. Now pass4 can read
+    # `sample["ask_chunk"]` directly and preserve the silent-then-respond
+    # pattern in `questions[*].ask_chunks`.
+    for s in raw:
+        cid = s.get("card_id")
+        if cid and cid in ask_chunk_by_card:
+            s["ask_chunk"] = int(ask_chunk_by_card[cid])
 
     return raw
 

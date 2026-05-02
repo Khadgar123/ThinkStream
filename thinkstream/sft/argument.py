@@ -74,6 +74,17 @@ class DataArguments:
             "12000 leaves ~4K margin for collator padding."
         },
     )
+    include_failed_verification: bool = field(
+        default=False,
+        metadata={
+            "help": "v12.12 (P0-5): include samples with verification.passed=False. "
+            "Default is False — pass3e tags every sample with verifier verdict "
+            "but pipeline.py keeps them in the trajectory for RL/eval continuity; "
+            "SFT must drop them to avoid learning from gold outputs that failed "
+            "entity-consistency / format / summary-cap checks. Flip to True only "
+            "when intentionally studying failure modes."
+        },
+    )
     require_pre_extracted_frames: bool = field(
         default=True,
         metadata={

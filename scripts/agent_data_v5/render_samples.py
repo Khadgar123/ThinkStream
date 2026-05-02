@@ -104,11 +104,18 @@ def _build_memory_from_snapshot(snapshot: Dict) -> Dict:
 
 
 def _build_queries_input(queries_state: List[Dict]) -> List[Dict]:
-    """Convert queries_state to the format expected by SFT input."""
+    """Convert queries_state to the format expected by SFT input.
+
+    v12.12 fix (P0-4): preserve `ask_time` so format_queries_block
+    (agent_protocol.py:148) can render Q events at the correct chunk time.
+    Without ask_time, all queries collapse to t=0 in the rendered <queries>
+    block — train/infer divergence (runtime has real timestamps).
+    """
     result = []
     for q in queries_state:
         result.append({
             "question": q.get("question", ""),
+            "ask_time": q.get("ask_time", 0),    # P0-4: preserve timestamp
             "answers": q.get("answers", []),
         })
     return result
@@ -268,6 +275,17 @@ def render_sample(
         # non-compress samples. Used by streaming-eval / RL to score
         # the model's <summary> time_range vs teacher's policy choice.
         "gold_compress_chunks": gold_compress_chunks,
+        # v12.12 fix (P0-1, P0-2): preserve the real placement.ask_chunk
+        # and the question schema (text + MC options + correct letter).
+        # pass4 was previously inferring ask_chunk from the response
+        # sample's chunk_idx, breaking forward/silent_then_response
+        # timing. It also dropped question/options/correct_option,
+        # forcing eval and RL to fall back to gold_answer (= treating
+        # the answer text as the question).
+        "ask_chunk": int(sample["ask_chunk"]) if "ask_chunk" in sample else -1,
+        "question": card.get("question", ""),
+        "options": list(card.get("options") or []),
+        "correct_option": card.get("correct_option", ""),
     }
 
     # v12.11 audit-4 P0 #1 fix (2026-05-01): merged shape-B recall samples
