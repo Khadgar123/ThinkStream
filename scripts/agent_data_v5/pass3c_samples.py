@@ -332,6 +332,56 @@ def _recall_response_sample(
     }
 
 
+def _recall_silent_multiturn_sample(
+    chunk_idx: int, think: str, queries: List[Dict],
+    recall_query: Dict, recall_result: Dict,
+    trajectory_id: str, card_id: str, sequence_type: str,
+    user_input: str = "",
+) -> Dict:
+    """Multi-turn recall sample with FAILURE result → empty answer (v12.13).
+
+    Teaches the model: when recall returns no useful content (source=failure),
+    DO NOT fabricate an answer — emit empty <answer></answer> (silent).
+
+    SFT rendering (pass5 shape B variant):
+      assistant → tool_call(recall_query)        ← turn1: model attempts recall
+      tool      → recall_result(source=failure)  ← system event: nothing found
+      assistant → think + empty <answer>          ← turn2: model stays silent
+
+    Without this sample shape, design.py:534 emits "recall+silent" intent
+    but pass3c renders it as a plain silent (no tool_call, no failure
+    recall_result). The model never sees the failure→silent pattern, so
+    at inference it may either (a) skip recall entirely, or (b) fabricate
+    an answer when recall fails.
+    """
+    turn1 = build_assistant_content_v12(
+        think=think, kind="recall", recall_query=recall_query,
+    )
+    turn2_think = (
+        "Recall returned no matching evidence. Cannot answer — staying silent."
+    )
+    turn2 = build_assistant_content_v12(
+        think=turn2_think, kind="answer", answer_text="",  # ← silent
+    )
+    return {
+        "chunk_idx": chunk_idx,
+        "sample_type": "recall",   # same shape B as recall_response
+        "prompt_type": "SYSTEM_PROMPT",
+        "trajectory_id": trajectory_id,
+        "card_id": card_id,
+        "sequence_type": sequence_type,
+        "action": "silent",        # ← gold action is silent (not response)
+        "output": turn2,
+        "v12_assistant_turn_1": turn1,
+        "v12_assistant_turn_2": turn2,
+        "queries": deepcopy(queries),
+        "user_input": user_input,
+        "recall_result": recall_result,
+        "base_role": "recall_silent",
+        "_recall_failure": True,    # diagnostic flag for pass3e/audit
+    }
+
+
 # ---------------------------------------------------------------------------
 # Public API (matches old pass3c interface)
 # ---------------------------------------------------------------------------
@@ -451,10 +501,20 @@ async def generate_trajectory_samples(
                 sequence_type=sequence_type, user_input=user_input,
             ))
         elif ds.sample_kind == "recall+silent":
-            raw.append(_silent_sample(
-                c, _think_for_chunk(rollout, c), queries_state, traj_id,
-                card_id=card_id or "", sequence_type=sequence_type,
-                base_role="recall_silent", sample_subtype="recall+silent",
+            # v12.13 fix (P0-4): emit a real two-turn shape B sample with
+            # tool_call(recall_query) → tool(recall_result, source=failure)
+            # → empty <answer>. Was emitting plain silent without any
+            # recall machinery, hiding the "failure → silent" supervision
+            # signal from the model entirely.
+            if client is not None:
+                rq = await _recall_query_via_llm(
+                    card or {}, client, video_id, c)
+            else:
+                rq = _recall_query_for(card or {}, c)
+            rr = _recall_result_for(card or {}, rollout, "failure")
+            raw.append(_recall_silent_multiturn_sample(
+                c, _think_for_chunk(rollout, c), queries_state,
+                rq, rr, traj_id, card_id or "", sequence_type,
                 user_input=user_input,
             ))
         elif ds.sample_kind == "response":

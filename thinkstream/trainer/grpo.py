@@ -560,20 +560,25 @@ def rollout(
             # question at each of their ask_chunks — we honor that by emitting
             # the same string at every chunk in the card's ask_chunks list.
             _question_at_chunk: Dict[int, str] = {}
+            # v12.13 fix (P0-1): parallel meta map carries options +
+            # answer_form so agent_loop.step → MemoryState.add_query can
+            # store them on the query → format_queries_block renders
+            # "Options: A) ..." for pending MC at every chunk where the
+            # query is still pending. Without this, RL/eval queries lose
+            # MC options after the ask chunk passes.
+            _question_meta_at_chunk: Dict[int, Dict] = {}
             _all_ask_chunks: List[int] = []
             _all_answer_chunks: List[int] = []
             for q in raw_sample["questions"]:
-                # v12.13: question text only — options live in <queries>
-                # via format_queries_block (queries_state has options +
-                # answer_form; pending MC renders "Options: A) ..." line).
-                # Putting options here too would double-render at ask_chunk.
                 q_text = q.get("question") or q.get("gold_answer", "")
+                q_meta = {
+                    "options": list(q.get("options") or []),
+                    "answer_form": q.get("answer_form", ""),
+                }
                 for ac in q.get("ask_chunks") or []:
                     _question_at_chunk[int(ac)] = q_text
+                    _question_meta_at_chunk[int(ac)] = q_meta
                     _all_ask_chunks.append(int(ac))
-                # v12.13 fix (P0-1): track answer_chunks so rollout cap
-                # extends to the LAST expected answer chunk. forward
-                # cards have lead 18-32 → answer falls way past ask + 5.
                 for ac in q.get("answer_chunks") or []:
                     _all_answer_chunks.append(int(ac))
             ask_chunk = max(_all_ask_chunks) if _all_ask_chunks else (
@@ -592,6 +597,7 @@ def rollout(
         else:
             ask_chunk = raw_sample.get("chunk_idx", rollout_max_chunks - 1)
             _question_at_chunk = {}
+            _question_meta_at_chunk = {}
             _rollout_end_chunk = ask_chunk + 5    # flat schema fallback
 
             # Extract user question (new format: input.user_input;
@@ -652,10 +658,15 @@ def rollout(
                 q = _question_at_chunk.get(chunk_idx)
                 if q is None and not _is_traj_sample and chunk_idx == ask_chunk:
                     q = user_question
+                # v12.13 fix (P0-1): plumb options/answer_form through to
+                # MemoryState.add_query so format_queries_block renders MC
+                # Options for pending queries.
+                q_meta = _question_meta_at_chunk.get(chunk_idx)
                 result = loop.step(
                     chunk_idx=chunk_idx,
                     video_path=abs_video_path,
                     user_question=q,
+                    user_question_meta=q_meta,
                 )
                 # v12.11 P0.6 fix: for recall multi-turn, the FINAL assistant
                 # turn that loss-time message reconstruction appends should be
@@ -1226,34 +1237,90 @@ def _calc_rewards_v12_trajectory(
                 if out.get("chunk_idx") is not None
             }
             for q in questions:
+                # v12.13 fix (P0-2): timing window mirrors outcome reward —
+                # uses answer_chunks (where the answer is actually expected),
+                # not ask_chunks (where the question is asked). For forward
+                # cards the gap is 18-32 chunks; the old `ask + 5` window
+                # marked correct late answers as "missed" and ignored the
+                # whole forward family.
+                #
+                # Two modes (matches v12_rewards.compute_trajectory_outcome_v12):
+                #   SINGLE: window = [ask_chunk, last_answer_chunk + slack]
+                #   MULTI:  per-emit window from per_emit_answers, with
+                #           non-overlapping search floor.
+                answer_chunks_q = sorted(q.get("answer_chunks") or [])
                 ask_chunks = sorted(q.get("ask_chunks") or [])
-                if not ask_chunks:
+                ask_chunk_q = q.get("ask_chunk")
+                if not isinstance(ask_chunk_q, int):
+                    ask_chunk_q = (
+                        ask_chunks[0] if ask_chunks else
+                        (answer_chunks_q[0] if answer_chunks_q else None)
+                    )
+                if ask_chunk_q is None:
                     continue
+                per_emit_q = q.get("per_emit_answers") or []
+                is_multi = (len(answer_chunks_q) > 1 or len(per_emit_q) > 1)
+                SLACK = 2
+
                 per_ask_t: List[float] = []
-                for i, ask_chunk in enumerate(ask_chunks):
-                    if i + 1 < len(ask_chunks):
-                        window_end = min(
-                            ask_chunks[i + 1] - 1,
-                            ask_chunk + answer_window_chunks,
-                        )
-                    else:
-                        window_end = ask_chunk + answer_window_chunks
-                    # Find model's first answer in this ask's window
-                    model_chunk = None
-                    for ci in range(ask_chunk, window_end + 1):
-                        out = by_chunk_idx.get(ci)
-                        if out is None:
+                if is_multi:
+                    # Per-emit timing
+                    chunk_gold_q = {
+                        int(e["chunk"]): str(e.get("value", ""))
+                        for e in per_emit_q
+                        if isinstance(e, dict) and "chunk" in e
+                    }
+                    target_chunks = sorted(
+                        chunk_gold_q.keys() or answer_chunks_q
+                    )
+                    next_floor = ask_chunk_q
+                    for i, emit_chunk in enumerate(target_chunks):
+                        lo = max(next_floor, emit_chunk - SLACK)
+                        if i + 1 < len(target_chunks):
+                            hi = min(emit_chunk + SLACK,
+                                     target_chunks[i + 1] - 1)
+                        else:
+                            hi = emit_chunk + SLACK
+                        if lo > hi:
+                            per_ask_t.append(0.0)
                             continue
-                        if (out.get("kind") == "answer"
+                        model_chunk = None
+                        for ci in range(lo, hi + 1):
+                            out = by_chunk_idx.get(ci)
+                            if (out and out.get("kind") == "answer"
+                                    and out.get("answer_text")):
+                                model_chunk = ci
+                                break
+                        if model_chunk is None:
+                            per_ask_t.append(0.0)
+                            continue
+                        next_floor = model_chunk + 1
+                        t = _compute_timing_reward_v12(
+                            answer_chunk=model_chunk,
+                            visible_start_chunk=max(ask_chunk_q, emit_chunk - SLACK),
+                            visible_end_chunk=hi,
+                        )
+                        per_ask_t.append(t)
+                else:
+                    # Single-emit: full window from ask to last answer + slack
+                    last_emit = (answer_chunks_q[-1]
+                                  if answer_chunks_q else
+                                  ask_chunk_q + answer_window_chunks)
+                    window_end = last_emit + SLACK
+                    model_chunk = None
+                    for ci in range(ask_chunk_q, window_end + 1):
+                        out = by_chunk_idx.get(ci)
+                        if (out and out.get("kind") == "answer"
                                 and out.get("answer_text")):
                             model_chunk = ci
                             break
                     t = _compute_timing_reward_v12(
                         answer_chunk=model_chunk,
-                        visible_start_chunk=ask_chunk,
+                        visible_start_chunk=ask_chunk_q,
                         visible_end_chunk=window_end,
                     )
                     per_ask_t.append(t)
+
                 if per_ask_t:
                     per_q_timings.append(sum(per_ask_t) / len(per_ask_t))
             timing_avg = (

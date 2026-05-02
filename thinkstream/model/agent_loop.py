@@ -243,13 +243,24 @@ class MemoryState:
     # still tolerates the legacy field via .get() for back-compat with
     # any external snapshot dumps.
 
-    def add_query(self, question: str, ask_time: float):
-        """Register a question (pending until answered)."""
+    def add_query(self, question: str, ask_time: float,
+                   options: Optional[List[str]] = None,
+                   answer_form: Optional[str] = None):
+        """Register a question (pending until answered).
+
+        v12.13 fix (P0-1): accept options + answer_form so format_queries_block
+        can render "Options: A) ... B) ..." for pending MC queries at
+        inference / RL rollout time. SFT data has options via pass3c
+        queries_state; without this in runtime, RL/eval prompts omit the
+        choices and forward MC questions become unanswerable.
+        """
         if not hasattr(self, "_queries"):
             self._queries = []
         self._queries.append({
             "question": question,
             "ask_time": ask_time,
+            "options": list(options or []),
+            "answer_form": answer_form or "",
             "answers": [],
         })
 
@@ -724,12 +735,17 @@ class StreamingAgentLoop:
         chunk_idx: int,
         video_path: str,
         user_question: Optional[str] = None,
+        user_question_meta: Optional[Dict] = None,
         **generate_kwargs,
     ) -> Dict:
         """Execute one agent step (one chunk).
 
         Returns parsed output dict with keys: think, action, payload.
         Handles compression trigger and recall orchestration internally.
+
+        v12.13 fix (P0-1): user_question_meta carries options + answer_form
+        for MC queries so MemoryState.add_query stores them; subsequent
+        chunks render Options in <queries> block via format_queries_block.
         """
         # 1. Snapshot BEFORE this step
         snapshot = self.memory.snapshot(chunk_idx)
@@ -748,7 +764,12 @@ class StreamingAgentLoop:
                 for q in self.memory.queries
             )
             if not already_logged:
-                self.memory.add_query(user_question, ask_time)
+                meta = user_question_meta or {}
+                self.memory.add_query(
+                    user_question, ask_time,
+                    options=meta.get("options"),
+                    answer_form=meta.get("answer_form"),
+                )
 
         # 2. Check compression trigger (system-triggered, not model-triggered).
         #

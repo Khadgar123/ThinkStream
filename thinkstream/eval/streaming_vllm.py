@@ -158,8 +158,14 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     # v12.6 #15: trajectory schema support — look up the per-chunk question
     # from the precomputed map. Falls back to legacy single-question
     # behavior (runner.query at runner.ask_chunk) when the map is empty.
-    if runner.question_at_chunk:
-        user_question = runner.question_at_chunk.get(chunk_idx)
+    # v12.13 fix (P0-1): runner.question_meta_at_chunk carries options +
+    # answer_form for the question at each ask_chunk. MemoryState.add_query
+    # stores them so format_queries_block renders MC Options for pending
+    # queries. Falls back to {} for legacy runners without the field.
+    q_at_chunk = getattr(runner, "question_at_chunk", None) or {}
+    q_meta_at_chunk = getattr(runner, "question_meta_at_chunk", None) or {}
+    if q_at_chunk:
+        user_question = q_at_chunk.get(chunk_idx)
     else:
         user_question = runner.query if chunk_idx == runner.ask_chunk else None
     if user_question:
@@ -169,7 +175,12 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
             for q in runner.memory.queries
         )
         if not already:
-            runner.memory.add_query(user_question, ask_time)
+            meta = q_meta_at_chunk.get(chunk_idx) or {}
+            runner.memory.add_query(
+                user_question, ask_time,
+                options=meta.get("options"),
+                answer_form=meta.get("answer_form"),
+            )
 
     compress_trigger = _maybe_compress_trigger(runner.memory, chunk_idx)
     runner._last_trigger = bool(compress_trigger)
@@ -573,6 +584,8 @@ class _RolloutRunner:
     # Built once per runner from raw_sample["questions"]; lookup in
     # _prepare_step_messages.
     question_at_chunk: Dict[int, str] = field(default_factory=dict)
+    # v12.13 fix (P0-1): per-chunk options + answer_form for MC queries
+    question_meta_at_chunk: Dict[int, Dict] = field(default_factory=dict)
     # Per-runner retriever for recall tool execution (BM25 index per video).
     # None = recall second-pass disabled (vLLM legacy behavior pre-#15).
     retriever: Optional[object] = None
@@ -784,6 +797,23 @@ def streaming_vllm_rollout(
         # the rollout horizon past the LATEST one so each fires its
         # response window.
         q_at_chunk = _extract_question_at_chunk_map(raw_sample)
+        # v12.13 fix (P0-1): build per-chunk meta map alongside question text
+        # so MC options propagate to runtime queries.
+        q_meta_at_chunk: Dict[int, Dict] = {}
+        # v12.13 fix (P0-3): track answer_chunks so rollout cap covers
+        # forward / silent_then_response cards (lead 18-32 chunks).
+        all_answer_chunks: List[int] = []
+        if (isinstance(raw_sample.get("questions"), list)
+                and isinstance(raw_sample.get("gold_action_per_chunk"), dict)):
+            for q in raw_sample["questions"]:
+                meta = {
+                    "options": list(q.get("options") or []),
+                    "answer_form": q.get("answer_form", ""),
+                }
+                for ac in q.get("ask_chunks") or []:
+                    q_meta_at_chunk[int(ac)] = meta
+                for ac in q.get("answer_chunks") or []:
+                    all_answer_chunks.append(int(ac))
         if q_at_chunk:
             latest_ask = max(q_at_chunk.keys())
             # Legacy fields for back-compat: pick the canonical first ask_chunk
@@ -793,7 +823,14 @@ def streaming_vllm_rollout(
             ask_chunk = int(raw_sample.get("chunk_idx", rollout_max_chunks - 1))
             latest_ask = ask_chunk
             question = None
-        max_chunks_this = min(latest_ask + rollout_extra_chunks, rollout_max_chunks)
+        # v12.13: rollout cap = max(answer_chunks) + slack. Fallback to
+        # latest_ask + rollout_extra_chunks for legacy trajectories without
+        # answer_chunks.
+        if all_answer_chunks:
+            cap_target = max(all_answer_chunks) + 2  # slack
+        else:
+            cap_target = latest_ask + rollout_extra_chunks
+        max_chunks_this = min(cap_target + 1, rollout_max_chunks)
 
         for g in range(group_size):
             # v12.6 #15: per-runner BM25 retriever for recall tool execution.
@@ -817,6 +854,7 @@ def streaming_vllm_rollout(
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
                 question_at_chunk=q_at_chunk,
+                question_meta_at_chunk=q_meta_at_chunk,    # v12.13 P0-1
                 retriever=runner_retriever,
             ))
 
