@@ -442,21 +442,34 @@ def _match_mcq_answer(
         if len(leading) == 1 or not leading[1].isalpha():
             return True
 
-    # Strategy 2: model output equals or contains the correct option text.
-    if correct_text and (ma == correct_text or correct_text in ma or ma in correct_text):
+    # Strategy 2: model output equals the correct option text, OR the
+    # correct option text appears as a substring of the model output
+    # (model answered "the answer is on the table" → still correct).
+    # Critically, do NOT do `ma in correct_text` — "b" is a substring
+    # of "table", which would let any single letter match any option
+    # whose text contains it.
+    if correct_text and (ma == correct_text or correct_text in ma):
         return True
 
-    # Strategy 3: any option exactly matches the model answer — must be
-    # the correct one to score.
+    # Strategy 3: model output exactly matches one of the option texts —
+    # must be the correct one to score. Also accept "long option text in
+    # ma" (model wrote out the full chosen option), but require length ≥ 4
+    # to avoid the same single-letter-in-text trap as Strategy 2.
     for i, opt in enumerate(options):
         on = _normalize_answer(opt)
-        if on and (ma == on or (len(on) > 5 and on in ma)):
+        if on and (ma == on or (len(on) >= 4 and on in ma)):
             return i == correct_idx
 
     # Strategy 4: gold_answer text fallback (some datasets use free text).
+    # Require gold_answer length ≥ 2 to avoid pathological single-char
+    # gold-answer false positives ("a" in everything).
     if gold_answer:
         ga = _normalize_answer(gold_answer)
-        if ga and (ma == ga or ga in ma or ma in ga):
+        if ga and len(ga) >= 2 and (ma == ga or ga in ma):
+            return True
+        # For very short gold answers (single chars / digits), require
+        # exact match.
+        if ga and len(ga) < 2 and ma == ga:
             return True
 
     return False
