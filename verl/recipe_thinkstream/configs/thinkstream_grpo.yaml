@@ -33,16 +33,16 @@ data:
   #       than this can't fit in one micro-batch on one GPU)
   #
   # Capacity rule of thumb (Qwen3-VL-8B + FSDP zero3 + offload, 96GB H20):
-  #   max_response_length=16384 → safely fits ~60 chunks per trajectory
-  #                              with D1 chunk-internal recall enabled
-  #                              (~10K stitched typical, 16K worst case)
-  #   32768 → ~120 chunks; tight but OK with use_dynamic_bsz
-  #   65536 → ~240 chunks; on the edge of OOM, expect occasional retries
+  #   max_response_length=16384 → ~60 chunks (smoke / very short videos)
+  #   32768 (DEFAULT) → ~120 chunks; covers all of current batch1's
+  #                     60-95 chunk range + lower tier of batch2's
+  #                     120-240s catalog tier. Safe with use_dynamic_bsz.
+  #   65536 → ~180-240 chunks; tight, OOM possible at peak batch sizes
   #   >=131072 → 300+ chunks; STITCHED PATH NOT RECOMMENDED — switch to
   #              recurrent rollout (docs/v12.14_recurrent_design.md)
   #              which cuts the per-sample sequence to one chunk's
   #              prompt+response (~2-8K) regardless of trajectory length.
-  max_response_length: 16384
+  max_response_length: 32768
   train_batch_size: 8
   return_raw_chat: True
   return_multi_modal_inputs: True
