@@ -79,12 +79,21 @@ class RDataset(RLHFDataset):
 from .async_utils import ChatCompletionProxy
 
 class AsyncOutput(ABC):
-    def __init__(self, 
-                 conversations: List[List[Dict[str, str]]], 
-                 sample_index: int, 
+    def __init__(self,
+                 conversations: List[List[Dict[str, str]]],
+                 sample_index: int,
                  final_mask: bool,
                  timing_raw: dict,
-                 metrics: dict = None):
+                 metrics: dict = None,
+                 # v12.14 (ThinkStream): per-conversation multi-modal payload.
+                 # Length must equal len(conversations). Each entry is either
+                 # None (text-only action — ReMemR1 default) or a dict with
+                 # the same shape as AgentLoopOutput.multi_modal_data, e.g.
+                 #   {"videos": [(tensor, metadata), ...], "images": [...]}
+                 # The generation_manager's concat_output / actor MM plumbing
+                 # reads these to inject vision tokens for the corresponding
+                 # action's prompt+response.
+                 multi_modal_data: Optional[List[Optional[Dict]]] = None):
         self.conversations = conversations
         self.sample_index = sample_index
         self.final_mask = final_mask
@@ -94,6 +103,13 @@ class AsyncOutput(ABC):
         self.metrics = metrics
         if "workflow/num_conv" not in metrics:
             metrics["workflow/num_conv"] = len(conversations)
+        if multi_modal_data is None:
+            multi_modal_data = [None] * len(conversations)
+        assert len(multi_modal_data) == len(conversations), (
+            f"multi_modal_data length ({len(multi_modal_data)}) must equal "
+            f"conversations length ({len(conversations)})"
+        )
+        self.multi_modal_data = multi_modal_data
     
 class AsyncRAgent(ABC):
     """
