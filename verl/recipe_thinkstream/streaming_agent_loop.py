@@ -301,7 +301,6 @@ def _register_streaming_agent_loop():
         default_v12_update_state,
     )
 
-    @register("thinkstream_streaming_agent")
     class ThinkStreamStreamingAgentLoop(AgentLoopBase):
         """MemAgent-style chunk-level rollout for streaming video."""
 
@@ -816,13 +815,33 @@ def _register_streaming_agent_loop():
             })
             return output_obj
 
+    # Manual registration with factory-function target so hydra can locate it.
+    # The @register decorator stores subclass.__qualname__ which breaks for
+    # local classes (contains '<locals>'). We override with the factory path.
+    from verl.experimental.agent_loop.agent_loop import _agent_loop_registry  # type: ignore
+    _agent_loop_registry["thinkstream_streaming_agent"] = {
+        "_target_": "recipe_thinkstream.streaming_agent_loop.make_thinkstream_streaming_agent_loop"
+    }
+
     return ThinkStreamStreamingAgentLoop
 
 
+# ---------------------------------------------------------------------------
+# Factory for hydra instantiate (avoids local-class locate issue).
+# ---------------------------------------------------------------------------
+def make_thinkstream_streaming_agent_loop(**kwargs):
+    """Return an instance of ThinkStreamStreamingAgentLoop.
+
+    hydra.utils.instantiate can't locate a class defined inside another
+    function (its __qualname__ contains '<locals>'). This factory lives at
+    module level, so agent_loops.yaml can point `_target_` here; we call
+    `_register_streaming_agent_loop()` to get the real class and instantiate.
+    """
+    cls = _register_streaming_agent_loop()
+    return cls(**kwargs)
+
+
 try:
-    # Promote the inner class to a module-level attribute so hydra
-    # `_target_: recipe_thinkstream.streaming_agent_loop.ThinkStreamStreamingAgentLoop`
-    # in agent_loops.yaml resolves.
     ThinkStreamStreamingAgentLoop = _register_streaming_agent_loop()
 except Exception as e:  # noqa: BLE001
     logger.debug("ThinkStreamStreamingAgentLoop not registered: %s", e)

@@ -2,6 +2,10 @@
 # 2-GPU verl GRPO debug — minimal smoke test.
 set -euo pipefail
 
+# Initialize conda for this shell
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate /home/tione/notebook/gaozhenkun/hzh/envs/thinkstream
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "${SCRIPT_DIR}")"
 
@@ -53,6 +57,7 @@ python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.log_prob_use_dynamic_bsz=false \
     actor_rollout_ref.rollout.multi_turn.max_assistant_turns=10 \
     actor_rollout_ref.rollout.multi_turn.max_user_turns=10 \
+    actor_rollout_ref.rollout.agent.num_workers=1 \
     data.train_files="${TRAIN_PARQUET}" \
     data.val_files="[${VAL_PARQUET}]" \
     data.train_batch_size=1 \

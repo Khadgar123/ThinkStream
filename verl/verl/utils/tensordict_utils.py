@@ -189,6 +189,9 @@ def concat_nested_tensors(tensors: list[torch.Tensor]) -> torch.Tensor:
         unbind_tensors.extend(list(unbind_tensor))
 
     tensor = torch.nested.as_nested_tensor(unbind_tensors, layout=torch.jagged)
+    ragged_idx = getattr(tensors[0], "_ragged_idx", None)
+    if ragged_idx is not None:
+        tensor._ragged_idx = ragged_idx
     return tensor
 
 
@@ -273,6 +276,28 @@ def concat_tensordict(data: list[TensorDict]) -> TensorDict:
     return output
 
 
+def _slice_nested_tensor(nt: torch.Tensor, start: int, end: int) -> torch.Tensor:
+    """Slice a jagged nested tensor along the batch dimension.
+
+    Extracts rows [start, end) from a nested tensor by slicing the underlying
+    values and adjusting offsets.  This avoids ``as_nested_tensor`` which
+    creates wrong internal metadata for 3D jagged tensors when the chunk
+    contains a single element.
+
+    See https://github.com/pytorch/pytorch/issues/153238
+    """
+    offsets = nt.offsets()
+    ragged_idx = getattr(nt, "_ragged_idx", None)
+    start_offset = int(offsets[start].item())
+    end_offset = int(offsets[end].item())
+    values = nt.values()[start_offset:end_offset]
+    new_offsets = offsets[start:end + 1] - start_offset
+    result = torch.nested.nested_tensor_from_jagged(values, offsets=new_offsets)
+    if ragged_idx is not None:
+        result._ragged_idx = ragged_idx
+    return result
+
+
 def chunk_tensordict(td: TensorDict, chunks: int) -> list[TensorDict]:
     """Split a TensorDict into equal-sized chunks with special nested tensor handling.
 
@@ -307,8 +332,8 @@ def chunk_tensordict(td: TensorDict, chunks: int) -> list[TensorDict]:
         unaffected — ``unbind(dim=0)`` works correctly for them.
 
         The workaround: try ``unbind`` first (fast path for 2D); on failure,
-        fall back to ``to_padded_tensor`` → ``chunk`` → reconstruct per-chunk
-        NestedTensors using the original ragged lengths from ``offsets``.
+        fall back to ``_slice_nested_tensor`` which slices the underlying
+        values and rebuilds with ``nested_tensor_from_jagged`` + correct offsets.
 
         See https://github.com/pytorch/pytorch/issues/153238
     """
@@ -327,20 +352,19 @@ def chunk_tensordict(td: TensorDict, chunks: int) -> list[TensorDict]:
         try:
             tensors = nt.unbind(dim=0)
         except RuntimeError:
-            padded = nt.to_padded_tensor(0)
-            padded_chunks = padded.chunk(chunks, dim=0)
-            offsets = nt.offsets()
-            lengths = offsets.diff().tolist()
+            # 3D+ jagged tensor — use slice-based reconstruction
             for i, chunk_td in enumerate(tds):
-                chunk_lengths = lengths[i * chunk_size : (i + 1) * chunk_size]
-                chunk_tensors = [padded_chunks[i][j, :seq_len] for j, seq_len in enumerate(chunk_lengths)]
-                chunk_td[key] = torch.nested.as_nested_tensor(chunk_tensors, layout=torch.jagged)
+                chunk_td[key] = _slice_nested_tensor(nt, i * chunk_size, (i + 1) * chunk_size)
             continue
 
         for i, chunk_td in enumerate(tds):
-            chunk_td[key] = torch.nested.as_nested_tensor(
+            chunk_nt = torch.nested.as_nested_tensor(
                 tensors[i * chunk_size : (i + 1) * chunk_size], layout=torch.jagged
             )
+            ragged_idx = getattr(nt, "_ragged_idx", None)
+            if ragged_idx is not None:
+                chunk_nt._ragged_idx = ragged_idx
+            chunk_td[key] = chunk_nt
 
     return tds
 
@@ -461,10 +485,18 @@ def index_select_tensor_dict(batch: TensorDict, indices: torch.Tensor | list[int
             if isinstance(tensor, torch.Tensor) and not tensor.is_nested:
                 data_dict[key] = tensor[indices]
             elif isinstance(tensor, torch.Tensor) and tensor.is_nested:
-                tensor_lst = tensor.unbind()  # for performance
-                data_dict[key] = torch.nested.as_nested_tensor(
-                    [tensor_lst[idx] for idx in indices], layout=torch.jagged
-                )
+                ragged_idx = getattr(tensor, "_ragged_idx", None)
+                try:
+                    tensor_lst = tensor.unbind()  # for performance
+                    selected_nt = torch.nested.as_nested_tensor(
+                        [tensor_lst[idx] for idx in indices], layout=torch.jagged
+                    )
+                except RuntimeError:
+                    # 3D+ jagged tensor — use slice-based reconstruction
+                    selected_nt = _slice_nested_tensor(tensor, int(indices[0].item()), int(indices[-1].item()) + 1)
+                if ragged_idx is not None:
+                    selected_nt._ragged_idx = ragged_idx
+                data_dict[key] = selected_nt
             else:
                 # This handles NonTensorStack (indexable by batch dim) and NonTensorData (scalar metadata).
                 if tensor.shape:

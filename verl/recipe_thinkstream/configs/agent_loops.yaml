@@ -13,4 +13,4 @@
 #
 # Loaded via rollout.agent.agent_loop_config_path in thinkstream_grpo.yaml.
 - name: thinkstream_streaming_agent
-  _target_: recipe_thinkstream.streaming_agent_loop.ThinkStreamStreamingAgentLoop
+  _target_: recipe_thinkstream.streaming_agent_loop.make_thinkstream_streaming_agent_loop
