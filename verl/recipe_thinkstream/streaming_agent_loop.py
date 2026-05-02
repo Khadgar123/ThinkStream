@@ -137,10 +137,36 @@ logger = logging.getLogger(__file__)
 logger.setLevel(os.getenv("VERL_LOGGING_LEVEL", "WARN"))
 
 
-# Token budget for compress system trigger (matches SFT default in
-# scripts.agent_data_v5.config.RECENT_THINKS_TOKEN_BUDGET; we estimate
-# tokens at ~1.3× whitespace word count to avoid pulling in tiktoken).
-DEFAULT_COMPRESS_TOKEN_THRESHOLD = 3200
+# Token budget for compress system trigger — MUST match pass2 / SFT / eval
+# exactly. Single source of truth is scripts/agent_data_v5/config.py:
+#
+#   RECENT_THINKS_TOKEN_BUDGET    = 4000   # total budget
+#   COMPRESS_TRIGGER_RATIO        = 0.8    # fire at 80%
+#   COMPRESS_TOKEN_THRESHOLD      = 3200   # = budget × ratio
+#   COMPRESS_RANGE_MIN            = 8      # min items in a compress range
+#
+# v12.13 (2026-05-03): RL was using a hardcoded 3200 + word-count×1.3
+# estimate, which drifted from pass2 / eval (both use the real Qwen
+# tokenizer). Diverging means RL's compress fires at a different memory
+# state than what the model trained on under SFT, breaking SFT-RL
+# distribution alignment. Now: import the constants directly and use
+# self.tokenizer (already loaded by AgentLoopBase) for accurate counting.
+try:
+    from scripts.agent_data_v5.config import (  # type: ignore
+        RECENT_THINKS_TOKEN_BUDGET,
+        COMPRESS_TOKEN_THRESHOLD,
+        COMPRESS_RANGE_MIN,
+    )
+except ImportError:
+    # Fallback for envs that don't have THINKSTREAM_HOME on PYTHONPATH —
+    # values mirror config.py but won't auto-update if config changes.
+    RECENT_THINKS_TOKEN_BUDGET = 4000
+    COMPRESS_TOKEN_THRESHOLD = 3200
+    COMPRESS_RANGE_MIN = 8
+
+# Backward-compat alias for any external import; new code should use
+# COMPRESS_TOKEN_THRESHOLD directly.
+DEFAULT_COMPRESS_TOKEN_THRESHOLD = COMPRESS_TOKEN_THRESHOLD
 
 
 # Module-level placeholder so hydra's `_target_:
@@ -340,16 +366,41 @@ def _retrieve_from_memory(
     }
 
 
-def _estimate_recent_thinks_tokens(recent_thinks: List[Dict[str, Any]]) -> int:
-    """Rough word-based token count for the compress trigger threshold.
-    Matches SFT's RECENT_THINKS_TOKEN_BUDGET semantics — a coarse upper
-    bound is fine since vLLM has its own tokenizer for the actual text."""
-    total_words = 0
+def _count_recent_thinks_tokens(
+    recent_thinks: List[Dict[str, Any]],
+    tokenizer=None,
+) -> int:
+    """Count tokens in recent_thinks, matching pass2/eval EXACTLY.
+
+    pass2 (scripts/agent_data_v5/pass2_rollout.py:183) and eval
+    (thinkstream/model/agent_loop.py:170) both use:
+        tokenizer.encode(text, add_special_tokens=False)
+    falling back to len(text)//4 when tokenizer is None.
+
+    RL must use the same accounting or its compress trigger fires at a
+    different memory state than what SFT data was generated under,
+    diverging the train/RL/eval distribution.
+    """
+    total = 0
     for t in recent_thinks or []:
         text = t.get("text") if isinstance(t, dict) else str(t)
-        if text:
-            total_words += len(text.split())
-    return int(total_words * 1.3)  # ~1.3 tokens per word for English
+        if not text:
+            continue
+        if tokenizer is not None:
+            try:
+                total += len(tokenizer.encode(text, add_special_tokens=False))
+                continue
+            except Exception:
+                pass  # fall through to char-based estimate
+        total += len(text) // 4
+    return total
+
+
+# Backward-compat alias for any external import.
+def _estimate_recent_thinks_tokens(recent_thinks: List[Dict[str, Any]]) -> int:
+    """DEPRECATED: kept as a no-tokenizer shim. Prefer
+    _count_recent_thinks_tokens(recent_thinks, tokenizer=...)."""
+    return _count_recent_thinks_tokens(recent_thinks, tokenizer=None)
 
 
 # ---------------------------------------------------------------------------
@@ -404,12 +455,17 @@ def _register_streaming_agent_loop():
             self.chunk_sec = float(
                 os.environ.get("THINKSTREAM_CHUNK_SEC", "1.0") or 1.0
             )
+            # v12.13: default = COMPRESS_TOKEN_THRESHOLD imported from
+            # scripts/agent_data_v5/config.py (3200 = 80% of 4000-tok
+            # RECENT_THINKS_TOKEN_BUDGET). Matches pass2 / eval / SFT
+            # exactly — diverging here means RL's compress fires at
+            # different memory state than what the model trained on.
             self.compress_token_threshold = int(
                 os.environ.get(
                     "THINKSTREAM_COMPRESS_THRESHOLD",
-                    str(DEFAULT_COMPRESS_TOKEN_THRESHOLD),
+                    str(COMPRESS_TOKEN_THRESHOLD),
                 )
-                or DEFAULT_COMPRESS_TOKEN_THRESHOLD
+                or COMPRESS_TOKEN_THRESHOLD
             )
             self.recall_stub_text = str(
                 os.environ.get(
@@ -658,11 +714,26 @@ def _register_streaming_agent_loop():
             self, state: "VideoTrajectoryState"
         ) -> Optional[Tuple[int, int]]:
             """Return (start_chunk, end_chunk) range to compress, or None.
-            Fires when recent_thinks token estimate exceeds threshold."""
-            est = _estimate_recent_thinks_tokens(state.recent_thinks)
-            if est < self.compress_token_threshold:
-                return None
+
+            Mirrors pass2 (scripts/agent_data_v5/pass2_rollout.py:199) and
+            eval (thinkstream/model/agent_loop.py:181) MemoryState.should_compress():
+              fires when recent_thinks tokens >= COMPRESS_TOKEN_THRESHOLD
+              AND len(recent_thinks) >= COMPRESS_RANGE_MIN.
+
+            Token counting uses self.tokenizer (the same Qwen tokenizer
+            verl loaded for the actor) — NOT word-count×1.3 — so the
+            trigger fires at the same memory state pass2/eval would.
+            """
             if not state.recent_thinks:
+                return None
+            if len(state.recent_thinks) < COMPRESS_RANGE_MIN:
+                # Match eval MemoryState.should_compress's range_min guard:
+                # at least 8 thinks before compress is meaningful.
+                return None
+            est = _count_recent_thinks_tokens(
+                state.recent_thinks, tokenizer=self.tokenizer,
+            )
+            if est < self.compress_token_threshold:
                 return None
             chunks = [
                 int(t.get("chunk", -1))
