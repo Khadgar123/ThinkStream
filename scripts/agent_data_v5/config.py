@@ -54,6 +54,43 @@ FRAMES_PER_CHUNK = 2         # 每 chunk 2 帧
 VISUAL_WINDOW_CHUNKS = 16    # 视觉窗口 = 最近 16 chunks (16s @ 2fps = 32 帧)
 VISUAL_WINDOW_FRAMES = VISUAL_WINDOW_CHUNKS * FRAMES_PER_CHUNK  # 32 帧
 
+# v12.13 (2026-05-02): visual window mode. Read from env so SFT generators
+# (pass2/pass5/render_samples) and the RL agent loop pick the same scheme
+# without separate plumbing. SFT and RL MUST agree on this value or the
+# rollout-time visual context diverges from the training distribution.
+#   "sliding"   — window slides 1 chunk per step (legacy default).
+#                 Frame token IDs shift left by FRAMES_PER_CHUNK every
+#                 chunk → vLLM prefix cache misses on the visual block.
+#   "expanding" — window anchored at segment boundary, grows to current
+#                 chunk, resets every VISUAL_WINDOW_CHUNKS. ~94% prefix-
+#                 cache hit on visual KV. Boundary chunks have less recent
+#                 context — re-verify SFT data quality after switching.
+import os as _os
+VISUAL_WINDOW_MODE = _os.environ.get(
+    "THINKSTREAM_VISUAL_WINDOW_MODE", "sliding"
+).lower()
+if VISUAL_WINDOW_MODE not in ("sliding", "expanding"):
+    VISUAL_WINDOW_MODE = "sliding"
+
+
+def compute_visual_window_start(
+    chunk_idx: int,
+    visual_window_chunks: int = VISUAL_WINDOW_CHUNKS,
+    mode: str = None,
+) -> int:
+    """Single source of truth for window-start computation across the
+    SFT data pipeline (pass2_rollout, pass5_messages, render_samples)
+    and the RL agent loop (recipe_thinkstream/streaming_agent_loop.py).
+
+    Returns the inclusive starting chunk_idx of the visual window
+    covering chunk ``chunk_idx``.
+    """
+    eff_mode = (mode or VISUAL_WINDOW_MODE or "sliding").lower()
+    if eff_mode == "expanding":
+        seg = max(1, int(visual_window_chunks))
+        return (int(chunk_idx) // seg) * seg
+    return max(0, int(chunk_idx) - int(visual_window_chunks) + 1)
+
 # ---------------------------------------------------------------------------
 # 3. Think & memory parameters
 # ---------------------------------------------------------------------------

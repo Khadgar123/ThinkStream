@@ -25,6 +25,7 @@ from .config import (
     AGENT_CHUNK_SEC,
     VISUAL_WINDOW_CHUNKS,
     FRAMES_PER_CHUNK,
+    compute_visual_window_start,
 )
 from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12
 
@@ -52,7 +53,7 @@ def _build_visual_window(
     for fast training I/O. Otherwise SFT data_processor falls back to
     video_path online decoding.
     """
-    window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
+    window_start = compute_visual_window_start(chunk_idx)
     video_start = window_start * AGENT_CHUNK_SEC
     video_end = (chunk_idx + 1) * AGENT_CHUNK_SEC
     n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK

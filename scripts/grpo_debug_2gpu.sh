@@ -22,6 +22,19 @@ export AGENT_DATA_DIR="${PROJECT_DIR}/data/agent_v5_current_backup/final"
 export THINKSTREAM_AUDIT_DIR="${AUDIT_DIR}"
 export THINKSTREAM_OUTPUT_DIR="${OUTPUT_DIR}"
 
+# v12.13: enable double-layer GRPO (outcome × α + state × (1-α)) on the
+# legacy thinkstream/train.py grpo path. Default OFF in grpo.py; set here
+# so the debug run actually exercises the ReMemR1-style advantage.
+export THINKSTREAM_USE_STATE_ADVANTAGE="${THINKSTREAM_USE_STATE_ADVANTAGE:-1}"
+export THINKSTREAM_ADVANTAGE_MODE="${THINKSTREAM_ADVANTAGE_MODE:-remem}"
+export THINKSTREAM_STATE_REWARD_MODE="${THINKSTREAM_STATE_REWARD_MODE:-format_action}"
+export THINKSTREAM_STATE_ADV_ALPHA="${THINKSTREAM_STATE_ADV_ALPHA:-0.7}"
+# v12.13: visual window mode. Default sliding to match existing SFT data
+# layout. Set THINKSTREAM_VISUAL_WINDOW_MODE=expanding ONLY after re-running
+# pass2_rollout.py + pass5_messages.py with the same env var (otherwise the
+# RL rollout-time visual context differs from training distribution).
+export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding}"
+
 # Pre-extracted frames: eliminates 300s+ torchcodec online decode per rollout
 FRAMES_ROOT="${PROJECT_DIR}/data/agent_v5/frames"
 VIDEO_ROOT="/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos"

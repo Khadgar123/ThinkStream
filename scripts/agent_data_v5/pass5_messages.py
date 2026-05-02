@@ -144,7 +144,10 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                     FRAMES_PER_CHUNK as _FPC,
                     VISUAL_WINDOW_CHUNKS as _VWC,
                 )
-                window_start = max(0, chunk_idx - _VWC + 1)
+                from scripts.agent_data_v5.config import (
+                    compute_visual_window_start as _cvws,
+                )
+                window_start = _cvws(chunk_idx, _VWC)
                 paths: List[str] = []
                 for ci in range(window_start, chunk_idx + 1):
                     for fi in range(_FPC):
@@ -163,8 +166,11 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                 FRAMES_PER_CHUNK as _FPC,
                 VISUAL_WINDOW_CHUNKS as _VWC,
             )
+            from scripts.agent_data_v5.config import (
+                compute_visual_window_start as _cvws,
+            )
             n_frames = len(vw["frame_paths"])
-            window_start = max(0, chunk_idx - _VWC + 1)
+            window_start = _cvws(chunk_idx, _VWC)
             # v12.12: runtime mm_processor_kwargs at video item level so
             # qwen-vl-utils.process_vision_info forwards them to vLLM as
             # smart_resize bounds. Matches pass2 / inference / RL rollout.

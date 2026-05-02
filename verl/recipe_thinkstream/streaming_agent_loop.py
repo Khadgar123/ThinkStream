@@ -27,20 +27,62 @@
 #       <|im_start|>assistant\n
 #     ]
 #
-# KV CACHE BEHAVIOUR (v12.12, 2026-05-01):
-#   User content reordered to put MEMORY FIRST (stable monotonic prefix)
-#   and visual_window AFTER. Across consecutive chunks of one trajectory:
-#     prompt_chunk_t   = [system + user_q + <memory_at_t> + <queries_at_t>
-#                         + <visual_window_t> + frames_t + <user_input_t>]
-#     prompt_chunk_t+1 = [system + user_q + <memory_at_t+1> + ...]
-#   memory_at_t+1 is memory_at_t with one extra appended think (modulo
-#   periodic compression rewrites that invalidate the prefix and reset
-#   the cache). vLLM's prefix cache therefore hits ~3-5K tokens of the
-#   stable head every chunk instead of just the ~600-tok system block.
+# CACHE BEHAVIOUR (v12.13, 2026-05-02):
+#   Two independent caches help streaming-video rollout. Each targets a
+#   different bottleneck.
 #
-#   Sliding visual window still changes every turn (chunk 0's frames drop
-#   out at turn 16) and remains a cache miss, but it's now LATER in the
-#   sequence so the missed region is shorter.
+#   1. vLLM mm_processor_cache (CPU, configured via
+#      engine_kwargs.vllm.mm_processor_cache_gb=64 in run_thinkstream_grpo.sh):
+#        Caches (PIL load + smart_resize + ViT-friendly tensor) per
+#        (frame_path, min_pixels, max_pixels) key. Sliding window means
+#        any single frame reappears in N=visual_window_chunks consecutive
+#        chunks, so per-frame ViT prep is reused (N-1)/N ≈ 94% of the
+#        time. THIS IS THE PRIMARY OPTIMIZATION for our streaming-video
+#        workload — pass2 teacher rollout (--mm-processor-cache-gb 512)
+#        empirically gets 93.8% mm-cache hit rate. RL inherits the same
+#        mechanism as long as mm_processor_kwargs are byte-stable across
+#        chunks (v12.12's RUNTIME_MM_PROCESSOR_KWARGS guarantees that).
+#
+#   2. vLLM enable_prefix_caching (GPU, thinkstream_grpo.yaml):
+#        Reuses attention KV blocks for byte-identical prompt prefixes.
+#        Across two chunks of one trajectory, the [system + user_q]
+#        prefix (~600 tok) and SFT-aligned [<memory>'s leading thinks]
+#        are byte-identical, so prefix cache saves the prefill there.
+#        BUT the visual block (which dominates token count) is a
+#        cache MISS under sliding window because frame token IDs shift
+#        every chunk. We do NOT restructure the prompt to chase prefix-
+#        cache hits on visuals — that's mm_processor_cache's job.
+#
+#   The "expanding" visual-window mode below is an OPT-IN experiment for
+#   prefix-cache-on-visual workloads; default is "sliding" to preserve
+#   SFT-RL distribution alignment with the existing data.
+#
+# PROMPT LAYOUT (must match SFT exactly — see
+# thinkstream/data/agent_protocol.py:213-214 build_user_content):
+#
+#     prompt_chunk_t = [
+#       system + user_q                        ← stable across chunks
+#       <memory>                               ← monotonic append; SFT-first
+#       (queries)                              ← optional
+#       <visual_window header>                 ← {start, end, frames, current_time}
+#       <video block: window frames>           ← sliding window (or expanding opt-in)
+#       <recall_result> (optional)             ← chunk-specific
+#       <user_input> or <compress_trigger/>    ← chunk-specific, last
+#     ]
+#
+# WINDOW MODE (THINKSTREAM_VISUAL_WINDOW_MODE):
+#   "sliding"  (default, matches SFT agent_protocol.py:275 and
+#               pass5_messages.py): window = [max(0, chunk-VWC+1) .. chunk].
+#               Frame token IDs shift left every chunk → 0% prefix-cache
+#               hit on visuals; mm_processor_cache reuses the per-frame
+#               ViT prep instead.
+#   "expanding" (opt-in, requires re-running pass2/pass5 with the same
+#                env var to keep SFT data in sync): window starts at the
+#                segment boundary (chunk // VWC × VWC) and grows to chunk.
+#                Within a segment frame IDs are byte-stable, so prefix
+#                cache hits the visual block ~94% (15/16). Boundary
+#                chunks lose recent visual context — re-verify SFT
+#                quality after switching.
 #
 # SFT ALIGNMENT (the 5 things that must match pass5_messages.py):
 #   1. Frame paths use 1-indexed numbering: frame_{ci*FPC + fi + 1:06d}.jpg
@@ -167,6 +209,37 @@ def _chunk_frame_paths(
     return paths
 
 
+def _compute_window_start(
+    chunk_idx: int,
+    visual_window_chunks: int,
+    mode: str = "sliding",
+) -> int:
+    """Compute the start chunk of the visual window for `chunk_idx`.
+
+    mode="sliding"   (legacy / SFT-aligned): window_start = max(0, chunk-VWC+1)
+                     The window slides 1 chunk per step. Frame token IDs in
+                     the prompt shift left by `frames_per_chunk` every step
+                     → vLLM prefix cache misses on the visual block.
+    mode="expanding" (v12.13 / KV-friendly): window_start = (chunk // VWC) * VWC
+                     The window is anchored at a segment boundary and grows
+                     until it hits the next segment. Within a segment the
+                     leading frames occupy IDENTICAL prompt positions across
+                     chunks → vLLM prefix cache hits ~(VWC-1)/VWC of visual
+                     tokens. Trade-off: at chunk_idx % VWC == 0 the window
+                     contains only 1 chunk of frames; recent context is
+                     thinner than `sliding` for the first chunk in each
+                     segment. Best paired with SFT data regenerated under
+                     the same mode (pass5_messages.py:147 needs the same
+                     branch); otherwise the rollout-time visual context
+                     differs from training-time context for boundary chunks.
+    """
+    if mode == "expanding":
+        seg = max(1, int(visual_window_chunks))
+        return (int(chunk_idx) // seg) * seg
+    # sliding (default)
+    return max(0, int(chunk_idx) - int(visual_window_chunks) + 1)
+
+
 def _build_visual_window(
     video_path: str,
     frames_root: str,
@@ -174,8 +247,9 @@ def _build_visual_window(
     visual_window_chunks: int,
     frames_per_chunk: int,
     chunk_sec: float = 1.0,
+    mode: str = "sliding",
 ) -> Tuple[List[str], Dict[str, Any], int, int]:
-    """Build the sliding visual window for chunk N.
+    """Build the visual window for chunk N.
 
     Returns:
       flat_paths:     all frame paths in window order (window_start..N)
@@ -183,9 +257,9 @@ def _build_visual_window(
                       total_num_frames) — drives MROPE temporal anchor
       window_start_chunk, window_end_chunk
 
-    Mirrors SFT's pass5_messages.py:140-161 exactly.
+    `mode` selects the windowing strategy (see _compute_window_start).
     """
-    window_start = max(0, chunk_idx - visual_window_chunks + 1)
+    window_start = _compute_window_start(chunk_idx, visual_window_chunks, mode)
     window_end = chunk_idx
     flat_paths: List[str] = []
     for c in range(window_start, window_end + 1):
@@ -342,6 +416,17 @@ def _register_streaming_agent_loop():
                     "(no relevant past observation found)",
                 )
             )
+            # v12.13: visual window mode (see _compute_window_start
+            # docstring). Default "sliding" matches SFT
+            # agent_protocol.py:275 + pass5_messages.py exactly. Opt in
+            # to "expanding" only after regenerating SFT data with the
+            # same THINKSTREAM_VISUAL_WINDOW_MODE env var.
+            mode = str(
+                os.environ.get("THINKSTREAM_VISUAL_WINDOW_MODE", "sliding")
+            ).lower()
+            if mode not in ("sliding", "expanding"):
+                mode = "sliding"
+            self.visual_window_mode = mode
 
         # -------------------------------------------------------------------
         # Per-chunk user-side text. Mirrors SFT's
@@ -367,17 +452,22 @@ def _register_streaming_agent_loop():
             """Build the user content list for chunk N. inter_chunk=True
             (compress turn) skips the visual_window — matches SFT shape C.
 
-            v12.12 (2026-05-01): order = memory → visual_window + frames →
-            recall_result → user_input. Memory first means the stable
-            monotonic prefix lands at the head of the user message and
-            the vLLM async server's prefix cache reuses [system + user_q
-            + memory_at_t-1] across chunks of one trajectory.
+            v12.13 (2026-05-02): mirrors SFT layout in
+            thinkstream/data/agent_protocol.py:213-214 build_user_content
+            EXACTLY:
+              <memory> → (queries) → <visual_window> + <video frames> →
+              <recall_result> → <user_input> or <compress_trigger/>
+
+            Memory FIRST (per SFT) — train/RL distribution alignment is
+            the hard constraint; whatever marginal prefix-cache benefit
+            visual-first would give is dwarfed by SFT-RL drift if the
+            two diverge. Per-frame ViT re-encoding cost is handled by
+            vLLM's mm_processor_cache (engine_kwargs.vllm.mm_processor_cache_gb
+            in run_thinkstream_grpo.sh), NOT by prefix-cache restructuring.
             """
             content: List[Dict[str, Any]] = []
 
-            # Memory block (FIRST — stable monotonic prefix; always emitted,
-            # even on compress turn).
-            #
+            # ── Memory block (FIRST — matches SFT build_user_content) ──
             # P0.5 fix (post-review 2026-05-01): format_memory_block reads
             # the dict under "compressed_segments" or legacy "compressed".
             # We were passing "compressed_summaries" → memory after compress
@@ -397,7 +487,11 @@ def _register_streaming_agent_loop():
                 "text": f"<memory>\n{mem_text}\n</memory>",
             })
 
-            # Visual window header + video block (cache-miss boundary).
+            # ── Visual window header + video block (after memory, matches
+            # SFT). Header layout copies agent_protocol.py:283-292: keys
+            # `start`, `end`, `frames`, `current_time` are all required —
+            # SFT trained the model on this exact JSON shape, removing
+            # any field would diverge train/RL distribution.
             if not inter_chunk:
                 vw_header = json.dumps({
                     "start": window_start_chunk * self.chunk_sec,
@@ -415,10 +509,13 @@ def _register_streaming_agent_loop():
                 if window_paths:
                     # v12.12: runtime mm_processor_kwargs at video-item level
                     # so qwen-vl-utils.process_vision_info forwards them to
-                    # vLLM as smart_resize bounds. Identical values to pass2 +
-                    # SFT data_processor + agent_loop inference → student
-                    # sees the same visual token sequence at training and
-                    # rollout time.
+                    # vLLM as smart_resize bounds. v12.13: identical kwargs
+                    # across chunks → vLLM mm_processor_cache key is stable
+                    # (frame_path, min_pixels, max_pixels) so PIL+ViT
+                    # preprocessing is cached when the same frame recurs in
+                    # consecutive sliding windows. This is the ONLY visual-
+                    # token reuse mechanism we rely on; do not rearrange the
+                    # surrounding content blocks for prefix-cache purposes.
                     try:
                         from scripts.agent_data_v5.config import (
                             RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
@@ -629,6 +726,7 @@ def _register_streaming_agent_loop():
                             visual_window_chunks=self.visual_window_chunks,
                             frames_per_chunk=self.frames_per_chunk,
                             chunk_sec=self.chunk_sec,
+                            mode=self.visual_window_mode,
                         )
                     )
                 visual_injected = bool(window_paths) and not inter_chunk
@@ -677,11 +775,14 @@ def _register_streaming_agent_loop():
                 if len(response_mask) + user_block_len + 1 >= self.response_length:
                     break
 
-                # ── Generate INDEPENDENTLY. v12.12: KV cache hits
-                # initial_prompt_ids + memory_at_t-1 + queries_at_t-1
-                # (memory now placed FIRST in user content). Visual window
-                # remains a cache miss because the sliding window mutates
-                # both ends each step (drops oldest frames, appends newest).
+                # ── Generate INDEPENDENTLY. v12.13 cache breakdown:
+                # - prefix cache hits the [system + user_q + memory's
+                #   leading thinks] head (~few % of total prompt).
+                # - mm_processor_cache (engine_kwargs.vllm.mm_processor_cache_gb)
+                #   reuses ViT prep for the ~94% of frames that overlap
+                #   with the previous chunk's sliding window. This is
+                #   where the actual rollout-time savings come from for
+                #   streaming video (matches pass2's 93.8% mm-cache hit).
                 with simple_timer("generate_sequences", metrics):
                     output: TokenOutput = await self.server_manager.generate(
                         request_id=request_id,

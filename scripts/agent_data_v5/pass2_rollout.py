@@ -34,6 +34,7 @@ from .config import (
     SUMMARY_TOKENS_MAX,
     SUMMARY_TOKENS_MIN,
     VISUAL_WINDOW_CHUNKS,
+    compute_visual_window_start,
 )
 from .pass1a_evidence import get_chunk_frame_paths
 
@@ -163,7 +164,7 @@ class MemoryState:
             # Backward compat fields (derived from timeline)
             "compressed_segments": deepcopy(self.compressed_segments),
             "recent_thinks": deepcopy(self.recent_thinks),
-            "visual_window_start": max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1),
+            "visual_window_start": compute_visual_window_start(chunk_idx),
         }
 
     def add_think(self, chunk_idx: int, think_text: str):
@@ -288,7 +289,7 @@ def build_observation_request(
     """
     start = chunk_idx * AGENT_CHUNK_SEC
     end = start + AGENT_CHUNK_SEC
-    window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
+    window_start = compute_visual_window_start(chunk_idx)
 
     memory_text = memory.format_for_prompt()
 

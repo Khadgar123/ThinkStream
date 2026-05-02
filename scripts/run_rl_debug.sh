@@ -6,6 +6,16 @@ eval "$(/root/miniconda3/bin/conda shell.bash hook)"
 conda activate /home/tione/notebook/gaozhenkun/hzh/envs/thinkstream
 set -u
 export AGENT_DATA_DIR=/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5_current_backup/final
+
+# v12.13: align the legacy debug run with the verl path defaults — enable
+# double-layer GRPO + expanding visual window so debug reproduces what
+# production rollout will see.
+export THINKSTREAM_USE_STATE_ADVANTAGE="${THINKSTREAM_USE_STATE_ADVANTAGE:-1}"
+export THINKSTREAM_ADVANTAGE_MODE="${THINKSTREAM_ADVANTAGE_MODE:-remem}"
+export THINKSTREAM_STATE_REWARD_MODE="${THINKSTREAM_STATE_REWARD_MODE:-format_action}"
+export THINKSTREAM_STATE_ADV_ALPHA="${THINKSTREAM_STATE_ADV_ALPHA:-0.7}"
+export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding}"
+
 CUDA_VISIBLE_DEVICES=6,7 torchrun --nproc_per_node=2 thinkstream/train.py grpo \
     --args.train.deepspeed scripts/zero3.json \
     --args.model.name_or_path output/agent-sft-debug \
