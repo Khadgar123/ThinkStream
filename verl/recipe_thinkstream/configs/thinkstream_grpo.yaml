@@ -123,11 +123,16 @@ actor_rollout_ref:
       agent_loop_config_path: recipe_thinkstream/configs/agent_loops.yaml
     multi_turn:
       enable: True
-      # v12.13 (2026-05-02): max_turns removed — verl MultiTurnConfig does
-      # not accept it (only max_assistant_turns/max_user_turns). The 360
-      # cap is enforced via max_assistant_turns below.
-      max_assistant_turns: 360
-      max_user_turns: 360
+      # v12.13: max_turns removed — verl MultiTurnConfig only accepts
+      # max_assistant_turns/max_user_turns.
+      # v12.14 (2026-05-03): default lowered 360 → 120 to match the
+      # stitched-training capacity (see top-of-file max_response_length
+      # comment + run_thinkstream_grpo.sh MAX_TURNS=120). Other launchers
+      # (debug_verl_2gpu.sh / grpo_train_verl.sh) override via CLI; this
+      # default catches direct `python -m verl.trainer.main_ppo` invocations.
+      # 240+ requires v12.14 recurrent (docs/v12.14_recurrent_design.md).
+      max_assistant_turns: 120
+      max_user_turns: 120
       max_parallel_calls: 1
       # ── ThinkStream-specific keys (frames_root / frames_per_chunk /
       # visual_window_chunks / recall_stub_text) are NOT accepted by
