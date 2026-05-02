@@ -22,11 +22,26 @@ defaults:
 
 data:
   max_prompt_length: 16384
-  # P0.3 — response_length is the TOTAL stitched length across all chunk
-  # turns (each chunk contributes its user_block + assistant turn). For
-  # the first-run conservative MAX_CHUNKS=60 + ~40 vis tokens/chunk text
-  # + ~80 tokens/chunk assistant ≈ 60*120 = 7200 tokens. Bump default
-  # well above that. For full 360-chunk trajectories raise to 32768+.
+  # v12.14 (2026-05-03): max_response_length is the TOTAL STITCHED length
+  # across all chunk turns. Under the current `1 trajectory = 1 long
+  # training sample` regime this is ALSO the actor-side per-sample
+  # sequence length, which drives BOTH:
+  #   (a) FSDP forward memory   (~ O(L²) attention even with use_remove_padding,
+  #                              since flash_attn_varlen un-pads but does NOT
+  #                              block-diagonalise across chunk boundaries)
+  #   (b) ppo_max_token_len_per_gpu packing budget (a single sample longer
+  #       than this can't fit in one micro-batch on one GPU)
+  #
+  # Capacity rule of thumb (Qwen3-VL-8B + FSDP zero3 + offload, 96GB H20):
+  #   max_response_length=16384 → safely fits ~60 chunks per trajectory
+  #                              with D1 chunk-internal recall enabled
+  #                              (~10K stitched typical, 16K worst case)
+  #   32768 → ~120 chunks; tight but OK with use_dynamic_bsz
+  #   65536 → ~240 chunks; on the edge of OOM, expect occasional retries
+  #   >=131072 → 300+ chunks; STITCHED PATH NOT RECOMMENDED — switch to
+  #              recurrent rollout (docs/v12.14_recurrent_design.md)
+  #              which cuts the per-sample sequence to one chunk's
+  #              prompt+response (~2-8K) regardless of trajectory length.
   max_response_length: 16384
   train_batch_size: 8
   return_raw_chat: True

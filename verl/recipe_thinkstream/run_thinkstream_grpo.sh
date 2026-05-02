@@ -27,7 +27,9 @@
 #   EPOCHS [1]
 #   MAX_PROMPT_LEN [16384]
 #   MAX_RESP_LEN [2048]
-#   MAX_TURNS [360]
+#   MAX_TURNS [60]    (NOT 300+ — stitched training caps here; see
+#                       docs/v12.14_recurrent_design.md for the recurrent
+#                       path that lifts this to 300+ without OOM.)
 #   GPU_MEM_UTIL [0.55]
 #   PROJECT_NAME [thinkstream-v12]
 #   EXPERIMENT_NAME [grpo-v126-verl]
@@ -54,8 +56,22 @@ PPO_MINI_BS=${PPO_MINI_BS:-256}
 LR=${LR:-1e-6}
 EPOCHS=${EPOCHS:-1}
 MAX_PROMPT_LEN=${MAX_PROMPT_LEN:-16384}
-MAX_RESP_LEN=${MAX_RESP_LEN:-2048}
-MAX_TURNS=${MAX_TURNS:-360}
+# v12.14 (2026-05-03): MAX_RESP_LEN is the STITCHED total across all chunk
+# turns, NOT a single chunk's output. Sized for ~MAX_TURNS chunks ×
+# (~50 user_block + ~120 assistant) ≈ MAX_TURNS × 170. With D1 chunk-internal
+# multi-turn recall a chunk with one recall round costs ~3× a plain chunk,
+# so size with a 1.5× multiplier as conservative headroom:
+#   MAX_TURNS=60   → ~10K stitched (default safe production range)
+#   MAX_TURNS=120  → ~20K
+#   MAX_TURNS=240  → ~40K (approaching actor OOM under stitched training;
+#                          recommend stage-B recurrent before going higher)
+# DO NOT scale MAX_TURNS to 300+ without first switching to recurrent
+# rollout (docs/v12.14_recurrent_design.md). Stitched training of 300
+# chunks ≈ 50K tokens × FSDP-sharded forward → high OOM risk on 96GB.
+MAX_RESP_LEN=${MAX_RESP_LEN:-16384}
+# Default 60 chunks fits comfortably in stitched training; bump only after
+# verifying actor forward + log_prob fit within ppo_max_token_len_per_gpu.
+MAX_TURNS=${MAX_TURNS:-60}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
 # v12.13: vLLM mm_processor_cache_gb (CPU-side image preprocessor cache).
 # pass2's teacher run uses 512GB and gets 93.8% mm-cache hit on the same
