@@ -948,17 +948,51 @@ def _register_streaming_agent_loop():
                 chunk_kinds.append(kind)
                 chunk_asst_texts.append(response_text)
 
-                # ── Multi-Q: assign this turn's <answer> (if any) to the
-                # earliest pending question. Per-Q answer attribution
-                # uses chunk-order matching (Q1 in design — robust enough
-                # given the no-overlapping-ask_chunks invariant).
+                # ── Multi-Q: assign this turn's <answer> (if any) to a
+                # pending question. Audit P1.4: pure FIFO is fragile in
+                # silent_then_response cases (Q1 ask=5/answer=25, Q2 ask=20):
+                # if the model answers Q2 first (at chunk 20) and Q1
+                # later (at chunk 25), FIFO would mis-route Q2's answer
+                # to Q1.
+                #
+                # New rule (best-effort, deterministic):
+                #   1. Prefer a pending Q whose answer_chunks window
+                #      contains chunk_idx (so the rollout's natural
+                #      timing matches the gold answer chunk).
+                #   2. Fall back to the most-recently-triggered pending Q
+                #      (LIFO) — newer questions are likelier to be the
+                #      one the model just heard and answered.
+                #   3. Only fall through to FIFO if both above fail.
                 if multi_q_list and pending_q_indices:
                     answer_match = re.search(
                         r"<answer>(.*?)</answer>", response_text, re.DOTALL,
                     )
                     if answer_match:
                         answer_str = answer_match.group(1).strip()
-                        q_idx = pending_q_indices.pop(0)
+
+                        chosen_pos = None
+                        # 1. answer_chunks window match
+                        for pos, qi in enumerate(pending_q_indices):
+                            q_obj = multi_q_list[qi]
+                            ans_ch = q_obj.get("answer_chunks") or []
+                            if hasattr(ans_ch, "tolist"):
+                                ans_ch = ans_ch.tolist()
+                            ans_ch_int = [
+                                int(x) for x in ans_ch
+                                if isinstance(x, (int, float))
+                            ]
+                            if ans_ch_int and (
+                                min(ans_ch_int) <= chunk_idx <= max(ans_ch_int)
+                            ):
+                                chosen_pos = pos
+                                break
+                        # 2. LIFO (most-recent triggered)
+                        if chosen_pos is None:
+                            chosen_pos = len(pending_q_indices) - 1
+                        # 3. FIFO is the implicit floor when 2 falls through
+                        # (single pending Q → both LIFO/FIFO pick it).
+
+                        q_idx = pending_q_indices.pop(chosen_pos)
                         per_q_answer_chunk[q_idx] = chunk_idx
                         per_q_answer_text[q_idx] = answer_str
 

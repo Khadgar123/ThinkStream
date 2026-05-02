@@ -97,15 +97,23 @@ VAL_JSONL="${VAL_JSONL:-${PROJECT_DIR}/data/agent_v5/final/val_trajectories.json
 TRAIN_PARQUET="${TRAIN_PARQUET:-${PROJECT_DIR}/data/agent_v5/final/train_rl.parquet}"
 VAL_PARQUET="${VAL_PARQUET:-${PROJECT_DIR}/data/agent_v5/final/val_rl.parquet}"
 
+# MULTI_Q=1 → 1 video = 1 row, all questions co-evaluated (OVOBench-aligned).
+# Default still flatten (video, question) for backward compat with existing
+# parquets; new runs should set MULTI_Q=1 to use the proper trajectory shape.
+MULTI_Q_FLAG=""
+if [[ "${MULTI_Q:-0}" == "1" ]]; then
+    MULTI_Q_FLAG="--multi_q"
+fi
+
 if [[ ! -f "${TRAIN_PARQUET}" ]]; then
-    echo "Building train parquet from ${TRAIN_JSONL}…"
+    echo "Building train parquet from ${TRAIN_JSONL}…  (multi_q=${MULTI_Q:-0})"
     python3 "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
-        --jsonl "${TRAIN_JSONL}" --out "${TRAIN_PARQUET}"
+        --jsonl "${TRAIN_JSONL}" --out "${TRAIN_PARQUET}" ${MULTI_Q_FLAG}
 fi
 if [[ ! -f "${VAL_PARQUET}" ]]; then
-    echo "Building val parquet from ${VAL_JSONL}…"
+    echo "Building val parquet from ${VAL_JSONL}…  (multi_q=${MULTI_Q:-0})"
     python3 "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
-        --jsonl "${VAL_JSONL}" --out "${VAL_PARQUET}"
+        --jsonl "${VAL_JSONL}" --out "${VAL_PARQUET}" ${MULTI_Q_FLAG}
 fi
 
 mkdir -p "${OUTPUT_DIR}"

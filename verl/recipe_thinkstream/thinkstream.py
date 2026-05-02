@@ -257,23 +257,45 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
         # Multi-Q rows already carry `questions` + `gold_action_per_chunk`
         # inside extra_info — preserve them. Single-Q rows fill from the
         # row-level columns.
-        is_multi_q = "questions" in extra and extra.get("questions")
+        #
+        # Avoid `bool(extra.get("questions"))` — pyarrow round-trip wraps
+        # List[Dict] in numpy.ndarray whose multi-element __bool__ raises
+        # ValueError. Use length check via a small helper that also handles
+        # `None` and accidental scalars.
+        def _qs_len(v):
+            if v is None:
+                return 0
+            try:
+                return len(v)
+            except TypeError:
+                return 0
+
+        questions_raw = extra.get("questions")
+        is_multi_q = "questions" in extra and _qs_len(questions_raw) > 0
 
         if is_multi_q:
-            # Normalize questions list (parquet may have stored as np array).
-            questions = extra.get("questions") or []
-            if hasattr(questions, "tolist"):
-                questions = questions.tolist()
+            # Normalize questions list (parquet may have stored as np array
+            # of object-dtype dicts; nested fields like options/ask_chunks
+            # may also be ndarrays).
+            if hasattr(questions_raw, "tolist"):
+                questions_raw = questions_raw.tolist()
             normalized_qs: list = []
-            for q in questions:
+            for q in questions_raw:
                 if hasattr(q, "tolist"):
                     q = q.tolist()
                 if not isinstance(q, dict):
                     continue
-                normalized_qs.append({k: q[k] for k in q.keys()})
+                # Coerce nested ndarray fields to plain lists so downstream
+                # `if x:` / `len(x)` checks don't blow up.
+                clean = {}
+                for k, val in q.items():
+                    if hasattr(val, "tolist"):
+                        val = val.tolist()
+                    clean[k] = val
+                normalized_qs.append(clean)
             extra["questions"] = normalized_qs
 
-            gap = extra.get("gold_action_per_chunk") or {}
+            gap = extra.get("gold_action_per_chunk")
             if hasattr(gap, "tolist"):
                 gap = gap.tolist()
             extra["gold_action_per_chunk"] = dict(gap) if gap else {}
@@ -447,8 +469,16 @@ def _score_one_question(
     if not ask_chunks and ask_chunk >= 0:
         ask_chunks = [ask_chunk]
     ask_chunks_int = [int(x) for x in ask_chunks if isinstance(x, (int, float))]
-    visible_start = min(ask_chunks_int) if ask_chunks_int else None
-    visible_end = max(ask_chunks_int) if ask_chunks_int else None
+    # answer_chunks is the FULL answerable window (silent_then_response: ask=5,
+    # answer=25 → window must include 25 or model gets penalised for late).
+    # Audit P1.3: visible_window had to bracket ask_chunks AND answer_chunks,
+    # otherwise pass4-style cards with (ask=20, answer=55) get scored as
+    # late even when model answers correctly at 55.
+    answer_chunks = _safe_list(q.get("answer_chunks"))
+    answer_chunks_int = [int(x) for x in answer_chunks if isinstance(x, (int, float))]
+    window_marks = ask_chunks_int + answer_chunks_int
+    visible_start = min(window_marks) if window_marks else None
+    visible_end = max(window_marks) if window_marks else None
 
     answered = 1.0 if (model_answer or "").strip() else 0.0
 
@@ -476,20 +506,40 @@ def _score_one_question(
             except Exception:
                 outcome = 0.0
 
-    # Timing — bucket the answered_chunk vs the visible window.
+    # Timing — bucket the answered_chunk vs the visible window
+    # (now bracketed by both ask_chunks AND answer_chunks).
     timing = float(rewards["timing"](
         answered_chunk if answered_chunk >= 0 else None,
         visible_start, visible_end,
     ))
 
-    # Silent quality — was the model silent before evidence and on-time
-    # at evidence? compute_silent_quality_v12 takes (final_answer, gold_action,
-    # gold_answer); for multi-Q we approximate gold_action as "response"
-    # (we expect a response at this Q's ask_chunk).
+    # Silent quality — audit P1.6: per-Q silent decision.
+    # compute_silent_quality_v12 takes (final_answer, gold_action, gold_answer)
+    # where gold_action is what the model SHOULD have done at this chunk:
+    #   - if answered_chunk is within the window → gold_action="response"
+    #     (model correctly took the response slot)
+    #   - if answered_chunk < visible_start (early) → gold_action="silent"
+    #     (model should have stayed silent at this point — penalise)
+    #   - if not answered (silent throughout) → gold_action="silent" only
+    #     when the question never had a visible window, otherwise "response"
+    if visible_start is None or visible_end is None:
+        gold_action_for_silent = "response"
+    elif answered_chunk < 0:
+        # Never answered — if there was a window, model should have responded.
+        gold_action_for_silent = "response"
+    elif visible_start <= answered_chunk <= visible_end:
+        # Answered in window → correct response slot.
+        gold_action_for_silent = "response"
+    elif answered_chunk < visible_start:
+        # Model answered too early — at THIS chunk the gold action is silent.
+        gold_action_for_silent = "silent"
+    else:
+        # Late answer (past visible_end) — gold was response.
+        gold_action_for_silent = "response"
     try:
         silent_q = float(rewards["silent_quality"](
             model_answer if answered else None,
-            "response",
+            gold_action_for_silent,
             gold_answer,
         ))
     except Exception:
