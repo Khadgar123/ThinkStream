@@ -492,8 +492,36 @@ def index_select_tensor_dict(batch: TensorDict, indices: torch.Tensor | list[int
                         [tensor_lst[idx] for idx in indices], layout=torch.jagged
                     )
                 except RuntimeError:
-                    # 3D+ jagged tensor — use slice-based reconstruction
-                    selected_nt = _slice_nested_tensor(tensor, int(indices[0].item()), int(indices[-1].item()) + 1)
+                    # 3D+ jagged tensor: ``unbind`` hits the
+                    # ``split_with_sizes`` bug (see chunk_tensordict
+                    # docstring). Slicing a contiguous range only works
+                    # when ``indices`` is contiguous and ascending, which
+                    # is NOT guaranteed here (DataLoader shuffle in
+                    # ``make_iterator`` produces arbitrary permutations).
+                    # Build the result by directly gathering ``values``
+                    # rows + recomputing offsets — avoids round-tripping
+                    # through ``unbind`` / ``concat_nested_tensors`` which
+                    # would re-trigger the same bug on 3D NTs.
+                    src_offsets = tensor.offsets()
+                    src_values = tensor.values()
+                    values_chunks = []
+                    new_offsets = [0]
+                    for idx in indices:
+                        idx_int = int(idx.item() if hasattr(idx, "item") else idx)
+                        start = int(src_offsets[idx_int].item())
+                        end = int(src_offsets[idx_int + 1].item())
+                        values_chunks.append(src_values[start:end])
+                        new_offsets.append(new_offsets[-1] + (end - start))
+                    if values_chunks:
+                        new_values = torch.cat(values_chunks, dim=0)
+                    else:
+                        new_values = src_values[:0]
+                    new_offsets_t = torch.tensor(
+                        new_offsets, dtype=src_offsets.dtype, device=src_offsets.device,
+                    )
+                    selected_nt = torch.nested.nested_tensor_from_jagged(
+                        new_values, offsets=new_offsets_t,
+                    )
                 if ragged_idx is not None:
                     selected_nt._ragged_idx = ragged_idx
                 data_dict[key] = selected_nt

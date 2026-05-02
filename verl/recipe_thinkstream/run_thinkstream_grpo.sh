@@ -50,13 +50,19 @@ NNODES=${NNODES:-1}
 GEN_TP=${GEN_TP:-2}
 GROUP_SIZE=${GROUP_SIZE:-8}
 BATCH_SIZE=${BATCH_SIZE:-8}
-PPO_MINI_BS=${PPO_MINI_BS:-32}
+PPO_MINI_BS=${PPO_MINI_BS:-256}
 LR=${LR:-1e-6}
 EPOCHS=${EPOCHS:-1}
 MAX_PROMPT_LEN=${MAX_PROMPT_LEN:-16384}
 MAX_RESP_LEN=${MAX_RESP_LEN:-2048}
 MAX_TURNS=${MAX_TURNS:-360}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
+# v12.13: vLLM mm_processor_cache_gb (CPU-side image preprocessor cache).
+# pass2's teacher run uses 512GB and gets 93.8% mm-cache hit on the same
+# streaming-video workload. RL is co-located with actor/ref FSDP shards
+# on the same nodes, so 64GB is a more conservative starting point.
+# Bump if you have free CPU RAM and see mm-cache evictions in vLLM logs.
+MM_CACHE_GB=${MM_CACHE_GB:-64}
 
 PROJECT_NAME=${PROJECT_NAME:-thinkstream-v12}
 EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v126-verl}
@@ -74,6 +80,42 @@ export THINKSTREAM_FRAMES_ROOT="${THINKSTREAM_FRAMES_ROOT:-${THINKSTREAM_HOME}/d
 export THINKSTREAM_FRAMES_PER_CHUNK="${THINKSTREAM_FRAMES_PER_CHUNK:-2}"
 export THINKSTREAM_VISUAL_WINDOW_CHUNKS="${THINKSTREAM_VISUAL_WINDOW_CHUNKS:-16}"
 export THINKSTREAM_RECALL_STUB="${THINKSTREAM_RECALL_STUB:-(no relevant past observation found)}"
+
+# v12.13 (2026-05-02): visual-window mode for vLLM prefix cache.
+# ─────────────────────────────────────────────────────────────────
+# IMPORTANT — SFT/RL must agree on this value, else rollout-time
+# visual context differs from training distribution.
+#
+#   sliding   — DEFAULT. window = [chunk-VWC+1 .. chunk]. Frame token
+#               IDs shift every chunk → ~0% visual prefix-cache hit.
+#               Use this if your SFT data was generated with the
+#               legacy `max(0, chunk-VWC+1)` window (i.e. without
+#               THINKSTREAM_VISUAL_WINDOW_MODE=expanding set when
+#               running pass2_rollout.py / pass5_messages.py).
+#
+#   expanding — window = [(chunk//VWC)*VWC .. chunk]. Frames append
+#               monotonically within a 16-chunk segment → ~94% (15/16)
+#               visual prefix-cache hit; cache resets at segment
+#               boundary. To use this:
+#                 1. Regenerate SFT data with THINKSTREAM_VISUAL_WINDOW_MODE=expanding
+#                    set during pass2_rollout.py + pass5_messages.py.
+#                 2. Verify SFT loss + eval are healthy under the new layout.
+#                 3. Then export THINKSTREAM_VISUAL_WINDOW_MODE=expanding
+#                    for the RL run.
+#               Without step 1+2 you'll have an SFT-RL distribution
+#               mismatch (RL rollout shows different frame windows
+#               than what the model trained on).
+export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding}"
+
+# v12.13 P0: enable ReMemR1 double-layer GRPO (outcome × α + state × (1-α))
+# in the legacy thinkstream/train.py grpo path. The verl path's
+# compute_score (recipe_thinkstream/thinkstream.py:510-513) already does
+# the same α-mix at the trajectory-scalar level, so these are mostly
+# defensive for code paths that read these env vars (telemetry, audits).
+export THINKSTREAM_USE_STATE_ADVANTAGE="${THINKSTREAM_USE_STATE_ADVANTAGE:-1}"
+export THINKSTREAM_ADVANTAGE_MODE="${THINKSTREAM_ADVANTAGE_MODE:-remem}"
+export THINKSTREAM_STATE_REWARD_MODE="${THINKSTREAM_STATE_REWARD_MODE:-format_action}"
+export THINKSTREAM_STATE_ADV_ALPHA="${THINKSTREAM_STATE_ADV_ALPHA:-0.7}"
 
 mkdir -p "${SAVE_DIR}"
 
@@ -117,12 +159,13 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.enforce_eager=True \
     actor_rollout_ref.rollout.free_cache_engine=True \
     actor_rollout_ref.rollout.enable_chunked_prefill=True \
+    actor_rollout_ref.rollout.enable_prefix_caching=True \
+    +actor_rollout_ref.rollout.engine_kwargs.vllm.mm_processor_cache_gb=${MM_CACHE_GB:-64} \
     actor_rollout_ref.rollout.response_length=${MAX_RESP_LEN} \
     actor_rollout_ref.rollout.prompt_length=${MAX_PROMPT_LEN} \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.rollout.log_prob_use_dynamic_bsz=True \
     actor_rollout_ref.rollout.log_prob_max_token_len_per_gpu=8192 \
-    +actor_rollout_ref.rollout.engine_kwargs.vllm.disable_mm_preprocessor_cache=True \
     actor_rollout_ref.rollout.multi_turn.enable=True \
     actor_rollout_ref.rollout.multi_turn.max_turns=${MAX_TURNS} \
     actor_rollout_ref.rollout.multi_turn.max_assistant_turns=${MAX_TURNS} \

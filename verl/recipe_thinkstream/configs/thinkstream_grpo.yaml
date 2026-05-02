@@ -57,6 +57,33 @@ actor_rollout_ref:
     enforce_eager: True
     free_cache_engine: True
     enable_chunked_prefill: True
+    # v12.13 (2026-05-02): vLLM cache configuration for streaming video.
+    #
+    # Two independent caches matter here, doing DIFFERENT things:
+    #
+    #   enable_prefix_caching (KV blocks on GPU):
+    #     Reuses attention KV across requests with byte-identical prompt
+    #     prefixes. Only meaningful WITHIN one trajectory's consecutive
+    #     chunks (across trajectories there's no shared prefix). Hit rate
+    #     for the text portion (system + memory's leading thinks) is
+    #     low-to-moderate; hit rate for the visual portion is ~0% under
+    #     the default sliding window because frame token IDs shift every
+    #     chunk. Visual is NOT the target of this cache for our workload.
+    #
+    #   mm_processor_cache_gb (CPU-side image preprocessor cache):
+    #     Caches the (PIL load + smart_resize + ViT-friendly tensor) for
+    #     each unique (frame_path, min_pixels, max_pixels) key. Streaming
+    #     video's sliding window means the same frame appears in N
+    #     consecutive chunks (N = visual_window_chunks=16) so this cache
+    #     hits ~(N-1)/N ≈ 94% on the visual side. THIS is the cache that
+    #     actually saves rollout time for streaming video — ViT encoding
+    #     dominates the per-chunk cost. pass2 uses --mm-processor-cache-gb
+    #     512 and observes 93.8% hit. RL needs the same mechanism.
+    #
+    # `mm_processor_cache_gb` is forwarded to vLLM via engine_kwargs in
+    # run_thinkstream_grpo.sh (Hydra +syntax for un-declared schema keys).
+    # Default sized for 8-rollout × 16-chunk window × ~2MB/frame headroom.
+    enable_prefix_caching: True
     response_length: 16384
     prompt_length: 16384
     # v12.13 (2026-05-02): cap vLLM's max_model_len explicitly. Without
