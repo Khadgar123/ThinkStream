@@ -1443,6 +1443,71 @@ class RayPPOTrainer:
                         # extract reward_tensor and reward_extra_infos_dict for training
                         reward_tensor, reward_extra_infos_dict = extract_reward(batch)
 
+                    # v12.14 Option B Phase 2: recurrent reward broadcast.
+                    #
+                    # When the agent_loop framework returns >1 action per
+                    # input trajectory, agent_loop._postprocess writes:
+                    #   batch.batch["sample_index"] (LongTensor [bsz])
+                    #   batch.batch["final_mask"]   (BoolTensor [bsz])
+                    # Each row's reward_tensor is currently per-row (each
+                    # action got an independent compute_score call), but
+                    # for outcome-only learning we want the SAME outcome
+                    # to broadcast back to all sibling actions of one
+                    # trajectory (matches MemAgent / ReMemR1 semantics).
+                    # Specifically: for each trajectory, take the
+                    # final-action's reward sum and place it at each
+                    # sibling action's last-valid-response-token position.
+                    #
+                    # Backward compat: when final_mask is all True (legacy
+                    # stitched path or recurrent rollout that happens to
+                    # be 1 action / trajectory), this is a no-op — every
+                    # row IS its trajectory's final.
+                    if (
+                        "sample_index" in batch.batch
+                        and "final_mask" in batch.batch
+                        and not batch.batch["final_mask"].all().item()
+                    ):
+                        sidx_t = batch.batch["sample_index"]
+                        fmask_t = batch.batch["final_mask"]
+                        # Per-row reward scalar (sum across response tokens).
+                        per_row_reward = reward_tensor.sum(dim=-1)
+                        # Build trajectory_idx → outcome map from finals.
+                        traj_outcome: dict[int, float] = {}
+                        for i, is_final in enumerate(fmask_t.tolist()):
+                            if is_final:
+                                traj_outcome[int(sidx_t[i].item())] = float(
+                                    per_row_reward[i].item()
+                                )
+                        # Recompute per-token reward: zero out, then place
+                        # broadcasted outcome at each row's last valid
+                        # response token (where the legacy
+                        # NaiveRewardManager would have placed it).
+                        prompt_length = batch.batch["prompts"].size(1)
+                        valid_resp_len = (
+                            batch.batch["attention_mask"][:, prompt_length:]
+                            .sum(dim=1) - 1
+                        ).clamp(min=0)
+                        new_reward = torch.zeros_like(reward_tensor)
+                        for i in range(reward_tensor.size(0)):
+                            tidx = int(sidx_t[i].item())
+                            outcome = traj_outcome.get(tidx, 0.0)
+                            pos = int(valid_resp_len[i].item())
+                            if 0 <= pos < new_reward.size(1):
+                                new_reward[i, pos] = outcome
+                        reward_tensor = new_reward
+                        # Telemetry — surfaces in wandb so we can verify
+                        # the broadcast actually fired in production.
+                        metrics["recurrent/n_trajectories"] = float(
+                            int(fmask_t.sum().item())
+                        )
+                        metrics["recurrent/n_actions_total"] = float(
+                            reward_tensor.size(0)
+                        )
+                        metrics["recurrent/avg_actions_per_traj"] = (
+                            float(reward_tensor.size(0))
+                            / max(1, int(fmask_t.sum().item()))
+                        )
+
                     # Operating Mode Selection:
                     # - Bypass mode: Sets old_log_probs = rollout_log_probs (2 policies: π_rollout, π_θ)
                     # - Decoupled mode: Recomputes old_log_probs as proximal anchor (3 policies: π_rollout, π_old, π_θ)
