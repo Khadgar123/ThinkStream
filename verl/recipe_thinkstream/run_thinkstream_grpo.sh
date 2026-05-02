@@ -135,6 +135,27 @@ export THINKSTREAM_RECALL_STUB="${THINKSTREAM_RECALL_STUB:-(no relevant past obs
 #               than what the model trained on).
 export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding}"
 
+# v12.14 Option B (2026-05-03): rollout output mode.
+#   "stitched" (default) — one AgentLoopOutput per trajectory, all chunks
+#                          stitched into one response. Matches all
+#                          versions ≤ v12.13. Use this for batch1
+#                          ≤120-chunk training.
+#   "recurrent"          — one AgentLoopOutput per assistant action.
+#                          AgentLoopWorker (verl/verl/experimental/
+#                          agent_loop/agent_loop.py Phase 1) flattens
+#                          across the batch tagging sample_index +
+#                          final_mask; ray_trainer (verl/verl/trainer/
+#                          ppo/ray_trainer.py Phase 2) broadcasts the
+#                          trajectory's final reward back to siblings
+#                          via sample_index. Required for >180-chunk
+#                          training without OOM.
+# Activation (full v12.14):
+#   THINKSTREAM_RECURRENT_MODE=recurrent \
+#   MULTI_Q=1 THINKSTREAM_MAX_RECALL_PER_CHUNK=1 \
+#   bash verl/recipe_thinkstream/run_thinkstream_grpo.sh
+export THINKSTREAM_RECURRENT_MODE="${THINKSTREAM_RECURRENT_MODE:-stitched}"
+export THINKSTREAM_MAX_RECALL_PER_CHUNK="${THINKSTREAM_MAX_RECALL_PER_CHUNK:-1}"
+
 # v12.13 P0: enable ReMemR1 double-layer GRPO (outcome × α + state × (1-α))
 # in the legacy thinkstream/train.py grpo path. The verl path's
 # compute_score (recipe_thinkstream/thinkstream.py:510-513) already does

@@ -130,7 +130,7 @@ import logging
 import os
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 from uuid import uuid4
 
 logger = logging.getLogger(__file__)
@@ -495,6 +495,22 @@ def _register_streaming_agent_loop():
             self.max_recall_per_chunk = int(
                 os.environ.get("THINKSTREAM_MAX_RECALL_PER_CHUNK", "1") or 1
             )
+
+            # v12.14 Option B Phase 3: dual-mode rollout output.
+            #   "stitched" (default): one AgentLoopOutput per trajectory
+            #                          (response_ids = all chunks
+            #                          stitched). Backward compat with
+            #                          existing trainer + reward path.
+            #   "recurrent": list[AgentLoopOutput] — one per assistant
+            #                action. AgentLoopWorker (Phase 1) flattens
+            #                across the batch, ray_trainer (Phase 2)
+            #                broadcasts final reward via sample_index.
+            mode = str(
+                os.environ.get("THINKSTREAM_RECURRENT_MODE", "stitched")
+            ).lower()
+            if mode not in ("stitched", "recurrent"):
+                mode = "stitched"
+            self.recurrent_mode = mode
 
         # -------------------------------------------------------------------
         # Per-chunk user-side text. Mirrors SFT's
@@ -905,7 +921,9 @@ def _register_streaming_agent_loop():
                 return None
             return (min(chunks), max(chunks))
 
-        async def run(self, sampling_params: dict[str, Any], **kwargs) -> "AgentLoopOutput":
+        async def run(
+            self, sampling_params: dict[str, Any], **kwargs,
+        ) -> Union["AgentLoopOutput", List["AgentLoopOutput"]]:
             metrics: Dict[str, Any] = {}
             request_id = uuid4().hex
 
@@ -1026,6 +1044,16 @@ def _register_streaming_agent_loop():
             # PIL list, so memory cost is O(n_chunks) tensors not
             # O(n_chunks × window × fpc) PIL images. (P1.11 fix.)
             accumulated_videos: List[Any] = list(initial_videos)
+
+            # v12.14 Phase 3: per-action tracking for recurrent mode.
+            # Stitched mode reads from response_ids/response_mask above and
+            # ignores these. Recurrent mode emits one AgentLoopOutput per
+            # entry of these arrays at the end of run().
+            per_action_prompt_ids: List[List[int]] = []
+            per_action_response_ids: List[List[int]] = []
+            per_action_response_mask: List[List[int]] = []
+            per_action_response_logprobs: List[Optional[List[float]]] = []
+            per_action_mm_data: List[Optional[Dict[str, Any]]] = []
 
             state = VideoTrajectoryState(video_uid=str(video_id), chunk_idx=0)
             recall_result_for_next: Optional[Dict[str, Any]] = None
@@ -1179,6 +1207,34 @@ def _register_streaming_agent_loop():
                     asst_start = len(response_ids)
                     response_ids.extend(assistant_ids)
                     response_mask.extend([1] * len(assistant_ids))
+
+                    # v12.14 Phase 3: also record per-action standalone
+                    # (prompt, response) so recurrent mode can emit one
+                    # AgentLoopOutput per action. Each action's prompt is
+                    # the FULL prompt at this round (chunk_prompt_ids,
+                    # which already includes prior recall multi-turn
+                    # context for round 2+); its response is just this
+                    # round's assistant tokens.
+                    per_action_prompt_ids.append(list(chunk_prompt_ids))
+                    per_action_response_ids.append(list(assistant_ids))
+                    per_action_response_mask.append([1] * len(assistant_ids))
+                    if output.log_probs and len(output.log_probs) == len(assistant_ids):
+                        per_action_response_logprobs.append(list(output.log_probs))
+                    else:
+                        per_action_response_logprobs.append(None)
+                    # mm payload: stitched mode accumulates videos globally;
+                    # recurrent mode needs per-action attribution. Use
+                    # `chunk_videos` for the visual chunk turn; tool turns
+                    # (recall round 2+) carry recalled-frame videos in
+                    # chunk_videos as well (the 2nd round's chunk_messages
+                    # includes the appended tool message).
+                    _ac_mm = None
+                    if chunk_videos:
+                        _ac_mm = {"videos": list(chunk_videos)}
+                    if chunk_images:
+                        _ac_mm = _ac_mm or {}
+                        _ac_mm["images"] = list(chunk_images)
+                    per_action_mm_data.append(_ac_mm)
                     if output.log_probs and len(output.log_probs) == len(assistant_ids):
                         response_logprobs.extend(list(output.log_probs))
                         any_logprobs_returned = True
@@ -1359,6 +1415,95 @@ def _register_streaming_agent_loop():
 
             num_turns = num_assistant_turns + 1
 
+            # Common extra_fields content for both stitched and recurrent modes.
+            common_extras = {
+                "turn_scores": [],
+                "tool_rewards": [],
+                "ts_n_recall": float(state.n_recall_calls),
+                "ts_n_compress": float(state.n_compress_calls),
+                "ts_chunks_used": float(num_assistant_turns),
+                "ts_chunks_with_frames": float(n_chunks_with_frames),
+                "ts_chunks_text_only": float(n_chunks_text_only),
+                "ts_chunks_compress_inter": float(n_chunks_compress_inter),
+                "ts_answer_chunk": float(
+                    state.final_answer_chunk
+                    if state.final_answer_chunk is not None else -1
+                ),
+                "ts_final_answer": state.final_answer or "",
+                "ts_chunk_asst_spans": chunk_asst_spans,
+                "ts_chunk_kinds": chunk_kinds,
+                "ts_chunk_asst_texts": chunk_asst_texts,
+                "ts_chunk_video_indices": chunk_video_indices,
+                "ts_per_q_answer_chunk": list(per_q_answer_chunk),
+                "ts_per_q_answer_text": list(per_q_answer_text),
+                "ts_n_questions": float(len(multi_q_list)),
+            }
+
+            # ──────────────────────────────────────────────────────
+            # v12.14 Phase 3: dispatch on recurrent_mode
+            # ──────────────────────────────────────────────────────
+            if self.recurrent_mode == "recurrent":
+                # Emit one AgentLoopOutput per assistant action. Phase 1's
+                # AgentLoopWorker.generate_sequences flattens these and
+                # tags sample_index + final_mask; Phase 2's ray_trainer
+                # broadcasts the trajectory's final reward back to all
+                # sibling actions via sample_index.
+                #
+                # Per-action: prompt_ids = full-context prompt at that
+                # round (includes prior recall multi-turn context for
+                # inner round 2+). response_ids = JUST that round's
+                # assistant tokens (mask all 1s — no user-block in the
+                # per-action response since the prompt already absorbed it).
+                outputs: List[AgentLoopOutput] = []
+                n_actions = len(per_action_prompt_ids)
+                if n_actions == 0:
+                    # Pathological: rollout produced nothing. Emit one empty
+                    # action so AgentLoopWorker doesn't crash on empty list.
+                    outputs.append(AgentLoopOutput(
+                        prompt_ids=initial_prompt_ids,
+                        response_ids=[],
+                        response_mask=[],
+                        multi_modal_data=(
+                            {"videos": initial_videos} if initial_videos else {}
+                        ),
+                        num_turns=1,
+                        metrics=metrics,
+                        extra_fields={
+                            **common_extras,
+                            "ts_action_index": 0,
+                            "ts_n_actions_in_traj": 1,
+                        },
+                    ))
+                else:
+                    for ai in range(n_actions):
+                        a_mm = per_action_mm_data[ai] or {}
+                        ext = {
+                            **common_extras,
+                            "ts_action_index": ai,
+                            "ts_n_actions_in_traj": n_actions,
+                            # video chunk this action belongs to (-1 for
+                            # compress inter-chunk turns); useful for the
+                            # trainer-side reward path.
+                            "ts_action_chunk_idx": (
+                                chunk_video_indices[ai]
+                                if ai < len(chunk_video_indices) else -1
+                            ),
+                        }
+                        outputs.append(AgentLoopOutput(
+                            prompt_ids=per_action_prompt_ids[ai],
+                            response_ids=per_action_response_ids[ai],
+                            response_mask=per_action_response_mask[ai],
+                            response_logprobs=per_action_response_logprobs[ai],
+                            multi_modal_data=a_mm,
+                            num_turns=1,  # one assistant turn per action
+                            metrics=metrics,
+                            extra_fields=ext,
+                        ))
+                return outputs
+
+            # ──────────────────────────────────────────────────────
+            # Stitched mode (default, backward-compat)
+            # ──────────────────────────────────────────────────────
             multi_modal_data: Dict[str, Any] = {}
             if accumulated_videos:
                 multi_modal_data["videos"] = accumulated_videos
@@ -1376,37 +1521,7 @@ def _register_streaming_agent_loop():
                 metrics=metrics,
                 extra_fields={},
             )
-            output_obj.extra_fields.update({
-                "turn_scores": [],
-                "tool_rewards": [],
-                "ts_n_recall": float(state.n_recall_calls),
-                "ts_n_compress": float(state.n_compress_calls),
-                "ts_chunks_used": float(num_assistant_turns),
-                "ts_chunks_with_frames": float(n_chunks_with_frames),
-                "ts_chunks_text_only": float(n_chunks_text_only),
-                "ts_chunks_compress_inter": float(n_chunks_compress_inter),
-                "ts_answer_chunk": float(
-                    state.final_answer_chunk
-                    if state.final_answer_chunk is not None else -1
-                ),
-                "ts_final_answer": state.final_answer or "",
-                # Per-chunk metadata for compute_score's per-chunk action
-                # shaping (folded into total `score` via GDPO α-mix).
-                "ts_chunk_asst_spans": chunk_asst_spans,
-                "ts_chunk_kinds": chunk_kinds,
-                "ts_chunk_asst_texts": chunk_asst_texts,
-                # P1.7: video chunk_idx per assistant turn (-1 for compress
-                # inter-chunk turns). compute_score keys gold_action_per_chunk
-                # by this, not by enumerate(chunk_kinds).
-                "ts_chunk_video_indices": chunk_video_indices,
-                # Multi-Q trajectory mode: per-question answer attribution
-                # (chunk_idx + answer text). compute_score reads these to
-                # score each question independently and aggregate.
-                # Lengths match len(questions); -1/"" for unanswered Qs.
-                "ts_per_q_answer_chunk": list(per_q_answer_chunk),
-                "ts_per_q_answer_text": list(per_q_answer_text),
-                "ts_n_questions": float(len(multi_q_list)),
-            })
+            output_obj.extra_fields.update(common_extras)
             return output_obj
 
     # Manual registration with factory-function target so hydra can locate it.
