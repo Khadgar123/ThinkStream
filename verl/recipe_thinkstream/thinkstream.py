@@ -202,6 +202,17 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
       data_source:            "thinkstream_v12_streaming"
     """
 
+    def _build_messages(self, example: dict):
+        """Return messages for prompt-length filtering (doc2len).
+
+        Mirrors RLHFDataset._build_messages but without placeholder
+        replacement — our parquet already stores full content dicts.
+        """
+        messages: list = example.get(self.prompt_key, [])
+        if hasattr(messages, "tolist"):
+            messages = messages.tolist()
+        return messages
+
     def __getitem__(self, item):
         import torch  # type: ignore
         row_dict: dict = self.dataframe[item]
