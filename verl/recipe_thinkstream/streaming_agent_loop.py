@@ -485,6 +485,17 @@ def _register_streaming_agent_loop():
                 mode = "sliding"
             self.visual_window_mode = mode
 
+            # v12.13 D1: max recall tool_call rounds per video chunk.
+            # 0 = legacy behavior (recall result delivered next chunk, no
+            # frames). 1 = one in-chunk multi-turn cycle (assistant emits
+            # tool_call → system injects tool_response w/ frames →
+            # assistant emits answer); matches SFT pass5 shape B exactly.
+            # >=2 lets the model retry recall if first result was unhelpful
+            # (rare in SFT data; default 1 to match training distribution).
+            self.max_recall_per_chunk = int(
+                os.environ.get("THINKSTREAM_MAX_RECALL_PER_CHUNK", "1") or 1
+            )
+
         # -------------------------------------------------------------------
         # Per-chunk user-side text. Mirrors SFT's
         # build_per_timestep_messages_v12 layout so train/RL distributions
@@ -675,18 +686,34 @@ def _register_streaming_agent_loop():
             return content
 
         async def _execute_recall(
-            self, args: Dict[str, Any], state: "VideoTrajectoryState"
+            self, args: Dict[str, Any], state: "VideoTrajectoryState",
+            *, video_path: str = "",
         ) -> Dict[str, Any]:
+            """v12.13 D1: build the COMPLETE tool response for shape-B recall.
+
+            Returns a dict matching what SFT pass5_messages.py:280-380 expects:
+              {
+                "recall_result": {source, text_content, returned_chunks, time}
+                                 — same shape as pass3c_samples._recall_result_for
+                "recalled_frames": {time_range, source, n_frames, frame_paths}
+                                   or None on retrieval failure / no frames
+                                   — same shape as pass3c rendering input
+              }
+
+            Both fields go into the next chunk_messages user payload. The
+            frames carry video_metadata.frames_indices anchored to the
+            HISTORICAL chunk timestamps (not the current chunk) so Qwen3-VL
+            MROPE renders per-frame `<X.X seconds>` tokens at the original
+            video time — model learns these are "old frames from time T",
+            not "current visual at time NOW".
+            """
             query = (args.get("query") or args.get("keywords") or
                      args.get("text") or "")
             time_range = args.get("time_range")
             tr_tuple: Optional[Tuple[float, float]] = None
-            # Secondary fix (post-review 2026-05-01): recall tool schema
-            # in agent_protocol.py:417 emits time_range as "start-end"
-            # string (e.g. "10-30"), but earlier eval code passes
-            # list/tuple [start, end]. Accept BOTH so the time-range
-            # filter actually works regardless of which shape the model
-            # learned during SFT.
+            # Recall tool schema (agent_protocol.py:417) emits time_range
+            # as "start-end" string (e.g. "10-30"); legacy eval code may
+            # pass list/tuple [start, end]. Accept BOTH.
             if isinstance(time_range, str) and time_range.strip():
                 m = re.match(r"\s*([\d.]+)\s*-\s*([\d.]+)\s*", time_range)
                 if m:
@@ -699,8 +726,10 @@ def _register_streaming_agent_loop():
                     tr_tuple = (float(time_range[0]), float(time_range[1]))
                 except (TypeError, ValueError):
                     tr_tuple = None
+
+            # ── Text retrieval (existing path) ──────────────────────────
             try:
-                return _retrieve_from_memory(
+                text_result = _retrieve_from_memory(
                     state.compressed_summaries or [],
                     state.recent_thinks or [],
                     query_text=query,
@@ -708,7 +737,139 @@ def _register_streaming_agent_loop():
                 )
             except Exception as e:
                 logger.warning("recall retrieval failed: %s", e)
-                return {"source": "memory", "time": "", "text": "(retrieval error)"}
+                text_result = {"source": "memory", "time": "", "text": "(retrieval error)"}
+
+            # ── Historical frame extraction (NEW in D1) ─────────────────
+            # Mirrors pass3c_samples._recall_result_for + pass5_messages
+            # rendering. Pulls frame_paths in [tr_start_chunk, tr_end_chunk]
+            # via the existing _chunk_frame_paths helper. Empty list when
+            # frames_root is unset (text-only RL) or chunk frames missing.
+            recalled_frame_paths: List[str] = []
+            tr_start_chunk = -1
+            tr_end_chunk = -1
+            if tr_tuple and self.frames_root and video_path:
+                try:
+                    tr_start_chunk = int(tr_tuple[0] / float(self.chunk_sec))
+                    tr_end_chunk = int(tr_tuple[1] / float(self.chunk_sec))
+                except (TypeError, ValueError, ZeroDivisionError):
+                    tr_start_chunk = tr_end_chunk = -1
+                if tr_start_chunk >= 0 and tr_end_chunk >= tr_start_chunk:
+                    for ci in range(tr_start_chunk, tr_end_chunk + 1):
+                        cf = _chunk_frame_paths(
+                            video_path, self.frames_root, ci,
+                            self.frames_per_chunk,
+                        )
+                        if cf:
+                            recalled_frame_paths.extend(cf)
+
+            success = bool(recalled_frame_paths) or bool(text_result.get("text"))
+            recall_result = {
+                "source": "historical_frames" if recalled_frame_paths else (
+                    text_result.get("source", "memory") if success else "failure"
+                ),
+                # SFT (pass3c) stores under `text_content`; pass5 reads with
+                # text_content fallback to `text`. Provide BOTH keys so
+                # downstream renderers don't care which one they read.
+                "text_content": text_result.get("text", "")
+                                if success else "No matching results found.",
+                "text": text_result.get("text", "")
+                        if success else "No matching results found.",
+                "returned_chunks": list(range(tr_start_chunk, tr_end_chunk + 1))
+                                   if recalled_frame_paths else [],
+                "time": (f"{tr_start_chunk}-{tr_end_chunk}"
+                         if tr_start_chunk >= 0 else
+                         (text_result.get("time", "") or "")),
+            }
+            recalled_frames = None
+            if recalled_frame_paths:
+                recalled_frames = {
+                    "time_range": [tr_start_chunk, tr_end_chunk],
+                    "source": "historical_frames",
+                    "n_frames": len(recalled_frame_paths),
+                    "frame_paths": recalled_frame_paths,
+                    # Pre-computed video_metadata so the prompt-builder can
+                    # attach it directly (mirrors pass5_messages.py:340-355).
+                    "video_metadata": {
+                        "fps": float(self.frames_per_chunk) / float(self.chunk_sec),
+                        "frames_indices": [
+                            tr_start_chunk * self.frames_per_chunk + i
+                            for i in range(len(recalled_frame_paths))
+                        ],
+                        "total_num_frames": (tr_end_chunk + 1) * self.frames_per_chunk,
+                    },
+                }
+            return {
+                "recall_result": recall_result,
+                "recalled_frames": recalled_frames,
+            }
+
+        def _build_recall_tool_message(
+            self, recall_payload: Dict[str, Any],
+        ) -> Dict[str, Any]:
+            """Wrap _execute_recall's return into a chat message.
+
+            Mirrors pass5_messages.py:280-380 ordering EXACTLY (the v12.11
+            audit P0 fix order is the SFT contract):
+              1. <recalled_frames>{json header}</recalled_frames> text
+              2. video block with video_metadata.frames_indices anchored
+                 to historical chunk timestamps (Qwen3-VL MROPE renders
+                 per-frame `<X.X seconds>` at original time)
+              3. <recall_result>{json}</recall_result> text
+
+            We use role="user" (not "tool") to match pass5's DeepEyesV2
+            ShareGPT alignment — the chat_template renders both as
+            <|im_start|>user\\n<tool_response>... so the on-the-wire
+            token stream is identical, but role="user" plays nicer with
+            verl's downstream chat-template handling.
+            """
+            rr = recall_payload.get("recall_result") or {}
+            rf = recall_payload.get("recalled_frames")  # may be None
+            content: List[Dict[str, Any]] = []
+
+            # 1. <recalled_frames> header text (only when frames exist)
+            if rf:
+                rf_header = json.dumps({
+                    "time_range": rf["time_range"],
+                    "source": rf.get("source", "historical_frames"),
+                    "n_frames": rf["n_frames"],
+                })
+                content.append({
+                    "type": "text",
+                    "text": f"<recalled_frames>{rf_header}</recalled_frames>",
+                })
+                # 2. video block with historical-time frames_indices
+                try:
+                    from scripts.agent_data_v5.config import (
+                        RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                    )
+                except ImportError:
+                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+                content.append({
+                    "type": "video",
+                    "video": rf["frame_paths"],
+                    "min_pixels": _RTKW["min_pixels"],
+                    "max_pixels": _RTKW["max_pixels"],
+                    "video_metadata": rf["video_metadata"],
+                })
+
+            # 3. <recall_result> text — pass5 puts this AFTER frames
+            #    (v12.11 audit-5 P0 fix). Empty/failure case still emits
+            #    the tag so the model can parse "no result found".
+            rr_json = json.dumps({
+                "source": rr.get("source", "failure"),
+                "time": rr.get("time", ""),
+                "text": rr.get("text_content", rr.get("text", "")),
+            }, ensure_ascii=False)
+            content.append({
+                "type": "text",
+                "text": (
+                    f"\n<recall_result>{rr_json}</recall_result>"
+                    if rf else
+                    f"<recall_result>{rr_json}</recall_result>"
+                ),
+            })
+
+            return {"role": "user", "content": content}
 
         def _check_compress_trigger(
             self, state: "VideoTrajectoryState"
@@ -934,106 +1095,196 @@ def _register_streaming_agent_loop():
                     {"role": "user", "content": user_content},
                 ]
 
-                # Resolve images/videos for THIS chunk (the new user msg
-                # only — initial_messages were already processed once).
-                chunk_extra_mm = await self.process_vision_info([chunk_messages[-1]])
-                chunk_images = chunk_extra_mm.get("images") or []
-                chunk_videos = chunk_extra_mm.get("videos") or []
+                # ── chunk-internal ready-loop (v12.13 D1):
+                #
+                # When `max_recall_per_chunk == 0` (legacy default), the
+                # loop runs once and recall_result_for_next is delivered
+                # to the NEXT chunk's user payload (D1 deferred behaviour).
+                #
+                # When `max_recall_per_chunk >= 1`, on a recall turn we
+                # build the tool response (with historical frames + MROPE
+                # anchored at recall time) and append it to chunk_messages,
+                # then re-generate WITHIN THE SAME CHUNK. Mirrors SFT
+                # pass5 shape B exactly: assistant→tool→assistant.
+                # Repeats up to `max_recall_per_chunk` times before
+                # falling through to "treat the next response as final".
+                response_text = ""
+                kind = "unknown"
+                parsed: Dict[str, Any] = {}
+                recall_rounds_this_chunk = 0
+                last_prompt_len = len(initial_prompt_ids)
+                inner_aborted = False
+                while True:
+                    # Resolve images/videos for the LATEST chunk_messages.
+                    # On round 1 this is just the user payload. On round 2+
+                    # it ALSO includes the appended assistant turn1 + tool
+                    # message (recalled frames live in the tool message).
+                    chunk_extra_mm = await self.process_vision_info(
+                        chunk_messages[len(initial_messages):],
+                    )
+                    chunk_images = chunk_extra_mm.get("images") or []
+                    chunk_videos = chunk_extra_mm.get("videos") or []
 
-                chunk_prompt_ids = await self.apply_chat_template(
-                    chunk_messages,
-                    tools=TOOLS_SCHEMA,
-                    images=chunk_images if chunk_images else None,
-                    videos=(initial_videos + chunk_videos) if chunk_videos else (
-                        initial_videos if initial_videos else None
-                    ),
-                )
-
-                # Prompt-budget guard.
-                if len(chunk_prompt_ids) + self.response_length >= self.max_model_len:
-                    break
-                user_block_len = len(chunk_prompt_ids) - len(initial_prompt_ids)
-                if user_block_len < 0:
-                    break
-                if len(response_mask) + user_block_len + 1 >= self.response_length:
-                    break
-
-                # ── Generate INDEPENDENTLY. v12.13 cache breakdown:
-                # - prefix cache hits the [system + user_q + memory's
-                #   leading thinks] head (~few % of total prompt).
-                # - mm_processor_cache (engine_kwargs.vllm.mm_processor_cache_gb)
-                #   reuses ViT prep for the ~94% of frames that overlap
-                #   with the previous chunk's sliding window. This is
-                #   where the actual rollout-time savings come from for
-                #   streaming video (matches pass2's 93.8% mm-cache hit).
-                with simple_timer("generate_sequences", metrics):
-                    output: TokenOutput = await self.server_manager.generate(
-                        request_id=request_id,
-                        prompt_ids=chunk_prompt_ids,
-                        sampling_params=sampling_params,
-                        image_data=chunk_images if chunk_images else None,
-                        video_data=(initial_videos + chunk_videos) if chunk_videos else (
+                    chunk_prompt_ids = await self.apply_chat_template(
+                        chunk_messages,
+                        tools=TOOLS_SCHEMA,
+                        images=chunk_images if chunk_images else None,
+                        videos=(initial_videos + chunk_videos) if chunk_videos else (
                             initial_videos if initial_videos else None
                         ),
                     )
-                assistant_ids = list(output.token_ids)
-                if not assistant_ids:
+
+                    # Prompt-budget guard (single-chunk + tool round can
+                    # exceed budget after frames are appended; skip out
+                    # if so — outer loop ends rollout).
+                    if len(chunk_prompt_ids) + self.response_length >= self.max_model_len:
+                        inner_aborted = True
+                        break
+                    user_block_len = len(chunk_prompt_ids) - last_prompt_len
+                    if user_block_len < 0:
+                        inner_aborted = True
+                        break
+                    if len(response_mask) + user_block_len + 1 >= self.response_length:
+                        inner_aborted = True
+                        break
+
+                    # ── Generate. v12.13 cache breakdown:
+                    # - prefix cache hits the [system + user_q + memory's
+                    #   leading thinks] head + the unchanged earlier part
+                    #   of the user payload across rounds.
+                    # - mm_processor_cache reuses ViT prep for the ~94%
+                    #   of frames that overlap the previous chunk's
+                    #   sliding window (matches pass2's 93.8% hit).
+                    with simple_timer("generate_sequences", metrics):
+                        output: TokenOutput = await self.server_manager.generate(
+                            request_id=request_id,
+                            prompt_ids=chunk_prompt_ids,
+                            sampling_params=sampling_params,
+                            image_data=chunk_images if chunk_images else None,
+                            video_data=(initial_videos + chunk_videos) if chunk_videos else (
+                                initial_videos if initial_videos else None
+                            ),
+                        )
+                    assistant_ids = list(output.token_ids)
+                    if not assistant_ids:
+                        inner_aborted = True
+                        break
+
+                    # ── Stitch (incremental relative to last_prompt_len).
+                    user_block_ids = chunk_prompt_ids[last_prompt_len:]
+                    response_ids.extend(user_block_ids)
+                    response_mask.extend([0] * len(user_block_ids))
+                    response_logprobs.extend([0.0] * len(user_block_ids))
+
+                    asst_start = len(response_ids)
+                    response_ids.extend(assistant_ids)
+                    response_mask.extend([1] * len(assistant_ids))
+                    if output.log_probs and len(output.log_probs) == len(assistant_ids):
+                        response_logprobs.extend(list(output.log_probs))
+                        any_logprobs_returned = True
+                    else:
+                        response_logprobs.extend([0.0] * len(assistant_ids))
+                    asst_end = len(response_ids)
+                    chunk_asst_spans.append((asst_start, asst_end))
+                    # -1 for compress (system inter-chunk turn).
+                    chunk_video_indices.append(-1 if inter_chunk else chunk_idx)
+
+                    if visual_injected:
+                        accumulated_videos.extend(chunk_videos)
+                        n_chunks_with_frames += 1
+                    elif inter_chunk:
+                        n_chunks_compress_inter += 1
+                    else:
+                        n_chunks_text_only += 1
+                    visual_injected = False  # only count once per chunk
+
+                    num_assistant_turns += 1
+
+                    # ── Decode + parse this turn.
+                    response_text = self.tokenizer.decode(
+                        assistant_ids, skip_special_tokens=True,
+                    )
+                    parsed = parse_agent_output_v12(response_text)
+                    kind = parsed.get("kind", "unknown")
+                    chunk_kinds.append(kind)
+                    chunk_asst_texts.append(response_text)
+
+                    # ── Decide: stay in chunk for shape-B recall multi-
+                    # turn, or break out and advance chunk_idx.
+                    if (
+                        kind == "recall"
+                        and not inter_chunk
+                        and recall_rounds_this_chunk < self.max_recall_per_chunk
+                    ):
+                        args = (parsed.get("tool_call") or {}).get("arguments") or {}
+                        recall_payload = await self._execute_recall(
+                            args, state, video_path=video_path,
+                        )
+                        # Bookkeep on state (accounting only — no truncation).
+                        try:
+                            state.n_recall_calls = int(getattr(state, "n_recall_calls", 0)) + 1
+                        except Exception:
+                            pass
+
+                        # Append turn1 assistant text + tool message to
+                        # chunk_messages so the NEXT round of apply_chat_template
+                        # rebuilds the prompt with the tool response in place.
+                        # (We can't reuse `assistant_ids` directly — the chat
+                        # template adds <|im_start|>assistant prefix/suffix
+                        # tokens we'd duplicate.)
+                        chunk_messages.append({
+                            "role": "assistant",
+                            "content": [{"type": "text", "text": response_text}],
+                        })
+                        chunk_messages.append(self._build_recall_tool_message(recall_payload))
+
+                        last_prompt_len = (
+                            len(chunk_prompt_ids) + len(assistant_ids)
+                        )
+                        recall_rounds_this_chunk += 1
+                        # Continue inner loop — generate turn 2 (the answer).
+                        continue
+
+                    # Non-recall turn (answer / silent / unknown / compress)
+                    # OR exceeded recall budget → exit inner, advance chunk.
+                    if kind == "recall" and recall_rounds_this_chunk >= self.max_recall_per_chunk:
+                        # Exhausted recall budget within this chunk —
+                        # legacy fallback: deliver result on next chunk.
+                        args = (parsed.get("tool_call") or {}).get("arguments") or {}
+                        recall_payload = await self._execute_recall(
+                            args, state, video_path=video_path,
+                        )
+                        recall_result_for_next = recall_payload.get("recall_result")
                     break
 
-                # ── Stitch into verl's expected shape.
-                user_block_ids = chunk_prompt_ids[len(initial_prompt_ids):]
-                response_ids.extend(user_block_ids)
-                response_mask.extend([0] * len(user_block_ids))
-                response_logprobs.extend([0.0] * len(user_block_ids))
-
-                asst_start = len(response_ids)
-                response_ids.extend(assistant_ids)
-                response_mask.extend([1] * len(assistant_ids))
-                if output.log_probs and len(output.log_probs) == len(assistant_ids):
-                    response_logprobs.extend(list(output.log_probs))
-                    any_logprobs_returned = True
-                else:
-                    response_logprobs.extend([0.0] * len(assistant_ids))
-                asst_end = len(response_ids)
-                chunk_asst_spans.append((asst_start, asst_end))
-                # P1.7: -1 for compress (system inter-chunk turn, not
-                # mapped to any video chunk for action gold lookup).
-                chunk_video_indices.append(-1 if inter_chunk else chunk_idx)
-
-                if visual_injected:
-                    accumulated_videos.extend(chunk_videos)
-                    n_chunks_with_frames += 1
-                elif inter_chunk:
-                    n_chunks_compress_inter += 1
-                else:
-                    n_chunks_text_only += 1
-
-                num_assistant_turns += 1
-
-                # ── Decode + parse + state evolution.
-                response_text = self.tokenizer.decode(
-                    assistant_ids, skip_special_tokens=True,
-                )
-                parsed = parse_agent_output_v12(response_text)
-                kind = parsed.get("kind", "unknown")
-                chunk_kinds.append(kind)
-                chunk_asst_texts.append(response_text)
+                if inner_aborted and num_assistant_turns == 0:
+                    break
 
                 # ── Multi-Q: assign this turn's <answer> (if any) to a
-                # pending question. Audit P1.4: pure FIFO is fragile in
-                # silent_then_response cases (Q1 ask=5/answer=25, Q2 ask=20):
-                # if the model answers Q2 first (at chunk 20) and Q1
-                # later (at chunk 25), FIFO would mis-route Q2's answer
-                # to Q1.
+                # pending question.
                 #
-                # New rule (best-effort, deterministic):
-                #   1. Prefer a pending Q whose answer_chunks window
-                #      contains chunk_idx (so the rollout's natural
-                #      timing matches the gold answer chunk).
-                #   2. Fall back to the most-recently-triggered pending Q
-                #      (LIFO) — newer questions are likelier to be the
-                #      one the model just heard and answered.
-                #   3. Only fall through to FIFO if both above fail.
+                # IMPORTANT — what pass3 SFT data actually looks like:
+                # design.py:gold_action_at is a pure function of
+                # (chunk_idx, ask_chunk, gold_emits, question_type) that
+                # marks AT MOST ONE Q as `response` per chunk. So along a
+                # SFT-aligned rollout, pure FIFO IS correct: when the model
+                # emits <answer> at chunk N, exactly one pending Q is in
+                # its `response_chunk == N` slot, and any earlier pending
+                # Q has already been popped at its own response_chunk.
+                #
+                # The 3-stage rule below is a DEFENSIVE upgrade for RL
+                # exploration where the model may answer at the wrong
+                # chunk (off-policy from SFT distribution). In SFT-aligned
+                # behavior all 3 stages converge on the same pending Q;
+                # in off-policy behavior the answer_chunks-window match
+                # rescues attribution that pure FIFO would silently
+                # mis-route.
+                #
+                # Stages (deterministic):
+                #   1. answer_chunks window match: pending Q whose
+                #      answer_chunks bracket the current chunk_idx.
+                #   2. LIFO: most-recently-triggered pending Q.
+                #   3. FIFO floor (implicit): single-pending case.
                 if multi_q_list and pending_q_indices:
                     answer_match = re.search(
                         r"<answer>(.*?)</answer>", response_text, re.DOTALL,
@@ -1071,6 +1322,10 @@ def _register_streaming_agent_loop():
                 # EVERY turn — including compress. For inter-chunk
                 # compress turns we DON'T want to skip ahead in the
                 # video timeline, so we revert state.chunk_idx after.
+                # `kind` / `parsed` / `response_text` here are from the
+                # FINAL inner-loop turn (the chunk's terminating
+                # answer/silent/compress, after any in-chunk recall
+                # multi-turn rounds have completed).
                 pre_chunk_idx = state.chunk_idx
                 state = default_v12_update_state(state, response_text, chunk_idx)
                 if inter_chunk:
@@ -1083,10 +1338,10 @@ def _register_streaming_agent_loop():
                         state.recent_thinks.append({
                             "chunk": chunk_idx, "text": think_text,
                         })
-
-                if kind == "recall":
-                    args = (parsed.get("tool_call") or {}).get("arguments") or {}
-                    recall_result_for_next = await self._execute_recall(args, state)
+                # NOTE: recall handling moved into the inner ready-loop
+                # above (chunk-internal multi-turn). The legacy "deliver
+                # recall_result on the next chunk" path is exercised only
+                # when max_recall_per_chunk is exhausted within the chunk.
 
                 if not state.is_active or state.is_done:
                     break
