@@ -168,11 +168,12 @@ def default_scope():
         "data_video_min_frames": Ref[int](
             "args.data.video_min_frames", metadata={ARG: Arg(default=4)}
         ),
+        # v12.12 (2026-05-02): RUNTIME profile (was 100352/50176)
         "data_video_max_pixels": Ref[int](
-            "args.data.video_max_pixels", metadata={ARG: Arg(default=100352)}
+            "args.data.video_max_pixels", metadata={ARG: Arg(default=220_000)}
         ),
         "data_video_min_pixels": Ref[int](
-            "args.data.video_min_pixels", metadata={ARG: Arg(default=50176)}
+            "args.data.video_min_pixels", metadata={ARG: Arg(default=130_000)}
         ),
         "data_video_fps": Ref[float](
             "args.data.video_fps", metadata={ARG: Arg(default=2)}

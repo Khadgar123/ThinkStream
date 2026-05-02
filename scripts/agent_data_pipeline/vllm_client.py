@@ -12,6 +12,7 @@ Usage:
 
 import asyncio
 import base64
+import functools
 import json
 import logging
 import time
@@ -46,8 +47,25 @@ class RequestStats:
         return self.total_output_tokens / max(self.elapsed, 0.001)
 
 
+# v12.12 (2026-05-01): LRU cache.
+#
+# Pass2's sliding visual_window keeps each frame in the prompt for 16
+# consecutive obs requests (VISUAL_WINDOW_CHUNKS). Without caching, every
+# frame is read + base64-encoded 16× per video. At 1024 concurrent videos
+# the redundant disk I/O + CPU encode is the dominant non-GPU cost in the
+# observation hot path.
+#
+# Cache key: absolute path string. Frames extracted to data/agent_v5/frames/
+# are immutable for the duration of a run, so path equality ⇒ content
+# equality. maxsize=16384 ≈ 16 hot frames × 1024 active videos peak;
+# at avg 80KB base64 string ⇒ ~1.3GB RSS budget (acceptable on the
+# server already running a multi-hundred-GB teacher).
+_BASE64_CACHE_MAXSIZE = 16384
+
+
+@functools.lru_cache(maxsize=_BASE64_CACHE_MAXSIZE)
 def encode_image_base64(image_path: str) -> str:
-    """Encode a local image file to base64 data URI."""
+    """Encode a local image file to base64 data URI (LRU-cached by path)."""
     with open(image_path, "rb") as f:
         data = base64.b64encode(f.read()).decode("utf-8")
     suffix = Path(image_path).suffix.lower()
@@ -146,11 +164,13 @@ class VLLMClient:
 
     async def _call_one_raw(
         self, messages, max_tokens, temperature, request_id, enable_thinking,
+        mm_processor_kwargs: Optional[Dict] = None,
     ):
         """Raw POST path — bypasses OpenAI SDK so chat_template_kwargs
         actually reaches vLLM. Returns (content_str_or_None, prompt_tokens,
-        completion_tokens). Used only when enable_thinking is non-None,
-        because SDK is fine for the rest.
+        completion_tokens). Used when enable_thinking is non-None or when
+        mm_processor_kwargs is supplied (vLLM 0.7+ accepts this at request
+        body top level for per-request smart_resize bounds).
         """
         body = {
             "model": self.model,
@@ -160,6 +180,15 @@ class VLLMClient:
         }
         if enable_thinking is not None:
             body["chat_template_kwargs"] = {"enable_thinking": bool(enable_thinking)}
+        if mm_processor_kwargs:
+            # v12.12 (2026-05-02): per-request Qwen3-VL smart_resize bounds.
+            # vLLM ≥ 0.7.3 forwards top-level mm_processor_kwargs to
+            # Qwen3VLProcessingInfo._get_vision_info, which sets
+            # size = {"shortest_edge": min_pixels, "longest_edge": max_pixels}
+            # and smart_resize aspect-preserves the image into that band.
+            # Putting these inside `image_url` is silently dropped — must
+            # be at body top level (here) or in OpenAI SDK extra_body.
+            body["mm_processor_kwargs"] = dict(mm_processor_kwargs)
         client = await self._get_httpx_client()
         resp = await client.post("/chat/completions", json=body)
         resp.raise_for_status()
@@ -180,6 +209,7 @@ class VLLMClient:
         request_id: str = "",
         max_retries: int = 3,
         enable_thinking: Optional[bool] = None,
+        mm_processor_kwargs: Optional[Dict] = None,
     ) -> Optional[str]:
         """Make a single API call with semaphore-controlled concurrency and retry.
 
@@ -191,16 +221,22 @@ class VLLMClient:
               because the SDK's `extra_body` is silently dropped on the
               397B server — verified curl-vs-SDK A/B by user. SDK path
               kept for `enable_thinking is None` (no-op = server default).
+            mm_processor_kwargs: v12.12 — per-request Qwen3-VL smart_resize
+              bounds, e.g. {"min_pixels": 130_000, "max_pixels": 220_000}.
+              When set, routes through raw POST (same reason as
+              enable_thinking — SDK extra_body unreliable). vLLM forwards
+              this to the Qwen3-VL processor for aspect-preserving resize.
         """
-        # When the caller explicitly toggles thinking, take the raw POST
-        # path so chat_template_kwargs lands at request-body top level.
-        if enable_thinking is not None:
+        # When the caller explicitly toggles thinking OR sets mm_processor_kwargs,
+        # take the raw POST path so the extra fields land at request-body top level.
+        if enable_thinking is not None or mm_processor_kwargs is not None:
             async with self.semaphore:
                 for attempt in range(max_retries):
                     try:
                         result, ptok, ctok = await self._call_one_raw(
                             messages, max_tokens, temperature, request_id,
                             enable_thinking,
+                            mm_processor_kwargs=mm_processor_kwargs,
                         )
                         self.stats.completed += 1
                         self.stats.total_input_tokens += ptok
@@ -276,6 +312,7 @@ class VLLMClient:
         max_tokens: int = 2048,
         temperature: float = 0.7,
         enable_thinking: Optional[bool] = None,
+        mm_processor_kwargs: Optional[Dict] = None,
     ) -> List[Optional[str]]:
         """Send a batch of requests with automatic concurrency control.
 
@@ -285,6 +322,8 @@ class VLLMClient:
             - "max_tokens": optional per-request override
             - "temperature": optional per-request override
             - "enable_thinking": optional per-request override
+            - "mm_processor_kwargs": optional per-request Qwen3-VL
+              smart_resize bounds (v12.12)
         """
         self.stats = RequestStats(total=len(requests), start_time=time.time())
         logger.info(
@@ -300,6 +339,7 @@ class VLLMClient:
                 temperature=req.get("temperature", temperature),
                 request_id=req.get("id", f"req_{i}"),
                 enable_thinking=req.get("enable_thinking", enable_thinking),
+                mm_processor_kwargs=req.get("mm_processor_kwargs", mm_processor_kwargs),
             )
             tasks.append(task)
 

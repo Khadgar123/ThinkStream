@@ -52,8 +52,12 @@ class DataArguments:
     # Video (per-timestep: 24 frames, fixed resolution)
     video_max_frames: Optional[int] = field(default=32)
     video_min_frames: Optional[int] = field(default=4)
-    video_max_pixels: int = field(default=150528)   # ~388x388
-    video_min_pixels: int = field(default=100352)    # ~317x317
+    # v12.12 (2026-05-02): RUNTIME profile (was 100352/150528). Empirically
+    # measured min=130k max=220k → ~235 tok/frame at 32-frame visual window
+    # = 7,520 tok in 16K context. Same values as RUNTIME_MM_PROCESSOR_KWARGS
+    # in scripts/agent_data_v5/config.py — pass2/SFT/RL/Eval/deploy unified.
+    video_max_pixels: int = field(default=220_000)   # ~470x470 area
+    video_min_pixels: int = field(default=130_000)   # ~360x360 area
     video_fps: float = field(default=1.0)
 
     # Per-timestep agent config

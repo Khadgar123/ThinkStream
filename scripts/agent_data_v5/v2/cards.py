@@ -83,11 +83,24 @@ def _state_change_chunks(evidence: List[Dict]) -> List[Tuple[int, str]]:
 
 
 def _ocr_chunks(evidence: List[Dict]) -> List[Tuple[int, str]]:
+    """Collect (chunk_idx, ocr_text) pairs.
+
+    v12.12 (2026-05-02): pass1a now emits OCR as
+    `[{"text": "EXIT", "confidence": 0.95}, ...]` (structured dicts).
+    Earlier evidence may have plain strings. Handle both.
+    """
     out = []
     for cap in evidence:
         for o in cap.get("ocr", []) or []:
-            if o:
-                out.append((cap.get("chunk_idx", 0), o))
+            if not o:
+                continue
+            # Structured: {"text": "...", "confidence": ...}
+            if isinstance(o, dict):
+                text = o.get("text", "")
+            else:
+                text = str(o)
+            if text and text.strip():
+                out.append((cap.get("chunk_idx", 0), text.strip()))
     return out
 
 

@@ -256,7 +256,7 @@ class TestSampleConstruction:
             '<summary>{"time_range":[0,8],"text":"[0-4] Chef did step_0 through step_3 at counter '
             'with knife, preparing ingredients carefully for the recipe."}</summary>',
             snapshot=snapshot,
-            user_input='<compress_trigger range="0-8"/>',
+            user_input='<compress_trigger/>',  # v12.12: no range in trigger
             metadata={"gold_action": "compress", "compressed_range": [0, 8],
                        "compressed_chunks": [0, 1, 2, 3]},
         )
@@ -349,8 +349,8 @@ class TestAgentProtocol:
         assert "[10-12] Chef slices tomato." in text
         assert "<pending>" in text
 
-    def test_build_user_content_video_first(self):
-        """Verify video comes before memory in user content."""
+    def test_build_user_content_memory_first(self):
+        """v12.12: memory is FIRST so vLLM prefix-cache hits the stable head."""
         mem = MemoryState()
         mem.add_think(5, "Chef at counter.")
         snapshot = mem.snapshot(6)
@@ -365,15 +365,15 @@ class TestAgentProtocol:
         texts = [c["text"] for c in content if c.get("type") == "text"]
         full = "\n".join(texts)
 
-        # Video-first: visual_window before memory
-        vw_pos = full.index("<visual_window>")
+        # v12.12 order: memory → visual_window → user_input
         mem_pos = full.index("<memory>")
+        vw_pos = full.index("<visual_window>")
         ui_pos = full.index("<user_input>")
-        assert vw_pos < mem_pos < ui_pos, \
-            f"Ordering wrong: vw={vw_pos}, mem={mem_pos}, ui={ui_pos}"
+        assert mem_pos < vw_pos < ui_pos, \
+            f"Ordering wrong: mem={mem_pos}, vw={vw_pos}, ui={ui_pos}"
 
     def test_build_user_content_with_recall(self):
-        """recall_response: visual_window → recalled_frames → memory → recall_result → user_input."""
+        """v12.12 recall_response order: memory → visual_window → recalled_frames → recall_result → user_input."""
         mem = MemoryState()
         mem.add_think(5, "Chef at counter.")
         snapshot = mem.snapshot(6)
@@ -392,12 +392,12 @@ class TestAgentProtocol:
         texts = [c["text"] for c in content if c.get("type") == "text"]
         full = "\n".join(texts)
 
+        mem_pos = full.index("<memory>")
         vw_pos = full.index("<visual_window>")
         rf_pos = full.index("<recalled_frames>")
-        mem_pos = full.index("<memory>")
         rr_pos = full.index("<recall_result>")
         ui_pos = full.index("<user_input>")
-        assert vw_pos < rf_pos < mem_pos < rr_pos < ui_pos
+        assert mem_pos < vw_pos < rf_pos < rr_pos < ui_pos
 
     def test_parse_agent_output_all_types(self):
         """parse_agent_output correctly handles all action types."""
@@ -771,26 +771,21 @@ class TestPromptTemplates:
 
     def test_compress_prompt_all_placeholders(self):
         from scripts.agent_data_v5.config import COMPRESS_PROMPT
-        # Should not raise KeyError
+        # Should not raise KeyError. v12.12: visual_context dropped.
         result = COMPRESS_PROMPT.format(
             observations_text="[0-2] Chef stirs.",
-            visual_context="",
             target_length=100,
             start=0,
             end=4,
         )
         assert "Chef stirs" in result
 
-    def test_compress_prompt_with_visual_context(self):
+    def test_compress_prompt_text_only(self):
+        # v12.12: compress is text-only to match student inter-chunk shape C.
+        # Verify the template no longer mentions video frames.
         from scripts.agent_data_v5.config import COMPRESS_PROMPT
-        result = COMPRESS_PROMPT.format(
-            observations_text="[0-2] Chef stirs.",
-            visual_context="\nFrames provided for reference.\n",
-            target_length=100,
-            start=0,
-            end=4,
-        )
-        assert "Frames provided" in result
+        assert "{visual_context}" not in COMPRESS_PROMPT
+        assert "video frames" not in COMPRESS_PROMPT.lower()
 
     def test_task_question_prompt(self):
         from scripts.agent_data_v5.config import TASK_QUESTION_PROMPT

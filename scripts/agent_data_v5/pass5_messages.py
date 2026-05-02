@@ -100,7 +100,24 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
 
     user_content: List[Dict] = []
 
-    # ── Visual window + frames ────────────────────────────────────────
+    # ── Memory block (FIRST — stable monotonic prefix, v12.12) ──────────
+    # Placed first so vLLM prefix-cache can reuse [system + memory_at_t-1]
+    # as a prefix of [system + memory_at_t]. See agent_protocol.py
+    # build_user_content for full ordering rationale.
+    memory_text = format_memory_block(inp.get("memory", {}))
+    user_content.append({
+        "type": "text",
+        "text": f"<memory>\n{memory_text}\n</memory>",
+    })
+
+    # ── Queries block (past Q&A history; second-stable prefix) ──────────
+    queries = inp.get("queries", [])
+    if queries and not inter_chunk:
+        qt = format_queries_block(queries)
+        if qt:
+            user_content.append({"type": "text", "text": f"\n{qt}"})
+
+    # ── Visual window + frames (cache-miss boundary) ────────────────────
     if not inter_chunk:
         vw = inp["visual_window"]
         current_start = chunk_idx * chunk_sec
@@ -113,7 +130,7 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
         })
         user_content.append({
             "type": "text",
-            "text": f"<visual_window>{vw_header}</visual_window>",
+            "text": f"\n<visual_window>{vw_header}</visual_window>",
         })
 
         # Pass4 flat files may omit frame_paths — infer from video_id +
@@ -148,9 +165,20 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
             )
             n_frames = len(vw["frame_paths"])
             window_start = max(0, chunk_idx - _VWC + 1)
+            # v12.12: runtime mm_processor_kwargs at video item level so
+            # qwen-vl-utils.process_vision_info forwards them to vLLM as
+            # smart_resize bounds. Matches pass2 / inference / RL rollout.
+            try:
+                from scripts.agent_data_v5.config import (
+                    RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                )
+            except ImportError:
+                _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
             user_content.append({
                 "type": "video",
                 "video": _resolve_paths(vw["frame_paths"], base_path),
+                "min_pixels": _RTKW["min_pixels"],
+                "max_pixels": _RTKW["max_pixels"],
                 "video_metadata": {
                     "fps": float(_FPC / chunk_sec),
                     "frames_indices": [
@@ -196,9 +224,17 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
             )
             tr0, tr1 = rf["time_range"]
             n_rf = len(rf["frame_paths"])
+            try:
+                from scripts.agent_data_v5.config import (
+                    RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                )
+            except ImportError:
+                _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
             user_content.append({
                 "type": "video",
                 "video": _resolve_paths(rf["frame_paths"], base_path),
+                "min_pixels": _RTKW["min_pixels"],   # v12.12
+                "max_pixels": _RTKW["max_pixels"],
                 "video_metadata": {
                     "fps": float(_FPC / chunk_sec),
                     "frames_indices": [
@@ -214,21 +250,6 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                 "video_end": rf["time_range"][1],
             })
 
-    # ── Memory block ────────────────────────────────────────────────────
-    memory_text = format_memory_block(inp.get("memory", {}))
-    user_content.append({
-        "type": "text",
-        "text": (f"\n<memory>\n{memory_text}\n</memory>" if not inter_chunk
-                 else f"<memory>\n{memory_text}\n</memory>"),
-    })
-
-    # ── Queries block (past Q&A history) ────────────────────────────────
-    queries = inp.get("queries", [])
-    if queries and not inter_chunk:
-        qt = format_queries_block(queries)
-        if qt:
-            user_content.append({"type": "text", "text": f"\n{qt}"})
-
     # ── Legacy single-turn recall_result (text only, no tool turn) ──────
     if inp.get("recall_result") and not is_recall_multiturn and not inter_chunk:
         rr = inp["recall_result"]
@@ -242,7 +263,7 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
             "text": f"\n<recall_result>{rr_json}</recall_result>",
         })
 
-    # ── User input (question / compress_trigger / "Continue...") ────────
+    # ── User input (LAST — every step varies) ───────────────────────────
     if inp.get("user_input"):
         user_content.append({
             "type": "text",

@@ -22,7 +22,7 @@
 #         <memory>...</memory>
 #         <queries>...</queries>           (when ask_chunks fired)
 #         <user_input>...</user_input>     (the question text)
-#         OR <compress_trigger range='a-b'/>   (compress turn — system-injected)
+#         OR <compress_trigger/>   (compress turn — system-injected, v12.12 no range)
 #       <|im_end|>
 #       <|im_start|>assistant\n
 #     ]
@@ -49,8 +49,8 @@
 #      alignment.
 #   3. video_metadata.frames_indices = [window_start*FPC + i for i in range(n)]
 #      — drives Qwen3-VL's per-frame `<X.X seconds>` temporal MROPE token.
-#   4. Compress turn uses <compress_trigger range='a-b'/> with INTEGER
-#      chunk indices, no visual_window.
+#   4. Compress turn uses bare <compress_trigger/> (v12.12: no range,
+#      no visual_window). Model derives time_range from memory.
 #   5. Recall result rendering as <recall_result>{...}</recall_result>
 #      JSON dict (source/time/text).
 #
@@ -396,9 +396,23 @@ def _register_streaming_agent_loop():
                     "text": f"\n<visual_window>{vw_header}</visual_window>",
                 })
                 if window_paths:
+                    # v12.12: runtime mm_processor_kwargs at video-item level
+                    # so qwen-vl-utils.process_vision_info forwards them to
+                    # vLLM as smart_resize bounds. Identical values to pass2 +
+                    # SFT data_processor + agent_loop inference → student
+                    # sees the same visual token sequence at training and
+                    # rollout time.
+                    try:
+                        from scripts.agent_data_v5.config import (
+                            RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                        )
+                    except ImportError:
+                        _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
                     content.append({
                         "type": "video",
                         "video": window_paths,
+                        "min_pixels": _RTKW["min_pixels"],
+                        "max_pixels": _RTKW["max_pixels"],
                         "video_metadata": window_metadata,
                     })
 
@@ -418,11 +432,20 @@ def _register_streaming_agent_loop():
             # User input — either the question (when it fires) or the
             # compress_trigger system event. LAST so the monotonic prefix
             # above stays cache-friendly.
+            #
+            # v12.12 (2026-05-02): trigger is bare `<compress_trigger/>` —
+            # NO range attribute (matches pass3c_samples._compress_sample SFT
+            # input format). The model derives the time_range from <memory>
+            # and emits it inside the assistant tool_call. The local variable
+            # `compress_trigger_range` is still computed by
+            # `_check_compress_trigger` so OOD-safety / telemetry code can
+            # consult it, but it is NOT exposed to the model in the prompt.
+            # When v12.13 RL goes fully model-driven this whole branch is
+            # removed (no trigger at all).
             if compress_trigger_range is not None:
-                tr0, tr1 = compress_trigger_range
                 content.append({
                     "type": "text",
-                    "text": f"\n<compress_trigger range='{int(tr0)}-{int(tr1)}'/>",
+                    "text": "\n<compress_trigger/>",
                 })
             elif question and ask_chunks and chunk_idx >= min(ask_chunks):
                 content.append({

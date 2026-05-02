@@ -278,15 +278,44 @@ def default_v12_update_state(
         new_state.n_compress_calls += 1
         tool_call = parsed.get("tool_call") or {}
         args = tool_call.get("arguments") or {}
+        # v12.12 (2026-05-02): track merge_level for unified compress policy.
+        # When the trigger range overlaps an existing summary (cross-summary
+        # compression), the new summary inherits max(replaced merge_levels) + 1.
+        # This is the SOFT penalty signal — when summaries pile up, downstream
+        # range-selection (or trigger logic) can use merge_level to avoid
+        # re-merging already-merged content too aggressively. NO hard cap on
+        # summary count (matches pass2_rollout.MemoryState design).
+        tr = args.get("time_range") or []
+        replaced_merge_levels = []
+        if isinstance(tr, list) and len(tr) == 2:
+            try:
+                tr_start, tr_end = sorted(tr)[:2]
+            except (TypeError, ValueError):
+                tr_start, tr_end = (0, 0)
+            # Find summaries whose time_range is fully inside the trigger range
+            # (cross-summary merge). Their merge_level contributes to the new
+            # summary's level. They will be DROPPED below.
+            kept_summaries = []
+            for s in new_state.compressed_summaries:
+                s_tr = s.get("time_range") or []
+                if (isinstance(s_tr, list) and len(s_tr) == 2
+                        and tr_start <= s_tr[0] and s_tr[1] <= tr_end):
+                    replaced_merge_levels.append(int(s.get("merge_level", 0)))
+                else:
+                    kept_summaries.append(s)
+            new_state.compressed_summaries = kept_summaries
+        new_merge_level = (max(replaced_merge_levels) + 1
+                           if replaced_merge_levels else 1)
         new_state.compressed_summaries.append({
-            "time_range": args.get("time_range", []),
+            "time_range": tr,
             "text": args.get("text", ""),
             "from_chunk": chunk_idx,
+            "merge_level": new_merge_level,    # v12.12: SOFT penalty signal
         })
         # Drop the oldest recent_thinks that fall in the compressed range
-        if args.get("time_range"):
+        if tr:
             try:
-                tr_start, tr_end = sorted(args["time_range"])[:2]
+                tr_start, tr_end = sorted(tr)[:2]
                 new_state.recent_thinks = [
                     t for t in new_state.recent_thinks
                     if not (tr_start <= t.get("chunk", -1) <= tr_end)

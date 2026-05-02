@@ -216,25 +216,23 @@ class MemoryState:
                 summary = dict(summary)
                 summary["text"] = self._tokenizer.decode(ids[:SUMMARY_TOKENS_MAX])
                 summary["_truncated"] = True
+        # v12.12 (2026-05-02): hard cap removed. Per the unified compress
+        # policy (matching pass2_rollout): there is NO upper limit on the
+        # number of summaries; the system trigger + range-selection scoring
+        # uses merge_level as a SOFT penalty (already implemented in pass2's
+        # score_range_for_compression) to discourage repeatedly re-merging
+        # already-summarized content. Letting summaries pile up here is OK
+        # because the trigger fires on TOTAL memory tokens (thinks +
+        # summaries) — once total exceeds threshold, the system selects an
+        # optimal range from the full timeline (potentially including old
+        # summaries with high merge_level). Old behavior (`while len > 5:
+        # brutal text concat`) destroyed information irreversibly and
+        # diverged from pass2's design.
+        #
+        # Caller is expected to drive merging via the normal compress
+        # trigger pipeline (system → range → model summary), NOT via a
+        # post-hoc bookkeeping merge here.
         self.compressed_segments.append(summary)
-        # Merge oldest two if over MAX_COMPRESSED_SEGMENTS=5.
-        while len(self.compressed_segments) > 5:
-            seg_a = self.compressed_segments.pop(0)
-            seg_b = self.compressed_segments.pop(0)
-            combined = f'{seg_a["text"]} {seg_b["text"]}'
-            if self._tokenizer:
-                ids = self._tokenizer.encode(combined, add_special_tokens=False)
-                if len(ids) > SUMMARY_TOKENS_MAX:
-                    combined = self._tokenizer.decode(ids[:SUMMARY_TOKENS_MAX])
-            merged = {
-                "time_range": [seg_a["time_range"][0], seg_b["time_range"][1]],
-                "text": combined,
-                "merged": True,
-                "merge_level": max(
-                    seg_a.get("merge_level", 1), seg_b.get("merge_level", 1)
-                ) + 1,
-            }
-            self.compressed_segments.insert(0, merged)
 
     # --- Queries tracking (matches SFT <queries> zone) ---
     # The legacy add_pending / resolve_pending pair was removed in v11.1
@@ -284,8 +282,9 @@ def build_single_step_messages(
     queries: Optional[List[Dict]] = None,
     recalled_frames: Optional[Dict] = None,
     recall_result: Optional[Dict] = None,
-    min_pixels: int = 100352,
-    max_pixels: int = 150528,
+    # v12.12 (2026-05-02): RUNTIME profile defaults — see config.py
+    min_pixels: int = 130_000,
+    max_pixels: int = 220_000,
     frame_paths: Optional[List[str]] = None,
     inter_chunk: bool = False,
 ) -> List[Dict]:
@@ -573,8 +572,9 @@ class StreamingAgentLoop:
         processor,
         *,
         model_type: str = "qwen3vl",
-        min_pixels: int = 100352,
-        max_pixels: int = 150528,
+        # v12.12 (2026-05-02): RUNTIME profile defaults
+        min_pixels: int = 130_000,
+        max_pixels: int = 220_000,
         max_new_tokens: int = 256,
         retrieve_fn: Optional[Callable] = None,
         retriever=None,
@@ -600,9 +600,10 @@ class StreamingAgentLoop:
                          is added so dense backends can build a visual index
                          on the fly.
             compress_mode: "system" (default, used by SFT eval) — when
-                memory.should_compress() fires, system inserts a
-                <compress_trigger range="t_start-t_end"/> with a fixed
-                FIFO range; the model only writes the summary text.
+                memory.should_compress() fires, system inserts a bare
+                <compress_trigger/> as a memory-pressure signal (NO range,
+                v12.12); the model derives the range from <memory> and
+                writes both range and summary in its tool_call.
                 "self" (used by RL eval after GDPO) — system never
                 inserts a trigger; the model decides autonomously when
                 to emit <action>compress</action> and which range to
@@ -778,11 +779,12 @@ class StreamingAgentLoop:
             oldest = self.memory.recent_thinks[:n_to_compress] if n_to_compress > 0 else []
             if oldest:
                 chunks = [t["chunk"] for t in oldest]
-                t_start = min(chunks) * AGENT_CHUNK_SEC
-                t_end = (max(chunks) + 1) * AGENT_CHUNK_SEC
-                compress_trigger = (
-                    f'<compress_trigger range="{t_start}-{t_end}"/>'
-                )
+                # v12.12 (2026-05-02): trigger carries NO range. Model must
+                # derive the range from <memory> contents and emit it inside
+                # the assistant tool_call. Range comparison for telemetry /
+                # success scoring (downstream) still uses `chunks` computed
+                # by the system's range-selection policy as the oracle target.
+                compress_trigger = "<compress_trigger/>"
                 _compress_telemetry = {
                     "thinks_count_at_trigger": len(self.memory.recent_thinks),
                     "thinks_token_count": self.memory.count_recent_tokens(),

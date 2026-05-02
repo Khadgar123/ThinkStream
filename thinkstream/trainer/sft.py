@@ -330,7 +330,15 @@ def init_processor(
              "<recall_result>", "</recall_result>",
              "<compressed>", "</compressed>",
              "<pending>", "</pending>",
-             "<compress_trigger>", "</compress_trigger>",
+             # v12.12 (2026-05-02): switched from open/close pair to the
+             # self-closing form actually emitted by pass3c / agent_loop /
+             # streaming_vllm. The old `<compress_trigger>` and
+             # `</compress_trigger>` open/close tokens never matched the
+             # actual data (which was always `<compress_trigger range='...'/>`,
+             # now `<compress_trigger/>`), so BPE was tokenizing the trigger
+             # into fragments. Single self-closing token = atomic system
+             # signal the model can recognize cleanly.
+             "<compress_trigger/>",
              "<summary>", "</summary>"]
         )
         num_new = len(lmm_processor.tokenizer) - model.config.vocab_size

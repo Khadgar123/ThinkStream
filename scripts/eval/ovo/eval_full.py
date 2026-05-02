@@ -277,18 +277,16 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None):
 
 def make_loop(model, processor, tokenizer, model_type, retriever,
               compress_mode, max_new_tokens, frames_root=None, video_root=None):
-    # v9.4.2 FIX (context overflow): use SFT-aligned pixel budget. The
-    # previous values (200704 / 401408) were 2-2.7× the SFT defaults
-    # (100352 / 150528), inflating per-frame visual tokens from ~256 to
-    # ~600+, which caused 24-frame visual_window prompts to consume
-    # ~14400 tokens instead of ~6144 → overflowed model_max_length=16384.
+    # v12.12 (2026-05-02): RUNTIME profile aligned with pass2/SFT/RL
+    # (was 100352/150528, before that 200704/401408). Empirically measured
+    # 130k/220k → ~235 tok/frame, 32-frame window = 7,520 vis tok in 16K.
     return StreamingAgentLoop(
         generate_fn=make_generate_fn(model, processor, model_type=model_type),
         tokenizer=tokenizer,
         processor=processor,
         model_type=model_type,
-        min_pixels=100352,    # was 100352*2 (200704)
-        max_pixels=150528,    # was 100352*4 (401408)
+        min_pixels=130_000,
+        max_pixels=220_000,
         max_new_tokens=max_new_tokens,
         retriever=retriever,
         compress_mode=compress_mode,

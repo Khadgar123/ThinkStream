@@ -6,6 +6,7 @@ Matches docs/data_construction_zh.md v6.2.
 """
 
 from pathlib import Path
+from typing import Dict
 
 # ---------------------------------------------------------------------------
 # 1. Directory layout
@@ -194,9 +195,56 @@ COMPRESS_RANGE = COMPRESS_RANGE_MAX  # deprecated alias
 SYSTEM_PROMPT_TOKENS = 400
 COMPRESSED_SEG_TOKENS = 280        # matches SUMMARY_TOKENS_MAX (was 150 stale)
 OBSERVATION_AVG_TOKENS = 60        # matches THINK_TOKEN_AVG
-VISUAL_TOKENS_PER_CHUNK = 128      # at min_pixels=100352
-VISUAL_WINDOW_TOKENS = VISUAL_WINDOW_CHUNKS * VISUAL_TOKENS_PER_CHUNK  # 16×128 = 2048
-RECALL_VISION_TOKENS = 256         # 4 帧 recalled
+
+# ---------------------------------------------------------------------------
+# v12.12 (2026-05-02): Qwen3-VL smart_resize profiles via mm_processor_kwargs
+# ---------------------------------------------------------------------------
+# vLLM ≥ 0.7.3 forwards top-level `mm_processor_kwargs` to the Qwen3-VL
+# processor's smart_resize. Output token count ≈ resized_pixels / 1024
+# (Qwen3-VL has patch_size=16, merge_size=2 → 32×32 = 1024 px/token) plus
+# ~18 tok of vision_start/vision_end/grid_thw bookkeeping overhead.
+#
+# Empirical measurement (1920×1080 source frames):
+#   no kwargs           → 2,058 tok/frame   (32 frames = 65,856, blows 16K)
+#   min=90k  max=130k   →   138 tok/frame   (32 frames =  4,416)
+#   min=90k  max=260k   →   249 tok/frame   (32 frames =  7,968)
+#   min=56k  max=56k    →    63 tok/frame   (32 frames =  2,016)
+#
+# Source video resolution distribution (catalog):
+#   640×360 38%, 852×480 18%, 1280×720 13%, 640×480 5%, 480×360 4%,
+#   360×640 4% (vertical), 480×270 3%, 480×640 2% (vertical), other ~13%.
+# smart_resize is aspect-aware → 16:9, 4:3, 9:16, 3:4 all auto-normalize
+# to the configured token-count band; no per-aspect special handling.
+#
+# RUNTIME profile — used by pass2 / pass5 SFT data / agent_loop / streaming
+# eval / verl RL recipe / production deploy. ALL these paths MUST use the
+# same mm_processor_kwargs because student is trained at this resolution
+# and mismatch = OOD vision-token sequence at inference.
+#
+# HIRES profile — used ONLY by pass1a evidence extraction. Higher visual
+# fidelity for OCR / small-entity / state_change detection. Pass1a is single-
+# chunk per request (2 frames) so total visual cost is small even with
+# higher per-frame tokens. Output (atomic_facts / visible_entities / ocr)
+# carries the fine details forward as TEXT, which pass2/student see in
+# memory regardless of their lower runtime resolution.
+RUNTIME_MM_PROCESSOR_KWARGS: Dict[str, int] = {
+    "min_pixels": 130_000,    # ~360p area floor (640×360 source = 230k passes through)
+    "max_pixels": 220_000,    # cap → ~127-235 tok/frame after smart_resize
+}
+HIRES_MM_PROCESSOR_KWARGS: Dict[str, int] = {
+    "min_pixels": 200_000,    # ~480p area floor; small sources upscale modestly
+    "max_pixels": 1_500_000,  # preserves 1280×720 fully; downsamples 1920×1080 only ~28%
+}
+
+# Empirical token counts (verify with real vLLM; adjust if measured value differs)
+VISUAL_TOKENS_PER_FRAME_RUNTIME       = 235    # at min=130k max=220k (typical source)
+VISUAL_TOKENS_PER_FRAME_HIRES_TYPICAL = 500    # at min=200k max=1500k, weighted avg by source distribution
+VISUAL_TOKENS_PER_FRAME_HIRES_MAX     = 1500   # at min=200k max=1500k, 1280×720 source
+
+# Backward-compat alias (consumed by older code paths). Set to RUNTIME default.
+VISUAL_TOKENS_PER_CHUNK = VISUAL_TOKENS_PER_FRAME_RUNTIME * FRAMES_PER_CHUNK  # 235×2 = 470
+VISUAL_WINDOW_TOKENS = VISUAL_WINDOW_CHUNKS * VISUAL_TOKENS_PER_CHUNK  # 16 × 470 = 7,520
+RECALL_VISION_TOKENS = VISUAL_TOKENS_PER_FRAME_RUNTIME * 4  # 4 frames recalled at runtime res = 940
 # v12.5: 4096 → 16384. Single-sample cap raised to match new 16K context
 # budget (system+visual+memory+output = ~10K nominal, 16K accommodates
 # bursts in compressed-segment count or recall density).
@@ -211,18 +259,23 @@ VLLM_CONTEXT_SAFETY_RATIO = 0.85
 VLLM_PREFILL_BATCH_TOKEN_BUDGET = 32_000_000  # KV usage ~2.6% at 64 conc → 1024 conc fits easily
 
 # Per-request token estimates (text + vision + output + thinking).
-# Vision passes: 24-28 frames (recall adds 4 recalled frames).
+# v12.12 (2026-05-02): visual budgets reflect mm_processor_kwargs profiles.
+# pass1a uses HIRES (~500 tok/frame typical) × 2 frames + template ≈ 2K visual.
+# pass2 uses RUNTIME (~235 tok/frame) × 32 frames + template ≈ 7.6K visual.
 # vLLM: --limit-mm-per-prompt '{"image":28}' to accommodate recall.
-# Thinking tokens estimated at ~2K per request (varies).
 PASS_CONTEXT_ESTIMATES = {
-    "pass1a": {"input": 1_500, "output": 5_000, "thinking": 0},  # 2 frames per chunk
-    # v12.5: thinking=0 (was implicit thinking budget under thinking=True).
-    # output budget tightened: 32K cap, but typical body is 4-6K tokens.
-    # v12.5 (2026-04-30): input 3_000 → 16_000. Empirical measurement
-    # on 87 batch1 videos: avg 13,776 tokens, median 13,432, max 30,927.
-    # The old 3K estimate under-sized actual prompts by ~4.6×.
-    "pass1b": {"input": 16_000, "output": 6_000, "thinking": 0},  # text-only, full video summary
-    "pass2_rollout":  {"input": 10_000, "output": 5_000, "thinking": 0},
+    # pass1a: 2 hires frames + template + 5K output. ~3K input typical.
+    "pass1a": {"input": 3_000, "output": 5_000, "thinking": 0},
+    # v12.5 (2026-04-30): input 3_000 → 16_000. Empirical measurement on 87
+    # batch1 videos: avg 13,776 tokens, median 13,432, max 30,927.
+    "pass1b": {"input": 16_000, "output": 6_000, "thinking": 0},  # text-only
+    # v12.12 (2026-05-02): RUNTIME profile ~235 tok/frame × 32 = 7,520 visual.
+    # + system 500 + template 200 + memory ≤4000 + queries 400 + recall ≤1320
+    # + pad 300 ≈ 14,240 input worst-case (with recall). Use 13,500 as a
+    # representative estimate (most chunks no recall).
+    # Output: weighted avg of (obs max_tokens=1024) and (compress max_tokens=4096)
+    # at 97/3 frequency = 1116; rounded to 1500.
+    "pass2_rollout":  {"input": 13_500, "output": 1_500, "thinking": 0},
     # v12.5: all passes now thinking=False. Estimates drop the thinking
     # column (was 16K-buffer reservations under thinking=True).
     "pass3a": {"input": 700, "output": 1_500, "thinking": 0},          # text-only card gen
@@ -537,7 +590,7 @@ Compressed memory:
 Recent thinks:
 {recent_thinks}
 
-Visual window: t={window_start}-{window_end}s (frames above).
+Visual window: t={window_start}-{window_end}s (frames provided as video block).
 
 Describe what is NEW or CHANGED in the latest 1 second (t={start}-{end}s).
 Be concise but complete (target 40-80 tokens, never exceed 100).
@@ -557,7 +610,7 @@ COMPRESS_PROMPT = """Compress these observations into a structured summary.
 
 Observations to compress:
 {observations_text}
-{visual_context}
+
 Rules:
 - Use coarse time sub-ranges: [X-Y]
 - Keep ALL entities with their appearance descriptions
@@ -565,8 +618,7 @@ Rules:
 - Keep state changes as before→after
 - Keep user interaction summaries if any
 - Target length: {target_length} tokens
-- Base the summary primarily on the observation text
-- If video frames are provided, use them to verify and refine details (correct entity counts, colors, spatial positions), but do not introduce entirely new events not mentioned in the observations
+- Base the summary strictly on the observation text — do not introduce entities, counts, colors, or events not present in the observations
 
 Output JSON: {{"time_range": [{start}, {end}], "text": "..."}}"""
 

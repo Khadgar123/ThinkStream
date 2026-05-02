@@ -180,16 +180,37 @@ def build_user_content(
     queries: Optional[List[Dict]] = None,
     recalled_frames: Optional[Dict] = None,
     recall_result: Optional[Dict] = None,
-    min_pixels: int = 100352,
-    max_pixels: int = 150528,
+    # v12.12 (2026-05-02): defaults aligned to RUNTIME_MM_PROCESSOR_KWARGS in
+    # scripts.agent_data_v5.config — Qwen3-VL smart_resize bounds for the
+    # student/runtime profile. SFT/RL/Eval/deploy ALL use these values; pass1a
+    # uses HIRES (set explicitly via mm_processor_kwargs at request level).
+    min_pixels: int = 130_000,
+    max_pixels: int = 220_000,
     frame_paths: Optional[List[str]] = None,
     inter_chunk: bool = False,
 ) -> List[Dict]:
     """Build the user content list for a single-step message.
 
-    Ordering (sft_engineering.md v3.0 §2.1, must not violate):
-    <visual_window> + frames → <recalled_frames> + frames → <memory>
-    → <queries> → <recall_result> → <user_input>
+    Ordering (v12.12, 2026-05-01 — supersedes v3.0 zone order):
+    <memory> → <queries> → <visual_window> + frames →
+    <recalled_frames> + frames → <recall_result> → <user_input>
+
+    Why this order: memory and queries are monotonically appended across
+    chunks of one trajectory (modulo periodic compression rewrites), so
+    placing them FIRST makes the largest stable token prefix. With
+    `--enable-prefix-caching` on the vLLM serving side, the prefix
+    [system + memory_at_t-1 + queries_at_t-1] is byte-identical to the
+    head of [system + memory_at_t + queries_at_t] up through chunk t-1's
+    last appended token → cache hits ~25-40% of the per-chunk prefill
+    instead of the ~5% (system only) that the old vision-first layout
+    achieved. Visual window changes every chunk (sliding) so it's the
+    cache-miss boundary; placing it AFTER the stable text means the miss
+    starts later in the sequence, not at the front.
+
+    MROPE temporal alignment for vision tokens is metadata-driven (via
+    `frames_indices` in video_metadata, see processing_qwen3_vl.py),
+    not position-in-sequence-driven, so reordering does not break the
+    `<X.X seconds>` per-frame temporal anchors.
 
     Args:
         memory_text: Pre-formatted memory block from format_memory_block().
@@ -212,7 +233,23 @@ def build_user_content(
     chunk_sec = AGENT_CHUNK_SEC
     user_content = []
 
-    # ── Zone B: Visual window + video frames (固定大小, position 稳定) ──
+    # ── Memory block (FIRST — stable monotonic prefix, v12.12) ──
+    # No leading "\n": memory is the first block in user content.
+    user_content.append({
+        "type": "text",
+        "text": f"<memory>\n{memory_text}\n</memory>",
+    })
+
+    # ── Queries (past Q&A, also monotonic; second-stable prefix) ──
+    if queries:
+        queries_text = format_queries_block(queries)
+        if queries_text:
+            user_content.append({
+                "type": "text",
+                "text": f"\n{queries_text}",
+            })
+
+    # ── Visual window + video frames (cache-miss boundary) ──
     # v12.6: inter_chunk compress turns SKIP this block entirely (matches
     # pass5 shape C). Compression is a system event between visual chunks
     # and consumes no new frames; including a visual_window here would
@@ -233,7 +270,7 @@ def build_user_content(
         })
         user_content.append({
             "type": "text",
-            "text": f"<visual_window>{vw_header}</visual_window>",
+            "text": f"\n<visual_window>{vw_header}</visual_window>",
         })
 
         if frame_paths:
@@ -244,9 +281,18 @@ def build_user_content(
             # Real video time = (chunk_idx × FRAMES_PER_CHUNK + i) / FPS.
             # See processing_qwen3_vl.py:217-224 for how metadata drives
             # the `<X.X seconds>` text-layer temporal anchor.
+            #
+            # v12.12: also include min_pixels/max_pixels at video item level.
+            # qwen-vl-utils.process_vision_info reads these and emits them as
+            # mm_processor_kwargs, which vLLM forwards to the Qwen3-VL
+            # processor's smart_resize. This is the HF-direct + offline-vLLM
+            # parity path; the OpenAI HTTP path uses request-top-level
+            # mm_processor_kwargs (set in vllm_client._call_one).
             user_content.append({
                 "type": "video",
                 "video": frame_paths,
+                "min_pixels": min_pixels,
+                "max_pixels": max_pixels,
                 "video_metadata": {
                     "fps": float(FRAMES_PER_CHUNK / chunk_sec),
                     "frames_indices": [
@@ -267,7 +313,7 @@ def build_user_content(
                 "max_pixels": max_pixels,
             })
 
-    # ── Zone B continued: Recalled frames (recall_response only) ──
+    # ── Recalled frames (recall_response only) ──
     if recalled_frames:
         rf_header = json.dumps({
             "time_range": recalled_frames["time_range"],
@@ -289,6 +335,8 @@ def build_user_content(
             user_content.append({
                 "type": "video",
                 "video": recalled_frames["frame_paths"],
+                "min_pixels": min_pixels,    # v12.12: runtime profile bounds
+                "max_pixels": max_pixels,
                 "video_metadata": {
                     "fps": float(FRAMES_PER_CHUNK / chunk_sec),
                     "frames_indices": [
@@ -308,22 +356,7 @@ def build_user_content(
                 "max_pixels": max_pixels,
             })
 
-    # ── Zone C: Memory block (可变大小, 追加式增长) ──
-    user_content.append({
-        "type": "text",
-        "text": f"\n<memory>\n{memory_text}\n</memory>",
-    })
-
-    # ── Zone Q: Queries (past Q&A, independent of memory, not compressed) ──
-    if queries:
-        queries_text = format_queries_block(queries)
-        if queries_text:
-            user_content.append({
-                "type": "text",
-                "text": f"\n{queries_text}",
-            })
-
-    # ── Zone C continued: Recall result (recall_response only) ──
+    # ── Recall result (recall_response only) ──
     # v9.4.2: cap recall text_content at RECALL_TEXT_MAX_CHARS. Default
     # 800 (~200 tok) matches the 16k profile; 32k profile bumps to 3000
     # via eval_profiles.apply_profile(). Top-4 retrieved thinks naturally
@@ -344,7 +377,7 @@ def build_user_content(
             "text": f"\n<recall_result>{rr_json}</recall_result>",
         })
 
-    # ── Zone D: User input (每步变化) ──
+    # ── User input (LAST — every step varies) ──
     if user_input:
         user_content.append({
             "type": "text",
@@ -360,8 +393,10 @@ def build_user_content(
 # Architecture:
 #   answer (terminal)   = <answer>text</answer> or <answer></answer> (silent)
 #   tool (recall)       = <tool_call>{"name":"recall","arguments":{...}}</tool_call>
-#   system event (compress) = system injects <compress_trigger range="a-b"/>
-#                             into user role; assistant emits compress tool_call
+#   system event (compress) = system injects <compress_trigger/> into user role
+#                             (boolean signal only — NO range, v12.12); the
+#                             assistant emits a compress tool_call carrying its
+#                             OWN derived time_range + summary text
 # Tools registered via system <tools> block (auto-rendered by chat_template
 # when tools=tools is passed to apply_chat_template).
 
@@ -376,8 +411,10 @@ SYSTEM_PROMPT_V12 = (
     "You may call recall AT MOST ONCE per question. After receiving "
     "<recall_result>, emit <answer> directly — do not call recall again.\n"
     "- compress: summarize a chunk range. Called ONLY when the system injects "
-    "<compress_trigger range='start-end'/> into your input. Retain entity names, "
-    "visual attributes, OCR, state changes.\n\n"
+    "<compress_trigger/> into your input as a memory-pressure signal. "
+    "You must derive the time range to compress yourself from <memory> "
+    "contents (oldest contiguous chunks that can be safely condensed). "
+    "Retain entity names, visual attributes, OCR, state changes.\n\n"
     "Output format (every turn must follow this exactly):\n"
     "  <think>40-60 tokens describing only what is newly visible</think>\n"
     "  Then ONE of:\n"
@@ -432,8 +469,9 @@ TOOLS_SCHEMA = [
             "name": "compress",
             "description": (
                 "Summarize a chunk range when the system signals memory pressure "
-                "via <compress_trigger range='start-end'/>. Output a concise "
-                "summary retaining all entities, attributes, and state changes."
+                "via <compress_trigger/>. You decide which range from <memory> to "
+                "compress. Output a concise summary retaining all entities, "
+                "attributes, and state changes."
             ),
             "parameters": {
                 "type": "object",
@@ -444,8 +482,9 @@ TOOLS_SCHEMA = [
                         "minItems": 2,
                         "maxItems": 2,
                         "description": (
-                            "[start_sec, end_sec] of the range being summarized. "
-                            "Should match the system's compress_trigger range."
+                            "[start_sec, end_sec] of the range to summarize. "
+                            "You select this range from <memory> contents "
+                            "(oldest contiguous chunks under memory pressure)."
                         ),
                     },
                     "text": {

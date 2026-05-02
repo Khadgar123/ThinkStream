@@ -54,7 +54,7 @@ def check_sft_loss_mask():
                 ],
             },
             "queries": [],
-            "user_input": "<compress_trigger range='0-5'/>",
+            "user_input": "<compress_trigger/>",  # v12.12: no range in trigger
         },
         "output": (
             '<think>summary thought</think>'

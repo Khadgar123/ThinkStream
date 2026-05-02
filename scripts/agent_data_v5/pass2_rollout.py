@@ -35,7 +35,7 @@ from .config import (
     SUMMARY_TOKENS_MIN,
     VISUAL_WINDOW_CHUNKS,
 )
-from .pass1a_evidence import build_vision_content, get_chunk_frame_paths
+from .pass1a_evidence import get_chunk_frame_paths
 
 logger = logging.getLogger(__name__)
 
@@ -267,7 +267,21 @@ def build_observation_request(
     memory: MemoryState,
     video_id: str,
 ) -> Dict:
-    """Build request for 397B to generate a student observation."""
+    """Build request for 397B to generate a student observation.
+
+    v12.12 (2026-05-01): content order changed to [text-prompt][frames]
+    (was [frames][text-prompt]). The OBSERVATION_PROMPT template already
+    places memory FIRST inside the text body; combined with text-then-
+    frames in the content list, the per-chunk prefill prefix becomes
+    [system + memory_at_t + (instruction template)] which is monotonic
+    across consecutive obs requests of one video. Switching to vLLM
+    --enable-prefix-caching then reuses ~3-5K tok of the head every
+    chunk instead of just the ~400-tok system block.
+
+    This mirrors the student's user_content layout in agent_protocol.py
+    build_user_content (memory → visual_window → frames → user_input)
+    so teacher and student see the same input distribution.
+    """
     start = chunk_idx * AGENT_CHUNK_SEC
     end = start + AGENT_CHUNK_SEC
     window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
@@ -287,8 +301,26 @@ def build_observation_request(
     for c in range(window_start, chunk_idx + 1):
         window_frame_paths.extend(get_chunk_frame_paths(frame_paths, c))
 
+    # v12.12: text first, frames last — opposite of the legacy
+    # build_vision_content layout (which kept frames first for early
+    # vision-token-position pretraining bias). The Qwen3-VL processor
+    # places vision tokens wherever the content list dictates and uses
+    # video_metadata for MROPE temporal alignment, so reordering does
+    # not break per-frame `<X.X seconds>` anchors. We build the content
+    # list inline here rather than reuse build_vision_content (which is
+    # still frames-first; pass1a callers depend on that behaviour).
+    content: List[Dict] = [{"type": "text", "text": prompt}]
+    for img_path in window_frame_paths:
+        from pathlib import Path as _Path
+        if _Path(img_path).exists():
+            from scripts.agent_data_pipeline.vllm_client import encode_image_base64
+            content.append({
+                "type": "image_url",
+                "image_url": {"url": encode_image_base64(img_path)},
+            })
+
     return {
-        "messages": [{"role": "user", "content": build_vision_content(prompt, window_frame_paths)}],
+        "messages": [{"role": "user", "content": content}],
         "max_tokens": PASS_CONFIG["pass2_rollout"]["max_tokens_observation"],
         "temperature": PASS_CONFIG["pass2_rollout"]["temperature"],
         "id": f"{video_id}_obs_{chunk_idx}",
@@ -505,7 +537,14 @@ def build_compress_request(
 ) -> Optional[Dict]:
     """Build compression request from pre-action timeline.
 
-    Finds contiguous think segments, selects best range within segments.
+    v12.12 (2026-05-01): compress is text-only. Student emits compress in
+    inter-chunk shape C (agent_loop.py:812-816, pass5_messages.py:104+178)
+    with NO visual_window and NO frames. Teacher must match that exact
+    distribution — passing overlap frames here used to make teacher
+    "verify entity details from video" but produced summaries the student
+    cannot reproduce at inference (it has only memory text). The
+    `frame_paths` arg is kept for backward compat with callers; it is
+    no longer consumed.
     """
     selected_indices, policy_meta = choose_optimal_compress_range(
         pre_action_timeline, evidence
@@ -540,41 +579,17 @@ def build_compress_request(
         [item for item in to_compress if item.get("type") == "think"], evidence
     )
 
-    # Overlapping frames: compress range ∩ visual window (only for thinks)
-    window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
     compress_chunks = [item["chunk"] for item in to_compress if item.get("type") == "think"]
-    overlap_chunks = [c for c in compress_chunks if window_start <= c <= chunk_idx]
-
-    overlap_frame_paths = []
-    if frame_paths and overlap_chunks:
-        for c in overlap_chunks:
-            overlap_frame_paths.extend(get_chunk_frame_paths(frame_paths, c))
-
-    visual_context = ""
-    if overlap_frame_paths:
-        overlap_start = overlap_chunks[0] * AGENT_CHUNK_SEC
-        overlap_end = (overlap_chunks[-1] + 1) * AGENT_CHUNK_SEC
-        visual_context = (
-            f"\nVideo frames from t={int(overlap_start)}-{int(overlap_end)}s "
-            f"are provided above for reference ({len(overlap_frame_paths)} frames). "
-            f"Use them to verify entity details, counts, colors, and spatial positions.\n"
-        )
 
     prompt = COMPRESS_PROMPT.format(
         observations_text=obs_text,
-        visual_context=visual_context,
         target_length=target_length,
         start=int(first_time),
         end=int(last_time),
     )
 
-    if overlap_frame_paths:
-        content = build_vision_content(prompt, overlap_frame_paths)
-    else:
-        content = prompt
-
     return {
-        "messages": [{"role": "user", "content": content}],
+        "messages": [{"role": "user", "content": prompt}],
         "max_tokens": PASS_CONFIG["pass2_rollout"]["max_tokens_compress"],
         "temperature": PASS_CONFIG["pass2_rollout"]["temperature"],
         "id": f"{video_id}_compress_{chunk_idx}",
@@ -583,8 +598,8 @@ def build_compress_request(
             "selected_indices": selected_indices,
             "chunks": compress_chunks,
             "teacher_policy": policy_meta,
-            "overlap_chunks": overlap_chunks,
-            "has_visual_context": bool(overlap_frame_paths),
+            "overlap_chunks": [],
+            "has_visual_context": False,
         },
     }
 
@@ -675,11 +690,16 @@ async def run_pass2_single_video(
         # v12.11 hotfix: cap max_tokens client-side so long-memory chunks
         # don't trip vLLM's "max_tokens must be at least 1, got -<N>" error.
         safe_obs_max = _safe_max_tokens_for_pass2(request, request["max_tokens"])
+        # v12.12: pass2 uses RUNTIME profile — same smart_resize bounds as
+        # student inference, so teacher and student see identical visual
+        # token sequences at every chunk (training-inference parity).
+        from .config import RUNTIME_MM_PROCESSOR_KWARGS
         raw = await client._call_one(
             messages=request["messages"],
             max_tokens=safe_obs_max,
             temperature=request["temperature"],
             request_id=request["id"],
+            mm_processor_kwargs=RUNTIME_MM_PROCESSOR_KWARGS,
         )
         think_text = parse_observation_result(raw)
         thinks.append({
@@ -701,6 +721,8 @@ async def run_pass2_single_video(
             safe_comp_max = _safe_max_tokens_for_pass2(
                 comp_request, comp_request["max_tokens"],
             )
+            # compress request is text-only (v12.12 P0 dropped overlap frames),
+            # mm_processor_kwargs unused but harmless if passed.
             comp_raw = await client._call_one(
                 messages=comp_request["messages"],
                 max_tokens=safe_comp_max,

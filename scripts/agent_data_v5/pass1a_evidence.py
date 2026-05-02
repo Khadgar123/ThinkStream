@@ -327,6 +327,14 @@ async def run_pass1a(
     # dropped on this server — see vllm_client._call_one_raw).
     enable_thinking = bool(PASS_CONFIG["pass1a"].get("thinking", True))
 
+    # v12.12 (2026-05-02): pass1a uses HIRES profile for fine-grained OCR,
+    # entity attributes, state_change detection. Pass2/runtime use a smaller
+    # RUNTIME profile (see config.py); their evidence comes from pass1a's
+    # output text, so pass1a's higher resolution propagates downstream
+    # without requiring runtime to bear the visual cost.
+    from .config import HIRES_MM_PROCESSOR_KWARGS
+    mm_kwargs = HIRES_MM_PROCESSOR_KWARGS
+
     async def _call(messages, max_tokens, temperature, request_id):
         if semaphore:
             async with semaphore:
@@ -334,11 +342,13 @@ async def run_pass1a(
                     messages=messages, max_tokens=max_tokens,
                     temperature=temperature, request_id=request_id,
                     enable_thinking=enable_thinking,
+                    mm_processor_kwargs=mm_kwargs,
                 )
         return await client._call_one(
             messages=messages, max_tokens=max_tokens,
             temperature=temperature, request_id=request_id,
             enable_thinking=enable_thinking,
+            mm_processor_kwargs=mm_kwargs,
         )
 
     async def annotate_chunk(chunk_idx):

@@ -128,25 +128,26 @@ def _resolve_frame_paths(
 
 
 def _maybe_compress_trigger(memory: MemoryState, chunk_idx: int) -> str:
-    """Return <compress_trigger range="..."/> if memory threshold fires.
+    """Return <compress_trigger/> if memory threshold fires, else "".
 
-    v11.3: range size selected by select_compress_range_by_tokens so eval
-    matches the post-fix agent_loop policy (variable range driven by token
-    budget, was hardcoded to first 4 thinks).
+    v11.3: range was selected by select_compress_range_by_tokens.
+    v12.12 (2026-05-02): trigger emits NO range. Model must derive the
+    range from <memory> contents and emit it inside the assistant
+    tool_call. This matches pass3c_samples._compress_sample (no range
+    in the SFT input) and the eventual RL upgrade where the trigger
+    itself is removed (model decides when AND what to compress).
     """
     if not memory.should_compress():
         return ""
+    # Still gate on range selection feasibility — if no contiguous range of
+    # min size can be found, don't emit the trigger (memory not actionable).
     n = select_compress_range_by_tokens(
         memory.recent_thinks,
         token_count_fn=memory._token_count,
     )
     if n <= 0:
         return ""
-    oldest = memory.recent_thinks[:n]
-    chunks = [t["chunk"] for t in oldest]
-    t_start = min(chunks) * AGENT_CHUNK_SEC
-    t_end = (max(chunks) + 1) * AGENT_CHUNK_SEC
-    return f'<compress_trigger range="{t_start}-{t_end}"/>'
+    return "<compress_trigger/>"
 
 
 def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:

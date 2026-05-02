@@ -249,9 +249,25 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         video_path = str(base_path / video_path)
     require_pre = bool(sample.get("_require_pre_extracted_frames", True))
 
-    # ── User content ───────────────────────────────────────────────────
+    # ── User content (v12.12 reorder: stable text first, vision after) ──
     user_content = []
 
+    # Memory FIRST — stable monotonic prefix for vLLM prefix-caching.
+    memory_text = _format_memory_block(inp["memory"])
+    user_content.append({
+        "type": "text",
+        "text": f"<memory>\n{memory_text}\n</memory>",
+    })
+
+    # Queries — second-stable prefix (also monotonic).
+    queries = inp.get("queries", [])
+    if queries and not inter_chunk:
+        from thinkstream.data.agent_protocol import format_queries_block
+        queries_text = format_queries_block(queries)
+        if queries_text:
+            user_content.append({"type": "text", "text": f"\n{queries_text}"})
+
+    # Visual window + frames (cache-miss boundary).
     if not inter_chunk:
         # Visual window only present for visual timesteps (NOT inter-chunk
         # compress turns, where compression is a system event between two
@@ -267,7 +283,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         })
         user_content.append({
             "type": "text",
-            "text": f"<visual_window>{vw_header}</visual_window>",
+            "text": f"\n<visual_window>{vw_header}</visual_window>",
         })
 
         # v12.5 fallback: pass4 flat files may omit frame_paths — infer from
@@ -284,7 +300,18 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         if "frame_paths" in vw:
             paths = [str(base_path / p) if not Path(p).is_absolute() else p
                      for p in vw["frame_paths"]]
-            user_content.append({"type": "video", "video": paths})
+            # v12.12: runtime mm_processor_kwargs at video-item level
+            try:
+                from scripts.agent_data_v5.config import (
+                    RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                )
+            except ImportError:
+                _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+            user_content.append({
+                "type": "video", "video": paths,
+                "min_pixels": _RTKW["min_pixels"],
+                "max_pixels": _RTKW["max_pixels"],
+            })
         elif "frame_indices" in vw and video_path:
             if require_pre:
                 raise ValueError(
@@ -320,27 +347,24 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         if "frame_paths" in rf:
             paths = [str(base_path / p) if not Path(p).is_absolute() else p
                      for p in rf["frame_paths"]]
-            user_content.append({"type": "video", "video": paths})
+            # v12.12: runtime mm_processor_kwargs at video-item level
+            try:
+                from scripts.agent_data_v5.config import (
+                    RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                )
+            except ImportError:
+                _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+            user_content.append({
+                "type": "video", "video": paths,
+                "min_pixels": _RTKW["min_pixels"],
+                "max_pixels": _RTKW["max_pixels"],
+            })
         elif video_path and not require_pre:
             user_content.append({
                 "type": "video", "video": video_path,
                 "video_start": rf["time_range"][0],
                 "video_end": rf["time_range"][1],
             })
-
-    memory_text = _format_memory_block(inp["memory"])
-    user_content.append({
-        "type": "text",
-        "text": f"\n<memory>\n{memory_text}\n</memory>" if not inter_chunk
-        else f"<memory>\n{memory_text}\n</memory>",
-    })
-
-    queries = inp.get("queries", [])
-    if queries and not inter_chunk:
-        from thinkstream.data.agent_protocol import format_queries_block
-        queries_text = format_queries_block(queries)
-        if queries_text:
-            user_content.append({"type": "text", "text": f"\n{queries_text}"})
 
     # Legacy (non-multi-turn) recall_result fallback. Multi-turn recall
     # samples render recall_result via the tool role below.

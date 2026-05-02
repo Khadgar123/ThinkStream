@@ -276,8 +276,8 @@ def main():
         tokenizer=tokenizer,
         processor=processor,
         model_type=model_type,
-        min_pixels=100352,
-        max_pixels=150528,
+        min_pixels=130_000,    # v12.12: RUNTIME profile
+        max_pixels=220_000,
         max_new_tokens=args.max_new_tokens,
         retriever=retriever,
         compress_mode=args.compress_mode,

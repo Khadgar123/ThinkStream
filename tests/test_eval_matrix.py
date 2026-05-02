@@ -389,21 +389,24 @@ def test_test_set_agent_walk_modes_in_signature():
 
 
 def test_eval_pixels_match_sft():
-    """v9.4.2 — eval scripts must use SFT-aligned pixel budget. Larger
-    values silently double per-frame visual tokens and overflow
-    model_max_length. We assert SFT defaults appear; we strip comments
-    before checking that the legacy 100352*2 / *4 expressions are gone
-    (the comments referencing 'was 100352*2' should remain as audit trail).
+    """v12.12 (2026-05-02) — eval scripts must use the unified RUNTIME
+    profile (was SFT-aligned 100352/150528). Empirically measured at
+    min=130000 max=220000 → ~235 tok/frame, 32-frame visual window
+    = 7,520 tok in 16K context. SFT/RL/Eval/deploy ALL share this
+    profile (see scripts/agent_data_v5/config.py:RUNTIME_MM_PROCESSOR_KWARGS).
     """
     for f in ("scripts/eval/ovo/eval_full.py",
               "scripts/eval/test_set_agent.py"):
         src = (ROOT / f).read_text()
         # Strip line comments before checking for legacy literals
         stripped = re.sub(r"#.*", "", src)
-        assert "min_pixels=100352" in stripped or "min_pixels = 100352" in stripped, \
-            f"{f}: min_pixels must equal SFT 100352 (was 200704)"
-        assert "max_pixels=150528" in stripped or "max_pixels = 150528" in stripped, \
-            f"{f}: max_pixels must equal SFT 150528 (was 401408)"
+        # New RUNTIME profile values (130_000 / 220_000 with optional underscore)
+        has_min = ("min_pixels=130_000" in stripped or "min_pixels = 130_000" in stripped
+                   or "min_pixels=130000" in stripped or "min_pixels = 130000" in stripped)
+        has_max = ("max_pixels=220_000" in stripped or "max_pixels = 220_000" in stripped
+                   or "max_pixels=220000" in stripped or "max_pixels = 220000" in stripped)
+        assert has_min, f"{f}: min_pixels must equal RUNTIME 130_000"
+        assert has_max, f"{f}: max_pixels must equal RUNTIME 220_000"
         # Legacy expressions must be gone from CODE (comments OK)
         assert "100352*2" not in stripped, f"{f}: legacy min_pixels=200704 still present in code"
         assert "100352*4" not in stripped, f"{f}: legacy max_pixels=401408 still present in code"

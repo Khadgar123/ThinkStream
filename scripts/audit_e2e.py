@@ -172,8 +172,11 @@ def check_data_pipeline(a: Audit):
             "v12_inter_chunk" in src)
     a.check("pass3c uses build_assistant_content_v12",
             "build_assistant_content_v12" in src)
-    a.check("pass3c injects <compress_trigger range='a-b'/>",
-            "<compress_trigger range='" in src)
+    # v12.12 (2026-05-02): trigger no longer carries range; model must
+    # derive it from <memory>. Range stays in the gold tool_call output.
+    a.check("pass3c injects bare <compress_trigger/> (no range)",
+            "<compress_trigger/>" in src and
+            "<compress_trigger range='" not in src)
 
     # pass5 messages converter
     from scripts.agent_data_v5 import pass5_messages
@@ -212,8 +215,9 @@ def check_sft(a: Audit):
             ma.model_name_or_path)
     a.check("Default agent_chunk_sec == 1.0", da.agent_chunk_sec == 1.0)
     a.check("Default visual_window_chunks == 16", da.visual_window_chunks == 16)
-    a.check("Default video_max_pixels == 150528", da.video_max_pixels == 150528)
-    a.check("Default video_min_pixels == 100352", da.video_min_pixels == 100352)
+    # v12.12 (2026-05-02): RUNTIME profile (was 100352/150528)
+    a.check("Default video_max_pixels == 220_000", da.video_max_pixels == 220_000)
+    a.check("Default video_min_pixels == 130_000", da.video_min_pixels == 130_000)
     a.check("Default video_fps == 1.0", da.video_fps == 1.0)
     a.check("max_sample_tokens == 12000 (legacy filter)",
             da.max_sample_tokens == 12000)

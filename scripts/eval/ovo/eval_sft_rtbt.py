@@ -231,8 +231,8 @@ def main():
             video_path=video_path,
             user_input=question,
             queries=None,
-            min_pixels=100352 * 2,
-            max_pixels=100352 * 4,
+            min_pixels=130_000,    # v12.12: RUNTIME profile (was 100352*2)
+            max_pixels=220_000,    #          (was 100352*4)
             frame_paths=frame_paths,
         )
         messages = [
