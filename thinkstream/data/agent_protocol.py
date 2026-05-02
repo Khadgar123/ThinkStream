@@ -141,7 +141,8 @@ def format_queries_block(queries: List[Dict]) -> str:
     queries = answered[-keep_n_answered:] + pending if keep_n_answered \
         else pending
 
-    # Build chronological event list: (time, "Q"/"A", text)
+    # Build chronological event list: (time, "Q"/"A"/"O", text)
+    # "O" = Options (rendered for pending MC queries; v12.13 P0-3 fix).
     events = []
     for q in queries:
         answers = q.get("answers", [])
@@ -150,6 +151,18 @@ def format_queries_block(queries: List[Dict]) -> str:
 
         # Question event — always shown (even if unanswered/pending)
         events.append((ask_t, "Q", question))
+
+        # v12.13 fix (P0-3): for pending MC queries, render the options
+        # right after the Q line so the model sees A-D choices when the
+        # response chunk fires LATER than the ask (forward / silent_then
+        # _response). Without this, pending MC queries reduce to "pick a
+        # letter without seeing options".
+        if (not answers
+                and q.get("answer_form") == "multiple_choice"
+                and q.get("options")):
+            opts = " ".join(q["options"])    # e.g., "A) red B) blue C) ..."
+            events.append((ask_t, "O", opts))
+
         # Answer event(s) — each carries its own timestamp
         for ans in answers:
             if isinstance(ans, dict):
@@ -160,13 +173,18 @@ def format_queries_block(queries: List[Dict]) -> str:
     if not events:
         return ""
 
-    # Sort by time (stable sort preserves Q-before-A at same timestamp)
-    events.sort(key=lambda e: (float(e[0]) if e[0] != "" else 0, 0 if e[1] == "Q" else 1))
+    # Sort by time (stable sort preserves Q-before-O-before-A at same timestamp)
+    _kind_order = {"Q": 0, "O": 1, "A": 2}
+    events.sort(key=lambda e: (float(e[0]) if e[0] != "" else 0,
+                                _kind_order.get(e[1], 3)))
 
     lines = []
     for t, kind, text in events:
         prefix = f"[{int(t)}s]" if t != "" else ""
-        lines.append(f"{prefix} {kind}: {text}")
+        if kind == "O":
+            lines.append(f"{prefix} Options: {text}")
+        else:
+            lines.append(f"{prefix} {kind}: {text}")
 
     return "<queries>\n" + "\n".join(lines) + "\n</queries>"
 

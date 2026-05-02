@@ -146,41 +146,132 @@ def gen_pn1_narration(evidence: List[Dict], video_id: str) -> List[Card]:
     )]
 
 
+def _action_repetition_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
+    """v12.13 (P1-7): detect repeated ACTIONS (not entity appearances).
+
+    OVO Bench REC = action repetition counting (e.g. "how many times does
+    the person wave?"). Looks at atomic_facts and groups by lemmatized
+    verb-phrase. A "repetition" requires:
+      - same verb-phrase fires in NON-ADJACENT chunks (gap ≥ 2),
+        otherwise it's one continuous action being re-described
+      - confidence ≥ 0.7 to drop noise
+      - ≥ 3 distinct occurrences and span ≥ 6 chunks (real countable event)
+
+    Returns {action_phrase: [chunk_idx, ...]}.
+    """
+    from collections import defaultdict
+    import re as _re
+
+    # Simple verb-phrase normalization: take first 3 tokens of fact text,
+    # lowercase, strip punctuation. Skips common cluttering words.
+    STOPS = {"the", "a", "an", "is", "are", "was", "were", "of"}
+    def normalize(text: str) -> str:
+        if not text:
+            return ""
+        toks = _re.findall(r"[a-zA-Z]+", text.lower())
+        toks = [t for t in toks if t not in STOPS]
+        return " ".join(toks[:3])    # first 3 content words
+
+    by_action: Dict[str, List[int]] = defaultdict(list)
+    for cap in evidence:
+        for f in (cap.get("atomic_facts") or []):
+            if not isinstance(f, dict):
+                continue
+            if f.get("confidence", 0) < 0.7:
+                continue
+            phrase = normalize(f.get("fact", ""))
+            if len(phrase) < 5:    # need at least one verb + object
+                continue
+            by_action[phrase].append(int(cap.get("chunk_idx", 0)))
+
+    # Filter by repetition criteria
+    out: Dict[str, List[int]] = {}
+    for phrase, chunks in by_action.items():
+        chunks = sorted(set(chunks))
+        # Drop adjacent-only repetitions (same continuous event being re-described)
+        non_adjacent = [chunks[0]]
+        for c in chunks[1:]:
+            if c - non_adjacent[-1] >= 2:
+                non_adjacent.append(c)
+        if (len(non_adjacent) >= 3
+                and (non_adjacent[-1] - non_adjacent[0]) >= 6):
+            out[phrase] = non_adjacent
+    return out
+
+
 def gen_f5_counting(evidence: List[Dict], video_id: str) -> List[Card]:
-    """F5 cards: pick entities that appear at >= 3 distinct, well-spaced chunks."""
-    ec = _entity_chunks(evidence)
+    """F5 cards: ACTION repetition counting (OVO REC alignment, v12.13).
+
+    Old behavior: counted entity appearances across chunks — meaningless
+    because entities persist (a person visible in chunks 1-50 isn't "appearing
+    50 times"). Aligns with OVO REC family which asks "how many times does
+    [action] happen?" and expects cumulative counts at each occurrence.
+
+    multi_emit: at each occurrence chunk, model emits the running count
+    (1, 2, 3, ...). Reward (P0-2) scores per-emit with these per-chunk golds.
+    """
+    actions = _action_repetition_chunks(evidence)
     cards = []
-    for eid, chunks in ec.items():
-        # require >=3 occurrences spread out (max - min >= 6)
-        if len(chunks) >= 3 and (max(chunks) - min(chunks)) >= 6:
-            occurrences = chunks[:6]
-            emits = [GoldEmit(chunk=c, value=str(i + 1)) for i, c in enumerate(occurrences)]
-            cards.append(Card(
-                card_id=f"{video_id}_F5_{_hash_id(video_id, eid)}",
-                family="F5",
-                question=f"How many times does {eid} appear?",
-                answer_form="number",
-                question_type="multi_emit",
-                gold_emits=emits,
-                grounding_frames=occurrences,
-            ))
-            if len(cards) >= FAMILY_BUDGET["F5"]:
-                break
+    for phrase, chunks in actions.items():
+        occurrences = chunks[:6]    # cap at 6 emits to keep per-emit window tractable
+        emits = [GoldEmit(chunk=c, value=str(i + 1))
+                 for i, c in enumerate(occurrences)]
+        cards.append(Card(
+            card_id=f"{video_id}_F5_{_hash_id(video_id, phrase)}",
+            family="F5",
+            question=(
+                f"How many times does \"{phrase}\" happen so far in the video?"
+            ),
+            answer_form="number",
+            question_type="multi_emit",
+            gold_emits=emits,
+            grounding_frames=occurrences,
+        ))
+        if len(cards) >= FAMILY_BUDGET["F5"]:
+            break
     return cards
 
 
 def gen_f7_status_flip(evidence: List[Dict], video_id: str) -> List[Card]:
-    """F7 cards: one per state_change, single_emit at the change chunk."""
+    """F7 cards: real-time Yes/No status (OVO SSR alignment, v12.13).
+
+    Old behavior: single_emit at change chunk with gold "Yes". This was
+    "wait silent until event happens, then answer Yes once" — that's a
+    forward task, not OVO SSR. SSR ("Same Sample Reasoning" / Status
+    Reasoning) expects the model to answer Yes/No at MULTIPLE chunks in
+    the trajectory, with the gold flipping at the change point.
+
+    New: multi_emit binary card. Asks "Has X happened?" at every chunk
+    in [change_chunk - K, change_chunk + K]:
+      - chunks BEFORE change: gold = "No"
+      - chunks AT or AFTER change: gold = "Yes"
+    Per-emit reward (P0-2) scores each chunk's Yes/No against its gold.
+
+    K is small (default 4) so the multi_emit doesn't span too many chunks
+    (= many parallel pending queries simultaneously).
+    """
     scs = _state_change_chunks(evidence)
+    if not evidence:
+        return []
+    n_chunks = max((c.get("chunk_idx", 0) for c in evidence), default=0) + 1
     cards = []
+    K = 4    # window radius around change chunk
     for c, text in scs[:FAMILY_BUDGET["F7"]]:
-        emits = [GoldEmit(chunk=c, value="Yes")]
+        lo = max(0, c - K)
+        hi = min(n_chunks - 1, c + K)
+        if hi - lo < 4:    # need ≥ 5 chunks for multi_emit to be meaningful
+            continue
+        # Build per-chunk emits: "No" before change, "Yes" at and after.
+        emits = []
+        for ci in range(lo, hi + 1):
+            value = "No" if ci < c else "Yes"
+            emits.append(GoldEmit(chunk=ci, value=value))
         cards.append(Card(
             card_id=f"{video_id}_F7_{_hash_id(video_id, c, text)}",
             family="F7",
-            question=f"Has {text[:40]} happened yet?",
+            question=f"Has \"{text[:40]}\" happened by now?",
             answer_form="binary",
-            question_type="single_emit",
+            question_type="multi_emit",   # was single_emit
             gold_emits=emits,
             grounding_frames=[c],
         ))

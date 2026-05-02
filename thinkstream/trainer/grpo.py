@@ -561,23 +561,43 @@ def rollout(
             # the same string at every chunk in the card's ask_chunks list.
             _question_at_chunk: Dict[int, str] = {}
             _all_ask_chunks: List[int] = []
+            _all_answer_chunks: List[int] = []
             for q in raw_sample["questions"]:
+                # v12.13 fix (P0-3): inject MC options into the question text
+                # at ask time. Without this, forward responses fire later
+                # without user_input and the model only sees q in <queries>
+                # — A-D letters become meaningless without options visible.
                 q_text = q.get("question") or q.get("gold_answer", "")
-                # Note: pass3a stores the question in raw_sample.input.user_input
-                # for SFT, but for trajectory rows we synthesize from the card.
-                # Real ingestion via streaming_vllm uses metadata so this
-                # placeholder is fine for token-counting / message construction.
+                if (q.get("answer_form") == "multiple_choice"
+                        and q.get("options")):
+                    q_text = (
+                        f"{q_text}\n\nOptions:\n" + "\n".join(q["options"])
+                    )
                 for ac in q.get("ask_chunks") or []:
                     _question_at_chunk[int(ac)] = q_text
                     _all_ask_chunks.append(int(ac))
+                # v12.13 fix (P0-1): track answer_chunks so rollout cap
+                # extends to the LAST expected answer chunk. forward
+                # cards have lead 18-32 → answer falls way past ask + 5.
+                for ac in q.get("answer_chunks") or []:
+                    _all_answer_chunks.append(int(ac))
             ask_chunk = max(_all_ask_chunks) if _all_ask_chunks else (
                 rollout_max_chunks - 1
+            )
+            # ROLLOUT_END_CHUNK: cap rollout at last answer chunk + slack.
+            # This is the upper bound used for `num_chunks = min(end+1, max)`.
+            ROLLOUT_SLACK = 2
+            _rollout_end_chunk = (
+                max(_all_answer_chunks) + ROLLOUT_SLACK
+                if _all_answer_chunks
+                else ask_chunk + 5  # legacy fallback when no answer_chunks
             )
             # No single user_question for trajectory rollouts; per-chunk.
             user_question = None
         else:
             ask_chunk = raw_sample.get("chunk_idx", rollout_max_chunks - 1)
             _question_at_chunk = {}
+            _rollout_end_chunk = ask_chunk + 5    # flat schema fallback
 
             # Extract user question (new format: input.user_input;
             # legacy: messages/conversations)
@@ -626,7 +646,10 @@ def rollout(
             )
 
             chunk_results_g: List[Dict[str, Any]] = []
-            num_chunks = min(ask_chunk + 5, rollout_max_chunks)  # run past last ask
+            # v12.13 fix (P0-1): rollout cap extends to last answer_chunk.
+            # forward cards have lead 18-32 → ask + 5 would never reach the
+            # answer position. _rollout_end_chunk = max(answer_chunks) + slack.
+            num_chunks = min(_rollout_end_chunk + 1, rollout_max_chunks)
             for chunk_idx in range(num_chunks):
                 # v12.4 trajectory: question may fire at any chunk that's in
                 # _question_at_chunk (one card → ≥1 ask_chunks). Single-question
@@ -1558,7 +1581,16 @@ def _extract_questions_at_chunks(raw_sample) -> Dict[int, str]:
     if (isinstance(raw_sample.get("questions"), list)
             and isinstance(raw_sample.get("gold_action_per_chunk"), dict)):
         for q in raw_sample["questions"]:
+            # v12.13 fix (P0-3): MC question text appends options so the
+            # model has the choice list visible. Mirrors pass3c's user_input
+            # construction at ask_chunk so flat-schema and trajectory-schema
+            # paths produce identical prompts at training time.
             q_text = q.get("question") or q.get("gold_answer", "")
+            if (q.get("answer_form") == "multiple_choice"
+                    and q.get("options")):
+                q_text = (
+                    f"{q_text}\n\nOptions:\n" + "\n".join(q["options"])
+                )
             for ac in q.get("ask_chunks") or []:
                 out[int(ac)] = q_text
         return out

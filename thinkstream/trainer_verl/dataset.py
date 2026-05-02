@@ -84,12 +84,34 @@ class ThinkStreamRLDataset(Dataset):
         }
         if questions:
             q0 = questions[0]
+            # v12.13 fix (P1-4): visible_end_chunk extends to last
+            # answer_chunk (was max(ask_chunks) — which is identical to
+            # ask_chunk for forward cards, missing the entire silent-
+            # then-respond window where the answer actually lands).
+            answer_chunks = q0.get("answer_chunks") or []
+            ask_chunks = q0.get("ask_chunks", [])
+            ask_chunk_canonical = q0.get("ask_chunk")
+            visible_start = (
+                ask_chunk_canonical
+                if isinstance(ask_chunk_canonical, int) and ask_chunk_canonical >= 0
+                else (min(ask_chunks) if ask_chunks else None)
+            )
+            visible_end = (
+                max(answer_chunks)
+                if answer_chunks
+                else (max(ask_chunks) if ask_chunks else None)
+            )
             ground_truth.update({
                 "gold_answer": q0.get("gold_answer", ""),
                 "answer_form": q0.get("answer_form", ""),
-                "ask_chunks":  q0.get("ask_chunks", []),
-                "visible_start_chunk": min(q0["ask_chunks"]) if q0.get("ask_chunks") else None,
-                "visible_end_chunk":   max(q0["ask_chunks"]) if q0.get("ask_chunks") else None,
+                "ask_chunks":  ask_chunks,
+                "answer_chunks": list(answer_chunks),     # NEW
+                "ask_chunk":     ask_chunk_canonical,     # NEW
+                "per_emit_answers": list(q0.get("per_emit_answers") or []),  # NEW
+                "options":       list(q0.get("options") or []),              # NEW (P0-3)
+                "correct_option": q0.get("correct_option", ""),              # NEW (P0-3)
+                "visible_start_chunk": visible_start,
+                "visible_end_chunk":   visible_end,
             })
 
         return {

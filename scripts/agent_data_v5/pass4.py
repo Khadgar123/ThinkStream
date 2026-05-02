@@ -252,6 +252,11 @@ def _build_trajectory_record(
             "question": meta.get("question", ""),
             "options": list(meta.get("options") or []),
             "correct_option": meta.get("correct_option", ""),
+            # v12.13 fix (P0-2): per-emit gold for multi_emit cards.
+            # F5/PN1/F7 cards expect different answers at different chunks
+            # (e.g., F5 counting: "1" at first event, "2" at second, ...).
+            # Reward iterates this list in lockstep with answer_chunks.
+            "per_emit_answers": list(meta.get("per_emit_answers") or []),
         })
 
     # ── v12.4: per-chunk gold_action map ──

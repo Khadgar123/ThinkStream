@@ -395,8 +395,14 @@ async def generate_trajectory_samples(
             if p.ask_chunk <= c and p.card_id not in queries_idx_by_card:
                 card = cards_map.get(p.card_id) or {}
                 queries_idx_by_card[p.card_id] = len(queries_state)
+                # v12.13 fix (P0-3): include options + answer_form so
+                # format_queries_block can render MC choices for pending
+                # queries (forward responses fire AFTER ask, with no fresh
+                # user_input — model sees only the queries block).
                 queries_state.append({
                     "question": card.get("question", ""),
+                    "options": list(card.get("options") or []),
+                    "answer_form": card.get("answer_form", ""),
                     "ask_time": p.ask_chunk * AGENT_CHUNK_SEC,
                     "answers": [],
                 })
@@ -492,10 +498,26 @@ async def generate_trajectory_samples(
     # forward/silent_then_response timing supervision. Now pass4 can read
     # `sample["ask_chunk"]` directly and preserve the silent-then-respond
     # pattern in `questions[*].ask_chunks`.
+    #
+    # v12.13 fix (P0-2): also stamp `per_emit_answers` from the card's
+    # gold_emits. multi_emit cards (F5 counting / PN1 narration / F7 status)
+    # have multiple expected answer chunks each with their OWN gold answer
+    # — e.g. F5 emits "1" at chunk_5, "2" at chunk_10, "3" at chunk_15.
+    # pass4 needs this to score multi-emit per-emit (not just at canonical_ask).
     for s in raw:
         cid = s.get("card_id")
-        if cid and cid in ask_chunk_by_card:
+        if not cid:
+            continue
+        if cid in ask_chunk_by_card:
             s["ask_chunk"] = int(ask_chunk_by_card[cid])
+        card = cards_map.get(cid) or {}
+        gold_emits = card.get("gold_emits") or []
+        if gold_emits:
+            s["per_emit_answers"] = [
+                {"chunk": int(e["chunk"]), "value": str(e.get("value", ""))}
+                for e in gold_emits
+                if isinstance(e, dict) and "chunk" in e
+            ]
 
     return raw
 

@@ -110,12 +110,20 @@ def _build_queries_input(queries_state: List[Dict]) -> List[Dict]:
     (agent_protocol.py:148) can render Q events at the correct chunk time.
     Without ask_time, all queries collapse to t=0 in the rendered <queries>
     block — train/infer divergence (runtime has real timestamps).
+
+    v12.13 fix (P0-3): also preserve `options` + `answer_form` so MC pending
+    queries can render their choices in the <queries> block. forward
+    response chunks fire AFTER ask (no fresh user_input), so the model
+    only sees the pending Q in <queries> — without options it cannot
+    choose A-D meaningfully.
     """
     result = []
     for q in queries_state:
         result.append({
             "question": q.get("question", ""),
-            "ask_time": q.get("ask_time", 0),    # P0-4: preserve timestamp
+            "options": list(q.get("options") or []),
+            "answer_form": q.get("answer_form", ""),
+            "ask_time": q.get("ask_time", 0),
             "answers": q.get("answers", []),
         })
     return result
@@ -286,6 +294,12 @@ def render_sample(
         "question": card.get("question", ""),
         "options": list(card.get("options") or []),
         "correct_option": card.get("correct_option", ""),
+        # v12.13 fix (P0-2): per_emit_answers carries [{chunk, value}, ...]
+        # for multi_emit cards. pass4 builds questions[*].per_emit_answers
+        # so reward can score multi-emit at each expected answer chunk
+        # with its OWN gold (F5 counting: "1","2","3"; PN1 narration: each
+        # event's description). Single-emit cards get list of length 1.
+        "per_emit_answers": list(sample.get("per_emit_answers") or []),
     }
 
     # v12.11 audit-4 P0 #1 fix (2026-05-01): merged shape-B recall samples

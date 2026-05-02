@@ -82,11 +82,14 @@ PLACEMENT_PROFILE = {
     "CR5": "backward", "N1":  "backward", "P1":  "backward",
     "M1":  "backward",
     # forward (anticipation / wait)
-    "E2":  "forward",  "F6":  "forward",  "F7":  "forward",
+    "E2":  "forward",  "F6":  "forward",
     # realtime (immediate)
     "CR3": "realtime", "CR7": "realtime", "R1":  "realtime",
     "F5":  "realtime", "C1":  "realtime",
     "PN1": "realtime",
+    # v12.13 (P1-7): F7 moved forward → realtime. New F7 is OVO SSR-style
+    # multi_emit Yes/No across [change-K, change+K]; not "wait then answer".
+    "F7":  "realtime",
 }
 
 # Multi_emit families adoption rate per video (each tossed independently).

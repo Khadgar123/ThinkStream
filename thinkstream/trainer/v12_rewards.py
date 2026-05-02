@@ -223,65 +223,134 @@ def compute_trajectory_outcome_v12(
     n_answered = 0
     n_correct = 0
 
+    # v12.13 (2026-05-02) outcome scoring rewrite (P0-1, P0-2):
+    #
+    #   v12.12 questions[*] schema introduced:
+    #     - "ask_chunk": canonical placement.ask_chunk (the question time)
+    #     - "answer_chunks": where actual answers should land (≥1)
+    #     - "per_emit_answers": [{chunk, value}] per-emit gold for multi_emit
+    #
+    #   Two-mode scoring:
+    #     SINGLE: len(answer_chunks) ≤ 1 (typical 91% of cards, includes
+    #             forward / silent_then_response / direct / backward / recall).
+    #             Window = [ask_chunk, max(answer_chunks) + slack]. The
+    #             window can span up to ~30 chunks for forward (lead 18-32),
+    #             not the old hardcoded ask + 5.
+    #
+    #     MULTI:  len(answer_chunks) > 1 (F5 counting / PN1 narration /
+    #             F7 step-progress). EACH expected emit_chunk is scored
+    #             with its OWN gold value from per_emit_answers (e.g. F5
+    #             gold = "1" at chunk 5, "2" at chunk 10, "3" at chunk 15).
+    #
+    # `slack` is small (default 2 chunks) so the model gets a brief grace
+    # period to emit the answer right after the expected chunk, but not
+    # so wide that it can pass by emitting a stale answer many chunks
+    # later. answer_window_chunks remains the legacy ask+N fallback when
+    # answer_chunks is missing (backward compat with old trajectories).
+    SLACK = 2
+
     for q in trajectory_questions:
+        # New schema: prefer answer_chunks; fall back to ask_chunks for
+        # legacy trajectories where pass4 didn't separate them.
+        answer_chunks = sorted(q.get("answer_chunks") or [])
         ask_chunks = sorted(q.get("ask_chunks") or [])
-        if not ask_chunks:
-            # No canonical ask_chunk — treat as unanswerable, score 0.
+        ask_chunk = q.get("ask_chunk")
+        if not isinstance(ask_chunk, int):
+            ask_chunk = ask_chunks[0] if ask_chunks else (
+                answer_chunks[0] if answer_chunks else -1)
+        if ask_chunk < 0 and not answer_chunks:
             per_q_outcomes.append(0.0)
             continue
 
-        # v12.4 multi-response handling (user feedback 2026-04-29):
-        #   F7 step-progress + M1 descriptive multi-probe families repeat
-        #   the same question at multiple chunks (e.g., ask_chunks=[40,41,42,45]).
-        #   pass3c emits independent response samples at each ask_chunk →
-        #   the model must answer at EACH ask, not just the first.
-        #
-        # Score each ask_chunk INDEPENDENTLY with a NON-OVERLAPPING window:
-        #   ask_i window = [ask_i, min(ask_{i+1} - 1, ask_i + answer_window)]
-        # This prevents the answer at ask_2 from also satisfying ask_1's window.
-        # Question's outcome = mean over its ask_chunks (each ask = 1 chance).
-        #
-        # Single-response cards (most: 91% of questions) have ask_chunks of
-        # length 1 → window = [ask, ask + answer_window], same as v12.3 semantic.
+        per_emit = q.get("per_emit_answers") or []
+        gold_default = q.get("gold_answer", "")
+        answer_form = q.get("answer_form", "")
+
+        # Decide single vs multi-emit
+        is_multi = len(answer_chunks) > 1 or (len(per_emit) > 1)
+
         per_ask_scores: List[float] = []
-        for i, ask_chunk in enumerate(ask_chunks):
-            if i + 1 < len(ask_chunks):
-                # Multi-response: window ends right before next ask
-                window_end = min(
-                    ask_chunks[i + 1] - 1,
-                    ask_chunk + answer_window_chunks,
-                )
-            else:
-                window_end = ask_chunk + answer_window_chunks
-            # Find the FIRST non-empty answer in this ask's window
+
+        if is_multi:
+            # MULTI-EMIT: score each expected answer chunk with its own gold.
+            # Build chunk → gold map from per_emit_answers; if missing,
+            # use canonical gold for all emit_chunks.
+            chunk_gold = {int(e["chunk"]): str(e.get("value", gold_default))
+                          for e in per_emit if isinstance(e, dict) and "chunk" in e}
+            target_chunks = sorted(chunk_gold.keys() or answer_chunks)
+            # Track lower-bound floor: next emit must search AFTER the chunk
+            # consumed by the previous emit's match — otherwise emit_2's
+            # window can scoop up emit_1's answer (e.g., emit_1 expected "1"
+            # at chunk 10, model answered at chunk 12; emit_2 expected "2"
+            # at chunk 20 with window [18, 22], but if we let it search
+            # from chunk 11+ we'd find the "1" at chunk 12 again).
+            next_search_floor = ask_chunk
+            for i, emit_chunk in enumerate(target_chunks):
+                lo = max(next_search_floor, emit_chunk - SLACK)
+                if i + 1 < len(target_chunks):
+                    hi = min(emit_chunk + SLACK, target_chunks[i + 1] - 1)
+                else:
+                    hi = emit_chunk + SLACK
+                if lo > hi:
+                    per_ask_scores.append(0.0)
+                    continue
+                model_answer = None
+                found_at = None
+                for ci in range(lo, hi + 1):
+                    out = by_chunk.get(ci)
+                    if out and out.get("kind") == "answer" and out.get("answer_text"):
+                        model_answer = out["answer_text"]
+                        found_at = ci
+                        break
+                if model_answer is None:
+                    per_ask_scores.append(0.0)
+                    continue
+                # Advance floor past the consumed answer so next emit
+                # can't match the same chunk.
+                next_search_floor = found_at + 1
+                n_answered += 1
+                gold_for_emit = chunk_gold.get(emit_chunk, gold_default)
+                if answer_form_judge is not None:
+                    ask_score = float(answer_form_judge(
+                        model_answer, gold_for_emit, answer_form,
+                    ))
+                else:
+                    ask_score = compute_outcome_reward_v12(
+                        model_answer, gold_for_emit, answer_form=answer_form,
+                    )
+                if ask_score >= 1.0:
+                    n_correct += 1
+                per_ask_scores.append(ask_score)
+        else:
+            # SINGLE-EMIT: window from ask to max(answer_chunks) + SLACK.
+            # Covers forward (long lead) + backward + direct uniformly.
+            last_emit = answer_chunks[-1] if answer_chunks else (
+                ask_chunk + answer_window_chunks)
+            window_end = last_emit + SLACK
             model_answer = None
             for ci in range(ask_chunk, window_end + 1):
                 out = by_chunk.get(ci)
-                if out is None:
-                    continue
-                if out.get("kind") == "answer" and out.get("answer_text"):
+                if out and out.get("kind") == "answer" and out.get("answer_text"):
                     model_answer = out["answer_text"]
                     break
             if model_answer is None:
                 per_ask_scores.append(0.0)
-                continue
-            n_answered += 1
-            if answer_form_judge is not None:
-                ask_score = float(answer_form_judge(
-                    model_answer, q.get("gold_answer", ""),
-                    q.get("answer_form", ""),
-                ))
             else:
-                ask_score = compute_outcome_reward_v12(
-                    model_answer, q.get("gold_answer", ""),
-                    answer_form=q.get("answer_form", ""),
-                )
-            if ask_score >= 1.0:
-                n_correct += 1
-            per_ask_scores.append(ask_score)
-        # Question outcome = mean over its asks (gives multi-response questions
-        # higher weight in the average than single-response, which matches
-        # their higher density of supervision signal).
+                n_answered += 1
+                if answer_form_judge is not None:
+                    ask_score = float(answer_form_judge(
+                        model_answer, gold_default, answer_form,
+                    ))
+                else:
+                    ask_score = compute_outcome_reward_v12(
+                        model_answer, gold_default, answer_form=answer_form,
+                    )
+                if ask_score >= 1.0:
+                    n_correct += 1
+                per_ask_scores.append(ask_score)
+
+        # Question outcome = mean over its emit chunks (multi: N emits;
+        # single: 1 element).
         q_outcome = (
             sum(per_ask_scores) / len(per_ask_scores)
             if per_ask_scores else 0.0

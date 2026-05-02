@@ -193,21 +193,157 @@ async def _generate_via_llm(
 
 
 async def verify_cards(*args, **kwargs) -> List[Dict]:
-    """No-op in v2.
+    """v12.13 (P1-8): real semantic verification (was no-op).
 
-    Accepts both:
-      - verify_cards(cards, client, video_id)                  (legacy)
-      - verify_cards(video_id, cards, evidence, client)        (pipeline.py:679)
-    Returns the cards list unchanged.
+    Two layers of validation. Each card either passes through unchanged
+    or is dropped (logged with the rejection reason).
+
+    Accepts both call shapes for back-compat:
+      - verify_cards(cards, client, video_id)
+      - verify_cards(video_id, cards, evidence, client)
     """
+    # Argument unpacking — pipeline.py uses kwargs, legacy uses positional.
     cards = kwargs.get("cards")
+    evidence = kwargs.get("evidence") or []
+    video_id = kwargs.get("video_id", "")
     if cards is None:
-        # Find the first list arg (cards is always a list of dicts)
+        # Heuristic: first list of dicts is cards; subsequent lists may be
+        # evidence (also list of dicts but with `chunk_idx` keys).
         for a in args:
-            if isinstance(a, list):
-                cards = a
-                break
-    return cards or []
+            if isinstance(a, list) and a and isinstance(a[0], dict):
+                if "card_id" in a[0]:
+                    cards = a
+                elif "chunk_idx" in a[0]:
+                    if not evidence:
+                        evidence = a
+            elif isinstance(a, str) and not video_id:
+                video_id = a
+    if not cards:
+        return []
+
+    # Build evidence index for fast lookups (Layer 2)
+    evidence_by_chunk: Dict[int, Dict] = {}
+    for cap in (evidence or []):
+        ci = cap.get("chunk_idx")
+        if isinstance(ci, int):
+            evidence_by_chunk[ci] = cap
+
+    out: List[Dict] = []
+    rejected: Dict[str, int] = {}
+    for card in cards:
+        verdict = _verify_card_layers(card, evidence_by_chunk)
+        if verdict == "PASS":
+            out.append(card)
+        else:
+            rejected[verdict] = rejected.get(verdict, 0) + 1
+
+    if rejected:
+        logger.info(
+            f"[{video_id}] 3a verify: {len(out)}/{len(cards)} passed; "
+            f"rejected: {dict(sorted(rejected.items(), key=lambda x: -x[1]))}"
+        )
+    else:
+        logger.info(f"[{video_id}] 3a verify: {len(out)}/{len(cards)} passed")
+    return out
+
+
+def _verify_card_layers(card: Dict, ev_by_chunk: Dict[int, Dict]) -> str:
+    """Two-layer card verification. Returns "PASS" or a fail reason string.
+
+    Layer 1 — schema sanity:
+      - has card_id, family, question, answer_form, gold_emits / canonical_answer
+      - MC: options is list of length 4; correct_option in {A,B,C,D};
+            options match the correct_option index
+      - binary: gold_emits values in {Yes, No, yes, no}
+      - number: gold_emits values are digit strings
+      - multi_emit: ≥ 2 distinct gold_emit chunks
+      - grounding_frames non-empty
+
+    Layer 2 — grounding evidence exists:
+      - every grounding chunk index has a matching evidence entry
+      - canonical answer text overlaps with evidence text in the grounding
+        chunks (loose containment; entity name OR fact phrase appears)
+    """
+    # ── Layer 1: schema ──
+    if not card.get("card_id") or not card.get("family"):
+        return "schema_missing_id_family"
+    q = (card.get("question") or "").strip()
+    if len(q) < 8:
+        return "schema_question_too_short"
+    af = card.get("answer_form", "")
+    emits = card.get("gold_emits") or []
+    if not emits and not card.get("canonical_answer"):
+        return "schema_no_gold"
+
+    if af == "multiple_choice":
+        opts = card.get("options") or []
+        if not isinstance(opts, list) or len(opts) != 4:
+            return "schema_mc_options_not_4"
+        co = card.get("correct_option", "")
+        if co not in {"A", "B", "C", "D"}:
+            return "schema_mc_bad_correct_letter"
+        # The option at the correct letter's index should match canonical_answer
+        # (or contain it). Skip exact match — pass3a may format options as
+        # "A) text" or just "text"; we accept any non-placeholder.
+        idx = ord(co) - ord("A")
+        if any("distractor placeholder" in str(o).lower() for o in opts):
+            return "schema_mc_placeholder_distractor"
+    elif af == "binary":
+        bad = [e for e in emits
+               if str(e.get("value", "")).strip().lower() not in ("yes", "no")]
+        if bad:
+            return "schema_binary_bad_value"
+    elif af == "number":
+        bad = [e for e in emits
+               if not str(e.get("value", "")).strip().isdigit()]
+        if bad:
+            return "schema_number_non_digit"
+
+    # multi_emit must have ≥ 2 distinct emit chunks (otherwise treat as single)
+    if card.get("question_type") == "multi_emit":
+        chunks = {int(e["chunk"]) for e in emits if "chunk" in e}
+        if len(chunks) < 2:
+            return "schema_multi_emit_single_chunk"
+
+    grounding = card.get("grounding_frames") or []
+    if not grounding:
+        return "schema_no_grounding_frames"
+
+    # ── Layer 2: grounding evidence exists ──
+    if not ev_by_chunk:
+        # No evidence dict provided → skip Layer 2 (legacy callers)
+        return "PASS"
+
+    missing = [c for c in grounding if c not in ev_by_chunk]
+    if missing:
+        return "grounding_evidence_missing"
+
+    # Loose evidence containment: canonical answer text should overlap
+    # with the entity_id / fact text from at least one grounding chunk.
+    canonical = (card.get("canonical_answer") or "").strip().lower()
+    if canonical:
+        ev_text = ""
+        for c in grounding:
+            cap = ev_by_chunk[c]
+            for e in (cap.get("visible_entities") or []):
+                ev_text += " " + (e.get("desc", "") + " " + e.get("id", "")).lower()
+            for f in (cap.get("atomic_facts") or []):
+                if isinstance(f, dict):
+                    ev_text += " " + (f.get("fact", "") or "").lower()
+            for o in (cap.get("ocr") or []):
+                if isinstance(o, dict):
+                    ev_text += " " + (o.get("text", "") or "").lower()
+                else:
+                    ev_text += " " + str(o).lower()
+        # Tokenize canonical and check at least one content token (>2 char)
+        # appears in the evidence text. This catches "answer pulled from
+        # thin air" while tolerating phrasing variation.
+        import re as _re
+        toks = [t for t in _re.findall(r"[a-z0-9]+", canonical) if len(t) > 2]
+        if toks and not any(t in ev_text for t in toks):
+            return "grounding_canonical_not_in_evidence"
+
+    return "PASS"
 
 
 def save_cards(video_id: str, cards: List[Dict],
