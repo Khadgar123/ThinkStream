@@ -412,18 +412,16 @@ async def generate_trajectory_samples(
         sequence_type = _mech_to_sequence_type(ds.mechanism) if card_id else ""
         # user_input fires only at the ask_chunk for that card.
         #
-        # v12.12 fix (P0-3): for multiple_choice cards, append options to the
-        # question text so the model can see the choices. Reward expects a
-        # bare letter A-D (v12_rewards.py:65 "multiple_choice" branch); the
-        # letter has no semantics if the options aren't shown.
+        # v12.13 (2026-05-02): MC options live ONLY in <queries> block via
+        # format_queries_block (queries_state carries options + answer_form;
+        # pending MC queries render an "Options: A) ... B) ..." line).
+        # Putting options ALSO in user_input was duplicating ~30 tokens
+        # per ask (model saw the same A-D list twice — once in <queries>
+        # and once in <user_input>). user_input now carries just the
+        # question text, parity with non-MC asks.
         user_input = ""
         if card_id and ask_chunk_by_card.get(card_id) == c and card:
-            q = card.get("question", "")
-            if card.get("answer_form") == "multiple_choice" and card.get("options"):
-                opts_text = "\n".join(card["options"])
-                user_input = f"{q}\n\nOptions:\n{opts_text}"
-            else:
-                user_input = q
+            user_input = card.get("question", "")
 
         if ds.sample_kind == "patrol":
             raw.append(_silent_sample(

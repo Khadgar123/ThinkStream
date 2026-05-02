@@ -563,16 +563,11 @@ def rollout(
             _all_ask_chunks: List[int] = []
             _all_answer_chunks: List[int] = []
             for q in raw_sample["questions"]:
-                # v12.13 fix (P0-3): inject MC options into the question text
-                # at ask time. Without this, forward responses fire later
-                # without user_input and the model only sees q in <queries>
-                # — A-D letters become meaningless without options visible.
+                # v12.13: question text only — options live in <queries>
+                # via format_queries_block (queries_state has options +
+                # answer_form; pending MC renders "Options: A) ..." line).
+                # Putting options here too would double-render at ask_chunk.
                 q_text = q.get("question") or q.get("gold_answer", "")
-                if (q.get("answer_form") == "multiple_choice"
-                        and q.get("options")):
-                    q_text = (
-                        f"{q_text}\n\nOptions:\n" + "\n".join(q["options"])
-                    )
                 for ac in q.get("ask_chunks") or []:
                     _question_at_chunk[int(ac)] = q_text
                     _all_ask_chunks.append(int(ac))
@@ -1580,17 +1575,11 @@ def _extract_questions_at_chunks(raw_sample) -> Dict[int, str]:
     # Schema A: trajectory
     if (isinstance(raw_sample.get("questions"), list)
             and isinstance(raw_sample.get("gold_action_per_chunk"), dict)):
+        # v12.13: question text only — options live in <queries> block.
+        # Avoids ~30-tok duplication at ask_chunk where queries_state +
+        # user_input would both show A-D options.
         for q in raw_sample["questions"]:
-            # v12.13 fix (P0-3): MC question text appends options so the
-            # model has the choice list visible. Mirrors pass3c's user_input
-            # construction at ask_chunk so flat-schema and trajectory-schema
-            # paths produce identical prompts at training time.
             q_text = q.get("question") or q.get("gold_answer", "")
-            if (q.get("answer_form") == "multiple_choice"
-                    and q.get("options")):
-                q_text = (
-                    f"{q_text}\n\nOptions:\n" + "\n".join(q["options"])
-                )
             for ac in q.get("ask_chunks") or []:
                 out[int(ac)] = q_text
         return out

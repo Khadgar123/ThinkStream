@@ -639,16 +639,10 @@ def _extract_question_at_chunk_map(raw_sample: Dict) -> Dict[int, str]:
     # Schema A: trajectory (v12.5+)
     if (isinstance(raw_sample.get("questions"), list)
             and isinstance(raw_sample.get("gold_action_per_chunk"), dict)):
+        # v12.13: options live ONLY in <queries> via format_queries_block.
+        # user_input/question_at_chunk carries the bare question text.
         for q in raw_sample["questions"]:
-            # v12.13 fix (P0-3): MC questions append options so the eval
-            # path sees the same prompt as training (where pass3c's
-            # user_input also includes "\nOptions:\n A) ... B) ...").
             q_text = q.get("question") or q.get("gold_answer", "")
-            if (q.get("answer_form") == "multiple_choice"
-                    and q.get("options")):
-                q_text = (
-                    f"{q_text}\n\nOptions:\n" + "\n".join(q["options"])
-                )
             for ac in q.get("ask_chunks") or []:
                 out[int(ac)] = q_text
         return out
