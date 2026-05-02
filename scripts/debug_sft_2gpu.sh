@@ -1,5 +1,11 @@
 #!/bin/bash
 # 2-GPU SFT debug launcher — verifies input/output/loss/update/save pipeline.
+#
+# NOTE on resolution: this script targets data/agent_v5_current_backup/final
+# (v12.5 SFT data). The pixel budgets below (min=100352, max=150528) match
+# THAT backup. For v12.13 data (data/agent_v5/final/), use:
+#   --video_min_pixels 130000 --video_max_pixels 220000
+# matching scripts/agent_data_v5/config.py:RUNTIME_MM_PROCESSOR_KWARGS.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
