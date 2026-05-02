@@ -235,25 +235,66 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
         # we follow the upstream convention.
         row_dict["dummy_tensor"] = torch.tensor([0], dtype=torch.uint8)
 
-        # Stash everything the reward fn needs into extra_info. The
-        # streaming agent loop reads video_id/video_path/n_chunks from
-        # here every chunk; compute_score reads gold_answer/ask_chunks/
-        # gold_action_per_chunk for shaping.
+        # Stash everything the reward fn needs into extra_info. Two row
+        # shapes are supported:
+        #
+        #   1. Multi-Q trajectory shape (build_verl_parquet --multi_q,
+        #      data_source=thinkstream_v12_streaming_multi_q): row carries
+        #      `extra_info.questions` (List[Dict]) — the streaming agent
+        #      loop injects each question's text at its ask_chunk and
+        #      compute_score scores all questions independently.
+        #
+        #   2. Legacy (video, question) flatten shape: row carries single
+        #      question/gold_answer/ask_chunks fields at the row level.
+        #      The agent loop reads `question` as the trajectory-wide
+        #      user input and triggers it at min(ask_chunks).
         extra = row_dict.get("extra_info", {}) or {}
         if hasattr(extra, "tolist"):
             extra = extra.tolist()
         if not isinstance(extra, dict):
             extra = {}
-        extra.update({
-            "video_id": str(row_dict.get("video_id", "")),
-            "video_path": str(row_dict.get("video_path", "")),
-            "question": str(row_dict.get("question", "")),
-            "gold_answer": str(row_dict.get("gold_answer", "")),
-            "answer_form": str(row_dict.get("answer_form", "")),
-            "ask_chunks": list(row_dict.get("ask_chunks") or []),
-            "gold_action_per_chunk": dict(row_dict.get("gold_action_per_chunk") or {}),
-            "n_chunks": int(row_dict.get("n_chunks") or 0),
-        })
+
+        # Multi-Q rows already carry `questions` + `gold_action_per_chunk`
+        # inside extra_info — preserve them. Single-Q rows fill from the
+        # row-level columns.
+        is_multi_q = "questions" in extra and extra.get("questions")
+
+        if is_multi_q:
+            # Normalize questions list (parquet may have stored as np array).
+            questions = extra.get("questions") or []
+            if hasattr(questions, "tolist"):
+                questions = questions.tolist()
+            normalized_qs: list = []
+            for q in questions:
+                if hasattr(q, "tolist"):
+                    q = q.tolist()
+                if not isinstance(q, dict):
+                    continue
+                normalized_qs.append({k: q[k] for k in q.keys()})
+            extra["questions"] = normalized_qs
+
+            gap = extra.get("gold_action_per_chunk") or {}
+            if hasattr(gap, "tolist"):
+                gap = gap.tolist()
+            extra["gold_action_per_chunk"] = dict(gap) if gap else {}
+
+            extra.update({
+                "video_id": str(row_dict.get("video_id", "")),
+                "video_path": str(row_dict.get("video_path", "")),
+                "n_chunks": int(row_dict.get("n_chunks") or 0),
+            })
+        else:
+            extra.update({
+                "video_id": str(row_dict.get("video_id", "")),
+                "video_path": str(row_dict.get("video_path", "")),
+                "question": str(row_dict.get("question", "")),
+                "gold_answer": str(row_dict.get("gold_answer", "")),
+                "answer_form": str(row_dict.get("answer_form", "")),
+                "ask_chunks": list(row_dict.get("ask_chunks") or []),
+                "gold_action_per_chunk": dict(row_dict.get("gold_action_per_chunk") or {}),
+                "n_chunks": int(row_dict.get("n_chunks") or 0),
+            })
+
         row_dict["extra_info"] = extra
         row_dict["index"] = extra.get("index", str(row_dict.get("video_id", "")))
         row_dict["tools_kwargs"] = extra.get("tools_kwargs", {}) or {}
@@ -338,6 +379,251 @@ def _coerce_ground_truth(ground_truth: Any) -> Dict[str, Any]:
     return {"gold_answer": str(ground_truth) if ground_truth is not None else ""}
 
 
+# ---------------------------------------------------------------------------
+# Multi-Q answer matching — used by both compute_score multi-Q branch and
+# the OVOBench eval. Liberal matching: option letter / option text / fuzzy.
+# ---------------------------------------------------------------------------
+def _normalize_answer(s: str) -> str:
+    """Lowercase + strip + collapse whitespace + drop trailing punctuation."""
+    s = (s or "").strip().lower()
+    s = re.sub(r"\s+", " ", s)
+    s = re.sub(r"[\.\,\!\?\:\;\)\]\}]+$", "", s)
+    s = re.sub(r"^[\(\[\{]+", "", s)
+    return s
+
+
+def _match_mcq_answer(
+    model_answer: str,
+    options: List[str],
+    correct_option: str,
+    gold_answer: str = "",
+) -> bool:
+    """Liberal MCQ answer match. Accepts:
+      - Option letter (A/B/C/D), case-insensitive, optional trailing
+        punctuation. ``correct_option`` may be 0-indexed int or letter.
+      - Full option text matching one of the options exactly (modulo
+        whitespace + punctuation), then check that option is the correct one.
+      - Direct match against gold_answer text (substring or equality).
+
+    Returns True iff any of the above strategies says the model picked
+    the correct option.
+    """
+    if not model_answer:
+        return False
+    ma = _normalize_answer(model_answer)
+    if not ma:
+        return False
+
+    # Resolve the correct option's letter + text.
+    correct_idx: Optional[int] = None
+    if isinstance(correct_option, int):
+        correct_idx = int(correct_option)
+    elif isinstance(correct_option, str):
+        co = correct_option.strip().upper()
+        if len(co) == 1 and "A" <= co <= "Z":
+            correct_idx = ord(co) - ord("A")
+        else:
+            try:
+                correct_idx = int(co)
+            except ValueError:
+                correct_idx = None
+    correct_letter = (
+        chr(ord("A") + correct_idx) if correct_idx is not None
+        and 0 <= correct_idx < 26 else ""
+    ).lower()
+    correct_text = ""
+    if correct_idx is not None and 0 <= correct_idx < len(options):
+        correct_text = _normalize_answer(options[correct_idx])
+
+    # Strategy 1: leading character is the correct letter (e.g., "C",
+    # "C.", "C)", "C: option text", "(C)").
+    leading = ma.lstrip("([").lstrip()
+    if leading and correct_letter and leading[0] == correct_letter:
+        if len(leading) == 1 or not leading[1].isalpha():
+            return True
+
+    # Strategy 2: model output equals or contains the correct option text.
+    if correct_text and (ma == correct_text or correct_text in ma or ma in correct_text):
+        return True
+
+    # Strategy 3: any option exactly matches the model answer — must be
+    # the correct one to score.
+    for i, opt in enumerate(options):
+        on = _normalize_answer(opt)
+        if on and (ma == on or (len(on) > 5 and on in ma)):
+            return i == correct_idx
+
+    # Strategy 4: gold_answer text fallback (some datasets use free text).
+    if gold_answer:
+        ga = _normalize_answer(gold_answer)
+        if ga and (ma == ga or ga in ma or ma in ga):
+            return True
+
+    return False
+
+
+def _safe_list(v: Any) -> list:
+    """Coerce a value (which may be numpy array, list, tuple, or None)
+    into a plain Python list. Avoids `value or []` which raises on
+    multi-element numpy arrays (ambiguous truth value)."""
+    if v is None:
+        return []
+    if hasattr(v, "tolist"):
+        v = v.tolist()
+    if isinstance(v, (list, tuple)):
+        return list(v)
+    return []
+
+
+def _score_one_question(
+    rewards: Dict[str, Any],
+    *,
+    q: Dict[str, Any],
+    model_answer: str,
+    answered_chunk: int,
+) -> Dict[str, float]:
+    """Score a single question's outcome + timing + silent decision.
+
+    Returns dict with keys: outcome, timing, silent_quality, answered.
+    `answered`=1 if the model produced any answer text for this Q.
+    """
+    options = _safe_list(q.get("options"))
+    correct_option = q.get("correct_option", "")
+    gold_answer = q.get("gold_answer", "") or ""
+    answer_form = q.get("answer_form", "") or ""
+    try:
+        ask_chunk = int(q.get("ask_chunk", -1))
+    except (TypeError, ValueError):
+        ask_chunk = -1
+    ask_chunks = _safe_list(q.get("ask_chunks"))
+    if not ask_chunks and ask_chunk >= 0:
+        ask_chunks = [ask_chunk]
+    ask_chunks_int = [int(x) for x in ask_chunks if isinstance(x, (int, float))]
+    visible_start = min(ask_chunks_int) if ask_chunks_int else None
+    visible_end = max(ask_chunks_int) if ask_chunks_int else None
+
+    answered = 1.0 if (model_answer or "").strip() else 0.0
+
+    # Outcome — MCQ liberal match if options present, otherwise fall back
+    # to v12 fuzzy outcome reward.
+    if options and answered:
+        outcome = 1.0 if _match_mcq_answer(
+            model_answer, options, correct_option, gold_answer,
+        ) else 0.0
+    else:
+        try:
+            outcome = float(rewards["outcome"](
+                model_answer if answered else None,
+                gold_answer,
+                answer_form=answer_form,
+            ))
+        except Exception:
+            outcome = 0.0
+
+    # Timing — bucket the answered_chunk vs the visible window.
+    timing = float(rewards["timing"](
+        answered_chunk if answered_chunk >= 0 else None,
+        visible_start, visible_end,
+    ))
+
+    # Silent quality — was the model silent before evidence and on-time
+    # at evidence? compute_silent_quality_v12 takes (final_answer, gold_action,
+    # gold_answer); for multi-Q we approximate gold_action as "response"
+    # (we expect a response at this Q's ask_chunk).
+    try:
+        silent_q = float(rewards["silent_quality"](
+            model_answer if answered else None,
+            "response",
+            gold_answer,
+        ))
+    except Exception:
+        silent_q = 0.0
+
+    return {
+        "outcome": outcome,
+        "timing": timing,
+        "silent_quality": silent_q,
+        "answered": answered,
+    }
+
+
+def _compute_score_multi_q(
+    rewards: Dict[str, Any],
+    weights: Dict[str, float],
+    questions: List[Dict[str, Any]],
+    extra: Dict[str, Any],
+    solution_str: str,
+) -> Dict[str, float]:
+    """Score a multi-Q trajectory. Aggregate per-Q rewards by mean."""
+    n_q = len(questions)
+    if n_q == 0:
+        return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
+                "format": 0.0, "spam": 0.0, "silent_quality": 0.0,
+                "n_questions": 0.0, "n_answered": 0.0}
+
+    # Per-Q answer attribution from the agent loop's extra_fields.
+    per_q_chunk_raw = _safe_list(extra.get("ts_per_q_answer_chunk"))
+    per_q_text_raw = _safe_list(extra.get("ts_per_q_answer_text"))
+    per_q_chunk = list(per_q_chunk_raw) + [-1] * (n_q - len(per_q_chunk_raw))
+    per_q_text = list(per_q_text_raw) + [""] * (n_q - len(per_q_text_raw))
+
+    # Per-Q scoring.
+    per_q_outcome: List[float] = []
+    per_q_timing: List[float] = []
+    per_q_silent: List[float] = []
+    n_answered = 0
+    for q_idx, q in enumerate(questions):
+        sub = _score_one_question(
+            rewards,
+            q=q,
+            model_answer=str(per_q_text[q_idx] or ""),
+            answered_chunk=int(per_q_chunk[q_idx]),
+        )
+        per_q_outcome.append(sub["outcome"])
+        per_q_timing.append(sub["timing"])
+        per_q_silent.append(sub["silent_quality"])
+        if sub["answered"] > 0:
+            n_answered += 1
+
+    # Trajectory-level aggregates.
+    avg_outcome = sum(per_q_outcome) / n_q
+    avg_timing = sum(per_q_timing) / n_q
+    avg_silent = sum(per_q_silent) / n_q
+
+    # Format + spam are trajectory-level (not per-Q).
+    chunks = _split_assistant_chunks(solution_str)
+    try:
+        fmt = float(rewards["format"](chunks))
+    except Exception:
+        fmt = 0.0
+    tool_counts = _count_tool_calls(solution_str)
+    try:
+        spam = float(rewards["spam"](
+            n_recall_calls=tool_counts["recall"],
+            n_compress_calls=tool_counts["compress"],
+        ))
+    except Exception:
+        spam = 0.0
+
+    parts = {
+        "outcome": avg_outcome,
+        "timing": avg_timing,
+        "format": fmt,
+        "spam": spam,
+        "silent_quality": avg_silent,
+    }
+    total = float(sum(weights.get(k, 0.0) * v for k, v in parts.items()))
+
+    return {
+        "score": total,
+        **{k: float(v) for k, v in parts.items()},
+        "n_questions": float(n_q),
+        "n_answered": float(n_answered),
+        "per_q_outcome_min": float(min(per_q_outcome)),
+        "per_q_outcome_max": float(max(per_q_outcome)),
+    }
+
+
 def compute_score(
     data_source: str,
     solution_str: str,
@@ -346,16 +632,16 @@ def compute_score(
 ) -> Dict[str, float]:
     """Reward function called by verl's NaiveRewardManager.
 
+    Two modes, switched by data_source:
+      - thinkstream_v12_streaming_multi_q: multi-Q trajectory; score every
+        question independently, aggregate by mean. Aligns with OVOBench
+        eval form.
+      - thinkstream_v12_streaming (legacy): single (video, question)
+        flatten; score one question with v12 5-component reward.
+
     Returns a dict so verl logs per-component rewards to wandb:
         {"score": <total>, "outcome": ..., "timing": ..., "format": ...,
          "spam": ..., "silent_quality": ...}
-
-    Aggregates the 5 v12 components with V12_DEFAULT_REWARD_WEIGHTS:
-        outcome / timing / format / spam (NEGATIVE weight) / silent_quality.
-
-    `ground_truth` is whatever the dataset wrote into the `reward_model`
-    column; we accept either a JSON-encoded bundle (the parquet builder
-    writes this) or a dict (a future config might pass directly).
     """
     rewards, weights = _load_thinkstream_rewards()
     if not rewards:
@@ -363,6 +649,41 @@ def compute_score(
                 "format": 0.0, "spam": 0.0, "silent_quality": 0.0}
 
     extra = extra_info or {}
+
+    # ── Multi-Q dispatch ──
+    # Parquet round-trip wraps List[Dict] columns in numpy.ndarray, which
+    # raises ValueError on bool() when multi-element. Coerce to plain list
+    # length-check explicitly before deciding the branch.
+    def _list_len(x: Any) -> int:
+        try:
+            return len(x) if x is not None else 0
+        except TypeError:
+            return 0
+
+    questions_in_extra = extra.get("questions")
+    gt_dict_for_multi_q = _coerce_ground_truth(ground_truth)
+    questions_in_gt = gt_dict_for_multi_q.get("questions")
+    has_extra_qs = _list_len(questions_in_extra) > 0
+    has_gt_qs = _list_len(questions_in_gt) > 0
+    is_multi_q = (
+        data_source == "thinkstream_v12_streaming_multi_q"
+        or has_extra_qs
+        or has_gt_qs
+    )
+    if is_multi_q:
+        # Prefer extra_info.questions (live from dataset); fall back to
+        # ground_truth's encoded copy (for cases where extra was stripped).
+        questions = questions_in_extra if has_extra_qs else questions_in_gt
+        # Coerce numpy-wrapped dicts to plain dicts.
+        norm: List[Dict[str, Any]] = []
+        for q in questions:
+            if hasattr(q, "tolist"):
+                q = q.tolist()
+            if isinstance(q, dict):
+                norm.append({k: q[k] for k in q.keys()})
+        return _compute_score_multi_q(
+            rewards, weights, norm, extra, solution_str,
+        )
 
     # Fall back to the trajectory index if extra_info doesn't carry the bundle
     # (e.g., when verl strips dict columns down to scalars at parquet load).

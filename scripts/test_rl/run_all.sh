@@ -32,5 +32,14 @@ python -m scripts.test_rl.verl_dataset_check \
     --traj "$OUT/synthetic_trajectories.jsonl"
 echo
 
+echo "═══ Step 4: Multi-Q parquet + compute_score round-trip ═══"
+python -m scripts.agent_data_v5.build_verl_parquet \
+    --jsonl "$OUT/synthetic_trajectories.jsonl" \
+    --out "$OUT/synthetic_multi_q.parquet" \
+    --multi_q
+python -m scripts.test_rl.test_multi_q_score \
+    --parquet "$OUT/synthetic_multi_q.parquet"
+echo
+
 echo "═══ ✓ Mini RL test passed ═══"
 echo "Report: $OUT/mock_report.json"

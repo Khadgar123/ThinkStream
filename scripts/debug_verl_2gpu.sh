@@ -57,9 +57,17 @@ if [[ ! -f "${TRAJ_JSONL}" || "${REGEN_DATA:-0}" == "1" ]]; then
     python -m scripts.test_rl.synthetic_traj --out "${TRAJ_JSONL}"
 fi
 if [[ ! -f "${TRAIN_PARQUET}" || "${REGEN_DATA:-0}" == "1" ]]; then
-    echo "[debug] flattening to parquet → ${TRAIN_PARQUET}"
+    # MULTI_Q=1 → 1 video = 1 row (OVOBench-aligned, all questions co-evaluated).
+    # MULTI_Q=0 (default) → legacy (video, question) flatten.
+    MULTI_Q_FLAG=""
+    if [[ "${MULTI_Q:-0}" == "1" ]]; then
+        MULTI_Q_FLAG="--multi_q"
+        echo "[debug] building MULTI-Q parquet → ${TRAIN_PARQUET}"
+    else
+        echo "[debug] flattening to (video,question) parquet → ${TRAIN_PARQUET}"
+    fi
     python -m scripts.agent_data_v5.build_verl_parquet \
-        --jsonl "${TRAJ_JSONL}" --out "${TRAIN_PARQUET}"
+        --jsonl "${TRAJ_JSONL}" --out "${TRAIN_PARQUET}" ${MULTI_Q_FLAG}
 fi
 VAL_PARQUET="${VAL_PARQUET:-${TRAIN_PARQUET}}"
 

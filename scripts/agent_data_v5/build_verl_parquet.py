@@ -154,6 +154,109 @@ def _iter_rows(jsonl_path: Path, max_questions_per_traj: int) -> Iterator[Dict[s
                 }
 
 
+def _iter_rows_multi_q(
+    jsonl_path: Path, max_questions_per_traj: int
+) -> Iterator[Dict[str, Any]]:
+    """Multi-Q trajectory rows: 1 video → 1 row containing ALL questions.
+
+    This shape matches OVOBench's eval form (one video, many MCQ time-points)
+    and the actual semantics of streaming-video agents — memory state +
+    compress / recall decisions are SHARED across questions in one video,
+    so flattening to (video, question) duplicates the visual rollout N
+    times and discards the joint-supervision signal that compress / recall
+    need to learn from.
+
+    Schema per row:
+      questions: List[Dict] — full pass4 question list (card_id, family,
+                              ask_chunk, options, correct_option,
+                              gold_answer, answer_form, per_emit_answers, ...)
+      gold_action_per_chunk: Dict[str, str] — full per-chunk gold action map
+                                              (NOT clipped to one question's window)
+      reward_model.ground_truth: JSON-encoded list of per-question targets
+                                 + the full gold_action map.
+
+    The streaming agent loop reads `extra_info.questions` and injects each
+    question's text into <user_input> at its `ask_chunk`; compute_score
+    then evaluates each Q independently and aggregates (mean by default).
+    """
+    with _open_jsonl(jsonl_path) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                traj = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            video_id = traj.get("video_id") or traj.get("trajectory_id") or ""
+            video_path = traj.get("video_path", "")
+            gold_action = traj.get("gold_action_per_chunk", {}) or {}
+            n_chunks = int((traj.get("stats") or {}).get("n_chunks_covered", 0))
+            questions = (traj.get("questions") or [])[:max_questions_per_traj]
+
+            if not questions:
+                continue
+
+            # Per-question target bundle — what compute_score scores against.
+            q_targets: List[Dict[str, Any]] = []
+            all_ask_chunks: List[int] = []
+            for q in questions:
+                ask_chunks = list(q.get("ask_chunks") or [])
+                if not ask_chunks and q.get("ask_chunk", -1) >= 0:
+                    ask_chunks = [int(q["ask_chunk"])]
+                all_ask_chunks.extend(ask_chunks)
+                q_targets.append({
+                    "card_id": q.get("card_id", ""),
+                    "family": q.get("family", ""),
+                    "question": q.get("question", ""),
+                    "options": list(q.get("options") or []),
+                    "correct_option": q.get("correct_option", ""),
+                    "gold_answer": q.get("gold_answer", ""),
+                    "answer_form": q.get("answer_form", ""),
+                    "ask_chunk": int(q.get("ask_chunk", -1)),
+                    "ask_chunks": ask_chunks,
+                    "answer_chunks": list(q.get("answer_chunks") or []),
+                    "per_emit_answers": list(q.get("per_emit_answers") or []),
+                    "support_chunks": list(q.get("support_chunks") or []),
+                })
+
+            # System-level prompt only — actual question text is injected
+            # by the agent loop at each ask_chunk. Streamed multi-Q agent
+            # gets a generic role description here, not a single question.
+            prompt = [
+                {"role": "system", "content": SYSTEM_PROMPT_V12},
+                {"role": "user", "content": (
+                    "You are a streaming-video agent. You will receive video "
+                    "frames in chunks and questions at specific time points. "
+                    "Maintain a memory of what you observe and answer each "
+                    "question when it is asked."
+                )},
+            ]
+
+            yield {
+                "prompt": prompt,
+                "video_id": video_id,
+                "video_path": video_path,
+                "n_chunks": n_chunks,
+                "n_questions": len(questions),
+                "extra_info": {
+                    "index": video_id,
+                    "video_id": video_id,
+                    "questions": q_targets,
+                    "gold_action_per_chunk": gold_action,
+                    "all_ask_chunks": sorted(set(all_ask_chunks)),
+                },
+                "reward_model": {
+                    "ground_truth": json.dumps({
+                        "questions": q_targets,
+                        "gold_action_per_chunk": gold_action,
+                    }, ensure_ascii=False),
+                    "style": "thinkstream_v12_multi_q",
+                },
+                "data_source": "thinkstream_v12_streaming_multi_q",
+            }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--jsonl", required=True, help="pass4 trajectory JSONL[.gz]")
@@ -161,8 +264,18 @@ def main() -> int:
     ap.add_argument(
         "--max_questions_per_traj",
         type=int,
-        default=5,
-        help="cap per video; pass4 typically emits ≤5 (default: 5)",
+        default=16,
+        help="cap per video. Default 16 covers OVOBench worst case (max 16 Q/video).",
+    )
+    ap.add_argument(
+        "--multi_q",
+        action="store_true",
+        help=(
+            "Multi-Q trajectory mode: 1 video = 1 parquet row containing all "
+            "questions. Aligns RL training with OVOBench eval form (one video, "
+            "many MCQ time-points). Default OFF for backward compat with the "
+            "(video, question) flatten path."
+        ),
     )
     args = ap.parse_args()
 
@@ -170,17 +283,21 @@ def main() -> int:
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    rows: List[Dict[str, Any]] = list(
-        _iter_rows(in_path, max_questions_per_traj=args.max_questions_per_traj)
+    iterator = (
+        _iter_rows_multi_q(in_path, max_questions_per_traj=args.max_questions_per_traj)
+        if args.multi_q
+        else _iter_rows(in_path, max_questions_per_traj=args.max_questions_per_traj)
     )
+    rows: List[Dict[str, Any]] = list(iterator)
     if not rows:
         print(f"[build_verl_parquet] no rows produced from {in_path}", file=sys.stderr)
         return 1
 
     df = pd.DataFrame(rows)
     df.to_parquet(out_path, index=False)
+    shape_label = "video" if args.multi_q else "(video,question)"
     print(
-        f"[build_verl_parquet] {in_path.name}: {len(rows)} (video,question) rows "
+        f"[build_verl_parquet] {in_path.name}: {len(rows)} {shape_label} rows "
         f"→ {out_path} ({out_path.stat().st_size/1024:.1f} KiB)"
     )
     return 0

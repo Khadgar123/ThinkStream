@@ -434,6 +434,49 @@ def _register_streaming_agent_loop():
         # line up. The video block is rendered separately as a content
         # block of type "video" (Qwen3-VL <|video_pad|> with frames_indices).
         # -------------------------------------------------------------------
+        def _format_user_input(
+            self,
+            chunk_idx: int,
+            question: str,
+            ask_chunks: List[int],
+            triggered_questions: Optional[List[Dict[str, Any]]],
+        ) -> Optional[str]:
+            """Render the <user_input>...</user_input> string for this chunk.
+
+            Two paths:
+              - Multi-Q mode (triggered_questions non-empty): render the
+                question(s) whose ask_chunk == chunk_idx, including the
+                MCQ options when present so the model has the option text
+                in the prompt at decision time.
+              - Single-Q legacy mode (`question` set, ask_chunks given):
+                fire the same single question whenever chunk_idx >=
+                min(ask_chunks). Backward compat with the (video, question)
+                flatten parquet shape.
+
+            Returns None when nothing should be injected this chunk.
+            """
+            # Multi-Q path
+            if triggered_questions:
+                blocks: List[str] = []
+                for q in triggered_questions:
+                    qtxt = q.get("question", "") or ""
+                    opts = q.get("options") or []
+                    if opts:
+                        opt_lines = "\n".join(
+                            f"{chr(ord('A') + i)}. {opt}"
+                            for i, opt in enumerate(opts)
+                        )
+                        blocks.append(f"{qtxt}\n{opt_lines}")
+                    else:
+                        blocks.append(qtxt)
+                if blocks:
+                    return "\n---\n".join(blocks)
+                return None
+            # Legacy single-Q path
+            if question and ask_chunks and chunk_idx >= min(ask_chunks):
+                return question
+            return None
+
         def _build_chunk_user_content(
             self,
             *,
@@ -445,6 +488,7 @@ def _register_streaming_agent_loop():
             window_end_chunk: int,
             question: str,
             ask_chunks: List[int],
+            triggered_questions: Optional[List[Dict[str, Any]]],
             recall_result: Optional[Dict[str, Any]],
             compress_trigger_range: Optional[Tuple[int, int]],
             inter_chunk: bool,
@@ -561,11 +605,15 @@ def _register_streaming_agent_loop():
                     "type": "text",
                     "text": "\n<compress_trigger/>",
                 })
-            elif question and ask_chunks and chunk_idx >= min(ask_chunks):
-                content.append({
-                    "type": "text",
-                    "text": f"\n<user_input>{question}</user_input>",
-                })
+            else:
+                user_input_text = self._format_user_input(
+                    chunk_idx, question, ask_chunks, triggered_questions,
+                )
+                if user_input_text:
+                    content.append({
+                        "type": "text",
+                        "text": f"\n<user_input>{user_input_text}</user_input>",
+                    })
 
             return content
 
@@ -635,6 +683,55 @@ def _register_streaming_agent_loop():
             n_chunks = min(self.max_chunks, n_chunks_dataset) if n_chunks_dataset else self.max_chunks
             question = extra_info.get("question", "")
             ask_chunks = list(extra_info.get("ask_chunks") or [])
+
+            # Multi-Q trajectory mode (build_verl_parquet --multi_q): one
+            # parquet row carries `questions` (List[Dict]). Each entry
+            # has its own ask_chunk; the rollout fires the corresponding
+            # question's text into <user_input> at exactly that chunk.
+            # Per-Q answers + answered chunks are surfaced via
+            # extra_fields so compute_score can score each Q independently.
+            multi_q_list_raw = extra_info.get("questions") or []
+            # Normalise: parquet round-trip can wrap dicts in numpy structs
+            # whose iteration yields plain dicts but `isinstance dict` may
+            # be False. Coerce defensively.
+            multi_q_list: List[Dict[str, Any]] = []
+            for q in multi_q_list_raw:
+                if hasattr(q, "tolist"):
+                    q = q.tolist()
+                if not isinstance(q, dict):
+                    continue
+                multi_q_list.append({k: q[k] for k in q.keys()})
+
+            # Build the per-chunk ask map: chunk_idx → list of question
+            # indices that should fire at that chunk. Pre-compute once
+            # rather than scanning N questions on every chunk iteration.
+            ask_at_chunk: Dict[int, List[int]] = {}
+            if multi_q_list:
+                for q_idx, q in enumerate(multi_q_list):
+                    aks = q.get("ask_chunks") or (
+                        [int(q["ask_chunk"])] if int(q.get("ask_chunk", -1)) >= 0 else []
+                    )
+                    for ck in aks:
+                        try:
+                            ck_int = int(ck)
+                        except (TypeError, ValueError):
+                            continue
+                        ask_at_chunk.setdefault(ck_int, []).append(q_idx)
+                # Ensure rollout reaches at least the latest ask_chunk.
+                if ask_at_chunk:
+                    n_chunks = max(n_chunks, max(ask_at_chunk.keys()) + 1)
+                    n_chunks = min(self.max_chunks, n_chunks)
+
+            # Per-Q answer tracking (multi-Q mode only). Indexed by q_idx;
+            # captured when the corresponding chunk's assistant turn parses
+            # to kind=="answer" (or any explicit <answer>...</answer>).
+            per_q_answer_chunk: List[int] = [-1] * len(multi_q_list)
+            per_q_answer_text: List[str] = [""] * len(multi_q_list)
+            # Stack of question indices waiting to be assigned to the next
+            # assistant turn (for chunks where multiple Qs fire — Q1's
+            # spec says this won't happen now, but keep the queue for
+            # robustness).
+            pending_q_indices: List[int] = []
 
             # ── Initial prompt: [system + user(question)]. Cached on vLLM
             # side; never re-prefilled across chunks.
@@ -731,6 +828,17 @@ def _register_streaming_agent_loop():
                     )
                 visual_injected = bool(window_paths) and not inter_chunk
 
+                # ── Multi-Q: which questions fire at this chunk?
+                triggered_qs_for_chunk: List[Dict[str, Any]] = []
+                triggered_q_indices_for_chunk: List[int] = []
+                if multi_q_list and not inter_chunk:
+                    for q_idx in ask_at_chunk.get(chunk_idx, []):
+                        triggered_qs_for_chunk.append(multi_q_list[q_idx])
+                        triggered_q_indices_for_chunk.append(q_idx)
+                    # Push triggered Qs into the pending queue so the
+                    # NEXT assistant turn's <answer> is assigned to them.
+                    pending_q_indices.extend(triggered_q_indices_for_chunk)
+
                 # ── Build user content + chunk_messages.
                 user_content = self._build_chunk_user_content(
                     state=state,
@@ -741,6 +849,9 @@ def _register_streaming_agent_loop():
                     window_end_chunk=window_end_chunk,
                     question=question,
                     ask_chunks=ask_chunks,
+                    triggered_questions=(
+                        triggered_qs_for_chunk if multi_q_list else None
+                    ),
                     recall_result=recall_result_for_next,
                     compress_trigger_range=compress_range,
                     inter_chunk=inter_chunk,
@@ -836,6 +947,20 @@ def _register_streaming_agent_loop():
                 chunk_kinds.append(kind)
                 chunk_asst_texts.append(response_text)
 
+                # ── Multi-Q: assign this turn's <answer> (if any) to the
+                # earliest pending question. Per-Q answer attribution
+                # uses chunk-order matching (Q1 in design — robust enough
+                # given the no-overlapping-ask_chunks invariant).
+                if multi_q_list and pending_q_indices:
+                    answer_match = re.search(
+                        r"<answer>(.*?)</answer>", response_text, re.DOTALL,
+                    )
+                    if answer_match:
+                        answer_str = answer_match.group(1).strip()
+                        q_idx = pending_q_indices.pop(0)
+                        per_q_answer_chunk[q_idx] = chunk_idx
+                        per_q_answer_text[q_idx] = answer_str
+
                 # default_v12_update_state advances chunk_idx by +1 on
                 # EVERY turn — including compress. For inter-chunk
                 # compress turns we DON'T want to skip ahead in the
@@ -913,6 +1038,13 @@ def _register_streaming_agent_loop():
                 # inter-chunk turns). compute_score keys gold_action_per_chunk
                 # by this, not by enumerate(chunk_kinds).
                 "ts_chunk_video_indices": chunk_video_indices,
+                # Multi-Q trajectory mode: per-question answer attribution
+                # (chunk_idx + answer text). compute_score reads these to
+                # score each question independently and aggregate.
+                # Lengths match len(questions); -1/"" for unanswered Qs.
+                "ts_per_q_answer_chunk": list(per_q_answer_chunk),
+                "ts_per_q_answer_text": list(per_q_answer_text),
+                "ts_n_questions": float(len(multi_q_list)),
             })
             return output_obj
 
