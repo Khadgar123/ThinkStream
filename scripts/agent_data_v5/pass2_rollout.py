@@ -55,17 +55,21 @@ logger = logging.getLogger(__name__)
 # via THINKSTREAM_VLLM_MAX_MODEL_LEN env so this client-side cap matches
 # the server's actual context window.
 #
-# Conservative input estimate per pass2 observation request:
-#   visual:  32 frames × ~196 tok/frame = ~6300 tok (16-chunk window @ 2fps)
+# Conservative input estimate per pass2 observation request (v12.12):
+#   visual:  32 frames × ~235 tok/frame = ~7,520 tok (RUNTIME mm_processor_kwargs)
 #   memory:  recent_thinks ≤ 4000 tok + compressed ≤ 1400 tok = ~5400 tok
 #   prompt template + safety: ~700 tok
 #   ─────────────────────────────────────────────────
-#   estimated input ~12500 tok worst case → max_tokens=16K fits in 64K cap.
+#   estimated input ~13,600 tok worst case → max_tokens=16K fits in 64K cap.
 import os as _os
 _PASS2_SAFE_MAX_MODEL_LEN = int(
     _os.environ.get("THINKSTREAM_VLLM_MAX_MODEL_LEN", "65536")
 )
 _PASS2_INPUT_MARGIN = 1500           # tokenizer drift + safety margin
+
+# v12.12: vision token estimate must match RUNTIME_MM_PROCESSOR_KWARGS profile.
+# Empirically ~235 tok/frame at min=130k max=220k (config.py).
+from .config import VISUAL_TOKENS_PER_FRAME_RUNTIME as _PASS2_VISION_TOKENS_PER_FRAME
 
 
 def _safe_max_tokens_for_pass2(
@@ -80,7 +84,7 @@ def _safe_max_tokens_for_pass2(
     """Compute a max_tokens value that won't trip the vLLM context cap.
 
     Estimates input tokens from message content (text via len/3, vision via
-    count × 196). Returns max(floor, min(configured, max_model_len - input - margin)).
+    count × VISUAL_TOKENS_PER_FRAME_RUNTIME). Returns max(floor, min(configured, max_model_len - input - margin)).
     """
     msgs = request.get("messages", [])
     n_text_chars = 0
@@ -96,8 +100,8 @@ def _safe_max_tokens_for_pass2(
                 if it.get("type") in ("text",):
                     n_text_chars += len(it.get("text", ""))
                 elif it.get("type") in ("video", "image_url", "image"):
-                    # Vision item: each frame ~196 vision tokens at 100k pixel
-                    # min (matches our pass2 visual setup).
+                    # Vision item: each frame ≈ VISUAL_TOKENS_PER_FRAME_RUNTIME
+                    # tok (RUNTIME mm_processor_kwargs profile).
                     if it.get("type") == "video":
                         v = it.get("video")
                         if isinstance(v, list):
@@ -108,7 +112,7 @@ def _safe_max_tokens_for_pass2(
                         n_video_frames += 1
     estimated_input = (
         n_text_chars // 3
-        + n_video_frames * 196
+        + n_video_frames * _PASS2_VISION_TOKENS_PER_FRAME
         + _PASS2_INPUT_MARGIN
     )
     available = _PASS2_SAFE_MAX_MODEL_LEN - estimated_input

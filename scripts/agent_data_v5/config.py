@@ -393,7 +393,7 @@ PASS_CONFIG = {
         "max_tokens_compress": 4096,
         "temperature": 0.3,
         "thinking": False,
-        "concurrent_videos": 1024,
+        "concurrent_videos": 512,
     },
     "pass3a": {
         # v12.5 (2026-04-30): thinking True → False per user audit "在pass3
@@ -401,21 +401,20 @@ PASS_CONFIG = {
         # FAMILY_PROMPTS with explicit constraints; CoT was a marginal
         # quality lift, not a correctness floor. 16K max_tokens kept as
         # context budget (no truncation risk on dense evidence).
-        "max_tokens": 16384,
+        "max_tokens": 8192,
         "temperature": 0.7,
         "thinking": False,
-        "concurrent": 256,    # pure text; client_3a also serves verify
+        "concurrent": 1024,    # pure text; client_3a also serves verify
     },
     "pass3c": {
         # v12.5 (2026-04-30): thinking True → False per user audit. Generation
         # tasks (response / recall_query / recall_think / fork_think) are
         # template-driven; CoT marginally improved quality but added latency
         # without floor-shifting correctness. 16K context preserved.
-        "max_tokens": 16384,
+        "max_tokens": 8192,
         "temperature": 0.3,
         "thinking": False,
-        "concurrent": 256,    # at 1024 each req waits ~55min (orphan-cascade);
-                              # at 256 each gets ~14min, no timeouts.
+        "concurrent": 1024,
     },
     # pass3a_verify and pass3b_visibility share their outer pass's client
     # (client_3a and client_3b respectively). The "concurrent" entries
