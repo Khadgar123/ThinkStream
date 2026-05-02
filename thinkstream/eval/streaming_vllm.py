@@ -257,21 +257,24 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> None:
 
 
 def _option_match(answer_text: str, options: List[str]) -> int:
-    """Map free-text answer to an option index. Same fallback chain as
-    eval_baseline.parse_answer but operating on the agent <answer> (v12).
+    """Map free-text answer to an option index. v12.13 (2026-05-02):
+    routes through the SHARED MCQ matcher (same one RL reward uses) so
+    eval matches what the model was trained to maximize.
+
+    Old behavior used local startswith / head / substring chain; that
+    diverged from RL's _match_mcq_answer (which has the "B" in "table"
+    false-positive guard) and caused train/eval reward gap.
+
+    Strategy: try each option's index as the candidate "correct" answer;
+    return the first one the shared matcher accepts. Falls back to
+    random if none match (preserves the original API contract).
     """
-    s = (answer_text or "").strip().upper()
-    for i, opt in enumerate(options):
-        if s.startswith(opt.upper()):
+    from thinkstream.trainer.outcome_match import match_mcq_answer
+    if not options:
+        return 0
+    for i in range(len(options)):
+        if match_mcq_answer(answer_text, options, i):
             return i
-    if s:
-        head = s[:1]
-        for i, opt in enumerate(options):
-            if opt.upper() == head:
-                return i
-        for i, opt in enumerate(options):
-            if opt.upper() in s:
-                return i
     return random.randint(0, len(options) - 1)
 
 

@@ -32,6 +32,18 @@ import re
 from pathlib import Path
 from typing import Dict, List, Optional
 
+# Shared form-aware liberal matchers — single source of truth across RL
+# reward, SFT eval, and OVOBench / our_val eval. v12.13 (2026-05-02): we
+# used to reimplement matching here independently, which created a
+# train/eval reward gap (RL would reward "Yes." but eval would judge it
+# wrong because eval used strict equality). Routing all 3 through
+# thinkstream.trainer.outcome_match keeps the metric the model is
+# optimizing identical to the metric we report.
+from thinkstream.trainer.outcome_match import (
+    match_mcq_answer,
+    score_outcome_by_form,
+)
+
 
 # Match a single-letter answer like "A", "C", or "C." (with trailing period
 # or whitespace). Anchored to the start of stripped text so rejects answers
@@ -136,43 +148,31 @@ class OVOBenchAdapter:
         question_chunk = OVOBenchAdapter.question_chunk(item)
         late_window = 2  # chunks past question_chunk that still count
 
+        opts = item.get("options") or []
         for out in model_outputs:
             if out["chunk_idx"] < question_chunk:
                 continue
             ans = _extract_answer_text(out["text"])
             if ans is None:
                 continue  # silent at this chunk
-            letter = _normalize_letter(ans)
             delay = out["chunk_idx"] - question_chunk
             in_window = delay <= late_window
 
-            if letter is None:
-                # Model emitted free text instead of a letter. Do best-effort
-                # substring match against option texts.
-                opts = item.get("options") or []
-                ans_low = ans.lower()
-                matched_idx = None
-                for i, opt in enumerate(opts):
-                    if opt.lower() in ans_low or ans_low in opt.lower():
-                        matched_idx = i
-                        break
-                correct = (matched_idx == gt_idx) if matched_idx is not None else False
-                return {
-                    "correct": correct and in_window,
-                    "answer_chunk": out["chunk_idx"],
-                    "answer_text": ans,
-                    "delay_chunks": delay,
-                    "fmt": "free_text_substring",
-                    "task": item.get("task"),
-                    "in_window": in_window,
-                }
+            # Use the SHARED MCQ matcher (same one RL uses). It tries
+            # leading-letter, then option-text-in-answer, then any-option-
+            # exact, then gold-fallback — handles "C", "C.", "(C)",
+            # "blue shirt", "the answer is on the table" all correctly,
+            # without the "B" in "table" false positive.
+            correct = match_mcq_answer(ans, opts, gt_idx)
+            letter = _normalize_letter(ans)
+            fmt = "letter" if letter is not None else "free_text"
 
             return {
-                "correct": (letter == gt_letter) and in_window,
+                "correct": correct and in_window,
                 "answer_chunk": out["chunk_idx"],
                 "answer_text": ans,
                 "delay_chunks": delay,
-                "fmt": "letter",
+                "fmt": fmt,
                 "task": item.get("task"),
                 "in_window": in_window,
             }
@@ -225,11 +225,11 @@ class OurOpenEndedAdapter:
 
     @staticmethod
     def score(item: Dict, model_outputs: List[Dict], *, judge_fn=None) -> Dict:
-        from thinkstream.trainer.v12_rewards import compute_outcome_reward_v12
-
         question_chunk = OurOpenEndedAdapter.question_chunk(item)
         gold = item.get("gold_answer") or item.get("answer", "")
         answer_form = item.get("answer_form", "")
+        options = item.get("options") or []
+        correct_option = item.get("correct_option", "")
 
         for out in model_outputs:
             if out["chunk_idx"] < question_chunk:
@@ -237,8 +237,17 @@ class OurOpenEndedAdapter:
             ans = _extract_answer_text(out["text"])
             if ans is None:
                 continue
-            score = compute_outcome_reward_v12(
-                ans, gold, judge_fn=judge_fn, answer_form=answer_form,
+            # v12.13: route through shared form-aware dispatcher (same as
+            # RL reward). Old path used compute_outcome_reward_v12 strict
+            # match → "Yes." vs "yes" silently failed, creating train/eval
+            # gap. judge_fn is currently unused (LLM-as-judge is a
+            # production-only plugin); kept in the signature for callers.
+            score = score_outcome_by_form(
+                ans,
+                options=options,
+                correct_option=correct_option,
+                gold_answer=gold,
+                answer_form=answer_form,
             )
             return {
                 "correct": score >= 0.5,
