@@ -59,6 +59,21 @@ actor_rollout_ref:
     enable_chunked_prefill: True
     response_length: 16384
     prompt_length: 16384
+    # v12.13 (2026-05-02): cap vLLM's max_model_len explicitly. Without
+    # this verl/workers/rollout/vllm_async_server.py:_validate_configs
+    # auto-defaults to HF max_position_embeddings, which for Qwen3-VL-8B
+    # is 262144 → vLLM startup profiler runs a 262K-token dummy + tokenizer
+    # warns at HF model_max_length 16384 ("148634 > 16384"). The dummy
+    # also chews enormous KV at the wrong size, which is the root of the
+    # downstream IndexError observed at startup.
+    #
+    # Per-turn budget under v12.12 RUNTIME profile:
+    #   compress turn (worst): 5K input + 4K output = 9K
+    #   obs+recall (worst):   15K input + 1K output = 16K
+    # max_model_len 32K leaves 2× headroom for tokenizer drift / KV planner.
+    # Each chunk is an INDEPENDENT generate (recipe header line 11-44),
+    # so we don't need 360 × per_turn — only the single largest turn.
+    max_model_len: 32768
     agent:
       # Registers the chunk-level streaming loop. `name` matches what
       # CustomRLHFDataset writes to row["agent_name"]; verl dispatches by
@@ -66,25 +81,22 @@ actor_rollout_ref:
       agent_loop_config_path: recipe_thinkstream/configs/agent_loops.yaml
     multi_turn:
       enable: True
-      max_turns: 360            # 6 min × 1s/chunk for streaming videos
+      # v12.13 (2026-05-02): max_turns removed — verl MultiTurnConfig does
+      # not accept it (only max_assistant_turns/max_user_turns). The 360
+      # cap is enforced via max_assistant_turns below.
       max_assistant_turns: 360
       max_user_turns: 360
       max_parallel_calls: 1
-      # ── ThinkStream-specific keys read by ThinkStreamStreamingAgentLoop.
-      # frames_root: directory of pre-extracted JPEG frames (one subdir
-      #   per video stem). pass1a writes frame_000000.jpg etc. Empty string
-      #   = run text-only (visual SFT prior carries the model).
-      # frames_per_chunk: must match scripts.agent_data_v5.config.FRAMES_PER_CHUNK.
-      # visual_window_chunks: sliding window size in chunks. Each chunk N's
-      #   prompt contains frames for chunks [max(0,N-window+1)..N]. Frames
-      #   from chunks < N-window+1 are NOT in vLLM's KV for chunk N's
-      #   generate request — they're truly evicted. Must match SFT's
-      #   VISUAL_WINDOW_CHUNKS so train/RL distributions line up.
-      # recall_stub_text: returned when retrieval finds nothing.
-      frames_root: ""
-      frames_per_chunk: 2
-      visual_window_chunks: 16
-      recall_stub_text: "(no relevant past observation found)"
+      # ── ThinkStream-specific keys (frames_root / frames_per_chunk /
+      # visual_window_chunks / recall_stub_text) are NOT accepted by
+      # verl's MultiTurnConfig. They're read by ThinkStreamStreamingAgentLoop
+      # via environment variables (THINKSTREAM_FRAMES_ROOT etc.) — see
+      # streaming_agent_loop.py:316 for the env-var fallback path. Set
+      # them in the launch script before invoking the trainer:
+      #   export THINKSTREAM_FRAMES_ROOT=/path/to/frames
+      #   bash recipe_thinkstream/run_thinkstream_grpo.sh
+      # Defaults (frames_per_chunk=2, visual_window_chunks=16) are baked
+      # into the recipe's __init__ from scripts.agent_data_v5.config.
 
 algorithm:
   adv_estimator: grpo

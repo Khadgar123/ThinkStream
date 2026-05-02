@@ -310,20 +310,38 @@ def _register_streaming_agent_loop():
             self.prompt_length = self.rollout_config.prompt_length
             self.response_length = self.rollout_config.response_length
             mt = self.rollout_config.multi_turn
-            self.max_chunks = int(getattr(mt, "max_turns", 0) or 360)
+            # v12.13 (2026-05-02): verl's MultiTurnConfig dataclass rejects
+            # custom fields (max_turns / frames_root / frames_per_chunk /
+            # visual_window_chunks / recall_stub_text). All of those are
+            # now read from environment variables set by the launch script.
+            # max_assistant_turns is the verl-native cap.
+            self.max_chunks = int(
+                getattr(mt, "max_assistant_turns", 0) or 360
+            )
             self.frames_root = str(
-                getattr(mt, "frames_root", "") or
                 os.environ.get("THINKSTREAM_FRAMES_ROOT", "")
             )
-            self.frames_per_chunk = int(getattr(mt, "frames_per_chunk", 2) or 2)
-            self.visual_window_chunks = int(
-                getattr(mt, "visual_window_chunks", 16) or 16
+            self.frames_per_chunk = int(
+                os.environ.get("THINKSTREAM_FRAMES_PER_CHUNK", "2") or 2
             )
-            self.chunk_sec = float(getattr(mt, "chunk_sec", 1.0) or 1.0)
+            self.visual_window_chunks = int(
+                os.environ.get("THINKSTREAM_VISUAL_WINDOW_CHUNKS", "16") or 16
+            )
+            self.chunk_sec = float(
+                os.environ.get("THINKSTREAM_CHUNK_SEC", "1.0") or 1.0
+            )
             self.compress_token_threshold = int(
-                getattr(mt, "compress_token_threshold",
-                        DEFAULT_COMPRESS_TOKEN_THRESHOLD)
+                os.environ.get(
+                    "THINKSTREAM_COMPRESS_THRESHOLD",
+                    str(DEFAULT_COMPRESS_TOKEN_THRESHOLD),
+                )
                 or DEFAULT_COMPRESS_TOKEN_THRESHOLD
+            )
+            self.recall_stub_text = str(
+                os.environ.get(
+                    "THINKSTREAM_RECALL_STUB",
+                    "(no relevant past observation found)",
+                )
             )
 
         # -------------------------------------------------------------------

@@ -67,6 +67,14 @@ SAVE_DIR=${SAVE_DIR:-./output/${EXPERIMENT_NAME}}
 export PYTHONPATH="${THINKSTREAM_HOME}:${PYTHONPATH:-}"
 export THINKSTREAM_TRAJ_INDEX_PATH="${THINKSTREAM_TRAJ_INDEX_PATH:-${THINKSTREAM_HOME}/data/agent_v5/final/train_rl_trajectories.jsonl}"
 
+# v12.13: ThinkStream-specific multi_turn config (verl's MultiTurnConfig
+# rejects custom keys, so we pass them as env vars; streaming_agent_loop.py
+# reads them in __init__ at line 316+). frames_root="" → text-only run.
+export THINKSTREAM_FRAMES_ROOT="${THINKSTREAM_FRAMES_ROOT:-${THINKSTREAM_HOME}/data/agent_v5/frames}"
+export THINKSTREAM_FRAMES_PER_CHUNK="${THINKSTREAM_FRAMES_PER_CHUNK:-2}"
+export THINKSTREAM_VISUAL_WINDOW_CHUNKS="${THINKSTREAM_VISUAL_WINDOW_CHUNKS:-16}"
+export THINKSTREAM_RECALL_STUB="${THINKSTREAM_RECALL_STUB:-(no relevant past observation found)}"
+
 mkdir -p "${SAVE_DIR}"
 
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
