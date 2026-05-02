@@ -1096,7 +1096,13 @@ async def run_pipeline(
     #   (a) generate batch2 (more videos, NOT denser per-video)
     #   (b) bump MAX_SAMPLES_PER_VIDEO 15 → 20 (mild density relaxation)
     #   (c) keep MAX_TRAJECTORIES_PER_VIDEO=5 but ease MAX_QUESTIONS=3→4
-    video_ids = list(set(s.get("video_id", "") for s in passed_samples))
+    # v12.13 (2026-05-02): use sorted() to make split deterministic across
+    # runs. `list(set(...))` ordering depends on PYTHONHASHSEED (random by
+    # default in Python 3) — even with seed=42 fixed for shuffle, the
+    # input list order varies, so SFT/RL/val/test assignments are NOT
+    # reproducible. split_train_sft_rl.py was already correct (line 66
+    # uses sorted()); aligning pipeline.py here so both paths agree.
+    video_ids = sorted({s.get("video_id", "") for s in passed_samples})
     video_ids = [v for v in video_ids if v]
     random.seed(seed)
     random.shuffle(video_ids)
