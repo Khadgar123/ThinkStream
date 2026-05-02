@@ -657,7 +657,15 @@ class AgentLoopWorker:
             return_tensors="pt",
             return_attention_mask=True,
         )
-        if response_output["input_ids"].dim() == 1:
+        # Edge case: empty response causes tokenizer.pad to return a list instead of tensor.
+        if isinstance(response_output["input_ids"], list):
+            response_output["input_ids"] = torch.zeros(
+                1, self.rollout_config.response_length, dtype=torch.long
+            )
+            response_output["attention_mask"] = torch.zeros(
+                1, self.rollout_config.response_length, dtype=torch.long
+            )
+        elif response_output["input_ids"].dim() == 1:
             response_output["input_ids"] = response_output["input_ids"].unsqueeze(0)
             response_output["attention_mask"] = response_output["attention_mask"].unsqueeze(0)
 
@@ -668,7 +676,11 @@ class AgentLoopWorker:
             return_tensors="pt",
             return_attention_mask=False,
         )
-        if response_mask_output["input_ids"].dim() == 1:
+        if isinstance(response_mask_output["input_ids"], list):
+            response_mask_output["input_ids"] = torch.zeros(
+                1, self.rollout_config.response_length, dtype=torch.long
+            )
+        elif response_mask_output["input_ids"].dim() == 1:
             response_mask_output["input_ids"] = response_mask_output["input_ids"].unsqueeze(0)
 
         response_logprobs = None

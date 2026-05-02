@@ -248,8 +248,6 @@ def qwen3_vl_base_forward(
     video_grid_thw: Optional[torch.LongTensor] = None,
     **kwargs,
 ):
-    print(f"[DEBUG qwen3_vl_base_forward] input_ids shape: {input_ids.shape if input_ids is not None else None}")
-    print(f"[DEBUG qwen3_vl_base_forward] position_ids shape: {kwargs.get('position_ids').shape if kwargs.get('position_ids') is not None else None}")
     input_kwargs = _get_input_embeds(
         self, input_ids, attention_mask, pixel_values, pixel_values_videos, image_grid_thw, video_grid_thw
     )  # avoid lora module having multiple keyword arguments

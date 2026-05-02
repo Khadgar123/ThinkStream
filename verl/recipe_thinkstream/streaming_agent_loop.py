@@ -382,6 +382,7 @@ def _register_streaming_agent_loop():
             super().__init__(*args, **kwargs)
             self.prompt_length = self.rollout_config.prompt_length
             self.response_length = self.rollout_config.response_length
+            self.max_model_len = self.rollout_config.max_model_len or (self.prompt_length + self.response_length)
             mt = self.rollout_config.multi_turn
             # v12.13 (2026-05-02): verl's MultiTurnConfig dataclass rejects
             # custom fields (max_turns / frames_root / frames_per_chunk /
@@ -878,7 +879,7 @@ def _register_streaming_agent_loop():
                 )
 
                 # Prompt-budget guard.
-                if len(chunk_prompt_ids) + self.response_length >= self.prompt_length:
+                if len(chunk_prompt_ids) + self.response_length >= self.max_model_len:
                     break
                 user_block_len = len(chunk_prompt_ids) - len(initial_prompt_ids)
                 if user_block_len < 0:

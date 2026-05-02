@@ -125,13 +125,17 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True) -> dict[str,
     non_aborted_sequence_score = sequence_score[non_aborted_mask]
     non_aborted_sequence_reward = sequence_reward[non_aborted_mask]
 
-    score_mean = torch.mean(non_aborted_sequence_score).detach().item()
-    score_max = torch.max(non_aborted_sequence_score).detach().item()
-    score_min = torch.min(non_aborted_sequence_score).detach().item()
+    if non_aborted_sequence_score.numel() == 0:
+        score_mean = score_max = score_min = 0.0
+        reward_mean = reward_max = reward_min = 0.0
+    else:
+        score_mean = torch.mean(non_aborted_sequence_score).detach().item()
+        score_max = torch.max(non_aborted_sequence_score).detach().item()
+        score_min = torch.min(non_aborted_sequence_score).detach().item()
 
-    reward_mean = torch.mean(non_aborted_sequence_reward).detach().item()
-    reward_max = torch.max(non_aborted_sequence_reward).detach().item()
-    reward_min = torch.min(non_aborted_sequence_reward).detach().item()
+        reward_mean = torch.mean(non_aborted_sequence_reward).detach().item()
+        reward_max = torch.max(non_aborted_sequence_reward).detach().item()
+        reward_min = torch.min(non_aborted_sequence_reward).detach().item()
 
     valid_adv = torch.masked_select(advantages, response_mask)
     valid_returns = torch.masked_select(returns, response_mask)

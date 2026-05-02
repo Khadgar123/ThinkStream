@@ -23,7 +23,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "${SCRIPT_DIR}")"
-cd "${PROJECT_DIR}"
+cd "${PROJECT_DIR}/verl"
 
 # ── conda env (override via CONDA_ENV / skip via SKIP_CONDA=1).
 if [[ "${SKIP_CONDA:-0}" != "1" ]]; then
@@ -92,7 +92,6 @@ export VLLM_ALLREDUCE_USE_SYMM_MEM=0
 export TOKENIZERS_PARALLELISM=false
 export NCCL_DEBUG=WARN
 export VLLM_LOGGING_LEVEL=WARN
-export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
 echo "═══ ThinkStream verl GRPO 2-GPU debug ═══"
 echo "  Checkpoint:    ${LLM}"
@@ -140,6 +139,7 @@ python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.multi_turn.max_assistant_turns=8 \
     actor_rollout_ref.rollout.multi_turn.max_user_turns=8 \
     actor_rollout_ref.rollout.multi_turn.max_parallel_calls=1 \
+    actor_rollout_ref.rollout.agent.num_workers=1 \
     data.train_files="${TRAIN_PARQUET}" \
     data.val_files="[${VAL_PARQUET}]" \
     data.train_batch_size=1 \

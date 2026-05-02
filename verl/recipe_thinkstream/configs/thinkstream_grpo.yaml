@@ -14,7 +14,7 @@
 # points at the pre-extracted JPEG frames directory.
 hydra:
   searchpath:
-    - file://verl/trainer/config
+    - pkg://verl.trainer.config
 
 defaults:
   - ppo_trainer
