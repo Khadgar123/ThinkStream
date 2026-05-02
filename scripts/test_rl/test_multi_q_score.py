@@ -114,11 +114,48 @@ def main() -> int:
         ("A", ["a", "b", "c", "d"], "C", "", False),
         ("eggplant", [], "", "eggplant", True),
         ("Eggplant.", [], "", "eggplant", True),
+        # Single-letter ma against text-heavy options (the bug we fixed)
+        ("B", ["on the table", "in the cabinet", "on the counter", "on the sink"], 0, "", False),
     ]
     for ma, opts, co, ga, exp in cases:
         got = rt._match_mcq_answer(ma, opts, co, ga)
         assert got == exp, f"_match_mcq_answer({ma!r}, opts={len(opts)}, correct={co!r}, gold={ga!r}) got={got} exp={exp}"
     print(f"  ✓ {len(cases)} liberal MCQ matching tests pass")
+
+    # ── Form-aware liberal outcome tests
+    form_cases = [
+        # (answer_form, model_answer, gold_answer, options, correct_option, expected)
+        # binary
+        ("binary",      "Yes.",         "yes",   [], "", 1.0),
+        ("binary",      "y",            "yes",   [], "", 1.0),
+        ("binary",      "false",        "no",    [], "", 1.0),
+        ("binary",      "no",           "yes",   [], "", 0.0),
+        # number
+        ("number",      "100.",         "100",   [], "", 1.0),
+        ("number",      "$100 mph",     "100",   [], "", 1.0),
+        ("number",      "99",           "100",   [], "", 0.0),
+        ("number",      "not numeric",  "100",   [], "", 0.0),
+        # short_exact
+        ("short_exact", "the apple",    "apple", [], "", 1.0),
+        ("short_exact", "Apple.",       "apple", [], "", 1.0),
+        ("short_exact", "orange",       "apple", [], "", 0.0),
+        # descriptive
+        ("descriptive", "the man walks home", "the man walks", [], "", 1.0),
+        ("descriptive", "the woman runs",     "the man walks", [], "", 0.0),
+        # multiple_choice via dispatcher
+        ("multiple_choice", "C", ["a","b","c","d"], ["a","b","c","d"], "C", 1.0),
+        # unanswered
+        ("binary", "", "yes", [], "", 0.0),
+        ("number", None, "100", [], "", 0.0),
+    ]
+    for af, ma, ga, opts, co, exp in form_cases:
+        if isinstance(ga, list):  # MCQ row order shifted
+            opts, ga = ga, ""
+        got = rt._score_outcome_by_form(
+            ma, options=opts, correct_option=co, gold_answer=ga, answer_form=af,
+        )
+        assert got == exp, f"_score_outcome_by_form(form={af}, ma={ma!r}, ga={ga!r}) got={got} exp={exp}"
+    print(f"  ✓ {len(form_cases)} form-aware outcome matcher tests pass (binary/number/short_exact/descriptive/multiple_choice)")
 
     print("✓ ALL MULTI-Q SCORING TESTS PASSED")
     return 0

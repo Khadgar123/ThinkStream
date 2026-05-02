@@ -488,6 +488,166 @@ def _safe_list(v: Any) -> list:
     return []
 
 
+# ---------------------------------------------------------------------------
+# Form-aware liberal outcome matchers.
+#
+# ThinkStream's pass3a emits 5 answer_form values:
+#   multiple_choice / binary / number / short_exact / descriptive
+#
+# v12_rewards.compute_outcome_reward_v12 strict path is `fa.lower() == ga.lower()`,
+# which is too rigid: "Yes." vs "yes", "100." vs "100", "the apple" vs "apple"
+# all fail and silently zero the reward signal. The matchers below relax the
+# comparison per-form while staying conservative enough to avoid reward
+# hacking.
+# ---------------------------------------------------------------------------
+_BINARY_YES = {"yes", "y", "true", "1", "t", "是", "对"}
+_BINARY_NO = {"no", "n", "false", "0", "f", "否", "不"}
+
+
+def _binary_polarity(s: str) -> Optional[bool]:
+    """Return True/False if the string is a binary yes/no, else None.
+    Strips leading/trailing punctuation and looks at the first token."""
+    if not s:
+        return None
+    norm = _normalize_answer(s)
+    if not norm:
+        return None
+    # Take first whitespace-separated token, then strip its trailing punct.
+    first = re.sub(r"[^\w]+$", "", norm.split()[0]) if norm.split() else ""
+    if first in _BINARY_YES:
+        return True
+    if first in _BINARY_NO:
+        return False
+    # Some MCQ-style binaries store "A"/"B" as gold — leave those to MCQ.
+    return None
+
+
+def _match_binary(model_answer: str, gold_answer: str) -> bool:
+    """yes/no/true/false matching with normalization."""
+    ma_pol = _binary_polarity(model_answer)
+    ga_pol = _binary_polarity(gold_answer)
+    if ma_pol is None or ga_pol is None:
+        # Fall through to short_exact normalize compare so we don't lose
+        # weird gold values like "yeah" / "nope".
+        return _normalize_answer(model_answer) == _normalize_answer(gold_answer)
+    return ma_pol == ga_pol
+
+
+_NUM_RE = re.compile(r"-?\d+(?:\.\d+)?")
+
+
+def _extract_first_number(s: str) -> Optional[float]:
+    """Pull out the first numeric token from `s`. Returns None if none."""
+    if not s:
+        return None
+    m = _NUM_RE.search(s)
+    if not m:
+        return None
+    try:
+        return float(m.group(0))
+    except (ValueError, TypeError):
+        return None
+
+
+def _match_number(model_answer: str, gold_answer: str, *, rel_tol: float = 0.0,
+                  abs_tol: float = 1e-6) -> bool:
+    """Numeric match with tolerance. Accepts trailing units / punctuation
+    (e.g. "100." / "100 mph" / "$100"). Default tolerance is exact-equal
+    on integers; bump rel_tol for noisy domains."""
+    ma_n = _extract_first_number(model_answer)
+    ga_n = _extract_first_number(gold_answer)
+    if ma_n is None or ga_n is None:
+        return False
+    if abs(ma_n - ga_n) <= abs_tol:
+        return True
+    if rel_tol > 0 and ga_n != 0:
+        return abs(ma_n - ga_n) / abs(ga_n) <= rel_tol
+    return False
+
+
+_STOPWORDS = {"the", "a", "an", "of", "is", "are", "was", "were"}
+
+
+def _strip_articles(s: str) -> str:
+    """Drop leading article-like stopwords. 'the apple' → 'apple'."""
+    tokens = s.split()
+    while tokens and tokens[0] in _STOPWORDS:
+        tokens.pop(0)
+    return " ".join(tokens)
+
+
+def _match_short_exact(model_answer: str, gold_answer: str) -> bool:
+    """Entity-name / short-exact match: normalize, strip leading articles,
+    accept either bidirectional substring (model wrote 'the apple' → still
+    matches gold 'apple', and vice versa). Conservative: requires gold
+    length ≥ 2 chars to avoid single-letter false positives."""
+    ma = _strip_articles(_normalize_answer(model_answer))
+    ga = _strip_articles(_normalize_answer(gold_answer))
+    if not ma or not ga:
+        return False
+    if ma == ga:
+        return True
+    if len(ga) < 2:
+        return ma == ga
+    return ga in ma or ma in ga
+
+
+def _match_descriptive(model_answer: str, gold_answer: str) -> bool:
+    """Free-text descriptive answers — bidirectional substring with
+    normalization. v12 fall-back path; consider plugging an LLM judge
+    here for higher-fidelity scoring on production runs."""
+    ma = _normalize_answer(model_answer)
+    ga = _normalize_answer(gold_answer)
+    if not ma or not ga:
+        return False
+    return ma == ga or ga in ma or ma in ga
+
+
+def _score_outcome_by_form(
+    model_answer: str,
+    *,
+    options: List[str],
+    correct_option: Any,
+    gold_answer: str,
+    answer_form: str,
+) -> float:
+    """Form-aware liberal outcome scoring. Returns 1.0 for a match, 0.0 otherwise.
+
+    Dispatches by `answer_form`:
+      - multiple_choice / mc        → _match_mcq_answer (letter / text / gold fallback)
+      - binary / yes_no             → _match_binary (yes/no/true/false polarity)
+      - number / numeric            → _match_number (extract float, tolerance)
+      - short_exact / entity / literal → _match_short_exact (article-stripped substring)
+      - descriptive (default)       → _match_descriptive (bidirectional substring)
+
+    The model answer must be non-empty for any match. Length > 1000 chars
+    forces 0 (anti-spam, mirrors compute_outcome_reward_v12).
+    """
+    if not model_answer or not str(model_answer).strip():
+        return 0.0
+    if len(str(model_answer)) > 1000:
+        return 0.0
+
+    af = (answer_form or "").lower()
+
+    if af in ("multiple_choice", "mc") and options:
+        return 1.0 if _match_mcq_answer(
+            model_answer, options, correct_option, gold_answer,
+        ) else 0.0
+
+    if af in ("binary", "yes_no"):
+        return 1.0 if _match_binary(model_answer, gold_answer) else 0.0
+
+    if af in ("number", "numeric"):
+        return 1.0 if _match_number(model_answer, gold_answer) else 0.0
+
+    if af in ("short_exact", "entity", "literal"):
+        return 1.0 if _match_short_exact(model_answer, gold_answer) else 0.0
+
+    # Default / descriptive
+    return 1.0 if _match_descriptive(model_answer, gold_answer) else 0.0
+
+
 def _score_one_question(
     rewards: Dict[str, Any],
     *,
@@ -517,21 +677,29 @@ def _score_one_question(
 
     answered = 1.0 if (model_answer or "").strip() else 0.0
 
-    # Outcome — MCQ liberal match if options present, otherwise fall back
-    # to v12 fuzzy outcome reward.
-    if options and answered:
-        outcome = 1.0 if _match_mcq_answer(
-            model_answer, options, correct_option, gold_answer,
-        ) else 0.0
+    # Outcome — form-aware liberal matching. Dispatches to the right
+    # matcher for each of pass3a's 5 answer_form values (multiple_choice
+    # / binary / number / short_exact / descriptive). Falls back to
+    # v12_rewards.compute_outcome_reward_v12 only if our dispatcher
+    # raises (defensive — should be a no-op in practice).
+    if not answered:
+        outcome = 0.0
     else:
         try:
-            outcome = float(rewards["outcome"](
-                model_answer if answered else None,
-                gold_answer,
+            outcome = _score_outcome_by_form(
+                model_answer,
+                options=options,
+                correct_option=correct_option,
+                gold_answer=gold_answer,
                 answer_form=answer_form,
-            ))
+            )
         except Exception:
-            outcome = 0.0
+            try:
+                outcome = float(rewards["outcome"](
+                    model_answer, gold_answer, answer_form=answer_form,
+                ))
+            except Exception:
+                outcome = 0.0
 
     # Timing — bucket the answered_chunk vs the visible window.
     timing = float(rewards["timing"](
