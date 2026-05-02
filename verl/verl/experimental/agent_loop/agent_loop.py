@@ -16,7 +16,7 @@ import logging
 import os
 import random
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any, Optional, Union
 from uuid import uuid4
 
 import hydra
@@ -370,7 +370,9 @@ class AgentLoopBase(ABC):
         return prompt_ids
 
     @abstractmethod
-    async def run(self, sampling_params: dict[str, Any], **kwargs) -> AgentLoopOutput:
+    async def run(
+        self, sampling_params: dict[str, Any], **kwargs
+    ) -> Union[AgentLoopOutput, list[AgentLoopOutput]]:
         """Run agent loop to interact with LLM server and environment.
 
         Args:
@@ -378,7 +380,23 @@ class AgentLoopBase(ABC):
             **kwargs: dataset fields from `verl.utils.dataset.RLHFDataset`.
 
         Returns:
-            AgentLoopOutput: Agent loop output.
+            Either a single AgentLoopOutput (legacy single-stitched-output
+            agents — silent / single-turn / standard multi-turn tool agents)
+            OR a list[AgentLoopOutput] (v12.14 recurrent agents — one
+            element per assistant action, with the LAST element marked as
+            the trajectory's terminal action).
+
+            When a list is returned, the framework treats each element as
+            an INDEPENDENT training sample and tracks the action↔trajectory
+            mapping via `sample_index` (= original input row index, repeated
+            once per action) and `final_mask` (False for all but the last
+            action of each trajectory). Reward is only computed on the
+            final-mask=True samples and broadcast back to siblings.
+
+            Returning `list` while the trainer hasn't been recurrent-aware
+            (e.g. `recurrent.enable` not set) still works — the framework
+            simply treats each action as an independent training row, but
+            sample_index/final_mask are NOT used for reward broadcast.
         """
         raise NotImplementedError
 
@@ -571,10 +589,40 @@ class AgentLoopWorker:
                     self._run_agent_loop(sampling_params, trajectory_info[i], trace=trace_this_sample, **kwargs)
                 )
             )
-        outputs = await asyncio.gather(*tasks)
+        per_traj_outputs = await asyncio.gather(*tasks)
+
+        # v12.14: each trajectory may produce 1 (legacy / stitched) or N
+        # (recurrent agent) postprocessed actions. Flatten while tracking:
+        #   sample_index: original input row index, repeated per action
+        #   final_mask:   True only on the last action of each trajectory
+        # Both are added to _postprocess so they survive into the DataProto
+        # batch as tensor fields the downstream trainer / reward / advantage
+        # path reads.
+        flat_outputs: list[_InternalAgentLoopOutput] = []
+        flat_sample_index: list[int] = []
+        flat_final_mask: list[bool] = []
+        # Also broadcast input_non_tensor_batch entries per-action so each
+        # row carries its trajectory's non_tensor metadata.
+        per_action_non_tensor_idx: list[int] = []
+        for traj_idx, traj_outputs in enumerate(per_traj_outputs):
+            n = len(traj_outputs)
+            flat_outputs.extend(traj_outputs)
+            flat_sample_index.extend([traj_idx] * n)
+            flat_final_mask.extend([False] * (n - 1) + [True])
+            per_action_non_tensor_idx.extend([traj_idx] * n)
+
+        # Repeat input_non_tensor_batch entries to align with flat_outputs.
+        repeated_non_tensor_batch = {
+            k: np.array([v[i] for i in per_action_non_tensor_idx], dtype=v.dtype)
+            for k, v in batch.non_tensor_batch.items()
+        }
 
         output = self._postprocess(
-            outputs, input_non_tensor_batch=batch.non_tensor_batch, validate=batch.meta_info.get("validate", False)
+            flat_outputs,
+            input_non_tensor_batch=repeated_non_tensor_batch,
+            validate=batch.meta_info.get("validate", False),
+            sample_index=flat_sample_index,
+            final_mask=flat_final_mask,
         )
         return output
 
@@ -586,7 +634,18 @@ class AgentLoopWorker:
         agent_name: str,
         trace: bool = True,
         **kwargs,
-    ) -> _InternalAgentLoopOutput:
+    ) -> list[_InternalAgentLoopOutput]:
+        """Run one trajectory's agent loop. Returns a list of postprocessed
+        outputs:
+          - Legacy single-stitched-output agents return a 1-element list.
+          - v12.14 recurrent agents return N elements (one per assistant
+            action), with the last element being the trajectory's
+            terminal action.
+
+        The framework downstream flattens these lists across the batch
+        and tracks (action → trajectory) via sample_index/final_mask
+        added in `generate_sequences`.
+        """
         with rollout_trace_attr(
             step=trajectory["step"],
             sample_index=trajectory["sample_index"],
@@ -609,8 +668,32 @@ class AgentLoopWorker:
                 dataset_cls=self.dataset_cls,
                 data_config=DictConfigWrap(self.config.data),
             )
-            output: AgentLoopOutput = await agent_loop.run(sampling_params, **kwargs)
-            return await self._agent_loop_postprocess(output, trajectory["validate"], **kwargs)
+            output_or_list = await agent_loop.run(sampling_params, **kwargs)
+            # Normalize to list — legacy agents return a single
+            # AgentLoopOutput; recurrent agents return list[AgentLoopOutput].
+            if isinstance(output_or_list, AgentLoopOutput):
+                outputs = [output_or_list]
+            else:
+                outputs = list(output_or_list)
+                if not outputs:
+                    raise ValueError(
+                        f"Agent loop {agent_name} returned empty list from run() — "
+                        f"recurrent agents must produce at least one action."
+                    )
+                for o in outputs:
+                    if not isinstance(o, AgentLoopOutput):
+                        raise TypeError(
+                            f"Agent loop {agent_name} returned non-AgentLoopOutput "
+                            f"item ({type(o).__name__}) in list."
+                        )
+            # Postprocess each action independently. Each call computes its
+            # own multi_modal_inputs / position_ids / reward — actions are
+            # treated as independent training samples.
+            postprocessed = await asyncio.gather(*[
+                self._agent_loop_postprocess(o, trajectory["validate"], **kwargs)
+                for o in outputs
+            ])
+            return list(postprocessed)
 
     async def _agent_loop_postprocess(self, output, validate, **kwargs) -> _InternalAgentLoopOutput:
         """Perform post-processing operations on the output of each individual agent loop."""
@@ -884,8 +967,29 @@ class AgentLoopWorker:
         inputs: list[_InternalAgentLoopOutput],
         input_non_tensor_batch: dict | None = None,
         validate: bool = False,
+        sample_index: Optional[list[int]] = None,
+        final_mask: Optional[list[bool]] = None,
     ) -> DataProto:
-        """Process the padded outputs from _run_agent_loop and combine them into a batch."""
+        """Process the padded outputs from _run_agent_loop and combine them into a batch.
+
+        v12.14: `sample_index` and `final_mask` are added as tensor fields
+        when provided (they're added by `generate_sequences` so legacy
+        callers don't need to supply them). Default = identity (each input
+        is its own sample, all are final) which matches stitched behavior
+        bit-for-bit.
+        """
+        # Backfill sample_index/final_mask with identity defaults if caller
+        # didn't supply them — keeps any direct _postprocess calls
+        # (tests / external) working unchanged.
+        n = len(inputs)
+        if sample_index is None:
+            sample_index = list(range(n))
+        if final_mask is None:
+            final_mask = [True] * n
+        assert len(sample_index) == n and len(final_mask) == n, (
+            f"sample_index/final_mask length must equal len(inputs) ({n}), "
+            f"got {len(sample_index)} / {len(final_mask)}"
+        )
         # Convert lists back to tensors and stack them to create a batch.
         prompt_ids = torch.cat([input.prompt_ids for input in inputs], dim=0)
         response_ids = torch.cat([input.response_ids for input in inputs], dim=0)
@@ -910,6 +1014,14 @@ class AgentLoopWorker:
                 "attention_mask": attention_mask,  # [bsz, prompt_length + response_length]
                 # position_ids: [bsz, 3, prompt_length + response_length] or [bsz, prompt_length + response_length]
                 "position_ids": position_ids,
+                # v12.14: per-action mapping back to the input trajectory.
+                # For legacy stitched agents these are identity (each row
+                # maps to itself, all rows are final). For recurrent agents
+                # multiple rows share the same sample_index and only the
+                # last row in each group has final_mask=True. Reward /
+                # advantage / sample-grouping downstream consults these.
+                "sample_index": torch.tensor(sample_index, dtype=torch.long),
+                "final_mask": torch.tensor(final_mask, dtype=torch.bool),
                 **optional_outputs,
             },
             batch_size=len(inputs),
