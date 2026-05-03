@@ -39,7 +39,7 @@ from .config import (
     compute_visual_window_start,
 )
 from .pass1a_evidence import get_chunk_frame_paths
-from scripts.agent_data_pipeline.vllm_client import encode_image_base64
+from scripts.agent_data_pipeline.vllm_client import build_video_jpeg_data_uri
 
 logger = logging.getLogger(__name__)
 
@@ -91,6 +91,7 @@ def _safe_max_tokens_for_pass2(
     count × VISUAL_TOKENS_PER_FRAME_RUNTIME). Returns max(floor, min(configured, max_model_len - input - margin)).
     """
     msgs = request.get("messages", [])
+    media_video = (request.get("media_io_kwargs") or {}).get("video") or {}
     n_text_chars = 0
     n_video_frames = 0
     for m in msgs:
@@ -103,7 +104,7 @@ def _safe_max_tokens_for_pass2(
                     continue
                 if it.get("type") in ("text",):
                     n_text_chars += len(it.get("text", ""))
-                elif it.get("type") in ("video", "image_url", "image"):
+                elif it.get("type") in ("video", "video_url", "image_url", "image"):
                     # Vision item: each frame ≈ VISUAL_TOKENS_PER_FRAME_RUNTIME
                     # tok (RUNTIME mm_processor_kwargs profile).
                     if it.get("type") == "video":
@@ -112,6 +113,12 @@ def _safe_max_tokens_for_pass2(
                             n_video_frames += len(v)
                         elif isinstance(v, str):
                             n_video_frames += 1
+                    elif it.get("type") == "video_url":
+                        # vLLM HTTP path sends pre-extracted frames as one
+                        # data:video/jpeg item; frame count lives in
+                        # media_io_kwargs.video.frames_indices.
+                        idx = media_video.get("frames_indices")
+                        n_video_frames += len(idx) if isinstance(idx, list) else 1
                     else:
                         n_video_frames += 1
     estimated_input = (
@@ -318,47 +325,59 @@ def build_observation_request(
     for c in range(window_start, chunk_idx + 1):
         window_frame_paths.extend(get_chunk_frame_paths(frame_paths, c))
 
+    # v12.15: vLLM 0.17 OpenAI serving accepts video only through
+    # {"type": "video_url"}. Pre-extracted JPEG frames are sent as one
+    # data:video/jpeg URI and their real temporal anchors are passed via
+    # request-level media_io_kwargs.video. This keeps vLLM scheduling/caching
+    # while avoiding server-side mp4 decode and non-deterministic resampling.
+    #
     # v12.14: text first, then one video block. Qwen3-VL needs the frames as
-    # a video with metadata so its processor renders per-frame timestamp
-    # anchors. Passing 32 separate image_url items makes the latest/current
-    # second ambiguous inside the sliding window.
+    # video, not 32 separate images, so its processor can render per-frame
+    # timestamp anchors and understand "latest/current second".
     #
     # v12.12: text first, frames last — opposite of the legacy
     # build_vision_content layout (which kept frames first for early
     # vision-token-position pretraining bias). The Qwen3-VL processor
     # places vision tokens wherever the content list dictates and uses
-    # video_metadata for MROPE temporal alignment, so reordering does
+    # vLLM media metadata for MROPE temporal alignment, so reordering does
     # not break per-frame `<X.X seconds>` anchors. We build the content
     # list inline here rather than reuse build_vision_content (which is
     # still frames-first; pass1a callers depend on that behaviour).
     content: List[Dict] = [{"type": "text", "text": prompt}]
-    video_frames: List[str] = []
+    video_frame_paths: List[str] = []
     frame_indices: List[int] = []
     for offset, img_path in enumerate(window_frame_paths):
         if Path(img_path).exists():
-            video_frames.append(encode_image_base64(img_path))
+            video_frame_paths.append(img_path)
             frame_indices.append(window_start * FRAMES_PER_CHUNK + offset)
 
-    if video_frames:
+    media_io_kwargs = None
+    if video_frame_paths:
+        fps = float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC)
+        total_num_frames = (chunk_idx + 1) * FRAMES_PER_CHUNK
         content.append({
-            "type": "video",
-            "video": video_frames,
-            "min_pixels": RUNTIME_MM_PROCESSOR_KWARGS["min_pixels"],
-            "max_pixels": RUNTIME_MM_PROCESSOR_KWARGS["max_pixels"],
-            "video_metadata": {
-                "fps": float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC),
+            "type": "video_url",
+            "video_url": {"url": build_video_jpeg_data_uri(video_frame_paths)},
+        })
+        media_io_kwargs = {
+            "video": {
+                "fps": fps,
                 "frames_indices": frame_indices,
-                "total_num_frames": (chunk_idx + 1) * FRAMES_PER_CHUNK,
+                "total_num_frames": total_num_frames,
+                "duration": total_num_frames / fps,
                 "do_sample_frames": False,
             },
-        })
+        }
 
-    return {
+    request = {
         "messages": [{"role": "user", "content": content}],
         "max_tokens": PASS_CONFIG["pass2_rollout"]["max_tokens_observation"],
         "temperature": PASS_CONFIG["pass2_rollout"]["temperature"],
         "id": f"{video_id}_obs_{chunk_idx}",
     }
+    if media_io_kwargs is not None:
+        request["media_io_kwargs"] = media_io_kwargs
+    return request
 
 
 def parse_observation_result(raw: Optional[str]) -> str:
@@ -781,6 +800,7 @@ async def run_pass2_single_video(
             request_id=request["id"],
             enable_thinking=enable_thinking,
             mm_processor_kwargs=mm_kwargs,
+            media_io_kwargs=request.get("media_io_kwargs"),
         )
         think_text = parse_observation_result(raw)
         thinks.append({

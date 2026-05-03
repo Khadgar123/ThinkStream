@@ -1,8 +1,8 @@
 """
 Async vLLM client with concurrency control and throughput monitoring.
 
-Handles text-only, image, and pre-sampled-video requests via the
-OpenAI-compatible API.
+Handles text-only, image, and pre-extracted-frame video requests via the
+vLLM OpenAI-compatible API.
 Automatically manages concurrency to maximize throughput without OOM.
 
 Usage:
@@ -65,27 +65,38 @@ _BASE64_CACHE_MAXSIZE = 16384
 
 
 @functools.lru_cache(maxsize=_BASE64_CACHE_MAXSIZE)
-def encode_image_base64(image_path: str) -> str:
-    """Encode a local image file to base64 data URI (LRU-cached by path)."""
+def encode_image_base64_payload(image_path: str) -> str:
+    """Encode a local image file to raw base64 (LRU-cached by path)."""
     with open(image_path, "rb") as f:
-        data = base64.b64encode(f.read()).decode("utf-8")
+        return base64.b64encode(f.read()).decode("utf-8")
+
+
+def encode_image_base64(image_path: str) -> str:
+    """Encode a local image file to base64 data URI."""
     suffix = Path(image_path).suffix.lower()
     mime = {"jpg": "jpeg", "jpeg": "jpeg", "png": "png", "webp": "webp"}.get(
         suffix.lstrip("."), "jpeg"
     )
-    return f"data:image/{mime};base64,{data}"
+    return f"data:image/{mime};base64,{encode_image_base64_payload(image_path)}"
+
+
+def build_video_jpeg_data_uri(frame_paths: List[str]) -> str:
+    """Build vLLM's pre-extracted-frame video data URI.
+
+    vLLM OpenAI serving accepts client-side extracted frames as
+    ``data:video/jpeg;base64,<frame1_b64>,<frame2_b64>,...``. The companion
+    request must pass ``media_io_kwargs.video`` with fps/frames_indices so
+    Qwen3-VL receives real temporal anchors instead of treating the frames as
+    independent images.
+    """
+    frames_b64 = ",".join(encode_image_base64_payload(str(p)) for p in frame_paths)
+    return f"data:video/jpeg;base64,{frames_b64}"
 
 
 def build_content_with_images(
     text: str, image_paths: Optional[List[str]] = None
 ) -> list:
-    """Build OpenAI-format content list with text and optional images.
-
-    Streaming pass2 does not use this helper: it sends a single
-    {"type": "video"} block made from pre-extracted frame data URIs plus
-    video_metadata. That path avoids server-side raw-video decoding and lets
-    Qwen3-VL receive official fps/frames_indices timestamp anchors.
-    """
+    """Build OpenAI-format content list with text and optional images."""
     content = []
     if image_paths:
         for img_path in image_paths:
@@ -172,6 +183,7 @@ class VLLMClient:
     async def _call_one_raw(
         self, messages, max_tokens, temperature, request_id, enable_thinking,
         mm_processor_kwargs: Optional[Dict] = None,
+        media_io_kwargs: Optional[Dict] = None,
     ):
         """Raw POST path — bypasses OpenAI SDK so chat_template_kwargs
         actually reaches vLLM. Returns (content_str_or_None, prompt_tokens,
@@ -196,6 +208,12 @@ class VLLMClient:
             # Putting these inside `image_url` is silently dropped — must
             # be at body top level (here) or in OpenAI SDK extra_body.
             body["mm_processor_kwargs"] = dict(mm_processor_kwargs)
+        if media_io_kwargs:
+            # vLLM stable supports pre-extracted video frames over OpenAI
+            # serving as data:video/jpeg plus request-level media_io_kwargs.
+            # This is where Qwen3-VL receives fps/frames_indices without
+            # asking the server to decode or resample the original mp4.
+            body["media_io_kwargs"] = dict(media_io_kwargs)
         client = await self._get_httpx_client()
         resp = await client.post("/chat/completions", json=body)
         resp.raise_for_status()
@@ -220,6 +238,7 @@ class VLLMClient:
         max_retries: int = 3,
         enable_thinking: Optional[bool] = None,
         mm_processor_kwargs: Optional[Dict] = None,
+        media_io_kwargs: Optional[Dict] = None,
     ) -> Optional[str]:
         """Make a single API call with semaphore-controlled concurrency and retry.
 
@@ -236,10 +255,17 @@ class VLLMClient:
               When set, routes through raw POST (same reason as
               enable_thinking — SDK extra_body unreliable). vLLM forwards
               this to the Qwen3-VL processor for aspect-preserving resize.
+            media_io_kwargs: vLLM media loader kwargs. For pre-extracted video
+              frames this carries {"video": {"fps": ..., "frames_indices": ...,
+              "total_num_frames": ..., "do_sample_frames": False}}.
         """
-        # When the caller explicitly toggles thinking OR sets mm_processor_kwargs,
-        # take the raw POST path so the extra fields land at request-body top level.
-        if enable_thinking is not None or mm_processor_kwargs is not None:
+        # When the caller explicitly toggles thinking or sets vLLM extra body
+        # fields, take the raw POST path so they land at request-body top level.
+        if (
+            enable_thinking is not None
+            or mm_processor_kwargs is not None
+            or media_io_kwargs is not None
+        ):
             async with self.semaphore:
                 for attempt in range(max_retries):
                     try:
@@ -247,6 +273,7 @@ class VLLMClient:
                             messages, max_tokens, temperature, request_id,
                             enable_thinking,
                             mm_processor_kwargs=mm_processor_kwargs,
+                            media_io_kwargs=media_io_kwargs,
                         )
                         self.stats.completed += 1
                         self.stats.total_input_tokens += ptok
@@ -323,6 +350,7 @@ class VLLMClient:
         temperature: float = 0.7,
         enable_thinking: Optional[bool] = None,
         mm_processor_kwargs: Optional[Dict] = None,
+        media_io_kwargs: Optional[Dict] = None,
     ) -> List[Optional[str]]:
         """Send a batch of requests with automatic concurrency control.
 
@@ -334,6 +362,8 @@ class VLLMClient:
             - "enable_thinking": optional per-request override
             - "mm_processor_kwargs": optional per-request Qwen3-VL
               smart_resize bounds (v12.12)
+            - "media_io_kwargs": optional per-request vLLM media loader kwargs
+              for pre-extracted video frame metadata
         """
         self.stats = RequestStats(total=len(requests), start_time=time.time())
         logger.info(
@@ -350,6 +380,7 @@ class VLLMClient:
                 request_id=req.get("id", f"req_{i}"),
                 enable_thinking=req.get("enable_thinking", enable_thinking),
                 mm_processor_kwargs=req.get("mm_processor_kwargs", mm_processor_kwargs),
+                media_io_kwargs=req.get("media_io_kwargs", media_io_kwargs),
             )
             tasks.append(task)
 

@@ -1,12 +1,16 @@
 #!/bin/bash
 # Launch the construction-time teacher vLLM server for ThinkStream.
 #
-# Important: pass2 sends pre-extracted JPEG frames as one Qwen3-VL video block
-# with video_metadata; it does not send raw mp4 files for server-side decode.
+# Important: vLLM 0.17 OpenAI serving accepts videos as video_url, not
+# type=video. pass2 sends pre-extracted JPEG frames as one
+# data:video/jpeg;base64,... video_url and passes original fps/frames_indices
+# in request-level media_io_kwargs.video. It does not send raw mp4 files for
+# server-side decode/resampling.
+#
 # Keep both image and video limits because pass1a uses image_url while pass2
-# uses video. The video limit is per prompt, not concurrency; pass2 uses one
-# video block per request, while runtime/eval recall can use current-window +
-# recalled-frame videos in one prompt.
+# uses video_url. The video limit is per prompt, not concurrency; pass2 uses
+# one video block per request, while runtime/eval recall can use current-window
+# + recalled-frame videos in one prompt.
 set -euo pipefail
 
 MODEL="${MODEL:-/home/tione/notebook/gaozhenkun/model/Qwen3.5-397B-A17B-FP8}"
@@ -17,8 +21,15 @@ MAX_NUM_SEQS="${MAX_NUM_SEQS:-1024}"
 MM_LIMIT="${MM_LIMIT:-{\"image\":64,\"video\":2}}"
 MM_PROCESSOR_CACHE_GB="${MM_PROCESSOR_CACHE_GB:-512}"
 PORT="${PORT:-8000}"
+SERVED_MODEL_NAME="${SERVED_MODEL_NAME:-}"
+
+EXTRA_ARGS=()
+if [[ -n "${SERVED_MODEL_NAME}" ]]; then
+  EXTRA_ARGS+=(--served-model-name "${SERVED_MODEL_NAME}")
+fi
 
 exec vllm serve "${MODEL}" \
+  "${EXTRA_ARGS[@]}" \
   --tensor-parallel-size "${TP}" \
   --max-model-len "${MAX_MODEL_LEN}" \
   --gpu-memory-utilization "${GPU_MEMORY_UTILIZATION}" \

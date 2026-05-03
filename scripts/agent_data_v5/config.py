@@ -302,8 +302,9 @@ VLLM_PREFILL_BATCH_TOKEN_BUDGET = 32_000_000  # KV usage ~2.6% at 64 conc → 10
 # pass1a uses HIRES (~500 tok/frame typical) × 2 frames + template ≈ 2K visual.
 # pass2 uses RUNTIME (~235 tok/frame) × 32 frames + template ≈ 7.6K visual.
 # vLLM teacher server: pass1a still sends image_url blocks, while pass2 sends
-# one Qwen3-VL video block made from pre-extracted frames (two video blocks can
-# appear when runtime recall adds historical frames). Start vLLM with e.g.
+# one OpenAI video_url block encoded as data:video/jpeg from pre-extracted
+# frames, with fps/frames_indices carried in request-level media_io_kwargs.
+# Start vLLM with e.g.
 #   --limit-mm-per-prompt '{"image":64,"video":2}'
 # video is a per-prompt block limit, not the request concurrency. pass2 uses
 # one video block; runtime/eval recall turns may include current-window +

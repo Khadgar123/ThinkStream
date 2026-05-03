@@ -314,10 +314,7 @@ def layer2_vllm_side(vllm_url: str, vllm_model: str, frame_dir: str) -> None:
         print(f"❌ Need ≥32 frames in {frame_dir}, found {len(frame_paths)}; skipping")
         return
 
-    # Build a synthetic obs request with 32 frames
-    import base64
-    def encode(p):
-        return f"data:image/jpeg;base64,{base64.b64encode(p.read_bytes()).decode()}"
+    from scripts.agent_data_pipeline.vllm_client import build_video_jpeg_data_uri
 
     content: List[Dict] = []
     # Memory + queries (text portion)
@@ -327,9 +324,14 @@ def layer2_vllm_side(vllm_url: str, vllm_model: str, frame_dir: str) -> None:
     memory_block += "</memory>"
     content.append({"type": "text", "text": memory_block})
 
-    # Vision frames (image_url)
-    for p in frame_paths:
-        content.append({"type": "image_url", "image_url": {"url": encode(p)}})
+    # Vision frames: vLLM OpenAI serving expects pre-extracted video frames as
+    # one data:video/jpeg video_url plus request-level media_io_kwargs.video.
+    fps = float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC)
+    frames_indices = list(range(len(frame_paths)))
+    content.append({
+        "type": "video_url",
+        "video_url": {"url": build_video_jpeg_data_uri([str(p) for p in frame_paths])},
+    })
     content.append({"type": "text", "text": "What's happening?"})
 
     print(f"\nProfile: {RUNTIME_MM_PROCESSOR_KWARGS}")
@@ -342,7 +344,21 @@ def layer2_vllm_side(vllm_url: str, vllm_model: str, frame_dir: str) -> None:
             messages=[{"role": "user", "content": content}],
             max_tokens=10,   # we don't care about output, just measure prefill
             temperature=0.0,
-            extra_body={"mm_processor_kwargs": RUNTIME_MM_PROCESSOR_KWARGS},
+            extra_body={
+                "mm_processor_kwargs": {
+                    **RUNTIME_MM_PROCESSOR_KWARGS,
+                    "do_sample_frames": False,
+                },
+                "media_io_kwargs": {
+                    "video": {
+                        "fps": fps,
+                        "frames_indices": frames_indices,
+                        "total_num_frames": len(frame_paths),
+                        "duration": len(frame_paths) / fps,
+                        "do_sample_frames": False,
+                    }
+                },
+            },
         )
     except Exception as exc:
         print(f"❌ vLLM request failed: {exc}")
