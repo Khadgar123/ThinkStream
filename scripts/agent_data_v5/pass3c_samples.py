@@ -25,6 +25,7 @@ from thinkstream.data.agent_protocol import build_assistant_content_v12
 from .config import AGENT_CHUNK_SEC, PASS_CONFIG, SAMPLES_3C_DIR
 from .pass3a_cards import dict_to_card
 from .pass3b_placement import _dict_to_placement
+from .stable_hash import stable_mod
 from .v2.design import (
     Placement,
     render_video_samples as _design_render,
@@ -392,7 +393,7 @@ async def generate_trajectory_samples(
     cards_map: Dict[str, Dict],
     rollout: Dict,
     evidence: List[Dict],
-    client=None,                     # unused (no LLM call in v2 path)
+    client=None,                     # optional LLM for descriptive response / recall query text
     video_id: str = "",
 ) -> List[Dict]:
     """Render one trajectory's placements into raw per-chunk samples.
@@ -400,8 +401,10 @@ async def generate_trajectory_samples(
     Output samples carry every field render_samples.render_sample() needs
     (chunk_idx, sample_type, action, output, queries, user_input,
     recall_result, sequence_type, card_id, trajectory_id, optional
-    v12_assistant_turn_*). render_samples then adds the `input` dict +
-    metadata for pass3e/4/5.
+    v12_assistant_turn_*). Non-descriptive answers stay deterministic;
+    descriptive answer text and recall queries can use `client` when
+    provided. render_samples then adds the `input` dict + metadata for
+    pass3e/4/5.
     """
     placements_dicts = trajectory.get("placements", [])
     placements = [_dict_to_placement(p) for p in placements_dicts]
@@ -424,7 +427,7 @@ async def generate_trajectory_samples(
     placements_by_card: Dict[str, List[Placement]] = {}
     for p in placements:
         placements_by_card.setdefault(p.card_id, []).append(p)
-    rng = random.Random(abs(hash(video_id + traj_id)) % (10**6))
+    rng = random.Random(stable_mod(video_id, traj_id, modulo=10**6))
     design_samples = _design_render(
         cards_obj, placements_by_card, num_chunks,
         evidence=evidence, rng=rng,
@@ -590,6 +593,9 @@ def save_samples(video_id: str, samples: List[Dict],
 
 def load_samples(video_id: str,
                  samples_dir: Path = SAMPLES_3C_DIR) -> Optional[List[Dict]]:
+    from .cache_version import stage_version_ok
+    if not stage_version_ok("3c"):
+        return None
     p = samples_dir / f"{video_id}.json"
     if not p.exists():
         return None

@@ -229,6 +229,8 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
     from thinkstream.data.agent_protocol import (
         SYSTEM_PROMPT_V12,
         AGENT_CHUNK_SEC,
+        FRAMES_PER_CHUNK,
+        infer_video_metadata,
     )
 
     inp = sample["input"]
@@ -248,6 +250,21 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
     if video_path and not Path(video_path).is_absolute():
         video_path = str(base_path / video_path)
     require_pre = bool(sample.get("_require_pre_extracted_frames", True))
+
+    def _metadata_for_frame_paths(
+        paths: Sequence[str],
+        start_seconds: float,
+        end_seconds: Optional[float] = None,
+    ) -> Dict:
+        start_frame = int(round(float(start_seconds) / chunk_sec)) * FRAMES_PER_CHUNK
+        total_frames = None
+        if end_seconds is not None:
+            total_frames = int(round(float(end_seconds) / chunk_sec)) * FRAMES_PER_CHUNK
+        return infer_video_metadata(
+            paths,
+            start_frame_index=start_frame,
+            total_num_frames=total_frames,
+        )
 
     # ── User content (v12.12 reorder: stable text first, vision after) ──
     user_content = []
@@ -311,6 +328,9 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                 "type": "video", "video": paths,
                 "min_pixels": _RTKW["min_pixels"],
                 "max_pixels": _RTKW["max_pixels"],
+                "video_metadata": _metadata_for_frame_paths(
+                    paths, vw["video_start"], vw["video_end"],
+                ),
             })
         elif "frame_indices" in vw and video_path:
             if require_pre:
@@ -358,6 +378,9 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                 "type": "video", "video": paths,
                 "min_pixels": _RTKW["min_pixels"],
                 "max_pixels": _RTKW["max_pixels"],
+                "video_metadata": _metadata_for_frame_paths(
+                    paths, rf["time_range"][0], rf["time_range"][1],
+                ),
             })
         elif video_path and not require_pre:
             user_content.append({
@@ -426,7 +449,21 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
             if "frame_paths" in rf:
                 paths = [str(base_path / p) if not Path(p).is_absolute() else p
                          for p in rf["frame_paths"]]
-                tool_payload.append({"type": "video", "video": paths})
+                try:
+                    from scripts.agent_data_v5.config import (
+                        RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                    )
+                except ImportError:
+                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+                tool_payload.append({
+                    "type": "video",
+                    "video": paths,
+                    "min_pixels": _RTKW["min_pixels"],
+                    "max_pixels": _RTKW["max_pixels"],
+                    "video_metadata": _metadata_for_frame_paths(
+                        paths, rf["time_range"][0], rf["time_range"][1],
+                    ),
+                })
             elif video_path and not require_pre:
                 tool_payload.append({
                     "type": "video", "video": video_path,
@@ -558,7 +595,8 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
                 if isinstance(meta, dict):
                     video_metadata.append(meta)
                 elif isinstance(frames, list) and frames:
-                    video_metadata.append({"total_num_frames": len(frames)})
+                    from thinkstream.data.agent_protocol import infer_video_metadata
+                    video_metadata.append(infer_video_metadata(frames))
                 else:
                     has_video_meta = False
 

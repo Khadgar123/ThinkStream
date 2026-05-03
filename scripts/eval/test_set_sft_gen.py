@@ -41,6 +41,20 @@ GOLD_RE = re.compile(r"<response>(.*?)</response>", re.DOTALL)
 RESPONSE_RE = re.compile(r"<response>(.*?)</response>", re.DOTALL)
 
 
+def collect_video_metadata(messages):
+    metas = []
+    for msg in messages:
+        content = msg.get("content", [])
+        if not isinstance(content, list):
+            continue
+        for item in content:
+            if isinstance(item, dict) and item.get("type") == "video":
+                meta = item.get("video_metadata")
+                if isinstance(meta, dict):
+                    metas.append(meta)
+    return metas
+
+
 def detect_model_class(ckpt: str):
     name = ckpt.lower()
     basename = Path(ckpt.rstrip("/")).name.lower()
@@ -176,13 +190,17 @@ def main():
             # Remove assistant turn — keep only system + user
             messages = [m for m in messages if m["role"] != "assistant"]
 
-            inputs = processor.apply_chat_template(
-                messages,
+            template_kwargs = dict(
                 tokenize=True,
                 return_dict=True,
                 return_tensors="pt",
                 add_generation_prompt=True,
+                do_sample_frames=False,
             )
+            video_metadata = collect_video_metadata(messages)
+            if video_metadata:
+                template_kwargs["video_metadata"] = video_metadata
+            inputs = processor.apply_chat_template(messages, **template_kwargs)
             inputs = {
                 k: v.to(model.device) if hasattr(v, "to") else v
                 for k, v in inputs.items()

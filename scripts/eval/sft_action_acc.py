@@ -46,6 +46,20 @@ from thinkstream.sft.argument import DataArguments
 ACTION_RE = re.compile(r"<action>\s*([a-zA-Z_]+)\s*</action>", re.DOTALL)
 
 
+def collect_video_metadata(messages):
+    metas = []
+    for msg in messages:
+        content = msg.get("content", [])
+        if not isinstance(content, list):
+            continue
+        for item in content:
+            if isinstance(item, dict) and item.get("type") == "video":
+                meta = item.get("video_metadata")
+                if isinstance(meta, dict):
+                    metas.append(meta)
+    return metas
+
+
 def parse_output(text: str) -> dict:
     """Extract action keyword + post-action continuation flag.
 
@@ -145,13 +159,17 @@ def main():
                 full = build_per_timestep_messages(s, base_path)
                 msgs = full[:-1]
 
-            inputs = processor.apply_chat_template(
-                msgs,
+            template_kwargs = dict(
                 tokenize=True,
                 return_dict=True,
                 return_tensors="pt",
                 add_generation_prompt=True,
+                do_sample_frames=False,
             )
+            video_metadata = collect_video_metadata(msgs)
+            if video_metadata:
+                template_kwargs["video_metadata"] = video_metadata
+            inputs = processor.apply_chat_template(msgs, **template_kwargs)
             inputs = {k: v.to(model.device) if hasattr(v, "to") else v for k, v in inputs.items()}
 
             prompt_len = inputs["input_ids"].shape[1]

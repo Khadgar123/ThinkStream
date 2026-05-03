@@ -50,8 +50,14 @@ from scripts.eval.ovo.eval_full import (
 )
 
 
-from thinkstream.data.agent_protocol import AGENT_CHUNK_SEC  # canonical (v12.5: 1s/chunk)
-DEFAULT_VISUAL_WINDOW_SEC = 24.0  # 12 chunks × 2s, matches agent_loop default
+from thinkstream.data.agent_protocol import (  # canonical v12.5 timing
+    AGENT_CHUNK_SEC,
+    FRAMES_PER_CHUNK,
+    VISUAL_WINDOW_CHUNKS,
+    infer_video_metadata,
+)
+DEFAULT_VISUAL_WINDOW_SEC = float(VISUAL_WINDOW_CHUNKS * AGENT_CHUNK_SEC)
+DEFAULT_FRAME_FPS = float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC)
 
 
 # ─── Frame sampling ──────────────────────────────────────────────────────────
@@ -61,27 +67,29 @@ def sample_frame_paths(frame_dir: Path,
                        t_start: float, t_end: float, n_frames: int):
     """Pick at most n_frames frame paths from [t_start, t_end].
 
-    Frames are pre-extracted at 1 fps (extract_frames.py): file names look
-    like {basename}/{idx:06d}.jpg where idx is the second offset (0-based).
+    Frames are pre-extracted at the project runtime FPS. Project frame_*.jpg
+    names are 1-based frame indices; plain numeric names are treated as
+    zero-based frame indices.
     """
     if not frame_dir.exists():
         return None
     all_frames = sorted(frame_dir.glob("*.jpg"))
     if not all_frames:
         return None
-    # Filter to [t_start, t_end] by frame index (== second offset).
+    # Filter to [t_start, t_end] by timestamp reconstructed from frame index.
     # Frame files are named frame_{idx:06d}.jpg (1-based) or {idx:06d}.jpg.
     in_range = []
     for fp in all_frames:
         try:
             stem = fp.stem
             if stem.startswith("frame_"):
-                idx = int(stem[6:])
+                frame_idx = int(stem[6:]) - 1
             else:
-                idx = int(stem)
+                frame_idx = int(stem)
         except ValueError:
             continue
-        if t_start <= idx <= t_end:
+        frame_t = max(0, frame_idx) / DEFAULT_FRAME_FPS
+        if t_start <= frame_t <= t_end:
             in_range.append(fp)
     if not in_range:
         return None
@@ -94,6 +102,7 @@ def sample_frame_paths(frame_dir: Path,
 
 
 def build_messages(frame_paths, question):
+    frame_list = list(frame_paths)
     return [
         {
             "role": "system",
@@ -111,7 +120,13 @@ def build_messages(frame_paths, question):
         {
             "role": "user",
             "content": [
-                {"type": "video", "video": frame_paths},
+                {
+                    "type": "video",
+                    "video": frame_list,
+                    "video_metadata": infer_video_metadata(
+                        frame_list, fps=DEFAULT_FRAME_FPS,
+                    ),
+                },
                 {"type": "text", "text": question},
             ],
         },
@@ -125,9 +140,21 @@ def eval_one_probe(model, processor, pad_id,
                    frame_paths, question, max_new_tokens):
     """Single VLM forward. Returns the decoded text."""
     messages = build_messages(frame_paths, question)
+    video_metadata = [
+        item["video_metadata"]
+        for msg in messages
+        for item in msg.get("content", [])
+        if isinstance(item, dict) and item.get("type") == "video"
+        and isinstance(item.get("video_metadata"), dict)
+    ]
+    template_kwargs = dict(
+        tokenize=True, return_dict=True, return_tensors="pt",
+        add_generation_prompt=True, do_sample_frames=False,
+    )
+    if video_metadata:
+        template_kwargs["video_metadata"] = video_metadata
     inputs = processor.apply_chat_template(
-        messages, tokenize=True, return_dict=True, return_tensors="pt",
-        add_generation_prompt=True,
+        messages, **template_kwargs,
     )
     inputs = {k: v.to(model.device) if hasattr(v, "to") else v
               for k, v in inputs.items()}
@@ -360,7 +387,7 @@ def main():
     p.add_argument("--benchmark_json", required=True)
     p.add_argument("--video_root", required=True)
     p.add_argument("--frames_root", default="data/agent_v5/frames",
-                   help="Pre-extracted 1fps frames root (extract_frames.py output)")
+                   help="Pre-extracted frame root")
     p.add_argument("--tasks", default=None,
                    help="Comma-separated subset of OVO tasks (default: all 12)")
     p.add_argument("--n_per_task", type=int, default=None)
@@ -370,7 +397,7 @@ def main():
                    help="Frame budget. Streaming default: 24 (fixed window). "
                         "Offline sweep: 64 / 128 / 256 / 512 / 1024.")
     p.add_argument("--visual_window_sec", type=float, default=DEFAULT_VISUAL_WINDOW_SEC,
-                   help="Window size for streaming mode (default: 24s = 12 chunks)")
+                   help="Window size for streaming mode (canonical runtime default)")
     p.add_argument("--max_new_tokens", type=int, default=64)
     p.add_argument("--scoring", default="lenient", choices=["lenient", "strict"],
                    help="lenient (default): first-matching-token wins. strict: "

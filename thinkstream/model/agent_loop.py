@@ -515,7 +515,8 @@ def make_generate_fn(
                         video_metadata.append(meta)
                     elif isinstance(frames, list) and frames:
                         # auto-fill so VideoMetadata() doesn't crash on empty dict
-                        video_metadata.append({"total_num_frames": len(frames)})
+                        from thinkstream.data.agent_protocol import infer_video_metadata
+                        video_metadata.append(infer_video_metadata(frames))
                     else:
                         has_video_meta = False
         template_kwargs = dict(

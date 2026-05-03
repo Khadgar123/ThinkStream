@@ -1,6 +1,7 @@
 """PASS 4 — Trajectory-grouped jsonl emission for v12 RL + streaming benchmark.
 
-This is the FINAL pipeline step. Reads tagged samples from data/agent_v5/
+This is the trajectory-grouping step before pass5 message conversion. It reads
+tagged samples from data/agent_v5/
 verified/ (output of pass3e_verify) and groups them by (video_id,
 trajectory_id) into the per-split files in data/agent_v5/final/.
 
@@ -20,18 +21,16 @@ WHY trajectory grouping:
 WHAT THIS SCRIPT DOES:
   - Reuses the EXISTING per-video split (read from train_sft.jsonl /
     train_rl.jsonl / val.jsonl / test.jsonl which already have video_id).
-  - For each video in each split, loads data/agent_v5/verified/{video}.json
-    (47,174 samples total — pre-cap, post-quality-filter).
+  - For each video in each split, loads data/agent_v5/verified/{video}.json.
   - Groups samples by (video_id, trajectory_id), preserves chunk order.
   - Emits trajectory-grouped jsonl: one row = one trajectory.
 
 OUTPUT FILES (data/agent_v5/final/):
-  train_sft_trajectories.jsonl    — SFT-side trajectories (109 videos)
-  train_rl_trajectories.jsonl     — RL-side trajectories (109 videos)
-  val_trajectories.jsonl          — val-side trajectories (47 videos)
-  test_trajectories.jsonl         — test-side trajectories (47 videos)
-  train_sft_full.jsonl            — SFT-side FLAT single-step (~18,229 rows,
-                                    11.2x recovery vs train_sft.jsonl=1,635 cap)
+  train_sft_trajectories.jsonl    — SFT-side trajectories
+  train_rl_trajectories.jsonl     — RL-side trajectories
+  val_trajectories.jsonl          — val-side trajectories
+  test_trajectories.jsonl         — test-side trajectories
+  train_sft_full.jsonl            — SFT-side flat single-step rows
   trajectories_manifest.json      — per-split stats + video lists
 
 EACH ROW (jsonl):
@@ -231,6 +230,7 @@ def _build_trajectory_record(
             "gold_answer": meta.get("gold_answer", ""),
             "canonical_answer": meta.get("canonical_answer", ""),
             "answer_form": meta.get("answer_form", ""),
+            "question_type": meta.get("question_type", ""),
             "availability": meta.get("availability", ""),
             "support_chunks": list(meta.get("support_chunks") or []),
             "gold_compress_chunks": list(meta.get("gold_compress_chunks") or []),
@@ -316,6 +316,7 @@ def _build_trajectory_record(
             "gold_answer": lf_meta.get("gold_answer", ""),
             "canonical_answer": lf_meta.get("canonical_answer", ""),
             "answer_form": lf_meta.get("answer_form", ""),
+            "question_type": lf_meta.get("question_type", ""),
             "availability": lf_meta.get("availability", ""),
             "support_chunks": lf_meta.get("support_chunks", []),
             "gold_compress_chunks": lf_meta.get("gold_compress_chunks", []),

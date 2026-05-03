@@ -1,8 +1,8 @@
 """
-Configuration for Agent Data Pipeline v6.1.
+Configuration for Agent Data Pipeline v12.15.
 
 All constants, prompts, and schema definitions.
-Matches docs/data_construction_zh.md v6.2.
+This module is the source of truth for runtime data-construction constants.
 """
 
 from pathlib import Path
@@ -49,7 +49,9 @@ FRAMES_PER_CHUNK = 2         # 每 chunk 2 帧
 # v12.5: 12 → 16 chunks. New chunk semantics: 16 chunks × 1s = 16s of visual
 # context (32 frames). Other streaming systems for reference: LiveCC ~240s @
 # 2fps, VideoLLM-online ~unbounded @ 2fps, MMDuet token-budgeted, Streamo
-# 1fps. We're still conservative for the 6-min batch1 footprint, but text
+# 1fps. The current Qwen3-VL visual block uses explicit video_metadata, so
+# timestamps still reflect real 2fps frame indices. We're conservative for
+# the 6-min batch1 footprint, but text
 # memory now comfortably exceeds visual (see RECENT_THINKS_TOKEN_BUDGET).
 VISUAL_WINDOW_CHUNKS = 16    # 视觉窗口 = 最近 16 chunks (16s @ 2fps = 32 帧)
 VISUAL_WINDOW_FRAMES = VISUAL_WINDOW_CHUNKS * FRAMES_PER_CHUNK  # 32 帧
@@ -168,7 +170,7 @@ SUMMARY_TOKENS_MIN = 100            # summary 最短
 # while still keeping memory cost bounded (5 segments × 280 = 1400 tok max).
 SUMMARY_TOKENS_MAX = 280
 COMPRESSION_RATIO_MIN = 2.5        # 最小压缩比
-RECALL_RETURN_FRAMES = 4           # recall 返回 4 帧 (4s at 1fps)
+RECALL_RETURN_FRAMES = 4           # recall returns 4 frames (2s at 2fps)
 MAX_COMPRESSED_SEGMENTS = 5        # 最多保留 5 段压缩
 
 # Per-video candidate limits (controls data volume + API cost)
@@ -210,12 +212,12 @@ MAX_SAMPLES_PER_VIDEO = 0            # v12.9 (2026-04-30): disable cap. pass3c
 # cross-video diversity; question density stays roughly constant by bumping
 # MAX_QUESTIONS_PER_TRAJECTORY 5 → 8.
 MAX_TRAJECTORIES_PER_VIDEO = 1
-# v12.10 (2026-04-30): 8 → 10. After v12.9 per-chunk SFT eliminated the
-# silent shortage problem, q_interval @ 150s was 18.8s (1 q every ~10s
-# avg incl PN1) — slightly sparser than industry norm. VideoLLM-online
-# LiveChat / MMDuet livechat sit at 1 per 7-15s. Bumping to 10 q/traj
-# brings q_interval to 15s on median videos.
-MAX_QUESTIONS_PER_TRAJECTORY = 10
+# v12.15 (2026-05-03): align config with the v2 placement source of truth.
+# The actual count is adaptive, roughly one question per 12 chunks, capped
+# here; short videos still use the v2 floor of 6 questions. This keeps the
+# observed q-interval near the LiveChat/MMDuet 7-15s band while preserving
+# enough family/mechanism diversity per trajectory.
+MAX_QUESTIONS_PER_TRAJECTORY = 14
 MAX_ACTIVE_QUERIES = 2               # unchanged — realistic user behavior
 
 # Backward compat aliases (deprecated — use token-based constants above)
@@ -513,12 +515,7 @@ PASS_CONFIG = {
 # 7. System prompt (4-action protocol)
 # ---------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------
-# 3 Prompt Protocol (v8.0)
-# Each prompt teaches ONE type of decision. No mixed behavior.
-# ---------------------------------------------------------------------------
-
-# NOTE: legacy v11 SYSTEM_PROMPT / SYSTEM_PROMPT_POST_RECALL /
+# NOTE: legacy v8/v11 SYSTEM_PROMPT / SYSTEM_PROMPT_POST_RECALL /
 # SYSTEM_PROMPT_COMPRESS were removed when the codebase consolidated on
 # the v12 Qwen tool protocol. See thinkstream/data/agent_protocol.py:
 # SYSTEM_PROMPT_V12 + TOOLS_SCHEMA for the current single source of truth.
@@ -656,7 +653,8 @@ Rules:
 - Target length: {target_length} tokens
 - Base the summary strictly on the observation text — do not introduce entities, counts, colors, or events not present in the observations
 
-Output JSON: {{"time_range": [{start}, {end}], "text": "..."}}"""
+Output JSON only: {{"time_range": [{start}, {end}], "text": "<concise factual summary>"}}
+Do NOT output literal ellipsis, placeholder text, markdown, or analysis outside the JSON."""
 
 TASK_QUESTION_PROMPT = """Based on this visual evidence:
 Entity: {entity}

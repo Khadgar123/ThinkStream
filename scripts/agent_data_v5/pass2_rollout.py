@@ -26,9 +26,11 @@ from .config import (
     COMPRESS_TOKEN_THRESHOLD,
     COMPRESS_HYSTERESIS_THRESHOLD,
     CONFIDENCE_THRESHOLD,
+    FRAMES_PER_CHUNK,
     OBSERVATION_PROMPT,
     get_tokenizer,
     PASS_CONFIG,
+    RUNTIME_MM_PROCESSOR_KWARGS,
     ROLLOUT_DIR,
     MAX_COMPRESSED_SEGMENTS,
     SUMMARY_TOKENS_MAX,
@@ -37,6 +39,7 @@ from .config import (
     compute_visual_window_start,
 )
 from .pass1a_evidence import get_chunk_frame_paths
+from scripts.agent_data_pipeline.vllm_client import encode_image_base64
 
 logger = logging.getLogger(__name__)
 
@@ -265,6 +268,15 @@ class MemoryState:
 # Observation Generation
 # ---------------------------------------------------------------------------
 
+_META_REASONING_RE = re.compile(
+    r"^\s*(?:"
+    r"the user wants|the task|we need|i need|i should|i will|let'?s|"
+    r"analy[sz]e the frames|looking at the frames|from the frames"
+    r")\b",
+    re.IGNORECASE,
+)
+_PLACEHOLDER_TEXT_RE = re.compile(r"^[.\s…-]+$")
+
 
 def build_observation_request(
     chunk_idx: int,
@@ -306,6 +318,11 @@ def build_observation_request(
     for c in range(window_start, chunk_idx + 1):
         window_frame_paths.extend(get_chunk_frame_paths(frame_paths, c))
 
+    # v12.14: text first, then one video block. Qwen3-VL needs the frames as
+    # a video with metadata so its processor renders per-frame timestamp
+    # anchors. Passing 32 separate image_url items makes the latest/current
+    # second ambiguous inside the sliding window.
+    #
     # v12.12: text first, frames last — opposite of the legacy
     # build_vision_content layout (which kept frames first for early
     # vision-token-position pretraining bias). The Qwen3-VL processor
@@ -315,14 +332,25 @@ def build_observation_request(
     # list inline here rather than reuse build_vision_content (which is
     # still frames-first; pass1a callers depend on that behaviour).
     content: List[Dict] = [{"type": "text", "text": prompt}]
-    for img_path in window_frame_paths:
-        from pathlib import Path as _Path
-        if _Path(img_path).exists():
-            from scripts.agent_data_pipeline.vllm_client import encode_image_base64
-            content.append({
-                "type": "image_url",
-                "image_url": {"url": encode_image_base64(img_path)},
-            })
+    video_frames: List[str] = []
+    frame_indices: List[int] = []
+    for offset, img_path in enumerate(window_frame_paths):
+        if Path(img_path).exists():
+            video_frames.append(encode_image_base64(img_path))
+            frame_indices.append(window_start * FRAMES_PER_CHUNK + offset)
+
+    if video_frames:
+        content.append({
+            "type": "video",
+            "video": video_frames,
+            "min_pixels": RUNTIME_MM_PROCESSOR_KWARGS["min_pixels"],
+            "max_pixels": RUNTIME_MM_PROCESSOR_KWARGS["max_pixels"],
+            "video_metadata": {
+                "fps": float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC),
+                "frames_indices": frame_indices,
+                "total_num_frames": (chunk_idx + 1) * FRAMES_PER_CHUNK,
+            },
+        })
 
     return {
         "messages": [{"role": "user", "content": content}],
@@ -338,6 +366,13 @@ def parse_observation_result(raw: Optional[str]) -> str:
         return "Scene continues without notable changes."
     raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
     raw = raw.strip('"').strip("'").strip()
+    if (
+        not raw
+        or _PLACEHOLDER_TEXT_RE.fullmatch(raw)
+        or _META_REASONING_RE.search(raw)
+        or "the user wants" in raw[:160].lower()
+    ):
+        return "Scene continues without notable changes."
     if len(raw) > 600:
         raw = raw[:600].rsplit(" ", 1)[0]
     return raw
@@ -605,15 +640,44 @@ def build_compress_request(
             "teacher_policy": policy_meta,
             "overlap_chunks": [],
             "has_visual_context": False,
+            "observations_text": obs_text,
         },
     }
+
+
+def _fallback_compress_text(meta: Dict) -> str:
+    """Extract a deterministic summary fallback from the selected observations."""
+    obs = meta.get("observations_text", "")
+    obs = re.sub(r"</?summary[^>]*>", " ", obs)
+    obs = re.sub(r"\[[^\]]+\]\s*", " ", obs)
+    obs = " ".join(obs.split())
+    if not obs:
+        return "Observations recorded during this period."
+    if len(obs) > 700:
+        obs = obs[:700].rsplit(" ", 1)[0]
+    return obs
+
+
+def _is_valid_compress_text(text: object) -> bool:
+    if not isinstance(text, str):
+        return False
+    stripped = text.strip()
+    if not stripped:
+        return False
+    if stripped in {"...", "…", "<summary text here>", "summary text here"}:
+        return False
+    if _PLACEHOLDER_TEXT_RE.fullmatch(stripped):
+        return False
+    if _META_REASONING_RE.search(stripped):
+        return False
+    return True
 
 
 def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
     """Parse compression summary output."""
     default = {
         "time_range": meta["time_range"],
-        "text": "Observations recorded during this period.",
+        "text": _fallback_compress_text(meta),
         "parse_success": False,
     }
 
@@ -624,9 +688,13 @@ def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
 
     try:
         parsed = json.loads(raw)
+        text = parsed.get("text", "")
+        if not _is_valid_compress_text(text):
+            default["_raw"] = raw[:4000]
+            return default
         return {
             "time_range": meta["time_range"],
-            "text": parsed.get("text", ""),
+            "text": text.strip(),
             "parse_success": True,
         }
     except (json.JSONDecodeError, ValueError):
@@ -641,9 +709,13 @@ def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
                     if depth == 0:
                         try:
                             parsed = json.loads(raw[start:i + 1])
+                            text = parsed.get("text", "")
+                            if not _is_valid_compress_text(text):
+                                default["_raw"] = raw[:4000]
+                                return default
                             return {
                                 "time_range": meta["time_range"],
-                                "text": parsed.get("text", ""),
+                                "text": text.strip(),
                                 "parse_success": True,
                             }
                         except (json.JSONDecodeError, ValueError):
@@ -698,13 +770,16 @@ async def run_pass2_single_video(
         # v12.12: pass2 uses RUNTIME profile — same smart_resize bounds as
         # student inference, so teacher and student see identical visual
         # token sequences at every chunk (training-inference parity).
-        from .config import RUNTIME_MM_PROCESSOR_KWARGS
+        enable_thinking = bool(PASS_CONFIG["pass2_rollout"].get("thinking", False))
+        mm_kwargs = dict(RUNTIME_MM_PROCESSOR_KWARGS)
+        mm_kwargs["do_sample_frames"] = False
         raw = await client._call_one(
             messages=request["messages"],
             max_tokens=safe_obs_max,
             temperature=request["temperature"],
             request_id=request["id"],
-            mm_processor_kwargs=RUNTIME_MM_PROCESSOR_KWARGS,
+            enable_thinking=enable_thinking,
+            mm_processor_kwargs=mm_kwargs,
         )
         think_text = parse_observation_result(raw)
         thinks.append({
@@ -733,6 +808,7 @@ async def run_pass2_single_video(
                 max_tokens=safe_comp_max,
                 temperature=comp_request["temperature"],
                 request_id=comp_request["id"],
+                enable_thinking=enable_thinking,
             )
             summary = parse_compress_result(comp_raw, comp_request["_meta"])
             selected_indices = comp_request["_meta"]["selected_indices"]

@@ -46,22 +46,23 @@ STAGE_VERSIONS: Dict[str, str] = {
     #         (verified by visual audit) but missing solo_ ids; bumping
     #         signals downstream that 1b-derived caches need re-derivation
     #         if you regenerate.
-    #   2 stays v12.5 — pass2 logic unchanged.
-    #   3a → v12.11: pass3a card targets bumped (N1 2→4, F6 1→2, F1 3→4),
-    #         FAMILY_TARGETS shape changed → existing card pool stale.
-    #   3b → v12.11: TIER_BONUS + answer_form bonus + PN1_PER_SEC
-    #         duration-normalize + greedy diversity bumps.
-    #   3c → v12.11: emit-every-chunk + render output-fallback fix.
-    #   3e → v12.11: _is_v12_sample detector fix (no longer mistags v12).
-    #   5  → v12.11: pass5 recall turn order + tools= for chat_template.
+    #   2 → v12.14: pass2 now sends Qwen3-VL video blocks with
+    #        video_metadata, explicitly disables thinking, and rejects
+    #        placeholder/meta-reasoning compression outputs.
+    #   3a/3b/3c → v12.15: placement/card simulator randomness now uses
+    #        stable SHA256 hashing instead of Python hash(); pass3a loaders
+    #        also enforce their stage version marker.
+    #   4/5 → v12.15: rendered metadata now preserves question_type, and
+    #        downstream final files must be regenerated from the fixed
+    #        pass3 outputs.
     "1a": "v12.5",
     "1b": "v12.11",
-    "2":  "v12.5",
-    "3a": "v12.11",
-    "3b": "v12.11",
-    "3c": "v12.11",
-    "4":  "v12.11",  # canonical key — verification
-    "5":  "v12.11",  # NEW — pass5_messages render version
+    "2":  "v12.14",
+    "3a": "v12.15",
+    "3b": "v12.15",
+    "3c": "v12.15",
+    "4":  "v12.15",  # canonical key — verification
+    "5":  "v12.15",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

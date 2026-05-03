@@ -39,7 +39,7 @@ from eval_baseline import (
 from vllm_engine import make_sampling_params, prepare_vllm_input
 
 
-def _build_messages(datum: dict, frames, options: list,
+def _build_messages(datum: dict, frames, frame_meta: dict, options: list,
                     question_prefix: str, question_postfix: str) -> tuple:
     if "options" in datum and datum["options"]:
         query = (
@@ -48,10 +48,13 @@ def _build_messages(datum: dict, frames, options: list,
         )
     else:
         query = datum["question"]
+    video_item = {"type": "video", "video": frames}
+    if isinstance(frame_meta.get("video_metadata"), dict):
+        video_item["video_metadata"] = frame_meta["video_metadata"]
     messages = [{
         "role": "user",
         "content": [
-            {"type": "video", "video": frames},
+            video_item,
             {"type": "text", "text": query},
         ],
     }]
@@ -123,7 +126,8 @@ def offline_predict_mcq_vllm(
                 raise ValueError(f"No frames loaded from {video_path}")
 
             messages, query = _build_messages(
-                datum, frames, options, question_prefix, question_postfix,
+                datum, frames, frame_meta, options, question_prefix,
+                question_postfix,
             )
             req = prepare_vllm_input(messages, processor, tools=tools_for_template)
 

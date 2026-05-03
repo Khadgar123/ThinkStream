@@ -356,6 +356,9 @@ def save_cards(video_id: str, cards: List[Dict],
 
 def load_cards(video_id: str,
                cards_dir: Path = TASK_CARDS_DIR) -> Optional[List[Dict]]:
+    from .cache_version import stage_version_ok
+    if not stage_version_ok("3a"):
+        return None
     p = cards_dir / f"{video_id}.json"
     if not p.exists():
         return None

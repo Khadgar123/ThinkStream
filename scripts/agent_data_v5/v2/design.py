@@ -17,6 +17,9 @@ import random
 from dataclasses import dataclass, field
 from typing import Dict, List, Literal, Optional, Tuple
 
+from ..config import MAX_QUESTIONS_PER_TRAJECTORY as CONFIG_MAX_QUESTIONS_PER_TRAJECTORY
+from ..stable_hash import stable_mod
+
 
 # ---------------------------------------------------------------------------
 # Constants (mirrors agent_data_v5/config.py + adds new ones)
@@ -54,8 +57,8 @@ BACKWARD_MID_RECALL_PROB = 0.6      # 60% recall, 40% direct in mid band
 # multi_emit ask runway before first emit
 ME_LEAD_RANGE = (2, 8)
 
-# Production trajectory caps (matches existing config.py constants)
-MAX_QUESTIONS_PER_TRAJECTORY = 14    # absolute cap; actual count is adaptive
+# Production trajectory caps (config.py is the source of truth for max cap)
+MAX_QUESTIONS_PER_TRAJECTORY = CONFIG_MAX_QUESTIONS_PER_TRAJECTORY
 MIN_QUESTIONS_PER_TRAJECTORY = 6     # floor for very short videos
 MAX_TRAJECTORIES_PER_VIDEO = 1
 AGENT_CHUNK_SEC = 1                  # seconds per chunk
@@ -332,7 +335,7 @@ def place_single_emit(card: Card, num_chunks: int, rng: random.Random) -> List[P
     if profile == "realtime":
         # Stratified fresh gap — sample one band (rotated by card id for spread)
         band_choice = (SE_FRESH_TRIVIAL, SE_FRESH_EASY, SE_FRESH_MEDIUM)[
-            abs(hash(card.card_id)) % 3
+            stable_mod(card.card_id, modulo=3)
         ]
         ask = _ask_from_band(emit, band_choice, num_chunks, rng, sign=+1)
         if ask is None:

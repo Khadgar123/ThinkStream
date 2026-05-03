@@ -24,6 +24,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from ..stable_hash import stable_seed
 from .cards import generate_cards
 from .design import (
     AGENT_CHUNK_SEC,
@@ -91,7 +92,7 @@ def simulate_one_video(
     compression_event_chunks: Optional[List[int]] = None,
 ) -> Dict:
     """Run v2 pipeline for one video. Returns aggregated metrics + raw samples."""
-    rng = random.Random(seed + abs(hash(video_id)) % 1_000_000)
+    rng = random.Random(stable_seed(seed, video_id, modulo=1_000_000))
 
     cards = generate_cards(evidence, video_id, seed=seed)
 

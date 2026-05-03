@@ -195,9 +195,12 @@ class VLLMClient:
         data = resp.json()
         msg = data["choices"][0]["message"]
         content = msg.get("content") or ""
-        # vLLM without --reasoning-parser puts thinking in "reasoning" and leaves content null
-        if not content:
-            content = msg.get("reasoning", "")
+        # vLLM without --reasoning-parser can put thinking in "reasoning" and
+        # leave content null. Only use that fallback when the caller did not
+        # explicitly disable thinking; otherwise we would inject hidden CoT into
+        # pass outputs.
+        if not content and enable_thinking is not False:
+            content = msg.get("reasoning", "") or msg.get("reasoning_content", "")
         usage = data.get("usage") or {}
         return content, usage.get("prompt_tokens", 0), usage.get("completion_tokens", 0)
 

@@ -102,6 +102,30 @@ def prepare_vllm_input(
         return_video_metadata=True,
     )
 
+    explicit_video_metadata: List[Dict] = []
+    for msg in messages:
+        content = msg.get("content", [])
+        if not isinstance(content, list):
+            continue
+        for item in content:
+            if isinstance(item, dict) and item.get("type") == "video":
+                meta = item.get("video_metadata")
+                if isinstance(meta, dict):
+                    explicit_video_metadata.append(meta)
+
+    if video_inputs is not None and explicit_video_metadata:
+        fixed_video_inputs = []
+        for i, video_input in enumerate(video_inputs):
+            if (
+                i < len(explicit_video_metadata)
+                and isinstance(video_input, tuple)
+                and len(video_input) == 2
+            ):
+                fixed_video_inputs.append((video_input[0], explicit_video_metadata[i]))
+            else:
+                fixed_video_inputs.append(video_input)
+        video_inputs = fixed_video_inputs
+
     mm_data: Dict[str, Any] = {}
     if image_inputs is not None:
         mm_data["image"] = image_inputs

@@ -14,12 +14,13 @@ import hashlib
 import random
 from typing import Dict, List, Optional, Tuple
 
+from ..stable_hash import stable_mod, stable_seed
 from .design import Card, GoldEmit, MULTI_EMIT_ADOPT_RATE
 
 
 # Family taxonomy aligned with OVOBench (MC-dominant) + 3-bucket profile.
 # Total target ~14 cards/video (was 20.9) — gives the trajectory selector
-# a 1.4× headroom over MAX_QUESTIONS_PER_TRAJECTORY=10 for diversity scoring
+# a small headroom over MAX_QUESTIONS_PER_TRAJECTORY for diversity scoring
 # without wasting LLM budget on cards that get dropped.
 #
 # Bucket allocation (matches PLACEMENT_PROFILE in design.py):
@@ -426,7 +427,7 @@ def gen_mc_card(
     ]
 
     rotation = ["A", "B", "C", "D"]
-    family_offset = abs(hash(video_id + family)) % 4
+    family_offset = stable_mod(video_id, family, modulo=4)
     cards = []
     for i, (c, ents, facts) in enumerate(bins):
         if ents:
@@ -506,7 +507,7 @@ def gen_m1_summary(evidence: List[Dict], video_id: str) -> List[Card]:
 
 
 def generate_cards(evidence: List[Dict], video_id: str, seed: int = 42) -> List[Card]:
-    rng = random.Random(seed + abs(hash(video_id)) % (10**6))
+    rng = random.Random(stable_seed(seed, video_id, modulo=10**6))
     cards: List[Card] = []
     # MC families (OVOBench bulk) — one per family per video
     for fam in sorted(MC_FAMILIES):

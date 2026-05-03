@@ -22,6 +22,7 @@ from typing import Dict, List, Optional
 
 from .config import PLACEMENTS_DIR
 from .pass3a_cards import dict_to_card
+from .stable_hash import stable_seed
 from .v2.design import (
     Placement,
     adaptive_q_count,
@@ -76,7 +77,7 @@ async def compute_all_placements(
     No LLM calls. Profile-driven, model-agnostic — depends only on each
     card's (gold_emits, grounding_frames) and the video length.
     """
-    rng = random.Random(seed + abs(hash(video_id)) % 1_000_000)
+    rng = random.Random(stable_seed(seed, video_id, modulo=1_000_000))
     num_chunks = int(rollout.get("num_chunks", 0))
     cards_obj = [dict_to_card(c) for c in cards]
 
@@ -140,6 +141,9 @@ def save_placements(video_id: str, data: Dict,
 
 def load_placements(video_id: str,
                     placements_dir: Path = PLACEMENTS_DIR) -> Optional[Dict]:
+    from .cache_version import stage_version_ok
+    if not stage_version_ok("3b"):
+        return None
     p = placements_dir / f"{video_id}.json"
     if not p.exists():
         return None

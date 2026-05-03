@@ -12,7 +12,8 @@ train/inference format identity.
 
 import json
 import re
-from typing import Dict, List, Optional
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Sequence
 
 # ---------------------------------------------------------------------------
 # Constants (canonical values, importable by all consumers)
@@ -31,6 +32,50 @@ except ImportError:
     AGENT_CHUNK_SEC = 1
     VISUAL_WINDOW_CHUNKS = 16
     FRAMES_PER_CHUNK = 2
+
+
+def infer_video_metadata(
+    frames: Sequence[Any],
+    *,
+    fps: Optional[float] = None,
+    start_frame_index: int = 0,
+    total_num_frames: Optional[int] = None,
+) -> Dict:
+    """Infer Qwen3-VL video metadata for pre-sampled frame lists.
+
+    Qwen3-VL uses ``fps`` + ``frames_indices`` to render text-layer timestamp
+    anchors for video frames. Project frame files are normally named
+    ``frame_000001.jpg`` (1-based), so this helper converts those names back to
+    zero-based indices. Non-path frame objects fall back to a contiguous range
+    starting at ``start_frame_index``.
+    """
+    eff_fps = float(fps or (FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)))
+    frame_seq = list(frames) if frames is not None else []
+    indices: List[int] = []
+
+    for offset, frame in enumerate(frame_seq):
+        idx: Optional[int] = None
+        if isinstance(frame, (str, Path)):
+            stem = Path(str(frame)).stem
+            raw = stem[6:] if stem.startswith("frame_") else stem
+            if raw.isdigit():
+                parsed = int(raw)
+                # Project frame_*.jpg files are 1-based. Plain numeric names
+                # are left as-is because some eval frame dumps use 0-based
+                # second offsets such as 000000.jpg, 000001.jpg.
+                if stem.startswith("frame_"):
+                    parsed -= 1
+                idx = max(0, parsed)
+        if idx is None:
+            idx = int(start_frame_index) + offset
+        indices.append(int(idx))
+
+    inferred_total = max(indices) + 1 if indices else len(frame_seq)
+    return {
+        "fps": eff_fps,
+        "frames_indices": indices,
+        "total_num_frames": int(total_num_frames or inferred_total),
+    }
 
 # ---------------------------------------------------------------------------
 # Memory Formatting
@@ -648,7 +693,13 @@ def has_compress_trigger(user_text: str) -> bool:
 
 
 def extract_compress_trigger_range(user_text: str) -> Optional[List[int]]:
-    """Extract [start, end] from <compress_trigger range='a-b'/>. Returns None if absent."""
+    """Extract a legacy trigger range if present.
+
+    Current v12 data uses boolean ``<compress_trigger/>`` and puts the gold
+    range only in the assistant compress tool_call. This parser is retained
+    for archived v11/v12.0 samples and eval fixtures that still carry a
+    range attribute.
+    """
     m = re.search(
         r"<compress_trigger\s+range\s*=\s*['\"]?(\d+)\s*-\s*(\d+)['\"]?\s*/?>",
         user_text or "",

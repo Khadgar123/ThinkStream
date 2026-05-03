@@ -509,7 +509,8 @@ def rollout(
                     if isinstance(meta, dict):
                         video_metadata.append(meta)
                     elif isinstance(frames, list) and frames:
-                        video_metadata.append({"total_num_frames": len(frames)})
+                        from thinkstream.data.agent_protocol import infer_video_metadata
+                        video_metadata.append(infer_video_metadata(frames))
                     else:
                         has_video_meta = False
         template_kwargs = dict(

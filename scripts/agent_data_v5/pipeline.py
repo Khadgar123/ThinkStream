@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from .progress import ProgressTracker
+from .stable_hash import stable_seed
 from .config import (
     AGENT_CHUNK_SEC,
     ALL_DIRS,
@@ -37,6 +38,57 @@ from .config import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _require_stage_cache(
+    label: str,
+    cache_map: Dict[str, object],
+    videos: List[Dict],
+) -> None:
+    """Fail fast when a skipped stage lacks valid per-video cache.
+
+    A skipped pass means the user expects current on-disk caches to be used.
+    Continuing with partial caches silently shrinks the corpus and can produce
+    empty final files, so missing/stale caches are treated as hard errors.
+    """
+    expected = [str(v.get("video_id", "")) for v in videos if v.get("video_id")]
+    missing = [vid for vid in expected if vid not in cache_map]
+    if missing:
+        preview = ", ".join(missing[:10])
+        suffix = "..." if len(missing) > 10 else ""
+        raise RuntimeError(
+            f"{label}: missing or stale cache for {len(missing)}/"
+            f"{len(expected)} selected videos: {preview}{suffix}"
+        )
+    if expected and not cache_map:
+        raise RuntimeError(f"{label}: no valid cache entries loaded")
+
+
+def _require_nonempty(label: str, items) -> None:
+    if not items:
+        raise RuntimeError(f"{label}: empty output; aborting to avoid bad final data")
+
+
+def _write_quality_audit(path: Path, label: str) -> None:
+    """Write a distribution/quality audit report for a generated JSONL file."""
+    if not path.exists():
+        logger.warning("Quality audit skipped for %s: file missing: %s", label, path)
+        return
+    from .audit_distribution import audit_jsonl, diagnose
+    report = audit_jsonl(path)
+    flags = diagnose(report)
+    AUDIT_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = AUDIT_DIR / f"{label}_quality_report.json"
+    out_path.write_text(json.dumps(
+        {"report": report, "flags": flags},
+        indent=2, ensure_ascii=False,
+    ))
+    logger.info("Quality audit written: %s", out_path)
+    for flag in flags:
+        logger.warning("  [%s audit] %s", label, flag)
+    blockers = [f for f in flags if str(f).startswith("BLOCKER")]
+    if blockers:
+        raise RuntimeError(f"{label} quality audit blockers: {blockers}")
 
 
 # ---------------------------------------------------------------------------
@@ -418,12 +470,44 @@ async def run_pipeline(
     from scripts.agent_data_v5.config import FPS, FRAMES_PER_CHUNK
     frames_dir = DATA_ROOT / "frames"
     video_frames = {}
+    valid_videos = []
+    skipped_zero_chunk = []
     for v in videos:
         v_frames_dir = frames_dir / v["video_id"]
         frames = extract_frames(v["video_path"], v_frames_dir, fps=FPS)
-        video_frames[v["video_id"]] = frames
         num_chunks = len(frames) // FRAMES_PER_CHUNK
+        if num_chunks <= 0:
+            skipped_zero_chunk.append({
+                "video_id": v["video_id"],
+                "video_path": v.get("video_path", ""),
+                "n_frames": len(frames),
+                "frames_per_chunk": FRAMES_PER_CHUNK,
+            })
+            logger.error(
+                "  [%s] skipped: extracted %d frames < FRAMES_PER_CHUNK=%d",
+                v["video_id"], len(frames), FRAMES_PER_CHUNK,
+            )
+            continue
+        video_frames[v["video_id"]] = frames
         v["num_chunks"] = num_chunks
+        valid_videos.append(v)
+
+    videos = valid_videos
+    if skipped_zero_chunk:
+        AUDIT_DIR.mkdir(parents=True, exist_ok=True)
+        skipped_path = AUDIT_DIR / "skipped_zero_chunk_videos.json"
+        skipped_path.write_text(json.dumps(
+            skipped_zero_chunk, indent=2, ensure_ascii=False
+        ))
+        logger.error(
+            "Skipped %d zero-chunk videos; details saved to %s",
+            len(skipped_zero_chunk), skipped_path,
+        )
+    if not videos:
+        raise RuntimeError(
+            "No valid videos after frame extraction; every selected video had "
+            "fewer frames than one chunk."
+        )
 
     logger.info(f"Frame extraction complete. {sum(len(f) for f in video_frames.values())} total frames.")
 
@@ -472,6 +556,7 @@ async def run_pipeline(
             cached = load_1b(v["video_id"])
             if cached:
                 evidence_map[v["video_id"]] = cached
+        _require_stage_cache("PASS 1-B (--skip_pass 1)", evidence_map, videos)
 
     if run_2:
         from .pass2_rollout import load_rollout, run_pass2_single_video, save_rollout
@@ -495,6 +580,7 @@ async def run_pipeline(
             cached = load_rollout(v["video_id"])
             if cached:
                 rollout_map[v["video_id"]] = cached
+        _require_stage_cache("PASS 2 (--skip_pass 2)", rollout_map, videos)
 
     if run_1 or run_2:
         # v12.11 (2026-05-01): refactor — replace per-video chained pipeline
@@ -594,6 +680,7 @@ async def run_pipeline(
                 ev = load_1b(v["video_id"])
                 if ev is not None:
                     evidence_map[v["video_id"]] = ev
+            _require_stage_cache("PASS 1-B (--skip_pass 1)", evidence_map, videos)
 
         # ─── Wave 3: Pass 2 (streaming rollout) ───────────────────────────
         if run_2:
@@ -610,11 +697,23 @@ async def run_pipeline(
                     evidence=evidence_map.get(vid),
                     chunk_log_path=pass2_chunk_log,
                 )
+                n_thinks = len(rollout.get("thinks") or [])
+                if n_thinks <= 0:
+                    await tracker_p2.record(
+                        success=False, video_id=vid,
+                        thinks=0,
+                        compressions=len(rollout.get("compression_events") or []),
+                    )
+                    logger.error(
+                        "  [%s] PASS 2 produced no thinks; not saving cache",
+                        vid,
+                    )
+                    return vid, None
                 save_rollout(vid, rollout)
                 await tracker_p2.record(
-                    success=True, video_id=vid,
-                    thinks=len(rollout["thinks"]),
-                    compressions=len(rollout["compression_events"]),
+                    success=n_thinks > 0, video_id=vid,
+                    thinks=n_thinks,
+                    compressions=len(rollout.get("compression_events") or []),
                 )
                 return vid, rollout
 
@@ -683,6 +782,10 @@ async def run_pipeline(
 
         results = await asyncio.gather(*[process_video_3a(v) for v in videos])
         cards_map = {vid: cards for vid, cards in results}
+        _require_nonempty(
+            "PASS 3-A task cards",
+            [c for cards in cards_map.values() for c in (cards or [])],
+        )
         tracker_3a.summary()
         from .cache_version import write_stage_version
         write_stage_version("3a")
@@ -693,9 +796,10 @@ async def run_pipeline(
             cached = load_cards(v["video_id"])
             if cached:
                 cards_map[v["video_id"]] = cached
+        _require_stage_cache("PASS 3-A (--skip_pass 3)", cards_map, videos)
 
     # =================================================================
-    # PASS 3-B: Placement + Trajectory Planning (LLM visibility)
+    # PASS 3-B: Placement + Trajectory Planning (programmatic)
     # =================================================================
     if 3 not in skip_pass:
         from .pass3b_placement import (
@@ -704,7 +808,7 @@ async def run_pipeline(
         )
 
         logger.info("=" * 60)
-        logger.info("PASS 3-B: Placement + Trajectory Planning (LLM visibility)")
+        logger.info("PASS 3-B: Placement + Trajectory Planning (programmatic)")
         logger.info("=" * 60)
 
         trajectories_map = {}
@@ -716,22 +820,15 @@ async def run_pipeline(
                 return vid, cached
             if vid not in cards_map or vid not in rollout_map or vid not in evidence_map:
                 return vid, None
-            # LLM visibility checks inside (independent per card, high concurrency)
+            # Programmatic placement; the client argument is kept only for
+            # backward-compatible function signatures.
             placements = await compute_all_placements(
                 cards_map[vid], rollout_map[vid], evidence_map[vid],
-                client=client_3b, video_id=vid,
+                client=None, video_id=vid,
             )
             vid_cards = {c["card_id"]: c for c in cards_map[vid]}
             nc = rollout_map[vid]["num_chunks"]
-            # v12.11 audit-4 P1 #2 fix (2026-05-01): Python's built-in
-            # hash() randomizes per-process via PYTHONHASHSEED, so two runs
-            # with the same --seed produce different traj_seeds → different
-            # trajectories. Use deterministic SHA256 over video_id text.
-            import hashlib
-            vid_hash = int(
-                hashlib.sha256(str(vid).encode("utf-8")).hexdigest()[:8], 16
-            )
-            traj_seed = seed * 10_000 + (vid_hash & 0xFFFFFF)
+            traj_seed = stable_seed(seed * 10_000, vid, modulo=0x1000000)
             trajectories = plan_trajectories(
                 placements, cards_map=vid_cards,
                 num_chunks=nc, evidence=evidence_map[vid],
@@ -747,6 +844,10 @@ async def run_pipeline(
                 trajectories_map[vid] = data
 
         logger.info(f"Pass 3-B complete: {sum(len(d.get('trajectories',[])) for d in trajectories_map.values())} trajectories")
+        _require_nonempty(
+            "PASS 3-B trajectories",
+            [t for d in trajectories_map.values() for t in d.get("trajectories", [])],
+        )
         from .cache_version import write_stage_version
         write_stage_version("3b")
     else:
@@ -756,6 +857,11 @@ async def run_pipeline(
             cached = load_placements(v["video_id"])
             if cached:
                 trajectories_map[v["video_id"]] = cached
+        _require_stage_cache("PASS 3-B (--skip_pass 3)", trajectories_map, videos)
+        _require_nonempty(
+            "PASS 3-B trajectories (--skip_pass 3)",
+            [t for d in trajectories_map.values() for t in d.get("trajectories", [])],
+        )
 
     # =================================================================
     # PASS 3-C: Trajectory Sample Generation
@@ -832,6 +938,7 @@ async def run_pipeline(
         for vid, vid_samples in results_3c:
             all_samples.extend(vid_samples)
 
+        _require_nonempty("PASS 3-C samples", all_samples)
         tracker_3c.summary()
         from .cache_version import write_stage_version
         write_stage_version("3c")
@@ -841,7 +948,29 @@ async def run_pipeline(
         for v in videos:
             cached = load_samples(v["video_id"])
             if cached:
+                for s in cached:
+                    s.setdefault("video_id", v["video_id"])
+                    s.setdefault("video_path", v.get("video_path", ""))
                 all_samples.extend(cached)
+        sample_vids = {
+            str(s.get("video_id") or "")
+            for s in all_samples
+            if s.get("video_id")
+        }
+        missing_sample_vids = [
+            str(v.get("video_id"))
+            for v in videos
+            if str(v.get("video_id")) not in sample_vids
+        ]
+        if missing_sample_vids:
+            preview = ", ".join(missing_sample_vids[:10])
+            suffix = "..." if len(missing_sample_vids) > 10 else ""
+            raise RuntimeError(
+                "PASS 3-C (--skip_pass 3): missing or stale samples for "
+                f"{len(missing_sample_vids)}/{len(videos)} selected videos: "
+                f"{preview}{suffix}"
+            )
+        _require_nonempty("PASS 3-C samples (--skip_pass 3)", all_samples)
 
     # =================================================================
     # RENDER: Convert raw samples into SFT-ready format (BEFORE Pass4)
@@ -877,6 +1006,7 @@ async def run_pipeline(
         rendered_samples.extend(rendered)
 
     logger.info(f"Rendered {len(rendered_samples)} samples from {len(raw_by_vid)} videos")
+    _require_nonempty("RENDER samples", rendered_samples)
 
     # =================================================================
     # PASS 3-E: Verify + TAG (no drops — preserves trajectory continuity)
@@ -904,6 +1034,7 @@ async def run_pipeline(
     logger.info(f"Action dist: {stats['action_distribution']}")
     logger.info(f"Difficulty dist: {stats['difficulty_distribution']}")
     logger.info(f"Trajectory check failures: {stats['trajectory_check_failures']}/{stats['trajectories']}")
+    _require_nonempty("PASS 3-E tagged samples", tagged_samples)
 
     # Save ALL tagged samples per video (not just passed)
     verified_by_vid = {}
@@ -1012,6 +1143,7 @@ async def run_pipeline(
         sft_samples.extend(vid_samples)
 
     logger.info(f"Rendered {len(sft_samples)} SFT samples from {len(verified_by_vid)} videos")
+    _require_nonempty("POST-FILTER SFT samples", sft_samples)
 
     # --- Distribution audit ---
     sample_counts = [v["count"] for v in per_video_stats.values()]
@@ -1176,6 +1308,9 @@ async def run_pipeline(
                 f.write(json.dumps(s, ensure_ascii=False) + "\n")
         logger.info(f"  {split_name}: {len(split_data)} samples → {path}")
 
+    _write_quality_audit(FINAL_DIR / "train_sft.jsonl", "train_sft")
+    _write_quality_audit(FINAL_DIR / "train_rl.jsonl", "train_rl")
+
     # Per-category diagnostic split files (NOT a training curriculum).
     # v11 production trains on phase5_train.jsonl (= all train samples).
     # The 1/2/C1 splits exist only for per-category ablation eval.
@@ -1259,11 +1394,13 @@ async def run_pipeline(
         # the broad try/except below silently swallows → pass4 never runs →
         # downstream pass5 has no train_*_trajectories.jsonl input → SFT
         # default dataset stays missing. Match pass5's argv-isolation idiom.
+        pass4_ok = False
         try:
             from scripts.agent_data_v5 import pass4 as _pass4_mod
             _sys.argv = ["pass4"]
             try:
                 _pass4_mod.main()
+                pass4_ok = True
             finally:
                 _sys.argv = _argv_backup
         except SystemExit as _e:
@@ -1271,6 +1408,11 @@ async def run_pipeline(
         except Exception as e:
             logger.error(f"pass4 failed: {e}; SFT/RL default datasets may be missing")
             _sys.argv = _argv_backup
+        if pass4_ok:
+            _write_quality_audit(
+                FINAL_DIR / "train_rl_trajectories.jsonl",
+                "train_rl_trajectories",
+            )
 
         logger.info("=" * 60)
         logger.info("PASS 5: messages-format conversion (LLaMA-Factory ShareGPT)")
@@ -1322,7 +1464,7 @@ def main():
     run_parser.add_argument("--skip_pass", type=int, nargs="*", default=[])
     run_parser.add_argument(
         "--force_rerun_from",
-        choices=["1a", "1b", "2", "3a", "3b", "3c", "4"],
+        choices=["1a", "1b", "2", "3a", "3b", "3c", "4", "5"],
         default=None,
         help="Delete cache for this stage and all downstream stages, forcing regeneration.",
     )

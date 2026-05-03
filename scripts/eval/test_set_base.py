@@ -11,8 +11,8 @@ Modes (--mode):
                offline VLM can do given full information?"
   streaming  — only the visual_window slice the streaming agent sees,
                i.e. the last visual_window_chunks*agent_chunk_sec
-               seconds before the decision (default 12*2=24 sec, 24
-               frames @ 1fps). This is the apples-to-apples baseline:
+               seconds before the decision (canonical runtime defaults).
+               This is the apples-to-apples baseline:
                "given the SAME visual context our agent has at decision
                time, what does base produce?" — the relevant comparison
                for measuring what the agent protocol adds.
@@ -57,6 +57,12 @@ from transformers import AutoProcessor
 
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import update_processor_pixels
+from thinkstream.data.agent_protocol import (
+    AGENT_CHUNK_SEC,
+    FRAMES_PER_CHUNK,
+    VISUAL_WINDOW_CHUNKS,
+    infer_video_metadata,
+)
 
 
 GOLD_RE = re.compile(r"<response>(.*?)</response>", re.DOTALL)
@@ -204,9 +210,19 @@ def build_messages(question, frames=None, recall_frames=None):
     """
     user_content = []
     if frames:
-        user_content.append({"type": "video", "video": list(frames)})
+        frame_list = list(frames)
+        user_content.append({
+            "type": "video",
+            "video": frame_list,
+            "video_metadata": infer_video_metadata(frame_list),
+        })
     if recall_frames:
-        user_content.append({"type": "video", "video": list(recall_frames)})
+        recall_list = list(recall_frames)
+        user_content.append({
+            "type": "video",
+            "video": recall_list,
+            "video_metadata": infer_video_metadata(recall_list),
+        })
     user_content.append({"type": "text", "text": question})
     return [
         {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT}]},
@@ -214,14 +230,34 @@ def build_messages(question, frames=None, recall_frames=None):
     ]
 
 
+def _collect_video_metadata(messages):
+    metas = []
+    for msg in messages:
+        content = msg.get("content", [])
+        if not isinstance(content, list):
+            continue
+        for item in content:
+            if isinstance(item, dict) and item.get("type") == "video":
+                meta = item.get("video_metadata")
+                if isinstance(meta, dict):
+                    metas.append(meta)
+    return metas
+
+
 def run_inference(
     model, processor, messages, *,
     max_new_tokens, num_samples=1, temperature=0.7, top_p=0.95, pad_id=None,
 ):
     """Run a single batched generate. Returns list of decoded strings (len = num_samples)."""
+    template_kwargs = dict(
+        tokenize=True, return_dict=True, return_tensors="pt",
+        add_generation_prompt=True, do_sample_frames=False,
+    )
+    video_metadata = _collect_video_metadata(messages)
+    if video_metadata:
+        template_kwargs["video_metadata"] = video_metadata
     inputs = processor.apply_chat_template(
-        messages, tokenize=True, return_dict=True, return_tensors="pt",
-        add_generation_prompt=True,
+        messages, **template_kwargs,
     )
     inputs = {
         k: v.to(model.device) if hasattr(v, "to") else v
@@ -309,15 +345,15 @@ def main():
         "--max_frames",
         type=int,
         default=None,
-        help="Override frame count. Defaults: offline=64, streaming=24",
+        help="Override frame count. Defaults: offline=64, streaming=visual_window_chunks*frames_per_chunk",
     )
     p.add_argument(
         "--visual_window_chunks",
         type=int,
-        default=12,
+        default=VISUAL_WINDOW_CHUNKS,
         help="Window length for --mode streaming (chunks of agent_chunk_sec).",
     )
-    p.add_argument("--agent_chunk_sec", type=float, default=2.0)
+    p.add_argument("--agent_chunk_sec", type=float, default=float(AGENT_CHUNK_SEC))
     p.add_argument("--video_root", default=None)
     p.add_argument("--scoring", default="lenient", choices=["lenient", "strict"],
                    help="lenient (default): first-matching-token wins (yes/no, "
@@ -336,7 +372,7 @@ def main():
 
     if args.max_frames is None:
         args.max_frames = 64 if args.mode == "offline" else (
-            args.visual_window_chunks * 2
+            args.visual_window_chunks * FRAMES_PER_CHUNK
         )
 
     Cls = detect_model_class(args.ckpt)

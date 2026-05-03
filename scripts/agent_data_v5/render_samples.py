@@ -185,7 +185,7 @@ def render_sample(
     - visual_window structure (computed from chunk_idx)
     - metadata with gold_action/gold_answer (from cards_map)
 
-    `all_frame_paths` is the per-video flat frame list (1fps extracted
+    `all_frame_paths` is the per-video flat frame list (2fps extracted
     earlier in the pipeline). When provided, recall_response samples get
     `recalled_frames.frame_paths` populated so the SFT loader feeds actual
     historical frames into the model — matching what inference does. If
@@ -219,10 +219,9 @@ def render_sample(
 
     # For compress samples, remember the gold compressed-chunks set so
     # RL/eval can score the model's <summary> time_range against the
-    # teacher's choice. pass3c already injected the chunk-index
-    # ``<compress_trigger range='a-b'/>`` into sample.user_input (matching
-    # the assistant tool_call arguments.time_range), so we must NOT
-    # overwrite it here.
+    # teacher's choice. pass3c injects only the boolean
+    # ``<compress_trigger/>`` signal into sample.user_input; the gold range
+    # lives in the assistant tool_call output and must be derived from memory.
     gold_compress_chunks: List[int] = []
     if sample.get("action") == "compress":
         for event in rollout.get("compression_events", []):
@@ -277,6 +276,7 @@ def render_sample(
         # answer (signal that it's a multi-probe pre-event chunk).
         "canonical_answer": canonical,
         "answer_form": card.get("answer_form", ""),
+        "question_type": card.get("question_type", ""),
         "family": card.get("family", ""),
         "availability": sample.get("sequence_type", ""),
         "support_chunks": card.get("support_chunks", []),

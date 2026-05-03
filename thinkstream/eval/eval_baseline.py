@@ -258,6 +258,12 @@ def _load_video_frames(
         "start_frame": int(start_frame),
         "end_frame": int(end_frame),
         "sampled": int(n_sample),
+        "frame_indices": [int(i) for i in indices.tolist()],
+        "video_metadata": {
+            "fps": float(fps),
+            "frames_indices": [int(i) for i in indices.tolist()],
+            "total_num_frames": int(total_frames),
+        },
     }
     return [Image.fromarray(f) for f in frames], meta
 
@@ -400,7 +406,11 @@ def offline_predict_mcq(
                 {
                     "role": "user",
                     "content": [
-                        {"type": "video", "video": frames},
+                        {
+                            "type": "video",
+                            "video": frames,
+                            "video_metadata": frame_meta["video_metadata"],
+                        },
                         {"type": "text", "text": query},
                     ],
                 }
@@ -409,10 +419,14 @@ def offline_predict_mcq(
             text = processor.apply_chat_template(
                 messages, tokenize=False, add_generation_prompt=True
             )
-            inputs = processor(
+            processor_kwargs = dict(
                 text=[text], images=None, videos=[frames],
                 padding=True, return_tensors="pt",
-            ).to(model.device)
+            )
+            if "Qwen3" in processor.__class__.__name__:
+                processor_kwargs["video_metadata"] = [frame_meta["video_metadata"]]
+                processor_kwargs["do_sample_frames"] = False
+            inputs = processor(**processor_kwargs).to(model.device)
 
             debug_record["input_ids_len"] = inputs["input_ids"].shape[1]
 
