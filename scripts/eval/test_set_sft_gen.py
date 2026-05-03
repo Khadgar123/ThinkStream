@@ -33,9 +33,13 @@ from transformers import AutoProcessor, AutoTokenizer
 
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
-    build_per_timestep_messages_v12 as build_per_timestep_messages,
+    _resolve_video_paths,
     update_processor_pixels,
 )
+from scripts.agent_data_v5.pass5_messages import (
+    build_messages as build_per_timestep_messages,
+)
+from thinkstream.trainer.outcome_match import score_outcome_by_form
 
 GOLD_RE = re.compile(r"<response>(.*?)</response>", re.DOTALL)
 RESPONSE_RE = re.compile(r"<response>(.*?)</response>", re.DOTALL)
@@ -107,7 +111,46 @@ def score(pred_text, gold, kind):
         return bool(m) and m.group() == gold
     if kind == "letter":
         return pred[:1].upper() == gold.upper()
-    return False
+    return score_outcome_by_form(
+        pred,
+        gold_answer=gold,
+        answer_form="descriptive",
+    ) >= 0.5
+
+
+def _sample_answer_form(sample, kind):
+    meta = sample.get("metadata") or {}
+    form = sample.get("answer_form") or meta.get("answer_form") or ""
+    if form:
+        return form
+    return {
+        "yes_no": "binary",
+        "int": "number",
+        "letter": "multiple_choice",
+        "descriptive": "descriptive",
+    }.get(kind, "descriptive")
+
+
+def score_sample(pred_text, sample, gold, kind):
+    if not pred_text or not gold:
+        return False
+    meta = sample.get("metadata") or {}
+    answer_form = _sample_answer_form(sample, kind)
+    options = sample.get("options") or meta.get("options") or []
+    correct_option = (
+        sample.get("correct_option")
+        if sample.get("correct_option") is not None
+        else meta.get("correct_option", "")
+    )
+    if answer_form == "multiple_choice" and not options and kind == "letter":
+        return score(pred_text, gold, kind)
+    return score_outcome_by_form(
+        pred_text,
+        options=options,
+        correct_option=correct_option,
+        gold_answer=gold,
+        answer_form=answer_form,
+    ) >= 0.5
 
 
 def extract_response_from_generation(text):
@@ -171,12 +214,12 @@ def main():
             continue
         gold = extract_gold(s)
         kind = gold_kind(gold)
-        if kind in ("yes_no", "int", "letter"):
+        if gold is not None and kind is not None:
             scorable.append(s)
 
     if args.n and 0 < args.n < len(scorable):
         scorable = scorable[: args.n]
-    print(f"Filtered {len(scorable)} scorable samples")
+    print(f"Filtered {len(scorable)} form-aware scorable samples")
 
     root_path = Path(args.test_jsonl).resolve().parent.parent.parent.parent
     results = []
@@ -185,8 +228,14 @@ def main():
 
     for i, s in enumerate(scorable):
         try:
-            # Build messages from input only (no assistant output)
-            messages = build_per_timestep_messages(s, root_path)
+            # Build messages from input only (no assistant output). Prefer the
+            # pass5 LLaMA-Factory/DeepEyes messages already stored in current
+            # datasets; fall back to the canonical pass5 builder for flat rows.
+            messages = (
+                _resolve_video_paths(s["messages"], root_path)
+                if "messages" in s
+                else build_per_timestep_messages(s, root_path)
+            )
             # Remove assistant turn — keep only system + user
             messages = [m for m in messages if m["role"] != "assistant"]
 
@@ -220,13 +269,15 @@ def main():
             pred_response = extract_response_from_generation(text)
             gold = extract_gold(s)
             kind = gold_kind(gold)
-            correct = score(pred_response, gold, kind)
+            answer_form = _sample_answer_form(s, kind)
+            correct = score_sample(pred_response, s, gold, kind)
 
             results.append({
                 "idx": i,
                 "sample_id": s.get("sample_id") or s.get("trajectory_id"),
                 "sample_type": s.get("sample_type"),
                 "kind": kind,
+                "answer_form": answer_form,
                 "gold": gold,
                 "pred_raw": text[:500],
                 "pred_response": pred_response[:300],

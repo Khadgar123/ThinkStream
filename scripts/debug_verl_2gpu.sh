@@ -50,7 +50,12 @@ mkdir -p "${OUTPUT_DIR}"
 # ── Synthetic trajectory data — generate if missing.
 TRAJ_DIR="${PROJECT_DIR}/data/test_rl"
 TRAJ_JSONL="${TRAJ_DIR}/synthetic_trajectories.jsonl"
-TRAIN_PARQUET="${TRAJ_DIR}/synthetic_train.parquet"
+MULTI_Q="${MULTI_Q:-1}"
+if [[ "${MULTI_Q}" == "1" ]]; then
+    TRAIN_PARQUET="${TRAJ_DIR}/synthetic_train_multi_q.parquet"
+else
+    TRAIN_PARQUET="${TRAJ_DIR}/synthetic_train_single_q.parquet"
+fi
 mkdir -p "${TRAJ_DIR}"
 if [[ ! -f "${TRAJ_JSONL}" || "${REGEN_DATA:-0}" == "1" ]]; then
     echo "[debug] generating synthetic trajectories → ${TRAJ_JSONL}"
@@ -58,9 +63,9 @@ if [[ ! -f "${TRAJ_JSONL}" || "${REGEN_DATA:-0}" == "1" ]]; then
 fi
 if [[ ! -f "${TRAIN_PARQUET}" || "${REGEN_DATA:-0}" == "1" ]]; then
     # MULTI_Q=1 → 1 video = 1 row (OVOBench-aligned, all questions co-evaluated).
-    # MULTI_Q=0 (default) → legacy (video, question) flatten.
+    # MULTI_Q=0 → legacy (video, question) flatten for ablations only.
     MULTI_Q_FLAG=""
-    if [[ "${MULTI_Q:-0}" == "1" ]]; then
+    if [[ "${MULTI_Q}" == "1" ]]; then
         MULTI_Q_FLAG="--multi_q"
         echo "[debug] building MULTI-Q parquet → ${TRAIN_PARQUET}"
     else

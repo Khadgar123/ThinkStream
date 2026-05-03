@@ -1,7 +1,7 @@
 """Per-timestep agent SFT trainer.
 
 Only keeps what we actually use:
-- WeightedSFTTrainer: per-sample loss weighting by action type
+- WeightedSFTTrainer: assistant-span CE + audit metrics
 - create_optimizer: per-component learning rate (vision_tower_lr, mm_projector_lr)
 - print_trainable_parameters: debugging utility
 
@@ -36,7 +36,7 @@ IGNORE_INDEX = -100
 
 
 # ---------------------------------------------------------------------------
-# Per-sample weighted loss Trainer
+# Assistant-span SFT Trainer
 # ---------------------------------------------------------------------------
 
 class WeightedSFTTrainer(Trainer):

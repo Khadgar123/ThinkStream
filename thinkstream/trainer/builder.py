@@ -175,6 +175,10 @@ def build_hf_deepspeed_train() -> Node:
 @TRAINER_BUILDERS.register(key="grpo")
 @builder
 def build_grpo_train() -> Node:
+    raise RuntimeError(
+        "Legacy slyme GRPO trainer is retired. Use the verl launcher: "
+        "bash scripts/grpo_train_verl.sh."
+    )
     scope = grpo_scope()
     train_data_scope = {
         "dataset": Ref("train_dataset"),

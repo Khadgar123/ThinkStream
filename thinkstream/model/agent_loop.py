@@ -986,6 +986,8 @@ class StreamingAgentLoop:
                         tool_user_content.append({
                             "type": "video",
                             "video": recalled_frames["frame_paths"],
+                            "min_pixels": self.min_pixels,
+                            "max_pixels": self.max_pixels,
                             "video_metadata": {
                                 "fps": float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
                                 "frames_indices": [
@@ -995,6 +997,7 @@ class StreamingAgentLoop:
                                 "total_num_frames": int(
                                     tr_end / float(AGENT_CHUNK_SEC)
                                 ) * FRAMES_PER_CHUNK,
+                                "do_sample_frames": False,
                             },
                         })
                 rr_json = _json.dumps({

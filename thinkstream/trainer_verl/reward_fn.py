@@ -100,9 +100,18 @@ def compute_thinkstream_reward(
     answer_chunk = extra_info.get("answer_chunk")
     gold_answer = ground_truth.get("gold_answer", "")
     answer_form = ground_truth.get("answer_form", "")
+    options = ground_truth.get("options") or extra_info.get("options") or []
+    correct_option = (
+        ground_truth.get("correct_option")
+        if ground_truth.get("correct_option") is not None
+        else extra_info.get("correct_option", "")
+    )
 
     outcome = compute_outcome_reward_v12(
-        final_answer, gold_answer, answer_form=answer_form,
+        final_answer, gold_answer,
+        answer_form=answer_form,
+        options=options,
+        correct_option=correct_option,
     )
     timing = compute_timing_reward_v12(
         answer_chunk,

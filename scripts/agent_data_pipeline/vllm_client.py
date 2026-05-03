@@ -1,7 +1,8 @@
 """
 Async vLLM client with concurrency control and throughput monitoring.
 
-Handles both text-only and vision (image) requests via OpenAI-compatible API.
+Handles text-only, image, and pre-sampled-video requests via the
+OpenAI-compatible API.
 Automatically manages concurrency to maximize throughput without OOM.
 
 Usage:
@@ -78,7 +79,13 @@ def encode_image_base64(image_path: str) -> str:
 def build_content_with_images(
     text: str, image_paths: Optional[List[str]] = None
 ) -> list:
-    """Build OpenAI-format content list with text and optional images."""
+    """Build OpenAI-format content list with text and optional images.
+
+    Streaming pass2 does not use this helper: it sends a single
+    {"type": "video"} block made from pre-extracted frame data URIs plus
+    video_metadata. That path avoids server-side raw-video decoding and lets
+    Qwen3-VL receive official fps/frames_indices timestamp anchors.
+    """
     content = []
     if image_paths:
         for img_path in image_paths:

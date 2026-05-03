@@ -349,6 +349,7 @@ def build_observation_request(
                 "fps": float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC),
                 "frames_indices": frame_indices,
                 "total_num_frames": (chunk_idx + 1) * FRAMES_PER_CHUNK,
+                "do_sample_frames": False,
             },
         })
 

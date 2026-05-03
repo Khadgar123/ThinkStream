@@ -1,11 +1,8 @@
 #!/bin/bash
 # 2-GPU SFT debug launcher — verifies input/output/loss/update/save pipeline.
 #
-# NOTE on resolution: this script targets data/agent_v5_current_backup/final
-# (v12.5 SFT data). The pixel budgets below (min=100352, max=150528) match
-# THAT backup. For v12.13 data (data/agent_v5/final/), use:
-#   --video_min_pixels 130000 --video_max_pixels 220000
-# matching scripts/agent_data_v5/config.py:RUNTIME_MM_PROCESSOR_KWARGS.
+# NOTE on resolution: use the same runtime profile as pass2/pass5/RL/eval:
+# 130k-220k pixels and fps=2.0 for 1s chunks × 2 frames/chunk.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -54,9 +51,9 @@ torchrun --nproc_per_node=2 \
     --model_max_length 4096 \
     --max_sample_tokens 3000 \
     --torch_empty_cache_steps 1 \
-    --video_min_pixels 100352 \
-    --video_max_pixels 150528 \
-    --video_fps 1.0 \
+    --video_min_pixels 130000 \
+    --video_max_pixels 220000 \
+    --video_fps 2.0 \
     --report_to none \
     --dataloader_num_workers 0
 

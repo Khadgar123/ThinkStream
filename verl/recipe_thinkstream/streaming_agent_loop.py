@@ -280,7 +280,8 @@ def _build_visual_window(
     Returns:
       flat_paths:     all frame paths in window order (window_start..N)
       video_metadata: Qwen3-VL metadata dict (fps, frames_indices,
-                      total_num_frames) — drives MROPE temporal anchor
+                      total_num_frames, do_sample_frames=False) — drives
+                      MROPE temporal anchor for pre-sampled frames
       window_start_chunk, window_end_chunk
 
     `mode` selects the windowing strategy (see _compute_window_start).
@@ -300,6 +301,7 @@ def _build_visual_window(
             window_start * frames_per_chunk + i for i in range(n_frames)
         ],
         "total_num_frames": (chunk_idx + 1) * frames_per_chunk,
+        "do_sample_frames": False,
     }
     return flat_paths, metadata, window_start, window_end
 
@@ -815,6 +817,7 @@ def _register_streaming_agent_loop():
                             for i in range(len(recalled_frame_paths))
                         ],
                         "total_num_frames": (tr_end_chunk + 1) * self.frames_per_chunk,
+                        "do_sample_frames": False,
                     },
                 }
             return {

@@ -29,8 +29,8 @@ torchrun --nproc_per_node=${NPROC} \
     --bf16 True \
     --model_max_length 16384 \
     --max_sample_tokens 12000 \
-    --video_min_pixels 100352 \
-    --video_max_pixels 150528 \
-    --video_fps 1.0 \
+    --video_min_pixels 130000 \
+    --video_max_pixels 220000 \
+    --video_fps 2.0 \
     --dataloader_num_workers 4 \
     --output_dir "${PROJECT_DIR}/output/agent-sft-test-eval"

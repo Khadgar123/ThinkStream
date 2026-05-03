@@ -218,7 +218,7 @@ def check_sft(a: Audit):
     # v12.12 (2026-05-02): RUNTIME profile (was 100352/150528)
     a.check("Default video_max_pixels == 220_000", da.video_max_pixels == 220_000)
     a.check("Default video_min_pixels == 130_000", da.video_min_pixels == 130_000)
-    a.check("Default video_fps == 1.0", da.video_fps == 1.0)
+    a.check("Default video_fps == 2.0", da.video_fps == 2.0)
     a.check("max_sample_tokens == 12000 (legacy filter)",
             da.max_sample_tokens == 12000)
 

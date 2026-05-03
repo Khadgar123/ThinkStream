@@ -50,9 +50,9 @@ torchrun --nproc_per_node=2 \
     --max_sample_tokens 3000 \
     --torch_empty_cache_steps 1 \
     --dataloader_num_workers 4 \
-    --video_min_pixels 100352 \
-    --video_max_pixels 150528 \
-    --video_fps 1.0 \
+    --video_min_pixels 130000 \
+    --video_max_pixels 220000 \
+    --video_fps 2.0 \
     --report_to wandb \
     --run_name agent-sft-debug \
     --protocol_version v12 \
@@ -63,7 +63,7 @@ torchrun --nproc_per_node=2 \
 echo ""
 echo "SFT debug complete. Checking checkpoint..."
 
-# ── RL debug (1 epoch, tiny budget) ──────────────────────────────────
+# ── RL debug (verl, tiny budget) ─────────────────────────────────────
 SFT_OUT="${PROJECT_DIR}/output/agent-sft-debug"
 if [ ! -d "${SFT_OUT}" ]; then
     echo "WARNING: No SFT output dir ${SFT_OUT}, skipping RL."
@@ -72,41 +72,18 @@ fi
 CKPT="${SFT_OUT}"
 echo "Using SFT output: ${CKPT}"
 
-RL_ENTRY="${PROJECT_DIR}/thinkstream/train.py"
-CUDA_VISIBLE_DEVICES=6,7 \
-torchrun --nproc_per_node=2 \
-    "${RL_ENTRY}" grpo \
-    --args.train.deepspeed "${DEEPSPEED}" \
-    --args.model.name_or_path "${CKPT}" \
-    --args.model.model_type qwen3vl \
-    --args.data.dataset_use stream_agent_rl_traj \
-    --args.train.output_dir "${PROJECT_DIR}/output/agent-grpo-debug" \
-    --args.train.num_train_epochs 1 \
-    --args.train.max_steps 30 \
-    --args.train.per_device_train_batch_size 1 \
-    --args.train.gradient_accumulation_steps 1 \
-    --args.train.learning_rate 5e-7 \
-    --args.train.weight_decay 0.0 \
-    --args.train.warmup_ratio 0.03 \
-    --args.train.max_grad_norm 1.0 \
-    --args.train.lr_scheduler_type cosine \
-    --args.train.save_steps 30 \
-    --args.train.bf16 True \
-    --args.train.group_size 4 \
-    --args.train.micro_batch_size 2 \
-    --args.train.beta 1e-3 \
-    --args.train.rollout_max_new_tokens 128 \
-    --args.train.rollout_max_think_tokens 60 \
-    --args.train.rollout_temperature 1.0 \
-    --args.train.rollout_top_k 50 \
-    --args.train.rollout_top_p 0.95 \
-    --args.train.rollout_max_chunks 100 \
-    --args.train.rollout_min_pixels 100352 \
-    --args.train.rollout_max_pixels 150528 \
-    --args.train.rollout_fpc 2.0 \
-    --args.train.time_reward_window 5 \
-    --args.train.time_reward_slack 3.0 \
-    --args.train.dataloader.num_workers 4 \
-    --args.train.dataloader.pin_memory True
+LLM="${CKPT}" \
+CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-6,7}" \
+NPROC=2 \
+GROUP_SIZE="${GROUP_SIZE:-2}" \
+BATCH_SIZE="${BATCH_SIZE:-1}" \
+PPO_MINI_BS="${PPO_MINI_BS:-1}" \
+MAX_CHUNKS="${MAX_CHUNKS:-8}" \
+MAXLEN="${MAXLEN:-4096}" \
+MAX_NEW_TOKEN="${MAX_NEW_TOKEN:-4096}" \
+MULTI_Q="${MULTI_Q:-1}" \
+RUN_NAME="${RUN_NAME:-agent-verl-debug}" \
+THINKSTREAM_OUTPUT_DIR="${PROJECT_DIR}/output/agent-verl-debug" \
+bash "${SCRIPT_DIR}/grpo_train_verl.sh"
 
 echo "RL debug complete."

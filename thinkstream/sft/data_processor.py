@@ -1,13 +1,14 @@
 """Per-timestep agent SFT data processor.
 
-Based on Qwen3-VL official finetune data_processor.py, adapted for
-per-timestep independent samples. Each sample = one inference step snapshot.
+Based on Qwen3-VL official finetune data processing, adapted to the
+LLaMA-Factory/DeepEyes ShareGPT messages format emitted by pass5. Each sample
+is one inference-step snapshot with assistant-span CE labels only.
 
 Key differences from standard VLM SFT:
-- Input is structured pipeline JSON (not conversations format)
+- Input is pre-rendered ShareGPT messages, not ad-hoc flat JSON
 - Messages contain <memory>, <visual_window>, <recalled_frames> tags
-- Per-sample loss weight by action type
-- Single assistant turn per sample (per-timestep design)
+- Labels mask prompt/tool/user tokens and train only assistant spans
+- Samples are independent per-timestep snapshots
 
 See docs/sft_engineering.md §2 and docs/data_construction_zh.md §13.
 """
@@ -61,11 +62,9 @@ def _estimate_sample_tokens(sample: Dict) -> int:
       (1) Messages format (post-pass5): sum text in content + count video frames
       (2) Flat format: parse input.{system,memory,queries,visual_window} fields
 
-    Vision token cost per frame matches config.VISUAL_TOKENS_PER_CHUNK / 2
-    = ~128 tokens at v12.5 resolution (min_pixels=100352, merge_size=2).
-    The earlier 256 figure assumed a higher resolution (~150k pixels)
-    and led to ~2× over-estimate, falsely flagging in-budget samples as
-    overlong.
+    Vision token cost per frame tracks the runtime 130k-220k pixel profile
+    (2 fps, merge_size=2). The estimate is intentionally conservative; it
+    only needs to rank samples for length grouping and overlong filtering.
     """
     _VIS_TOK_PER_FRAME = 128  # matches config.VISUAL_TOKENS_PER_CHUNK / FRAMES_PER_CHUNK
 

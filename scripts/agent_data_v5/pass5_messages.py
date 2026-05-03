@@ -191,6 +191,7 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                         window_start * _FPC + i for i in range(n_frames)
                     ],
                     "total_num_frames": (chunk_idx + 1) * _FPC,
+                    "do_sample_frames": False,
                 },
             })
         elif "frame_indices" in vw and video_path:
@@ -247,6 +248,7 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                         int(tr0 * _FPC) + i for i in range(n_rf)
                     ],
                     "total_num_frames": int(tr1 * _FPC),
+                    "do_sample_frames": False,
                 },
             })
         elif video_path:
@@ -329,12 +331,20 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                 )
                 tr_start, tr_end = rf["time_range"]
                 n_rf = len(rf["frame_paths"])
+                try:
+                    from scripts.agent_data_v5.config import (
+                        RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                    )
+                except ImportError:
+                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
                 # historical frame indices = (tr_start_chunk * FRAMES_PER_CHUNK +
                 # 0..n_rf-1), mirrors the original encoding at recall time.
                 tr_start_chunk = int(tr_start / float(_CHUNK_SEC))
                 tool_payload.append({
                     "type": "video",
                     "video": _resolve_paths(rf["frame_paths"], base_path),
+                    "min_pixels": _RTKW["min_pixels"],
+                    "max_pixels": _RTKW["max_pixels"],
                     "video_metadata": {
                         "fps": float(_FPC / float(_CHUNK_SEC)),
                         "frames_indices": [
@@ -343,6 +353,7 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                         # total_num_frames anchors the timestamp scale; use
                         # tr_end_chunk * FRAMES_PER_CHUNK as ceiling.
                         "total_num_frames": int(tr_end / float(_CHUNK_SEC)) * _FPC,
+                        "do_sample_frames": False,
                     },
                 })
             elif video_path:

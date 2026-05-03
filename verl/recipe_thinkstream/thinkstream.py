@@ -705,6 +705,12 @@ def compute_score(
     gt = _coerce_ground_truth(ground_truth)
     gold_answer = gt.get("gold_answer", "") or extra.get("gold_answer", "")
     answer_form = gt.get("answer_form", "") or extra.get("answer_form", "")
+    options = gt.get("options") or extra.get("options") or []
+    correct_option = (
+        gt.get("correct_option")
+        if gt.get("correct_option") is not None
+        else extra.get("correct_option", "")
+    )
     ask_chunks = gt.get("ask_chunks") or extra.get("ask_chunks") or []
     visible_start = gt.get("visible_start_chunk")
     visible_end = gt.get("visible_end_chunk")
@@ -759,7 +765,11 @@ def compute_score(
     parts: Dict[str, float] = {}
     try:
         parts["outcome"] = rewards["outcome"](
-            final_answer, gold_answer, answer_form=answer_form
+            final_answer,
+            gold_answer,
+            answer_form=answer_form,
+            options=options,
+            correct_option=correct_option,
         )
         parts["timing"] = rewards["timing"](answer_chunk, visible_start, visible_end)
         parts["format"] = rewards["format"](chunks)

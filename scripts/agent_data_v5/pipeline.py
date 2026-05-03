@@ -1439,7 +1439,7 @@ async def run_pipeline(
     logger.info(f"Output: {FINAL_DIR}")
     logger.info("Next:")
     logger.info("  SFT: bash scripts/sft_per_timestep.sh   (reads train_sft_messages.jsonl)")
-    logger.info("  RL:  bash scripts/grpo_train.sh         (reads train_rl_trajectories.jsonl)")
+    logger.info("  RL:  bash scripts/grpo_train_verl.sh    (builds/reads train_rl_multi_q.parquet)")
     logger.info("=" * 60)
 
     return stats

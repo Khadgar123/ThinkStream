@@ -1,5 +1,5 @@
 #!/bin/bash
-# End-to-end SFT + RL training pipeline for ThinkStream agent v12.5.
+# End-to-end SFT + verl RL training pipeline for ThinkStream agent v12.5.
 #
 # Features:
 #   - Uninterruptible (run inside tmux/screen)
@@ -119,7 +119,7 @@ else
 fi
 
 # ------------------------------------------------------------------
-# Phase 2: RL (GRPO)
+# Phase 2: RL (verl GRPO)
 # ------------------------------------------------------------------
 echo ""
 echo "============================================"
@@ -134,7 +134,8 @@ rl_cmd="LLM=${best_ckpt} \
     EPOCHS=${EPOCHS_RL} \
     BETA=${BETA} \
     RUN_NAME=${RL_RUN_NAME} \
-    bash ${SCRIPT_DIR}/grpo_train.sh"
+    MULTI_Q=${MULTI_Q:-1} \
+    bash ${SCRIPT_DIR}/grpo_train_verl.sh"
 
 echo "RL command:"
 echo "${rl_cmd}"

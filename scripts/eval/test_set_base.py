@@ -28,10 +28,9 @@ Modes (--mode):
                recall_required / too_hard / unknown.  Use this to filter
                training data into the GRPO Goldilocks band (~30-70%).
 
-Only scores Yes/No, integer, and single-letter responses (587 of 1,600
-test samples after filtering response/recall_response). Descriptive
-gold responses (323 samples) are skipped because reliable scoring
-requires an LLM judge — out of scope for a quick base baseline.
+Scores response/recall samples with the shared form-aware matcher used by
+RL/eval adapters: MCQ, binary, number, short_exact, and descriptive
+substring fallback are all included.
 
 Single-GPU usage:
     python scripts/eval/test_set_base.py \\
@@ -63,6 +62,7 @@ from thinkstream.data.agent_protocol import (
     VISUAL_WINDOW_CHUNKS,
     infer_video_metadata,
 )
+from thinkstream.trainer.outcome_match import score_outcome_by_form
 
 
 GOLD_RE = re.compile(r"<response>(.*?)</response>", re.DOTALL)
@@ -175,7 +175,49 @@ def score(pred_text, gold, kind, scoring="lenient"):
         return bool(m) and m.group() == gold
     if kind == "letter":
         return pred[:1].upper() == gold.upper()
-    return False  # descriptive: not scored
+    return score_outcome_by_form(
+        pred,
+        gold_answer=gold,
+        answer_form="descriptive",
+    ) >= 0.5
+
+
+def _sample_answer_form(sample, kind):
+    meta = sample.get("metadata") or {}
+    form = sample.get("answer_form") or meta.get("answer_form") or ""
+    if form:
+        return form
+    return {
+        "yes_no": "binary",
+        "int": "number",
+        "letter": "multiple_choice",
+        "descriptive": "descriptive",
+    }.get(kind, "descriptive")
+
+
+def score_sample(pred_text, sample, gold, kind, scoring="lenient"):
+    """Score with the same answer_form dispatcher used by RL/eval adapters."""
+    if not pred_text or not gold:
+        return False
+    if scoring == "strict":
+        return score(pred_text, gold, kind, scoring=scoring)
+    meta = sample.get("metadata") or {}
+    answer_form = _sample_answer_form(sample, kind)
+    options = sample.get("options") or meta.get("options") or []
+    correct_option = (
+        sample.get("correct_option")
+        if sample.get("correct_option") is not None
+        else meta.get("correct_option", "")
+    )
+    if answer_form == "multiple_choice" and not options and kind == "letter":
+        return score(pred_text, gold, kind, scoring=scoring)
+    return score_outcome_by_form(
+        pred_text,
+        options=options,
+        correct_option=correct_option,
+        gold_answer=gold,
+        answer_form=answer_form,
+    ) >= 0.5
 
 
 def resolve_video_path(sample, video_root):
@@ -403,12 +445,12 @@ def main():
             continue
         gold = extract_gold(s)
         kind = gold_kind(gold)
-        if kind in ("yes_no", "int", "letter"):
+        if gold is not None and kind is not None:
             scorable.append((s, gold, kind))
 
     if args.n and 0 < args.n < len(scorable):
         scorable = scorable[: args.n]
-    print(f"Filtered {len(scorable)} scorable samples (Yes/No, integer, letter)")
+    print(f"Filtered {len(scorable)} form-aware scorable samples")
 
     results = []
     skipped = 0
@@ -452,7 +494,10 @@ def main():
         except Exception as e:
             print(f"  probe inference failed: {type(e).__name__}: {e}")
             return None, 0
-        n_correct = sum(int(score(t, gold, kind, scoring=args.scoring)) for t in texts)
+        n_correct = sum(
+            int(score_sample(t, s, gold, kind, scoring=args.scoring))
+            for t in texts
+        )
         return (n_correct / len(texts) if texts else None), len(texts)
 
     for i, (s, gold, kind) in enumerate(scorable):
@@ -538,7 +583,8 @@ def main():
                 pad_id=pad_id,
             )[0]
 
-            correct = score(text, gold, kind, scoring=args.scoring)
+            answer_form = _sample_answer_form(s, kind)
+            correct = score_sample(text, s, gold, kind, scoring=args.scoring)
             if args.mode == "offline":
                 vw_start, vw_end = 0.0, float(decision_end)
             else:
@@ -549,6 +595,7 @@ def main():
                 "sample_id": s.get("sample_id") or s.get("trajectory_id"),
                 "sample_type": s.get("sample_type"),
                 "kind": kind,
+                "answer_form": answer_form,
                 "gold": gold,
                 "video_window": [vw_start, vw_end],
                 "pred": text[:300],

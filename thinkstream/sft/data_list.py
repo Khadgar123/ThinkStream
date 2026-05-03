@@ -1,18 +1,12 @@
-"""Dataset registry for the per-timestep agent.
+"""Dataset registry for ThinkStream SFT/eval data.
 
-Production: `stream_agent_p5` (= all train samples mixed). Used by both
-SFT (PHASE=mixed) and GDPO RL (default DATASET in grpo_train.sh).
+Canonical SFT inputs are pass5 LLaMA-Factory/DeepEyes-style ShareGPT
+`*_messages.jsonl` files. Canonical RL inputs are verl parquets built from
+`*_trajectories.jsonl` by scripts/agent_data_v5/build_verl_parquet.py.
 
-Ablation-only diagnostic splits: `stream_agent_p1`, `stream_agent_p2`,
-`stream_agent_c1`. These break the production dataset down by sample
-category (basic / recall / compress) so you can train or eval on a
-single category for ablations. Per the v9.2 paper survey
-(8/8 same-era 2026 works use single-stage SFT), these are NOT a
-training curriculum — production is a single SFT pass on `_p5`.
-
-The old `stream_agent_c2` (model-self-pick range SFT) was removed in
-v11: range exploration moved to RL stage and is supervised by the
-`overflow_pen` reward in `thinkstream/trainer/grpo.py`.
+Older phase/category entries remain only for archived ablations. Do not use
+them as a staged curriculum; production SFT is a single pass over
+`stream_agent_sft`.
 """
 
 from pathlib import Path
@@ -61,29 +55,6 @@ DATASET_REGISTRY = {
         "data_path": "./",
     },
 
-    # ─── SFT / RL split (v11.1, 2026-04-27) ─────────────────────────
-    # train.jsonl is split by video_id (~80/20) into disjoint pools.
-    # See data/agent_v5/final/split_manifest.json for the seed and the
-    # full list of video_ids per side. The SFT pool is what the
-    # per-timestep SFT trainer should consume in production; the RL
-    # pool is the held-out prompt set for GDPO/GRPO.
-    "stream_agent_sft": {
-        "annotation_path": _agent_path("train_sft.jsonl"),
-        "data_path": "./",
-    },
-    "stream_agent_rl": {
-        "annotation_path": _agent_path("train_rl.jsonl"),
-        "data_path": "./",
-    },
-
-    # Held-out validation pool (1,550 samples, video-disjoint from
-    # train_sft / train_rl). Used as eval_dataset to monitor
-    # generalization during SFT — see eval_dataset_use in DataArguments.
-    "stream_agent_val": {
-        "annotation_path": _agent_path("val.jsonl"),
-        "data_path": "./",
-    },
-
     # ─── Ablation-only diagnostic splits ─────────────────────────────
     # Per-category subsets of train samples, for category-specific eval
     # or ablation. Do NOT chain into a curriculum — see module docstring.
@@ -101,15 +72,6 @@ DATASET_REGISTRY = {
     "stream_agent_c1": {
         # Compress samples (system trigger + teacher gold range).
         "annotation_path": _agent_path("c1_train.jsonl"),
-        "data_path": "./",
-    },
-
-    # ─── Eval / held-out sets ────────────────────────────────────────
-    # stream_agent_val is defined above in the SFT/RL split section
-    # (held-out video-disjoint, used as eval_dataset). Test set added
-    # in upstream's eval-monitoring commit.
-    "stream_agent_test": {
-        "annotation_path": _agent_path("test.jsonl"),
         "data_path": "./",
     },
 

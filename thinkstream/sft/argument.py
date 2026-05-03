@@ -2,8 +2,8 @@
 
 Based on Qwen3-VL official finetune arguments, extended with:
 - Agent protocol special tokens
-- Per-sample loss weighting
-- Phase-based curriculum training
+- LLaMA-Factory ShareGPT messages ingestion
+- DeepEyes-style assistant-span loss masking
 """
 
 import transformers
@@ -58,7 +58,7 @@ class DataArguments:
     # in scripts/agent_data_v5/config.py — pass2/SFT/RL/Eval/deploy unified.
     video_max_pixels: int = field(default=220_000)   # ~470x470 area
     video_min_pixels: int = field(default=130_000)   # ~360x360 area
-    video_fps: float = field(default=1.0)
+    video_fps: float = field(default=2.0)
 
     # Per-timestep agent config
     # v12.5: 1s/chunk, 16-chunk visual window (16s @ 2fps = 32 frames).

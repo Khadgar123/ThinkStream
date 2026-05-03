@@ -196,10 +196,10 @@ class OVOBenchAdapter:
 class OurOpenEndedAdapter:
     """Our SFT/RL eval set with metadata.answer_form per sample.
 
-    Routes scoring through compute_outcome_reward_v12 (matches RL reward
-    so eval and RL-time signal stay aligned). For descriptive answers,
-    falls back to fuzzy substring match — caller can pass judge_fn for
-    LLM-as-judge.
+    Routes scoring through the shared form-aware matcher used by the RL
+    reward, so eval and training signal stay aligned. Descriptive answers
+    use the same conservative substring fallback; callers can still pass
+    judge_fn later for LLM-as-judge integrations.
     """
 
     NAME = "our_val"

@@ -21,6 +21,13 @@ if __name__ == "__main__":
         sys.exit(1)
 
     builder_name = sys.argv[1]
+    if builder_name == "grpo":
+        print(
+            "Error: legacy thinkstream/train.py grpo has been retired. "
+            "Use bash scripts/grpo_train_verl.sh or "
+            "bash verl/recipe_thinkstream/run_thinkstream_grpo.sh."
+        )
+        sys.exit(2)
 
     try:
         # Retrieve the builder from the registry

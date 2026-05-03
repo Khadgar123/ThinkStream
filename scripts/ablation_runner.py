@@ -35,7 +35,7 @@ Output:
     plot_silent_response.png silent_acc / response_acc overlay
 
 This script is the ENTRY POINT — it sets reward weights, kicks off the
-slyme RL trainer twice, and aggregates results. It runs on 8×H20 (the
+verl RL trainer twice, and aggregates results. It runs on 8×H20 (the
 RL trainer needs GPUs). For dry-run / config validation only:
 
     python -m scripts.ablation_runner --dry-run
@@ -118,7 +118,7 @@ def validate_config():
 def write_reward_override(out_dir: Path, weights: Dict[str, float]):
     """Write a JSON reward-weight override the trainer picks up via env var.
 
-    The trainer (slyme grpo or verl reward_fn) reads
+    The verl reward function reads
     THINKSTREAM_REWARD_WEIGHTS_PATH if set; otherwise falls back to
     V12_DEFAULT_REWARD_WEIGHTS in gdpo_advantage.py. This file overrides
     only for THIS ablation run — production weights stay untouched.
@@ -146,30 +146,16 @@ def run_one_ablation(
     cfg_dir.mkdir(parents=True, exist_ok=True)
     weights_path = write_reward_override(cfg_dir, weights)
 
-    # Trainer command — slyme RL is launched via the project's
-    # `bash scripts/grpo_train.sh` (not a single Python entry point;
-    # slyme orchestrates multi-node via @node DAG resolution). For verl
-    # backend use `python -m thinkstream.trainer_verl.main_grpo`.
-    #
-    # Reward override path: trainer reads THINKSTREAM_REWARD_WEIGHTS_PATH
-    # at GRPO node init (see thinkstream/trainer/grpo.py — env-driven
-    # weights loading is the only knob ablation_runner can flip without
-    # forking the trainer).
-    backend = os.environ.get("ABLATION_BACKEND", "slyme")
-    if backend == "verl":
-        cmd = [
-            "python", "-m", "thinkstream.trainer_verl.main_grpo",
-            "--config", "recipe/v12_grpo.yaml",
-        ]
-    else:
-        cmd = [
-            "bash", "scripts/grpo_train.sh",
-        ]
+    # Trainer command — verl is the only supported RL backend.
+    cmd = [
+        "bash", "scripts/grpo_train_verl.sh",
+    ]
     env = os.environ.copy()
     env["THINKSTREAM_REWARD_WEIGHTS_PATH"] = str(weights_path)
     env["THINKSTREAM_OUTPUT_DIR"] = str(cfg_dir)
     env["THINKSTREAM_AUDIT_DIR"] = str(cfg_dir / "audit")
     env["MAX_STEPS"] = str(train_steps)
+    env.setdefault("MULTI_Q", "1")
 
     if dry_run:
         logger.info(f"[DRY] {name}: would launch {' '.join(cmd)}")

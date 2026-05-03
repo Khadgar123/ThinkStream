@@ -79,8 +79,8 @@ def baseline_predict_streaming(
     world_size: int = 1,
     model_type: str = "qwen3vl",
     slack_time: float = 3.0,
-    min_pixels: int = 200704,
-    max_pixels: int = 401408,
+    min_pixels: int = 130_000,
+    max_pixels: int = 220_000,
     debug: bool = False,
     debug_dir: str = None,
 ):

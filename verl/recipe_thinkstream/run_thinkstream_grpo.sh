@@ -181,11 +181,9 @@ export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding
 export THINKSTREAM_RECURRENT_MODE="${THINKSTREAM_RECURRENT_MODE:-stitched}"
 export THINKSTREAM_MAX_RECALL_PER_CHUNK="${THINKSTREAM_MAX_RECALL_PER_CHUNK:-1}"
 
-# v12.13 P0: enable ReMemR1 double-layer GRPO (outcome × α + state × (1-α))
-# in the legacy thinkstream/train.py grpo path. The verl path's
-# compute_score (recipe_thinkstream/thinkstream.py:510-513) already does
-# the same α-mix at the trajectory-scalar level, so these are mostly
-# defensive for code paths that read these env vars (telemetry, audits).
+# v12.13 P0: enable ReMemR1-style double-layer GRPO flags for telemetry and
+# compatibility. The retired thinkstream/train.py grpo path no longer runs;
+# verl's compute_score applies the same trajectory-scalar α-mix directly.
 export THINKSTREAM_USE_STATE_ADVANTAGE="${THINKSTREAM_USE_STATE_ADVANTAGE:-1}"
 export THINKSTREAM_ADVANTAGE_MODE="${THINKSTREAM_ADVANTAGE_MODE:-remem}"
 export THINKSTREAM_STATE_REWARD_MODE="${THINKSTREAM_STATE_REWARD_MODE:-format_action}"

@@ -75,6 +75,7 @@ def infer_video_metadata(
         "fps": eff_fps,
         "frames_indices": indices,
         "total_num_frames": int(total_num_frames or inferred_total),
+        "do_sample_frames": False,
     }
 
 # ---------------------------------------------------------------------------
@@ -363,6 +364,7 @@ def build_user_content(
                         for i in range(len(frame_paths))
                     ],
                     "total_num_frames": (chunk_idx + 1) * FRAMES_PER_CHUNK,
+                    "do_sample_frames": False,
                 },
             })
         else:
@@ -406,6 +408,7 @@ def build_user_content(
                         int(tr_start * FRAMES_PER_CHUNK) + i for i in range(n_rf)
                     ],
                     "total_num_frames": int(tr_end * FRAMES_PER_CHUNK),
+                    "do_sample_frames": False,
                 },
             })
         elif video_path:

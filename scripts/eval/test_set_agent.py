@@ -63,6 +63,7 @@ from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
     update_processor_pixels,
 )
+from thinkstream.trainer.outcome_match import score_outcome_by_form
 from scripts.eval.ovo.eval_full import (
     detect_model_class,
     extract_letter, extract_int, is_yes, is_no,
@@ -136,6 +137,43 @@ def score(pred_text, gold, kind):
         let = extract_letter(pred)
         return let is not None and let.upper() == gold.upper()
     return False  # descriptive — not auto-scored
+
+
+def _sample_answer_form(sample, kind):
+    meta = sample.get("metadata") or {}
+    form = sample.get("answer_form") or meta.get("answer_form") or ""
+    if form:
+        return form
+    return {
+        "yes_no": "binary",
+        "int": "number",
+        "letter": "multiple_choice",
+        "descriptive": "descriptive",
+    }.get(kind, "descriptive")
+
+
+def score_sample(pred_text, sample, gold, kind):
+    """Form-aware scoring for MCQ, binary, number, short_exact, descriptive."""
+    if not pred_text or not gold:
+        return False
+    meta = sample.get("metadata") or {}
+    answer_form = _sample_answer_form(sample, kind)
+    options = sample.get("options") or meta.get("options") or []
+    correct_option = (
+        sample.get("correct_option")
+        if sample.get("correct_option") is not None
+        else meta.get("correct_option", "")
+    )
+    # Backward-compatible fast path for legacy flat files without metadata.
+    if answer_form == "multiple_choice" and not options and kind == "letter":
+        return score(pred_text, gold, kind)
+    return score_outcome_by_form(
+        pred_text,
+        options=options,
+        correct_option=correct_option,
+        gold_answer=gold,
+        answer_form=answer_form,
+    ) >= 0.5
 
 
 def resolve_video_path(sample, video_root):
@@ -459,11 +497,11 @@ def main():
             continue
         gold = extract_gold(s)
         kind = gold_kind(gold)
-        if kind in ("yes_no", "int", "letter"):
+        if gold is not None and kind is not None:
             scorable.append((s, gold, kind))
     if args.n and 0 < args.n < len(scorable):
         scorable = scorable[: args.n]
-    print(f"Filtered {len(scorable)} scorable samples (yes_no / int / letter)")
+    print(f"Filtered {len(scorable)} form-aware scorable samples")
 
     results = []
     skipped = 0
@@ -522,7 +560,8 @@ def main():
             if walk is None:
                 skipped += 1
                 continue
-            correct = score(walk["response"], gold, kind)
+            answer_form = _sample_answer_form(s, kind)
+            correct = score_sample(walk["response"], s, gold, kind)
             for k in (kind, "_all"):
                 bucket = by[k]
                 bucket["n"] += 1
@@ -569,7 +608,7 @@ def main():
             results.append({
                 "idx": i,
                 "sample_id": s.get("sample_id") or s.get("trajectory_id"),
-                "kind": kind, "gold": gold,
+                "kind": kind, "answer_form": answer_form, "gold": gold,
                 "ask_chunk": ask_chunk,
                 "response_chunk": walk["response_chunk"],
                 "response": walk["response"][:300],

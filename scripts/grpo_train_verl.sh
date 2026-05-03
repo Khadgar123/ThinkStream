@@ -1,13 +1,8 @@
 #!/bin/bash
-# verl-based GRPO training launcher for ThinkStream — parallel to
-# scripts/grpo_train.sh which uses slyme.
+# verl-based GRPO training launcher for ThinkStream.
 #
-# Why two paths:
-#   - slyme path (grpo_train.sh): proprietary framework; HF rollout backend,
-#     no vLLM bridge yet. Slow (no prefix-caching, no TP).
-#   - verl path (THIS SCRIPT):    open framework; vLLM rollout backend,
-#     prefix-caching, TP, dynamic-bsz, FSDP+offload — 10-30× faster on
-#     long-trajectory rollouts. Cross-validates slyme algorithmically.
+# This is the only supported RL backend. The old slyme/HF-rollout GRPO path
+# has been retired to avoid train/eval drift and duplicate reward logic.
 #
 # verl is vendored at ThinkStream/verl/ (a customized fork of
 # verl-project/verl with our recipe at verl/recipe_thinkstream/). We do NOT
@@ -44,9 +39,11 @@
 #   PARAM_OFFLOAD   — FSDP offload params to CPU (false). Enable for tight HBM.
 #   OPTIMIZER_OFFLOAD — FSDP offload optimizer state (false).
 #   ROLLOUT_BACKEND — rollout backend: vllm | sglang | hf (vllm).
-#   TRAIN_PARQUET / VAL_PARQUET — flattened (video, question) parquets.
-#                  If unset, we auto-build from data/agent_v5/final/*.jsonl
-#                  via scripts/agent_data_v5/build_verl_parquet.py.
+#   TRAIN_PARQUET / VAL_PARQUET — verl parquets. If unset, we auto-build
+#                  from data/agent_v5/final/*.jsonl via
+#                  scripts/agent_data_v5/build_verl_parquet.py.
+#   MULTI_Q        — 1 by default: one video row with all questions.
+#                  Set 0 only for legacy single-question ablations.
 
 set -euo pipefail
 
@@ -73,6 +70,7 @@ BATCH_SIZE=${BATCH_SIZE:-4}
 PPO_MINI_BS=${PPO_MINI_BS:-16}
 LR=${LR:-1e-6}
 EPOCHS=${EPOCHS:-1}
+MAX_STEPS=${MAX_STEPS:-}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
 RUN_NAME=${RUN_NAME:-grpo-v126-verl}
@@ -91,27 +89,33 @@ RECIPE_NAME="thinkstream_grpo"
 OUTPUT_DIR="${THINKSTREAM_OUTPUT_DIR:-${PROJECT_DIR}/output/${RUN_NAME}}"
 TRAIN_JSONL="${TRAIN_JSONL:-${PROJECT_DIR}/data/agent_v5/final/train_rl_trajectories.jsonl}"
 VAL_JSONL="${VAL_JSONL:-${PROJECT_DIR}/data/agent_v5/final/val_trajectories.jsonl}"
+MULTI_Q="${MULTI_Q:-1}"
 
 # verl's RLHFDataset reads parquet; auto-build from JSONL if user didn't
 # supply a parquet directly.
-TRAIN_PARQUET="${TRAIN_PARQUET:-${PROJECT_DIR}/data/agent_v5/final/train_rl.parquet}"
-VAL_PARQUET="${VAL_PARQUET:-${PROJECT_DIR}/data/agent_v5/final/val_rl.parquet}"
+if [[ "${MULTI_Q}" == "1" ]]; then
+    DEFAULT_TRAIN_PARQUET="${PROJECT_DIR}/data/agent_v5/final/train_rl_multi_q.parquet"
+    DEFAULT_VAL_PARQUET="${PROJECT_DIR}/data/agent_v5/final/val_rl_multi_q.parquet"
+else
+    DEFAULT_TRAIN_PARQUET="${PROJECT_DIR}/data/agent_v5/final/train_rl_single_q.parquet"
+    DEFAULT_VAL_PARQUET="${PROJECT_DIR}/data/agent_v5/final/val_rl_single_q.parquet"
+fi
+TRAIN_PARQUET="${TRAIN_PARQUET:-${DEFAULT_TRAIN_PARQUET}}"
+VAL_PARQUET="${VAL_PARQUET:-${DEFAULT_VAL_PARQUET}}"
 
 # MULTI_Q=1 → 1 video = 1 row, all questions co-evaluated (OVOBench-aligned).
-# Default still flatten (video, question) for backward compat with existing
-# parquets; new runs should set MULTI_Q=1 to use the proper trajectory shape.
 MULTI_Q_FLAG=""
-if [[ "${MULTI_Q:-0}" == "1" ]]; then
+if [[ "${MULTI_Q}" == "1" ]]; then
     MULTI_Q_FLAG="--multi_q"
 fi
 
 if [[ ! -f "${TRAIN_PARQUET}" ]]; then
-    echo "Building train parquet from ${TRAIN_JSONL}…  (multi_q=${MULTI_Q:-0})"
+    echo "Building train parquet from ${TRAIN_JSONL}…  (multi_q=${MULTI_Q})"
     python3 "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
         --jsonl "${TRAIN_JSONL}" --out "${TRAIN_PARQUET}" ${MULTI_Q_FLAG}
 fi
 if [[ ! -f "${VAL_PARQUET}" ]]; then
-    echo "Building val parquet from ${VAL_JSONL}…  (multi_q=${MULTI_Q:-0})"
+    echo "Building val parquet from ${VAL_JSONL}…  (multi_q=${MULTI_Q})"
     python3 "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
         --jsonl "${VAL_JSONL}" --out "${VAL_PARQUET}" ${MULTI_Q_FLAG}
 fi
@@ -125,6 +129,7 @@ echo "Recipe dir:        ${RECIPE_DIR}"
 echo "Recipe name:       ${RECIPE_NAME}"
 echo "Train parquet:     ${TRAIN_PARQUET}"
 echo "Val parquet:       ${VAL_PARQUET}"
+echo "Multi-Q rows:      ${MULTI_Q}"
 echo "Output:            ${OUTPUT_DIR}"
 echo "GPUs:              ${NPROC}"
 echo "Rollout backend:   ${ROLLOUT_BACKEND}"
@@ -136,6 +141,7 @@ echo "Max new tokens:    ${MAX_NEW_TOKEN}"
 echo "GPU mem util:      ${GPU_MEM_UTIL}"
 echo "LR:                ${LR}"
 echo "Epochs:            ${EPOCHS}"
+echo "Max steps:         ${MAX_STEPS:-<epoch-based>}"
 echo "PPO mini bs:       ${PPO_MINI_BS}"
 echo "Batch size:        ${BATCH_SIZE}"
 echo "FSDP param offload: ${PARAM_OFFLOAD}"
@@ -162,6 +168,11 @@ export THINKSTREAM_TRAJ_INDEX_PATH="${TRAIN_JSONL}"
 # turn. Empty / unset → loop falls back to text-only RL.
 FRAMES_ROOT="${FRAMES_ROOT:-${PROJECT_DIR}/data/agent_v5/frames}"
 export THINKSTREAM_FRAMES_ROOT="${FRAMES_ROOT}"
+
+TRAINING_STEPS_ARGS=()
+if [[ -n "${MAX_STEPS}" ]]; then
+    TRAINING_STEPS_ARGS=(trainer.total_training_steps=${MAX_STEPS})
+fi
 
 cd "${VERL_DIR}"
 
@@ -190,6 +201,7 @@ python3 -m verl.trainer.main_ppo \
     reward.custom_reward_function.path="${VERL_DIR}/recipe_thinkstream/thinkstream.py" \
     reward.custom_reward_function.name=compute_score \
     trainer.total_epochs=${EPOCHS} \
+    "${TRAINING_STEPS_ARGS[@]}" \
     trainer.save_freq=${SAVE_FREQ} \
     trainer.test_freq=${TEST_FREQ} \
     trainer.experiment_name="${RUN_NAME}" \

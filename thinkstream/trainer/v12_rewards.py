@@ -21,7 +21,7 @@ References:
 """
 from __future__ import annotations
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional, Sequence
 
 import torch
 
@@ -42,11 +42,16 @@ def compute_outcome_reward_v12(
     *,
     judge_fn=None,
     answer_form: str = "",
+    options: Optional[Sequence[str]] = None,
+    correct_option: Any = "",
 ) -> float:
     """v12 outcome: 1.0 if final_answer matches gold, 0.0 otherwise.
 
-    For 'literal' answers (yes/no, numeric, single entity): rule-match.
-    For 'descriptive': delegate to judge_fn or fall back to fuzzy substring.
+    Form-aware matcher shared by RL, SFT eval, and benchmark eval:
+    multiple_choice uses option/correct_option metadata, binary tolerates
+    "Yes.", number extracts numerals, short_exact/descriptive use conservative
+    normalized substring matching. For descriptive, a caller-supplied judge_fn
+    can override the default fuzzy matcher.
 
     Anti-hacking: if final_answer length > 1000 chars, force 0
     (DeepEyesV2 vl_agent.py:256 same defense vs reward-judge spam).
@@ -59,20 +64,16 @@ def compute_outcome_reward_v12(
     ga = (gold_answer or "").strip()
     if not ga:
         return 0.0
-    # Strict-match forms: pass3a uses binary/multiple_choice/number/short_exact;
-    # we also accept the legacy aliases yes_no/numeric/entity/literal that some
-    # external eval datasets use. Drift here = false positives in RL outcome.
-    strict_forms = (
-        "binary", "yes_no",        # Yes/No
-        "multiple_choice", "mc",   # single letter A-D
-        "number", "numeric",       # digits
-        "short_exact", "entity", "literal",  # exact entity name
-    )
-    if answer_form in strict_forms:
-        return 1.0 if fa.lower() == ga.lower() else 0.0
-    if judge_fn is not None:
+    if judge_fn is not None and (not answer_form or (answer_form or "").lower() == "descriptive"):
         return float(judge_fn(fa, ga))
-    return 1.0 if ga.lower() in fa.lower() or fa.lower() in ga.lower() else 0.0
+    from thinkstream.trainer.outcome_match import score_outcome_by_form
+    return float(score_outcome_by_form(
+        fa,
+        options=list(options or []),
+        correct_option=correct_option,
+        gold_answer=ga,
+        answer_form=answer_form,
+    ))
 
 
 def compute_timing_reward_v12(
@@ -265,6 +266,8 @@ def compute_trajectory_outcome_v12(
         per_emit = q.get("per_emit_answers") or []
         gold_default = q.get("gold_answer", "")
         answer_form = q.get("answer_form", "")
+        options = q.get("options") or []
+        correct_option = q.get("correct_option", "")
 
         # Decide single vs multi-emit
         is_multi = len(answer_chunks) > 1 or (len(per_emit) > 1)
@@ -316,7 +319,10 @@ def compute_trajectory_outcome_v12(
                     ))
                 else:
                     ask_score = compute_outcome_reward_v12(
-                        model_answer, gold_for_emit, answer_form=answer_form,
+                        model_answer, gold_for_emit,
+                        answer_form=answer_form,
+                        options=options,
+                        correct_option=correct_option,
                     )
                 if ask_score >= 1.0:
                     n_correct += 1
@@ -343,7 +349,10 @@ def compute_trajectory_outcome_v12(
                     ))
                 else:
                     ask_score = compute_outcome_reward_v12(
-                        model_answer, gold_default, answer_form=answer_form,
+                        model_answer, gold_default,
+                        answer_form=answer_form,
+                        options=options,
+                        correct_option=correct_option,
                     )
                 if ask_score >= 1.0:
                     n_correct += 1
@@ -383,6 +392,7 @@ def compute_per_chunk_silent_quality_v12(
       gold says "response"/"recall_response" / model emits answer → 0.0
         (correctness handled by trajectory_outcome reward)
       gold says "response"/"recall_response" / model is silent     → -0.6 (MISSED)
+      gold says "recall" / model recalls or answers → 0.0, silent → -0.6
       gold says "compress"/"recall_query" — neutral (other rewards apply)
 
     Returns:
@@ -426,6 +436,13 @@ def compute_per_chunk_silent_quality_v12(
             else:
                 score_sum += -0.6
                 n_missed += 1
+        elif gold_action == "recall":
+            n_scored += 1
+            if kind == "recall" or has_answer:
+                score_sum += 0.0  # recall/action correctness handled elsewhere
+            else:
+                score_sum += -0.6
+                n_missed += 1
         # else compress / recall_query — neutral, skip
 
     mean_score = score_sum / n_scored if n_scored > 0 else 0.0
@@ -454,7 +471,7 @@ def compute_silent_quality_v12(
       gold_action=silent (gold_answer empty):
         → +0.3 if final_answer is empty/None  (correct silence)
         → -0.6 if final_answer non-empty       (HALLUCINATION)
-      gold_action ∈ {response, recall_response} AND gold_answer present:
+      gold_action ∈ {response, recall_response, recall} AND gold_answer present:
         → -0.6 if final_answer empty/None      (MISSED — should have answered)
         →  0.0 otherwise (correctness handled by outcome reward)
       otherwise: 0.0  (compress / recall_query — these have their own rewards)
@@ -469,7 +486,7 @@ def compute_silent_quality_v12(
     if ga_clean == "silent" or (ga_clean in ("", "none") and not gold_present):
         # Should be silent
         return 0.3 if not has_answer else -0.6
-    if ga_clean in ("response", "recall_response") and gold_present:
+    if ga_clean in ("response", "recall_response", "recall") and gold_present:
         # Should respond
         return -0.6 if not has_answer else 0.0
     # compress / recall_query / other — silent_quality is neutral; specific

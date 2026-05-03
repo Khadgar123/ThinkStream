@@ -80,6 +80,8 @@ def _iter_rows(jsonl_path: Path, max_questions_per_traj: int) -> Iterator[Dict[s
                 question = q.get("question", "")
                 gold_answer = q.get("gold_answer", "")
                 answer_form = q.get("answer_form", "")
+                options = list(q.get("options") or [])
+                correct_option = q.get("correct_option", "")
                 ask_chunks = list(q.get("ask_chunks") or [])
 
                 # ── Per-question gold_action_per_chunk (P1.9 fix).
@@ -123,8 +125,12 @@ def _iter_rows(jsonl_path: Path, max_questions_per_traj: int) -> Iterator[Dict[s
                     "video_id": video_id,
                     "video_path": video_path,
                     "question": question,
+                    "options": options,
+                    "correct_option": correct_option,
                     "gold_answer": gold_answer,
                     "answer_form": answer_form,
+                    "answer_chunks": list(q.get("answer_chunks") or []),
+                    "per_emit_answers": list(q.get("per_emit_answers") or []),
                     "ask_chunks": ask_chunks,
                     "gold_action_per_chunk": q_gold_action,
                     "n_chunks": n_chunks,
@@ -134,7 +140,11 @@ def _iter_rows(jsonl_path: Path, max_questions_per_traj: int) -> Iterator[Dict[s
                         "question_idx": q_idx,
                         "card_id": q.get("card_id", ""),
                         "family": q.get("family", ""),
+                        "options": options,
+                        "correct_option": correct_option,
                         "support_chunks": list(q.get("support_chunks") or []),
+                        "answer_chunks": list(q.get("answer_chunks") or []),
+                        "per_emit_answers": list(q.get("per_emit_answers") or []),
                     },
                     # verl convention: reward_model.ground_truth is what the
                     # reward function receives as `ground_truth`. Use a dict
@@ -143,7 +153,11 @@ def _iter_rows(jsonl_path: Path, max_questions_per_traj: int) -> Iterator[Dict[s
                         "ground_truth": json.dumps({
                             "gold_answer": gold_answer,
                             "answer_form": answer_form,
+                            "options": options,
+                            "correct_option": correct_option,
                             "ask_chunks": ask_chunks,
+                            "answer_chunks": list(q.get("answer_chunks") or []),
+                            "per_emit_answers": list(q.get("per_emit_answers") or []),
                             "visible_start_chunk": min(ask_chunks) if ask_chunks else None,
                             "visible_end_chunk":   max(ask_chunks) if ask_chunks else None,
                             "gold_action_per_chunk": q_gold_action,

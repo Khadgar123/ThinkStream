@@ -166,9 +166,9 @@ torchrun --nproc_per_node=${NPROC} \
     --max_sample_tokens 12000 \
     --torch_empty_cache_steps 1 \
     --dataloader_num_workers 4 \
-    --video_min_pixels 100352 \
-    --video_max_pixels 150528 \
-    --video_fps 1.0 \
+    --video_min_pixels 130000 \
+    --video_max_pixels 220000 \
+    --video_fps 2.0 \
     --report_to wandb \
     --run_name "${run_name}" \
     ${extra_args}

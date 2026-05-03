@@ -60,4 +60,4 @@ where ThinkStream is supposed to beat the offline baseline.
 | `--max_new_tokens` | 30 (base) / 128 (sft+rl) | Generation budget. SFT/RL needs more because outputs include `<think>...</think><action>...</action><response>...</response>`. |
 | `--think_budget` | 20 | Token budget allocated specifically for `<think>` content. Only used by streaming paths. |
 | `--max_frames` | 64 | Only applies to `--form offline`. Match the paper's offline baseline row. |
-| `--min_pixels`/`--max_pixels` | 100352×2 / 100352×4 | Visual resolution. Same as SFT training defaults — do not change without a reason. |
+| `--min_pixels`/`--max_pixels` | 130000 / 220000 | Runtime visual resolution. Same as SFT/RL defaults — do not change without a reason. |
