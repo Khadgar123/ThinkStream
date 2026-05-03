@@ -113,8 +113,18 @@ def main() -> int:
     print("With this env set:")
     print("  1. streaming_agent_loop.run() returns list[AgentLoopOutput] per traj")
     print("  2. Phase 1 AgentLoopWorker flattens → batch.batch[sample_index/final_mask]")
-    print("  3. Phase 2 ray_trainer broadcasts final reward via sample_index")
-    print("  4. GRPO group_by uid: sibling actions get same advantage (correct)")
+    print("  3. Phase 4 ray_trainer swap: batch = expanded gen_batch_output (sum(K_i) rows),")
+    print("     reindex non_tensor_batch via sample_index, save original_batch (B*n rows)")
+    print("  4. Phase 4d: trajectory-level reward extraction + 1D GRPO advantage")
+    print("     (compute_1D_grpo_advantage on B*n rows, broadcast via sample_index)")
+    print()
+    print("NOTE on credit assignment:")
+    print("  This static check ONLY verifies dispatch wiring. It does NOT exercise")
+    print("  ray_trainer's compute_advantage path. The CORRECT GRPO behavior in")
+    print("  recurrent mode requires Phase 4d (1D advantage on trajectory level →")
+    print("  sample_index broadcast). The earlier 'Phase 2 broadcast + standard GRPO'")
+    print("  approach was wrong (within-group variance=0 → advantage=0). See:")
+    print("    scripts/test_rl/test_phase4_recurrent_advantage.py")
     return 0
 
 

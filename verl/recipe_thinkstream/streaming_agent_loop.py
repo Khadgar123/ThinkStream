@@ -501,10 +501,13 @@ def _register_streaming_agent_loop():
             #                          (response_ids = all chunks
             #                          stitched). Backward compat with
             #                          existing trainer + reward path.
-            #   "recurrent": list[AgentLoopOutput] — one per assistant
+            #   "recurrent" (experimental, Phase 4 trainer wiring):
+            #                list[AgentLoopOutput] — one per assistant
             #                action. AgentLoopWorker (Phase 1) flattens
-            #                across the batch, ray_trainer (Phase 2)
-            #                broadcasts final reward via sample_index.
+            #                across the batch, ray_trainer (Phase 4d)
+            #                computes 1D GRPO advantage on trajectory
+            #                final rewards and broadcasts via
+            #                sample_index back to action rows.
             mode = str(
                 os.environ.get("THINKSTREAM_RECURRENT_MODE", "stitched")
             ).lower()
@@ -1445,9 +1448,10 @@ def _register_streaming_agent_loop():
             if self.recurrent_mode == "recurrent":
                 # Emit one AgentLoopOutput per assistant action. Phase 1's
                 # AgentLoopWorker.generate_sequences flattens these and
-                # tags sample_index + final_mask; Phase 2's ray_trainer
-                # broadcasts the trajectory's final reward back to all
-                # sibling actions via sample_index.
+                # tags sample_index + final_mask. Phase 4d's ray_trainer
+                # extracts trajectory-level reward from final actions,
+                # computes 1D GRPO advantage by uid, then broadcasts the
+                # advantage back to all sibling action rows via sample_index.
                 #
                 # Per-action: prompt_ids = full-context prompt at that
                 # round (includes prior recall multi-turn context for

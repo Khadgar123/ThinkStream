@@ -288,6 +288,63 @@ def final_batch(batch: DataProto, final_mask: torch.Tensor, sample_index: torch.
     final_output.reorder(reverse_indices(final_index))
     return final_output
 
+
+def compute_1D_grpo_advantage(
+    token_level_rewards: torch.Tensor,
+    index,
+    epsilon: float = 1e-6,
+    use_adv: bool = True,
+):
+    """1-D GRPO advantage on trajectory-level rewards.
+
+    Mirrors MemAgent / ReMemR1 verl/trainer/ppo/ray_trainer.py:243.
+    Standard verl compute_grpo_outcome_advantage returns a 2-D
+    [bsz, response_len] tensor (advantage broadcast across response
+    tokens). For recurrent rollout we want a per-trajectory scalar so
+    we can re-broadcast it to action rows via sample_index.
+
+    Args:
+        token_level_rewards: shape (bsz, response_len). Each row is a
+            trajectory-level (final-action) reward as produced by
+            ``compute_reward(reward_batch)`` after ``final_batch``.
+        index: per-row group key (typically ``uid``). list / np.ndarray
+            / torch.Tensor — anything indexable.
+        epsilon: numerical floor for std.
+        use_adv: when True, normalize by std (standard GRPO); when
+            False return mean-centered scores (no std normalization).
+
+    Returns:
+        advantages: shape (bsz,) — per-trajectory scalar advantage.
+    """
+    from collections import defaultdict
+
+    scores = token_level_rewards.sum(dim=-1).clone()
+    id2score: dict = defaultdict(list)
+    id2mean: dict = {}
+    id2std: dict = {}
+
+    with torch.no_grad():
+        bsz = scores.shape[0]
+        for i in range(bsz):
+            id2score[index[i]].append(scores[i])
+        for idx in id2score:
+            if len(id2score[idx]) == 1:
+                id2mean[idx] = torch.tensor(0.0)
+                if use_adv:
+                    id2std[idx] = torch.tensor(1.0)
+            elif len(id2score[idx]) > 1:
+                id2mean[idx] = torch.mean(torch.tensor(id2score[idx]))
+                if use_adv:
+                    id2std[idx] = torch.std(torch.tensor(id2score[idx]))
+            else:
+                raise ValueError(f"no score in prompt index: {idx}")
+        for i in range(bsz):
+            if use_adv:
+                scores[i] = (scores[i] - id2mean[index[i]]) / (id2std[index[i]] + epsilon)
+            else:
+                scores[i] = scores[i] - id2mean[index[i]]
+    return scores
+
 def clip_long_string(string, max_length=2000):
     """Clip long string to a maximum length."""
     # assert max_length > 50, "max_length must be greater than 50"

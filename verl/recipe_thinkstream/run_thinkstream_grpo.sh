@@ -140,19 +140,44 @@ export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding
 #                          stitched into one response. Matches all
 #                          versions ≤ v12.13. Use this for batch1
 #                          ≤120-chunk training.
-#   "recurrent"          — one AgentLoopOutput per assistant action.
+#   "recurrent" (EXPERIMENTAL) — one AgentLoopOutput per assistant action.
 #                          AgentLoopWorker (verl/verl/experimental/
 #                          agent_loop/agent_loop.py Phase 1) flattens
 #                          across the batch tagging sample_index +
-#                          final_mask; ray_trainer (verl/verl/trainer/
-#                          ppo/ray_trainer.py Phase 2) broadcasts the
-#                          trajectory's final reward back to siblings
-#                          via sample_index. Required for >180-chunk
-#                          training without OOM.
-# Activation (full v12.14):
+#                          final_mask; ray_trainer Phase 4d
+#                          (verl/verl/trainer/ppo/ray_trainer.py)
+#                          extracts trajectory-level reward, computes 1D
+#                          GRPO advantage by uid, broadcasts back to
+#                          action rows via sample_index, and pads to
+#                          actor world_size with response_mask=0 on
+#                          padded rows. Required for >180-chunk training
+#                          without OOM.
+#
+# EXPERIMENTAL — what's done, what's NOT:
+#   ✓ math + DataProto integration tests pass (test_phase4_*.py)
+#   ✗ NOT validated end-to-end on a real Ray/FSDP multi-GPU cluster
+#   ✗ format/spam reward only comes from final action's solution_str
+#     (NOT a stitched trajectory) — defensible compromise, see Phase 4d
+#     comment in ray_trainer.py
+#   ⚠ rollout.n must be ≥ 2 — n=1 collapses to singleton GRPO group
+#     (advantage = raw score, no normalization)
+#
+# Activation (full v12.14, EXPERIMENTAL — start with 2-GPU debug):
 #   THINKSTREAM_RECURRENT_MODE=recurrent \
+#   MAX_RESP_LEN=4096 \                        # ← per-action cap, not stitched 32768
 #   MULTI_Q=1 THINKSTREAM_MAX_RECALL_PER_CHUNK=1 \
 #   bash verl/recipe_thinkstream/run_thinkstream_grpo.sh
+#
+# Why MAX_RESP_LEN must drop in recurrent mode:
+#   In stitched, MAX_RESP_LEN=32768 caps the WHOLE trajectory's response.
+#   In recurrent, AgentLoopWorker pads EACH action's response to
+#   rollout.response_length (verl/verl/experimental/agent_loop/
+#   agent_loop.py:736). So sum(K_i) actions × 32768 makes
+#   responses/rm_scores/advantages/log_probs explode in dense memory and
+#   cross-rank communication, even if attention runs no-padding. Set to
+#   ~4096 (typical single-action upper bound for ThinkStream) or 6144
+#   for headroom. The Phase 4 swap+pad path doesn't crash with 32768 —
+#   it's purely a memory/throughput concern.
 export THINKSTREAM_RECURRENT_MODE="${THINKSTREAM_RECURRENT_MODE:-stitched}"
 export THINKSTREAM_MAX_RECALL_PER_CHUNK="${THINKSTREAM_MAX_RECALL_PER_CHUNK:-1}"
 

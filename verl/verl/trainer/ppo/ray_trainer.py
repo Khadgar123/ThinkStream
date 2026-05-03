@@ -1410,7 +1410,63 @@ class RayPPOTrainer:
                             del rm_scores, gen_baseline_batch, gen_baseline_output
                     # repeat to align with repeated responses in rollout
                     batch = batch.repeat(repeat_times=self.config.actor_rollout_ref.rollout.n, interleave=True)
-                    batch = batch.union(gen_batch_output)
+
+                    # v12.14 Option B Phase 4 (MemAgent-aligned): detect
+                    # recurrent rollout, swap batch to expanded action rows,
+                    # and remember the original (B*n) batch for trajectory-
+                    # level reward + advantage computation later in this
+                    # iteration.
+                    #
+                    # In stitched mode (`gen_batch_output` has B*n rows, no
+                    # `sample_index`), legacy `batch.union(gen_batch_output)`
+                    # is used unchanged.
+                    #
+                    # In recurrent mode (THINKSTREAM_RECURRENT_MODE=recurrent
+                    # → streaming_agent_loop expands each trajectory into
+                    # K_i actions), `gen_batch_output` carries sum(K_i)
+                    # rows tagged with `sample_index ∈ [0, B*n)`. We have
+                    # to swap (not union) because row counts differ:
+                    #   - reindex `batch.{batch,non_tensor_batch}` through
+                    #     sample_index so each action carries its parent
+                    #     trajectory's uid / data_source / extra_info /
+                    #     multi_modal_inputs.
+                    #   - keep the un-swapped (B*n) batch as
+                    #     `original_batch` so the reward + advantage block
+                    #     downstream can compute trajectory-level reward
+                    #     and 1D GRPO advantage (one scalar per traj),
+                    #     then broadcast via sample_index back to action
+                    #     rows. This is the only correct GRPO credit
+                    #     assignment for recurrent — see MemAgent /
+                    #     ReMemR1 ray_trainer.py:1128-1244.
+                    is_recurrent_step = False
+                    original_batch = None
+                    if (
+                        "sample_index" in gen_batch_output.batch
+                        and len(gen_batch_output) != len(batch)
+                    ):
+                        is_recurrent_step = True
+                        original_batch = batch  # B*n rows, has uid for grouping
+                        sidx_np = gen_batch_output.batch["sample_index"].cpu().numpy().astype(int)
+                        sidx_t = torch.from_numpy(sidx_np).long()
+                        # Reindex non_tensor_batch (uid, data_source, extra_info, ...).
+                        # Keys already present in gen_batch_output (e.g.
+                        # multi_modal_data emitted per-action) win — never overwrite.
+                        for k, v in batch.non_tensor_batch.items():
+                            if k not in gen_batch_output.non_tensor_batch:
+                                gen_batch_output.non_tensor_batch[k] = v[sidx_np]
+                        # Reindex tensor_batch fields not already in gen_batch_output.
+                        for k, v in batch.batch.items():
+                            if k not in gen_batch_output.batch:
+                                gen_batch_output.batch[k] = v[sidx_t]
+                        batch = gen_batch_output
+                        metrics["recurrent/swap_fired"] = 1.0
+                        metrics["recurrent/expanded_rows"] = float(len(batch))
+                        metrics["recurrent/n_trajectories"] = float(len(original_batch))
+                        metrics["recurrent/avg_actions_per_traj"] = (
+                            float(len(batch)) / max(1, len(original_batch))
+                        )
+                    else:
+                        batch = batch.union(gen_batch_output)
                     if self._should_compute_teacher_colocate(batch):
                         with marked_timer("teacher", timing_raw, color="cyan"):
                             batch_teacher = self._compute_teacher_colocate(batch)
@@ -1422,7 +1478,11 @@ class RayPPOTrainer:
                     # NOTE: This usually changes the order of data in the `batch`,
                     # which won't affect the advantage calculation (since it's based on uid),
                     # but might affect the loss calculation (due to the change of mini-batching).
-                    if self.config.trainer.balance_batch:
+                    # Recurrent mode: skip balance_batch — it would reorder
+                    # rows and break sample_index / final_mask alignment
+                    # (those are positional indices into `batch` rows).
+                    # Mirrors MemAgent ray_trainer.py:1109.
+                    if self.config.trainer.balance_batch and not is_recurrent_step:
                         self._balance_batch(batch, metrics=metrics)
 
                     # compute global_valid tokens
@@ -1443,70 +1503,160 @@ class RayPPOTrainer:
                         # extract reward_tensor and reward_extra_infos_dict for training
                         reward_tensor, reward_extra_infos_dict = extract_reward(batch)
 
-                    # v12.14 Option B Phase 2: recurrent reward broadcast.
+                    # v12.14 Option B Phase 4d (MemAgent-aligned): in
+                    # recurrent mode, extract trajectory-level reward
+                    # for 1D GRPO advantage downstream.
                     #
-                    # When the agent_loop framework returns >1 action per
-                    # input trajectory, agent_loop._postprocess writes:
-                    #   batch.batch["sample_index"] (LongTensor [bsz])
-                    #   batch.batch["final_mask"]   (BoolTensor [bsz])
-                    # Each row's reward_tensor is currently per-row (each
-                    # action got an independent compute_score call), but
-                    # for outcome-only learning we want the SAME outcome
-                    # to broadcast back to all sibling actions of one
-                    # trajectory (matches MemAgent / ReMemR1 semantics).
-                    # Specifically: for each trajectory, take the
-                    # final-action's reward sum and place it at each
-                    # sibling action's last-valid-response-token position.
+                    # `reward_tensor` from extract_reward(batch) is per-
+                    # action [sum(K_i), R]. The agent_loop framework
+                    # called compute_score on every AgentLoopOutput
+                    # during postprocess, so each action — final or not —
+                    # got its own score. We extract the FINAL-only subset
+                    # and use it as the trajectory-level reward.
                     #
-                    # Backward compat: when final_mask is all True (legacy
-                    # stitched path or recurrent rollout that happens to
-                    # be 1 action / trajectory), this is a no-op — every
-                    # row IS its trajectory's final.
-                    if (
-                        "sample_index" in batch.batch
-                        and "final_mask" in batch.batch
-                        and not batch.batch["final_mask"].all().item()
-                    ):
+                    # Semantic note (matches MemAgent's intent but not
+                    # MemAgent's literal implementation):
+                    #   - MemAgent skips per-action scoring entirely; it
+                    #     calls compute_reward in the trainer on
+                    #     final_batch.union(original_batch) so reward_fn
+                    #     sees only the trajectory's terminal state.
+                    #   - We score per-action in postprocess (so
+                    #     intermediate actions carry non-zero format /
+                    #     spam scores, which we DISCARD here), then take
+                    #     the final action's row.
+                    #   - For ThinkStream:
+                    #       outcome + timing come from cumulative
+                    #         ts_per_q_* extras → trajectory-equivalent
+                    #         (the final action's extras snapshot the
+                    #         trajectory's full answer state).
+                    #       format / spam come from the final action's
+                    #         solution_str only — NOT a stitched
+                    #         trajectory. This is the one place where
+                    #         our reward differs from a hypothetical
+                    #         "stitched trajectory" reward.
+                    # The trade-off is intentional: per-action format
+                    # rewards in postprocess give wandb visibility into
+                    # per-step format quality, even though those
+                    # intermediate scores are not used for advantage.
+                    #
+                    # Output for the advantage block:
+                    #   reward_traj_tensor: [B*n, R] aligned with original_batch
+                    #   original_uids:      [B*n] — n rollouts of one prompt share uid
+                    #
+                    # The standard compute_advantage path is bypassed for
+                    # recurrent (see "adv" block below).
+                    #
+                    # IMPORTANT: this REPLACES the old Phase 2
+                    # broadcast-then-standard-GRPO approach which was
+                    # wrong credit assignment (with n=1 the broadcast
+                    # makes within-group variance zero → advantage=0 →
+                    # no learning signal; with n>1 long trajectories
+                    # are over-weighted in the group statistics).
+                    reward_traj_tensor = None
+                    recurrent_pad_size = 0
+                    if is_recurrent_step:
                         sidx_t = batch.batch["sample_index"]
                         fmask_t = batch.batch["final_mask"]
-                        # Per-row reward scalar (sum across response tokens).
-                        per_row_reward = reward_tensor.sum(dim=-1)
-                        # Build trajectory_idx → outcome map from finals.
-                        traj_outcome: dict[int, float] = {}
-                        for i, is_final in enumerate(fmask_t.tolist()):
-                            if is_final:
-                                traj_outcome[int(sidx_t[i].item())] = float(
-                                    per_row_reward[i].item()
+                        from verl.recurrent.utils import reverse_indices
+                        final_action_idx = torch.where(fmask_t)[0]
+                        # sample_index of finals = which trajectory each final belongs to
+                        traj_idx_of_finals = sidx_t[final_action_idx].long()
+                        n_traj = len(original_batch)
+                        # Sanity: every trajectory should have exactly one final action.
+                        assert final_action_idx.numel() == n_traj, (
+                            f"recurrent: expected {n_traj} finals, got "
+                            f"{final_action_idx.numel()}"
+                        )
+                        # Reorder per-final reward rows into trajectory-input
+                        # order so reward_traj_tensor[j] = traj j's outcome.
+                        reorder = reverse_indices(traj_idx_of_finals)
+                        reward_traj_tensor = reward_tensor[final_action_idx][reorder]
+                        # Telemetry: sum/mean of trajectory outcomes so we
+                        # can see learning signal in wandb.
+                        per_traj_reward = reward_traj_tensor.sum(dim=-1)
+                        metrics["recurrent/traj_reward_mean"] = float(per_traj_reward.mean().item())
+                        metrics["recurrent/traj_reward_std"] = float(per_traj_reward.std().item())
+                        metrics["recurrent/n_actions_total"] = float(reward_tensor.size(0))
+
+                        # Audit (informational only): surface the magnitude
+                        # of compute_score's output on non-final action rows.
+                        # NOTE on what this measures: each action's
+                        # compute_score sees the trajectory's CUMULATIVE
+                        # extras (ts_per_q_*) at that point, NOT just per-
+                        # action format/spam. So a non-final action that
+                        # already has a partial-correct ts_per_q_answers
+                        # will receive partial outcome/timing reward too.
+                        # This metric therefore reflects "score
+                        # compute_score returned on rows we don't use for
+                        # advantage" — useful as a sanity check (e.g. is
+                        # it close to zero? is it close to the final
+                        # reward magnitude?) but not strictly "discarded
+                        # format/spam reward". For a strict measurement,
+                        # we'd need to skip per-action scoring entirely
+                        # (MemAgent style — open future work).
+                        nonfinal_mask = ~fmask_t
+                        if nonfinal_mask.any():
+                            nonfinal_score = reward_tensor[nonfinal_mask].sum(dim=-1)
+                            metrics["recurrent/nonfinal_action_score_mean"] = float(
+                                nonfinal_score.mean().item()
+                            )
+                            metrics["recurrent/nonfinal_action_score_abs_mean"] = float(
+                                nonfinal_score.abs().mean().item()
+                            )
+
+                        # FSDP shape divisibility — sum(K_i) is unpredictable
+                        # and almost never integer-divides actor_rollout_wg
+                        # world_size, which would make DataProto.chunk() in
+                        # the worker dispatcher raise. Pad with replicated
+                        # rows ONCE here, then keep the padded batch through
+                        # old_log_prob / ref / values / advantage / update_critic
+                        # / update_actor — never unpad. Padded rows are
+                        # masked OUT of loss + advantage by setting their
+                        # `response_mask` to 0, so they contribute zero
+                        # gradient. Mirrors MemAgent's "no_padding_mask"
+                        # approach (their ray_trainer.py:1133/1221 unpad
+                        # before adv but leaves loss-side masking; we
+                        # keep it padded all the way to be safe with verl
+                        # 0.4's update_actor that ALSO uses DataProto.chunk).
+                        #
+                        # Padding semantics (must stay consistent across
+                        # batch / reward_tensor / reward_extra_infos_dict):
+                        # pad_dataproto_to_divisor replicates HEAD rows
+                        # (data[:pad_size]) — we mirror that for the side
+                        # arrays so column-indexed reads continue to work.
+                        actor_world_size = self.actor_rollout_wg.world_size
+                        batch, recurrent_pad_size = pad_dataproto_to_divisor(
+                            batch, actor_world_size
+                        )
+                        if recurrent_pad_size > 0:
+                            # Pad reward_tensor with HEAD replication (matches
+                            # DataProto.pad_dataproto_to_divisor). It feeds
+                            # batch.batch["token_level_scores"] in the adv
+                            # block — must have len == len(batch).
+                            reward_tensor = torch.cat(
+                                [reward_tensor, reward_tensor[:recurrent_pad_size]],
+                                dim=0,
+                            )
+                            # Pad reward_extra_infos_dict arrays (compute_score
+                            # returns dict for ThinkStream — non-empty in
+                            # production). Without this, the
+                            # `batch.non_tensor_batch.update(...)` later writes
+                            # short arrays into a padded batch → TensorDict /
+                            # non_tensor_batch length mismatch.
+                            for _k, _v in list(reward_extra_infos_dict.items()):
+                                _arr = np.asarray(_v)
+                                reward_extra_infos_dict[_k] = np.concatenate(
+                                    [_arr, _arr[:recurrent_pad_size]], axis=0
                                 )
-                        # Recompute per-token reward: zero out, then place
-                        # broadcasted outcome at each row's last valid
-                        # response token (where the legacy
-                        # NaiveRewardManager would have placed it).
-                        prompt_length = batch.batch["prompts"].size(1)
-                        valid_resp_len = (
-                            batch.batch["attention_mask"][:, prompt_length:]
-                            .sum(dim=1) - 1
-                        ).clamp(min=0)
-                        new_reward = torch.zeros_like(reward_tensor)
-                        for i in range(reward_tensor.size(0)):
-                            tidx = int(sidx_t[i].item())
-                            outcome = traj_outcome.get(tidx, 0.0)
-                            pos = int(valid_resp_len[i].item())
-                            if 0 <= pos < new_reward.size(1):
-                                new_reward[i, pos] = outcome
-                        reward_tensor = new_reward
-                        # Telemetry — surfaces in wandb so we can verify
-                        # the broadcast actually fired in production.
-                        metrics["recurrent/n_trajectories"] = float(
-                            int(fmask_t.sum().item())
-                        )
-                        metrics["recurrent/n_actions_total"] = float(
-                            reward_tensor.size(0)
-                        )
-                        metrics["recurrent/avg_actions_per_traj"] = (
-                            float(reward_tensor.size(0))
-                            / max(1, int(fmask_t.sum().item()))
-                        )
+                            # Zero out response_mask for the padded rows so
+                            # they contribute 0 to advantage tile + 0 to
+                            # actor/critic loss. Cannot just rely on
+                            # advantages=0 because some loss paths
+                            # (entropy, ref-kl) read response_mask directly.
+                            new_resp_mask = batch.batch["response_mask"].clone()
+                            new_resp_mask[-recurrent_pad_size:] = 0
+                            batch.batch["response_mask"] = new_resp_mask
+                            metrics["recurrent/pad_size"] = float(recurrent_pad_size)
 
                     # Operating Mode Selection:
                     # - Bypass mode: Sets old_log_probs = rollout_log_probs (2 policies: π_rollout, π_θ)
@@ -1579,6 +1729,15 @@ class RayPPOTrainer:
 
                         # compute rewards. apply_kl_penalty if available
                         if self.config.algorithm.use_kl_in_reward:
+                            if is_recurrent_step:
+                                # MemAgent ray_trainer.py:1247 NotImplementedError
+                                # — kl-in-reward needs per-token kl alignment that
+                                # doesn't make sense after reward broadcast via
+                                # sample_index. Recurrent must use kl-loss in actor.
+                                raise NotImplementedError(
+                                    "use_kl_in_reward is not supported in recurrent mode; "
+                                    "set algorithm.use_kl_in_reward=False and use kl_loss in actor."
+                                )
                             batch, kl_metrics = apply_kl_penalty(
                                 batch, kl_ctrl=self.kl_ctrl_in_reward, kl_penalty=self.config.algorithm.kl_penalty
                             )
@@ -1606,15 +1765,61 @@ class RayPPOTrainer:
                             "norm_adv_by_std_in_grpo", True
                         )  # GRPO adv normalization factor
 
-                        batch = compute_advantage(
-                            batch,
-                            adv_estimator=self.config.algorithm.adv_estimator,
-                            gamma=self.config.algorithm.gamma,
-                            lam=self.config.algorithm.lam,
-                            num_repeat=self.config.actor_rollout_ref.rollout.n,
-                            norm_adv_by_std_in_grpo=norm_adv_by_std_in_grpo,
-                            config=self.config.algorithm,
-                        )
+                        if is_recurrent_step:
+                            # MemAgent-aligned 1D GRPO advantage:
+                            # 1. group trajectory rewards by uid (n rollouts
+                            #    of one prompt share a uid → form one group)
+                            # 2. compute scalar (z-score) advantage per traj
+                            #    (uses UNPADDED reward_traj_tensor [B*n] —
+                            #    extracted before pad)
+                            # 3. broadcast via sample_index back to ALL
+                            #    action rows (sidx is now PADDED to
+                            #    padded_sum(K_i); padded rows' sidx points
+                            #    to head-traj from pad_dataproto_to_divisor,
+                            #    so they get a real adv value, but get
+                            #    masked to 0 by response_mask=0 below)
+                            # 4. tile across response_length, multiply by
+                            #    response_mask (padded rows → 0)
+                            #
+                            # No unpad: batch stays padded through
+                            # update_critic / update_actor so DataProto.chunk
+                            # in the worker dispatcher always divides cleanly.
+                            from verl.recurrent.utils import compute_1D_grpo_advantage
+                            adv_est = self.config.algorithm.adv_estimator
+                            if adv_est != AdvantageEstimator.GRPO:
+                                raise NotImplementedError(
+                                    f"recurrent mode currently only supports GRPO; got {adv_est}"
+                                )
+                            # original_batch.uid: [B*n] — interleaved n copies per prompt
+                            original_uids = original_batch.non_tensor_batch["uid"]
+                            advantage_scalar = compute_1D_grpo_advantage(
+                                token_level_rewards=reward_traj_tensor,
+                                index=original_uids,
+                                use_adv=norm_adv_by_std_in_grpo,
+                            )  # shape [B*n] — UNPADDED, one per traj
+                            sidx = batch.batch["sample_index"].long()
+                            advantage_per_action = advantage_scalar[sidx]  # padded shape
+                            response_length = batch.batch["responses"].size(-1)
+                            response_mask = batch.batch["response_mask"]  # padded rows = 0
+                            advantages = (
+                                advantage_per_action.unsqueeze(-1)
+                                .tile([1, response_length])
+                                * response_mask
+                            )
+                            batch.batch["advantages"] = advantages
+                            batch.batch["returns"] = advantages
+                            metrics["recurrent/adv_mean"] = float(advantage_scalar.mean().item())
+                            metrics["recurrent/adv_std"] = float(advantage_scalar.std().item())
+                        else:
+                            batch = compute_advantage(
+                                batch,
+                                adv_estimator=self.config.algorithm.adv_estimator,
+                                gamma=self.config.algorithm.gamma,
+                                lam=self.config.algorithm.lam,
+                                num_repeat=self.config.actor_rollout_ref.rollout.n,
+                                norm_adv_by_std_in_grpo=norm_adv_by_std_in_grpo,
+                                config=self.config.algorithm,
+                            )
 
                     # update critic
                     if self.use_critic:
