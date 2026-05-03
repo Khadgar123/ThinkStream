@@ -255,6 +255,12 @@ def compute_trajectory_outcome_v12(
         # legacy trajectories where pass4 didn't separate them.
         answer_chunks = sorted(q.get("answer_chunks") or [])
         ask_chunks = sorted(q.get("ask_chunks") or [])
+        legacy_multi_from_ask_chunks = not answer_chunks and len(ask_chunks) > 1
+        if legacy_multi_from_ask_chunks:
+            # Backward compatibility for v12.4 trajectories/tests: repeated
+            # ask_chunks meant one expected emission per ask. New pass4 writes
+            # these as answer_chunks/per_emit_answers explicitly.
+            answer_chunks = list(ask_chunks)
         ask_chunk = q.get("ask_chunk")
         if not isinstance(ask_chunk, int):
             ask_chunk = ask_chunks[0] if ask_chunks else (
