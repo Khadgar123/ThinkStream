@@ -83,10 +83,14 @@ LLM=output/agent-sft/checkpoint-616 bash scripts/grpo_train.sh
 ```
 
 GDPO RL uses NVIDIA-style per-reward decoupled advantage aggregation
-([2601.05242](https://arxiv.org/abs/2601.05242)) over six reward components
-(`format`, `correctness`, `timing`, `silent_quality`, `recall_quality`,
-`overflow_pen`). See `thinkstream/trainer/gdpo_advantage.py` and
-`docs/data_construction_zh.md` §4 for the full design.
+([2601.05242](https://arxiv.org/abs/2601.05242)) over eight reward components
+(`correctness`, `silent_quality`, `timing`, `recall_quality`, `recall_hit_rate`,
+`range_tightness`, `format`, `overflow_pen`). See `thinkstream/trainer/gdpo_advantage.py`
+and `docs/design.md` §8 for the full design (canonical current-state).
+
+For verl-based RL (the production path used since v12), see
+`verl/recipe_thinkstream/run_thinkstream_grpo.sh` + `docs/design.md` §8 +
+`docs/v12.14_recurrent_design.md` for the >180-chunk recurrent variant.
 
 ### Evaluation
 
