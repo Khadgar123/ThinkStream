@@ -1459,6 +1459,11 @@ class RayPPOTrainer:
                             if k not in gen_batch_output.batch:
                                 gen_batch_output.batch[k] = v[sidx_t]
                         batch = gen_batch_output
+                        # Preserve meta_info keys from original batch that
+                        # gen_batch_output doesn't carry (e.g. temperature).
+                        for k, v in original_batch.meta_info.items():
+                            if k not in batch.meta_info:
+                                batch.meta_info[k] = v
                         metrics["recurrent/swap_fired"] = 1.0
                         metrics["recurrent/expanded_rows"] = float(len(batch))
                         metrics["recurrent/n_trajectories"] = float(len(original_batch))
