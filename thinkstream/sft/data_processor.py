@@ -666,6 +666,8 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     ans_start, ans_end = assistant_spans[0]
     full_result["eval_meta"] = {
         "sample_type": sample.get("sample_type", "?"),
+        "action": sample.get("action", ""),
+        "gold_action": (sample.get("metadata") or {}).get("gold_action", ""),
         "ans_start": ans_start,           # legacy: first span only
         "ans_end": ans_end,
         "ans_spans": list(assistant_spans),  # v12.11: all spans (1 or 2 turns)

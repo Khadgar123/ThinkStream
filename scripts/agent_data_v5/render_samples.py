@@ -8,7 +8,7 @@ This is the bridge between data construction (Pass 3) and SFT training.
 Each sample gets a full `input` structure that matches what
 `data_processor.py:build_per_timestep_messages_v12` expects.
 
-Called after Pass 4 verify, before writing final JSONL.
+Called after Pass 3-C raw sample generation and before Pass 3-E verification.
 """
 
 import json
@@ -30,6 +30,51 @@ from .config import (
 from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12
 
 logger = logging.getLogger(__name__)
+
+_OPTION_LABEL_RE = re.compile(r"^\s*([A-D])[\).]\s*(.*)\s*$", re.DOTALL)
+
+
+def _strip_option_label(text: str) -> str:
+    m = _OPTION_LABEL_RE.match(str(text or ""))
+    return (m.group(2) if m else str(text or "")).strip()
+
+
+def _mc_correct_letter_text(card: Dict) -> tuple[str, str]:
+    options = list(card.get("options") or [])
+    correct = str(card.get("correct_option") or "").strip().upper()
+    if correct in {"A", "B", "C", "D"} and len(options) == 4:
+        idx = ord(correct) - ord("A")
+        if 0 <= idx < len(options):
+            return correct, _strip_option_label(options[idx])
+    return correct, _strip_option_label(card.get("canonical_answer", ""))
+
+
+def _semantic_gold_answer(card: Dict, sft_answer: str) -> str:
+    """Return the answer used by RL/eval scoring, not necessarily SFT target."""
+    answer_form = card.get("answer_form", "")
+    canonical = str(card.get("canonical_answer") or "").strip()
+    if answer_form == "multiple_choice":
+        _letter, text = _mc_correct_letter_text(card)
+        return text or canonical
+    if card.get("question_type") == "multi_emit" and sft_answer:
+        return sft_answer
+    return canonical or sft_answer
+
+
+def _accepted_answers(card: Dict, gold_answer: str) -> List[str]:
+    if card.get("answer_form") != "multiple_choice":
+        return [gold_answer] if gold_answer else []
+    letter, text = _mc_correct_letter_text(card)
+    out = []
+    if letter:
+        out.append(letter)
+    if letter and text:
+        out.append(f"{letter}) {text}")
+    if text:
+        out.append(text)
+    # Preserve order while de-duplicating.
+    seen = set()
+    return [x for x in out if x and not (x.lower() in seen or seen.add(x.lower()))]
 
 
 def _get_system_prompt(prompt_type: str) -> str:
@@ -124,6 +169,8 @@ def _build_queries_input(queries_state: List[Dict]) -> List[Dict]:
             "question": q.get("question", ""),
             "options": list(q.get("options") or []),
             "answer_form": q.get("answer_form", ""),
+            "answer_style": q.get("answer_style", ""),
+            "answer_instruction": q.get("answer_instruction", ""),
             "ask_time": q.get("ask_time", 0),
             "answers": q.get("answers", []),
         })
@@ -250,34 +297,40 @@ def render_sample(
         card = cards_map[card_id]
     else:
         card = {}
-    # v11.3: per-chunk gold_answer for multi-probe families. For F7/CR5/F5
-    # multi_response samples, pass3c substitutes the per-probe answer into
-    # <response>...</response> at each chunk (e.g., "No" before step_chunk,
-    # "Yes" after). card.canonical_answer is the final-state answer, so it
-    # mismatches every pre-event chunk. GRPO reads metadata.gold_answer
-    # for R_correctness — using card.canonical_answer would penalize the
-    # model for outputting the correct per-chunk answer. Parse from
-    # sample.output instead, fall back to canonical_answer when no
-    # <response> tag (silent / recall_query / compress samples).
+    # Separate the two answer layers:
+    #   - sft_answer: exact target string inside <answer> for this row.
+    #   - gold_answer: semantic answer used by RL/eval scoring.
+    # For MC, sft_answer may be "A", "A) red apron", or "red apron";
+    # gold_answer remains the correct option text so downstream scoring
+    # can accept all equivalent formats.
     canonical = card.get("canonical_answer", "")
     # v12: output may live in v12_assistant_turn_2 (multi-turn recall);
     # otherwise it's in sample.output. Both use <answer>...</answer>.
     v12_text = (sample.get("v12_assistant_turn_2")
                 or sample.get("output", "") or "")
     m = _ANSWER_RE.search(v12_text)
-    per_chunk_answer = m.group(1).strip() if m else ""
-    gold_answer = per_chunk_answer or canonical
+    sft_answer = m.group(1).strip() if m else ""
+    gold_answer = _semantic_gold_answer(card, sft_answer)
+    correct_letter, correct_answer_text = _mc_correct_letter_text(card)
 
     metadata = {
         "gold_action": sample.get("action", "silent"),
         "gold_answer": gold_answer,
+        "sft_answer": sft_answer,
+        "correct_answer_text": correct_answer_text,
+        "accepted_answers": _accepted_answers(card, gold_answer),
         # Keep the card-level canonical separately so GRPO / eval can
         # tell when a sample's gold_answer diverges from the card final
         # answer (signal that it's a multi-probe pre-event chunk).
         "canonical_answer": canonical,
         "answer_form": card.get("answer_form", ""),
+        "answer_style": sample.get("answer_style", card.get("answer_style", "")),
         "question_type": card.get("question_type", ""),
         "family": card.get("family", ""),
+        "family_name": card.get("family_name", ""),
+        "category": card.get("category", ""),
+        "skill": card.get("skill", ""),
+        "ours_unique": bool(card.get("ours_unique", False)),
         "availability": sample.get("sequence_type", ""),
         "support_chunks": card.get("support_chunks", []),
         # Gold compressed-chunks (for compress samples) — empty list for
@@ -294,7 +347,7 @@ def render_sample(
         "ask_chunk": int(sample["ask_chunk"]) if "ask_chunk" in sample else -1,
         "question": card.get("question", ""),
         "options": list(card.get("options") or []),
-        "correct_option": card.get("correct_option", ""),
+        "correct_option": card.get("correct_option", correct_letter),
         # v12.13 fix (P0-2): per_emit_answers carries [{chunk, value}, ...]
         # for multi_emit cards. pass4 builds questions[*].per_emit_answers
         # so reward can score multi-emit at each expected answer chunk

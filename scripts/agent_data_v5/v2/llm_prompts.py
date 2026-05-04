@@ -17,43 +17,111 @@ from typing import Dict, List
 # Family taxonomy + per-family generation rules (mirrors v2/cards.py)
 # ---------------------------------------------------------------------------
 
+# Keep the compact legacy ids (N1/F5/PN1/...) as stable primary keys because
+# placement, cached cards, rewards, and eval rows already reference them.
+# The new fields below are the human-facing taxonomy used for data audits,
+# paper tables, and downstream sampling. They are inspired by StreamO/OvO
+# style buckets, but include ThinkStream-specific streaming-agent skills:
+# live narration, tool recall, compression, and silence timing.
+FAMILY_TAXONOMY = {
+    "N1":  {"family_name": "appearance_recall", "category": "Memory & Tracking",
+            "skill": "verify which entity actually appeared", "ours_unique": False},
+    "P1":  {"family_name": "attribute_memory", "category": "Memory & Tracking",
+            "skill": "recall an entity color/material/state", "ours_unique": False},
+    "CR1": {"family_name": "cause_effect", "category": "Causal & Intent Reasoning",
+            "skill": "explain a visible cause-effect relation", "ours_unique": False},
+    "CR2": {"family_name": "temporal_order", "category": "Temporal Understanding",
+            "skill": "recover the order of observed events", "ours_unique": False},
+    "CR4": {"family_name": "cross_event_reasoning", "category": "Causal & Intent Reasoning",
+            "skill": "combine multiple observations across time", "ours_unique": False},
+    "CR5": {"family_name": "delayed_clue_resolution", "category": "Memory & Tracking",
+            "skill": "hold an ambiguous clue until later evidence resolves it", "ours_unique": True},
+    "M1":  {"family_name": "video_summary", "category": "Global Understanding",
+            "skill": "summarize the whole video trajectory", "ours_unique": False},
+    "E2":  {"family_name": "next_event", "category": "Temporal Understanding",
+            "skill": "wait for and identify the next observable event", "ours_unique": False},
+    "F6":  {"family_name": "future_state", "category": "Temporal Understanding",
+            "skill": "predict the next state from current evidence", "ours_unique": False},
+    "F7":  {"family_name": "step_status", "category": "Progress Monitoring",
+            "skill": "answer whether a step has happened by now", "ours_unique": False},
+    "CR3": {"family_name": "intent_now", "category": "Causal & Intent Reasoning",
+            "skill": "infer the current actor intent", "ours_unique": False},
+    "CR7": {"family_name": "object_persistence", "category": "Memory & Tracking",
+            "skill": "track an object after occlusion or motion", "ours_unique": False},
+    "R1":  {"family_name": "visible_reasoning", "category": "Current Perception",
+            "skill": "reason over the currently visible scene", "ours_unique": False},
+    "F5":  {"family_name": "action_count", "category": "Streaming Agent Actions",
+            "skill": "emit cumulative counts for repeated actions", "ours_unique": True},
+    "C1":  {"family_name": "text_readout", "category": "Current Perception",
+            "skill": "read exact visible text", "ours_unique": False},
+    "PN1": {"family_name": "live_narration", "category": "Streaming Agent Actions",
+            "skill": "proactively describe sparse state changes", "ours_unique": True},
+}
+
+
+def family_taxonomy(family: str) -> Dict:
+    """Return human-facing taxonomy fields for a stable family id."""
+    return dict(FAMILY_TAXONOMY.get(family, {
+        "family_name": family or "unknown",
+        "category": "Unknown",
+        "skill": "",
+        "ours_unique": False,
+    }))
+
+
 FAMILY_RULES = {
     # backward MC (recall_demo dominant)
     "N1":  {"answer_form": "multiple_choice", "profile": "backward",
-            "intent": "Hallucination Detection: which entity actually appeared in the video"},
+            "intent": "Appearance recall: which entity actually appeared in the video",
+            **family_taxonomy("N1")},
     "P1":  {"answer_form": "multiple_choice", "profile": "backward",
-            "intent": "Entity attribute: color/material/state of an entity"},
+            "intent": "Attribute memory: color/material/state of an entity",
+            **family_taxonomy("P1")},
     "CR1": {"answer_form": "multiple_choice", "profile": "backward",
-            "intent": "Causal-why: why did X happen given visible cause"},
+            "intent": "Cause-effect: why did X happen given visible cause",
+            **family_taxonomy("CR1")},
     "CR2": {"answer_form": "multiple_choice", "profile": "backward",
-            "intent": "Temporal ordering: what was the sequence of N events"},
+            "intent": "Temporal ordering: what was the sequence of N events",
+            **family_taxonomy("CR2")},
     "CR4": {"answer_form": "multiple_choice", "profile": "backward",
-            "intent": "Compositional: combine 2+ observations to derive answer"},
+            "intent": "Cross-event reasoning: combine 2+ observations to derive answer",
+            **family_taxonomy("CR4")},
     "CR5": {"answer_form": "multiple_choice", "profile": "backward",
-            "intent": "Clue-delayed: question about something whose meaning is revealed later"},
+            "intent": "Delayed clue resolution: an early clue is resolved by later evidence",
+            **family_taxonomy("CR5")},
     "M1":  {"answer_form": "descriptive", "profile": "backward",
-            "intent": "Full-video summary"},
+            "intent": "Video summary",
+            **family_taxonomy("M1")},
     # forward (silent_then_response)
     "E2":  {"answer_form": "multiple_choice", "profile": "forward",
-            "intent": "Event watch: predict the next observable event"},
+            "intent": "Next event: wait for the next observable event",
+            **family_taxonomy("E2")},
     "F6":  {"answer_form": "multiple_choice", "profile": "forward",
-            "intent": "FPD prediction: predict next state given current"},
-    "F7":  {"answer_form": "binary", "profile": "forward",
-            "intent": "SSR step-progress: has step X happened yet (Yes/No flip at step_chunk)"},
+            "intent": "Future state: predict next state given current",
+            **family_taxonomy("F6")},
+    "F7":  {"answer_form": "binary", "profile": "realtime",
+            "intent": "Step status: has step X happened yet (Yes/No flips at step_chunk)",
+            **family_taxonomy("F7")},
     # realtime (direct)
     "CR3": {"answer_form": "multiple_choice", "profile": "realtime",
-            "intent": "Intent recognition: what is the actor trying to do now"},
+            "intent": "Intent now: what is the actor trying to do now",
+            **family_taxonomy("CR3")},
     "CR7": {"answer_form": "multiple_choice", "profile": "realtime",
-            "intent": "Object permanence: where is the (currently occluded) object"},
+            "intent": "Object persistence: where is the currently occluded/tracked object",
+            **family_taxonomy("CR7")},
     "R1":  {"answer_form": "multiple_choice", "profile": "realtime",
-            "intent": "Reasoning about visible scene"},
+            "intent": "Visible reasoning: reason about the current scene",
+            **family_taxonomy("R1")},
     "F5":  {"answer_form": "number", "profile": "realtime",
-            "intent": "REC repetition counting (multi_emit, cumulative)"},
+            "intent": "Action count: repeated action counting (multi_emit, cumulative)",
+            **family_taxonomy("F5")},
     "C1":  {"answer_form": "short_exact", "profile": "realtime",
-            "intent": "OCR: exact text visible on screen"},
+            "intent": "Text readout: exact text visible on screen",
+            **family_taxonomy("C1")},
     # multi_emit
     "PN1": {"answer_form": "descriptive", "profile": "realtime",
-            "intent": "Proactive narration (multi_emit, one description per state_change chunk)"},
+            "intent": "Live narration (multi_emit, one description per state_change chunk)",
+            **family_taxonomy("PN1")},
 }
 
 QUESTION_TYPE_BY_FAMILY = {f: ("multi_emit" if f in ("F5", "PN1") else "single_emit")
@@ -119,6 +187,7 @@ def card_generation_prompt(
     return f"""You are a teacher generating ONE training card from a video's per-chunk evidence.
 
 Family: {family}  ({rule["intent"]})
+Category: {rule["category"]} / {rule["family_name"]}
 Answer form: {rule["answer_form"]}
 Question type: {qtype}
 
@@ -266,6 +335,7 @@ def parse_card_response(raw: str, family: str) -> List[Dict]:
         c.setdefault("canonical_answer",
                      norm_emits[-1]["value"] if norm_emits else "")
         c["question_type"] = QUESTION_TYPE_BY_FAMILY.get(family, "single_emit")
+        c.update(family_taxonomy(family))
         valid.append(c)
     return valid
 

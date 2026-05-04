@@ -35,6 +35,33 @@ from transformers.models.qwen3_vl_moe.modeling_qwen3_vl_moe import (
 IGNORE_INDEX = -100
 
 
+def expected_v12_kind_for_eval(
+    stype: str,
+    *,
+    turn_idx: int = 0,
+    n_turns: int = 1,
+    action: str = "",
+) -> str:
+    """Expected assistant behavior for teacher-forced protocol metrics."""
+    if stype in ("recall_query", "recall") and n_turns >= 2:
+        if turn_idx == 0:
+            return "recall"
+        return (
+            "answer_empty"
+            if (action or "").strip().lower() == "silent"
+            else "answer_nonempty"
+        )
+    if stype == "silent":
+        return "answer_empty"
+    if stype in ("response", "recall_response"):
+        return "answer_nonempty"
+    if stype in ("recall_query", "recall"):
+        return "recall"
+    if stype in ("compress", "compress_inter"):
+        return "compress"
+    return "unknown"
+
+
 # ---------------------------------------------------------------------------
 # Assistant-span SFT Trainer
 # ---------------------------------------------------------------------------
@@ -287,20 +314,22 @@ class WeightedSFTTrainer(Trainer):
                         preds, input_ids, b, s, e, stype,
                         turn_idx=turn_idx,
                         n_turns=len(ans_spans),
+                        action=meta.get("action") or meta.get("gold_action", ""),
                     )
 
     def _accumulate_v12_behavioral(
         self, preds, input_ids, b: int, s: int, e: int, stype: str,
         turn_idx: int = 0, n_turns: int = 1,
+        action: str = "",
     ) -> None:
         """v12.1 per-sample behavioral counters from teacher-forced argmax.
 
         v12.11 audit-3 fix (2026-05-01): turn_idx + n_turns added so this
         helper can disambiguate the EXPECTED kind for multi-turn recall
         samples (shape B = [tool_call, final_answer]). For sample_type
-        "recall" with n_turns=2, turn 0 expects "recall", turn 1 expects
-        "answer_nonempty". Single-turn samples (n_turns=1) keep the prior
-        behavior of inferring expected directly from sample_type.
+        "recall" with n_turns=2, turn 0 expects "recall"; turn 1 expects a
+        non-empty answer for recall+response and an empty answer for
+        recall-failure→silent. Single-turn samples keep the prior behavior.
         """
         # Lazy-init on first call so __init__ doesn't change.
         if "v12_kind_match" not in self._eval_acc:
@@ -341,18 +370,9 @@ class WeightedSFTTrainer(Trainer):
         # answer ("answer_nonempty"). Inferring expected purely from
         # sample_type would tag turn 1 as "recall" too → false negative on
         # v12_kind_match.
-        if stype in ("recall_query", "recall") and n_turns >= 2:
-            expected_kind = "recall" if turn_idx == 0 else "answer_nonempty"
-        elif stype == "silent":
-            expected_kind = "answer_empty"
-        elif stype in ("response", "recall_response"):
-            expected_kind = "answer_nonempty"
-        elif stype in ("recall_query", "recall"):
-            expected_kind = "recall"
-        elif stype in ("compress", "compress_inter"):
-            expected_kind = "compress"
-        else:
-            expected_kind = "unknown"
+        expected_kind = expected_v12_kind_for_eval(
+            stype, turn_idx=turn_idx, n_turns=n_turns, action=action,
+        )
 
         observed_bucket = {
             "answer": "v12_observed_answer",

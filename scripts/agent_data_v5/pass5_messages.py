@@ -31,6 +31,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import logging
 import os
@@ -75,6 +76,14 @@ SPLITS = [
     ("val", "val_trajectories", "val_messages"),
     ("test", "test_trajectories", "test_messages"),
 ]
+
+# SFT rows are independent fresh-KV snapshots, unlike RL/eval trajectories
+# which must keep a complete replay timeline. Keep all high-information
+# actions, then downsample low-information patrol silence so SFT still learns
+# silence without drowning recall/compress/answer actions.
+SFT_SILENT_TO_ACTIVE_RATIO = 1.25
+SFT_ACTIVE_SILENT_FRACTION = 0.70
+SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO = 0.35
 
 
 # ---------------------------------------------------------------------------
@@ -456,6 +465,160 @@ def _emit_row(sample: Dict, messages: List[Dict]) -> Dict:
     }
 
 
+def _sample_rank(sample: Dict, idx: int) -> str:
+    key = "|".join([
+        str(sample.get("video_id", "")),
+        str(sample.get("trajectory_id", "")),
+        str(sample.get("sample_id", "")),
+        str(sample.get("chunk_idx", "")),
+        str(idx),
+    ])
+    return hashlib.sha1(key.encode("utf-8")).hexdigest()
+
+
+def _is_active_silent(sample: Dict) -> bool:
+    if sample.get("sample_type") != "silent" or sample.get("action") != "silent":
+        return False
+    meta = sample.get("metadata") or {}
+    if sample.get("card_id") or meta.get("question"):
+        return True
+    return sample.get("sequence_type") in {
+        "event_watch",
+        "multi_response",
+        "recall_success",
+        "immediate_response",
+    }
+
+
+def _choose_ranked(items: List[tuple[int, Dict]], n: int) -> List[tuple[int, Dict]]:
+    if n <= 0:
+        return []
+    return sorted(items, key=lambda x: _sample_rank(x[1], x[0]))[:n]
+
+
+def _is_multi_emit_response(sample: Dict) -> bool:
+    if sample.get("sample_type") != "response":
+        return False
+    meta = sample.get("metadata") or {}
+    return (
+        meta.get("question_type") == "multi_emit"
+        or meta.get("family") in {"F5", "F7", "PN1"}
+    )
+
+
+def _choose_multi_emit_response(
+    items: List[tuple[int, Dict]],
+    n: int,
+) -> List[tuple[int, Dict]]:
+    if n <= 0:
+        return []
+    by_family: Dict[str, List[tuple[int, Dict]]] = {}
+    for item in items:
+        meta = item[1].get("metadata") or {}
+        fam = meta.get("family") or "unknown"
+        by_family.setdefault(fam, []).append(item)
+    for fam in by_family:
+        by_family[fam] = _choose_ranked(by_family[fam], len(by_family[fam]))
+
+    selected: List[tuple[int, Dict]] = []
+    cursors = {fam: 0 for fam in by_family}
+    families = sorted(by_family)
+    while len(selected) < n:
+        progressed = False
+        for fam in families:
+            cur = cursors[fam]
+            bucket = by_family[fam]
+            if cur >= len(bucket):
+                continue
+            selected.append(bucket[cur])
+            cursors[fam] += 1
+            progressed = True
+            if len(selected) >= n:
+                break
+        if not progressed:
+            break
+    return selected
+
+
+def balance_sft_samples(samples: List[Dict]) -> tuple[List[Dict], Dict[str, int]]:
+    """Balance only the SFT messages split.
+
+    Policy:
+      - keep every recall / compress row;
+      - keep ordinary response rows;
+      - cap multi-emit response rows so F5/PN1 do not dominate SFT;
+      - keep enough silent rows to make silent roughly 55-60% of SFT;
+      - prefer active query-bearing silent rows over patrol/background rows.
+    """
+    indexed = list(enumerate(samples))
+    recall_compress = [
+        (i, s) for i, s in indexed
+        if s.get("sample_type") in {"recall", "compress"}
+    ]
+    multi_emit_response = [
+        (i, s) for i, s in indexed if _is_multi_emit_response(s)
+    ]
+    ordinary_response = [
+        (i, s) for i, s in indexed
+        if s.get("sample_type") == "response" and not _is_multi_emit_response(s)
+    ]
+    other_active = [
+        (i, s) for i, s in indexed
+        if s.get("sample_type") not in {"silent", "response", "recall", "compress"}
+    ]
+    multi_limit = min(
+        len(multi_emit_response),
+        max(1, int(len(ordinary_response) * SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO)),
+    )
+    active = (
+        recall_compress
+        + ordinary_response
+        + other_active
+        + _choose_multi_emit_response(multi_emit_response, multi_limit)
+    )
+    active_silent = [(i, s) for i, s in indexed if _is_active_silent(s)]
+    base_silent = [
+        (i, s) for i, s in indexed
+        if s.get("sample_type") == "silent" and not _is_active_silent(s)
+    ]
+    if not active:
+        return samples, {"before": len(samples), "after": len(samples)}
+
+    target_silent = min(
+        len(active_silent) + len(base_silent),
+        max(1, int(len(active) * SFT_SILENT_TO_ACTIVE_RATIO)),
+    )
+    target_active_silent = min(
+        len(active_silent),
+        int(target_silent * SFT_ACTIVE_SILENT_FRACTION),
+    )
+    kept_silent = _choose_ranked(active_silent, target_active_silent)
+    remaining = target_silent - len(kept_silent)
+    if remaining > 0:
+        kept_silent.extend(_choose_ranked(base_silent, remaining))
+    if len(kept_silent) < target_silent:
+        used = {i for i, _s in kept_silent}
+        rest = [(i, s) for i, s in active_silent if i not in used]
+        kept_silent.extend(_choose_ranked(rest, target_silent - len(kept_silent)))
+
+    selected = active + kept_silent
+    selected.sort(key=lambda x: x[0])
+    out = [s for _i, s in selected]
+    return out, {
+        "before": len(samples),
+        "after": len(out),
+        "active_kept": len(active),
+        "ordinary_response_kept": len(ordinary_response),
+        "multi_emit_response_before": len(multi_emit_response),
+        "multi_emit_response_kept": min(len(multi_emit_response), multi_limit),
+        "recall_compress_kept": len(recall_compress),
+        "silent_before": len(active_silent) + len(base_silent),
+        "silent_kept": len(kept_silent),
+        "active_silent_kept": sum(1 for _i, s in kept_silent if _is_active_silent(s)),
+        "base_silent_kept": sum(1 for _i, s in kept_silent if not _is_active_silent(s)),
+    }
+
+
 def convert(
     src: Path,
     dst: Path,
@@ -463,14 +626,23 @@ def convert(
     is_trajectory: bool,
     base_path: Path,
     limit: Optional[int] = None,
+    balance_sft: bool = False,
 ) -> Dict[str, int]:
     iter_fn = _iter_trajectories if is_trajectory else _iter_flat
     counts = {"ok": 0, "failed": 0}
     by_type: Dict[str, int] = {}
+    balance_stats: Dict[str, int] = {}
+    sample_iter: Iterable[Dict]
+    if balance_sft:
+        materialized = list(iter_fn(src))
+        materialized, balance_stats = balance_sft_samples(materialized)
+        sample_iter = materialized
+    else:
+        sample_iter = iter_fn(src)
 
     dst.parent.mkdir(parents=True, exist_ok=True)
     with dst.open("w") as out:
-        for i, sample in enumerate(iter_fn(src)):
+        for i, sample in enumerate(sample_iter):
             if limit and counts["ok"] >= limit:
                 break
             try:
@@ -488,6 +660,8 @@ def convert(
             by_type[row["sample_type"]] = by_type.get(row["sample_type"], 0) + 1
 
     counts["by_type"] = by_type
+    if balance_stats:
+        counts["balance"] = balance_stats
     return counts
 
 
@@ -533,6 +707,8 @@ def main() -> None:
                         "(samples store paths like 'data/agent_v5/frames/...'; "
                         "base_path must be PROJECT_ROOT, NOT data/).")
     parser.add_argument("--limit", type=int, default=0, help="Per-split sample cap (0 = unlimited).")
+    parser.add_argument("--no-balance-sft", action="store_true",
+                        help="Disable train_sft_messages silent downsampling.")
     args = parser.parse_args()
 
     final_dir = Path(args.final_dir)
@@ -564,11 +740,14 @@ def main() -> None:
 
         dst = final_dir / f"{out_stem}.jsonl"
         logger.info(f"Converting {src.name} → {dst.name} (is_trajectory={is_traj})")
+        balance = out_stem == "train_sft_messages" and not args.no_balance_sft
         counts = convert(src, dst, is_trajectory=is_traj, base_path=base_path,
-                         limit=args.limit or None)
+                         limit=args.limit or None, balance_sft=balance)
         logger.info(
             f"  ok={counts['ok']} failed={counts['failed']} by_type={counts['by_type']}"
         )
+        if counts.get("balance"):
+            logger.info(f"  SFT balance: {counts['balance']}")
         splits_done.append(out_stem.replace("_messages", ""))
 
     if splits_done:

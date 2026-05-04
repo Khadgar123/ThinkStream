@@ -645,14 +645,52 @@ Visual window: t={window_start}-{window_end}s (frames provided as video block).
 Describe what is NEW or CHANGED in the latest 1 second (t={start}-{end}s).
 Be concise but complete (target 40-80 tokens, never exceed 100).
 
+Evidence priority:
+1. Current frames at t={start}-{end}s: the only evidence for the current think.
+2. Recent thinks/compressed memory: history and entity naming only.
+3. If current frames conflict with memory, ignore memory for the current visual
+   description.
+
 Rules:
 - Only observable visual facts
 - Describe entities by appearance (clothing, color, material). If a similar
-  entity already appears in recent thinks, REUSE the same descriptive phrase
-  (e.g., "the man in the black polo shirt") so downstream linking can match it
+  entity is visibly present and already appears in recent thinks, reuse the
+  same descriptive phrase for that entity
 - Focus: entities+attributes, actions, state changes, OCR, spatial
 - NO meta-reasoning, NO "I notice", NO sounds/smells/emotions
-- If nothing new: one short sentence on ongoing state
+- Do not write "continues", "remains", "unchanged", or "no new" unless the
+  latest frames visibly show the same object/action
+- If the latest frames show a different object/action, name the new
+  object/action directly
+
+Output one paragraph:"""
+
+OBSERVATION_REPAIR_PROMPT = """You are correcting a streaming video think note for one current chunk.
+
+Recent memory/entity names (may be stale; use only for naming):
+{recent_thinks}
+
+Previous stale draft to avoid copying:
+{stale_text}
+
+The video block contains ONLY the current 1 second: t={start}-{end}s
+({n_frames} frames at {fps} fps).
+
+Task: inspect the current frames first and write the actual visual note for
+t={start}-{end}s.
+
+Evidence priority:
+1. Current frames at t={start}-{end}s.
+2. Memory/entity names only if the same entity is visibly present.
+3. Never use memory or the stale draft as evidence for what is visible now.
+
+Rules:
+- Describe only observable visual facts in this 1-second chunk
+- Keep entity names consistent only when the same entity is visibly present
+- Do not say "continues", "remains", "unchanged", or "no new" unless the
+  current frames visibly show the same object/action
+- If the current frames show a new object/action, name it directly
+- 40-80 tokens, one paragraph, no meta-reasoning
 
 Output one paragraph:"""
 

@@ -31,6 +31,28 @@ def test_mc_response_uses_correct_option_text_not_gold_emit_fragment():
     assert "blank white can" not in text
 
 
+def test_mc_response_can_use_letter_only_style():
+    card = {
+        "answer_form": "multiple_choice",
+        "answer_style": "letter_only",
+        "options": ["A) red", "B) blue", "C) green", "D) yellow"],
+        "correct_option": "C",
+    }
+
+    assert _response_text_for(card, "ignored") == "C"
+
+
+def test_mc_response_can_use_letter_plus_text_style():
+    card = {
+        "answer_form": "multiple_choice",
+        "answer_style": "letter_plus_text",
+        "options": ["A) red", "B) blue", "C) green", "D) yellow"],
+        "correct_option": "B",
+    }
+
+    assert _response_text_for(card, "ignored") == "B) blue"
+
+
 def test_descriptive_multi_emit_uses_current_emit_not_future_canonical():
     card = {
         "answer_form": "descriptive",

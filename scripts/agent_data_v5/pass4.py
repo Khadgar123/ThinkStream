@@ -218,7 +218,13 @@ def _build_trajectory_record(
             int(x.get("chunk_idx", 0))
             for x in sorted_samples
             if x.get("card_id") == cid
-            and x.get("sample_type") in ("response", "recall_response", "recall")
+            and (
+                x.get("sample_type") in ("response", "recall_response")
+                or (
+                    x.get("sample_type") == "recall"
+                    and x.get("action") == "response"
+                )
+            )
         })
         if canonical_ask < 0 and answer_chunks:
             # Fallback for legacy trajectories without ask_chunk metadata
@@ -232,7 +238,15 @@ def _build_trajectory_record(
         questions.append({
             "card_id": cid,
             "family": meta.get("family", ""),
+            "family_name": meta.get("family_name", ""),
+            "category": meta.get("category", ""),
+            "skill": meta.get("skill", ""),
+            "ours_unique": bool(meta.get("ours_unique", False)),
             "gold_answer": meta.get("gold_answer", ""),
+            "correct_answer_text": meta.get("correct_answer_text", ""),
+            "accepted_answers": list(meta.get("accepted_answers") or []),
+            "answer_style": meta.get("answer_style", ""),
+            "answer_instruction": meta.get("answer_instruction", ""),
             "canonical_answer": meta.get("canonical_answer", ""),
             "answer_form": meta.get("answer_form", ""),
             "question_type": meta.get("question_type", ""),
@@ -290,6 +304,11 @@ def _build_trajectory_record(
     for s in sorted_samples:
         ci = int(s.get("chunk_idx", 0))
         st = s.get("sample_type", "silent")
+        if st == "recall" and s.get("action") == "silent":
+            # Shape-B recall failure: assistant should call recall, then keep
+            # the final <answer> empty. Reward/metrics must not treat this as
+            # a missed response.
+            st = "recall_silent"
         prev = gold_action_per_chunk.get(ci)
         if prev is None or action_priority.get(st, 99) < action_priority.get(prev, 99):
             gold_action_per_chunk[ci] = st
@@ -317,8 +336,15 @@ def _build_trajectory_record(
         # with consumers that pre-date v12.4 multi-question schema.
         "metadata": {
             "family": lf_meta.get("family", ""),
+            "family_name": lf_meta.get("family_name", ""),
+            "category": lf_meta.get("category", ""),
+            "skill": lf_meta.get("skill", ""),
+            "ours_unique": bool(lf_meta.get("ours_unique", False)),
             "gold_action": lf_meta.get("gold_action", ""),
             "gold_answer": lf_meta.get("gold_answer", ""),
+            "correct_answer_text": lf_meta.get("correct_answer_text", ""),
+            "accepted_answers": lf_meta.get("accepted_answers", []),
+            "answer_style": lf_meta.get("answer_style", ""),
             "canonical_answer": lf_meta.get("canonical_answer", ""),
             "answer_form": lf_meta.get("answer_form", ""),
             "question_type": lf_meta.get("question_type", ""),

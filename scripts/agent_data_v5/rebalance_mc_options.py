@@ -42,6 +42,7 @@ ALL_JSONL_FILES = [
 ]
 
 OPTION_RE = re.compile(r"^\s*([A-D])[\).]\s*(.*)\s*$", re.DOTALL)
+ANSWER_RE = re.compile(r"<answer>(.*?)</answer>", re.DOTALL)
 QUERY_BLOCK_RE = re.compile(
     r"(?P<qline>\[[^\]\n]+s\]\s+Q:\s+(?P<question>.*?)\n)"
     r"(?P<oline>\[[^\]\n]+s\]\s+Options:\s+)(?P<options>.*?)(?=\n\[|\n</queries>|$)",
@@ -69,6 +70,49 @@ def _correct_text(options: List[str], correct_option: str) -> str | None:
     if idx >= len(options):
         return None
     return _strip_label(options[idx])
+
+
+def _accepted_answers(options: List[str], correct_option: str) -> List[str]:
+    text = _correct_text(options, correct_option) or ""
+    out = []
+    if correct_option:
+        out.append(correct_option)
+    if correct_option and text:
+        out.append(f"{correct_option}) {text}")
+    if text:
+        out.append(text)
+    seen = set()
+    return [x for x in out if x and not (x.lower() in seen or seen.add(x.lower()))]
+
+
+def _target_for_style(style: str, options: List[str], correct_option: str) -> str | None:
+    text = _correct_text(options, correct_option) or ""
+    if style == "letter_only":
+        return correct_option
+    if style == "letter_plus_text":
+        return f"{correct_option}) {text}" if text else correct_option
+    if style == "text_only":
+        return text
+    return None
+
+
+def _patch_answer_payload(text: str, target: str | None) -> Tuple[str, bool]:
+    if not target or not isinstance(text, str) or "<answer>" not in text:
+        return text, False
+
+    changed = False
+
+    def repl(match: re.Match[str]) -> str:
+        nonlocal changed
+        current = match.group(1)
+        if not current.strip():
+            return match.group(0)
+        if current.strip() == target:
+            return match.group(0)
+        changed = True
+        return f"<answer>{target}</answer>"
+
+    return ANSWER_RE.sub(repl, text), changed
 
 
 def _rebalance_options(
@@ -170,6 +214,12 @@ def _patch_question(mapping: Dict[Tuple[str, str, str], Dict[str, Any]], video_i
         return False
     obj["options"] = list(hit["options"])
     obj["correct_option"] = hit["correct_option"]
+    correct_text = _correct_text(hit["options"], hit["correct_option"])
+    if correct_text:
+        if obj.get("answer_form") == "multiple_choice" or "gold_answer" in obj:
+            obj["gold_answer"] = correct_text
+        obj["correct_answer_text"] = correct_text
+        obj["accepted_answers"] = _accepted_answers(hit["options"], hit["correct_option"])
     return True
 
 
@@ -188,9 +238,11 @@ def patch_row(
     row: Dict[str, Any],
     mapping: Dict[Tuple[str, str, str], Dict[str, Any]],
     by_video_question: Dict[Tuple[str, str], Dict[str, Any]],
+    parent_video_id: str = "",
 ) -> int:
     changed = 0
-    video_id = str(row.get("video_id", ""))
+    video_id = str(row.get("video_id") or parent_video_id or "")
+    row_hit = None
 
     if isinstance(row.get("questions"), list):
         for q in row.get("questions") or []:
@@ -198,13 +250,33 @@ def patch_row(
 
     metadata = row.get("metadata")
     if isinstance(metadata, dict):
+        row_hit = _lookup(mapping, video_id, metadata)
         changed += int(_patch_question(mapping, video_id, metadata))
+        if row_hit:
+            target = _target_for_style(
+                metadata.get("answer_style", ""),
+                row_hit["options"],
+                row_hit["correct_option"],
+            )
+            for key in ("output", "v12_assistant_turn_2"):
+                if isinstance(row.get(key), str):
+                    new_text, did = _patch_answer_payload(row[key], target)
+                    if did:
+                        row[key] = new_text
+                        changed += 1
 
     input_obj = row.get("input")
     if isinstance(input_obj, dict):
         for q in input_obj.get("queries") or []:
             if isinstance(q, dict):
                 changed += int(_patch_question(mapping, video_id, q))
+
+    if isinstance(row.get("samples"), list):
+        for sample in row.get("samples") or []:
+            if isinstance(sample, dict):
+                changed += patch_row(
+                    sample, mapping, by_video_question, parent_video_id=video_id
+                )
 
     messages = row.get("messages")
     if isinstance(messages, list):
@@ -217,6 +289,14 @@ def patch_row(
                     continue
                 old = part.get("text", "")
                 new = _patch_query_text(old, video_id, by_video_question)
+                if row_hit:
+                    target = _target_for_style(
+                        (metadata or {}).get("answer_style", ""),
+                        row_hit["options"],
+                        row_hit["correct_option"],
+                    )
+                    new, did_answer = _patch_answer_payload(new, target)
+                    changed += int(did_answer)
                 if new != old:
                     part["text"] = new
                     changed += 1

@@ -29,6 +29,7 @@ from .v2.llm_prompts import (
     FAMILY_RULES,
     QUESTION_TYPE_BY_FAMILY,
     card_generation_prompt,
+    family_taxonomy,
     parse_card_response,
 )
 
@@ -42,9 +43,11 @@ logger = logging.getLogger(__name__)
 
 def _card_to_dict(card: Card) -> Dict:
     canonical = card.gold_emits[-1].value if card.gold_emits else ""
+    taxonomy = family_taxonomy(card.family)
     return {
         "card_id": card.card_id,
         "family": card.family,
+        **taxonomy,
         "question": card.question,
         "answer_form": card.answer_form,
         "canonical_answer": canonical,
@@ -178,6 +181,7 @@ async def _generate_via_llm(
         out = []
         for i, c in enumerate(cards):
             c["card_id"] = f"{video_id}_{family}_{seed:04d}_{i}"
+            c.update(family_taxonomy(family))
             # Default placeholder; pass3c may override on demand
             c.setdefault("recall_query", None)
             out.append(c)

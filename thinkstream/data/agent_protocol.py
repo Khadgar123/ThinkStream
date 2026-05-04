@@ -187,8 +187,9 @@ def format_queries_block(queries: List[Dict]) -> str:
     queries = answered[-keep_n_answered:] + pending if keep_n_answered \
         else pending
 
-    # Build chronological event list: (time, "Q"/"A"/"O", text)
+    # Build chronological event list: (time, "Q"/"A"/"O"/"F", text)
     # "O" = Options (rendered for pending MC queries; v12.13 P0-3 fix).
+    # "F" = answer Format instruction for the pending query.
     events = []
     for q in queries:
         answers = q.get("answers", [])
@@ -208,6 +209,9 @@ def format_queries_block(queries: List[Dict]) -> str:
                 and q.get("options")):
             opts = " ".join(q["options"])    # e.g., "A) red B) blue C) ..."
             events.append((ask_t, "O", opts))
+            instruction = (q.get("answer_instruction") or "").strip()
+            if instruction:
+                events.append((ask_t, "F", instruction))
 
         # Answer event(s) — each carries its own timestamp
         for ans in answers:
@@ -220,7 +224,7 @@ def format_queries_block(queries: List[Dict]) -> str:
         return ""
 
     # Sort by time (stable sort preserves Q-before-O-before-A at same timestamp)
-    _kind_order = {"Q": 0, "O": 1, "A": 2}
+    _kind_order = {"Q": 0, "O": 1, "F": 2, "A": 3}
     events.sort(key=lambda e: (float(e[0]) if e[0] != "" else 0,
                                 _kind_order.get(e[1], 3)))
 
@@ -229,6 +233,8 @@ def format_queries_block(queries: List[Dict]) -> str:
         prefix = f"[{int(t)}s]" if t != "" else ""
         if kind == "O":
             lines.append(f"{prefix} Options: {text}")
+        elif kind == "F":
+            lines.append(f"{prefix} {text}")
         else:
             lines.append(f"{prefix} {kind}: {text}")
 
@@ -489,8 +495,14 @@ SYSTEM_PROMPT_V12 = (
     "    <answer>response text</answer>\n"
     "    <answer></answer>   (silent — no question to answer right now)\n\n"
     "Think rules: describe ONLY what is newly visible in the current chunk. "
-    "No meta-reasoning, no sound/smell/emotion, no speculation. "
-    "Maintain consistent entity names from memory."
+    "Evidence priority: (1) current video frames determine the current think; "
+    "(2) memory is history and entity naming only; (3) if current frames "
+    "conflict with memory, ignore memory for the current visual description. "
+    "Do not use memory as evidence that a past object/action is still visible. "
+    "Use continuation phrases such as 'continues', 'remains', or 'unchanged' "
+    "only when the current frames visibly show the same object/action; "
+    "otherwise name the new object/action directly. No meta-reasoning, no "
+    "sound/smell/emotion, no speculation."
 )
 
 

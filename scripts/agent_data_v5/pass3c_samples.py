@@ -54,19 +54,15 @@ def _think_for_chunk(rollout: Dict, chunk_idx: int) -> str:
 
 
 _OPTION_LABEL_RE = re.compile(r"^\s*[A-D][\).]\s*")
+MC_ANSWER_STYLES = ("letter_only", "letter_plus_text", "text_only")
 
 
 def _strip_option_label(text: str) -> str:
     return _OPTION_LABEL_RE.sub("", str(text or "")).strip()
 
 
-def _mc_answer_text(card: Dict, fallback: str = "") -> str:
-    """Return the answer text for an MC card without teaching letter-only SFT.
-
-    Pass3A LLM cards may put a local evidence phrase in gold_emits while the
-    actual answer is the canonical option. Use correct_option/options first so
-    the response answers the question, then fall back to canonical_answer.
-    """
+def _mc_correct_letter_text(card: Dict, fallback: str = "") -> tuple[str, str]:
+    """Return (correct_letter, correct_option_text) for an MC card."""
     options = list(card.get("options") or [])
     correct = str(card.get("correct_option") or "").strip().upper()
     if correct in {"A", "B", "C", "D"} and len(options) == 4:
@@ -74,11 +70,58 @@ def _mc_answer_text(card: Dict, fallback: str = "") -> str:
         if 0 <= idx < len(options):
             text = _strip_option_label(options[idx])
             if text:
-                return text
+                return correct, text
     canonical = str(card.get("canonical_answer") or "").strip()
     if canonical and canonical.upper() not in {"A", "B", "C", "D"}:
-        return _strip_option_label(canonical)
-    return str(fallback or "").strip()
+        return correct, _strip_option_label(canonical)
+    return correct, str(fallback or "").strip()
+
+
+def _mc_answer_style_for_card(card: Dict, video_id: str = "") -> str:
+    """Stable MC target-format mixture.
+
+    SFT needs to learn OvO-compatible letter-only answering, but not only
+    that format. The split is intentionally card-stable so all response /
+    recall samples for the same question use one protocol:
+      60% letter_only, 25% letter_plus_text, 15% text_only.
+    """
+    explicit = str(card.get("answer_style") or "").strip()
+    if explicit in MC_ANSWER_STYLES:
+        return explicit
+    bucket = stable_mod(video_id, card.get("card_id", ""), card.get("question", ""),
+                        modulo=100)
+    if bucket < 60:
+        return "letter_only"
+    if bucket < 85:
+        return "letter_plus_text"
+    return "text_only"
+
+
+def _mc_answer_instruction(style: str) -> str:
+    if style == "letter_only":
+        return "Answer format: one letter only (A, B, C, or D)."
+    if style == "letter_plus_text":
+        return "Answer format: letter plus option text, e.g. A) option text."
+    return "Answer format: answer text only, no option letter."
+
+
+def _mc_answer_text(card: Dict, fallback: str = "", style: Optional[str] = None) -> str:
+    """Return the SFT target string for an MC card.
+
+    Pass3A LLM cards may put a local evidence phrase in gold_emits while the
+    actual answer is the canonical option. Use correct_option/options first so
+    the response answers the question, then fall back to canonical_answer.
+
+    `style` controls the output protocol. If absent, keep the old text-only
+    behavior for offline tests and legacy cards.
+    """
+    correct, text = _mc_correct_letter_text(card, fallback)
+    style = style or str(card.get("answer_style") or "text_only")
+    if style == "letter_only" and correct:
+        return correct
+    if style == "letter_plus_text" and correct:
+        return f"{correct}) {text}" if text else correct
+    return text
 
 
 def _clean_emit_text(value: str) -> str:
@@ -100,7 +143,7 @@ def _response_text_for(card: Dict, value: str) -> str:
     """
     af = card.get("answer_form", "")
     if af == "multiple_choice":
-        return _mc_answer_text(card, value)
+        return _mc_answer_text(card, value, style=card.get("answer_style"))
     if af in ("binary", "number", "short_exact"):
         return value
     if card.get("question_type") == "multi_emit" and value:
@@ -359,7 +402,11 @@ def _recall_response_sample(
     turn1 = build_assistant_content_v12(
         think=think, kind="recall", recall_query=recall_query,
     )
-    turn2_think = "Recalled relevant frames; deriving the answer."
+    turn2_think = (
+        "The recalled frames provide the historical evidence needed for this "
+        "pending question. I compare that retrieved moment with the question "
+        "and give the grounded answer without adding unsupported details."
+    )
     turn2 = build_assistant_content_v12(
         think=turn2_think, kind="answer", answer_text=response,
     )
@@ -406,7 +453,9 @@ def _recall_silent_multiturn_sample(
         think=think, kind="recall", recall_query=recall_query,
     )
     turn2_think = (
-        "Recall returned no matching evidence. Cannot answer — staying silent."
+        "The recall result did not return matching historical evidence for "
+        "this pending question. Without a grounded visual match, I should not "
+        "guess; the correct action is to keep the answer empty."
     )
     turn2 = build_assistant_content_v12(
         think=turn2_think, kind="answer", answer_text="",  # ← silent
@@ -470,6 +519,12 @@ async def generate_trajectory_samples(
 
     # Run design's gold-action pipeline (handles patrol stratification,
     # compress_silent, priority resolution).
+    for cid, card in cards_map.items():
+        if (card or {}).get("answer_form") == "multiple_choice":
+            style = _mc_answer_style_for_card(card, video_id)
+            card["answer_style"] = style
+            card["answer_instruction"] = _mc_answer_instruction(style)
+
     cards_obj = [dict_to_card(c) for c in cards_map.values()]
     placements_by_card: Dict[str, List[Placement]] = {}
     for p in placements:
@@ -503,6 +558,8 @@ async def generate_trajectory_samples(
                     "question": card.get("question", ""),
                     "options": list(card.get("options") or []),
                     "answer_form": card.get("answer_form", ""),
+                    "answer_style": card.get("answer_style", ""),
+                    "answer_instruction": card.get("answer_instruction", ""),
                     "ask_time": p.ask_chunk * AGENT_CHUNK_SEC,
                     "answers": [],
                 })
@@ -619,6 +676,10 @@ async def generate_trajectory_samples(
         if cid in ask_chunk_by_card:
             s["ask_chunk"] = int(ask_chunk_by_card[cid])
         card = cards_map.get(cid) or {}
+        if card.get("answer_style"):
+            s["answer_style"] = card.get("answer_style")
+        if card.get("answer_instruction"):
+            s["answer_instruction"] = card.get("answer_instruction")
         gold_emits = card.get("gold_emits") or []
         if gold_emits:
             s["per_emit_answers"] = [

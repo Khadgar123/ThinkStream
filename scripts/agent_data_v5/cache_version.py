@@ -46,23 +46,21 @@ STAGE_VERSIONS: Dict[str, str] = {
     #         (verified by visual audit) but missing solo_ ids; bumping
     #         signals downstream that 1b-derived caches need re-derivation
     #         if you regenerate.
-    #   2 → v12.14: pass2 now sends Qwen3-VL video blocks with
-    #        video_metadata, explicitly disables thinking, and rejects
-    #        placeholder/meta-reasoning compression outputs.
-    #   3a/3b/3c → v12.15: placement/card simulator randomness now uses
-    #        stable SHA256 hashing instead of Python hash(); pass3a loaders
-    #        also enforce their stage version marker.
-    #   4/5 → v12.15: rendered metadata now preserves question_type, and
-    #        downstream final files must be regenerated from the fixed
-    #        pass3 outputs.
+    #   2 → v12.16: pass2 now includes stale-repeat repair before a think
+    #        enters memory, keeps OpenAI-HTTP teacher requests on vLLM's
+    #        video_url + request-level media_io_kwargs.video path for
+    #        pre-extracted JPEG frames, and audits stale rollouts after pass2.
+    #   3a/3b/3c/4/5 → v12.18: pass3 display taxonomy fields, mixed MC answer
+    #        protocols (letter/text/letter+text), semantic gold_answer split
+    #        from SFT target, and verifier/rebalance updates.
     "1a": "v12.5",
     "1b": "v12.11",
-    "2":  "v12.14",
-    "3a": "v12.15",
-    "3b": "v12.15",
-    "3c": "v12.15",
-    "4":  "v12.15",  # canonical key — verification
-    "5":  "v12.15",  # pass5_messages render version
+    "2":  "v12.16",
+    "3a": "v12.18",
+    "3b": "v12.18",
+    "3c": "v12.18",
+    "4":  "v12.18",  # canonical key — verification
+    "5":  "v12.18",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

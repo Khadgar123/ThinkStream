@@ -1,5 +1,5 @@
 """
-Pass 4: Verify + Filter
+Pass 3-E: Verify + Tag
 
 Validates every sample produced by Pass 3 (fork + base).
 
@@ -21,7 +21,7 @@ Validates every sample produced by Pass 3 (fork + base).
   13. Base sample queries-state interpolation
   14. Recall evidence reachability
 
-Each sample gets a pass/fail verdict with reasons.
+Each sample gets a pass/fail verdict with reasons; no rows are dropped here.
 Output: verified/{video_id}.json
 """
 
@@ -41,6 +41,7 @@ from .config import (
 )
 from .pass3a_cards import extract_keywords, extract_card_keywords
 from .pass3b_placement import _keyword_overlap as keyword_overlap
+from thinkstream.trainer.outcome_match import score_outcome_by_form
 
 logger = logging.getLogger(__name__)
 
@@ -76,6 +77,38 @@ def _memory_item_text(item) -> str:
     if isinstance(item, dict):
         return item.get("text", item.get("obs", str(item)))
     return str(item)
+
+
+def _verify_mc_response_text(resp_text: str, metadata: Dict) -> Tuple[bool, str]:
+    """Validate MC answer semantics and, when present, the SFT target style."""
+    style = (metadata.get("answer_style") or "").strip()
+    correct = (metadata.get("correct_option") or "").strip().upper()
+    if style == "letter_only":
+        if not re.fullmatch(r"[A-D]", resp_text.strip()):
+            return False, f"mc_response_not_letter_only: '{resp_text[:30]}'"
+        if correct and resp_text.strip().upper() != correct:
+            return False, f"mc_response_letter_mismatch: got '{resp_text}' want '{correct}'"
+    elif style == "letter_plus_text":
+        if correct and not re.match(rf"^\s*{re.escape(correct)}[\).:\s]", resp_text.strip(), re.I):
+            return False, f"mc_response_not_letter_plus_text: '{resp_text[:30]}'"
+    elif style == "text_only":
+        if re.match(r"^\s*[A-D][\).:]", resp_text.strip(), re.I):
+            return False, f"mc_response_has_letter_for_text_only: '{resp_text[:30]}'"
+
+    gold = (metadata.get("correct_answer_text")
+            or metadata.get("gold_answer")
+            or metadata.get("canonical_answer")
+            or "")
+    score = score_outcome_by_form(
+        resp_text,
+        options=list(metadata.get("options") or []),
+        correct_option=metadata.get("correct_option", ""),
+        gold_answer=gold,
+        answer_form="multiple_choice",
+    )
+    if score < 1.0:
+        return False, f"mc_response_semantic_mismatch: '{resp_text[:50]}'"
+    return True, "pass"
 
 
 def _compressed_source_texts(sample: Dict) -> List[str]:
@@ -202,11 +235,9 @@ def verify_information_flow(sample: Dict) -> Tuple[bool, str]:
             # in pass3c via _normalize_exact_form_answer; the response must
             # match exactly. Drift here = OVO eval miss.
             if answer_form == "multiple_choice":
-                if not re.fullmatch(r'[A-D]', resp_text):
-                    return False, f"mc_response_not_single_letter: '{resp_text[:30]}'"
-                gold = (metadata.get("gold_answer", "") or "").strip().upper()
-                if gold and resp_text != gold:
-                    return False, f"mc_response_mismatch: got '{resp_text}' want '{gold}'"
+                ok, reason = _verify_mc_response_text(resp_text, metadata)
+                if not ok:
+                    return False, reason
             elif answer_form == "binary":
                 if resp_text not in ("Yes", "No"):
                     return False, f"binary_response_not_yes_no: '{resp_text[:30]}'"
@@ -268,7 +299,11 @@ def _verify_information_flow_v12(sample: Dict) -> Tuple[bool, str]:
     if answer_match is not None:
         resp_text = answer_match.group(1).strip()
         # silent samples = empty answer (intended). Validate non-silent only.
-        if sample_type in ("response", "recall_response"):
+        is_answer_sample = (
+            sample_type in ("response", "recall_response")
+            or (sample_type == "recall" and sample.get("action") == "response")
+        )
+        if is_answer_sample:
             if not resp_text:
                 return False, "empty_response"
             answer_form = metadata.get("answer_form", "")
@@ -278,11 +313,9 @@ def _verify_information_flow_v12(sample: Dict) -> Tuple[bool, str]:
                 if len(resp_text) < 3:
                     return False, "response_too_short"
             if answer_form == "multiple_choice":
-                if not re.fullmatch(r"[A-D]", resp_text):
-                    return False, f"mc_response_not_single_letter: '{resp_text[:30]}'"
-                gold = (metadata.get("gold_answer", "") or "").strip().upper()
-                if gold and resp_text != gold:
-                    return False, f"mc_response_mismatch: got '{resp_text}' want '{gold}'"
+                ok, reason = _verify_mc_response_text(resp_text, metadata)
+                if not ok:
+                    return False, reason
             elif answer_form == "binary":
                 if resp_text not in ("Yes", "No"):
                     return False, f"binary_response_not_yes_no: '{resp_text[:30]}'"
@@ -301,6 +334,8 @@ def _verify_information_flow_v12(sample: Dict) -> Tuple[bool, str]:
             ans = re.search(r"<answer>(.*?)</answer>", t2, re.DOTALL)
             if ans:
                 resp = ans.group(1).lower()
+                if sample.get("action") == "silent" and not resp.strip():
+                    return True, "pass"
                 uncertain_kws = [
                     "cannot", "could not", "not sure", "unable",
                     "uncertain", "don't see", "not enough", "unclear",

@@ -62,6 +62,13 @@ def normalize_answer(s: str) -> str:
     return s
 
 
+_OPTION_LABEL_RE = re.compile(r"^\s*[A-Z][\).:]\s*")
+
+
+def _strip_option_label(s: str) -> str:
+    return _OPTION_LABEL_RE.sub("", str(s or "")).strip()
+
+
 # ---------------------------------------------------------------------------
 # multiple_choice
 # ---------------------------------------------------------------------------
@@ -110,12 +117,14 @@ def match_mcq_answer(
     ).lower()
     correct_text = ""
     if correct_idx is not None and 0 <= correct_idx < len(options):
-        correct_text = normalize_answer(options[correct_idx])
+        correct_text = normalize_answer(_strip_option_label(options[correct_idx]))
 
     # Strategy 1: leading-letter match.
     leading = ma.lstrip("([").lstrip()
-    if leading and correct_letter and leading[0] == correct_letter:
+    if leading and correct_letter and leading[0] in "abcd":
         if len(leading) == 1 or not leading[1].isalpha():
+            if leading[0] != correct_letter:
+                return False
             return True
 
     # Strategy 2: equality / option-text-in-model-output (one-way only).
@@ -124,13 +133,13 @@ def match_mcq_answer(
 
     # Strategy 3: any option's text matches.
     for i, opt in enumerate(options):
-        on = normalize_answer(opt)
+        on = normalize_answer(_strip_option_label(opt))
         if on and (ma == on or (len(on) >= 4 and on in ma)):
             return i == correct_idx
 
     # Strategy 4: gold_answer text fallback.
     if gold_answer:
-        ga = normalize_answer(gold_answer)
+        ga = normalize_answer(_strip_option_label(gold_answer))
         if ga and len(ga) >= 2 and (ma == ga or ga in ma):
             return True
         if ga and len(ga) < 2 and ma == ga:

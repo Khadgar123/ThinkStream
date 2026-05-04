@@ -75,6 +75,32 @@ def test_no_empty_trajectory():
         print(f"  PASS {fname}: no empty trajectories")
 
 
+def test_recall_failure_is_recall_silent_not_answer_chunk():
+    from scripts.agent_data_v5.pass4 import _build_trajectory_record
+
+    samples = [
+        {
+            "chunk_idx": 5,
+            "sample_type": "recall",
+            "action": "silent",
+            "trajectory_id": "t0",
+            "card_id": "c1",
+            "metadata": {
+                "gold_answer": "red cup",
+                "canonical_answer": "red cup",
+                "answer_form": "short_exact",
+                "family": "N1",
+                "ask_chunk": 2,
+                "question": "What object appeared earlier?",
+            },
+        }
+    ]
+
+    rec = _build_trajectory_record("vid", "t0", samples)
+    assert rec["gold_action_per_chunk"]["5"] == "recall_silent"
+    assert rec["questions"][0]["answer_chunks"] == []
+
+
 def test_metadata_consistency_v124():
     """Each sample's metadata must match SOME question in the trajectory's
     questions list (v12.4: multi-card trajectories — different chunks may

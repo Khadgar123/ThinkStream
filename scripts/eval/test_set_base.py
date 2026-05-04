@@ -65,7 +65,9 @@ from thinkstream.data.agent_protocol import (
 from thinkstream.trainer.outcome_match import score_outcome_by_form
 
 
-GOLD_RE = re.compile(r"<response>(.*?)</response>", re.DOTALL)
+GOLD_RE = re.compile(
+    r"<(?P<tag>answer|response)>(?P<answer>.*?)</(?P=tag)>", re.DOTALL
+)
 
 
 def detect_model_class(ckpt: str):
@@ -94,7 +96,7 @@ def extract_gold(sample):
         else:
             out = c
     m = GOLD_RE.search(out)
-    return m.group(1).strip() if m else None
+    return m.group("answer").strip() if m else None
 
 
 def gold_kind(gold):

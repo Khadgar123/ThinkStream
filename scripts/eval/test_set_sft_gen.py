@@ -41,8 +41,12 @@ from scripts.agent_data_v5.pass5_messages import (
 )
 from thinkstream.trainer.outcome_match import score_outcome_by_form
 
-GOLD_RE = re.compile(r"<response>(.*?)</response>", re.DOTALL)
-RESPONSE_RE = re.compile(r"<response>(.*?)</response>", re.DOTALL)
+GOLD_RE = re.compile(
+    r"<(?P<tag>answer|response)>(?P<answer>.*?)</(?P=tag)>", re.DOTALL
+)
+RESPONSE_RE = re.compile(
+    r"<(?P<tag>answer|response)>(?P<answer>.*?)</(?P=tag)>", re.DOTALL
+)
 
 
 def collect_video_metadata(messages):
@@ -78,7 +82,7 @@ def detect_model_class(ckpt: str):
 def extract_gold(sample):
     out = sample.get("output", "")
     m = GOLD_RE.search(out)
-    return m.group(1).strip() if m else None
+    return m.group("answer").strip() if m else None
 
 
 def gold_kind(gold):
@@ -156,7 +160,7 @@ def score_sample(pred_text, sample, gold, kind):
 def extract_response_from_generation(text):
     m = RESPONSE_RE.search(text)
     if m:
-        return m.group(1).strip()
+        return m.group("answer").strip()
     # Fallback for models that omit <action>/<response> tags and output
     # <think>...</think>responseNo  or  <think>...</think>response 12
     think_end = text.rfind("</think>")

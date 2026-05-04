@@ -422,6 +422,7 @@ def _register_streaming_agent_loop():
         TOOLS_SCHEMA,
         parse_agent_output_v12,
         format_memory_block,
+        format_queries_block,
     )
     from thinkstream.trainer.v12_rollout import (  # type: ignore
         VideoTrajectoryState,
@@ -549,14 +550,7 @@ def _register_streaming_agent_loop():
                 blocks: List[str] = []
                 for q in triggered_questions:
                     qtxt = q.get("question", "") or ""
-                    opts = q.get("options") or []
-                    if opts:
-                        opt_lines = "\n".join(
-                            f"{chr(ord('A') + i)}. {opt}"
-                            for i, opt in enumerate(opts)
-                        )
-                        blocks.append(f"{qtxt}\n{opt_lines}")
-                    else:
+                    if qtxt:
                         blocks.append(qtxt)
                 if blocks:
                     return "\n---\n".join(blocks)
@@ -578,6 +572,7 @@ def _register_streaming_agent_loop():
             question: str,
             ask_chunks: List[int],
             triggered_questions: Optional[List[Dict[str, Any]]],
+            queries: Optional[List[Dict[str, Any]]],
             recall_result: Optional[Dict[str, Any]],
             compress_trigger_range: Optional[Tuple[int, int]],
             inter_chunk: bool,
@@ -619,6 +614,19 @@ def _register_streaming_agent_loop():
                 "type": "text",
                 "text": f"<memory>\n{mem_text}\n</memory>",
             })
+
+            # ── Queries block — same renderer as SFT/pass5. Data carries
+            # structured question/options/answer_style fields; prompt text is
+            # rendered here so eval adapters can reuse the same interface.
+            try:
+                queries_text = format_queries_block(queries or [])
+            except Exception:
+                queries_text = ""
+            if queries_text:
+                content.append({
+                    "type": "text",
+                    "text": f"\n{queries_text}",
+                })
 
             # ── Visual window header + video block (after memory, matches
             # SFT). Header layout copies agent_protocol.py:283-292: keys
@@ -989,6 +997,8 @@ def _register_streaming_agent_loop():
             # spec says this won't happen now, but keep the queue for
             # robustness).
             pending_q_indices: List[int] = []
+            query_log: List[Dict[str, Any]] = []
+            query_log_idx_by_q: Dict[int, int] = {}
 
             # ── Initial prompt: [system + user(question)]. Cached on vLLM
             # side; never re-prefilled across chunks.
@@ -1100,8 +1110,20 @@ def _register_streaming_agent_loop():
                 triggered_q_indices_for_chunk: List[int] = []
                 if multi_q_list and not inter_chunk:
                     for q_idx in ask_at_chunk.get(chunk_idx, []):
-                        triggered_qs_for_chunk.append(multi_q_list[q_idx])
+                        q_obj = multi_q_list[q_idx]
+                        triggered_qs_for_chunk.append(q_obj)
                         triggered_q_indices_for_chunk.append(q_idx)
+                        if q_idx not in query_log_idx_by_q:
+                            query_log_idx_by_q[q_idx] = len(query_log)
+                            query_log.append({
+                                "question": q_obj.get("question", ""),
+                                "options": list(q_obj.get("options") or []),
+                                "answer_form": q_obj.get("answer_form", ""),
+                                "answer_style": q_obj.get("answer_style", ""),
+                                "answer_instruction": q_obj.get("answer_instruction", ""),
+                                "ask_time": chunk_idx * self.chunk_sec,
+                                "answers": [],
+                            })
                     # Push triggered Qs into the pending queue so the
                     # NEXT assistant turn's <answer> is assigned to them.
                     pending_q_indices.extend(triggered_q_indices_for_chunk)
@@ -1119,6 +1141,7 @@ def _register_streaming_agent_loop():
                     triggered_questions=(
                         triggered_qs_for_chunk if multi_q_list else None
                     ),
+                    queries=query_log,
                     recall_result=recall_result_for_next,
                     compress_trigger_range=compress_range,
                     inter_chunk=inter_chunk,
@@ -1379,6 +1402,12 @@ def _register_streaming_agent_loop():
                         q_idx = pending_q_indices.pop(chosen_pos)
                         per_q_answer_chunk[q_idx] = chunk_idx
                         per_q_answer_text[q_idx] = answer_str
+                        qlog_i = query_log_idx_by_q.get(q_idx)
+                        if qlog_i is not None and 0 <= qlog_i < len(query_log):
+                            query_log[qlog_i].setdefault("answers", []).append({
+                                "text": answer_str,
+                                "time": chunk_idx * self.chunk_sec,
+                            })
 
                 # default_v12_update_state advances chunk_idx by +1 on
                 # EVERY turn — including compress. For inter-chunk

@@ -71,7 +71,9 @@ from scripts.eval.ovo.eval_full import (
 )
 
 
-GOLD_RE = re.compile(r"<response>(.*?)</response>", re.DOTALL)
+GOLD_RE = re.compile(
+    r"<(?P<tag>answer|response)>(?P<answer>.*?)</(?P=tag)>", re.DOTALL
+)
 
 
 # ─── test.jsonl helpers (shared in spirit with test_set_base.py) ─────────────
@@ -80,7 +82,7 @@ GOLD_RE = re.compile(r"<response>(.*?)</response>", re.DOTALL)
 def extract_gold(sample):
     out = sample.get("output", "")
     m = GOLD_RE.search(out)
-    return m.group(1).strip() if m else None
+    return m.group("answer").strip() if m else None
 
 
 def gold_kind(gold):

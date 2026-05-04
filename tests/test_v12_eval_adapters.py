@@ -16,17 +16,17 @@ def test_ovo_build_user_input():
 
     item = {
         "task": "EPM",
-        "realtime": 14,  # → question_chunk = 7
+        "realtime": 14,  # → question_chunk = 14 at AGENT_CHUNK_SEC=1
         "question": "What did they do?",
         "options": ["sat down", "stood up", "ran away", "yelled"],
         "gt": 1,
     }
     # Pre-question chunks: empty
     assert OVOBenchAdapter.build_user_input(item, 0) == ""
-    assert OVOBenchAdapter.build_user_input(item, 6) == ""
+    assert OVOBenchAdapter.build_user_input(item, 13) == ""
 
     # Question chunk: full prompt
-    prompt = OVOBenchAdapter.build_user_input(item, 7)
+    prompt = OVOBenchAdapter.build_user_input(item, 14)
     assert "What did they do?" in prompt
     assert "A. sat down" in prompt
     assert "B. stood up" in prompt
@@ -35,7 +35,7 @@ def test_ovo_build_user_input():
     assert "Answer with one letter (A/B/C/D)" in prompt
 
     # After-question chunks: empty (silent expected)
-    assert OVOBenchAdapter.build_user_input(item, 8) == ""
+    assert OVOBenchAdapter.build_user_input(item, 15) == ""
 
     print("✓ OVO build_user_input")
 
@@ -45,54 +45,54 @@ def test_ovo_score_letter_match():
 
     item = {
         "task": "EPM",
-        "realtime": 14,  # question_chunk=7
+        "realtime": 14,  # question_chunk=14
         "options": ["a", "b", "c", "d"],
         "gt": 2,  # → "C"
     }
 
     # Correct letter at question chunk
     outs = [
-        {"chunk_idx": 5, "text": "<think>...</think><answer></answer>"},
-        {"chunk_idx": 7, "text": "<think>x</think><answer>C</answer>"},
+            {"chunk_idx": 12, "text": "<think>...</think><answer></answer>"},
+            {"chunk_idx": 14, "text": "<think>x</think><answer>C</answer>"},
     ]
     r = OVOBenchAdapter.score(item, outs)
     assert r["correct"] is True
-    assert r["answer_chunk"] == 7
+    assert r["answer_chunk"] == 14
     assert r["delay_chunks"] == 0
     assert r["fmt"] == "letter"
 
     # Correct letter delayed by 2 chunks (within window)
     outs = [
-        {"chunk_idx": 7, "text": "<think>...</think><answer></answer>"},
-        {"chunk_idx": 8, "text": "<think>...</think><answer></answer>"},
-        {"chunk_idx": 9, "text": "<think>x</think><answer>C</answer>"},
+        {"chunk_idx": 14, "text": "<think>...</think><answer></answer>"},
+        {"chunk_idx": 15, "text": "<think>...</think><answer></answer>"},
+        {"chunk_idx": 16, "text": "<think>x</think><answer>C</answer>"},
     ]
     r = OVOBenchAdapter.score(item, outs)
     assert r["correct"] is True  # delay=2 ≤ late_window
     assert r["delay_chunks"] == 2
 
     # Late beyond window — fmt=letter but in_window=False
-    outs = [{"chunk_idx": 12, "text": "<think>x</think><answer>C</answer>"}]
+    outs = [{"chunk_idx": 19, "text": "<think>x</think><answer>C</answer>"}]
     r = OVOBenchAdapter.score(item, outs)
     assert r["correct"] is False  # delay=5 > 2 → out of window
     assert r["in_window"] is False
 
     # Wrong letter
-    outs = [{"chunk_idx": 7, "text": "<think>x</think><answer>A</answer>"}]
+    outs = [{"chunk_idx": 14, "text": "<think>x</think><answer>A</answer>"}]
     r = OVOBenchAdapter.score(item, outs)
     assert r["correct"] is False
     assert r["fmt"] == "letter"
 
     # Free-text answer matches option content (substring match)
-    outs = [{"chunk_idx": 7, "text": "<think>x</think><answer>I think it is c</answer>"}]
+    outs = [{"chunk_idx": 14, "text": "<think>x</think><answer>I think it is c</answer>"}]
     r = OVOBenchAdapter.score(item, outs)
     assert r["correct"] is True
-    assert r["fmt"] == "free_text_substring"
+    assert r["fmt"] == "free_text"
 
     # Never answered → no_answer
     outs = [
-        {"chunk_idx": 7, "text": "<think>x</think><answer></answer>"},
-        {"chunk_idx": 9, "text": "<think>x</think><answer></answer>"},
+        {"chunk_idx": 14, "text": "<think>x</think><answer></answer>"},
+        {"chunk_idx": 16, "text": "<think>x</think><answer></answer>"},
     ]
     r = OVOBenchAdapter.score(item, outs)
     assert r["correct"] is False
@@ -107,18 +107,18 @@ def test_ovo_hld_unable_to_answer():
 
     item = {
         "task": "HLD",
-        "realtime": 6,  # question_chunk=3
+        "realtime": 6,  # question_chunk=6
         "options": ["empty bottles", "Unable to answer", "newspapers", "scraps"],
         "gt": 1,  # "Unable to answer" is the correct option
     }
     # Model emits the correct letter
-    outs = [{"chunk_idx": 3, "text": "<think>x</think><answer>B</answer>"}]
+    outs = [{"chunk_idx": 6, "text": "<think>x</think><answer>B</answer>"}]
     r = OVOBenchAdapter.score(item, outs)
     assert r["correct"] is True
 
     # Model stays silent (avoiding the question) — wrong even though semantically
     # it's "I don't know", because OVO requires picking the option
-    outs = [{"chunk_idx": 3, "text": "<think>x</think><answer></answer>"}]
+    outs = [{"chunk_idx": 6, "text": "<think>x</think><answer></answer>"}]
     r = OVOBenchAdapter.score(item, outs)
     assert r["correct"] is False
 
@@ -146,8 +146,8 @@ def test_our_open_ended_adapter():
 
     outs = [{"chunk_idx": 5, "text": "<think>x</think><answer>yes definitely</answer>"}]
     r = OurOpenEndedAdapter.score(item, outs)
-    # binary form requires exact "Yes" — "yes definitely" fails strict match
-    assert r["correct"] is False
+    # binary form uses the shared RL/eval matcher; first-token yes/no matches.
+    assert r["correct"] is True
 
     # descriptive: fuzzy substring
     item2 = {
@@ -209,7 +209,7 @@ def test_score_offline_predictions():
         {"id": 1, "task": "HLD", "realtime": 4, "options": ["a", "b", "c", "d"], "gt": 1},
     ]
     predictions = [
-        [{"chunk_idx": 7, "text": "<think>x</think><answer>A</answer>"}],
+        [{"chunk_idx": 14, "text": "<think>x</think><answer>A</answer>"}],
         [{"chunk_idx": 2, "text": "<think>x</think><answer>X</answer>"}],
     ]
     results = score_offline_predictions(

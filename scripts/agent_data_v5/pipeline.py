@@ -521,6 +521,8 @@ async def run_pipeline(
     # -----------------------------------------------------------------
     run_1 = 1 not in skip_pass
     run_2 = 2 not in skip_pass
+    evidence_1a_map: Dict[str, list] = {}
+    evidence_map: Dict[str, list] = {}
 
     if run_1:
         from .pass1a_evidence import load_1a, run_pass1a, save_1a
@@ -547,8 +549,6 @@ async def run_pipeline(
     else:
         from .pass1a_evidence import load_1a
         from .pass1b_enrich import load_1b
-        evidence_1a_map = {}
-        evidence_map = {}
         for v in videos:
             cached = load_1a(v["video_id"])
             if cached:
@@ -604,8 +604,6 @@ async def run_pipeline(
         # Each wave still uses its dedicated client + semaphore (defined
         # above), so per-pass concurrency caps are unchanged.
 
-        evidence_1a_map: Dict[str, list] = {}
-        evidence_map: Dict[str, list] = {}
         rollout_per_video: Dict[str, dict] = {}
 
         # ─── Wave 1: Pass 1a (per-chunk evidence) ───────────────────────
@@ -694,7 +692,11 @@ async def run_pipeline(
                     frame_paths=video_frames.get(vid, []),
                     num_chunks=video["num_chunks"],
                     client=client_2,
-                    evidence=evidence_map.get(vid),
+                    # pass2 uses evidence only for QC/repair triggers and
+                    # compression boundary scoring. Prefer enriched 1b, but
+                    # fall back to 1a so videos whose 1b failed do not run
+                    # completely blind to obvious stale-repeat drift.
+                    evidence=evidence_map.get(vid) or evidence_1a_map.get(vid),
                     chunk_log_path=pass2_chunk_log,
                 )
                 n_thinks = len(rollout.get("thinks") or [])
@@ -739,6 +741,31 @@ async def run_pipeline(
             with open(AUDIT_DIR / "compression_stats.json", "w") as f:
                 json.dump(comp_stats, f, indent=2, ensure_ascii=False)
             logger.info(f"Compression stats saved to {AUDIT_DIR / 'compression_stats.json'}")
+
+            # Diagnostic only: pass2 think text is reused directly in SFT/RL
+            # trajectories, so catch the high-risk failure mode where the model
+            # repeats stale memory for a long span while pass1 evidence changes.
+            from .audit_pass2_stale import audit_rollouts as audit_pass2_rollouts
+            pass2_audit_evidence = {
+                vid: evidence_map.get(vid) or evidence_1a_map.get(vid)
+                for vid in rollout_map
+            }
+            stale_report = audit_pass2_rollouts(rollout_map, pass2_audit_evidence)
+            stale_path = AUDIT_DIR / "pass2_stale_audit.json"
+            stale_path.write_text(json.dumps(
+                stale_report, indent=2, ensure_ascii=False,
+            ))
+            stale_rate = stale_report.get("totals", {}).get(
+                "hard_stale_video_rate", 0.0,
+            )
+            logger.info("Pass2 stale audit saved to %s", stale_path)
+            if stale_rate >= 0.10:
+                logger.warning(
+                    "Pass2 stale audit flagged %.1f%% videos. Inspect %s before "
+                    "training; this is usually visual-window grounding drift.",
+                    stale_rate * 100.0,
+                    stale_path,
+                )
 
     # =================================================================
     # PASS 3-A: Task Card Generation + Verification
@@ -1161,12 +1188,17 @@ async def run_pipeline(
 
     # Global family distribution
     global_families = {}
+    global_categories = {}
     global_seq_types = {}
     global_base_roles = {}
     for s in sft_samples:
-        fam = s.get("metadata", {}).get("family", "")
+        meta = s.get("metadata", {})
+        fam = meta.get("family", "")
         if fam:
             global_families[fam] = global_families.get(fam, 0) + 1
+        cat = meta.get("category", "")
+        if cat:
+            global_categories[cat] = global_categories.get(cat, 0) + 1
         seq = s.get("sequence_type", "")
         global_seq_types[seq] = global_seq_types.get(seq, 0) + 1
         br = s.get("base_role", "")
@@ -1174,16 +1206,19 @@ async def run_pipeline(
             global_base_roles[br] = global_base_roles.get(br, 0) + 1
 
     logger.info(f"Global family dist: {dict(sorted(global_families.items()))}")
+    logger.info(f"Global category dist: {dict(sorted(global_categories.items()))}")
     logger.info(f"Global seq_type dist: {dict(sorted(global_seq_types.items()))}")
     logger.info(f"Global base_role dist: {dict(sorted(global_base_roles.items()))}")
 
-    # Warn if any expected family has <1% representation.
-    # v9.4: include reasoning families (CR1-4); 0.5% floor is more lenient
-    # because reasoning cards are scarcer per video by design.
+    # Warn if any expected v12 taxonomy family has very low representation.
+    # Multi-emit families are allowed a lower floor because each unique card
+    # expands into several response rows and is capped by design.
     total_with_family = sum(global_families.values()) or 1
     for fam, floor_pct in [
-        ("F1", 1.0), ("F2", 1.0), ("E1", 1.0), ("E2", 1.0), ("S1", 1.0),
-        ("CR1", 0.5), ("CR2", 0.5), ("CR3", 0.3), ("CR4", 0.5),
+        ("N1", 1.0), ("P1", 1.0), ("CR1", 1.0), ("CR2", 1.0),
+        ("CR3", 0.8), ("CR4", 1.0), ("CR5", 1.0), ("CR7", 0.8),
+        ("E2", 1.0), ("F6", 1.0), ("F7", 0.5), ("R1", 0.8),
+        ("C1", 0.5), ("F5", 0.3), ("PN1", 0.3), ("M1", 0.8),
     ]:
         fam_count = global_families.get(fam, 0)
         fam_pct = fam_count / total_with_family * 100
@@ -1356,6 +1391,7 @@ async def run_pipeline(
     stats["phase_counts"] = phase_counts
     stats["split_by_video"] = True
     stats["global_family_distribution"] = global_families
+    stats["global_category_distribution"] = global_categories
     stats["global_sequence_type_distribution"] = global_seq_types
     stats["global_base_role_distribution"] = global_base_roles
     stats["per_video_sample_counts"] = {

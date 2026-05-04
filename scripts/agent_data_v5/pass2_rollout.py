@@ -28,6 +28,7 @@ from .config import (
     CONFIDENCE_THRESHOLD,
     FRAMES_PER_CHUNK,
     OBSERVATION_PROMPT,
+    OBSERVATION_REPAIR_PROMPT,
     get_tokenizer,
     PASS_CONFIG,
     RUNTIME_MM_PROCESSOR_KWARGS,
@@ -283,6 +284,135 @@ _META_REASONING_RE = re.compile(
     re.IGNORECASE,
 )
 _PLACEHOLDER_TEXT_RE = re.compile(r"^[.\s…-]+$")
+_STALE_OBSERVATION_RE = re.compile(
+    r"\b(continues?|remains?|unchanged|no new|static|identical)\b",
+    re.IGNORECASE,
+)
+
+
+def _norm_observation(text: str) -> str:
+    text = (text or "").lower()
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _observation_tokens(text: str) -> set:
+    stop = {
+        "the", "and", "for", "with", "that", "this", "from", "into", "over",
+        "under", "left", "right", "center", "middle", "frame", "video",
+        "scene", "visible", "text", "still", "same", "latest", "second",
+        "continues", "continue", "remain", "remains", "unchanged", "static",
+        "during", "throughout", "current",
+    }
+    return {
+        tok for tok in _norm_observation(text).split()
+        if len(tok) > 2 and tok not in stop
+    }
+
+
+def _jaccard(a: set, b: set) -> float:
+    return len(a & b) / max(len(a | b), 1)
+
+
+def _evidence_text(chunk: Dict) -> str:
+    parts: List[str] = []
+    for ent in chunk.get("visible_entities") or []:
+        if isinstance(ent, dict):
+            parts.append(str(ent.get("desc", "")))
+            parts.append(str(ent.get("action", "")))
+    for fact in chunk.get("atomic_facts") or []:
+        if isinstance(fact, dict):
+            parts.append(str(fact.get("fact", "")))
+        else:
+            parts.append(str(fact))
+    for change in chunk.get("state_changes") or []:
+        parts.append(str(change))
+    return " ".join(p for p in parts if p)
+
+
+def _evidence_drift(evidence: Optional[List[Dict]], start: int, end: int) -> Optional[float]:
+    if not evidence or start < 0 or end < 0:
+        return None
+    if start >= len(evidence) or end >= len(evidence):
+        return None
+    return 1.0 - _jaccard(
+        _observation_tokens(_evidence_text(evidence[start])),
+        _observation_tokens(_evidence_text(evidence[end])),
+    )
+
+
+def should_repair_observation(
+    think_text: str,
+    recent_thinks: List[Dict],
+    *,
+    chunk_idx: int,
+    evidence: Optional[List[Dict]] = None,
+) -> Tuple[bool, Dict]:
+    """Detect stale-copy pass2 observations before they enter memory.
+
+    Pass2's gold think is reused directly by SFT/RL samples. A repeated
+    "continues/remains unchanged" sentence is acceptable for truly static
+    frames, but it is harmful when the visual evidence has drifted. This gate
+    uses pass1 evidence only to decide whether to retry; the repair prompt
+    itself still receives only video frames, so no pass1 text leaks into the
+    target think.
+    """
+    norm = _norm_observation(think_text)
+    if not norm or not recent_thinks:
+        return False, {}
+
+    prev_texts = [str(t.get("text", "")) for t in recent_thinks if t.get("type") == "think"]
+    exact_prev = 0
+    for prev in reversed(prev_texts):
+        if _norm_observation(prev) == norm:
+            exact_prev += 1
+        else:
+            break
+
+    cur_tokens = _observation_tokens(think_text)
+    near_prev = 0
+    for prev in reversed(prev_texts):
+        if _jaccard(_observation_tokens(prev), cur_tokens) >= 0.86:
+            near_prev += 1
+        else:
+            break
+
+    exact_len = exact_prev + 1
+    near_len = near_prev + 1
+    stale_language = bool(_STALE_OBSERVATION_RE.search(think_text))
+    if not stale_language:
+        return False, {}
+
+    candidates: List[Tuple[str, int, int]] = []
+    if exact_len >= 4:
+        candidates.append(("exact", exact_len, chunk_idx - exact_prev))
+    if near_len >= 6:
+        candidates.append(("near", near_len, chunk_idx - near_prev))
+    if not candidates:
+        return False, {}
+
+    best_kind, best_len, best_start = max(candidates, key=lambda x: x[1])
+    drift = _evidence_drift(evidence, best_start, chunk_idx)
+    if drift is not None:
+        if drift < 0.45:
+            return False, {}
+        return True, {
+            "reason": f"{best_kind}_repeat_with_evidence_drift",
+            "run_length": best_len,
+            "run_start": best_start,
+            "evidence_drift": round(drift, 3),
+        }
+
+    # If pass1b evidence is unavailable for this video, keep the fallback
+    # conservative to avoid doubling calls on genuinely static title screens.
+    if (best_kind == "exact" and best_len >= 12) or best_len >= 16:
+        return True, {
+            "reason": f"{best_kind}_repeat_without_evidence",
+            "run_length": best_len,
+            "run_start": best_start,
+            "evidence_drift": None,
+        }
+    return False, {}
 
 
 def build_observation_request(
@@ -374,6 +504,68 @@ def build_observation_request(
         "max_tokens": PASS_CONFIG["pass2_rollout"]["max_tokens_observation"],
         "temperature": PASS_CONFIG["pass2_rollout"]["temperature"],
         "id": f"{video_id}_obs_{chunk_idx}",
+    }
+    if media_io_kwargs is not None:
+        request["media_io_kwargs"] = media_io_kwargs
+    return request
+
+
+def build_observation_repair_request(
+    chunk_idx: int,
+    frame_paths: List[str],
+    memory: MemoryState,
+    video_id: str,
+    *,
+    stale_text: str = "",
+) -> Dict:
+    """Build a current-chunk-only repair request for stale pass2 thinks."""
+    start = chunk_idx * AGENT_CHUNK_SEC
+    end = start + AGENT_CHUNK_SEC
+    chunk_frame_paths = [
+        p for p in get_chunk_frame_paths(frame_paths, chunk_idx)
+        if Path(p).exists()
+    ]
+    fps = float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC)
+
+    recent_lines = []
+    for item in memory.recent_thinks[-8:]:
+        recent_lines.append(f'[{item["time"]}] {item.get("text", "")}')
+    recent_text = "\n".join(recent_lines) or "(none)"
+
+    prompt = OBSERVATION_REPAIR_PROMPT.format(
+        recent_thinks=recent_text,
+        stale_text=(stale_text or "").strip()[:600] or "(none)",
+        start=int(start),
+        end=int(end),
+        n_frames=len(chunk_frame_paths),
+        fps=fps,
+    )
+
+    content: List[Dict] = [{"type": "text", "text": prompt}]
+    media_io_kwargs = None
+    if chunk_frame_paths:
+        content.append({
+            "type": "video_url",
+            "video_url": {"url": build_video_jpeg_data_uri(chunk_frame_paths)},
+        })
+        media_io_kwargs = {
+            "video": {
+                "fps": fps,
+                "frames_indices": [
+                    chunk_idx * FRAMES_PER_CHUNK + i
+                    for i in range(len(chunk_frame_paths))
+                ],
+                "total_num_frames": (chunk_idx + 1) * FRAMES_PER_CHUNK,
+                "duration": (chunk_idx + 1) * FRAMES_PER_CHUNK / fps,
+                "do_sample_frames": False,
+            },
+        }
+
+    request = {
+        "messages": [{"role": "user", "content": content}],
+        "max_tokens": PASS_CONFIG["pass2_rollout"]["max_tokens_observation"],
+        "temperature": min(float(PASS_CONFIG["pass2_rollout"]["temperature"]), 0.2),
+        "id": f"{video_id}_obs_repair_{chunk_idx}",
     }
     if media_io_kwargs is not None:
         request["media_io_kwargs"] = media_io_kwargs
@@ -803,11 +995,53 @@ async def run_pass2_single_video(
             media_io_kwargs=request.get("media_io_kwargs"),
         )
         think_text = parse_observation_result(raw)
-        thinks.append({
+        repaired = False
+        repair_meta: Dict = {}
+        should_repair, repair_meta = should_repair_observation(
+            think_text,
+            memory.recent_thinks,
+            chunk_idx=chunk_idx,
+            evidence=evidence,
+        )
+        if should_repair:
+            repair_request = build_observation_repair_request(
+                chunk_idx, frame_paths, memory, video_id, stale_text=think_text,
+            )
+            safe_repair_max = _safe_max_tokens_for_pass2(
+                repair_request, repair_request["max_tokens"],
+            )
+            try:
+                repair_raw = await client._call_one(
+                    messages=repair_request["messages"],
+                    max_tokens=safe_repair_max,
+                    temperature=repair_request["temperature"],
+                    request_id=repair_request["id"],
+                    enable_thinking=enable_thinking,
+                    mm_processor_kwargs=mm_kwargs,
+                    media_io_kwargs=repair_request.get("media_io_kwargs"),
+                )
+                repaired_text = parse_observation_result(repair_raw)
+                if repaired_text and repaired_text != "Scene continues without notable changes.":
+                    think_text = repaired_text
+                    repaired = True
+                    logger.info(
+                        "  [%s] Repaired stale pass2 think at chunk %d: %s",
+                        video_id, chunk_idx, repair_meta.get("reason", ""),
+                    )
+            except Exception as exc:
+                logger.warning(
+                    "  [%s] Stale pass2 repair failed at chunk %d: %s",
+                    video_id, chunk_idx, exc,
+                )
+
+        think_record = {
             "chunk_idx": chunk_idx,
             "time": [chunk_idx * AGENT_CHUNK_SEC, (chunk_idx + 1) * AGENT_CHUNK_SEC],
             "think": think_text,
-        })
+        }
+        if repaired:
+            think_record["repair"] = repair_meta
+        thinks.append(think_record)
 
         # --- 3. Compress (between timesteps) then append current think ---
         if should_compress_now:
@@ -871,6 +1105,11 @@ async def run_pass2_single_video(
                 "tokens": memory.count_tokens(),
                 "compressed": should_compress_now,
             }
+            if repaired:
+                log_entry["repaired"] = True
+                log_entry["repair_reason"] = repair_meta.get("reason")
+                log_entry["repair_run_length"] = repair_meta.get("run_length")
+                log_entry["repair_evidence_drift"] = repair_meta.get("evidence_drift")
             if should_compress_now and compression_events and compression_events[-1]["trigger_chunk"] == chunk_idx:
                 ce = compression_events[-1]
                 log_entry["compress_range"] = ce["summary"].get("time_range")
