@@ -70,7 +70,7 @@ def _load_helpers_from_source(path: str, names, extra_globals=None):
 
 # Module-level regex constant referenced by test_set_agent.extract_gold.
 # Pre-load into the namespace whenever we exec that def.
-_GOLD_RE_PATTERN = r"<response>(.*?)</response>"
+_GOLD_RE_PATTERN = r"<(?P<tag>answer|response)>(?P<answer>.*?)</(?P=tag)>"
 
 
 def test_test_set_agent_gold_kind_extraction():
@@ -193,35 +193,36 @@ def test_ovo_base_frame_sampling_in_range(tmp_path):
     h = _load_helpers_from_source(
         str(ROOT / "scripts" / "eval" / "ovo" / "base.py"),
         ["sample_frame_paths"],
+        extra_globals={"DEFAULT_FRAME_FPS": 2.0},
     )
     sample_frame_paths = h["sample_frame_paths"]
 
-    # Build fake frame dir: video "demo" with frames 0-9 (10 frames at 1 fps).
-    frames_root = tmp_path / "frames"
-    video_dir = frames_root / "demo"
+    # Build fake frame dir with frames 0-9. Current OVO helper receives the
+    # per-video frame_dir directly and uses the canonical project FPS.
+    video_dir = tmp_path / "frames" / "demo"
     video_dir.mkdir(parents=True)
     for i in range(10):
         (video_dir / f"{i:06d}.jpg").write_bytes(b"fake")
 
     # Full range, n=10 → all 10
-    out = sample_frame_paths(frames_root, "demo", 0, 9, 10)
+    out = sample_frame_paths(video_dir, 0, 4.5, 10)
     assert len(out) == 10
     assert all(p.endswith(".jpg") for p in out)
 
-    # Partial range [3, 7] → 5 frames in range
-    out = sample_frame_paths(frames_root, "demo", 3, 7, 5)
+    # Partial range [1.5, 3.5] at 2fps → frames 3..7.
+    out = sample_frame_paths(video_dir, 1.5, 3.5, 5)
     assert len(out) == 5
     assert all("00000" in p for p in out)  # all single-digit indices padded
 
     # Cap n=3 from 10 candidates → uniformly sampled
-    out = sample_frame_paths(frames_root, "demo", 0, 9, 3)
+    out = sample_frame_paths(video_dir, 0, 4.5, 3)
     assert len(out) == 3
     # First, middle-ish, last
     indices = [int(Path(p).stem) for p in out]
     assert indices[0] == 0 and indices[-1] == 9
 
     # Out-of-range t_start/t_end → empty/None
-    out = sample_frame_paths(frames_root, "demo", 100, 200, 5)
+    out = sample_frame_paths(video_dir, 100, 200, 5)
     assert out is None
 
 
@@ -229,8 +230,9 @@ def test_ovo_base_frame_sampling_missing_dir(tmp_path):
     h = _load_helpers_from_source(
         str(ROOT / "scripts" / "eval" / "ovo" / "base.py"),
         ["sample_frame_paths"],
+        extra_globals={"DEFAULT_FRAME_FPS": 2.0},
     )
-    out = h["sample_frame_paths"](tmp_path, "nonexistent", 0, 10, 5)
+    out = h["sample_frame_paths"](tmp_path / "nonexistent", 0, 10, 5)
     assert out is None
 
 
@@ -433,8 +435,8 @@ def test_recall_text_cap_aligned_to_sft():
     assert m, "RECALL_TEXT_MAX_CHARS not set"
     assert int(m.group(1)) == 1600, \
         f"default recall char-cap must be 1600 (SFT upper bound); got {m.group(1)}"
-    block = src[src.find("Zone C continued: Recall result"):
-                src.find("Zone D: User input")]
+    block = src[src.find("if recall_result:"):
+                src.find("# ── User input")]
     assert "RECALL_TEXT_MAX_CHARS" in block, \
         "recall block must reference RECALL_TEXT_MAX_CHARS, not a literal"
 
@@ -685,10 +687,10 @@ def test_should_compress_matches_sft():
 
 def test_summary_cap_aligned_with_sft():
     """Both incoming summary and merged segments cap at SUMMARY_TOKENS_MAX
-    (=180), matching SFT config.py. Going above 180 is OOD; going below is
+    (=280), matching SFT config.py. Going above 280 is OOD; going below is
     over-tightening (model never trained on shorter)."""
     src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
-    assert "SUMMARY_TOKENS_MAX = 180" in src, "module-level cap constant"
+    assert "SUMMARY_TOKENS_MAX = 280" in src, "module-level cap constant"
     cmp_block = src[src.find("def compress("):
                     src.find("# --- Queries tracking")]
     assert "len(ids) > SUMMARY_TOKENS_MAX" in cmp_block
@@ -765,13 +767,13 @@ def test_render_sample_injects_recalled_frames():
         "text_content": "[10s] foo",
         "returned_chunks": [5, 6, 7, 8],
     }
-    # Per-video frame list: 1fps, 2 frames per chunk → indices [10..15] map
-    # to chunks 5..7. Provide enough to cover chunk 8.
+    # Current data uses 1s chunks at 2fps. returned_chunks [5..8] map to
+    # time range [5, 9] and frame indices 10..17.
     all_frames = [f"frame_{i:06d}.jpg" for i in range(1, 21)]
     rf = _build_recalled_frames(rr, all_frames)
     assert rf is not None
     assert rf["source"] == "historical_frames"
-    assert rf["time_range"] == [10, 18]   # min(5)*2 to (max(8)+1)*2
+    assert rf["time_range"] == [5, 9]     # min(5)*1 to (max(8)+1)*1
     assert rf["n_frames"] == 8            # 4 chunks × 2 frames
     assert "frame_paths" in rf and len(rf["frame_paths"]) == 8
 
@@ -872,38 +874,33 @@ def test_bm25_retrieve_calls_time_range_filter():
         "HybridRetriever must filter archive by time_range too"
 
 
-def test_recall_query_two_schemas_present():
-    """pass3c_samples must define BOTH RECALL_QUERY_PROMPT_WITH_RANGE and
-    RECALL_QUERY_PROMPT_KEYWORD_ONLY, and the keyword-only schema must
-    NOT include time_range in its JSON output template."""
+def test_recall_query_uses_prompt_parser_with_time_fallback():
+    """pass3c recall-query generation is now a single structured schema:
+    the prompt/parser may use the LLM output, but falls back to the card's
+    grounding time range when the LLM omits/garbles time_range."""
     src = (ROOT / "scripts" / "agent_data_v5" / "pass3c_samples.py").read_text()
-    assert "RECALL_QUERY_PROMPT_WITH_RANGE" in src
-    assert "RECALL_QUERY_PROMPT_KEYWORD_ONLY" in src
-    # Keyword-only block must not template a time_range field
-    ko = src[src.find("RECALL_QUERY_PROMPT_KEYWORD_ONLY"):
-             src.find("RECALL_TIME_RANGE_FRACTION")]
-    assert '"time_range"' not in ko, \
-        "keyword_only schema must NOT contain time_range field"
-    # Mix ratio is exposed
-    assert "RECALL_TIME_RANGE_FRACTION" in src
+    assert "recall_query_prompt(card)" in src
+    assert "parse_recall_query_response(raw or \"\", fallback_time_range=fallback_tr)" in src
+    assert "card[\"recall_query\"] = rq" in src
 
 
-def test_recall_time_range_uses_support_chunks():
-    """_compute_recall_time_range must derive the window from card's
-    support_chunks (with slack), not the legacy 0-max-history."""
+def test_recall_query_time_range_uses_grounding_frames():
+    """_recall_query_for derives recall search range from grounding_frames
+    under the current 1-second chunk protocol."""
     h = _load_helpers_from_source(
         str(ROOT / "scripts" / "agent_data_v5" / "pass3c_samples.py"),
-        ["_compute_recall_time_range"],
-        extra_globals={"AGENT_CHUNK_SEC": 2.0},
+        ["_recall_query_for"],
+        extra_globals={"AGENT_CHUNK_SEC": 1.0},
     )
-    fn = h["_compute_recall_time_range"]
-    # support_chunks = [5, 6, 7] → t in [10, 16] → with 4s slack → "6-20"
-    card = {"support_chunks": [5, 6, 7]}
-    snapshot = {"compressed_segments": [], "recent_thinks": []}
-    assert fn(card, snapshot, slack_sec=4) == "6-20"
-    # No support → fallback to visible-history bound
-    snap2 = {"compressed_segments": [], "recent_thinks": [{"time": "0-2", "text": "x"}]}
-    assert fn({}, snap2) == "0-2"
+    fn = h["_recall_query_for"]
+    card = {
+        "question": "What color object appeared near the table?",
+        "grounding_frames": [5, 6, 7],
+    }
+    rq = fn(card, ask_chunk=20)
+    assert rq["time_range"] == "5-8"
+    assert "color" in rq["query"] and "object" in rq["query"]
+    assert fn({"question": "What happened?"}, ask_chunk=20)["time_range"] == ""
 
 
 @pytest.mark.skip(reason="v11 helper removed in v12.5 cleanup")
@@ -957,21 +954,20 @@ def test_eval_default_retriever_is_hybrid():
             f"{f}: default retriever should be 'hybrid', got {m.group(1)!r}"
 
 
-def test_reward_keys_split_recall_signal():
-    """REWARD_DICT_KEYS must list recall_quality, recall_hit_rate,
-    range_tightness as three separate columns. Weights must sum to ~1.0
-    and put correctness as the largest single weight."""
+def test_reward_keys_use_v12_simplified_stack():
+    """Production reward stack intentionally removed tool-specific recall
+    columns; recall/compress credit flows through outcome/timing/format/spam
+    and silent_quality."""
     src = (ROOT / "thinkstream" / "trainer" / "gdpo_advantage.py").read_text()
     keys_block = src[src.find("REWARD_DICT_KEYS"):
-                     src.find("# Per-reward weights")]
-    for k in ("recall_quality", "recall_hit_rate", "range_tightness"):
+                     src.find("_V12_PRODUCTION_WEIGHTS")]
+    for k in ("outcome", "timing", "format", "spam", "silent_quality"):
         assert f'"{k}"' in keys_block, f"REWARD_DICT_KEYS missing {k}"
-    # Weights map exists for every key
-    weights_block = src[src.find("DEFAULT_REWARD_WEIGHTS:"):
+    for k in ("recall_quality", "recall_hit_rate", "range_tightness"):
+        assert f'"{k}"' not in keys_block, f"obsolete reward key still present: {k}"
+    weights_block = src[src.find("_V12_PRODUCTION_WEIGHTS:"):
                         src.find("def per_reward_group_norm(")]
-    for k in ("correctness", "recall_quality", "recall_hit_rate",
-              "range_tightness", "format", "timing", "silent_quality",
-              "overflow_pen"):
+    for k in ("outcome", "timing", "format", "spam", "silent_quality"):
         assert f'"{k}":' in weights_block, f"weights missing {k}"
 
 
