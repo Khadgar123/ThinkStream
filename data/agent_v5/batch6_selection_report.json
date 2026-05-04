@@ -1,0 +1,290 @@
+{
+  "candidate_path": "/Users/hzh/Downloads/candidate_pool_validated.jsonl",
+  "output_path": "/Users/hzh/Desktop/简历/streamvideo-project/ThinkStream/data/agent_v5/batch6_videos.jsonl",
+  "target": 500,
+  "seed": 46,
+  "duration_range_sec": [
+    30.0,
+    600.0
+  ],
+  "streamo_paper_takeaways": {
+    "task_families": [
+      "real_time_narration",
+      "event_caption",
+      "action_caption",
+      "event_grounding",
+      "time_sensitive_qa",
+      "offline_qa"
+    ],
+    "sources": [
+      "Koala",
+      "LLaVA-Video",
+      "ActivityNet",
+      "QVHighlight",
+      "YouCook2",
+      "HACS",
+      "EgoTimeQA",
+      "DiDeMo",
+      "COIN"
+    ],
+    "streamo_duration_distribution": {
+      "0-30": 68273,
+      "30-60": 19153,
+      "60-120": 21834,
+      "120-240": 20529,
+      "240+": 6086
+    }
+  },
+  "thinkstream_batch2_policy": {
+    "reason": "Keep Streamo-like source/task coverage but use more 120-600s videos because ThinkStream trains one video as one trajectory and needs recall/compression supervision.",
+    "target_duration_buckets": {
+      "30-60": 75,
+      "60-120": 125,
+      "120-240": 175,
+      "240-600": 125
+    },
+    "strata": [
+      {
+        "group": "how_to_step",
+        "quota": 40,
+        "kind": "procedural_step"
+      },
+      {
+        "group": "how_to_caption",
+        "quota": 30,
+        "kind": "procedural_step"
+      },
+      {
+        "group": "Koala_raw",
+        "quota": 40,
+        "kind": "procedural_longform"
+      },
+      {
+        "group": "Koala",
+        "quota": 20,
+        "kind": "procedural_short_clip"
+      },
+      {
+        "group": "VideoMind/coin",
+        "quota": 35,
+        "kind": "procedural_benchmark"
+      },
+      {
+        "group": "VideoMind/youcook2",
+        "quota": 30,
+        "kind": "procedural_benchmark"
+      },
+      {
+        "group": "VideoMind/qvhighlights",
+        "quota": 40,
+        "kind": "temporal_grounding"
+      },
+      {
+        "group": "VideoMind/didemo",
+        "quota": 25,
+        "kind": "temporal_grounding"
+      },
+      {
+        "group": "VideoMind/queryd",
+        "quota": 20,
+        "kind": "temporal_grounding"
+      },
+      {
+        "group": "VideoMind/hirest",
+        "quota": 30,
+        "kind": "temporal_grounding"
+      },
+      {
+        "group": "LLaVA-Video/youtube",
+        "quota": 45,
+        "kind": "open_world_qa"
+      },
+      {
+        "group": "LLaVA-Video/academic",
+        "quota": 25,
+        "kind": "offline_video_qa"
+      },
+      {
+        "group": "VideoMind/activitynet",
+        "quota": 50,
+        "kind": "activity_event"
+      },
+      {
+        "group": "VideoMind/charades_sta",
+        "quota": 20,
+        "kind": "activity_action"
+      },
+      {
+        "group": "tarsier2/VATEX",
+        "quota": 35,
+        "kind": "short_dynamic_scene"
+      },
+      {
+        "group": "VideoMind/nextqa",
+        "quota": 15,
+        "kind": "short_dynamic_qa"
+      }
+    ]
+  },
+  "excluded_existing_files": [
+    "/Users/hzh/Desktop/简历/streamvideo-project/ThinkStream/data/selected_videos.jsonl",
+    "/Users/hzh/Desktop/简历/streamvideo-project/ThinkStream/data/agent_v5_test/video_registry.jsonl",
+    "/Users/hzh/Desktop/简历/streamvideo-project/ThinkStream/data/agent_v5/batch2_videos.jsonl",
+    "/Users/hzh/Desktop/简历/streamvideo-project/ThinkStream/data/agent_v5/batch3_videos.jsonl",
+    "/Users/hzh/Desktop/简历/streamvideo-project/ThinkStream/data/agent_v5/batch4_videos.jsonl",
+    "/Users/hzh/Desktop/简历/streamvideo-project/ThinkStream/data/agent_v5/batch5_videos.jsonl"
+  ],
+  "excluded_existing_paths": 2729,
+  "excluded_existing_ids": 2710,
+  "candidate_stats": {
+    "candidate_rows": 664783,
+    "available_rows": 263658,
+    "skipped": {
+      "non_target_group": 329060,
+      "duplicate_candidate": 53552,
+      "duration_out_of_range": 12218,
+      "existing_or_thinkstream": 3764,
+      "resolution_low": 1728,
+      "bad_codec": 803
+    },
+    "candidate_by_group": {
+      "VideoMind/cosmo_cap": 136073,
+      "VideoMind/internvid_vtime": 82236,
+      "LLaVA-Video/youtube": 70470,
+      "Koala": 66683,
+      "VideoMind/vid_morp": 61984,
+      "VideoMind/activitynet": 35853,
+      "VideoMind/qvhighlights": 25124,
+      "Koala_raw": 24254,
+      "how_to_step": 18390,
+      "LLaVA-Video/academic": 18235,
+      "tarsier2/VATEX": 17204,
+      "how_to_caption": 15445,
+      "VideoMind/hirest": 12151,
+      "VideoMind/coin": 10003,
+      "tarsier2/ActivityNet": 9002,
+      "VideoMind/didemo": 7917,
+      "VideoMind/charades_sta": 6096,
+      "tarsier2/WebVid-10M_part-1": 5624,
+      "tarsier2/WebVid-10M_part-2": 5559,
+      "tarsier2/WebVid-10M_part-3": 5458,
+      "tarsier2/Charades": 4918,
+      "tarsier2/Charades-Ego": 3523,
+      "VideoMind/nextqa": 3482,
+      "VideoMind/queryd": 2660,
+      "LLaVA-Video/nextqa": 2582,
+      "VideoMind/longvideobench": 2568,
+      "VideoMind/cgbench": 2438,
+      "LLaVA-Video/activitynetqa": 2061,
+      "VideoMind/mlvu": 2050,
+      "VideoMind/youcook2": 1756,
+      "VideoMind/videomme": 888,
+      "VideoMind/mvbench": 691,
+      "VideoMind/tacos": 547,
+      "LLaVA-Video/other": 475,
+      "tarsier2/Oops": 141,
+      "VideoMind/lvbench": 103,
+      "tarsier2/TGIF": 75,
+      "tarsier2/LSMDC_part-2": 21,
+      "tarsier2/LSMDC_part-3": 16,
+      "tarsier2/LSMDC_part-4": 13,
+      "tarsier2/LSMDC_part-1": 13,
+      "how_to_captio.mp4/": 1
+    },
+    "available_by_group": {
+      "LLaVA-Video/youtube": 70071,
+      "Koala": 66561,
+      "how_to_step": 17830,
+      "VideoMind/activitynet": 17700,
+      "tarsier2/VATEX": 14968,
+      "how_to_caption": 14279,
+      "Koala_raw": 13437,
+      "VideoMind/qvhighlights": 12401,
+      "VideoMind/coin": 9721,
+      "VideoMind/didemo": 7056,
+      "VideoMind/charades_sta": 5969,
+      "VideoMind/hirest": 5789,
+      "VideoMind/nextqa": 3210,
+      "VideoMind/queryd": 2207,
+      "VideoMind/youcook2": 1556,
+      "LLaVA-Video/academic": 903
+    },
+    "available_by_bucket": {
+      "30-60": 108282,
+      "120-240": 78640,
+      "60-120": 48726,
+      "240-600": 28010
+    },
+    "available_by_dataset": {
+      "LLaVA-Video-178K": 70974,
+      "Koala": 66561,
+      "VideoMind-Dataset": 65609,
+      "how_to_step": 17830,
+      "tarsier2_unzip": 14968,
+      "how_to_caption": 14279,
+      "Koala_raw": 13437
+    }
+  },
+  "selection_stats": {
+    "count": 500,
+    "duration_sec": {
+      "min": 30.14,
+      "p50": 134.0,
+      "p90": 277.04,
+      "p95": 288.09,
+      "max": 331.98,
+      "total_hours": 20.4
+    },
+    "by_duration_bucket": {
+      "120-240": 164,
+      "60-120": 140,
+      "240-600": 112,
+      "30-60": 84
+    },
+    "by_dataset": {
+      "VideoMind-Dataset": 265,
+      "LLaVA-Video-178K": 70,
+      "how_to_step": 40,
+      "Koala_raw": 40,
+      "tarsier2_unzip": 35,
+      "how_to_caption": 30,
+      "Koala": 20
+    },
+    "by_source_group": {
+      "VideoMind/activitynet": 50,
+      "LLaVA-Video/youtube": 45,
+      "how_to_step": 40,
+      "Koala_raw": 40,
+      "VideoMind/qvhighlights": 40,
+      "VideoMind/coin": 35,
+      "tarsier2/VATEX": 35,
+      "how_to_caption": 30,
+      "VideoMind/youcook2": 30,
+      "VideoMind/hirest": 30,
+      "VideoMind/didemo": 25,
+      "LLaVA-Video/academic": 25,
+      "Koala": 20,
+      "VideoMind/queryd": 20,
+      "VideoMind/charades_sta": 20,
+      "VideoMind/nextqa": 15
+    },
+    "by_selection_kind": {
+      "temporal_grounding": 115,
+      "procedural_step": 70,
+      "procedural_benchmark": 65,
+      "activity_event": 50,
+      "open_world_qa": 45,
+      "procedural_longform": 40,
+      "short_dynamic_scene": 35,
+      "offline_video_qa": 25,
+      "procedural_short_clip": 20,
+      "activity_action": 20,
+      "short_dynamic_qa": 15
+    },
+    "streamo_overlap": {
+      "true": 90,
+      "false": 410
+    }
+  },
+  "stratum_shortfalls": {}
+}
