@@ -580,7 +580,8 @@ async def run_pipeline(
             cached = load_rollout(v["video_id"])
             if cached:
                 rollout_map[v["video_id"]] = cached
-        _require_stage_cache("PASS 2 (--skip_pass 2)", rollout_map, videos)
+        if 3 not in skip_pass:
+            _require_stage_cache("PASS 2 (--skip_pass 2)", rollout_map, videos)
 
     if run_1 or run_2:
         # v12.11 (2026-05-01): refactor — replace per-video chained pipeline
