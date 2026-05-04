@@ -82,7 +82,12 @@ from typing import Dict, List, Optional, Set
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "agent_v5"
+# Batch isolation: align with config.py's THINKSTREAM_BATCH logic.
+_BATCH_SUFFIX = os.environ.get("THINKSTREAM_BATCH", "")
+if _BATCH_SUFFIX:
+    DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "agent_v5" / _BATCH_SUFFIX
+else:
+    DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "agent_v5"
 
 
 def _read_video_ids(jsonl_path: Path) -> Set[str]:
