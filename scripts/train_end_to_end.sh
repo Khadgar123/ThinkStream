@@ -1,5 +1,5 @@
 #!/bin/bash
-# End-to-end SFT + verl RL training pipeline for ThinkStream agent v12.5.
+# End-to-end SFT + verl RL training pipeline for ThinkStream agent v12.22.
 #
 # Features:
 #   - Uninterruptible (run inside tmux/screen)
@@ -26,8 +26,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "${SCRIPT_DIR}")"
 cd "${PROJECT_DIR}"
 
-# Data directory override (v12.5 backup)
-export AGENT_DATA_DIR=${AGENT_DATA_DIR:-/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5_current_backup/final}
+# Generated batch root. SFT reads final/train_sft_messages.jsonl underneath it;
+# RL reads final/train_rl_trajectories.jsonl and frames/ underneath it.
+export THINKSTREAM_DATA_ROOT=${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5_current_backup}}
 
 # ------------------------------------------------------------------
 # Configurable overrides (env vars)
@@ -43,8 +44,8 @@ BETA=${BETA:-1e-3}
 GROUP_SIZE=${GROUP_SIZE:-4}
 MICRO_BATCH=${MICRO_BATCH:-4}
 
-SFT_RUN_NAME="agent-sft-v12.5"
-RL_RUN_NAME="agent-grpo-v12.5"
+SFT_RUN_NAME="agent-sft-v12.22"
+RL_RUN_NAME="agent-grpo-v12.22"
 SFT_OUTPUT="${PROJECT_DIR}/output/${SFT_RUN_NAME}"
 RL_OUTPUT="${PROJECT_DIR}/output/${RL_RUN_NAME}"
 

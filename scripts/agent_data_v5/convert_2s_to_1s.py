@@ -9,8 +9,8 @@ Best-effort conversion rules:
 4. System prompt string is rewritten from "2-second" to "1-second".
 5. Memory block think timestamps are halved if they are numeric seconds.
 
-Input:  data/agent_v5_current_backup/final/{train_sft_full,val,test}.jsonl
-Output: data/agent_v5_current_backup/final/v12_{train_sft_full,val,test}.jsonl
+Input:  <batch_root>/final/{train_sft_full,val,test}.jsonl
+Output: <batch_root>/final/v12_{train_sft_full,val,test}.jsonl
         (then run pass5_messages.py on these to get messages)
 
 Limitations:

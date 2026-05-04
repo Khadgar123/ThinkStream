@@ -60,7 +60,7 @@ from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
     VISUAL_WINDOW_CHUNKS,
-    infer_video_metadata,
+    append_timestamped_image_list,
 )
 from thinkstream.trainer.outcome_match import score_outcome_by_form
 
@@ -236,8 +236,9 @@ def resolve_video_path(sample, video_root):
 
 
 SYSTEM_PROMPT = (
-    "You are a helpful video understanding assistant. Watch the "
-    "video carefully and answer questions based on what you observe. "
+    "You are a helpful video understanding assistant. Use the timestamped "
+    "frames carefully and answer questions based on what you observe. "
+    "Each frame is preceded by its real video timestamp. "
     "If the question is yes/no, answer with Yes or No. If the "
     "question asks for a count, answer with the integer."
 )
@@ -255,37 +256,25 @@ def build_messages(question, frames=None, recall_frames=None):
     user_content = []
     if frames:
         frame_list = list(frames)
-        user_content.append({
-            "type": "video",
-            "video": frame_list,
-            "video_metadata": infer_video_metadata(frame_list),
-        })
+        append_timestamped_image_list(
+            user_content,
+            frame_list,
+            fps=float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC),
+            context_label="visual frame",
+        )
     if recall_frames:
         recall_list = list(recall_frames)
-        user_content.append({
-            "type": "video",
-            "video": recall_list,
-            "video_metadata": infer_video_metadata(recall_list),
-        })
+        append_timestamped_image_list(
+            user_content,
+            recall_list,
+            fps=float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC),
+            context_label="recalled frame",
+        )
     user_content.append({"type": "text", "text": question})
     return [
         {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT}]},
         {"role": "user", "content": user_content},
     ]
-
-
-def _collect_video_metadata(messages):
-    metas = []
-    for msg in messages:
-        content = msg.get("content", [])
-        if not isinstance(content, list):
-            continue
-        for item in content:
-            if isinstance(item, dict) and item.get("type") == "video":
-                meta = item.get("video_metadata")
-                if isinstance(meta, dict):
-                    metas.append(meta)
-    return metas
 
 
 def run_inference(
@@ -297,9 +286,6 @@ def run_inference(
         tokenize=True, return_dict=True, return_tensors="pt",
         add_generation_prompt=True, do_sample_frames=False,
     )
-    video_metadata = _collect_video_metadata(messages)
-    if video_metadata:
-        template_kwargs["video_metadata"] = video_metadata
     inputs = processor.apply_chat_template(
         messages, **template_kwargs,
     )

@@ -7,6 +7,12 @@ Usage:
         --video_root /path/to/videos \
         --num_videos 300
 
+    THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
+    python -m scripts.agent_data_v5.pipeline run \
+        --api_base http://AMD_IP:8000/v1 \
+        --videos_jsonl data/agent_v5/batch2_videos.jsonl \
+        --num_videos 500
+
     python -m scripts.agent_data_v5.pipeline stress_test \
         --api_base http://AMD_IP:8000/v1
 """
@@ -26,6 +32,7 @@ from .config import (
     AGENT_CHUNK_SEC,
     ALL_DIRS,
     AUDIT_DIR,
+    BATCH_ID,
     DATA_ROOT,
     FINAL_DIR,
     MAX_SAMPLES_PER_VIDEO,
@@ -89,6 +96,82 @@ def _write_quality_audit(path: Path, label: str) -> None:
     blockers = [f for f in flags if str(f).startswith("BLOCKER")]
     if blockers:
         raise RuntimeError(f"{label} quality audit blockers: {blockers}")
+
+
+def _write_jsonl(path: Path, rows: List[Dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w") as f:
+        for row in rows:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
+def _load_videos_jsonl(path: str, limit: int = 0) -> List[Dict]:
+    """Load an explicit batch video list.
+
+    Required fields per row: video_id, video_path. duration_sec and dataset
+    are preserved when present. This keeps selection outside the expensive
+    pass pipeline when a batch has already been balanced/validated.
+    """
+    rows: List[Dict] = []
+    src = Path(path)
+    with src.open() as f:
+        for line_no, line in enumerate(f, 1):
+            line = line.strip()
+            if not line:
+                continue
+            row = json.loads(line)
+            if not row.get("video_id") or not row.get("video_path"):
+                raise ValueError(
+                    f"{src}:{line_no}: each row needs video_id and video_path"
+                )
+            rows.append({
+                "video_id": str(row["video_id"]),
+                "video_path": str(row["video_path"]),
+                "duration_sec": float(row.get("duration_sec", 0) or 0),
+                "dataset": row.get("dataset", "unknown"),
+            })
+            if limit and len(rows) >= limit:
+                break
+    if not rows:
+        raise RuntimeError(f"No videos loaded from {src}")
+    return rows
+
+
+def _write_batch_manifest(videos: List[Dict], *, source: str, seed: int) -> None:
+    """Write a stable manifest describing this batch root."""
+    selected_path = DATA_ROOT / "selected_videos.jsonl"
+    _write_jsonl(selected_path, videos)
+
+    manifest = {
+        "batch_id": BATCH_ID,
+        "data_root": str(DATA_ROOT),
+        "source": source,
+        "seed": seed,
+        "n_videos": len(videos),
+        "selected_videos": str(selected_path),
+        "frames_dir": str(DATA_ROOT / "frames"),
+        "stage_dirs": {
+            "pass1a": str(DATA_ROOT / "evidence_1a"),
+            "pass1b": str(DATA_ROOT / "evidence_1b"),
+            "pass2": str(DATA_ROOT / "rollout"),
+            "pass3a": str(DATA_ROOT / "task_cards"),
+            "pass3b": str(DATA_ROOT / "placements"),
+            "pass3c": str(DATA_ROOT / "samples_3c"),
+            "pass3e": str(DATA_ROOT / "verified"),
+            "pass4_pass5_final": str(FINAL_DIR),
+            "audits": str(AUDIT_DIR),
+        },
+        "final_files": {
+            "sft_messages": str(FINAL_DIR / "train_sft_messages.jsonl"),
+            "rl_trajectories": str(FINAL_DIR / "train_rl_trajectories.jsonl"),
+            "verl_multi_q": str(FINAL_DIR / "train_rl_multi_q.parquet"),
+            "val_messages": str(FINAL_DIR / "val_messages.jsonl"),
+            "test_messages": str(FINAL_DIR / "test_messages.jsonl"),
+        },
+    }
+    (DATA_ROOT / "batch_manifest.json").write_text(
+        json.dumps(manifest, indent=2, ensure_ascii=False)
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -350,10 +433,7 @@ def select_videos(
     # Save union registry. Pipeline cache (evidence_1a/, task_cards/, ...)
     # already keys off video_id, so cached batch-1 stages auto-hit and
     # only the new batch-2 ids need fresh API calls.
-    registry_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(registry_path, "w") as f:
-        for v in selected:
-            f.write(json.dumps(v, ensure_ascii=False) + "\n")
+    _write_jsonl(registry_path, selected)
 
     logger.info(
         f"Registry: {len(existing)} existing + {len(new_selected)} new "
@@ -414,6 +494,7 @@ async def run_pipeline(
     num_videos: int = 300,
     seed: int = 42,
     skip_pass: List[int] = None,
+    videos_jsonl: str = None,
 ):
     """Run the full 5-pass pipeline."""
     random.seed(seed)  # Seed early for reproducibility across all passes
@@ -461,8 +542,20 @@ async def run_pipeline(
         client_3b.max_concurrent, client_3c.max_concurrent,
     )
 
-    # --- Video selection ---
-    videos = select_videos(video_root, num_videos, seed=seed)
+    # --- Video selection / explicit batch input ---
+    if videos_jsonl:
+        videos = _load_videos_jsonl(videos_jsonl, limit=num_videos)
+        video_source = str(Path(videos_jsonl))
+        _write_jsonl(DATA_ROOT / "video_registry.jsonl", videos)
+        logger.info(
+            "Loaded explicit batch list: %s (%d videos)",
+            video_source,
+            len(videos),
+        )
+    else:
+        videos = select_videos(video_root, num_videos, seed=seed)
+        video_source = "select_videos"
+    _write_batch_manifest(videos, source=video_source, seed=seed)
     logger.info(f"Pipeline starting with {len(videos)} videos")
 
     # --- Extract frames ---
@@ -1524,9 +1617,21 @@ def main():
     run_parser = subparsers.add_parser("run", help="Run full pipeline")
     run_parser.add_argument("--api_base", required=True)
     run_parser.add_argument("--model", default=VLLM_MODEL)
-    run_parser.add_argument("--video_root", required=True)
+    run_parser.add_argument(
+        "--video_root",
+        default="",
+        help="Root used for catalog/filesystem selection. Optional with --videos_jsonl.",
+    )
     run_parser.add_argument("--num_videos", type=int, default=300)
     run_parser.add_argument("--seed", type=int, default=42)
+    run_parser.add_argument(
+        "--videos_jsonl",
+        default=None,
+        help=(
+            "Optional explicit batch list with video_id/video_path rows. "
+            "Use this for pre-balanced candidate batches."
+        ),
+    )
     run_parser.add_argument("--skip_pass", type=int, nargs="*", default=[])
     run_parser.add_argument(
         "--force_rerun_from",
@@ -1550,6 +1655,8 @@ def main():
     )
 
     if args.command == "run":
+        if not args.video_root and not args.videos_jsonl:
+            run_parser.error("either --video_root or --videos_jsonl is required")
         if getattr(args, "force_rerun_from", None):
             from .cache_version import invalidate_stage_and_downstream
             logger.warning(
@@ -1564,6 +1671,7 @@ def main():
             num_videos=args.num_videos,
             seed=args.seed,
             skip_pass=args.skip_pass,
+            videos_jsonl=args.videos_jsonl,
         ))
     elif args.command == "stress_test":
         from scripts.agent_data_pipeline.vllm_client import stress_test

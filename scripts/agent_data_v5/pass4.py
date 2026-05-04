@@ -82,11 +82,10 @@ from typing import Dict, List, Optional, Set
 
 logger = logging.getLogger(__name__)
 
-# Batch isolation: align with config.py's THINKSTREAM_BATCH logic.
-_BATCH_SUFFIX = os.environ.get("THINKSTREAM_BATCH", "")
-if _BATCH_SUFFIX:
-    DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "agent_v5" / _BATCH_SUFFIX
-else:
+# Batch isolation: use the same root resolver as the pass pipeline.
+try:
+    from .config import DATA_ROOT as DEFAULT_DATA_DIR
+except Exception:
     DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "agent_v5"
 
 
@@ -226,6 +225,13 @@ def _build_trajectory_record(
                 )
             )
         })
+        per_emit_answers = list(meta.get("per_emit_answers") or [])
+        expected_answer_chunks = sorted({
+            int(e.get("chunk"))
+            for e in per_emit_answers
+            if isinstance(e, dict) and e.get("chunk") is not None
+        })
+        missing_answer_chunks = sorted(set(expected_answer_chunks) - set(answer_chunks))
         if canonical_ask < 0 and answer_chunks:
             # Fallback for legacy trajectories without ask_chunk metadata
             canonical_ask = answer_chunks[0]
@@ -235,6 +241,12 @@ def _build_trajectory_record(
                 f"(forward / silent_then_response timing supervision will be wrong)."
             )
 
+        canonical_answer = str(meta.get("canonical_answer") or "").strip()
+        question_gold = canonical_answer or str(meta.get("gold_answer", "")).strip()
+        accepted_answers = list(meta.get("accepted_answers") or [])
+        if meta.get("answer_form") != "multiple_choice":
+            accepted_answers = [question_gold] if question_gold else []
+
         questions.append({
             "card_id": cid,
             "family": meta.get("family", ""),
@@ -242,12 +254,12 @@ def _build_trajectory_record(
             "category": meta.get("category", ""),
             "skill": meta.get("skill", ""),
             "ours_unique": bool(meta.get("ours_unique", False)),
-            "gold_answer": meta.get("gold_answer", ""),
+            "gold_answer": question_gold,
             "correct_answer_text": meta.get("correct_answer_text", ""),
-            "accepted_answers": list(meta.get("accepted_answers") or []),
+            "accepted_answers": accepted_answers,
             "answer_style": meta.get("answer_style", ""),
             "answer_instruction": meta.get("answer_instruction", ""),
-            "canonical_answer": meta.get("canonical_answer", ""),
+            "canonical_answer": canonical_answer,
             "answer_form": meta.get("answer_form", ""),
             "question_type": meta.get("question_type", ""),
             "availability": meta.get("availability", ""),
@@ -263,6 +275,8 @@ def _build_trajectory_record(
             # answer_chunks separate so reward functions can detect
             # silent-before-respond patterns (forward families).
             "answer_chunks": answer_chunks,
+            "expected_answer_chunks": expected_answer_chunks,
+            "missing_answer_chunks": missing_answer_chunks,
             # v12.12 fix (P0-2): question / options / correct_option needed
             # by RL/eval to (a) re-render the prompt at evaluation time and
             # (b) score MC outputs against the gold letter. Without these,
@@ -275,7 +289,7 @@ def _build_trajectory_record(
             # F5/PN1/F7 cards expect different answers at different chunks
             # (e.g., F5 counting: "1" at first event, "2" at second, ...).
             # Reward iterates this list in lockstep with answer_chunks.
-            "per_emit_answers": list(meta.get("per_emit_answers") or []),
+            "per_emit_answers": per_emit_answers,
         })
 
     # ── v12.4: per-chunk gold_action map ──
@@ -549,12 +563,17 @@ def main(argv: Optional[List[str]] = None) -> None:
     ap.add_argument(
         "--data-dir",
         type=Path,
-        default=Path(os.environ.get("AGENT_DATA_DIR", str(DEFAULT_DATA_DIR))),
+        default=Path(
+            os.environ.get("THINKSTREAM_DATA_ROOT")
+            or os.environ.get("AGENT_DATA_DIR")
+            or str(DEFAULT_DATA_DIR)
+        ),
         help="data/agent_v5 root (contains verified/ and final/).",
     )
     args = ap.parse_args(argv)
+    data_dir = args.data_dir.parent if args.data_dir.name == "final" else args.data_dir
 
-    manifest = emit_all(args.data_dir)
+    manifest = emit_all(data_dir)
     print(f"\nTotals: "
           f"{manifest['totals']['videos']} videos, "
           f"{manifest['totals']['trajectories']} trajectories, "

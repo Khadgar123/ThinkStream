@@ -456,16 +456,9 @@ def test_pass4_silent_sample_skips_strict_check():
 
 
 def test_cache_versions_consistent():
-    """All v9.4 stages at v9.4 / v9.4.x; 3c at v9.2; pass1/2 untouched."""
+    """All construction stages share the current cache protocol version."""
     sv = cache_version.STAGE_VERSIONS
-    assert sv["3a"].startswith("v9.4")     # v9.4 or v9.4.1 (HLD bug fix)
-    assert sv["3b"].startswith("v9.4")
-    assert sv["4"].startswith("v9.4")
-    assert sv["3c"].startswith("v9.2")
-    # 1a/1b/2 untouched
-    assert sv["1a"] == "v9.1"
-    assert sv["1b"] == "v9.1"
-    assert sv["2"] == "v9.1"
+    assert set(sv.values()) == {"v12.22"}
 
 
 def test_pipeline_order_complete():

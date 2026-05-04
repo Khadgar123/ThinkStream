@@ -975,31 +975,23 @@ class StreamingAgentLoop:
                         "text": f"<recalled_frames>{rf_header}</recalled_frames>",
                     })
                     if "frame_paths" in recalled_frames:
-                        # v12.11 P1.1 fix (2026-05-01): attach video_metadata
-                        # so Qwen3-VL processor renders per-frame `<X.X seconds>`
-                        # at the ORIGINAL video time. Mirrors the SFT-side fix in
-                        # pass5_messages.py — keeps train/infer prompts identical
-                        # for the recalled-frames user turn.
+                        from thinkstream.data.agent_protocol import (
+                            append_timestamped_image_list,
+                        )
                         tr_start, tr_end = recalled_frames["time_range"]
-                        n_rf = len(recalled_frames["frame_paths"])
                         tr_start_chunk = int(tr_start / float(AGENT_CHUNK_SEC))
-                        tool_user_content.append({
-                            "type": "video",
-                            "video": recalled_frames["frame_paths"],
-                            "min_pixels": self.min_pixels,
-                            "max_pixels": self.max_pixels,
-                            "video_metadata": {
-                                "fps": float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
-                                "frames_indices": [
-                                    tr_start_chunk * FRAMES_PER_CHUNK + i
-                                    for i in range(n_rf)
-                                ],
-                                "total_num_frames": int(
-                                    tr_end / float(AGENT_CHUNK_SEC)
-                                ) * FRAMES_PER_CHUNK,
-                                "do_sample_frames": False,
-                            },
-                        })
+                        append_timestamped_image_list(
+                            tool_user_content,
+                            recalled_frames["frame_paths"],
+                            fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
+                            start_frame_index=tr_start_chunk * FRAMES_PER_CHUNK,
+                            total_num_frames=int(
+                                tr_end / float(AGENT_CHUNK_SEC)
+                            ) * FRAMES_PER_CHUNK,
+                            context_label="recalled frame",
+                            min_pixels=self.min_pixels,
+                            max_pixels=self.max_pixels,
+                        )
                 rr_json = _json.dumps({
                     "source": recall_result.get("source", ""),
                     "time": recall_result.get("time", ""),

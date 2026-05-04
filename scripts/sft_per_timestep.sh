@@ -34,6 +34,9 @@
 #   EVAL_BSZ    - Per-device eval batch size (PHASE=sft, default = BSZ)
 #   SAVE_LIMIT  - Max retained checkpoints (PHASE=sft, default 5; ~30-50GB each
 #                 for 8B + zero-3, plus the best ckpt is always preserved)
+#   THINKSTREAM_DATA_ROOT / AGENT_DATA_DIR
+#               - Generated batch root; SFT reads final/train_sft_messages.jsonl
+#                 below it. Default: data/agent_v5.
 #
 # Step budget reference (BSZ=8 × NPROC=8 × GRAD_ACCUM=1 → eff. batch 64):
 #   PHASE=sft   : 9,900 / 64 = 154 steps/epoch × 4 epochs = 616 steps
@@ -50,6 +53,10 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 DEEPSPEED="${SCRIPT_DIR}/zero3.json"
 ENTRY="${PROJECT_DIR}/thinkstream/sft/train.py"
+AGENT_DATA_ROOT="${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-${PROJECT_DIR}/data/agent_v5}}"
+if [[ "${AGENT_DATA_ROOT}" == */final ]]; then
+    AGENT_DATA_ROOT="$(dirname "${AGENT_DATA_ROOT}")"
+fi
 
 # extra_args is appended in the case-block when phase needs special flags
 extra_args=""
@@ -74,11 +81,11 @@ case $PHASE in
         llm=${LLM:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
         datasets=${DATASETS:-stream_agent_sft}
         eval_datasets=${EVAL_DATASETS:-stream_agent_val}
-        # v12.5: corpus 11.2x larger; reduce default epochs proportionally
+        # v12.x: corpus is much larger; reduce default epochs proportionally
         # so total steps stay in the v11.1 ballpark (was 4×154=616; now
         # 2×285=570 with effective_bsz=64). Override with EPOCHS=N.
         lr=${LR:-2e-5}; epochs=${EPOCHS:-2}
-        run_name="agent-sft-v12.5"
+        run_name="agent-sft-v12.22"
         # Save aligned to eval cadence so every eval has a corresponding
         # ckpt to roll back to. load_best_model_at_end keeps the lowest
         # eval_loss ckpt even if it falls outside the rolling window.
@@ -131,6 +138,7 @@ echo "Phase:    ${PHASE}"
 echo "Model:    ${llm}"
 echo "Dataset:  ${datasets}"
 echo "Eval:     ${eval_datasets:-none}"
+echo "Data:     ${AGENT_DATA_ROOT}"
 echo "LR:       ${lr}"
 echo "Epochs:   ${epochs}"
 echo "Output:   ${output_dir}"

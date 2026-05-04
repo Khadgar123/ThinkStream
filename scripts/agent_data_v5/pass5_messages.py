@@ -7,7 +7,7 @@ user.content carries the full state (memory + queries + visual_window +
 recalled_frames + user_input) so the model trains under the exact same input
 distribution it sees at inference.
 
-Three sample shapes preserved (mirrors data_processor.build_per_timestep_messages_v12):
+Three sample shapes preserved (canonical pass/SFT/RL/eval timestamped-image protocol):
   A. Single-turn       (silent / response / lonely recall / inter-chunk compress)
   B. Multi-turn recall (recall_query → tool turn → final answer, within one chunk)
   C. Inter-chunk compress (system inserts <compress_trigger>, no visual_window)
@@ -40,36 +40,37 @@ from typing import Dict, Iterable, List, Optional
 
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC, SYSTEM_PROMPT_V12, format_memory_block, format_queries_block,
+    append_timestamped_image_list,
 )
 
 logger = logging.getLogger(__name__)
 
 # Project layout:
-#   PROJECT_ROOT/data/agent_v5/                         (DEFAULT_DATA_DIR)
-#   PROJECT_ROOT/data/agent_v5/final/*.jsonl            (FINAL_DIR)
-#   PROJECT_ROOT/data/agent_v5/frames/<vid>/...jpg      (frame paths in samples)
+#   <batch_root>/                         (DEFAULT_DATA_DIR)
+#   <batch_root>/final/*.jsonl            (FINAL_DIR)
+#   <batch_root>/frames/<vid>/...jpg      (frame paths in samples)
 #
-# Frame paths inside samples are stored relative to PROJECT_ROOT
-# (e.g. "data/agent_v5/frames/<vid>/frame_000001.jpg"), so base_path used
-# to resolve them MUST be PROJECT_ROOT — NOT data/. Earlier bug: default
-# base_path was DEFAULT_DATA_DIR.parent = .../data/, which produced
-# .../data/data/agent_v5/frames/... at resolution time.
+# Frame paths inside samples may be absolute or relative to PROJECT_ROOT.
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
-# Batch isolation: align with config.py's THINKSTREAM_BATCH logic.
-_BATCH_SUFFIX = os.environ.get("THINKSTREAM_BATCH", "")
-if _BATCH_SUFFIX:
-    DEFAULT_DATA_DIR = PROJECT_ROOT / "data" / "agent_v5" / _BATCH_SUFFIX
-else:
+try:
+    from scripts.agent_data_v5.config import DATA_ROOT as DEFAULT_DATA_DIR
+except Exception:
     DEFAULT_DATA_DIR = Path(
-        os.environ.get("AGENT_DATA_DIR", str(PROJECT_ROOT / "data" / "agent_v5"))
+        os.environ.get("THINKSTREAM_DATA_ROOT")
+        or os.environ.get("AGENT_DATA_DIR")
+        or str(PROJECT_ROOT / "data" / "agent_v5")
     )
+    if not DEFAULT_DATA_DIR.is_absolute():
+        DEFAULT_DATA_DIR = PROJECT_ROOT / DEFAULT_DATA_DIR
+    if DEFAULT_DATA_DIR.name == "final":
+        DEFAULT_DATA_DIR = DEFAULT_DATA_DIR.parent
 FINAL_DIR = DEFAULT_DATA_DIR / "final"
 
-# Relative frame prefix used inside sample paths (must mirror pipeline.py).
-_FRAME_REL_PREFIX = (
-    f"data/agent_v5/{_BATCH_SUFFIX}/frames" if _BATCH_SUFFIX else "data/agent_v5/frames"
-)
+try:
+    _FRAME_REL_PREFIX = str((DEFAULT_DATA_DIR / "frames").relative_to(PROJECT_ROOT))
+except ValueError:
+    _FRAME_REL_PREFIX = str(DEFAULT_DATA_DIR / "frames")
 
 SPLITS = [
     ("train_sft_full", "train_sft_trajectories", "train_sft_messages"),
@@ -97,9 +98,10 @@ def _resolve_paths(paths: List[str], base_path: Path) -> List[str]:
 def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
     """Produce v12 ShareGPT messages for one sample. Stdlib-only.
 
-    Mirrors thinkstream.sft.data_processor.build_per_timestep_messages_v12,
-    so the output is byte-identical (modulo path resolution edge cases) to
-    what the SFT data loader synthesizes online.
+    This is the canonical offline renderer. It must stay aligned with
+    thinkstream.data.agent_protocol.build_user_content and the verl RL
+    prompt builder: memory, queries, visual_window, timestamped images,
+    recalled frames, recall_result, then user input.
     """
     inp = sample["input"]
     chunk_idx = sample["chunk_idx"]
@@ -178,10 +180,6 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                 vw["frame_paths"] = paths
 
         if "frame_paths" in vw:
-            # v12.6: attach video_metadata so Qwen3-VL processor renders
-            # per-frame `<X.X seconds>` text tokens with REAL video time.
-            # Without metadata, processor defaults to fps=24 + indices=0..N
-            # → timestamps anchored at sequence start, not real video time.
             from thinkstream.data.agent_protocol import (
                 FRAMES_PER_CHUNK as _FPC,
                 VISUAL_WINDOW_CHUNKS as _VWC,
@@ -189,31 +187,23 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
             from scripts.agent_data_v5.config import (
                 compute_visual_window_start as _cvws,
             )
-            n_frames = len(vw["frame_paths"])
             window_start = _cvws(chunk_idx, _VWC)
-            # v12.12: runtime mm_processor_kwargs at video item level so
-            # qwen-vl-utils.process_vision_info forwards them to vLLM as
-            # smart_resize bounds. Matches pass2 / inference / RL rollout.
             try:
                 from scripts.agent_data_v5.config import (
                     RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                 )
             except ImportError:
                 _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-            user_content.append({
-                "type": "video",
-                "video": _resolve_paths(vw["frame_paths"], base_path),
-                "min_pixels": _RTKW["min_pixels"],
-                "max_pixels": _RTKW["max_pixels"],
-                "video_metadata": {
-                    "fps": float(_FPC / chunk_sec),
-                    "frames_indices": [
-                        window_start * _FPC + i for i in range(n_frames)
-                    ],
-                    "total_num_frames": (chunk_idx + 1) * _FPC,
-                    "do_sample_frames": False,
-                },
-            })
+            append_timestamped_image_list(
+                user_content,
+                _resolve_paths(vw["frame_paths"], base_path),
+                fps=float(_FPC / chunk_sec),
+                start_frame_index=window_start * _FPC,
+                total_num_frames=(chunk_idx + 1) * _FPC,
+                latest_start_frame_index=chunk_idx * _FPC,
+                min_pixels=_RTKW["min_pixels"],
+                max_pixels=_RTKW["max_pixels"],
+            )
         elif "frame_indices" in vw and video_path:
             user_content.append({
                 "type": "video", "video": video_path,
@@ -243,34 +233,26 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
             "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
         })
         if "frame_paths" in rf:
-            # v12.6: anchor recalled frames at their REAL video time so
-            # Qwen3-VL renders `<X.X seconds>` matching when the frame
-            # originally appeared, not where it lands in the sequence.
             from thinkstream.data.agent_protocol import (
                 FRAMES_PER_CHUNK as _FPC,
             )
             tr0, tr1 = rf["time_range"]
-            n_rf = len(rf["frame_paths"])
             try:
                 from scripts.agent_data_v5.config import (
                     RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                 )
             except ImportError:
                 _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-            user_content.append({
-                "type": "video",
-                "video": _resolve_paths(rf["frame_paths"], base_path),
-                "min_pixels": _RTKW["min_pixels"],   # v12.12
-                "max_pixels": _RTKW["max_pixels"],
-                "video_metadata": {
-                    "fps": float(_FPC / chunk_sec),
-                    "frames_indices": [
-                        int(tr0 * _FPC) + i for i in range(n_rf)
-                    ],
-                    "total_num_frames": int(tr1 * _FPC),
-                    "do_sample_frames": False,
-                },
-            })
+            append_timestamped_image_list(
+                user_content,
+                _resolve_paths(rf["frame_paths"], base_path),
+                fps=float(_FPC / chunk_sec),
+                start_frame_index=int(tr0 * _FPC),
+                total_num_frames=int(tr1 * _FPC),
+                context_label="recalled frame",
+                min_pixels=_RTKW["min_pixels"],
+                max_pixels=_RTKW["max_pixels"],
+            )
         elif video_path:
             user_content.append({
                 "type": "video", "video": video_path,
@@ -335,14 +317,6 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                 "text": f"<recalled_frames>{rf_header}</recalled_frames>",
             })
             if "frame_paths" in rf:
-                # v12.11 P1.1 fix (2026-05-01): attach video_metadata so the
-                # Qwen3-VL processor renders per-frame `<X.X seconds>` text
-                # tokens at the recalled frames' ORIGINAL video time. Without
-                # metadata, the processor defaults to fps=24 + indices=0..N-1
-                # → recalled frames anchor at "frame 0" instead of their
-                # historical timestamps, breaking the design intent of
-                # "recall复用原始 MROPE 时间编码" (the model can't tell that
-                # these are old frames from time T).
                 from thinkstream.data.agent_protocol import (
                     FRAMES_PER_CHUNK as _FPC,
                 )
@@ -350,32 +324,23 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                     AGENT_CHUNK_SEC as _CHUNK_SEC,
                 )
                 tr_start, tr_end = rf["time_range"]
-                n_rf = len(rf["frame_paths"])
                 try:
                     from scripts.agent_data_v5.config import (
                         RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                     )
                 except ImportError:
                     _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-                # historical frame indices = (tr_start_chunk * FRAMES_PER_CHUNK +
-                # 0..n_rf-1), mirrors the original encoding at recall time.
                 tr_start_chunk = int(tr_start / float(_CHUNK_SEC))
-                tool_payload.append({
-                    "type": "video",
-                    "video": _resolve_paths(rf["frame_paths"], base_path),
-                    "min_pixels": _RTKW["min_pixels"],
-                    "max_pixels": _RTKW["max_pixels"],
-                    "video_metadata": {
-                        "fps": float(_FPC / float(_CHUNK_SEC)),
-                        "frames_indices": [
-                            tr_start_chunk * _FPC + i for i in range(n_rf)
-                        ],
-                        # total_num_frames anchors the timestamp scale; use
-                        # tr_end_chunk * FRAMES_PER_CHUNK as ceiling.
-                        "total_num_frames": int(tr_end / float(_CHUNK_SEC)) * _FPC,
-                        "do_sample_frames": False,
-                    },
-                })
+                append_timestamped_image_list(
+                    tool_payload,
+                    _resolve_paths(rf["frame_paths"], base_path),
+                    fps=float(_FPC / float(_CHUNK_SEC)),
+                    start_frame_index=tr_start_chunk * _FPC,
+                    total_num_frames=int(tr_end / float(_CHUNK_SEC)) * _FPC,
+                    context_label="recalled frame",
+                    min_pixels=_RTKW["min_pixels"],
+                    max_pixels=_RTKW["max_pixels"],
+                )
             elif video_path:
                 tool_payload.append({
                     "type": "video", "video": video_path,
@@ -703,9 +668,9 @@ def main() -> None:
     )
     parser.add_argument("--final-dir", default=str(FINAL_DIR))
     parser.add_argument("--base-path", default=str(PROJECT_ROOT),
-                        help="Project root for resolving relative video/frame paths "
-                        "(samples store paths like 'data/agent_v5/frames/...'; "
-                        "base_path must be PROJECT_ROOT, NOT data/).")
+                        help="Project root for resolving relative video/frame paths. "
+                        "Generated samples store frame paths relative to the repo "
+                        "or absolute paths under the batch root.")
     parser.add_argument("--limit", type=int, default=0, help="Per-split sample cap (0 = unlimited).")
     parser.add_argument("--no-balance-sft", action="store_true",
                         help="Disable train_sft_messages silent downsampling.")

@@ -55,6 +55,7 @@ from eval_common import (
     setup_distributed,
     cleanup_distributed,
 )
+from thinkstream.data.agent_protocol import append_timestamped_image_list
 
 
 # ---------------------------------------------------------------------------
@@ -259,11 +260,6 @@ def _load_video_frames(
         "end_frame": int(end_frame),
         "sampled": int(n_sample),
         "frame_indices": [int(i) for i in indices.tolist()],
-        "video_metadata": {
-            "fps": float(fps),
-            "frames_indices": [int(i) for i in indices.tolist()],
-            "total_num_frames": int(total_frames),
-        },
     }
     return [Image.fromarray(f) for f in frames], meta
 
@@ -402,31 +398,28 @@ def offline_predict_mcq(
             debug_record["frame_meta"] = frame_meta
             debug_record["query"] = query
 
-            messages = [
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "video",
-                            "video": frames,
-                            "video_metadata": frame_meta["video_metadata"],
-                        },
-                        {"type": "text", "text": query},
-                    ],
-                }
-            ]
+            user_content = []
+            append_timestamped_image_list(
+                user_content,
+                frames,
+                fps=float(frame_meta.get("fps") or 2.0),
+                start_frame_index=int(frame_meta.get("start_frame") or 0),
+                total_num_frames=int(frame_meta.get("total_frames") or len(frames)),
+                context_label="visual frame",
+                min_pixels=min_pixels,
+                max_pixels=max_pixels,
+            )
+            user_content.append({"type": "text", "text": query})
+            messages = [{"role": "user", "content": user_content}]
 
-            text = processor.apply_chat_template(
-                messages, tokenize=False, add_generation_prompt=True
-            )
-            processor_kwargs = dict(
-                text=[text], images=None, videos=[frames],
-                padding=True, return_tensors="pt",
-            )
-            if "Qwen3" in processor.__class__.__name__:
-                processor_kwargs["video_metadata"] = [frame_meta["video_metadata"]]
-                processor_kwargs["do_sample_frames"] = False
-            inputs = processor(**processor_kwargs).to(model.device)
+            inputs = processor.apply_chat_template(
+                messages,
+                tokenize=True,
+                return_dict=True,
+                return_tensors="pt",
+                add_generation_prompt=True,
+                do_sample_frames=False,
+            ).to(model.device)
 
             debug_record["input_ids_len"] = inputs["input_ids"].shape[1]
 

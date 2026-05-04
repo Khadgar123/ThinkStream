@@ -27,6 +27,7 @@ Usage:
 """
 import argparse
 import json
+import os
 import re
 import sys
 import time
@@ -54,10 +55,21 @@ from thinkstream.data.agent_protocol import (  # canonical v12.5 timing
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
     VISUAL_WINDOW_CHUNKS,
-    infer_video_metadata,
+    append_timestamped_image_list,
 )
 DEFAULT_VISUAL_WINDOW_SEC = float(VISUAL_WINDOW_CHUNKS * AGENT_CHUNK_SEC)
 DEFAULT_FRAME_FPS = float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC)
+
+
+def _default_frames_root() -> str:
+    root = os.environ.get("THINKSTREAM_FRAMES_ROOT")
+    if root:
+        return root
+    data_root = os.environ.get("THINKSTREAM_DATA_ROOT") or os.environ.get("AGENT_DATA_DIR")
+    if data_root:
+        p = Path(data_root)
+        return str(p.parent / "frames") if p.name == "final" else str(p / "frames")
+    return "data/agent_v5/frames"
 
 
 # ─── Frame sampling ──────────────────────────────────────────────────────────
@@ -103,14 +115,24 @@ def sample_frame_paths(frame_dir: Path,
 
 def build_messages(frame_paths, question):
     frame_list = list(frame_paths)
+    user_content = []
+    append_timestamped_image_list(
+        user_content,
+        frame_list,
+        fps=DEFAULT_FRAME_FPS,
+        context_label="visual frame",
+    )
+    user_content.append({"type": "text", "text": question})
     return [
         {
             "role": "system",
             "content": [{
                 "type": "text",
                 "text": (
-                    "You are a helpful video understanding assistant. Watch "
-                    "the video carefully and answer based on observations. "
+                    "You are a helpful video understanding assistant. Use "
+                    "the timestamped frames carefully and answer based on "
+                    "observations. Each frame is preceded by its real video "
+                    "timestamp. "
                     "If the question is yes/no, answer Yes or No. If it asks "
                     "for a count, answer with the integer. If it is multiple "
                     "choice, answer with a single letter A/B/C/D."
@@ -119,16 +141,7 @@ def build_messages(frame_paths, question):
         },
         {
             "role": "user",
-            "content": [
-                {
-                    "type": "video",
-                    "video": frame_list,
-                    "video_metadata": infer_video_metadata(
-                        frame_list, fps=DEFAULT_FRAME_FPS,
-                    ),
-                },
-                {"type": "text", "text": question},
-            ],
+            "content": user_content,
         },
     ]
 
@@ -140,19 +153,10 @@ def eval_one_probe(model, processor, pad_id,
                    frame_paths, question, max_new_tokens):
     """Single VLM forward. Returns the decoded text."""
     messages = build_messages(frame_paths, question)
-    video_metadata = [
-        item["video_metadata"]
-        for msg in messages
-        for item in msg.get("content", [])
-        if isinstance(item, dict) and item.get("type") == "video"
-        and isinstance(item.get("video_metadata"), dict)
-    ]
     template_kwargs = dict(
         tokenize=True, return_dict=True, return_tensors="pt",
         add_generation_prompt=True, do_sample_frames=False,
     )
-    if video_metadata:
-        template_kwargs["video_metadata"] = video_metadata
     inputs = processor.apply_chat_template(
         messages, **template_kwargs,
     )
@@ -386,7 +390,7 @@ def main():
     p.add_argument("--ckpt", required=True)
     p.add_argument("--benchmark_json", required=True)
     p.add_argument("--video_root", required=True)
-    p.add_argument("--frames_root", default="data/agent_v5/frames",
+    p.add_argument("--frames_root", default=_default_frames_root(),
                    help="Pre-extracted frame root")
     p.add_argument("--tasks", default=None,
                    help="Comma-separated subset of OVO tasks (default: all 12)")

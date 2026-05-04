@@ -15,14 +15,37 @@ from typing import Dict
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]  # ThinkStream/
 
-# Batch isolation: set THINKSTREAM_BATCH=batch2 to output to
-# data/agent_v5/batch2/ instead of the default data/agent_v5/.
-# This keeps per-batch rollout, audits, final, etc. separate.
-_BATCH_SUFFIX = os.environ.get("THINKSTREAM_BATCH", "")
-if _BATCH_SUFFIX:
-    DATA_ROOT = PROJECT_ROOT / "data" / "agent_v5" / _BATCH_SUFFIX
-else:
-    DATA_ROOT = PROJECT_ROOT / "data" / "agent_v5"
+
+def _resolve_data_root() -> Path:
+    """Resolve the canonical root for one data-construction batch.
+
+    New runs should set exactly one batch root and let every pass write
+    underneath it:
+
+        THINKSTREAM_DATA_ROOT=data/agent_v5/batch2
+
+    Backward-compatible shorthands:
+      - AGENT_DATA_DIR points at the same batch root.
+      - THINKSTREAM_BATCH=batch2 expands to data/agent_v5/batch2.
+      - no env keeps the historical data/agent_v5 root.
+    """
+    explicit = os.environ.get("THINKSTREAM_DATA_ROOT") or os.environ.get("AGENT_DATA_DIR")
+    if explicit:
+        p = Path(explicit).expanduser()
+        if not p.is_absolute():
+            p = PROJECT_ROOT / p
+        # Some older scripts used AGENT_DATA_DIR=data/agent_v5/final. Treat
+        # that as a final-dir pointer and recover the batch root.
+        return p.parent if p.name == "final" else p
+
+    batch = os.environ.get("THINKSTREAM_BATCH", "").strip()
+    if batch:
+        return PROJECT_ROOT / "data" / "agent_v5" / batch
+    return PROJECT_ROOT / "data" / "agent_v5"
+
+
+DATA_ROOT = _resolve_data_root()
+BATCH_ID = DATA_ROOT.name
 
 # Stage outputs
 EVIDENCE_1A_DIR = DATA_ROOT / "evidence_1a"     # 1-A raw per-chunk
@@ -58,9 +81,9 @@ FRAMES_PER_CHUNK = 2         # 每 chunk 2 帧
 # v12.5: 12 → 16 chunks. New chunk semantics: 16 chunks × 1s = 16s of visual
 # context (32 frames). Other streaming systems for reference: LiveCC ~240s @
 # 2fps, VideoLLM-online ~unbounded @ 2fps, MMDuet token-budgeted, Streamo
-# 1fps. The current Qwen3-VL visual block uses explicit video_metadata, so
-# timestamps still reflect real 2fps frame indices. We're conservative for
-# the 6-min batch1 footprint, but text
+# 1fps. Current pre-extracted-frame prompts render explicit timestamp text
+# before each image, so timestamps still reflect real 2fps frame indices.
+# We're conservative for the 6-min batch1 footprint, but text
 # memory now comfortably exceeds visual (see RECENT_THINKS_TOKEN_BUDGET).
 VISUAL_WINDOW_CHUNKS = 16    # 视觉窗口 = 最近 16 chunks (16s @ 2fps = 32 帧)
 VISUAL_WINDOW_FRAMES = VISUAL_WINDOW_CHUNKS * FRAMES_PER_CHUNK  # 32 帧
@@ -88,9 +111,8 @@ def compute_visual_window_start(
     visual_window_chunks: int = VISUAL_WINDOW_CHUNKS,
     mode: str = None,
 ) -> int:
-    """Single source of truth for window-start computation across the
-    SFT data pipeline (pass2_rollout, pass5_messages, render_samples)
-    and the RL agent loop (recipe_thinkstream/streaming_agent_loop.py).
+    """Single source of truth for window-start computation across pass2,
+    pass5/SFT rendering, RL rollout, eval, and deploy inference.
 
     Returns the inclusive starting chunk_idx of the visual window
     covering chunk ``chunk_idx``.
@@ -226,7 +248,7 @@ MAX_TRAJECTORIES_PER_VIDEO = 1
 # observed q-interval near the LiveChat/MMDuet 7-15s band while preserving
 # enough family/mechanism diversity per trajectory.
 MAX_QUESTIONS_PER_TRAJECTORY = 14
-MAX_ACTIVE_QUERIES = 2               # unchanged — realistic user behavior
+MAX_ACTIVE_QUERIES = 1               # one active question; no cross-question interference
 
 # Backward compat aliases (deprecated — use token-based constants above)
 OBSERVATION_TOKENS = THINK_TOKENS  # deprecated alias
@@ -309,15 +331,14 @@ VLLM_PREFILL_BATCH_TOKEN_BUDGET = 32_000_000  # KV usage ~2.6% at 64 conc → 10
 # v12.12 (2026-05-02): visual budgets reflect mm_processor_kwargs profiles.
 # pass1a uses HIRES (~500 tok/frame typical) × 2 frames + template ≈ 2K visual.
 # pass2 uses RUNTIME (~235 tok/frame) × 32 frames + template ≈ 7.6K visual.
-# vLLM teacher server: pass1a still sends image_url blocks, while pass2 now
-# sends a timestamped image list for the full sliding visual window. This keeps
-# the latest chunk visually explicit even when text memory is stale, and avoids
-# relying on the OpenAI video_url path to surface temporal anchors inside the
-# model. Start vLLM with e.g.
+# vLLM teacher/runtime server: pass1a/pass2/SFT/RL/eval use timestamp text +
+# image/image_url lists for pre-extracted frames. This keeps the latest chunk
+# visually explicit even when text memory is stale, and avoids relying on the
+# vLLM video_url/pre-sampled-video path to surface temporal anchors inside
+# the model. Start vLLM with e.g.
 #   --limit-mm-per-prompt '{"image":64,"video":2}'
 # image/video limits are per prompt, not concurrency. pass2 uses up to 32
-# images per request (16 chunks × 2 fps); runtime/eval recall can still use
-# video blocks elsewhere in the stack.
+# images per request (16 chunks × 2 fps); 64 leaves room for recalled frames.
 # Keep request-level mm_processor_kwargs at RUNTIME_MM_PROCESSOR_KWARGS
 # plus do_sample_frames=False.
 PASS_CONTEXT_ESTIMATES = {

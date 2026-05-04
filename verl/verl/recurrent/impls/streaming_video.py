@@ -50,6 +50,7 @@ from verl.recurrent.interface import (
 from verl.recurrent.utils import log_step, msg
 from verl.protocol import DataProtoItem
 from verl.trainer.ppo.ray_trainer import _timer
+from thinkstream.data.agent_protocol import append_timestamped_image_list
 
 logger = logging.getLogger(__file__)
 logger.setLevel("INFO")
@@ -201,23 +202,15 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
         return max(0, chunk_idx - self.config.visual_window_chunks + 1)
 
     def _build_visual_window(self, video_path: str, chunk_idx: int):
-        """Return (frame_paths, video_metadata, window_start_chunk)."""
+        """Return (frame_paths, window_start_chunk)."""
         ws = self._window_start(chunk_idx)
         flat: List[str] = []
         for c in range(ws, chunk_idx + 1):
             cf = self._frames_for_chunk(video_path, c)
             if not cf:
-                return [], {}, ws
+                return [], ws
             flat.extend(cf)
-        n = len(flat)
-        meta = {
-            "fps": float(self.config.frames_per_chunk) / float(self.config.chunk_sec),
-            "frames_indices": [
-                ws * self.config.frames_per_chunk + i for i in range(n)
-            ],
-            "total_num_frames": (chunk_idx + 1) * self.config.frames_per_chunk,
-        }
-        return flat, meta, ws
+        return flat, ws
 
     def _count_recent_thinks_tokens(self, recent_thinks: List[Dict]) -> int:
         total = 0
@@ -251,7 +244,6 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
         memory_text: str,
         chunk_idx: int,
         window_paths: List[str],
-        window_metadata: Dict,
         window_start: int,
         triggered_questions: List[Dict],
         compress_trigger_range: Optional[Tuple[int, int]],
@@ -266,7 +258,7 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
         })
         mm_payload = None
         if compress_trigger_range is None:
-            # visual_window header + video block
+            # visual_window header + timestamped image list
             vw_header = json.dumps({
                 "start": window_start * self.config.chunk_sec,
                 "end": (chunk_idx + 1) * self.config.chunk_sec,
@@ -281,13 +273,16 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
                 "text": f"\n<visual_window>{vw_header}</visual_window>",
             })
             if window_paths:
-                content.append({
-                    "type": "video",
-                    "video": window_paths,
-                    "video_metadata": window_metadata,
-                })
+                append_timestamped_image_list(
+                    content,
+                    window_paths,
+                    fps=float(self.config.frames_per_chunk) / float(self.config.chunk_sec),
+                    start_frame_index=window_start * self.config.frames_per_chunk,
+                    total_num_frames=(chunk_idx + 1) * self.config.frames_per_chunk,
+                    latest_start_frame_index=chunk_idx * self.config.frames_per_chunk,
+                )
                 mm_payload = {
-                    "videos": [(window_paths, window_metadata)],
+                    "images": list(window_paths),
                 }
             # user_input — render triggered questions
             if triggered_questions:
@@ -327,13 +322,17 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
                 "type": "text",
                 "text": f"<recalled_frames>{rf_header}</recalled_frames>",
             })
-            content.append({
-                "type": "video",
-                "video": recalled_frames["frame_paths"],
-                "video_metadata": recalled_frames["video_metadata"],
-            })
+            tr_start, tr_end = recalled_frames["time_range"]
+            append_timestamped_image_list(
+                content,
+                recalled_frames["frame_paths"],
+                fps=float(self.config.frames_per_chunk) / float(self.config.chunk_sec),
+                start_frame_index=int(tr_start) * self.config.frames_per_chunk,
+                total_num_frames=int(tr_end + 1) * self.config.frames_per_chunk,
+                context_label="recalled frame",
+            )
             mm_payload = {
-                "videos": [(recalled_frames["frame_paths"], recalled_frames["video_metadata"])],
+                "images": list(recalled_frames["frame_paths"]),
             }
         rr_json = json.dumps({
             "source": recall_result.get("source", "failure"),
@@ -451,9 +450,9 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
                 inter_chunk = compress_range is not None
 
                 # Visual window
-                window_paths, window_metadata, window_start = ([], {}, chunk_idx)
+                window_paths, window_start = ([], chunk_idx)
                 if not inter_chunk:
-                    window_paths, window_metadata, window_start = self._build_visual_window(
+                    window_paths, window_start = self._build_visual_window(
                         video_path, chunk_idx,
                     )
 
@@ -477,7 +476,6 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
                     memory_text=memory_text,
                     chunk_idx=chunk_idx,
                     window_paths=window_paths,
-                    window_metadata=window_metadata,
                     window_start=window_start,
                     triggered_questions=triggered,
                     compress_trigger_range=compress_range,
@@ -681,14 +679,6 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
                         "source": "historical_frames",
                         "n_frames": len(recalled_paths),
                         "frame_paths": recalled_paths,
-                        "video_metadata": {
-                            "fps": float(self.config.frames_per_chunk) / float(self.config.chunk_sec),
-                            "frames_indices": [
-                                tr_start_chunk * self.config.frames_per_chunk + i
-                                for i in range(len(recalled_paths))
-                            ],
-                            "total_num_frames": (tr_end_chunk + 1) * self.config.frames_per_chunk,
-                        },
                     }
         success = bool(recalled_paths) or bool(text_hit)
         recall_result = {

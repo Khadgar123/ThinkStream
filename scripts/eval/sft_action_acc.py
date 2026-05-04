@@ -15,16 +15,14 @@ Run after SFT completes (or on any saved checkpoint):
         --out output/agent-sft/eval_gen_action.json
 
 Reports per-sample-type:
-    - action_accuracy:  pred action keyword matches gold (silent /
-      response / recall / compress)
-    - post_continued:   model produced more content after </action>
-      (for silent samples this should be FALSE; for response/recall/
-      compress this should be TRUE)
+    - action_accuracy:  v12 terminal action matches gold (silent /
+      response / recall / compress). v12 maps <answer></answer> to silent,
+      non-empty <answer> to response, and tool calls to recall/compress.
+    - post_continued:   non-silent terminal emitted
     - silent_eos_rate:  silent samples that correctly stopped
 """
 import argparse
 import json
-import re
 import sys
 import time
 from collections import defaultdict
@@ -37,13 +35,14 @@ import torch
 from transformers import AutoProcessor
 
 from thinkstream.sft.data_processor import (
-    build_per_timestep_messages_v12 as build_per_timestep_messages,
+    _resolve_video_paths,
     update_processor_pixels,
 )
 from thinkstream.sft.argument import DataArguments
-
-
-ACTION_RE = re.compile(r"<action>\s*([a-zA-Z_]+)\s*</action>", re.DOTALL)
+from scripts.agent_data_v5.pass5_messages import (
+    build_messages as build_per_timestep_messages,
+)
+from thinkstream.data.agent_protocol import parse_agent_output_v12
 
 
 def collect_video_metadata(messages):
@@ -61,29 +60,21 @@ def collect_video_metadata(messages):
 
 
 def parse_output(text: str) -> dict:
-    """Extract action keyword + post-action continuation flag.
-
-    silent samples: gold = no payload after </action>
-    response/recall/compress: gold = <response>/<query>/<summary> after
-    """
-    m = ACTION_RE.search(text)
-    action = m.group(1).strip() if m else None
-    after = text[m.end():] if m else ""
-
-    has_response = "<response>" in after
-    has_query = "<query>" in after
-    has_summary = "<summary>" in after
-    post_continued = has_response or has_query or has_summary
+    """Extract the v12 terminal action from generated text."""
+    parsed = parse_agent_output_v12(text)
+    kind = parsed.get("kind")
+    if kind == "answer":
+        action = "response" if (parsed.get("answer_text") or "").strip() else "silent"
+    elif kind in {"recall", "compress"}:
+        action = kind
+    else:
+        action = None
 
     return {
         "action": action,
-        "post_continued": post_continued,
-        "post_type": (
-            "response" if has_response
-            else "query" if has_query
-            else "summary" if has_summary
-            else "eos"
-        ),
+        "post_continued": action not in (None, "silent"),
+        "post_type": action or "format_error",
+        "format_error": parsed.get("format_error"),
     }
 
 
@@ -94,8 +85,7 @@ def gold_action(sample: dict) -> str:
         # v5 format: last message is assistant
         last = sample["messages"][-1]
         out = (last.get("content") or [{}])[0].get("text", "") if isinstance(last.get("content"), list) else last.get("content", "")
-    m = ACTION_RE.search(out)
-    return m.group(1).strip() if m else None
+    return parse_output(out)["action"]
 
 
 def load_model(ckpt: str, bf16: bool = True):
@@ -154,7 +144,7 @@ def main():
             base_path = Path(s.get("data_path") or ".")
             if "messages" in s:
                 # Drop assistant turn so the model has to produce it
-                msgs = s["messages"][:-1]
+                msgs = _resolve_video_paths(s["messages"][:-1], base_path)
             else:
                 full = build_per_timestep_messages(s, base_path)
                 msgs = full[:-1]

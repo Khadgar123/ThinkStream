@@ -15,6 +15,7 @@ def init_vllm_engine(
     tensor_parallel_size: int = None,
     gpu_memory_utilization: float = 0.9,
     max_model_len: int = 128000,
+    max_images_per_prompt: int = 64,
     max_videos_per_prompt: int = 2,
     seed: int = 3407,
     dtype: str = "bfloat16",
@@ -44,9 +45,13 @@ def init_vllm_engine(
         gpu_memory_utilization=gpu_memory_utilization,
         trust_remote_code=True,
         max_model_len=max_model_len,
-        # video=2 covers visual_window + recalled_frames in agent mode;
-        # raise it if you ever stack more video tracks per prompt.
-        limit_mm_per_prompt={"video": max_videos_per_prompt},
+        # ThinkStream's canonical pre-extracted-frame protocol is
+        # timestamped image lists. Keep video as a fallback for legacy raw
+        # video baselines, but normal SFT/RL/eval traffic consumes image slots.
+        limit_mm_per_prompt={
+            "image": max_images_per_prompt,
+            "video": max_videos_per_prompt,
+        },
         seed=seed,
         dtype=dtype,
         enforce_eager=enforce_eager,

@@ -19,7 +19,7 @@ re-process video frames or hit any model — pure jsonl manipulation.
 Usage:
     python -m scripts.agent_data_v5.split_train_sft_rl
     python -m scripts.agent_data_v5.split_train_sft_rl --rl-frac 0.25
-    AGENT_DATA_DIR=/cluster/path/data/agent_v5/final \\
+    THINKSTREAM_FINAL_DIR=/cluster/path/data/agent_v5/batch2/final \\
         python -m scripts.agent_data_v5.split_train_sft_rl
 """
 
@@ -44,6 +44,14 @@ DEFAULT_RL_FRAC = 0.50
 DROP_SAMPLE_TYPES: set = set()  # keep all sample types (matches pipeline.py)
 
 
+def _default_final_dir() -> Path:
+    env = os.environ.get("THINKSTREAM_FINAL_DIR") or os.environ.get("AGENT_DATA_DIR")
+    if not env:
+        return DEFAULT_FINAL_DIR
+    p = Path(env).expanduser()
+    return p if p.name == "final" else p / "final"
+
+
 def split_train(
     final_dir: Path,
     seed: int = DEFAULT_SEED,
@@ -54,7 +62,7 @@ def split_train(
     if not train_path.exists():
         raise FileNotFoundError(
             f"{train_path} not found — run pipeline.py first or "
-            f"override AGENT_DATA_DIR / --final-dir."
+            f"override THINKSTREAM_FINAL_DIR / --final-dir."
         )
 
     rows: List[dict] = [json.loads(l) for l in train_path.open()]
@@ -110,7 +118,7 @@ def main():
     ap.add_argument(
         "--final-dir",
         type=Path,
-        default=Path(os.environ.get("AGENT_DATA_DIR", str(DEFAULT_FINAL_DIR))),
+        default=_default_final_dir(),
         help="Directory containing train.jsonl (also where outputs land).",
     )
     ap.add_argument("--seed", type=int, default=DEFAULT_SEED)

@@ -37,6 +37,7 @@ from eval_baseline import (
     setup_eval_logging,
 )
 from vllm_engine import make_sampling_params, prepare_vllm_input
+from thinkstream.data.agent_protocol import append_timestamped_image_list
 
 
 def _build_messages(datum: dict, frames, frame_meta: dict, options: list,
@@ -48,15 +49,19 @@ def _build_messages(datum: dict, frames, frame_meta: dict, options: list,
         )
     else:
         query = datum["question"]
-    video_item = {"type": "video", "video": frames}
-    if isinstance(frame_meta.get("video_metadata"), dict):
-        video_item["video_metadata"] = frame_meta["video_metadata"]
+    user_content = []
+    append_timestamped_image_list(
+        user_content,
+        frames,
+        fps=float(frame_meta.get("fps") or 2.0),
+        start_frame_index=int(frame_meta.get("start_frame") or 0),
+        total_num_frames=int(frame_meta.get("total_frames") or len(frames)),
+        context_label="visual frame",
+    )
+    user_content.append({"type": "text", "text": query})
     messages = [{
         "role": "user",
-        "content": [
-            video_item,
-            {"type": "text", "text": query},
-        ],
+        "content": user_content,
     }]
     return messages, query
 

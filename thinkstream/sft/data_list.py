@@ -9,15 +9,41 @@ them as a staged curriculum; production SFT is a single pass over
 `stream_agent_sft`.
 """
 
+import os
 from pathlib import Path
 
-# Base directory for pipeline output.
-# Resolves relative to project root (ThinkStream/), not CWD.
-import os
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]  # thinkstream/sft/ → ThinkStream/
-_AGENT_DATA_DIR = Path(
-    os.environ.get("AGENT_DATA_DIR", str(_PROJECT_ROOT / "data" / "agent_v5" / "final"))
-)
+
+
+def _resolve_final_dir() -> Path:
+    """Resolve the canonical final/ directory for one generated batch.
+
+    Preferred:
+      THINKSTREAM_DATA_ROOT=data/agent_v5/batch2
+
+    Backward compatible:
+      AGENT_DATA_DIR may point either at the batch root or directly at final/.
+      THINKSTREAM_BATCH=batch2 expands to data/agent_v5/batch2/final.
+    """
+    explicit_final = os.environ.get("THINKSTREAM_FINAL_DIR")
+    if explicit_final:
+        p = Path(explicit_final).expanduser()
+        return p if p.is_absolute() else _PROJECT_ROOT / p
+
+    root_env = os.environ.get("THINKSTREAM_DATA_ROOT") or os.environ.get("AGENT_DATA_DIR")
+    if root_env:
+        root = Path(root_env).expanduser()
+        if not root.is_absolute():
+            root = _PROJECT_ROOT / root
+        return root if root.name == "final" else root / "final"
+
+    batch = os.environ.get("THINKSTREAM_BATCH", "").strip()
+    if batch:
+        return _PROJECT_ROOT / "data" / "agent_v5" / batch / "final"
+    return _PROJECT_ROOT / "data" / "agent_v5" / "final"
+
+
+_AGENT_DATA_DIR = _resolve_final_dir()
 
 
 def _agent_path(filename: str) -> str:

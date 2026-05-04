@@ -27,6 +27,7 @@
 #   MAX_NEW_TOKEN   — max response length per turn (2048) — covers compress JSON
 #   MAX_CHUNKS      — max turns per video (360 = 6 min × 1s/chunk)
 #   GPU_MEM_UTIL    — vLLM gpu_memory_utilization (0.55 — leave room for FSDP)
+#   LIMIT_IMAGES    — vLLM limit_mm_per_prompt.image for timestamped frames (64)
 #   TP_SIZE         — tensor_parallel_size for vLLM rollout (2 on 8-GPU node)
 #   BATCH_SIZE      — videos per training step (8)
 #   PPO_MINI_BS     — ppo_mini_batch_size (32)
@@ -34,7 +35,7 @@
 #   EPOCHS          — total_epochs (1)
 #   SAVE_FREQ       — save every N steps (50)
 #   TEST_FREQ       — eval on val every N steps (25)
-#   RUN_NAME        — wandb experiment name (grpo-v126-verl)
+#   RUN_NAME        — wandb experiment name (grpo-v12.22-verl)
 #   WANDB_PROJECT   — wandb project (thinkstream-v12)
 #   PARAM_OFFLOAD   — FSDP offload params to CPU (false). Enable for tight HBM.
 #   OPTIMIZER_OFFLOAD — FSDP offload optimizer state (false).
@@ -42,6 +43,9 @@
 #   TRAIN_PARQUET / VAL_PARQUET — verl parquets. If unset, we auto-build
 #                  from data/agent_v5/final/*.jsonl via
 #                  scripts/agent_data_v5/build_verl_parquet.py.
+#   THINKSTREAM_DATA_ROOT / AGENT_DATA_DIR — generated batch root
+#                  (default: data/agent_v5). final/ and frames/ are
+#                  resolved underneath this root.
 #   MULTI_Q        — 1 by default: one video row with all questions.
 #                  Set 0 only for legacy single-question ablations.
 
@@ -65,6 +69,7 @@ MAXLEN=${MAXLEN:-16384}
 MAX_NEW_TOKEN=${MAX_NEW_TOKEN:-16384}
 MAX_CHUNKS=${MAX_CHUNKS:-60}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
+LIMIT_IMAGES=${LIMIT_IMAGES:-64}
 TP_SIZE=${TP_SIZE:-2}
 BATCH_SIZE=${BATCH_SIZE:-4}
 PPO_MINI_BS=${PPO_MINI_BS:-16}
@@ -73,7 +78,7 @@ EPOCHS=${EPOCHS:-1}
 MAX_STEPS=${MAX_STEPS:-}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
-RUN_NAME=${RUN_NAME:-grpo-v126-verl}
+RUN_NAME=${RUN_NAME:-grpo-v12.22-verl}
 WANDB_PROJECT=${WANDB_PROJECT:-thinkstream-v12}
 PARAM_OFFLOAD=${PARAM_OFFLOAD:-false}
 OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-false}
@@ -85,20 +90,24 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 VERL_DIR="${PROJECT_DIR}/verl"
 RECIPE_DIR="${VERL_DIR}/recipe_thinkstream/configs"
 RECIPE_NAME="thinkstream_grpo"
+AGENT_DATA_ROOT="${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-${PROJECT_DIR}/data/agent_v5}}"
+if [[ "${AGENT_DATA_ROOT}" == */final ]]; then
+    AGENT_DATA_ROOT="$(dirname "${AGENT_DATA_ROOT}")"
+fi
 
 OUTPUT_DIR="${THINKSTREAM_OUTPUT_DIR:-${PROJECT_DIR}/output/${RUN_NAME}}"
-TRAIN_JSONL="${TRAIN_JSONL:-${PROJECT_DIR}/data/agent_v5/final/train_rl_trajectories.jsonl}"
-VAL_JSONL="${VAL_JSONL:-${PROJECT_DIR}/data/agent_v5/final/val_trajectories.jsonl}"
+TRAIN_JSONL="${TRAIN_JSONL:-${AGENT_DATA_ROOT}/final/train_rl_trajectories.jsonl}"
+VAL_JSONL="${VAL_JSONL:-${AGENT_DATA_ROOT}/final/val_trajectories.jsonl}"
 MULTI_Q="${MULTI_Q:-1}"
 
 # verl's RLHFDataset reads parquet; auto-build from JSONL if user didn't
 # supply a parquet directly.
 if [[ "${MULTI_Q}" == "1" ]]; then
-    DEFAULT_TRAIN_PARQUET="${PROJECT_DIR}/data/agent_v5/final/train_rl_multi_q.parquet"
-    DEFAULT_VAL_PARQUET="${PROJECT_DIR}/data/agent_v5/final/val_rl_multi_q.parquet"
+    DEFAULT_TRAIN_PARQUET="${AGENT_DATA_ROOT}/final/train_rl_multi_q.parquet"
+    DEFAULT_VAL_PARQUET="${AGENT_DATA_ROOT}/final/val_rl_multi_q.parquet"
 else
-    DEFAULT_TRAIN_PARQUET="${PROJECT_DIR}/data/agent_v5/final/train_rl_single_q.parquet"
-    DEFAULT_VAL_PARQUET="${PROJECT_DIR}/data/agent_v5/final/val_rl_single_q.parquet"
+    DEFAULT_TRAIN_PARQUET="${AGENT_DATA_ROOT}/final/train_rl_single_q.parquet"
+    DEFAULT_VAL_PARQUET="${AGENT_DATA_ROOT}/final/val_rl_single_q.parquet"
 fi
 TRAIN_PARQUET="${TRAIN_PARQUET:-${DEFAULT_TRAIN_PARQUET}}"
 VAL_PARQUET="${VAL_PARQUET:-${DEFAULT_VAL_PARQUET}}"
@@ -127,6 +136,7 @@ echo "Checkpoint:        ${LLM}"
 echo "Vendored verl:     ${VERL_DIR}"
 echo "Recipe dir:        ${RECIPE_DIR}"
 echo "Recipe name:       ${RECIPE_NAME}"
+echo "Data root:         ${AGENT_DATA_ROOT}"
 echo "Train parquet:     ${TRAIN_PARQUET}"
 echo "Val parquet:       ${VAL_PARQUET}"
 echo "Multi-Q rows:      ${MULTI_Q}"
@@ -139,6 +149,7 @@ echo "Max chunks:        ${MAX_CHUNKS}"
 echo "Max prompt len:    ${MAXLEN}"
 echo "Max new tokens:    ${MAX_NEW_TOKEN}"
 echo "GPU mem util:      ${GPU_MEM_UTIL}"
+echo "Image limit:       ${LIMIT_IMAGES}"
 echo "LR:                ${LR}"
 echo "Epochs:            ${EPOCHS}"
 echo "Max steps:         ${MAX_STEPS:-<epoch-based>}"
@@ -166,7 +177,7 @@ export THINKSTREAM_TRAJ_INDEX_PATH="${TRAIN_JSONL}"
 # Where pre-extracted JPEG frames live (one subdir per video stem). The
 # streaming agent loop reads this to inject per-chunk visual frames every
 # turn. Empty / unset → loop falls back to text-only RL.
-FRAMES_ROOT="${FRAMES_ROOT:-${PROJECT_DIR}/data/agent_v5/frames}"
+FRAMES_ROOT="${FRAMES_ROOT:-${AGENT_DATA_ROOT}/frames}"
 export THINKSTREAM_FRAMES_ROOT="${FRAMES_ROOT}"
 
 TRAINING_STEPS_ARGS=()
@@ -188,6 +199,7 @@ python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.n=${GROUP_SIZE} \
     actor_rollout_ref.rollout.tensor_model_parallel_size=${TP_SIZE} \
     actor_rollout_ref.rollout.gpu_memory_utilization=${GPU_MEM_UTIL} \
+    actor_rollout_ref.rollout.limit_images=${LIMIT_IMAGES} \
     actor_rollout_ref.rollout.response_length=${MAX_NEW_TOKEN} \
     actor_rollout_ref.rollout.prompt_length=${MAXLEN} \
     actor_rollout_ref.rollout.multi_turn.max_assistant_turns=${MAX_CHUNKS} \

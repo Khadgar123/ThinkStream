@@ -27,7 +27,8 @@ def test_pass2_observation_uses_timestamped_image_window(tmp_path):
 
     content = req["messages"][0]["content"]
     assert [item["type"] for item in content] == [
-        "text", "text", "image_url", "text", "image_url", "text", "image_url", "text", "image_url",
+        "text",
+        *sum((["text", "image_url"] for _ in range(FRAMES_PER_CHUNK * 3)), []),
     ]
     prompt = content[0]["text"]
     assert "CURRENT TASK FIRST" in prompt
@@ -38,7 +39,7 @@ def test_pass2_observation_uses_timestamped_image_window(tmp_path):
     assert "older context to the latest chunk" in prompt
     assert content[1]["text"] == "Frame timestamp t=0.0s (older context)."
     assert content[2]["image_url"]["url"].startswith("data:image/jpeg;base64,")
-    assert content[-2]["text"] == "Frame timestamp t=3.0s (latest chunk)."
+    assert content[-2]["text"] == "Frame timestamp t=2.5s (latest chunk)."
     assert "media_io_kwargs" not in req
 
 
@@ -184,13 +185,14 @@ def test_pass2_safe_token_estimate_counts_timestamped_image_frames(tmp_path):
 
 
 def test_pass2_cache_bump_invalidates_old_video_http_rollouts():
-    assert STAGE_VERSIONS["2"] == "v12.18"
-    # Downstream stages consume pass2 rollout text, so they must not reuse
-    # v12.14/v12.15 placements/samples/final messages after pass2 changes.
-    assert STAGE_VERSIONS["3b"] == "v12.20"
-    assert STAGE_VERSIONS["3c"] == "v12.20"
-    assert STAGE_VERSIONS["4"] == "v12.20"
-    assert STAGE_VERSIONS["5"] == "v12.20"
+    assert STAGE_VERSIONS["1a"] == "v12.22"
+    assert STAGE_VERSIONS["2"] == "v12.22"
+    # Downstream stages must not reuse cached data after the project-wide
+    # timestamped image-list protocol change.
+    assert STAGE_VERSIONS["3b"] == "v12.22"
+    assert STAGE_VERSIONS["3c"] == "v12.22"
+    assert STAGE_VERSIONS["4"] == "v12.22"
+    assert STAGE_VERSIONS["5"] == "v12.22"
 
 
 def test_pass2_stale_audit_flags_repeated_thinks_when_evidence_changes():

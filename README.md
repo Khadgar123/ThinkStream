@@ -34,17 +34,19 @@ Experiments on multiple streaming video benchmarks show that ThinkStream signifi
 
 ```text
 ThinkStream/
-├── scripts/                       # Training, evaluation, and demo scripts
-│   ├── eval/                      # Evaluation scripts (OVO-Bench, StreamingBench)
-│   ├── demo.py                    # Inference demo
-│   ├── sft_per_timestep.sh        # SFT (default PHASE=sft → train_sft.jsonl)
-│   └── grpo_train.sh              # GDPO RL (single stage, from SFT checkpoint)
-├── thinkstream/                   # Core codebase
-│   ├── data/                      # Data processing + dataset registry
-│   ├── eval/                      # Evaluation + format conversion
-│   ├── model/                     # Architecture, streaming attention, inference engine
-│   ├── trainer/                   # SFT + GDPO RL training nodes (gdpo_advantage.py)
-│   └── train.py                   # slyme launcher (used by grpo_train.sh)
+├── scripts/agent_data_v5/         # data construction passes: pass1...pass5
+├── scripts/eval/                  # evaluation entrypoints
+├── scripts/sft_per_timestep.sh    # production SFT launcher
+├── scripts/grpo_train_verl.sh     # production GRPO launcher
+├── thinkstream/
+│   ├── data/agent_protocol.py     # shared pass/SFT/RL/eval prompt protocol
+│   ├── sft/                       # SFT dataset loader and trainer
+│   ├── eval/                      # shared eval engines
+│   ├── model/                     # inference/runtime agent loop
+│   └── trainer/                   # framework-agnostic reward/matcher helpers
+├── verl/recipe_thinkstream/       # vendored verl recipe and RL agent loop
+├── data/agent_v5/<batch_id>/      # generated batch roots (ignored by git)
+├── docs/project_structure.md      # current path and batch-layout contract
 ├── requirements.txt
 └── README.md
 ```
@@ -64,21 +66,22 @@ pip install -r requirements.txt
 
 *Note: The dataset path configurations are located in `thinkstream/data/__init__.py`, which follows a similar logic to `qwen-vl-finetune`.*
 
-**Run Training (SFT → GDPO RL, both single-stage):**
+**Run Training (SFT → verl GRPO RL):**
 
-The pipeline emits `train_sft.jsonl` (199 vids) + `train_rl.jsonl` (50 vids)
-as **disjoint** pools. SFT trains on the first; RL rolls out on the second
-so it cannot reward-hack via memorization on prompts the SFT model already
-mastered. (For a single-pool baseline, use `PHASE=mixed`.)
+Generated data should live under one batch root, for example
+`data/agent_v5/batch2`. The pipeline emits SFT messages and RL trajectories
+under `final/`.
 
 ```bash
-# SFT on disjoint pool (default PHASE=sft → stream_agent_sft)
+# SFT on the batch's messages file
+THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
 bash scripts/sft_per_timestep.sh
 # → output/agent-sft/
 
-# GDPO RL from SFT checkpoint, on the held-out RL pool
-# (default DATASET=stream_agent_rl, ROLLOUT_MAX_CHUNKS=30, save every 200 steps)
-LLM=output/agent-sft/checkpoint-616 bash scripts/grpo_train.sh
+# GRPO RL from the SFT checkpoint, using vendored verl
+THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
+LLM=output/agent-sft/checkpoint-616 \
+bash scripts/grpo_train_verl.sh
 # → output/agent-grpo/  +  output/agent-grpo/audit/grpo_step.jsonl
 ```
 
@@ -88,8 +91,10 @@ GDPO RL uses NVIDIA-style per-reward decoupled advantage aggregation
 `range_tightness`, `format`, `overflow_pen`). See `thinkstream/trainer/gdpo_advantage.py`
 and `docs/design.md` §8 for the full design (canonical current-state).
 
-For verl-based RL (the production path used since v12), see
-`verl/recipe_thinkstream/run_thinkstream_grpo.sh` + `docs/design.md` §8 +
+`scripts/grpo_train.sh` is only a backward-compatible forwarder. The active
+RL implementation is `scripts/grpo_train_verl.sh` plus
+`verl/recipe_thinkstream/run_thinkstream_grpo.sh`. See
+`docs/project_structure.md`, `docs/design.md` §8, and
 `docs/v12.14_recurrent_design.md` for the >180-chunk recurrent variant.
 
 ### Evaluation

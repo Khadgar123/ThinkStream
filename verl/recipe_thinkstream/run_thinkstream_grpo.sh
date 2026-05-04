@@ -16,6 +16,8 @@
 #   TRAIN_PARQUET       — flattened (video, question) parquet from
 #                         scripts/agent_data_v5/build_verl_parquet.py.
 #   VAL_PARQUET         — val split.
+#   THINKSTREAM_DATA_ROOT — generated batch root containing final/ and frames/
+#                           (optional, defaults to $THINKSTREAM_HOME/data/agent_v5).
 #
 # Optional env (defaults in [...]):
 #   N_GPUS_PER_NODE [8] / NNODES [1]
@@ -32,8 +34,9 @@
 #                       docs/v12.14_recurrent_design.md for the recurrent
 #                       path that lifts this to 600+ without OOM.)
 #   GPU_MEM_UTIL [0.55]
+#   LIMIT_IMAGES [64]       vLLM limit_mm_per_prompt.image for timestamped frames
 #   PROJECT_NAME [thinkstream-v12]
-#   EXPERIMENT_NAME [grpo-v126-verl]
+#   EXPERIMENT_NAME [grpo-v12.22-verl]
 #   SAVE_DIR [./output/$EXPERIMENT_NAME]
 
 set -xeuo pipefail
@@ -47,6 +50,10 @@ THINKSTREAM_HOME=${THINKSTREAM_HOME:?"THINKSTREAM_HOME= required (path to ThinkS
 HF_MODEL_PATH=${HF_MODEL_PATH:?"HF_MODEL_PATH= required (Qwen3-VL-8B SFT ckpt)"}
 TRAIN_PARQUET=${TRAIN_PARQUET:?"TRAIN_PARQUET= required"}
 VAL_PARQUET=${VAL_PARQUET:?"VAL_PARQUET= required"}
+THINKSTREAM_DATA_ROOT=${THINKSTREAM_DATA_ROOT:-${THINKSTREAM_HOME}/data/agent_v5}
+if [[ "${THINKSTREAM_DATA_ROOT}" == */final ]]; then
+    THINKSTREAM_DATA_ROOT="$(dirname "${THINKSTREAM_DATA_ROOT}")"
+fi
 
 N_GPUS_PER_NODE=${N_GPUS_PER_NODE:-8}
 NNODES=${NNODES:-1}
@@ -85,6 +92,7 @@ MAX_RESP_LEN=${MAX_RESP_LEN:-32768}
 # coverage; for 240+ chunks switch to v12.14 recurrent rollout.
 MAX_TURNS=${MAX_TURNS:-120}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
+LIMIT_IMAGES=${LIMIT_IMAGES:-64}
 # v12.13: vLLM mm_processor_cache_gb (CPU-side image preprocessor cache).
 # pass2's teacher run uses 512GB and gets 93.8% mm-cache hit on the same
 # streaming-video workload. RL is co-located with actor/ref FSDP shards
@@ -93,18 +101,18 @@ GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
 MM_CACHE_GB=${MM_CACHE_GB:-64}
 
 PROJECT_NAME=${PROJECT_NAME:-thinkstream-v12}
-EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v126-verl}
+EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v12.22-verl}
 SAVE_DIR=${SAVE_DIR:-./output/${EXPERIMENT_NAME}}
 
 # verl spawns Ray workers; each worker process inherits PYTHONPATH so the
 # reward function can import thinkstream.trainer.v12_rewards.
 export PYTHONPATH="${THINKSTREAM_HOME}:${PYTHONPATH:-}"
-export THINKSTREAM_TRAJ_INDEX_PATH="${THINKSTREAM_TRAJ_INDEX_PATH:-${THINKSTREAM_HOME}/data/agent_v5/final/train_rl_trajectories.jsonl}"
+export THINKSTREAM_TRAJ_INDEX_PATH="${THINKSTREAM_TRAJ_INDEX_PATH:-${THINKSTREAM_DATA_ROOT}/final/train_rl_trajectories.jsonl}"
 
 # v12.13: ThinkStream-specific multi_turn config (verl's MultiTurnConfig
 # rejects custom keys, so we pass them as env vars; streaming_agent_loop.py
 # reads them in __init__ at line 316+). frames_root="" → text-only run.
-export THINKSTREAM_FRAMES_ROOT="${THINKSTREAM_FRAMES_ROOT:-${THINKSTREAM_HOME}/data/agent_v5/frames}"
+export THINKSTREAM_FRAMES_ROOT="${THINKSTREAM_FRAMES_ROOT:-${THINKSTREAM_DATA_ROOT}/frames}"
 export THINKSTREAM_FRAMES_PER_CHUNK="${THINKSTREAM_FRAMES_PER_CHUNK:-2}"
 export THINKSTREAM_VISUAL_WINDOW_CHUNKS="${THINKSTREAM_VISUAL_WINDOW_CHUNKS:-16}"
 export THINKSTREAM_RECALL_STUB="${THINKSTREAM_RECALL_STUB:-(no relevant past observation found)}"
@@ -228,6 +236,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.tensor_model_parallel_size=${GEN_TP} \
     actor_rollout_ref.rollout.gpu_memory_utilization=${GPU_MEM_UTIL} \
     actor_rollout_ref.rollout.max_num_batched_tokens=32768 \
+    actor_rollout_ref.rollout.limit_images=${LIMIT_IMAGES} \
     actor_rollout_ref.rollout.enforce_eager=True \
     actor_rollout_ref.rollout.free_cache_engine=True \
     actor_rollout_ref.rollout.enable_chunked_prefill=True \

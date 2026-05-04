@@ -1,8 +1,7 @@
 """
 Async vLLM client with concurrency control and throughput monitoring.
 
-Handles text-only, image, and pre-extracted-frame video requests via the
-vLLM OpenAI-compatible API.
+Handles text-only and image requests via the vLLM OpenAI-compatible API.
 Automatically manages concurrency to maximize throughput without OOM.
 
 Usage:
@@ -78,19 +77,6 @@ def encode_image_base64(image_path: str) -> str:
         suffix.lstrip("."), "jpeg"
     )
     return f"data:image/{mime};base64,{encode_image_base64_payload(image_path)}"
-
-
-def build_video_jpeg_data_uri(frame_paths: List[str]) -> str:
-    """Build vLLM's pre-extracted-frame video data URI.
-
-    vLLM OpenAI serving accepts client-side extracted frames as
-    ``data:video/jpeg;base64,<frame1_b64>,<frame2_b64>,...``. The companion
-    request must pass ``media_io_kwargs.video`` with fps/frames_indices so
-    Qwen3-VL receives real temporal anchors instead of treating the frames as
-    independent images.
-    """
-    frames_b64 = ",".join(encode_image_base64_payload(str(p)) for p in frame_paths)
-    return f"data:video/jpeg;base64,{frames_b64}"
 
 
 def build_content_with_images(
@@ -209,10 +195,9 @@ class VLLMClient:
             # be at body top level (here) or in OpenAI SDK extra_body.
             body["mm_processor_kwargs"] = dict(mm_processor_kwargs)
         if media_io_kwargs:
-            # vLLM stable supports pre-extracted video frames over OpenAI
-            # serving as data:video/jpeg plus request-level media_io_kwargs.
-            # This is where Qwen3-VL receives fps/frames_indices without
-            # asking the server to decode or resample the original mp4.
+            # Legacy/raw-video escape hatch. Current ThinkStream prompts use
+            # timestamp text + image_url items, so normal requests should not
+            # set this.
             body["media_io_kwargs"] = dict(media_io_kwargs)
         client = await self._get_httpx_client()
         resp = await client.post("/chat/completions", json=body)
@@ -255,9 +240,8 @@ class VLLMClient:
               When set, routes through raw POST (same reason as
               enable_thinking — SDK extra_body unreliable). vLLM forwards
               this to the Qwen3-VL processor for aspect-preserving resize.
-            media_io_kwargs: vLLM media loader kwargs. For pre-extracted video
-              frames this carries {"video": {"fps": ..., "frames_indices": ...,
-              "total_num_frames": ..., "do_sample_frames": False}}.
+            media_io_kwargs: legacy vLLM media loader kwargs. Current
+              ThinkStream pre-extracted frames use timestamped image_url items.
         """
         # When the caller explicitly toggles thinking or sets vLLM extra body
         # fields, take the raw POST path so they land at request-body top level.
@@ -362,8 +346,7 @@ class VLLMClient:
             - "enable_thinking": optional per-request override
             - "mm_processor_kwargs": optional per-request Qwen3-VL
               smart_resize bounds (v12.12)
-            - "media_io_kwargs": optional per-request vLLM media loader kwargs
-              for pre-extracted video frame metadata
+            - "media_io_kwargs": optional legacy per-request vLLM media loader kwargs
         """
         self.stats = RequestStats(total=len(requests), start_time=time.time())
         logger.info(

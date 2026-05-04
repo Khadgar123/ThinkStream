@@ -56,6 +56,9 @@ BACKWARD_MID_RECALL_PROB = 0.6      # 60% recall, 40% direct in mid band
 
 # multi_emit ask runway before first emit
 ME_LEAD_RANGE = (2, 8)
+MAX_MULTI_EMIT_ACTIVE_SPAN = 16
+MAX_MULTI_EMIT_RESPONSES = 4
+RECALL_TARGET_FRACTION = 0.45
 
 # Production trajectory caps (config.py is the source of truth for max cap)
 MAX_QUESTIONS_PER_TRAJECTORY = CONFIG_MAX_QUESTIONS_PER_TRAJECTORY
@@ -369,14 +372,54 @@ def place_single_emit(card: Card, num_chunks: int, rng: random.Random) -> List[P
     return placements
 
 
+def _select_multi_emit_subset(card: Card) -> List[GoldEmit]:
+    """Pick a compact local subset for one active multi-answer episode."""
+    emits = sorted(card.gold_emits, key=lambda e: e.chunk)
+    if len(emits) <= MAX_MULTI_EMIT_RESPONSES:
+        if emits[-1].chunk - emits[0].chunk <= MAX_MULTI_EMIT_ACTIVE_SPAN:
+            return emits
+
+    best: List[GoldEmit] = []
+    best_key: Tuple[int, int, int] = (-1, 10**9, 10**9)
+    for i, start in enumerate(emits):
+        cur = [
+            e for e in emits[i:]
+            if e.chunk - start.chunk <= MAX_MULTI_EMIT_ACTIVE_SPAN
+        ][:MAX_MULTI_EMIT_RESPONSES]
+        if len(cur) < 2:
+            continue
+        span = cur[-1].chunk - cur[0].chunk
+        key = (len(cur), -span, -cur[0].chunk)
+        if key > best_key:
+            best_key = key
+            best = cur
+    return best
+
+
 def place_multi_emit(card: Card, num_chunks: int, rng: random.Random) -> List[Placement]:
-    """Generate ONE placement: ask = first_emit - random lead in [2, 8]."""
+    """Generate ONE compact multi-answer placement.
+
+    A multi-answer question is allowed, but it must be one local episode. A
+    question spanning half the video would suppress too many independent
+    Q/A episodes and make the training target ambiguous.
+    """
     if not card.gold_emits:
         return []
-    first = min(e.chunk for e in card.gold_emits)
+    emits = _select_multi_emit_subset(card)
+    if len(emits) < 2:
+        return []
+    first = min(e.chunk for e in emits)
+    last = max(e.chunk for e in emits)
     lead = _randint_safe(rng, ME_LEAD_RANGE[0], min(ME_LEAD_RANGE[1], first))
     ask = max(0, first - lead)
-    actions = gold_window_for_card(card, ask, num_chunks)
+    emit_by_chunk = {e.chunk: e.value for e in emits}
+    end = min(num_chunks - 1, last + 1)
+    actions: Dict[int, Tuple[GoldKind, str]] = {}
+    for c in range(ask, end + 1):
+        if c in emit_by_chunk:
+            actions[c] = ("response", emit_by_chunk[c])
+        else:
+            actions[c] = ("silent", "")
     return [Placement(
         card_id=card.card_id,
         ask_chunk=ask,
@@ -396,6 +439,23 @@ def place_card(card: Card, num_chunks: int, rng: random.Random) -> List[Placemen
 # ---------------------------------------------------------------------------
 
 
+def _placement_chunks(p: Placement) -> set:
+    return {int(c) for c in p.chunk_actions.keys()}
+
+
+def _placement_span_len(p: Placement) -> int:
+    chunks = _placement_chunks(p)
+    if not chunks:
+        return 0
+    return max(chunks) - min(chunks) + 1
+
+
+def _recall_floor(max_q: int) -> int:
+    if max_q <= 0:
+        return 0
+    return max(1, int(max_q * RECALL_TARGET_FRACTION + 0.999))
+
+
 def select_trajectory(
     cards: List[Card],
     placements_by_card: Dict[str, List[Placement]],
@@ -412,7 +472,12 @@ def select_trajectory(
       +1 unseen card (one placement per card max)
       +spread: distance to nearest already-picked ask_chunk / 10 (cap 1.5)
 
-    Strict constraint: at most ONE placement per card_id.
+    Strict constraints:
+      - at most ONE placement per card_id
+      - no overlapping placement chunks. This enforces a single active
+        question at a time; multi-answer supervision is allowed only inside
+        one multi_emit question, never as competing questions on the same
+        answer chunk.
     """
     cards_by_id = {c.card_id: c for c in cards}
     pool: List[Tuple[Placement, Card]] = []
@@ -430,40 +495,70 @@ def select_trajectory(
     seen_mechs: set = set()
     seen_aforms: set = set()
     seen_cards: set = set()
+    used_chunks: set = set()
     used_ask: List[int] = []
 
-    while len(selected) < max_q and pool:
+    def feasible(p: Placement, card: Card) -> bool:
+        if card.card_id in seen_cards:
+            return False
+        return not (_placement_chunks(p) & used_chunks)
+
+    def score(p: Placement, card: Card) -> float:
+        s = 0.0
+        if card.family not in seen_families:
+            s += 3.0
+        if p.mechanism not in seen_mechs:
+            s += 2.0
+        if card.answer_form not in seen_aforms:
+            s += 1.0
+        s += 1.0  # base for new card
+        if used_ask:
+            min_dist = min(abs(p.ask_chunk - x) for x in used_ask)
+            s += min(min_dist / 10.0, 1.5)
+        else:
+            s += 1.5
+        # Long active spans are legitimate for one-question multi-answer
+        # tasks, but they reduce the number of independent Q/A episodes
+        # in a trajectory. Penalize them rather than banning them.
+        s -= min(_placement_span_len(p) / 24.0, 2.0)
+        return s
+
+    def take_best(predicate) -> bool:
         best_score = -1e9
         best_idx = -1
         for i, (p, card) in enumerate(pool):
-            if card.card_id in seen_cards:
+            if not feasible(p, card) or not predicate(p, card):
                 continue
-            s = 0.0
-            if card.family not in seen_families:
-                s += 3.0
-            if p.mechanism not in seen_mechs:
-                s += 2.0
-            if card.answer_form not in seen_aforms:
-                s += 1.0
-            s += 1.0  # base for new card
-            # spread bonus
-            if used_ask:
-                min_dist = min(abs(p.ask_chunk - x) for x in used_ask)
-                s += min(min_dist / 10.0, 1.5)
-            else:
-                s += 1.5
+            s = score(p, card)
             if s > best_score:
                 best_score = s
                 best_idx = i
         if best_idx < 0:
-            break
+            return False
         p, card = pool.pop(best_idx)
         selected.append(p)
         seen_families.add(card.family)
         seen_mechs.add(p.mechanism)
         seen_aforms.add(card.answer_form)
         seen_cards.add(card.card_id)
+        used_chunks.update(_placement_chunks(p))
         used_ask.append(p.ask_chunk)
+        return True
+
+    # Recall is sparse in row count (one tool-turn row per recall question).
+    # Select a floor before filling realtime/current questions so SFT/RL see
+    # enough tool-use supervision without allowing overlapping pending queries.
+    target_recall = min(max_q, _recall_floor(max_q))
+    while (
+        len(selected) < max_q
+        and sum(1 for p in selected if p.mechanism == "recall_demo") < target_recall
+        and take_best(lambda p, _card: p.mechanism == "recall_demo")
+    ):
+        pass
+
+    while len(selected) < max_q and pool:
+        if not take_best(lambda _p, _card: True):
+            break
 
     return selected
 
@@ -664,6 +759,15 @@ def render_video_samples(
                 extra={"role": "patrol_rich" if chunk_rich.get(c) else "patrol_empty"},
             ))
             continue
+        if len(candidates) > 1:
+            owners = [
+                f"{card.card_id}@{p.ask_chunk}:{kind}"
+                for kind, _value, p, card in candidates
+            ]
+            raise ValueError(
+                f"overlapping question placements at chunk {c}: "
+                + ", ".join(owners)
+            )
         candidates.sort(key=lambda t: -PRIORITY[t[0]])
         kind, value, p, card = candidates[0]
         all_samples.append(Sample(

@@ -15,7 +15,7 @@ eval "$(/root/miniconda3/bin/conda shell.bash hook)"
 conda activate /home/tione/notebook/gaozhenkun/hzh/envs/thinkstream
 set -u
 
-export AGENT_DATA_DIR=${AGENT_DATA_DIR:-/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5_current_backup/final}
+export THINKSTREAM_DATA_ROOT=${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5_current_backup}}
 
 DEEPSPEED="${SCRIPT_DIR}/zero3.json"
 SFT_ENTRY="${PROJECT_DIR}/thinkstream/sft/train.py"

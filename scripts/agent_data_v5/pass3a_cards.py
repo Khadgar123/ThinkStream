@@ -325,6 +325,11 @@ def _verify_card_layers(card: Dict, ev_by_chunk: Dict[int, Dict]) -> str:
     # Loose evidence containment: canonical answer text should overlap
     # with the entity_id / fact text from at least one grounding chunk.
     canonical = (card.get("canonical_answer") or "").strip().lower()
+    if af == "binary":
+        # Binary progress/status questions usually have canonical Yes/No.
+        # The literal token "yes" or "no" will not appear in visual evidence,
+        # so grounding must rely on the emit chunk + evidence presence above.
+        return "PASS"
     if canonical:
         ev_text = ""
         for c in grounding:

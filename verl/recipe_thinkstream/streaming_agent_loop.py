@@ -17,10 +17,10 @@
 #       <|im_start|>system\n{SYSTEM_PROMPT_V12}\n<|im_end|>     ← common prefix
 #       <|im_start|>user\n{question}\n<|im_end|>                ← common prefix
 #       <|im_start|>user\n
-#         <visual_window>{header}</visual_window>               ← turn-specific
-#         {video block: chunks[max(0,N-15)..N]'s frames + video_metadata}
 #         <memory>...</memory>
 #         <queries>...</queries>           (when ask_chunks fired)
+#         <visual_window>{header}</visual_window>               ← turn-specific
+#         {timestamp text + image items for chunks[max(0,N-15)..N]}
 #         <user_input>...</user_input>     (the question text)
 #         OR <compress_trigger/>   (compress turn — system-injected, v12.12 no range)
 #       <|im_end|>
@@ -65,7 +65,7 @@
 #       <memory>                               ← monotonic append; SFT-first
 #       (queries)                              ← optional
 #       <visual_window header>                 ← {start, end, frames, current_time}
-#       <video block: window frames>           ← sliding window (or expanding opt-in)
+#       timestamp text + image items           ← sliding window (or expanding opt-in)
 #       <recall_result> (optional)             ← chunk-specific
 #       <user_input> or <compress_trigger/>    ← chunk-specific, last
 #     ]
@@ -86,11 +86,10 @@
 #
 # SFT ALIGNMENT (the 5 things that must match pass5_messages.py):
 #   1. Frame paths use 1-indexed numbering: frame_{ci*FPC + fi + 1:06d}.jpg
-#   2. Single video block per chunk (not multiple image blocks) — Qwen3-VL
-#      needs a single <|video_pad|> with video_metadata for MROPE temporal
-#      alignment.
-#   3. video_metadata.frames_indices = [window_start*FPC + i for i in range(n)]
-#      — drives Qwen3-VL's per-frame `<X.X seconds>` temporal MROPE token.
+#   2. Pre-extracted frames render as timestamp text + image items. The
+#      timestamp text is the temporal anchor; vLLM schedules image tensors.
+#   3. Timestamp text uses frame_idx / fps, where
+#      frame_idx = window_start*FPC + i.
 #   4. Compress turn uses bare <compress_trigger/> (v12.12: no range,
 #      no visual_window). Model derives time_range from memory.
 #   5. Recall result rendering as <recall_result>{...}</recall_result>
@@ -104,7 +103,7 @@
 #       model trains on a different recall topology than SFT — recall is
 #       still learnable but with one-chunk delay and missing visual
 #       context. Fix needs: when kind=recall, immediately build a tool
-#       turn with recall_result + recalled_frames video block, append to
+#       turn with recall_result + recalled-frame timestamped images, append to
 #       prompt_ids with mask=0, generate again before advancing chunk_idx.
 #   D2. Per-chunk attention reset / training-time per-chunk forward
 #       (P0.4 / P0.3). At training time verl's actor sees the stitched
@@ -120,7 +119,7 @@
 #   output.prompt_ids   = [system + user_q]  (the COMMON prefix)
 #   output.response_ids = [user_block_0 + asst_0 + user_block_1 + asst_1 + ...]
 #   output.response_mask = [0...0 | 1...1 | 0...0 | 1...1 | ...]
-#   output.multi_modal_data["videos"] = list of (video_tensor, metadata) per chunk
+#   output.multi_modal_data["images"] = image payloads for timestamped frames
 #
 # Registered under `"thinkstream_streaming_agent"`.
 from __future__ import annotations
@@ -274,14 +273,11 @@ def _build_visual_window(
     frames_per_chunk: int,
     chunk_sec: float = 1.0,
     mode: str = "sliding",
-) -> Tuple[List[str], Dict[str, Any], int, int]:
+) -> Tuple[List[str], int, int]:
     """Build the visual window for chunk N.
 
     Returns:
       flat_paths:     all frame paths in window order (window_start..N)
-      video_metadata: Qwen3-VL metadata dict (fps, frames_indices,
-                      total_num_frames, do_sample_frames=False) — drives
-                      MROPE temporal anchor for pre-sampled frames
       window_start_chunk, window_end_chunk
 
     `mode` selects the windowing strategy (see _compute_window_start).
@@ -292,18 +288,9 @@ def _build_visual_window(
     for c in range(window_start, window_end + 1):
         cf = _chunk_frame_paths(video_path, frames_root, c, frames_per_chunk)
         if not cf:
-            return [], {}, window_start, window_end
+            return [], window_start, window_end
         flat_paths.extend(cf)
-    n_frames = len(flat_paths)
-    metadata = {
-        "fps": float(frames_per_chunk) / float(chunk_sec),
-        "frames_indices": [
-            window_start * frames_per_chunk + i for i in range(n_frames)
-        ],
-        "total_num_frames": (chunk_idx + 1) * frames_per_chunk,
-        "do_sample_frames": False,
-    }
-    return flat_paths, metadata, window_start, window_end
+    return flat_paths, window_start, window_end
 
 
 # ---------------------------------------------------------------------------
@@ -420,6 +407,7 @@ def _register_streaming_agent_loop():
 
     from thinkstream.data.agent_protocol import (  # type: ignore
         TOOLS_SCHEMA,
+        append_timestamped_image_list,
         parse_agent_output_v12,
         format_memory_block,
         format_queries_block,
@@ -519,10 +507,9 @@ def _register_streaming_agent_loop():
             self.recurrent_mode = mode
 
         # -------------------------------------------------------------------
-        # Per-chunk user-side text. Mirrors SFT's
-        # build_per_timestep_messages_v12 layout so train/RL distributions
-        # line up. The video block is rendered separately as a content
-        # block of type "video" (Qwen3-VL <|video_pad|> with frames_indices).
+        # Per-chunk user-side text. Mirrors SFT/pass5 layout so train/RL
+        # distributions line up. Pre-extracted frames render as timestamp
+        # text + image items through append_timestamped_image_list().
         # -------------------------------------------------------------------
         def _format_user_input(
             self,
@@ -566,7 +553,6 @@ def _register_streaming_agent_loop():
             state: "VideoTrajectoryState",
             chunk_idx: int,
             window_paths: List[str],
-            window_metadata: Dict[str, Any],
             window_start_chunk: int,
             window_end_chunk: int,
             question: str,
@@ -583,7 +569,7 @@ def _register_streaming_agent_loop():
             v12.13 (2026-05-02): mirrors SFT layout in
             thinkstream/data/agent_protocol.py:213-214 build_user_content
             EXACTLY:
-              <memory> → (queries) → <visual_window> + <video frames> →
+              <memory> → (queries) → <visual_window> + timestamped images →
               <recall_result> → <user_input> or <compress_trigger/>
 
             Memory FIRST (per SFT) — train/RL distribution alignment is
@@ -628,7 +614,7 @@ def _register_streaming_agent_loop():
                     "text": f"\n{queries_text}",
                 })
 
-            # ── Visual window header + video block (after memory, matches
+            # ── Visual window header + timestamped image list (after memory, matches
             # SFT). Header layout copies agent_protocol.py:283-292: keys
             # `start`, `end`, `frames`, `current_time` are all required —
             # SFT trained the model on this exact JSON shape, removing
@@ -648,9 +634,8 @@ def _register_streaming_agent_loop():
                     "text": f"\n<visual_window>{vw_header}</visual_window>",
                 })
                 if window_paths:
-                    # v12.12: runtime mm_processor_kwargs at video-item level
-                    # so qwen-vl-utils.process_vision_info forwards them to
-                    # vLLM as smart_resize bounds. v12.13: identical kwargs
+                    # v12.22: runtime resize bounds are attached to each image.
+                    # v12.13: identical kwargs
                     # across chunks → vLLM mm_processor_cache key is stable
                     # (frame_path, min_pixels, max_pixels) so PIL+ViT
                     # preprocessing is cached when the same frame recurs in
@@ -663,13 +648,16 @@ def _register_streaming_agent_loop():
                         )
                     except ImportError:
                         _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-                    content.append({
-                        "type": "video",
-                        "video": window_paths,
-                        "min_pixels": _RTKW["min_pixels"],
-                        "max_pixels": _RTKW["max_pixels"],
-                        "video_metadata": window_metadata,
-                    })
+                    append_timestamped_image_list(
+                        content,
+                        window_paths,
+                        fps=float(self.frames_per_chunk) / float(self.chunk_sec),
+                        start_frame_index=window_start_chunk * self.frames_per_chunk,
+                        total_num_frames=(chunk_idx + 1) * self.frames_per_chunk,
+                        latest_start_frame_index=chunk_idx * self.frames_per_chunk,
+                        min_pixels=_RTKW["min_pixels"],
+                        max_pixels=_RTKW["max_pixels"],
+                    )
 
             # Recall result (single-turn legacy form — SFT shape A inline).
             # True shape-B intra-chunk multi-turn is a deferred follow-up.
@@ -730,11 +718,10 @@ def _register_streaming_agent_loop():
               }
 
             Both fields go into the next chunk_messages user payload. The
-            frames carry video_metadata.frames_indices anchored to the
-            HISTORICAL chunk timestamps (not the current chunk) so Qwen3-VL
-            MROPE renders per-frame `<X.X seconds>` tokens at the original
-            video time — model learns these are "old frames from time T",
-            not "current visual at time NOW".
+            prompt builder renders recalled frame paths with timestamp text
+            anchored to the HISTORICAL chunk timestamps (not the current
+            chunk), so the model sees these as old frames from time T, not
+            current visual evidence.
             """
             query = (args.get("query") or args.get("keywords") or
                      args.get("text") or "")
@@ -816,17 +803,6 @@ def _register_streaming_agent_loop():
                     "source": "historical_frames",
                     "n_frames": len(recalled_frame_paths),
                     "frame_paths": recalled_frame_paths,
-                    # Pre-computed video_metadata so the prompt-builder can
-                    # attach it directly (mirrors pass5_messages.py:340-355).
-                    "video_metadata": {
-                        "fps": float(self.frames_per_chunk) / float(self.chunk_sec),
-                        "frames_indices": [
-                            tr_start_chunk * self.frames_per_chunk + i
-                            for i in range(len(recalled_frame_paths))
-                        ],
-                        "total_num_frames": (tr_end_chunk + 1) * self.frames_per_chunk,
-                        "do_sample_frames": False,
-                    },
                 }
             return {
                 "recall_result": recall_result,
@@ -841,9 +817,8 @@ def _register_streaming_agent_loop():
             Mirrors pass5_messages.py:280-380 ordering EXACTLY (the v12.11
             audit P0 fix order is the SFT contract):
               1. <recalled_frames>{json header}</recalled_frames> text
-              2. video block with video_metadata.frames_indices anchored
-                 to historical chunk timestamps (Qwen3-VL MROPE renders
-                 per-frame `<X.X seconds>` at original time)
+              2. timestamp text + image items anchored to historical chunk
+                 timestamps
               3. <recall_result>{json}</recall_result> text
 
             We use role="user" (not "tool") to match pass5's DeepEyesV2
@@ -867,20 +842,24 @@ def _register_streaming_agent_loop():
                     "type": "text",
                     "text": f"<recalled_frames>{rf_header}</recalled_frames>",
                 })
-                # 2. video block with historical-time frames_indices
+                # 2. timestamped historical frames
                 try:
                     from scripts.agent_data_v5.config import (
                         RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                     )
                 except ImportError:
                     _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-                content.append({
-                    "type": "video",
-                    "video": rf["frame_paths"],
-                    "min_pixels": _RTKW["min_pixels"],
-                    "max_pixels": _RTKW["max_pixels"],
-                    "video_metadata": rf["video_metadata"],
-                })
+                tr_start, tr_end = rf["time_range"]
+                append_timestamped_image_list(
+                    content,
+                    rf["frame_paths"],
+                    fps=float(self.frames_per_chunk) / float(self.chunk_sec),
+                    start_frame_index=int(tr_start) * self.frames_per_chunk,
+                    total_num_frames=int(tr_end + 1) * self.frames_per_chunk,
+                    context_label="recalled frame",
+                    min_pixels=_RTKW["min_pixels"],
+                    max_pixels=_RTKW["max_pixels"],
+                )
 
             # 3. <recall_result> text — pass5 puts this AFTER frames
             #    (v12.11 audit-5 P0 fix). Empty/failure case still emits
@@ -1004,6 +983,7 @@ def _register_streaming_agent_loop():
             # side; never re-prefilled across chunks.
             initial_messages = list(kwargs["raw_prompt"])
             initial_mm = await self.process_vision_info(initial_messages)
+            initial_images: List[Any] = list(initial_mm.get("images") or [])
             initial_videos: List[Any] = list(initial_mm.get("videos") or [])
 
             # P0.3 fix (post-review 2026-05-01): AgentLoopBase.apply_chat_template
@@ -1033,7 +1013,8 @@ def _register_streaming_agent_loop():
                 # recover the no-prefix length by tokenizing the prefix
                 # marker itself.
                 with_prefix = await self.apply_chat_template(
-                    initial_messages, tools=TOOLS_SCHEMA, images=None,
+                    initial_messages, tools=TOOLS_SCHEMA,
+                    images=initial_images if initial_images else None,
                     videos=initial_videos if initial_videos else None,
                 )
                 initial_prompt_ids = list(with_prefix)
@@ -1056,9 +1037,9 @@ def _register_streaming_agent_loop():
             chunk_video_indices: List[int] = []
 
             # multi_modal_data accumulator: one (tensor, metadata) per
-            # chunk that injected a video block. NOT a flat per-frame
-            # PIL list, so memory cost is O(n_chunks) tensors not
-            # O(n_chunks × window × fpc) PIL images. (P1.11 fix.)
+            # Accumulators for multi-modal payloads. Current protocol uses
+            # timestamped images; video remains only for legacy/raw fallback.
+            accumulated_images: List[Any] = list(initial_images)
             accumulated_videos: List[Any] = list(initial_videos)
 
             # v12.14 Phase 3: per-action tracking for recurrent mode.
@@ -1090,11 +1071,10 @@ def _register_streaming_agent_loop():
 
                 # ── Sliding visual window (skipped for compress turns).
                 window_paths: List[str] = []
-                window_metadata: Dict[str, Any] = {}
                 window_start_chunk = chunk_idx
                 window_end_chunk = chunk_idx
                 if not inter_chunk and self.frames_root and video_path:
-                    window_paths, window_metadata, window_start_chunk, window_end_chunk = (
+                    window_paths, window_start_chunk, window_end_chunk = (
                         _build_visual_window(
                             video_path, self.frames_root, chunk_idx,
                             visual_window_chunks=self.visual_window_chunks,
@@ -1133,7 +1113,6 @@ def _register_streaming_agent_loop():
                     state=state,
                     chunk_idx=chunk_idx,
                     window_paths=window_paths,
-                    window_metadata=window_metadata,
                     window_start_chunk=window_start_chunk,
                     window_end_chunk=window_end_chunk,
                     question=question,
@@ -1185,7 +1164,9 @@ def _register_streaming_agent_loop():
                     chunk_prompt_ids = await self.apply_chat_template(
                         chunk_messages,
                         tools=TOOLS_SCHEMA,
-                        images=chunk_images if chunk_images else None,
+                        images=(initial_images + chunk_images) if chunk_images else (
+                            initial_images if initial_images else None
+                        ),
                         videos=(initial_videos + chunk_videos) if chunk_videos else (
                             initial_videos if initial_videos else None
                         ),
@@ -1217,7 +1198,9 @@ def _register_streaming_agent_loop():
                             request_id=request_id,
                             prompt_ids=chunk_prompt_ids,
                             sampling_params=sampling_params,
-                            image_data=chunk_images if chunk_images else None,
+                            image_data=(initial_images + chunk_images) if chunk_images else (
+                                initial_images if initial_images else None
+                            ),
                             video_data=(initial_videos + chunk_videos) if chunk_videos else (
                                 initial_videos if initial_videos else None
                             ),
@@ -1253,10 +1236,9 @@ def _register_streaming_agent_loop():
                         per_action_response_logprobs.append(None)
                     # mm payload: stitched mode accumulates videos globally;
                     # recurrent mode needs per-action attribution. Use
-                    # `chunk_videos` for the visual chunk turn; tool turns
-                    # (recall round 2+) carry recalled-frame videos in
-                    # chunk_videos as well (the 2nd round's chunk_messages
-                    # includes the appended tool message).
+                    # Pre-extracted frames now arrive as timestamped image
+                    # items; legacy video payloads are still forwarded if a
+                    # fallback message path produces them.
                     _ac_mm = None
                     if chunk_videos:
                         _ac_mm = {"videos": list(chunk_videos)}
@@ -1275,6 +1257,7 @@ def _register_streaming_agent_loop():
                     chunk_video_indices.append(-1 if inter_chunk else chunk_idx)
 
                     if visual_injected:
+                        accumulated_images.extend(chunk_images)
                         accumulated_videos.extend(chunk_videos)
                         n_chunks_with_frames += 1
                     elif inter_chunk:
@@ -1500,7 +1483,10 @@ def _register_streaming_agent_loop():
                         response_ids=[],
                         response_mask=[],
                         multi_modal_data=(
-                            {"videos": initial_videos} if initial_videos else {}
+                            {
+                                **({"images": initial_images} if initial_images else {}),
+                                **({"videos": initial_videos} if initial_videos else {}),
+                            }
                         ),
                         num_turns=1,
                         metrics=metrics,
@@ -1541,6 +1527,8 @@ def _register_streaming_agent_loop():
             # Stitched mode (default, backward-compat)
             # ──────────────────────────────────────────────────────
             multi_modal_data: Dict[str, Any] = {}
+            if accumulated_images:
+                multi_modal_data["images"] = accumulated_images
             if accumulated_videos:
                 multi_modal_data["videos"] = accumulated_videos
 

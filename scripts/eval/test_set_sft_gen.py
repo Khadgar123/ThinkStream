@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-"""Generative eval of SFT checkpoint on test set — response correctness.
+"""Generative eval of SFT checkpoint on test set — answer correctness.
 
 Loads an SFT checkpoint, runs model.generate() on each test sample,
-extracts the <response> tag from the generated text, and scores it
-against the gold <response> using the same OVO-style matching as
-test_set_base.py (Yes/No, integer, single-letter only).
+extracts the v12 <answer> payload from the generated text, and scores it
+against the gold answer with the same form-aware matcher as RL/eval
+(binary, MC letter/full text, number, short exact, descriptive).
 
 This is the L3 (generative) counterpart to test_set_eval.py's L1+L2
 (teacher-forced action accuracy). It answers: "when the model actually
@@ -240,7 +240,7 @@ def main():
                 if "messages" in s
                 else build_per_timestep_messages(s, root_path)
             )
-            # Remove assistant turn — keep only system + user
+            # Remove assistant turn; keep system + user timestamped frames.
             messages = [m for m in messages if m["role"] != "assistant"]
 
             template_kwargs = dict(

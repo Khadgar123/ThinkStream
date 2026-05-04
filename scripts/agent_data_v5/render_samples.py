@@ -5,8 +5,8 @@ Takes: 3-C fork+base samples + Pass 2 rollout snapshots
 Produces: Complete SFT samples with input + output fields
 
 This is the bridge between data construction (Pass 3) and SFT training.
-Each sample gets a full `input` structure that matches what
-`data_processor.py:build_per_timestep_messages_v12` expects.
+Each sample gets a full `input` structure that pass5_messages.py renders
+into the canonical timestamped-image ShareGPT messages.
 
 Called after Pass 3-C raw sample generation and before Pass 3-E verification.
 """
@@ -166,12 +166,15 @@ def _build_queries_input(queries_state: List[Dict]) -> List[Dict]:
     result = []
     for q in queries_state:
         result.append({
+            "card_id": q.get("card_id", ""),
             "question": q.get("question", ""),
             "options": list(q.get("options") or []),
             "answer_form": q.get("answer_form", ""),
             "answer_style": q.get("answer_style", ""),
             "answer_instruction": q.get("answer_instruction", ""),
             "ask_time": q.get("ask_time", 0),
+            "open_until": q.get("open_until", q.get("ask_time", 0)),
+            "status": q.get("status", ""),
             "answers": q.get("answers", []),
         })
     return result
@@ -325,6 +328,9 @@ def render_sample(
         "canonical_answer": canonical,
         "answer_form": card.get("answer_form", ""),
         "answer_style": sample.get("answer_style", card.get("answer_style", "")),
+        "answer_instruction": sample.get(
+            "answer_instruction", card.get("answer_instruction", "")
+        ),
         "question_type": card.get("question_type", ""),
         "family": card.get("family", ""),
         "family_name": card.get("family_name", ""),

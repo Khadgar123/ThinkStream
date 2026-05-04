@@ -40,33 +40,29 @@ STAGE_VERSIONS: Dict[str, str] = {
     # v12.11 audit-5 P1 #5 (2026-05-01): bumps below align with the v12.11
     # data-construction logic changes. Without these, an existing cluster
     # cache stamped v12.5 would silently reuse stale outputs:
-    #   1a stays v12.5 — pass1a logic unchanged; current 320 outputs OK.
-    #   1b → v12.11: compact prompt (5535555) + await fix (audit-4 P1#1) +
-    #         singleton solo_<i> ids. Old v12.5 1b is functionally OK
-    #         (verified by visual audit) but missing solo_ ids; bumping
-    #         signals downstream that 1b-derived caches need re-derivation
-    #         if you regenerate.
-    #   2 → v12.18: pass2 observation prompt/input now uses a text-first,
-    #        forward-ordered timestamped image list over the full sliding
-    #        visual window. This beat both chronological video blocks and
-    #        reverse image order on the confirmed stale batchtest failures and
-    #        avoids relying on OpenAI video_url timestamp behavior.
-    #   3a stays v12.18: pass3 card generation is evidence/card based and does
-    #        not consume pass2 rollout text.
-    #   3b/3c/4/5 → v12.20: downstream trajectory caches consume pass2 rollout
-    #        text/snapshots either directly or through generated samples, so they
-    #        must be invalidated with the v12.18 pass2 prompt/input change.
+    #   v12.22 (2026-05-04): all construction/rendering stages align on the
+    #        project-wide pre-extracted-frame protocol: timestamp text before
+    #        each image/image_url. pass1a/pass2 teacher calls, pass5 SFT
+    #        messages, SFT/RL/eval/deploy renderers now share the same helper
+    #        instead of mixing Qwen video blocks with image lists. This avoids
+    #        vLLM pre-sampled-video metadata drift while preserving real 2fps
+    #        temporal anchors for the model.
+    #   v12.21: pass3 trajectory planning enforces one
+    #        active question at a time, prevents answer-chunk collisions,
+    #        preserves open multi-answer query status, raises recall tool-use
+    #        coverage, fixes F7/progress binary verification, and consumes the
+    #        v12.18 pass2 timestamped-image rollout snapshots downstream.
     #   v12.18 background: pass3 display taxonomy fields, mixed MC answer
     #        protocols (letter/text/letter+text), semantic gold_answer split
     #        from SFT target, and verifier/rebalance updates.
-    "1a": "v12.5",
-    "1b": "v12.11",
-    "2":  "v12.18",
-    "3a": "v12.18",
-    "3b": "v12.20",
-    "3c": "v12.20",
-    "4":  "v12.20",  # canonical key — verification
-    "5":  "v12.20",  # pass5_messages render version
+    "1a": "v12.22",
+    "1b": "v12.22",
+    "2":  "v12.22",
+    "3a": "v12.22",
+    "3b": "v12.22",
+    "3c": "v12.22",
+    "4":  "v12.22",  # canonical key — verification
+    "5":  "v12.22",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

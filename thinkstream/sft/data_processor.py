@@ -14,6 +14,7 @@ See docs/sft_engineering.md §2 and docs/data_construction_zh.md §13.
 """
 
 import json
+import os
 import random
 import logging
 import time
@@ -59,7 +60,7 @@ def _estimate_sample_tokens(sample: Dict) -> int:
     we only need correct ranking among samples.
 
     Handles BOTH schemas:
-      (1) Messages format (post-pass5): sum text in content + count video frames
+      (1) Messages format (post-pass5): sum text in content + count visual frames
       (2) Flat format: parse input.{system,memory,queries,visual_window} fields
 
     Vision token cost per frame tracks the runtime 130k-220k pixel profile
@@ -92,6 +93,8 @@ def _estimate_sample_tokens(sample: Dict) -> int:
                             vs = item.get("video_start", 0)
                             ve = item.get("video_end", vs)
                             n_frames += max(1, int(ve - vs) * 2)  # FPS=2
+                    elif t == "image" or item.get("image_url") or item.get("image"):
+                        n_frames += 1
         return text_chars // 3 + n_frames * _VIS_TOK_PER_FRAME
 
     # ── Flat format (legacy) ──
@@ -229,7 +232,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         SYSTEM_PROMPT_V12,
         AGENT_CHUNK_SEC,
         FRAMES_PER_CHUNK,
-        infer_video_metadata,
+        append_timestamped_image_list,
     )
 
     inp = sample["input"]
@@ -249,21 +252,6 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
     if video_path and not Path(video_path).is_absolute():
         video_path = str(base_path / video_path)
     require_pre = bool(sample.get("_require_pre_extracted_frames", True))
-
-    def _metadata_for_frame_paths(
-        paths: Sequence[str],
-        start_seconds: float,
-        end_seconds: Optional[float] = None,
-    ) -> Dict:
-        start_frame = int(round(float(start_seconds) / chunk_sec)) * FRAMES_PER_CHUNK
-        total_frames = None
-        if end_seconds is not None:
-            total_frames = int(round(float(end_seconds) / chunk_sec)) * FRAMES_PER_CHUNK
-        return infer_video_metadata(
-            paths,
-            start_frame_index=start_frame,
-            total_num_frames=total_frames,
-        )
 
     # ── User content (v12.12 reorder: stable text first, vision after) ──
     user_content = []
@@ -307,30 +295,65 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         if "frame_paths" not in vw and "frames" in vw:
             vid = sample.get("video_id", "")
             if vid:
-                frame_dir = f"data/agent_v5/frames/{vid}"
-                vw["frame_paths"] = [
-                    f"{frame_dir}/frame_{i+1:06d}.jpg"
-                    for i in range(vw["frames"])
-                ]
+                try:
+                    from scripts.agent_data_v5.config import (
+                        DATA_ROOT as _DATA_ROOT,
+                        PROJECT_ROOT as _PROJECT_ROOT,
+                        VISUAL_WINDOW_CHUNKS as _VWC,
+                        compute_visual_window_start as _cvws,
+                    )
+                    _frame_dir_path = _DATA_ROOT / "frames" / vid
+                    try:
+                        frame_dir = str(_frame_dir_path.relative_to(_PROJECT_ROOT))
+                    except ValueError:
+                        frame_dir = str(_frame_dir_path)
+                except ImportError:
+                    data_root = (
+                        os.environ.get("THINKSTREAM_DATA_ROOT")
+                        or os.environ.get("AGENT_DATA_DIR")
+                    )
+                    if data_root:
+                        root_path = Path(data_root)
+                        frame_dir = str(
+                            root_path.parent / "frames" / vid
+                            if root_path.name == "final"
+                            else root_path / "frames" / vid
+                        )
+                    else:
+                        frame_dir = f"data/agent_v5/frames/{vid}"
+                    _VWC = 16
+                    _cvws = lambda ck, visual_window_chunks=16: max(
+                        0, int(ck) - int(visual_window_chunks) + 1
+                    )
+                window_start = _cvws(chunk_idx, _VWC)
+                paths: List[str] = []
+                for ci in range(window_start, chunk_idx + 1):
+                    for fi in range(FRAMES_PER_CHUNK):
+                        fnum = ci * FRAMES_PER_CHUNK + fi + 1
+                        paths.append(f"{frame_dir}/frame_{fnum:06d}.jpg")
+                vw["frame_paths"] = paths
 
         if "frame_paths" in vw:
             paths = [str(base_path / p) if not Path(p).is_absolute() else p
                      for p in vw["frame_paths"]]
-            # v12.12: runtime mm_processor_kwargs at video-item level
             try:
                 from scripts.agent_data_v5.config import (
                     RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                 )
             except ImportError:
                 _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-            user_content.append({
-                "type": "video", "video": paths,
-                "min_pixels": _RTKW["min_pixels"],
-                "max_pixels": _RTKW["max_pixels"],
-                "video_metadata": _metadata_for_frame_paths(
-                    paths, vw["video_start"], vw["video_end"],
-                ),
-            })
+            start_frame = int(round(float(vw["video_start"]) / chunk_sec)) * FRAMES_PER_CHUNK
+            total_frames = int(round(float(vw["video_end"]) / chunk_sec)) * FRAMES_PER_CHUNK
+            append_timestamped_image_list(
+                user_content,
+                paths,
+                fps=float(FRAMES_PER_CHUNK / chunk_sec),
+                start_frame_index=start_frame,
+                total_num_frames=total_frames,
+                latest_start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
+                min_pixels=_RTKW["min_pixels"],
+                max_pixels=_RTKW["max_pixels"],
+            )
         elif "frame_indices" in vw and video_path:
             if require_pre:
                 raise ValueError(
@@ -366,21 +389,24 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         if "frame_paths" in rf:
             paths = [str(base_path / p) if not Path(p).is_absolute() else p
                      for p in rf["frame_paths"]]
-            # v12.12: runtime mm_processor_kwargs at video-item level
             try:
                 from scripts.agent_data_v5.config import (
                     RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                 )
             except ImportError:
                 _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-            user_content.append({
-                "type": "video", "video": paths,
-                "min_pixels": _RTKW["min_pixels"],
-                "max_pixels": _RTKW["max_pixels"],
-                "video_metadata": _metadata_for_frame_paths(
-                    paths, rf["time_range"][0], rf["time_range"][1],
-                ),
-            })
+            start_frame = int(round(float(rf["time_range"][0]) / chunk_sec)) * FRAMES_PER_CHUNK
+            total_frames = int(round(float(rf["time_range"][1]) / chunk_sec)) * FRAMES_PER_CHUNK
+            append_timestamped_image_list(
+                user_content,
+                paths,
+                fps=float(FRAMES_PER_CHUNK / chunk_sec),
+                start_frame_index=start_frame,
+                total_num_frames=total_frames,
+                context_label="recalled frame",
+                min_pixels=_RTKW["min_pixels"],
+                max_pixels=_RTKW["max_pixels"],
+            )
         elif video_path and not require_pre:
             user_content.append({
                 "type": "video", "video": video_path,
@@ -454,15 +480,18 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                     )
                 except ImportError:
                     _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-                tool_payload.append({
-                    "type": "video",
-                    "video": paths,
-                    "min_pixels": _RTKW["min_pixels"],
-                    "max_pixels": _RTKW["max_pixels"],
-                    "video_metadata": _metadata_for_frame_paths(
-                        paths, rf["time_range"][0], rf["time_range"][1],
-                    ),
-                })
+                start_frame = int(round(float(rf["time_range"][0]) / chunk_sec)) * FRAMES_PER_CHUNK
+                total_frames = int(round(float(rf["time_range"][1]) / chunk_sec)) * FRAMES_PER_CHUNK
+                append_timestamped_image_list(
+                    tool_payload,
+                    paths,
+                    fps=float(FRAMES_PER_CHUNK / chunk_sec),
+                    start_frame_index=start_frame,
+                    total_num_frames=total_frames,
+                    context_label="recalled frame",
+                    min_pixels=_RTKW["min_pixels"],
+                    max_pixels=_RTKW["max_pixels"],
+                )
             elif video_path and not require_pre:
                 tool_payload.append({
                     "type": "video", "video": video_path,
@@ -490,7 +519,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
 # ---------------------------------------------------------------------------
 
 def _resolve_video_paths(messages: List[Dict], base_path: Path) -> List[Dict]:
-    """Resolve relative video paths in messages to absolute paths."""
+    """Resolve relative media paths in messages to absolute paths."""
     resolved = []
     for msg in messages:
         content = msg.get("content")
@@ -502,6 +531,11 @@ def _resolve_video_paths(messages: List[Dict], base_path: Path) -> List[Dict]:
                     vp = item.get("video", "")
                     if isinstance(vp, str) and vp and not Path(vp).is_absolute():
                         item["video"] = str(base_path / vp)
+                elif isinstance(item, dict) and item.get("type") == "image":
+                    item = dict(item)
+                    ip = item.get("image", "")
+                    if isinstance(ip, str) and ip and not Path(ip).is_absolute():
+                        item["image"] = str(base_path / ip)
                 new_content.append(item)
             msg = {**msg, "content": new_content}
         resolved.append(msg)
@@ -581,9 +615,9 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
         )
     messages = _resolve_video_paths(sample["messages"], base_path)
 
-    # v12.6: collect per-video metadata so Qwen3-VL renders <X.X seconds>
-    # with REAL video time. Without this, processor defaults fps=24 and
-    # timestamps are ~12x compressed.
+    # Current pass5 messages use timestamp text + image items, so no
+    # video_metadata is needed. Keep this only for legacy/raw-video fallback
+    # rows that still contain type="video".
     video_metadata = []
     has_video_meta = True
     for msg in messages:

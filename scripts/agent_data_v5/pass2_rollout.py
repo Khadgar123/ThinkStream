@@ -41,6 +41,7 @@ from .config import (
 )
 from .pass1a_evidence import get_chunk_frame_paths
 from scripts.agent_data_pipeline.vllm_client import encode_image_base64
+from thinkstream.data.agent_protocol import append_timestamped_image_list
 
 logger = logging.getLogger(__name__)
 
@@ -115,9 +116,8 @@ def _safe_max_tokens_for_pass2(
                         elif isinstance(v, str):
                             n_video_frames += 1
                     elif it.get("type") == "video_url":
-                        # vLLM HTTP path sends pre-extracted frames as one
-                        # data:video/jpeg item; frame count lives in
-                        # media_io_kwargs.video.frames_indices.
+                        # Legacy/raw-video fallback; normal pass2 requests
+                        # now use one image_url item per timestamped frame.
                         idx = media_video.get("frames_indices")
                         n_video_frames += len(idx) if isinstance(idx, list) else 1
                     else:
@@ -455,7 +455,7 @@ def build_observation_request(
     v12.18 (2026-05-04): observation requests send the full sliding visual
     window as a timestamped image list, ordered from older context to the
     latest chunk. Real A/B calls on stale pass2 failures showed that this is
-    more reliable than the OpenAI video_url path for making the latest chunk
+    more reliable than the vLLM video_url path for making the latest chunk
     win against stale text memory, while still preserving the student's visual
     sliding-window distribution.
     """
@@ -476,20 +476,25 @@ def build_observation_request(
     )
 
     content: List[Dict] = [{"type": "text", "text": prompt}]
+    window_images: List[str] = []
+    timestamp_labels: List[str] = []
     for c in range(window_start, chunk_idx + 1):
-        tag = "latest chunk" if c == chunk_idx else "older context"
-        for offset, img_path in enumerate(get_chunk_frame_paths(frame_paths, c)):
+        label = "latest chunk" if c == chunk_idx else "older context"
+        for img_path in get_chunk_frame_paths(frame_paths, c):
             if not Path(img_path).exists():
                 continue
-            frame_idx = c * FRAMES_PER_CHUNK + offset
-            content.append({
-                "type": "text",
-                "text": f"Frame timestamp t={frame_idx / float(FRAMES_PER_CHUNK):.1f}s ({tag}).",
-            })
-            content.append({
-                "type": "image_url",
-                "image_url": {"url": encode_image_base64(img_path)},
-            })
+            window_images.append(img_path)
+            timestamp_labels.append(label)
+    append_timestamped_image_list(
+        content,
+        window_images,
+        fps=float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC),
+        start_frame_index=window_start * FRAMES_PER_CHUNK,
+        total_num_frames=(chunk_idx + 1) * FRAMES_PER_CHUNK,
+        timestamp_labels=timestamp_labels,
+        image_key="image_url",
+        image_url_encoder=encode_image_base64,
+    )
 
     request = {
         "messages": [{"role": "user", "content": content}],
@@ -532,16 +537,16 @@ def build_observation_repair_request(
     )
 
     content: List[Dict] = [{"type": "text", "text": prompt}]
-    for i, img_path in enumerate(chunk_frame_paths):
-        frame_idx = chunk_idx * FRAMES_PER_CHUNK + i
-        content.append({
-            "type": "text",
-            "text": f"Frame timestamp t={frame_idx / fps:.1f}s (latest chunk).",
-        })
-        content.append({
-            "type": "image_url",
-            "image_url": {"url": encode_image_base64(img_path)},
-        })
+    append_timestamped_image_list(
+        content,
+        chunk_frame_paths,
+        fps=fps,
+        start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
+        total_num_frames=(chunk_idx + 1) * FRAMES_PER_CHUNK,
+        context_label="latest chunk",
+        image_key="image_url",
+        image_url_encoder=encode_image_base64,
+    )
 
     request = {
         "messages": [{"role": "user", "content": content}],

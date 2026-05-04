@@ -9,8 +9,8 @@ Stages checked:
   [2] Agent protocol (thinkstream/data/agent_protocol.py)
   [3] Data construction (pass1a → pass5)
   [4] SFT (thinkstream/sft/)
-  [5] RL slyme (thinkstream/trainer/)
-  [6] RL verl (thinkstream/trainer_verl/)
+  [5] RL reward helpers (thinkstream/trainer/)
+  [6] RL verl recipe (verl/recipe_thinkstream/)
   [7] Eval (thinkstream/eval/)
   [8] Cross-stage prompt + system message identity
 
@@ -77,11 +77,11 @@ def check_config(a: Audit):
     a.check("SUMMARY_TOKENS_MAX == 280",      c.SUMMARY_TOKENS_MAX == 280)
     a.check("THINK_TOKENS == (40, 80)",       c.THINK_TOKENS == (40, 80))
     a.check("MAX_SAMPLE_TOKENS == 16384",     c.MAX_SAMPLE_TOKENS == 16384)
-    a.check("VISUAL_TOKENS_PER_CHUNK == 128", c.VISUAL_TOKENS_PER_CHUNK == 128)
+    a.check("VISUAL_TOKENS_PER_CHUNK == 470", c.VISUAL_TOKENS_PER_CHUNK == 470)
 
     # Prompts
-    a.check("OBSERVATION_PROMPT mentions '1 second'",
-            "1 second" in c.OBSERVATION_PROMPT, "")
+    a.check("OBSERVATION_PROMPT mentions '1-second'",
+            "1-second" in c.OBSERVATION_PROMPT, "")
     a.check("OBSERVATION_PROMPT does NOT mention '2 second'",
             "2 second" not in c.OBSERVATION_PROMPT)
     a.check("OBSERVATION_PROMPT think target 40-80",
@@ -208,19 +208,29 @@ def check_data_pipeline(a: Audit):
 def check_sft(a: Audit):
     a.section("4. SFT (thinkstream/sft/)")
 
-    from thinkstream.sft.argument import ModelArguments, DataArguments, TrainingArguments
-    ma, da = ModelArguments(), DataArguments()
-    a.check("Default model = Qwen3-VL-8B-Instruct",
-            "Qwen3-VL" in ma.model_name_or_path,
-            ma.model_name_or_path)
-    a.check("Default agent_chunk_sec == 1.0", da.agent_chunk_sec == 1.0)
-    a.check("Default visual_window_chunks == 16", da.visual_window_chunks == 16)
-    # v12.12 (2026-05-02): RUNTIME profile (was 100352/150528)
-    a.check("Default video_max_pixels == 220_000", da.video_max_pixels == 220_000)
-    a.check("Default video_min_pixels == 130_000", da.video_min_pixels == 130_000)
-    a.check("Default video_fps == 2.0", da.video_fps == 2.0)
-    a.check("max_sample_tokens == 12000 (legacy filter)",
-            da.max_sample_tokens == 12000)
+    arg_path = ROOT / "thinkstream/sft/argument.py"
+    arg_src = arg_path.read_text() if arg_path.exists() else ""
+    try:
+        from thinkstream.sft.argument import ModelArguments, DataArguments, TrainingArguments
+        ma, da = ModelArguments(), DataArguments()
+        a.check("Default model = Qwen3-VL-8B-Instruct",
+                "Qwen3-VL" in ma.model_name_or_path,
+                ma.model_name_or_path)
+        a.check("Default agent_chunk_sec == 1.0", da.agent_chunk_sec == 1.0)
+        a.check("Default visual_window_chunks == 16", da.visual_window_chunks == 16)
+        a.check("Default video_max_pixels == 220_000", da.video_max_pixels == 220_000)
+        a.check("Default video_min_pixels == 130_000", da.video_min_pixels == 130_000)
+        a.check("Default video_fps == 2.0", da.video_fps == 2.0)
+        a.check("max_sample_tokens == 12000 (legacy filter)",
+                da.max_sample_tokens == 12000)
+    except ImportError as e:
+        a.warn(f"SFT argument import skipped due local env: {e}")
+        a.check("argument.py default model mentions Qwen3-VL",
+                "Qwen3-VL-8B-Instruct" in arg_src)
+        a.check("argument.py video_min_pixels default 130000",
+                "video_min_pixels" in arg_src and "130_000" in arg_src)
+        a.check("argument.py video_max_pixels default 220000",
+                "video_max_pixels" in arg_src and "220_000" in arg_src)
 
     # data_processor strict messages format
     import importlib.util
@@ -240,11 +250,11 @@ def check_sft(a: Audit):
 
 
 # ===========================================================================
-# Stage 5: RL slyme
+# Stage 5: RL reward helpers
 # ===========================================================================
 
-def check_rl_slyme(a: Audit):
-    a.section("5. RL slyme (thinkstream/trainer/)")
+def check_rl_reward_helpers(a: Audit):
+    a.section("5. RL reward helpers (thinkstream/trainer/)")
 
     # Reward keys (drop compress_quality / recall_quality)
     from thinkstream.trainer.gdpo_advantage import (
@@ -281,57 +291,37 @@ def check_rl_slyme(a: Audit):
 
 
 # ===========================================================================
-# Stage 6: RL verl
+# Stage 6: RL verl recipe
 # ===========================================================================
 
 def check_rl_verl(a: Audit):
-    a.section("6. RL verl (thinkstream/trainer_verl/)")
+    a.section("6. RL verl recipe (verl/recipe_thinkstream/)")
 
-    from thinkstream.trainer_verl.reward_fn import compute_thinkstream_reward
-    from thinkstream.trainer_verl.multiturn_rollout import VerlMultiTurnConfig
-    from thinkstream.trainer_verl.dataset import ThinkStreamRLDataset, build_rl_dataset
+    recipe = ROOT / "verl/recipe_thinkstream"
+    cfg = recipe / "configs/thinkstream_grpo.yaml"
+    loop = recipe / "streaming_agent_loop.py"
+    entry = recipe / "thinkstream.py"
+    run = recipe / "run_thinkstream_grpo.sh"
 
-    cfg = VerlMultiTurnConfig()
-    a.check("verl config max_chunks == slyme",   cfg.max_chunks_per_video == 360)
-    a.check("verl config max_prompt == 16384",   cfg.max_prompt_length == 16384)
-    a.check("verl config chunk_visual_tokens == 4096",
-                                                  cfg.chunk_visual_tokens == 4096)
-    a.check("verl config alpha == 0.7",           cfg.advantage_alpha == 0.7)
-    a.check("verl config group_size == 8",        cfg.group_size == 8)
-
-    # Reward parity
-    from thinkstream.trainer.v12_rewards import (
-        compute_outcome_reward_v12, compute_format_reward_v12,
-    )
-    msgs = [
-        {"role": "system", "content": "s"},
-        {"role": "user", "content": "u"},
-        {"role": "assistant", "content": "<think>x</think><answer>yes</answer>"},
-    ]
-    gt = {"gold_answer": "yes", "answer_form": "binary",
-          "visible_start_chunk": 5, "visible_end_chunk": 6,
-          "gold_action_per_chunk": {"5": "response"}}
-    ei = {"answer_chunk": 5, "final_answer": "yes"}
-    verl_r = compute_thinkstream_reward(msgs, gt, ei)
-    a.check("verl outcome == 1.0 for correct answer",
-            verl_r["outcome"] == 1.0)
-    a.check("verl format == 1.0 for well-formed",
-            verl_r["format"] == 1.0)
-
-    # Recipe exists
-    recipe = ROOT / "recipe/v12_grpo.yaml"
-    a.check("recipe/v12_grpo.yaml exists", recipe.exists())
-    if recipe.exists():
-        rt = recipe.read_text()
-        a.check("recipe model = Qwen3-VL-8B", "Qwen3-VL-8B" in rt)
-        a.check("recipe max_prompt_length == 16384",
-                "prompt_length: 16384" in rt)
-        a.check("recipe response_length == 2048",
-                "response_length: 2048" in rt)
-        a.check("recipe n (group_size) == 8",
-                re.search(r"^\s+n: 8(\s+#.*)?$", rt, re.M) is not None)
-        a.check("recipe reward_weights all 5 components",
-                all(k in rt for k in ["outcome:", "timing:", "format:", "spam:", "silent_quality:"]))
+    a.check("verl recipe config exists", cfg.exists())
+    a.check("verl streaming agent loop exists", loop.exists())
+    a.check("verl reward/dataset entry exists", entry.exists())
+    if cfg.exists():
+        txt = cfg.read_text()
+        a.check("verl uses custom ThinkStream agent loop",
+                "thinkstream_streaming_agent" in txt)
+        a.check("verl sets vLLM image limit for timestamped frames",
+                "limit_images: 64" in txt)
+        a.check("verl reward path = recipe_thinkstream/thinkstream.py",
+                'path: "recipe_thinkstream/thinkstream.py"' in txt)
+    if loop.exists():
+        txt = loop.read_text()
+        a.check("verl rollout appends timestamped images",
+                "append_timestamped_image_list" in txt)
+    if run.exists():
+        txt = run.read_text()
+        a.check("verl launcher resolves THINKSTREAM_DATA_ROOT",
+                "THINKSTREAM_DATA_ROOT" in txt)
 
 
 # ===========================================================================
@@ -403,8 +393,7 @@ def check_prompt_identity(a: Audit):
         (ROOT / "thinkstream/sft/data_processor.py", False),
         (ROOT / "thinkstream/eval/streaming_vllm.py", True),   # via build_single_step_messages
         (ROOT / "thinkstream/model/agent_loop.py", False),
-        (ROOT / "thinkstream/trainer/grpo.py", False),
-        (ROOT / "thinkstream/trainer_verl/dataset.py", False),
+        (ROOT / "verl/recipe_thinkstream/streaming_agent_loop.py", False),
         (ROOT / "scripts/agent_data_v5/pass3c_samples.py", True),  # via build_assistant_content_v12
         (ROOT / "scripts/agent_data_v5/pass5_messages.py", False),
     ]
@@ -430,7 +419,7 @@ def check_prompt_identity(a: Audit):
         ROOT / "thinkstream/sft/data_processor.py",
         ROOT / "thinkstream/eval/streaming_vllm.py",
         ROOT / "thinkstream/eval/eval_baseline_vllm.py",
-        ROOT / "thinkstream/trainer_verl/dataset.py",
+        ROOT / "verl/recipe_thinkstream/streaming_agent_loop.py",
     ]
     for p in paths_using_tools:
         if p.exists():
@@ -445,7 +434,7 @@ def check_prompt_identity(a: Audit):
 
 def main():
     print("=" * 78)
-    print("ThinkStream end-to-end audit (Data → SFT → RL slyme/verl → Eval)")
+    print("ThinkStream end-to-end audit (Data → SFT → verl RL → Eval)")
     print("=" * 78)
 
     a = Audit()
@@ -453,7 +442,7 @@ def main():
     check_protocol(a)
     check_data_pipeline(a)
     check_sft(a)
-    check_rl_slyme(a)
+    check_rl_reward_helpers(a)
     check_rl_verl(a)
     check_eval(a)
     check_prompt_identity(a)

@@ -46,7 +46,14 @@ def build_evidence_request(
     chunk_frame_paths = get_chunk_frame_paths(frame_paths, chunk_idx)
 
     return {
-        "messages": [{"role": "user", "content": build_vision_content(prompt, chunk_frame_paths)}],
+        "messages": [{
+            "role": "user",
+            "content": build_vision_content(
+                prompt,
+                chunk_frame_paths,
+                start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
+            ),
+        }],
         "max_tokens": PASS_CONFIG["pass1a"]["max_tokens"],
         "temperature": PASS_CONFIG["pass1a"]["temperature"],
         "id": f"{video_id}_1a_{chunk_idx}",
@@ -420,15 +427,26 @@ def get_chunk_frame_paths(all_frame_paths: List[str], chunk_idx: int) -> List[st
     return all_frame_paths[start:end] if start < len(all_frame_paths) else []
 
 
-def build_vision_content(text: str, image_paths: List[str]) -> list:
+def build_vision_content(
+    text: str,
+    image_paths: List[str],
+    *,
+    start_frame_index: int = 0,
+) -> list:
     from scripts.agent_data_pipeline.vllm_client import encode_image_base64
+    from thinkstream.data.agent_protocol import append_timestamped_image_list
 
-    content = []
-    for img_path in image_paths:
-        if Path(img_path).exists():
-            content.append({
-                "type": "image_url",
-                "image_url": {"url": encode_image_base64(img_path)},
-            })
-    content.append({"type": "text", "text": text})
+    content = [{"type": "text", "text": text}]
+    existing = [img_path for img_path in image_paths if Path(img_path).exists()]
+    if existing:
+        append_timestamped_image_list(
+            content,
+            existing,
+            fps=float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC),
+            start_frame_index=start_frame_index,
+            total_num_frames=start_frame_index + len(existing),
+            context_label="current chunk",
+            image_key="image_url",
+            image_url_encoder=encode_image_base64,
+        )
     return content

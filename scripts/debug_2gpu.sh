@@ -13,7 +13,7 @@ eval "$(/root/miniconda3/bin/conda shell.bash hook)"
 conda activate /home/tione/notebook/gaozhenkun/hzh/envs/thinkstream
 set -u
 
-export AGENT_DATA_DIR=${AGENT_DATA_DIR:-/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5_current_backup/final}
+export THINKSTREAM_DATA_ROOT=${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5_current_backup}}
 
 DEEPSPEED="${SCRIPT_DIR}/zero3.json"
 SFT_ENTRY="${PROJECT_DIR}/thinkstream/sft/train.py"
@@ -24,7 +24,7 @@ torchrun --nproc_per_node=2 \
     "${SFT_ENTRY}" \
     --deepspeed "${DEEPSPEED}" \
     --model_name_or_path /home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct \
-    --dataset_use stream_agent_sft_full \
+    --dataset_use stream_agent_sft \
     --eval_dataset_use stream_agent_val \
     --eval_max_samples 50 \
     --tune_mm_vision False \
@@ -55,7 +55,6 @@ torchrun --nproc_per_node=2 \
     --video_fps 2.0 \
     --report_to wandb \
     --run_name agent-sft-debug \
-    --protocol_version v12 \
     --class_balanced_sampler False \
     --focal_alpha_action False \
     --dataloader_num_workers 0

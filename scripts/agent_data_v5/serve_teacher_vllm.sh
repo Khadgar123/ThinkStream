@@ -1,16 +1,14 @@
 #!/bin/bash
 # Launch the construction-time teacher vLLM server for ThinkStream.
 #
-# Important: vLLM 0.17 OpenAI serving accepts videos as video_url, not
-# type=video. pass2 sends pre-extracted JPEG frames as one
-# data:video/jpeg;base64,... video_url and passes original fps/frames_indices
-# in request-level media_io_kwargs.video. It does not send raw mp4 files for
-# server-side decode/resampling.
+# Important: ThinkStream sends pre-extracted JPEG frames as timestamped
+# image/image_url lists. It does not send raw mp4 files for server-side
+# decode/resampling, and it does not depend on vLLM's pre-sampled video
+# metadata path for temporal anchors.
 #
-# Keep both image and video limits because pass1a uses image_url while pass2
-# uses video_url. The video limit is per prompt, not concurrency; pass2 uses
-# one video block per request, while runtime/eval recall can use current-window
-# + recalled-frame videos in one prompt.
+# Keep both image and video limits: image=64 covers the 32-frame sliding
+# window plus recalled frames; video=2 is retained only for legacy/raw-video
+# fallback paths. These limits are per prompt, not concurrency.
 set -euo pipefail
 
 MODEL="${MODEL:-/home/tione/notebook/gaozhenkun/model/Qwen3.5-397B-A17B-FP8}"

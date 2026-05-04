@@ -119,7 +119,7 @@ def gen_pn1_narration(evidence: List[Dict], video_id: str) -> List[Card]:
     handled by single_emit families below. PN1 should stay sparse so it
     doesn't dominate the response budget.
     """
-    event_chunks: List[int] = []
+    event_chunks: List[Tuple[int, str]] = []
     last = -100
     for cap in evidence:
         c = cap.get("chunk_idx", 0)
@@ -127,7 +127,12 @@ def gen_pn1_narration(evidence: List[Dict], video_id: str) -> List[Card]:
             continue
         if c - last < 12:                    # was 6 → tightened to LiveCC density
             continue
-        event_chunks.append(c)
+        change = cap.get("state_changes")[0]
+        if isinstance(change, dict):
+            change_text = change.get("text") or change.get("change") or str(change)
+        else:
+            change_text = str(change)
+        event_chunks.append((c, change_text))
         last = c
     if not event_chunks:
         return []
@@ -135,15 +140,15 @@ def gen_pn1_narration(evidence: List[Dict], video_id: str) -> List[Card]:
     # video length. Beyond 6 the model just learns "narrate every 12s" which
     # isn't what OVOBench measures.
     event_chunks = event_chunks[:6]
-    emits = [GoldEmit(chunk=c, value=f"event@{c}") for c in event_chunks]
+    emits = [GoldEmit(chunk=c, value=text) for c, text in event_chunks]
     return [Card(
         card_id=f"{video_id}_PN1_{_hash_id(video_id, 'PN1')}",
         family="PN1",
-        question="",  # implicit narration mode
+        question="Describe each important event as it happens.",
         answer_form="descriptive",
         question_type="multi_emit",
         gold_emits=emits,
-        grounding_frames=event_chunks,
+        grounding_frames=[c for c, _text in event_chunks],
     )]
 
 
@@ -490,13 +495,23 @@ def gen_m1_summary(evidence: List[Dict], video_id: str) -> List[Card]:
         return []
     last = max(chunks_with_facts)
     grounding = chunks_with_facts[-min(8, len(chunks_with_facts)):]
+    facts: List[str] = []
+    grounding_set = set(grounding)
+    for cap in evidence:
+        if cap.get("chunk_idx", 0) not in grounding_set:
+            continue
+        for fact in cap.get("atomic_facts") or []:
+            if isinstance(fact, dict) and fact.get("fact"):
+                facts.append(str(fact["fact"]).strip().rstrip("."))
+                break
+    summary = "; ".join(facts[:4]) or "video summary"
     return [Card(
         card_id=f"{video_id}_M1_{_hash_id(video_id, 'M1')}",
         family="M1",
         question="Summarize the video.",
         answer_form="descriptive",
         question_type="single_emit",
-        gold_emits=[GoldEmit(chunk=last, value="full summary")],
+        gold_emits=[GoldEmit(chunk=last, value=summary)],
         grounding_frames=grounding,
     )]
 

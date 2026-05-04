@@ -1,20 +1,15 @@
-"""verl-based RL trainer (parallel implementation to slyme `trainer/`).
+"""Archived compatibility adapters for early verl experiments.
 
-Goal: cross-validate the slyme implementation by running the same algorithm
-on the same data through the public verl framework. Algorithm modules
-(rewards, advantages, state evolution) are SHARED across both:
+Production GRPO no longer enters through ``thinkstream.trainer_verl``.
+Use the vendored recipe instead:
 
-  thinkstream/trainer/v12_rewards.py   ← pure pytorch, framework-agnostic
-  thinkstream/trainer/gdpo_advantage.py← pure pytorch, framework-agnostic
-  thinkstream/trainer/v12_rollout.py   ← state evolution, framework-agnostic
+    bash scripts/grpo_train_verl.sh
 
-verl-specific glue (this directory):
-  reward_fn.py        — verl-format reward function (wraps v12_rewards)
-  multiturn_rollout.py — verl multi-turn rollout config (chunk-level)
-  dataset.py          — verl dataset adapter (reads pass5 messages format)
-  main_grpo.py        — verl entrypoint (train script)
+The active code is:
 
-Cross-validation invariant:
-  Same trajectory_id × group_size × seed → same advantage vector ± numerical
-  noise on both slyme and verl paths.
+  verl/recipe_thinkstream/thinkstream.py
+  verl/recipe_thinkstream/streaming_agent_loop.py
+  verl/recipe_thinkstream/configs/thinkstream_grpo.yaml
+
+This package remains importable for old tests and reward parity utilities.
 """

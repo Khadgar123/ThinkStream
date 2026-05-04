@@ -541,6 +541,16 @@ async def generate_trajectory_samples(
     queries_idx_by_card: Dict[str, int] = {}
     placements_sorted = sorted(placements, key=lambda p: p.ask_chunk)
     ask_chunk_by_card = {p.card_id: p.ask_chunk for p in placements_sorted}
+    response_chunks_by_card: Dict[str, List[int]] = {}
+    for p in placements_sorted:
+        response_chunks_by_card[p.card_id] = sorted(
+            int(c) for c, (kind, _value) in p.chunk_actions.items()
+            if kind == "response"
+        )
+    open_until_by_card = {
+        cid: max(chunks) for cid, chunks in response_chunks_by_card.items()
+        if chunks
+    }
 
     raw: List[Dict] = []
     for ds in design_samples:
@@ -555,14 +565,29 @@ async def generate_trajectory_samples(
                 # queries (forward responses fire AFTER ask, with no fresh
                 # user_input — model sees only the queries block).
                 queries_state.append({
+                    "card_id": p.card_id,
                     "question": card.get("question", ""),
                     "options": list(card.get("options") or []),
                     "answer_form": card.get("answer_form", ""),
                     "answer_style": card.get("answer_style", ""),
                     "answer_instruction": card.get("answer_instruction", ""),
                     "ask_time": p.ask_chunk * AGENT_CHUNK_SEC,
+                    "open_until": open_until_by_card.get(p.card_id, p.ask_chunk)
+                                  * AGENT_CHUNK_SEC,
+                    "status": "open",
                     "answers": [],
                 })
+        pending_queries = [
+            q for q in queries_state
+            if str(q.get("status", "")).lower() in ("open", "pending", "active")
+            or (not q.get("status") and not q.get("answers"))
+        ]
+        if len(pending_queries) > 1:
+            pending_names = [str(q.get("question", ""))[:80] for q in pending_queries]
+            raise ValueError(
+                f"{video_id}/{traj_id} has {len(pending_queries)} concurrent "
+                f"pending questions at chunk {c}: {pending_names}"
+            )
 
         card_id = ds.card_id
         card = cards_map.get(card_id) if card_id else None
@@ -638,6 +663,8 @@ async def generate_trajectory_samples(
                 queries_state[queries_idx_by_card[card_id]]["answers"].append({
                     "text": resp, "time": c * AGENT_CHUNK_SEC,
                 })
+                if c >= open_until_by_card.get(card_id, c):
+                    queries_state[queries_idx_by_card[card_id]]["status"] = "answered"
         elif ds.sample_kind == "recall+response":
             if client is not None:
                 resp = await _response_text_via_llm(
@@ -656,6 +683,8 @@ async def generate_trajectory_samples(
                 queries_state[queries_idx_by_card[card_id]]["answers"].append({
                     "text": resp, "time": c * AGENT_CHUNK_SEC,
                 })
+                if c >= open_until_by_card.get(card_id, c):
+                    queries_state[queries_idx_by_card[card_id]]["status"] = "answered"
 
     # v12.12 fix (P0-1): stamp every card-bearing sample with its REAL
     # ask_chunk from placement (not the answer chunk). pass4 currently
@@ -680,12 +709,12 @@ async def generate_trajectory_samples(
             s["answer_style"] = card.get("answer_style")
         if card.get("answer_instruction"):
             s["answer_instruction"] = card.get("answer_instruction")
-        gold_emits = card.get("gold_emits") or []
-        if gold_emits:
+        placement = next((p for p in placements if p.card_id == cid), None)
+        if placement is not None:
             s["per_emit_answers"] = [
-                {"chunk": int(e["chunk"]), "value": str(e.get("value", ""))}
-                for e in gold_emits
-                if isinstance(e, dict) and "chunk" in e
+                {"chunk": int(c), "value": str(value)}
+                for c, (kind, value) in sorted(placement.chunk_actions.items())
+                if kind == "response"
             ]
 
     return raw

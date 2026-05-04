@@ -2,8 +2,9 @@
 
 This module is the single source of truth for the agent's input/output format.
 Used by:
-- Data construction (scripts/agent_data_v5/pass4_forks.py)
+- Data construction (scripts/agent_data_v5/pass2_rollout.py / pass5_messages.py)
 - SFT training (thinkstream/sft/data_processor.py)
+- RL rollout (verl/recipe_thinkstream/streaming_agent_loop.py)
 - Inference (thinkstream/model/agent_loop.py)
 
 Any change to the protocol format MUST be made here to guarantee
@@ -13,7 +14,7 @@ train/inference format identity.
 import json
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Callable, Dict, List, Optional, Sequence
 
 # ---------------------------------------------------------------------------
 # Constants (canonical values, importable by all consumers)
@@ -27,11 +28,19 @@ try:
         AGENT_CHUNK_SEC,
         VISUAL_WINDOW_CHUNKS,
         FRAMES_PER_CHUNK,
+        compute_visual_window_start,
     )
 except ImportError:
     AGENT_CHUNK_SEC = 1
     VISUAL_WINDOW_CHUNKS = 16
     FRAMES_PER_CHUNK = 2
+
+    def compute_visual_window_start(
+        chunk_idx: int,
+        visual_window_chunks: int = VISUAL_WINDOW_CHUNKS,
+        mode: Optional[str] = None,
+    ) -> int:
+        return max(0, int(chunk_idx) - int(visual_window_chunks) + 1)
 
 
 def infer_video_metadata(
@@ -77,6 +86,88 @@ def infer_video_metadata(
         "total_num_frames": int(total_num_frames or inferred_total),
         "do_sample_frames": False,
     }
+
+
+def append_timestamped_image_list(
+    content: List[Dict],
+    frames: Sequence[Any],
+    *,
+    fps: Optional[float] = None,
+    start_frame_index: int = 0,
+    total_num_frames: Optional[int] = None,
+    latest_start_frame_index: Optional[int] = None,
+    context_label: str = "older context",
+    timestamp_labels: Optional[Sequence[str]] = None,
+    image_key: str = "image",
+    image_url_encoder: Optional[Callable[[Any], str]] = None,
+    min_pixels: Optional[int] = None,
+    max_pixels: Optional[int] = None,
+) -> None:
+    """Append canonical timestamped pre-extracted frames to chat content.
+
+    Runtime and data construction do NOT send pre-extracted frames as a
+    Qwen/VLLM ``video`` block because vLLM's pre-sampled video path has been
+    version-sensitive around metadata. The reliable project protocol is:
+
+        {"type": "text", "text": "Frame timestamp t=12.5s (latest chunk)."}
+        {"type": "image", "image": "/abs/frame_000026.jpg", ...}
+
+    OpenAI-compatible rollout uses the same timestamp text with
+    ``image_url`` items by setting ``image_key="image_url"`` and passing an
+    encoder. Local SFT/RL/eval use ``image`` items so qwen-vl-utils and vLLM
+    process them as images while the timestamp text supplies video time.
+    """
+    frame_seq = list(frames) if frames is not None else []
+    if not frame_seq:
+        return
+
+    eff_fps = float(fps or (FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)))
+    metadata = infer_video_metadata(
+        frame_seq,
+        fps=eff_fps,
+        start_frame_index=start_frame_index,
+        total_num_frames=total_num_frames,
+    )
+    indices = list(metadata.get("frames_indices") or [])
+
+    if timestamp_labels is not None and len(timestamp_labels) != len(frame_seq):
+        raise ValueError(
+            "timestamp_labels length must match frames length "
+            f"({len(timestamp_labels)} != {len(frame_seq)})"
+        )
+    if image_key not in {"image", "image_url"}:
+        raise ValueError(f"Unsupported image_key={image_key!r}")
+
+    for offset, frame in enumerate(frame_seq):
+        frame_idx = int(indices[offset]) if offset < len(indices) else (
+            int(start_frame_index) + offset
+        )
+        if timestamp_labels is not None:
+            label = str(timestamp_labels[offset])
+        elif latest_start_frame_index is not None and frame_idx >= int(latest_start_frame_index):
+            label = "latest chunk"
+        else:
+            label = context_label
+
+        content.append({
+            "type": "text",
+            "text": f"Frame timestamp t={frame_idx / eff_fps:.1f}s ({label}).",
+        })
+
+        if image_key == "image_url":
+            if image_url_encoder is None:
+                raise ValueError("image_url_encoder is required for image_url items")
+            content.append({
+                "type": "image_url",
+                "image_url": {"url": image_url_encoder(frame)},
+            })
+        else:
+            item = {"type": "image", "image": frame}
+            if min_pixels is not None:
+                item["min_pixels"] = min_pixels
+            if max_pixels is not None:
+                item["max_pixels"] = max_pixels
+            content.append(item)
 
 # ---------------------------------------------------------------------------
 # Memory Formatting
@@ -177,9 +268,18 @@ def format_queries_block(queries: List[Dict]) -> str:
     if not queries:
         return ""
 
-    # Split: pending queries (always kept) vs answered (cap to recent)
-    pending = [q for q in queries if not q.get("answers")]
-    answered = [q for q in queries if q.get("answers")]
+    def _query_is_open(q: Dict) -> bool:
+        status = str(q.get("status", "")).strip().lower()
+        if status in {"open", "pending", "active"}:
+            return True
+        if status in {"answered", "closed", "done"}:
+            return False
+        return not q.get("answers")
+
+    # Split: open queries (always kept) vs closed/answered (cap to recent).
+    # A multi-answer question can already have answers and still be open.
+    pending = [q for q in queries if _query_is_open(q)]
+    answered = [q for q in queries if not _query_is_open(q)]
     # Keep all pending + last (cap - len(pending)) answered. If pending
     # alone exceeds cap, that's a signal of agent malfunction; keep them
     # all anyway — answered subset trims to 0.
@@ -204,7 +304,8 @@ def format_queries_block(queries: List[Dict]) -> str:
         # response chunk fires LATER than the ask (forward / silent_then
         # _response). Without this, pending MC queries reduce to "pick a
         # letter without seeing options".
-        if (not answers
+        is_open = _query_is_open(q)
+        if (is_open
                 and q.get("answer_form") == "multiple_choice"
                 and q.get("options")):
             opts = " ".join(q["options"])    # e.g., "A) red B) blue C) ..."
@@ -212,6 +313,12 @@ def format_queries_block(queries: List[Dict]) -> str:
             instruction = (q.get("answer_instruction") or "").strip()
             if instruction:
                 events.append((ask_t, "F", instruction))
+        if is_open and answers:
+            events.append((
+                ask_t,
+                "P",
+                "Still open: continue tracking this question for later matching events.",
+            ))
 
         # Answer event(s) — each carries its own timestamp
         for ans in answers:
@@ -224,7 +331,7 @@ def format_queries_block(queries: List[Dict]) -> str:
         return ""
 
     # Sort by time (stable sort preserves Q-before-O-before-A at same timestamp)
-    _kind_order = {"Q": 0, "O": 1, "F": 2, "A": 3}
+    _kind_order = {"Q": 0, "O": 1, "F": 2, "P": 3, "A": 4}
     events.sort(key=lambda e: (float(e[0]) if e[0] != "" else 0,
                                 _kind_order.get(e[1], 3)))
 
@@ -234,6 +341,8 @@ def format_queries_block(queries: List[Dict]) -> str:
         if kind == "O":
             lines.append(f"{prefix} Options: {text}")
         elif kind == "F":
+            lines.append(f"{prefix} {text}")
+        elif kind == "P":
             lines.append(f"{prefix} {text}")
         else:
             lines.append(f"{prefix} {kind}: {text}")
@@ -277,10 +386,10 @@ def build_user_content(
     cache-miss boundary; placing it AFTER the stable text means the miss
     starts later in the sequence, not at the front.
 
-    MROPE temporal alignment for vision tokens is metadata-driven (via
-    `frames_indices` in video_metadata, see processing_qwen3_vl.py),
-    not position-in-sequence-driven, so reordering does not break the
-    `<X.X seconds>` per-frame temporal anchors.
+    Pre-extracted frames are rendered as timestamp text + image items, not
+    as a ``video`` block. The timestamp text is the project-level temporal
+    anchor shared by pass/SFT/RL/eval; vLLM still batches/schedules the image
+    tensors while avoiding pre-sampled-video metadata edge cases.
 
     Args:
         memory_text: Pre-formatted memory block from format_memory_block().
@@ -290,11 +399,12 @@ def build_user_content(
         recalled_frames: Optional recalled frame info for recall_response.
         recall_result: Optional recall result for recall_response.
         min_pixels, max_pixels: Resolution limits.
-        frame_paths: Optional explicit frame paths (training). If None, uses
-                     video_path with time range (inference).
+        frame_paths: Optional explicit frame paths. This is the canonical path
+                     for pass/SFT/RL/eval and renders timestamped images. If
+                     None, uses video_path with time range as a legacy fallback.
         inter_chunk: v12.6 — when True (compress system trigger fires
                      between two visual chunks), DROP <visual_window> and
-                     the video frame block. Matches pass5 inter_chunk
+                     the visual frame block. Matches pass5 inter_chunk
                      shape C (compress sample has memory + trigger only,
                      no visual context). Compression is a system event
                      between visual timesteps; treating it as a visual
@@ -319,12 +429,12 @@ def build_user_content(
                 "text": f"\n{queries_text}",
             })
 
-    # ── Visual window + video frames (cache-miss boundary) ──
+    # ── Visual window + timestamped images (cache-miss boundary) ──
     # v12.6: inter_chunk compress turns SKIP this block entirely (matches
     # pass5 shape C). Compression is a system event between visual chunks
     # and consumes no new frames; including a visual_window here would
     # diverge from the SFT distribution.
-    window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
+    window_start = compute_visual_window_start(chunk_idx, VISUAL_WINDOW_CHUNKS)
     video_start = window_start * chunk_sec
     video_end = (chunk_idx + 1) * chunk_sec
     current_start = chunk_idx * chunk_sec
@@ -344,35 +454,16 @@ def build_user_content(
         })
 
         if frame_paths:
-            # v12.6: attach video_metadata so Qwen3-VL processor renders
-            # per-frame timestamp tokens (`<X.X seconds>`) with REAL video
-            # time. Without metadata, processor defaults to fps=24 and
-            # frame_indices=0..N → wrong timestamps that always start at 0.
-            # Real video time = (chunk_idx × FRAMES_PER_CHUNK + i) / FPS.
-            # See processing_qwen3_vl.py:217-224 for how metadata drives
-            # the `<X.X seconds>` text-layer temporal anchor.
-            #
-            # v12.12: also include min_pixels/max_pixels at video item level.
-            # qwen-vl-utils.process_vision_info reads these and emits them as
-            # mm_processor_kwargs, which vLLM forwards to the Qwen3-VL
-            # processor's smart_resize. This is the HF-direct + offline-vLLM
-            # parity path; the OpenAI HTTP path uses request-top-level
-            # mm_processor_kwargs (set in vllm_client._call_one).
-            user_content.append({
-                "type": "video",
-                "video": frame_paths,
-                "min_pixels": min_pixels,
-                "max_pixels": max_pixels,
-                "video_metadata": {
-                    "fps": float(FRAMES_PER_CHUNK / chunk_sec),
-                    "frames_indices": [
-                        window_start * FRAMES_PER_CHUNK + i
-                        for i in range(len(frame_paths))
-                    ],
-                    "total_num_frames": (chunk_idx + 1) * FRAMES_PER_CHUNK,
-                    "do_sample_frames": False,
-                },
-            })
+            append_timestamped_image_list(
+                user_content,
+                frame_paths,
+                fps=float(FRAMES_PER_CHUNK / chunk_sec),
+                start_frame_index=window_start * FRAMES_PER_CHUNK,
+                total_num_frames=(chunk_idx + 1) * FRAMES_PER_CHUNK,
+                latest_start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
+                min_pixels=min_pixels,
+                max_pixels=max_pixels,
+            )
         else:
             user_content.append({
                 "type": "video",
@@ -383,7 +474,6 @@ def build_user_content(
                 "min_pixels": min_pixels,
                 "max_pixels": max_pixels,
             })
-
     # ── Recalled frames (recall_response only) ──
     if recalled_frames:
         rf_header = json.dumps({
@@ -396,27 +486,18 @@ def build_user_content(
             "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
         })
         if recalled_frames.get("frame_paths"):
-            # v12.6: timestamps for recall frames must reference their
-            # ORIGINAL video time (not start at 0). Reconstruct
-            # frames_indices from time_range to get the real `<T seconds>`
-            # text token anchored to historical chunk position.
+            # Timestamp recalled images at their ORIGINAL video time.
             tr_start, tr_end = recalled_frames["time_range"]
-            n_rf = len(recalled_frames["frame_paths"])
-            rf_chunks = max(1, (tr_end - tr_start))  # in chunks (chunk_sec=1)
-            user_content.append({
-                "type": "video",
-                "video": recalled_frames["frame_paths"],
-                "min_pixels": min_pixels,    # v12.12: runtime profile bounds
-                "max_pixels": max_pixels,
-                "video_metadata": {
-                    "fps": float(FRAMES_PER_CHUNK / chunk_sec),
-                    "frames_indices": [
-                        int(tr_start * FRAMES_PER_CHUNK) + i for i in range(n_rf)
-                    ],
-                    "total_num_frames": int(tr_end * FRAMES_PER_CHUNK),
-                    "do_sample_frames": False,
-                },
-            })
+            append_timestamped_image_list(
+                user_content,
+                recalled_frames["frame_paths"],
+                fps=float(FRAMES_PER_CHUNK / chunk_sec),
+                start_frame_index=int(tr_start * FRAMES_PER_CHUNK),
+                total_num_frames=int(tr_end * FRAMES_PER_CHUNK),
+                context_label="recalled frame",
+                min_pixels=min_pixels,
+                max_pixels=max_pixels,
+            )
         elif video_path:
             user_content.append({
                 "type": "video",
@@ -474,7 +555,10 @@ def build_user_content(
 
 SYSTEM_PROMPT_V12 = (
     "You are a streaming video agent. You observe 1-second video chunks and maintain memory.\n\n"
-    "Each turn you receive: visual frames (recent 16s window) + memory state. "
+    "Each turn you receive: timestamped visual frames (recent 16s window) + memory state. "
+    "Every image is preceded by a line like 'Frame timestamp t=12.5s (...)'; "
+    "use these timestamps together with <visual_window>.current_time to identify "
+    "the current chunk. "
     "You may either (a) call a tool, (b) emit a final answer, or (c) emit an empty "
     "answer if no response is warranted.\n\n"
     "Tools:\n"
@@ -495,7 +579,7 @@ SYSTEM_PROMPT_V12 = (
     "    <answer>response text</answer>\n"
     "    <answer></answer>   (silent — no question to answer right now)\n\n"
     "Think rules: describe ONLY what is newly visible in the current chunk. "
-    "Evidence priority: (1) current video frames determine the current think; "
+    "Evidence priority: (1) current timestamped frames determine the current think; "
     "(2) memory is history and entity naming only; (3) if current frames "
     "conflict with memory, ignore memory for the current visual description. "
     "Do not use memory as evidence that a past object/action is still visible. "

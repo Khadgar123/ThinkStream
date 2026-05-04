@@ -1,5 +1,7 @@
-"""Agent data pipeline v2 — model-agnostic gold + gap-driven trajectory.
+"""Current pass3 card/placement engine.
 
-See design.py for the schema and core logic, simulate.py for distribution
-analysis over existing pass1-2 outputs.
+The directory name is historical: these modules are not deprecated. pass3a,
+pass3b, and pass3c import this package directly for the Card/GoldEmit schema,
+trajectory placement, and simulation logic. Do not delete it as "old v2"
+unless the pass3 imports have first been migrated.
 """

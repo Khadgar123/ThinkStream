@@ -8,7 +8,7 @@ Verifies:
     AgentLoopOutput (one per assistant action).
   - per-action AgentLoopOutput carries:
       - prompt_ids / response_ids / response_mask consistent
-      - multi_modal_data with the chunk's videos when visual was injected
+      - multi_modal_data with the chunk's images when visual was injected
       - extra_fields with ts_action_index, ts_n_actions_in_traj,
         ts_action_chunk_idx, plus the trajectory-level ts_per_q_*
   - Phase 1 + Phase 2 wiring (sample_index / final_mask / reward

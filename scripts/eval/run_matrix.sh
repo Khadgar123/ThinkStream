@@ -38,7 +38,11 @@ cd "$(dirname "$0")/../.."
 TEST_JSONL="${TEST_JSONL:-data/agent_v5/final/test.jsonl}"
 OVO_JSON="${OVO_JSON:-/home/tione/notebook/gaozhenkun/hzh/data/datasets/ovo_bench/ovo_bench_new.json}"
 VIDEO_ROOT="${VIDEO_ROOT:-/home/tione/notebook/gaozhenkun/hzh/data/datasets}"
-FRAMES_ROOT="${FRAMES_ROOT:-data/agent_v5/frames}"
+DATA_ROOT="${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-data/agent_v5}}"
+if [[ "${DATA_ROOT}" == */final ]]; then
+    DATA_ROOT="$(dirname "${DATA_ROOT}")"
+fi
+FRAMES_ROOT="${FRAMES_ROOT:-${THINKSTREAM_FRAMES_ROOT:-${DATA_ROOT}/frames}}"
 
 # ── Models (override via env) ─────────────────────────────────────────────
 # For base eval — public Qwen3-VL checkpoints. Sized to study scaling.

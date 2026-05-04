@@ -124,7 +124,7 @@ FAMILY_RULES = {
             **family_taxonomy("PN1")},
 }
 
-QUESTION_TYPE_BY_FAMILY = {f: ("multi_emit" if f in ("F5", "PN1") else "single_emit")
+QUESTION_TYPE_BY_FAMILY = {f: ("multi_emit" if f in ("F5", "F7", "PN1") else "single_emit")
                            for f in FAMILY_RULES}
 
 

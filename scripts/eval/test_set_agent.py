@@ -40,6 +40,7 @@ Usage:
 """
 import argparse
 import json
+import os
 import re
 import sys
 import time
@@ -74,6 +75,17 @@ from scripts.eval.ovo.eval_full import (
 GOLD_RE = re.compile(
     r"<(?P<tag>answer|response)>(?P<answer>.*?)</(?P=tag)>", re.DOTALL
 )
+
+
+def _default_frames_root() -> str:
+    root = os.environ.get("THINKSTREAM_FRAMES_ROOT")
+    if root:
+        return root
+    data_root = os.environ.get("THINKSTREAM_DATA_ROOT") or os.environ.get("AGENT_DATA_DIR")
+    if data_root:
+        p = Path(data_root)
+        return str(p.parent / "frames") if p.name == "final" else str(p / "frames")
+    return "data/agent_v5/frames"
 
 
 # ─── test.jsonl helpers (shared in spirit with test_set_base.py) ─────────────
@@ -405,7 +417,7 @@ def main():
     p.add_argument("--ckpt", required=True)
     p.add_argument("--test_jsonl", required=True)
     p.add_argument("--video_root", required=True)
-    p.add_argument("--frames_root", default="data/agent_v5/frames")
+    p.add_argument("--frames_root", default=_default_frames_root())
     p.add_argument("--n", type=int, default=200,
                    help="Max samples to evaluate (after filtering scorable)")
     p.add_argument("--retriever", default="hybrid", choices=["bm25", "hybrid"])

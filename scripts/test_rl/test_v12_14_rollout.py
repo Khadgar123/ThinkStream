@@ -340,14 +340,13 @@ async def main() -> int:
     assert n_proxy_calls >= 30, f"expected >=30 proxy calls (1+/chunk), got {n_proxy_calls}"
 
     # Verify multi_modal_data shape on a visual-bearing conversation
-    visual_actions = [i for i, m in enumerate(output.multi_modal_data) if m and "videos" in m]
+    visual_actions = [i for i, m in enumerate(output.multi_modal_data) if m and "images" in m]
     print(f"  visual-bearing actions: {len(visual_actions)}/{n_actions}")
     if visual_actions:
         sample_mm = output.multi_modal_data[visual_actions[0]]
-        videos = sample_mm["videos"]
-        print(f"  sample mm['videos'] entries: {len(videos)}, first frames_indices[:4] = {videos[0][1]['frames_indices'][:4]}")
-        assert len(videos) >= 1
-        assert "frames_indices" in videos[0][1]
+        images = sample_mm["images"]
+        print(f"  sample mm['images'] entries: {len(images)}")
+        assert len(images) >= 1
 
     # Verify recall-tool conversation has historical mm
     # Find the conversation right after Q2's tool_call
@@ -363,12 +362,16 @@ async def main() -> int:
         rc_mm = output.multi_modal_data[recall_conv_idx]
         print(f"  recall conversation #{recall_conv_idx} has mm: {rc_mm is not None}")
         if rc_mm:
-            rec_videos = rc_mm["videos"]
-            assert len(rec_videos) >= 1
-            indices = rec_videos[0][1]["frames_indices"]
-            # Should be anchored at chunks 5-10 (recall time_range), so frames_indices[0] == 5*2=10
-            assert indices[0] == 10, f"recalled frames_indices should start at 10 (chunk 5*fpc=2), got {indices[0]}"
-            print(f"  ✓ recall historical MROPE: frames_indices[0]={indices[0]} (chunk 5 × 2 fpc)")
+            rec_images = rc_mm["images"]
+            assert len(rec_images) >= 1
+            content_text = "\n".join(
+                str(c.get("text", ""))
+                for m in output.conversations[recall_conv_idx]
+                for c in (m.get("content") or [])
+                if isinstance(c, dict)
+            )
+            assert "Frame timestamp t=5.0s (recalled frame)." in content_text
+            print("  ✓ recall historical timestamp text starts at 5.0s")
 
     print("\n✓ ALL v12.14 ROLLOUT SMOKE ASSERTIONS PASS")
     return 0
