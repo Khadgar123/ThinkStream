@@ -5,6 +5,7 @@ All constants, prompts, and schema definitions.
 This module is the source of truth for runtime data-construction constants.
 """
 
+import os
 from pathlib import Path
 from typing import Dict
 
@@ -13,7 +14,15 @@ from typing import Dict
 # ---------------------------------------------------------------------------
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]  # ThinkStream/
-DATA_ROOT = PROJECT_ROOT / "data" / "agent_v5"
+
+# Batch isolation: set THINKSTREAM_BATCH=batch2 to output to
+# data/agent_v5/batch2/ instead of the default data/agent_v5/.
+# This keeps per-batch rollout, audits, final, etc. separate.
+_BATCH_SUFFIX = os.environ.get("THINKSTREAM_BATCH", "")
+if _BATCH_SUFFIX:
+    DATA_ROOT = PROJECT_ROOT / "data" / "agent_v5" / _BATCH_SUFFIX
+else:
+    DATA_ROOT = PROJECT_ROOT / "data" / "agent_v5"
 
 # Stage outputs
 EVIDENCE_1A_DIR = DATA_ROOT / "evidence_1a"     # 1-A raw per-chunk
@@ -67,8 +76,7 @@ VISUAL_WINDOW_FRAMES = VISUAL_WINDOW_CHUNKS * FRAMES_PER_CHUNK  # 32 帧
 #                 chunk, resets every VISUAL_WINDOW_CHUNKS. ~94% prefix-
 #                 cache hit on visual KV. Boundary chunks have less recent
 #                 context — re-verify SFT data quality after switching.
-import os as _os
-VISUAL_WINDOW_MODE = _os.environ.get(
+VISUAL_WINDOW_MODE = os.environ.get(
     "THINKSTREAM_VISUAL_WINDOW_MODE", "sliding"
 ).lower()
 if VISUAL_WINDOW_MODE not in ("sliding", "expanding"):

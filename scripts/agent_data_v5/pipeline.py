@@ -1397,7 +1397,7 @@ async def run_pipeline(
         pass4_ok = False
         try:
             from scripts.agent_data_v5 import pass4 as _pass4_mod
-            _sys.argv = ["pass4"]
+            _sys.argv = ["pass4", "--data-dir", str(DATA_ROOT)]
             try:
                 _pass4_mod.main()
                 pass4_ok = True

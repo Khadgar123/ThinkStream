@@ -54,10 +54,21 @@ logger = logging.getLogger(__name__)
 # base_path was DEFAULT_DATA_DIR.parent = .../data/, which produced
 # .../data/data/agent_v5/frames/... at resolution time.
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-DEFAULT_DATA_DIR = Path(
-    os.environ.get("AGENT_DATA_DIR", str(PROJECT_ROOT / "data" / "agent_v5"))
-)
+
+# Batch isolation: align with config.py's THINKSTREAM_BATCH logic.
+_BATCH_SUFFIX = os.environ.get("THINKSTREAM_BATCH", "")
+if _BATCH_SUFFIX:
+    DEFAULT_DATA_DIR = PROJECT_ROOT / "data" / "agent_v5" / _BATCH_SUFFIX
+else:
+    DEFAULT_DATA_DIR = Path(
+        os.environ.get("AGENT_DATA_DIR", str(PROJECT_ROOT / "data" / "agent_v5"))
+    )
 FINAL_DIR = DEFAULT_DATA_DIR / "final"
+
+# Relative frame prefix used inside sample paths (must mirror pipeline.py).
+_FRAME_REL_PREFIX = (
+    f"data/agent_v5/{_BATCH_SUFFIX}/frames" if _BATCH_SUFFIX else "data/agent_v5/frames"
+)
 
 SPLITS = [
     ("train_sft_full", "train_sft_trajectories", "train_sft_messages"),
@@ -153,7 +164,7 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                     for fi in range(_FPC):
                         fnum = ci * _FPC + fi + 1
                         paths.append(
-                            f"data/agent_v5/frames/{vid}/frame_{fnum:06d}.jpg"
+                            f"{_FRAME_REL_PREFIX}/{vid}/frame_{fnum:06d}.jpg"
                         )
                 vw["frame_paths"] = paths
 
