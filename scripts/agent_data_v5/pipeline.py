@@ -1433,6 +1433,35 @@ async def run_pipeline(
             logger.error(f"pass5_messages failed: {e}; SFT default dataset missing")
             _sys.argv = _argv_backup
 
+        # v12.14: MC option letters must not carry a dataset-level prior.
+        # Pass3A LLM generations can skew correct_option heavily toward A
+        # even when the answer text is valid. Rebalance after pass4/pass5 so
+        # flat samples, trajectory rows, and messages-format rows stay in sync.
+        try:
+            from scripts.agent_data_v5 import rebalance_mc_options as _mc_mod
+
+            mapping = _mc_mod.build_mapping(FINAL_DIR)
+            changed = _mc_mod.apply_mapping(FINAL_DIR, mapping)
+            report = _mc_mod.summarize_mapping(mapping)
+            report["changed_by_file"] = changed
+            report_path = AUDIT_DIR / "mc_rebalance_report.json"
+            report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False))
+            logger.info(
+                "MC option rebalance: %d questions; report -> %s",
+                report.get("n_questions", 0),
+                report_path,
+            )
+
+            _write_quality_audit(FINAL_DIR / "train_sft.jsonl", "train_sft")
+            _write_quality_audit(FINAL_DIR / "train_rl.jsonl", "train_rl")
+            if (FINAL_DIR / "train_rl_trajectories.jsonl").exists():
+                _write_quality_audit(
+                    FINAL_DIR / "train_rl_trajectories.jsonl",
+                    "train_rl_trajectories",
+                )
+        except Exception as e:
+            logger.error(f"MC option rebalance failed: {e}; inspect MC balance audit")
+
     logger.info("=" * 60)
     logger.info("PIPELINE COMPLETE")
     logger.info(f"Total samples: {len(passed_samples)}")
