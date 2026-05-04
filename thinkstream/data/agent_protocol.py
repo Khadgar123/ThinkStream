@@ -109,7 +109,7 @@ def append_timestamped_image_list(
     Qwen/VLLM ``video`` block because vLLM's pre-sampled video path has been
     version-sensitive around metadata. The reliable project protocol is:
 
-        {"type": "text", "text": "Frame timestamp t=12.5s (latest chunk)."}
+        {"type": "text", "text": "<frame ts=\"12.5\" role=\"latest chunk\" />"}
         {"type": "image", "image": "/abs/frame_000026.jpg", ...}
 
     OpenAI-compatible rollout uses the same timestamp text with
@@ -151,7 +151,7 @@ def append_timestamped_image_list(
 
         content.append({
             "type": "text",
-            "text": f"Frame timestamp t={frame_idx / eff_fps:.1f}s ({label}).",
+            "text": f'<frame ts="{frame_idx / eff_fps:.1f}" role="{label}" />',
         })
 
         if image_key == "image_url":

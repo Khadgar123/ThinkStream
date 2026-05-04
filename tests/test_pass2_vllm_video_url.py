@@ -4,6 +4,7 @@ from scripts.agent_data_v5.pass2_rollout import (
     _safe_max_tokens_for_pass2,
     build_observation_request,
     build_observation_repair_request,
+    parse_observation_result,
     should_repair_observation,
 )
 from scripts.agent_data_v5.config import FRAMES_PER_CHUNK, VISUAL_TOKENS_PER_FRAME_RUNTIME
@@ -32,14 +33,15 @@ def test_pass2_observation_uses_timestamped_image_window(tmp_path):
     ]
     prompt = content[0]["text"]
     assert "CURRENT TASK FIRST" in prompt
-    assert "timestamped image list" in prompt
+    assert "timestamp-tagged image list" in prompt
     assert f"({FRAMES_PER_CHUNK} frames)" in prompt
     assert "untrusted history for entity naming only" in prompt
     assert "only evidence for the current think" in prompt
+    assert "Never copy or paraphrase any frame tag" in prompt
     assert "older context to the latest chunk" in prompt
-    assert content[1]["text"] == "Frame timestamp t=0.0s (older context)."
+    assert content[1]["text"] == '<frame ts="0.0" role="older context" />'
     assert content[2]["image_url"]["url"].startswith("data:image/jpeg;base64,")
-    assert content[-2]["text"] == "Frame timestamp t=2.5s (latest chunk)."
+    assert content[-2]["text"] == '<frame ts="2.5" role="latest chunk" />'
     assert "media_io_kwargs" not in req
 
 
@@ -64,10 +66,28 @@ def test_pass2_repair_request_uses_only_current_chunk_timestamped_images(tmp_pat
 
     content = req["messages"][0]["content"]
     assert [item["type"] for item in content] == ["text", "text", "image_url", "text", "image_url"]
-    assert content[1]["text"] == "Frame timestamp t=4.0s (latest chunk)."
+    assert content[1]["text"] == '<frame ts="4.0" role="latest chunk" />'
     assert content[2]["image_url"]["url"].startswith("data:image/jpeg;base64,")
-    assert content[3]["text"] == "Frame timestamp t=4.5s (latest chunk)."
+    assert content[3]["text"] == '<frame ts="4.5" role="latest chunk" />'
     assert "media_io_kwargs" not in req
+
+
+def test_parse_observation_result_strips_frame_tags():
+    raw = (
+        '<frame ts="12.0" role="latest chunk" />\n'
+        '<frame ts="12.5" role="latest chunk" />\n'
+        "A woman in a red apron stirs food in a silver pan."
+    )
+    assert parse_observation_result(raw) == "A woman in a red apron stirs food in a silver pan."
+
+
+def test_parse_observation_result_strips_inline_frame_tags():
+    raw = (
+        '<frame ts="12.0" role="latest chunk" /> '
+        '<frame ts="12.5" role="latest chunk" /> '
+        "A white bowl rests on a wooden counter."
+    )
+    assert parse_observation_result(raw) == "A white bowl rests on a wooden counter."
 
 
 def test_should_repair_observation_uses_evidence_drift():
@@ -143,6 +163,26 @@ def test_should_repair_observation_flags_near_repeat_without_stale_words():
     assert meta["reason"] == "near_repeat_with_evidence_drift"
 
 
+def test_should_repair_observation_skips_static_visual_delta():
+    memory = MemoryState()
+    stale = "The title card remains unchanged with the same centered text."
+    for c in range(4):
+        memory.add_think(c, stale)
+
+    should_repair, meta = should_repair_observation(
+        stale,
+        memory.recent_thinks,
+        chunk_idx=4,
+        evidence=[
+            {"visible_entities": [{"desc": "title card", "action": "static"}], "atomic_facts": ["A title card is visible."]}
+            for _ in range(5)
+        ],
+        visual_delta_mse=0.0,
+    )
+    assert not should_repair
+    assert meta["reason"] == "static_visual_delta_skip"
+
+
 def test_repair_acceptance_rejects_still_repeated_text():
     memory = MemoryState()
     stale = (
@@ -186,13 +226,13 @@ def test_pass2_safe_token_estimate_counts_timestamped_image_frames(tmp_path):
 
 def test_pass2_cache_bump_invalidates_old_video_http_rollouts():
     assert STAGE_VERSIONS["1a"] == "v12.22"
-    assert STAGE_VERSIONS["2"] == "v12.22"
+    assert STAGE_VERSIONS["2"] == "v12.23"
     # Downstream stages must not reuse cached data after the project-wide
     # timestamped image-list protocol change.
-    assert STAGE_VERSIONS["3b"] == "v12.22"
-    assert STAGE_VERSIONS["3c"] == "v12.22"
-    assert STAGE_VERSIONS["4"] == "v12.22"
-    assert STAGE_VERSIONS["5"] == "v12.22"
+    assert STAGE_VERSIONS["3b"] == "v12.23"
+    assert STAGE_VERSIONS["3c"] == "v12.23"
+    assert STAGE_VERSIONS["4"] == "v12.23"
+    assert STAGE_VERSIONS["5"] == "v12.23"
 
 
 def test_pass2_stale_audit_flags_repeated_thinks_when_evidence_changes():

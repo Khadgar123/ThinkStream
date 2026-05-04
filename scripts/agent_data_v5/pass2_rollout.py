@@ -17,6 +17,7 @@ import re
 from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+from PIL import Image
 
 from .config import (
     AGENT_CHUNK_SEC,
@@ -288,7 +289,16 @@ _STALE_OBSERVATION_RE = re.compile(
     r"\b(continues?|remains?|unchanged|no new|static|identical)\b",
     re.IGNORECASE,
 )
+_FRAME_TAG_LINE_RE = re.compile(
+    r'^\s*<frame\s+ts="[^"]+"\s+role="[^"]+"\s*/>\s*$',
+    re.IGNORECASE,
+)
+_FRAME_TAG_INLINE_RE = re.compile(
+    r'\s*<frame\s+ts="[^"]+"\s+role="[^"]+"\s*/>\s*',
+    re.IGNORECASE,
+)
 _REPAIR_ACCEPT_SIMILARITY_MAX = 0.82
+_STATIC_REPAIR_MSE_MAX = 50.0
 
 
 def _norm_observation(text: str) -> str:
@@ -342,12 +352,51 @@ def _evidence_drift(evidence: Optional[List[Dict]], start: int, end: int) -> Opt
     )
 
 
+def _frame_pair_mse(prev_path: str, cur_path: str) -> Optional[float]:
+    try:
+        with Image.open(prev_path).convert("RGB") as prev_img:
+            prev = list(prev_img.getdata())
+        with Image.open(cur_path).convert("RGB") as cur_img:
+            cur = list(cur_img.getdata())
+    except Exception:
+        return None
+
+    if len(prev) != len(cur) or not prev:
+        return None
+
+    total = 0.0
+    for (pr, pg, pb), (cr, cg, cb) in zip(prev, cur):
+        total += (pr - cr) ** 2 + (pg - cg) ** 2 + (pb - cb) ** 2
+    return total / (len(prev) * 3.0)
+
+
+def _chunk_visual_delta_mse(
+    frame_paths: List[str],
+    chunk_idx: int,
+) -> Optional[float]:
+    if chunk_idx <= 0:
+        return None
+    prev_chunk = get_chunk_frame_paths(frame_paths, chunk_idx - 1)
+    cur_chunk = get_chunk_frame_paths(frame_paths, chunk_idx)
+    vals: List[float] = []
+    for prev_path, cur_path in zip(prev_chunk, cur_chunk):
+        if not Path(prev_path).exists() or not Path(cur_path).exists():
+            continue
+        mse = _frame_pair_mse(prev_path, cur_path)
+        if mse is not None:
+            vals.append(mse)
+    if not vals:
+        return None
+    return sum(vals) / len(vals)
+
+
 def should_repair_observation(
     think_text: str,
     recent_thinks: List[Dict],
     *,
     chunk_idx: int,
     evidence: Optional[List[Dict]] = None,
+    visual_delta_mse: Optional[float] = None,
 ) -> Tuple[bool, Dict]:
     """Detect stale-copy pass2 observations before they enter memory.
 
@@ -387,6 +436,12 @@ def should_repair_observation(
         candidates.append(("near", near_len, chunk_idx - near_prev))
     if not candidates:
         return False, {}
+
+    if visual_delta_mse is not None and visual_delta_mse < _STATIC_REPAIR_MSE_MAX:
+        return False, {
+            "reason": "static_visual_delta_skip",
+            "visual_delta_mse": round(visual_delta_mse, 3),
+        }
 
     best_kind, best_len, best_start = max(candidates, key=lambda x: x[1])
     stale_language = bool(_STALE_OBSERVATION_RE.search(think_text))
@@ -563,6 +618,14 @@ def parse_observation_result(raw: Optional[str]) -> str:
         return "Scene continues without notable changes."
     raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
     raw = raw.strip('"').strip("'").strip()
+    lines = []
+    for line in raw.splitlines():
+        if _FRAME_TAG_LINE_RE.fullmatch(line):
+            continue
+        lines.append(line)
+    raw = "\n".join(lines).strip()
+    raw = _FRAME_TAG_INLINE_RE.sub(" ", raw)
+    raw = re.sub(r"\s+", " ", raw).strip()
     if (
         not raw
         or _PLACEHOLDER_TEXT_RE.fullmatch(raw)
@@ -981,14 +1044,19 @@ async def run_pass2_single_video(
         )
         think_text = parse_observation_result(raw)
         repaired = False
+        repair_attempted = False
+        repair_rejected = False
         repair_meta: Dict = {}
+        visual_delta_mse = _chunk_visual_delta_mse(frame_paths, chunk_idx)
         should_repair, repair_meta = should_repair_observation(
             think_text,
             memory.recent_thinks,
             chunk_idx=chunk_idx,
             evidence=evidence,
+            visual_delta_mse=visual_delta_mse,
         )
         if should_repair:
+            repair_attempted = True
             repair_request = build_observation_repair_request(
                 chunk_idx, frame_paths, memory, video_id, stale_text=think_text,
             )
@@ -1018,6 +1086,7 @@ async def run_pass2_single_video(
                         video_id, chunk_idx, repair_meta.get("reason", ""),
                     )
                 else:
+                    repair_rejected = True
                     logger.warning(
                         "  [%s] Rejected stale pass2 repair at chunk %d: still too similar (%s)",
                         video_id, chunk_idx, repair_meta.get("reason", ""),
@@ -1099,11 +1168,19 @@ async def run_pass2_single_video(
                 "tokens": memory.count_tokens(),
                 "compressed": should_compress_now,
             }
+            if repair_attempted:
+                log_entry["repair_attempted"] = True
+                log_entry["repair_trigger_reason"] = repair_meta.get("reason")
+                log_entry["repair_run_length"] = repair_meta.get("run_length")
+                log_entry["repair_evidence_drift"] = repair_meta.get("evidence_drift")
+            if visual_delta_mse is not None:
+                log_entry["visual_delta_mse"] = round(visual_delta_mse, 3)
             if repaired:
                 log_entry["repaired"] = True
                 log_entry["repair_reason"] = repair_meta.get("reason")
-                log_entry["repair_run_length"] = repair_meta.get("run_length")
-                log_entry["repair_evidence_drift"] = repair_meta.get("evidence_drift")
+            elif repair_rejected:
+                log_entry["repair_rejected"] = True
+                log_entry["repair_rejected_reason"] = "still_too_similar"
             if should_compress_now and compression_events and compression_events[-1]["trigger_chunk"] == chunk_idx:
                 ce = compression_events[-1]
                 log_entry["compress_range"] = ce["summary"].get("time_range")

@@ -40,6 +40,12 @@ STAGE_VERSIONS: Dict[str, str] = {
     # v12.11 audit-5 P1 #5 (2026-05-01): bumps below align with the v12.11
     # data-construction logic changes. Without these, an existing cluster
     # cache stamped v12.5 would silently reuse stale outputs:
+    #   v12.23 (2026-05-05): pass2 teacher keeps the same compression,
+    #        textual memory, and 16s sliding visual window, but changes the
+    #        per-frame temporal marker from natural-language timestamp lines
+    #        to structural <frame .../> tags and strips any echoed tags from
+    #        outputs. This fixes prompt-metadata leakage into pass2 thinks and
+    #        adds structured logging for rejected repairs.
     #   v12.22 (2026-05-04): all construction/rendering stages align on the
     #        project-wide pre-extracted-frame protocol: timestamp text before
     #        each image/image_url. pass1a/pass2 teacher calls, pass5 SFT
@@ -57,12 +63,12 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        from SFT target, and verifier/rebalance updates.
     "1a": "v12.22",
     "1b": "v12.22",
-    "2":  "v12.22",
+    "2":  "v12.23",
     "3a": "v12.22",
-    "3b": "v12.22",
-    "3c": "v12.22",
-    "4":  "v12.22",  # canonical key — verification
-    "5":  "v12.22",  # pass5_messages render version
+    "3b": "v12.23",
+    "3c": "v12.23",
+    "4":  "v12.23",  # canonical key — verification
+    "5":  "v12.23",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

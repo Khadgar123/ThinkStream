@@ -97,7 +97,7 @@ case $PHASE in
             --per_device_eval_batch_size ${EVAL_BSZ:-${BSZ}} \
             --save_strategy steps \
             --save_steps ${EVAL_STEPS:-50} \
-            --save_total_limit ${SAVE_LIMIT:-5} \
+            --save_total_limit ${SAVE_LIMIT:-0} \
             --load_best_model_at_end True \
             --metric_for_best_model eval_loss \
             --greater_is_better False"
@@ -162,7 +162,7 @@ torchrun --nproc_per_node=${NPROC} \
     --per_device_train_batch_size ${BSZ} \
     --gradient_accumulation_steps ${GRAD_ACCUM} \
     --save_strategy epoch \
-    --save_total_limit 3 \
+    --save_total_limit ${SAVE_LIMIT:-0} \
     --learning_rate ${lr} \
     --weight_decay 0.0 \
     --warmup_ratio 0.03 \

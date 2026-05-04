@@ -656,23 +656,26 @@ Output JSON only:"""
 
 OBSERVATION_PROMPT = """You are a streaming video agent generating a think note for one current 1-second chunk.
 
-CURRENT TASK FIRST: inspect the timestamped image list for the sliding visual window t={window_start}-{window_end}s. The latest target chunk is ONLY t={start}-{end}s ({current_frame_count} frames) and is the primary evidence.
+CURRENT TASK FIRST: inspect the timestamp-tagged image list for the sliding visual window t={window_start}-{window_end}s. The latest target chunk is ONLY t={start}-{end}s ({current_frame_count} frames) and is the primary evidence.
 
 Memory below is untrusted history for entity naming only. It may describe older frames and must not be copied if the latest frames differ.
 <memory>
 {recent_thinks}
 </memory>
 
-The timestamped images are ordered from older context to the latest chunk. Frames labeled t={start}-{end}s are the only evidence for the current think; older timestamps are context only.
+Each image is preceded by a structural tag like <frame ts="12.5" role="latest chunk" />. These frame tags are routing metadata only, not answer text. Never copy or paraphrase any frame tag in the output.
+
+The timestamp-tagged images are ordered from older context to the latest chunk. Frames labeled t={start}-{end}s are the only evidence for the current think; older timestamps are context only.
 
 Evidence priority:
-1. The timestamped images at t={start}-{end}s are the only evidence for the current think.
-2. Older timestamped images are context only.
+1. The tagged images at t={start}-{end}s are the only evidence for the current think.
+2. Older tagged images are context only.
 3. Memory is history and entity naming only. Ignore memory when it conflicts with the latest frames.
 3. Never use memory as evidence that a past object/action is still visible.
 
 Rules:
 - Ground the note only in observable visual facts from the latest target chunk
+- Do not copy any XML-like tag, timestamp marker, role marker, or metadata line into the output
 - Mention current OCR, logos, icons, labels, title cards, graphic overlays, and spatial layout when visible
 - Reuse a memory entity phrase only when that same entity is visibly present now
 - Do not copy a prior sentence or mention any object/action from memory unless it is visible in the latest target chunk
@@ -693,19 +696,22 @@ Recent memory/entity names (may be stale; use only for naming):
 Previous stale draft to avoid copying:
 {stale_text}
 
-The timestamped images contain ONLY the current 1 second: t={start}-{end}s
+The tagged images contain ONLY the current 1 second: t={start}-{end}s
 ({n_frames} frames at {fps} fps).
+
+Each image is preceded by a structural tag like <frame ts="12.5" role="latest chunk" />. These frame tags are routing metadata only, not answer text. Never copy or paraphrase any frame tag in the output.
 
 Task: inspect the current frames first and write the actual visual note for
 t={start}-{end}s.
 
 Evidence priority:
-1. Current timestamped frames at t={start}-{end}s.
+1. Current tagged frames at t={start}-{end}s.
 2. Memory/entity names only if the same entity is visibly present.
 3. Never use memory or the stale draft as evidence for what is visible now.
 
 Rules:
 - Describe only observable visual facts in this 1-second chunk
+- Do not copy any XML-like tag, timestamp marker, role marker, or metadata line into the output
 - Keep entity names consistent only when the same entity is visibly present
 - Do not say "continues", "remains", "unchanged", or "no new" unless the
   current frames visibly show the same object/action
