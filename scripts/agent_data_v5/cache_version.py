@@ -46,21 +46,27 @@ STAGE_VERSIONS: Dict[str, str] = {
     #         (verified by visual audit) but missing solo_ ids; bumping
     #         signals downstream that 1b-derived caches need re-derivation
     #         if you regenerate.
-    #   2 → v12.16: pass2 now includes stale-repeat repair before a think
-    #        enters memory, keeps OpenAI-HTTP teacher requests on vLLM's
-    #        video_url + request-level media_io_kwargs.video path for
-    #        pre-extracted JPEG frames, and audits stale rollouts after pass2.
-    #   3a/3b/3c/4/5 → v12.18: pass3 display taxonomy fields, mixed MC answer
+    #   2 → v12.18: pass2 observation prompt/input now uses a text-first,
+    #        forward-ordered timestamped image list over the full sliding
+    #        visual window. This beat both chronological video blocks and
+    #        reverse image order on the confirmed stale batchtest failures and
+    #        avoids relying on OpenAI video_url timestamp behavior.
+    #   3a stays v12.18: pass3 card generation is evidence/card based and does
+    #        not consume pass2 rollout text.
+    #   3b/3c/4/5 → v12.20: downstream trajectory caches consume pass2 rollout
+    #        text/snapshots either directly or through generated samples, so they
+    #        must be invalidated with the v12.18 pass2 prompt/input change.
+    #   v12.18 background: pass3 display taxonomy fields, mixed MC answer
     #        protocols (letter/text/letter+text), semantic gold_answer split
     #        from SFT target, and verifier/rebalance updates.
     "1a": "v12.5",
     "1b": "v12.11",
-    "2":  "v12.16",
+    "2":  "v12.18",
     "3a": "v12.18",
-    "3b": "v12.18",
-    "3c": "v12.18",
-    "4":  "v12.18",  # canonical key — verification
-    "5":  "v12.18",  # pass5_messages render version
+    "3b": "v12.20",
+    "3c": "v12.20",
+    "4":  "v12.20",  # canonical key — verification
+    "5":  "v12.20",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

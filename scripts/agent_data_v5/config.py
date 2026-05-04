@@ -309,16 +309,17 @@ VLLM_PREFILL_BATCH_TOKEN_BUDGET = 32_000_000  # KV usage ~2.6% at 64 conc → 10
 # v12.12 (2026-05-02): visual budgets reflect mm_processor_kwargs profiles.
 # pass1a uses HIRES (~500 tok/frame typical) × 2 frames + template ≈ 2K visual.
 # pass2 uses RUNTIME (~235 tok/frame) × 32 frames + template ≈ 7.6K visual.
-# vLLM teacher server: pass1a still sends image_url blocks, while pass2 sends
-# one OpenAI video_url block encoded as data:video/jpeg from pre-extracted
-# frames, with fps/frames_indices carried in request-level media_io_kwargs.
-# Start vLLM with e.g.
+# vLLM teacher server: pass1a still sends image_url blocks, while pass2 now
+# sends a timestamped image list for the full sliding visual window. This keeps
+# the latest chunk visually explicit even when text memory is stale, and avoids
+# relying on the OpenAI video_url path to surface temporal anchors inside the
+# model. Start vLLM with e.g.
 #   --limit-mm-per-prompt '{"image":64,"video":2}'
-# video is a per-prompt block limit, not the request concurrency. pass2 uses
-# one video block; runtime/eval recall turns may include current-window +
-# recalled-frame videos in the same prompt.
+# image/video limits are per prompt, not concurrency. pass2 uses up to 32
+# images per request (16 chunks × 2 fps); runtime/eval recall can still use
+# video blocks elsewhere in the stack.
 # Keep request-level mm_processor_kwargs at RUNTIME_MM_PROCESSOR_KWARGS
-# plus do_sample_frames=False. Do not send raw mp4 to the server in pass2.
+# plus do_sample_frames=False.
 PASS_CONTEXT_ESTIMATES = {
     # pass1a: 2 hires frames + template + 5K output. ~3K input typical.
     "pass1a": {"input": 3_000, "output": 5_000, "thinking": 0},
@@ -632,36 +633,34 @@ Rules:
 
 Output JSON only:"""
 
-OBSERVATION_PROMPT = """You are a streaming video agent generating a think (incremental visual memory note).
+OBSERVATION_PROMPT = """You are a streaming video agent generating a think note for one current 1-second chunk.
 
-Compressed memory:
-{compressed_memory}
+CURRENT TASK FIRST: inspect the timestamped image list for the sliding visual window t={window_start}-{window_end}s. The latest target chunk is ONLY t={start}-{end}s ({current_frame_count} frames) and is the primary evidence.
 
-Recent thinks:
+Memory below is untrusted history for entity naming only. It may describe older frames and must not be copied if the latest frames differ.
+<memory>
 {recent_thinks}
+</memory>
 
-Visual window: t={window_start}-{window_end}s (frames provided as video block).
-
-Describe what is NEW or CHANGED in the latest 1 second (t={start}-{end}s).
-Be concise but complete (target 40-80 tokens, never exceed 100).
+The timestamped images are ordered from older context to the latest chunk. Frames labeled t={start}-{end}s are the only evidence for the current think; older timestamps are context only.
 
 Evidence priority:
-1. Current frames at t={start}-{end}s: the only evidence for the current think.
-2. Recent thinks/compressed memory: history and entity naming only.
-3. If current frames conflict with memory, ignore memory for the current visual
-   description.
+1. The timestamped images at t={start}-{end}s are the only evidence for the current think.
+2. Older timestamped images are context only.
+3. Memory is history and entity naming only. Ignore memory when it conflicts with the latest frames.
+3. Never use memory as evidence that a past object/action is still visible.
 
 Rules:
-- Only observable visual facts
-- Describe entities by appearance (clothing, color, material). If a similar
-  entity is visibly present and already appears in recent thinks, reuse the
-  same descriptive phrase for that entity
-- Focus: entities+attributes, actions, state changes, OCR, spatial
+- Ground the note only in observable visual facts from the latest target chunk
+- Mention current OCR, logos, icons, labels, title cards, graphic overlays, and spatial layout when visible
+- Reuse a memory entity phrase only when that same entity is visibly present now
+- Do not copy a prior sentence or mention any object/action from memory unless it is visible in the latest target chunk
+- If memory says a person/hand is holding, pressing, pouring, cutting, walking, or otherwise manipulating something, write that action only when the actor and contact/motion are visible in the latest target chunk
+- If the latest frames show an object at rest, on a stand/table/surface, or as a static screen/card, describe that current state directly instead of repeating an old manipulation
+- If the latest frames show a different object/action, title card, branding card, transition card, or static graphic, name it directly
+- Avoid "continues", "remains", "persists", "still", "same", and "without change" unless those words are justified by the latest target chunk alone
 - NO meta-reasoning, NO "I notice", NO sounds/smells/emotions
-- Do not write "continues", "remains", "unchanged", or "no new" unless the
-  latest frames visibly show the same object/action
-- If the latest frames show a different object/action, name the new
-  object/action directly
+- One paragraph, 40-80 tokens, never exceed 100
 
 Output one paragraph:"""
 
@@ -673,14 +672,14 @@ Recent memory/entity names (may be stale; use only for naming):
 Previous stale draft to avoid copying:
 {stale_text}
 
-The video block contains ONLY the current 1 second: t={start}-{end}s
+The timestamped images contain ONLY the current 1 second: t={start}-{end}s
 ({n_frames} frames at {fps} fps).
 
 Task: inspect the current frames first and write the actual visual note for
 t={start}-{end}s.
 
 Evidence priority:
-1. Current frames at t={start}-{end}s.
+1. Current timestamped frames at t={start}-{end}s.
 2. Memory/entity names only if the same entity is visibly present.
 3. Never use memory or the stale draft as evidence for what is visible now.
 

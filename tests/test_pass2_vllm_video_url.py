@@ -1,5 +1,6 @@
 from scripts.agent_data_v5.pass2_rollout import (
     MemoryState,
+    _is_repair_better,
     _safe_max_tokens_for_pass2,
     build_observation_request,
     build_observation_repair_request,
@@ -10,7 +11,7 @@ from scripts.agent_data_v5.audit_pass2_stale import audit_rollouts
 from scripts.agent_data_v5.cache_version import STAGE_VERSIONS
 
 
-def test_pass2_observation_uses_vllm_video_url_with_media_metadata(tmp_path):
+def test_pass2_observation_uses_timestamped_image_window(tmp_path):
     frame_paths = []
     for idx in range(FRAMES_PER_CHUNK * 3):
         path = tmp_path / f"frame_{idx + 1:06d}.jpg"
@@ -25,18 +26,23 @@ def test_pass2_observation_uses_vllm_video_url_with_media_metadata(tmp_path):
     )
 
     content = req["messages"][0]["content"]
-    assert [item["type"] for item in content] == ["text", "video_url"]
-    assert content[1]["video_url"]["url"].startswith("data:video/jpeg;base64,")
-    assert '"type": "video"' not in str(content)
+    assert [item["type"] for item in content] == [
+        "text", "text", "image_url", "text", "image_url", "text", "image_url", "text", "image_url",
+    ]
+    prompt = content[0]["text"]
+    assert "CURRENT TASK FIRST" in prompt
+    assert "timestamped image list" in prompt
+    assert f"({FRAMES_PER_CHUNK} frames)" in prompt
+    assert "untrusted history for entity naming only" in prompt
+    assert "only evidence for the current think" in prompt
+    assert "older context to the latest chunk" in prompt
+    assert content[1]["text"] == "Frame timestamp t=0.0s (older context)."
+    assert content[2]["image_url"]["url"].startswith("data:image/jpeg;base64,")
+    assert content[-2]["text"] == "Frame timestamp t=3.0s (latest chunk)."
+    assert "media_io_kwargs" not in req
 
-    video_meta = req["media_io_kwargs"]["video"]
-    assert video_meta["frames_indices"] == list(range(FRAMES_PER_CHUNK * 3))
-    assert video_meta["fps"] > 0
-    assert video_meta["total_num_frames"] == FRAMES_PER_CHUNK * 3
-    assert video_meta["do_sample_frames"] is False
 
-
-def test_pass2_repair_request_uses_only_current_chunk_frames(tmp_path):
+def test_pass2_repair_request_uses_only_current_chunk_timestamped_images(tmp_path):
     frame_paths = []
     for idx in range(FRAMES_PER_CHUNK * 5):
         path = tmp_path / f"frame_{idx + 1:06d}.jpg"
@@ -56,11 +62,11 @@ def test_pass2_repair_request_uses_only_current_chunk_frames(tmp_path):
     )
 
     content = req["messages"][0]["content"]
-    assert [item["type"] for item in content] == ["text", "video_url"]
-    meta = req["media_io_kwargs"]["video"]
-    assert meta["frames_indices"] == [FRAMES_PER_CHUNK * 4, FRAMES_PER_CHUNK * 4 + 1]
-    assert meta["total_num_frames"] == FRAMES_PER_CHUNK * 5
-    assert meta["do_sample_frames"] is False
+    assert [item["type"] for item in content] == ["text", "text", "image_url", "text", "image_url"]
+    assert content[1]["text"] == "Frame timestamp t=4.0s (latest chunk)."
+    assert content[2]["image_url"]["url"].startswith("data:image/jpeg;base64,")
+    assert content[3]["text"] == "Frame timestamp t=4.5s (latest chunk)."
+    assert "media_io_kwargs" not in req
 
 
 def test_should_repair_observation_uses_evidence_drift():
@@ -102,7 +108,64 @@ def test_should_repair_observation_uses_evidence_drift():
     assert meta["reason"] == "exact_repeat_with_evidence_drift"
 
 
-def test_pass2_safe_token_estimate_counts_video_url_frames(tmp_path):
+def test_should_repair_observation_flags_near_repeat_without_stale_words():
+    memory = MemoryState()
+    stale = (
+        "The close-up view shows a person wearing blue jeans pressing a brown "
+        "leather shoe against the rapidly spinning brush and roller."
+    )
+    for c in range(6):
+        memory.add_think(c, stale)
+
+    candidate = (
+        "The close-up view captures a person wearing blue jeans pressing a brown "
+        "leather shoe against the rapidly spinning brush and roller."
+    )
+    evidence = []
+    for _ in range(6):
+        evidence.append({
+            "visible_entities": [{"desc": "brown leather shoe and brush", "action": "polishing"}],
+            "atomic_facts": ["A shoe is pressed against a spinning brush."],
+        })
+    evidence.append({
+        "visible_entities": [{"desc": "Heute Maschinenfabrik branding card", "action": "static"}],
+        "atomic_facts": ["A Quality made in GERMANY badge and logo are displayed."],
+    })
+
+    should_repair, meta = should_repair_observation(
+        candidate,
+        memory.recent_thinks,
+        chunk_idx=6,
+        evidence=evidence,
+    )
+    assert should_repair
+    assert meta["reason"] == "near_repeat_with_evidence_drift"
+
+
+def test_repair_acceptance_rejects_still_repeated_text():
+    memory = MemoryState()
+    stale = (
+        "The close-up view shows a person wearing blue jeans pressing a brown "
+        "leather shoe against the rapidly spinning brush and roller."
+    )
+    for c in range(3):
+        memory.add_think(c, stale)
+
+    repeated = (
+        "The close-up view captures a person wearing blue jeans pressing a brown "
+        "leather shoe against the rapidly spinning brush and roller."
+    )
+    corrected = (
+        "The latest frames show a static Heute Maschinenfabrik branding card "
+        "with a Quality made in GERMANY badge, three footprint-and-gear icons, "
+        "and a magenta vertical bar."
+    )
+
+    assert not _is_repair_better(repeated, stale, memory.recent_thinks)
+    assert _is_repair_better(corrected, stale, memory.recent_thinks)
+
+
+def test_pass2_safe_token_estimate_counts_timestamped_image_frames(tmp_path):
     frame_paths = []
     for idx in range(FRAMES_PER_CHUNK * 2):
         path = tmp_path / f"frame_{idx + 1:06d}.jpg"
@@ -121,13 +184,13 @@ def test_pass2_safe_token_estimate_counts_video_url_frames(tmp_path):
 
 
 def test_pass2_cache_bump_invalidates_old_video_http_rollouts():
-    assert STAGE_VERSIONS["2"] == "v12.16"
+    assert STAGE_VERSIONS["2"] == "v12.18"
     # Downstream stages consume pass2 rollout text, so they must not reuse
     # v12.14/v12.15 placements/samples/final messages after pass2 changes.
-    assert STAGE_VERSIONS["3b"] == "v12.18"
-    assert STAGE_VERSIONS["3c"] == "v12.18"
-    assert STAGE_VERSIONS["4"] == "v12.18"
-    assert STAGE_VERSIONS["5"] == "v12.18"
+    assert STAGE_VERSIONS["3b"] == "v12.20"
+    assert STAGE_VERSIONS["3c"] == "v12.20"
+    assert STAGE_VERSIONS["4"] == "v12.20"
+    assert STAGE_VERSIONS["5"] == "v12.20"
 
 
 def test_pass2_stale_audit_flags_repeated_thinks_when_evidence_changes():

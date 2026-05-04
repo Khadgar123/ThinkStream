@@ -40,7 +40,7 @@ from .config import (
     compute_visual_window_start,
 )
 from .pass1a_evidence import get_chunk_frame_paths
-from scripts.agent_data_pipeline.vllm_client import build_video_jpeg_data_uri
+from scripts.agent_data_pipeline.vllm_client import encode_image_base64
 
 logger = logging.getLogger(__name__)
 
@@ -288,6 +288,7 @@ _STALE_OBSERVATION_RE = re.compile(
     r"\b(continues?|remains?|unchanged|no new|static|identical)\b",
     re.IGNORECASE,
 )
+_REPAIR_ACCEPT_SIMILARITY_MAX = 0.82
 
 
 def _norm_observation(text: str) -> str:
@@ -379,10 +380,6 @@ def should_repair_observation(
 
     exact_len = exact_prev + 1
     near_len = near_prev + 1
-    stale_language = bool(_STALE_OBSERVATION_RE.search(think_text))
-    if not stale_language:
-        return False, {}
-
     candidates: List[Tuple[str, int, int]] = []
     if exact_len >= 4:
         candidates.append(("exact", exact_len, chunk_idx - exact_prev))
@@ -392,9 +389,14 @@ def should_repair_observation(
         return False, {}
 
     best_kind, best_len, best_start = max(candidates, key=lambda x: x[1])
+    stale_language = bool(_STALE_OBSERVATION_RE.search(think_text))
     drift = _evidence_drift(evidence, best_start, chunk_idx)
     if drift is not None:
-        if drift < 0.45:
+        # Old gate required stale words such as "continues/remains". The
+        # production failure repeated high-similarity factual sentences without
+        # those words, so evidence drift now carries near/exact-repeat repair.
+        threshold = 0.45 if stale_language else 0.65
+        if drift < threshold:
             return False, {}
         return True, {
             "reason": f"{best_kind}_repeat_with_evidence_drift",
@@ -405,7 +407,12 @@ def should_repair_observation(
 
     # If pass1b evidence is unavailable for this video, keep the fallback
     # conservative to avoid doubling calls on genuinely static title screens.
-    if (best_kind == "exact" and best_len >= 12) or best_len >= 16:
+    if (
+        (stale_language and best_kind == "exact" and best_len >= 12)
+        or (stale_language and best_len >= 16)
+        or (best_kind == "exact" and best_len >= 18)
+        or best_len >= 24
+    ):
         return True, {
             "reason": f"{best_kind}_repeat_without_evidence",
             "run_length": best_len,
@@ -413,6 +420,28 @@ def should_repair_observation(
             "evidence_drift": None,
         }
     return False, {}
+
+
+def _is_repair_better(
+    repaired_text: str,
+    stale_text: str,
+    recent_thinks: List[Dict],
+) -> bool:
+    """Accept a repair only if it breaks away from stale recent memory."""
+    if not repaired_text or repaired_text == "Scene continues without notable changes.":
+        return False
+    repaired_tokens = _observation_tokens(repaired_text)
+    if not repaired_tokens:
+        return False
+    if _jaccard(repaired_tokens, _observation_tokens(stale_text)) >= _REPAIR_ACCEPT_SIMILARITY_MAX:
+        return False
+    for prev in recent_thinks[-3:]:
+        if _jaccard(
+            repaired_tokens,
+            _observation_tokens(str(prev.get("text", ""))),
+        ) >= _REPAIR_ACCEPT_SIMILARITY_MAX:
+            return False
+    return True
 
 
 def build_observation_request(
@@ -423,18 +452,12 @@ def build_observation_request(
 ) -> Dict:
     """Build request for 397B to generate a student observation.
 
-    v12.12 (2026-05-01): content order changed to [text-prompt][frames]
-    (was [frames][text-prompt]). The OBSERVATION_PROMPT template already
-    places memory FIRST inside the text body; combined with text-then-
-    frames in the content list, the per-chunk prefill prefix becomes
-    [system + memory_at_t + (instruction template)] which is monotonic
-    across consecutive obs requests of one video. Switching to vLLM
-    --enable-prefix-caching then reuses ~3-5K tok of the head every
-    chunk instead of just the ~400-tok system block.
-
-    This mirrors the student's user_content layout in agent_protocol.py
-    build_user_content (memory → visual_window → frames → user_input)
-    so teacher and student see the same input distribution.
+    v12.18 (2026-05-04): observation requests send the full sliding visual
+    window as a timestamped image list, ordered from older context to the
+    latest chunk. Real A/B calls on stale pass2 failures showed that this is
+    more reliable than the OpenAI video_url path for making the latest chunk
+    win against stale text memory, while still preserving the student's visual
+    sliding-window distribution.
     """
     start = chunk_idx * AGENT_CHUNK_SEC
     end = start + AGENT_CHUNK_SEC
@@ -449,55 +472,24 @@ def build_observation_request(
         window_end=int(end),
         start=int(start),
         end=int(end),
+        current_frame_count=FRAMES_PER_CHUNK,
     )
 
-    window_frame_paths = []
-    for c in range(window_start, chunk_idx + 1):
-        window_frame_paths.extend(get_chunk_frame_paths(frame_paths, c))
-
-    # v12.15: vLLM 0.17 OpenAI serving accepts video only through
-    # {"type": "video_url"}. Pre-extracted JPEG frames are sent as one
-    # data:video/jpeg URI and their real temporal anchors are passed via
-    # request-level media_io_kwargs.video. This keeps vLLM scheduling/caching
-    # while avoiding server-side mp4 decode and non-deterministic resampling.
-    #
-    # v12.14: text first, then one video block. Qwen3-VL needs the frames as
-    # video, not 32 separate images, so its processor can render per-frame
-    # timestamp anchors and understand "latest/current second".
-    #
-    # v12.12: text first, frames last — opposite of the legacy
-    # build_vision_content layout (which kept frames first for early
-    # vision-token-position pretraining bias). The Qwen3-VL processor
-    # places vision tokens wherever the content list dictates and uses
-    # vLLM media metadata for MROPE temporal alignment, so reordering does
-    # not break per-frame `<X.X seconds>` anchors. We build the content
-    # list inline here rather than reuse build_vision_content (which is
-    # still frames-first; pass1a callers depend on that behaviour).
     content: List[Dict] = [{"type": "text", "text": prompt}]
-    video_frame_paths: List[str] = []
-    frame_indices: List[int] = []
-    for offset, img_path in enumerate(window_frame_paths):
-        if Path(img_path).exists():
-            video_frame_paths.append(img_path)
-            frame_indices.append(window_start * FRAMES_PER_CHUNK + offset)
-
-    media_io_kwargs = None
-    if video_frame_paths:
-        fps = float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC)
-        total_num_frames = (chunk_idx + 1) * FRAMES_PER_CHUNK
-        content.append({
-            "type": "video_url",
-            "video_url": {"url": build_video_jpeg_data_uri(video_frame_paths)},
-        })
-        media_io_kwargs = {
-            "video": {
-                "fps": fps,
-                "frames_indices": frame_indices,
-                "total_num_frames": total_num_frames,
-                "duration": total_num_frames / fps,
-                "do_sample_frames": False,
-            },
-        }
+    for c in range(window_start, chunk_idx + 1):
+        tag = "latest chunk" if c == chunk_idx else "older context"
+        for offset, img_path in enumerate(get_chunk_frame_paths(frame_paths, c)):
+            if not Path(img_path).exists():
+                continue
+            frame_idx = c * FRAMES_PER_CHUNK + offset
+            content.append({
+                "type": "text",
+                "text": f"Frame timestamp t={frame_idx / float(FRAMES_PER_CHUNK):.1f}s ({tag}).",
+            })
+            content.append({
+                "type": "image_url",
+                "image_url": {"url": encode_image_base64(img_path)},
+            })
 
     request = {
         "messages": [{"role": "user", "content": content}],
@@ -505,8 +497,6 @@ def build_observation_request(
         "temperature": PASS_CONFIG["pass2_rollout"]["temperature"],
         "id": f"{video_id}_obs_{chunk_idx}",
     }
-    if media_io_kwargs is not None:
-        request["media_io_kwargs"] = media_io_kwargs
     return request
 
 
@@ -518,7 +508,7 @@ def build_observation_repair_request(
     *,
     stale_text: str = "",
 ) -> Dict:
-    """Build a current-chunk-only repair request for stale pass2 thinks."""
+    """Build a current-chunk timestamped-image repair request."""
     start = chunk_idx * AGENT_CHUNK_SEC
     end = start + AGENT_CHUNK_SEC
     chunk_frame_paths = [
@@ -542,24 +532,16 @@ def build_observation_repair_request(
     )
 
     content: List[Dict] = [{"type": "text", "text": prompt}]
-    media_io_kwargs = None
-    if chunk_frame_paths:
+    for i, img_path in enumerate(chunk_frame_paths):
+        frame_idx = chunk_idx * FRAMES_PER_CHUNK + i
         content.append({
-            "type": "video_url",
-            "video_url": {"url": build_video_jpeg_data_uri(chunk_frame_paths)},
+            "type": "text",
+            "text": f"Frame timestamp t={frame_idx / fps:.1f}s (latest chunk).",
         })
-        media_io_kwargs = {
-            "video": {
-                "fps": fps,
-                "frames_indices": [
-                    chunk_idx * FRAMES_PER_CHUNK + i
-                    for i in range(len(chunk_frame_paths))
-                ],
-                "total_num_frames": (chunk_idx + 1) * FRAMES_PER_CHUNK,
-                "duration": (chunk_idx + 1) * FRAMES_PER_CHUNK / fps,
-                "do_sample_frames": False,
-            },
-        }
+        content.append({
+            "type": "image_url",
+            "image_url": {"url": encode_image_base64(img_path)},
+        })
 
     request = {
         "messages": [{"role": "user", "content": content}],
@@ -567,8 +549,6 @@ def build_observation_repair_request(
         "temperature": min(float(PASS_CONFIG["pass2_rollout"]["temperature"]), 0.2),
         "id": f"{video_id}_obs_repair_{chunk_idx}",
     }
-    if media_io_kwargs is not None:
-        request["media_io_kwargs"] = media_io_kwargs
     return request
 
 
@@ -1021,11 +1001,20 @@ async def run_pass2_single_video(
                     media_io_kwargs=repair_request.get("media_io_kwargs"),
                 )
                 repaired_text = parse_observation_result(repair_raw)
-                if repaired_text and repaired_text != "Scene continues without notable changes.":
+                if _is_repair_better(
+                    repaired_text,
+                    think_text,
+                    memory.recent_thinks,
+                ):
                     think_text = repaired_text
                     repaired = True
                     logger.info(
                         "  [%s] Repaired stale pass2 think at chunk %d: %s",
+                        video_id, chunk_idx, repair_meta.get("reason", ""),
+                    )
+                else:
+                    logger.warning(
+                        "  [%s] Rejected stale pass2 repair at chunk %d: still too similar (%s)",
                         video_id, chunk_idx, repair_meta.get("reason", ""),
                     )
             except Exception as exc:
