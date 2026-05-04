@@ -208,7 +208,8 @@ def find_optimal_sft_config(
 @dataclass
 class RLConfig:
     seq_len: int                       # max prompt length
-    max_new_tokens: int                # response per chunk
+    max_new_tokens: int                # stitched response buffer
+    max_action_tokens: int             # per-action vLLM generation cap
     group_size: int                    # G rollouts per video
     train_batch_videos: int            # videos per training step
     vllm_gpu_mem_util: float = 0.55    # fraction of HBM for vLLM
@@ -373,14 +374,16 @@ def print_rl_recommendation(hw: HardwareSpec, model: Qwen3VLSpec):
     print("=" * 78)
     cfg = RLConfig(
         seq_len=16384,
-        max_new_tokens=2048,
+        max_new_tokens=32768,
+        max_action_tokens=4096,
         group_size=8,
-        train_batch_videos=8,
+        train_batch_videos=4,
     )
     mem = cfg.memory_gb(hw, model)
     timing = rl_step_seconds(cfg, hw, model)
     print(f"  prompt_length:             {cfg.seq_len}")
-    print(f"  max_response_length:       {cfg.max_new_tokens}")
+    print(f"  max_response_length:       {cfg.max_new_tokens} (stitched)")
+    print(f"  max_action_tokens:         {cfg.max_action_tokens}")
     print(f"  group_size G:              {cfg.group_size}")
     print(f"  train_batch_videos:        {cfg.train_batch_videos}")
     print(f"  total rollouts/step:       {cfg.train_batch_videos * cfg.group_size}")

@@ -1,5 +1,5 @@
 #!/bin/bash
-# End-to-end SFT + verl RL training pipeline for ThinkStream agent v12.22.
+# End-to-end SFT + verl RL training pipeline for ThinkStream agent v12.23.
 #
 # Features:
 #   - Uninterruptible (run inside tmux/screen)
@@ -28,7 +28,7 @@ cd "${PROJECT_DIR}"
 
 # Generated batch root. SFT reads final/train_sft_messages.jsonl underneath it;
 # RL reads final/train_rl_trajectories.jsonl and frames/ underneath it.
-export THINKSTREAM_DATA_ROOT=${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5_current_backup}}
+export THINKSTREAM_DATA_ROOT=${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-${PROJECT_DIR}/data/agent_v5}}
 
 # ------------------------------------------------------------------
 # Configurable overrides (env vars)
@@ -37,15 +37,18 @@ NPROC=${NPROC:-8}
 BSZ=${BSZ:-8}
 GRAD_ACCUM=${GRAD_ACCUM:-1}
 EPOCHS_SFT=${EPOCHS_SFT:-2}
-EPOCHS_RL=${EPOCHS_RL:-2}
+EPOCHS_RL=${EPOCHS_RL:-1}
 LR_SFT=${LR_SFT:-2e-5}
 LR_RL=${LR_RL:-5e-7}
-BETA=${BETA:-1e-3}
-GROUP_SIZE=${GROUP_SIZE:-4}
-MICRO_BATCH=${MICRO_BATCH:-4}
+GROUP_SIZE=${GROUP_SIZE:-8}
+BATCH_SIZE_RL=${BATCH_SIZE_RL:-4}
+PPO_MINI_BS=${PPO_MINI_BS:-${BATCH_SIZE_RL}}
+MAX_CHUNKS_RL=${MAX_CHUNKS_RL:-120}
+MAX_RESP_LEN_RL=${MAX_RESP_LEN_RL:-32768}
+MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-4096}
 
-SFT_RUN_NAME="agent-sft-v12.22"
-RL_RUN_NAME="agent-grpo-v12.22"
+SFT_RUN_NAME="agent-sft-v12.23"
+RL_RUN_NAME="agent-grpo-v12.23"
 SFT_OUTPUT="${PROJECT_DIR}/output/${SFT_RUN_NAME}"
 RL_OUTPUT="${PROJECT_DIR}/output/${RL_RUN_NAME}"
 
@@ -130,10 +133,13 @@ echo "============================================"
 rl_cmd="LLM=${best_ckpt} \
     NPROC=${NPROC} \
     GROUP_SIZE=${GROUP_SIZE} \
-    MICRO_BATCH=${MICRO_BATCH} \
+    BATCH_SIZE=${BATCH_SIZE_RL} \
+    PPO_MINI_BS=${PPO_MINI_BS} \
     LR=${LR_RL} \
     EPOCHS=${EPOCHS_RL} \
-    BETA=${BETA} \
+    MAX_CHUNKS=${MAX_CHUNKS_RL} \
+    MAX_NEW_TOKEN=${MAX_RESP_LEN_RL} \
+    MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS} \
     RUN_NAME=${RL_RUN_NAME} \
     MULTI_Q=${MULTI_Q:-1} \
     bash ${SCRIPT_DIR}/grpo_train_verl.sh"

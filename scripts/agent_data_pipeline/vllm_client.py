@@ -196,7 +196,7 @@ class VLLMClient:
             body["mm_processor_kwargs"] = dict(mm_processor_kwargs)
         if media_io_kwargs:
             # Legacy/raw-video escape hatch. Current ThinkStream prompts use
-            # timestamp text + image_url items, so normal requests should not
+            # frame-tag text + image_url items, so normal requests should not
             # set this.
             body["media_io_kwargs"] = dict(media_io_kwargs)
         client = await self._get_httpx_client()

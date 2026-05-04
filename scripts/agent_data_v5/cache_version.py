@@ -47,7 +47,7 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        outputs. This fixes prompt-metadata leakage into pass2 thinks and
     #        adds structured logging for rejected repairs.
     #   v12.22 (2026-05-04): all construction/rendering stages align on the
-    #        project-wide pre-extracted-frame protocol: timestamp text before
+    #        project-wide pre-extracted-frame protocol: frame-tag text before
     #        each image/image_url. pass1a/pass2 teacher calls, pass5 SFT
     #        messages, SFT/RL/eval/deploy renderers now share the same helper
     #        instead of mixing Qwen video blocks with image lists. This avoids

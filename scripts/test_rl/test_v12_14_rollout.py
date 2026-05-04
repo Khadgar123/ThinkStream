@@ -370,8 +370,8 @@ async def main() -> int:
                 for c in (m.get("content") or [])
                 if isinstance(c, dict)
             )
-            assert "Frame timestamp t=5.0s (recalled frame)." in content_text
-            print("  ✓ recall historical timestamp text starts at 5.0s")
+            assert '<frame ts="5.0" role="recalled frame" />' in content_text
+            print("  ✓ recall historical frame tag starts at 5.0s")
 
     print("\n✓ ALL v12.14 ROLLOUT SMOKE ASSERTIONS PASS")
     return 0

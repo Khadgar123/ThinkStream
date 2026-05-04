@@ -534,15 +534,22 @@ def make_generate_fn(
         # 2. Move to device
         inputs = {k: v.to(device) if hasattr(v, "to") else v for k, v in inputs.items()}
 
-        # 3. Generate
-        output_ids = model.generate(
-            **inputs,
-            max_new_tokens=max_new_tokens,
-            do_sample=True,
-            temperature=kwargs.get("temperature", 0.7),
-            top_k=kwargs.get("top_k", 50),
-            top_p=kwargs.get("top_p", 0.95),
-        )
+        # 3. Generate. Accuracy eval should be deterministic by default;
+        # callers can opt back into sampling with do_sample=True or
+        # temperature>0 for exploratory demos.
+        temperature = float(kwargs.get("temperature", 0.0))
+        do_sample = bool(kwargs.get("do_sample", temperature > 0.0))
+        gen_kwargs = {
+            "max_new_tokens": max_new_tokens,
+            "do_sample": do_sample,
+        }
+        if do_sample:
+            gen_kwargs.update({
+                "temperature": temperature,
+                "top_k": kwargs.get("top_k", 50),
+                "top_p": kwargs.get("top_p", 0.95),
+            })
+        output_ids = model.generate(**inputs, **gen_kwargs)
 
         # 4. Decode (only new tokens)
         input_len = inputs["input_ids"].shape[1]

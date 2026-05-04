@@ -20,7 +20,7 @@
 #         <memory>...</memory>
 #         <queries>...</queries>           (when ask_chunks fired)
 #         <visual_window>{header}</visual_window>               ← turn-specific
-#         {timestamp text + image items for chunks[max(0,N-15)..N]}
+#         {frame-tag text + image items for chunks[max(0,N-15)..N]}
 #         <user_input>...</user_input>     (the question text)
 #         OR <compress_trigger/>   (compress turn — system-injected, v12.12 no range)
 #       <|im_end|>
@@ -65,7 +65,7 @@
 #       <memory>                               ← monotonic append; SFT-first
 #       (queries)                              ← optional
 #       <visual_window header>                 ← {start, end, frames, current_time}
-#       timestamp text + image items           ← sliding window (or expanding opt-in)
+#       frame-tag text + image items          ← sliding window (or expanding opt-in)
 #       <recall_result> (optional)             ← chunk-specific
 #       <user_input> or <compress_trigger/>    ← chunk-specific, last
 #     ]
@@ -86,9 +86,9 @@
 #
 # SFT ALIGNMENT (the 5 things that must match pass5_messages.py):
 #   1. Frame paths use 1-indexed numbering: frame_{ci*FPC + fi + 1:06d}.jpg
-#   2. Pre-extracted frames render as timestamp text + image items. The
-#      timestamp text is the temporal anchor; vLLM schedules image tensors.
-#   3. Timestamp text uses frame_idx / fps, where
+#   2. Pre-extracted frames render as frame-tag text + image items. The
+#      frame-tag timestamp is the temporal anchor; vLLM schedules image tensors.
+#   3. Frame-tag text uses frame_idx / fps, where
 #      frame_idx = window_start*FPC + i.
 #   4. Compress turn uses bare <compress_trigger/> (v12.12: no range,
 #      no visual_window). Model derives time_range from memory.
@@ -425,6 +425,14 @@ def _register_streaming_agent_loop():
             self.prompt_length = self.rollout_config.prompt_length
             self.response_length = self.rollout_config.response_length
             self.max_model_len = self.rollout_config.max_model_len or (self.prompt_length + self.response_length)
+            # response_length is the stitched trajectory buffer used by verl's
+            # loss tensors. A single chunk action must be much smaller; pass2
+            # uses 1024 for observation and 4096 for compress. Use 4096 as a
+            # safe unified cap so max_model_len checks do not confuse the
+            # whole-trajectory buffer with one vLLM request.
+            self.max_tokens_per_action = int(
+                os.environ.get("THINKSTREAM_MAX_TOKENS_PER_ACTION", "4096") or 4096
+            )
             mt = self.rollout_config.multi_turn
             # v12.13 (2026-05-02): verl's MultiTurnConfig dataclass rejects
             # custom fields (max_turns / frames_root / frames_per_chunk /
@@ -718,7 +726,7 @@ def _register_streaming_agent_loop():
               }
 
             Both fields go into the next chunk_messages user payload. The
-            prompt builder renders recalled frame paths with timestamp text
+            prompt builder renders recalled frame paths with frame-tag text
             anchored to the HISTORICAL chunk timestamps (not the current
             chunk), so the model sees these as old frames from time T, not
             current visual evidence.
@@ -817,7 +825,7 @@ def _register_streaming_agent_loop():
             Mirrors pass5_messages.py:280-380 ordering EXACTLY (the v12.11
             audit P0 fix order is the SFT contract):
               1. <recalled_frames>{json header}</recalled_frames> text
-              2. timestamp text + image items anchored to historical chunk
+              2. frame-tag text + image items anchored to historical chunk
                  timestamps
               3. <recall_result>{json}</recall_result> text
 
@@ -1174,15 +1182,23 @@ def _register_streaming_agent_loop():
 
                     # Prompt-budget guard (single-chunk + tool round can
                     # exceed budget after frames are appended; skip out
-                    # if so — outer loop ends rollout).
-                    if len(chunk_prompt_ids) + self.response_length >= self.max_model_len:
+                    # if so — outer loop ends rollout). Use the per-action
+                    # generation cap here, not the stitched response buffer.
+                    remaining_context = self.max_model_len - len(chunk_prompt_ids)
+                    if remaining_context <= 0:
                         inner_aborted = True
                         break
                     user_block_len = len(chunk_prompt_ids) - last_prompt_len
                     if user_block_len < 0:
                         inner_aborted = True
                         break
-                    if len(response_mask) + user_block_len + 1 >= self.response_length:
+                    remaining_response = self.response_length - len(response_mask) - user_block_len - 1
+                    max_tokens_this_turn = min(
+                        self.max_tokens_per_action,
+                        remaining_context,
+                        remaining_response,
+                    )
+                    if max_tokens_this_turn <= 0:
                         inner_aborted = True
                         break
 
@@ -1197,7 +1213,10 @@ def _register_streaming_agent_loop():
                         output: TokenOutput = await self.server_manager.generate(
                             request_id=request_id,
                             prompt_ids=chunk_prompt_ids,
-                            sampling_params=sampling_params,
+                            sampling_params={
+                                **sampling_params,
+                                "max_tokens": max_tokens_this_turn,
+                            },
                             image_data=(initial_images + chunk_images) if chunk_images else (
                                 initial_images if initial_images else None
                             ),
@@ -1354,11 +1373,11 @@ def _register_streaming_agent_loop():
                 #   2. LIFO: most-recently-triggered pending Q.
                 #   3. FIFO floor (implicit): single-pending case.
                 if multi_q_list and pending_q_indices:
-                    answer_match = re.search(
-                        r"<answer>(.*?)</answer>", response_text, re.DOTALL,
+                    answer_str = (
+                        parsed.get("answer_text") if kind == "answer" else None
                     )
-                    if answer_match:
-                        answer_str = answer_match.group(1).strip()
+                    if answer_str is not None:
+                        answer_str = str(answer_str).strip()
 
                         chosen_pos = None
                         # 1. answer_chunks window match

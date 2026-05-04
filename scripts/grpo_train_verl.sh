@@ -22,23 +22,24 @@
 #
 # Optional env (defaults shown):
 #   NPROC           — GPUs per node (8)
-#   GROUP_SIZE      — GRPO group size G (8) — verl supports up to ~16 cleanly
+#   GROUP_SIZE      — GRPO group size G (8) — enough variance for GRPO
 #   MAXLEN          — max prompt length (16384) — vLLM context cap
-#   MAX_NEW_TOKEN   — max response length per turn (2048) — covers compress JSON
-#   MAX_CHUNKS      — max turns per video (360 = 6 min × 1s/chunk)
+#   MAX_NEW_TOKEN   — total stitched response buffer (32768)
+#   MAX_ACTION_TOKENS — per-action vLLM generation cap (4096)
+#   MAX_CHUNKS      — max turns per video (120 by default; use recurrent for 240+)
 #   GPU_MEM_UTIL    — vLLM gpu_memory_utilization (0.55 — leave room for FSDP)
 #   LIMIT_IMAGES    — vLLM limit_mm_per_prompt.image for timestamped frames (64)
 #   TP_SIZE         — tensor_parallel_size for vLLM rollout (2 on 8-GPU node)
-#   BATCH_SIZE      — videos per training step (8)
-#   PPO_MINI_BS     — ppo_mini_batch_size (32)
-#   LR              — learning rate (1e-6)
+#   BATCH_SIZE      — videos per training step (4)
+#   PPO_MINI_BS     — ppo_mini_batch_size in prompt units (default=BATCH_SIZE)
+#   LR              — learning rate (5e-7)
 #   EPOCHS          — total_epochs (1)
 #   SAVE_FREQ       — save every N steps (50)
 #   TEST_FREQ       — eval on val every N steps (25)
-#   RUN_NAME        — wandb experiment name (grpo-v12.22-verl)
+#   RUN_NAME        — wandb experiment name (grpo-v12.23-verl)
 #   WANDB_PROJECT   — wandb project (thinkstream-v12)
-#   PARAM_OFFLOAD   — FSDP offload params to CPU (false). Enable for tight HBM.
-#   OPTIMIZER_OFFLOAD — FSDP offload optimizer state (false).
+#   PARAM_OFFLOAD   — FSDP offload params to CPU (true).
+#   OPTIMIZER_OFFLOAD — FSDP offload optimizer state (true).
 #   ROLLOUT_BACKEND — rollout backend: vllm | sglang | hf (vllm).
 #   TRAIN_PARQUET / VAL_PARQUET — verl parquets. If unset, we auto-build
 #                  from data/agent_v5/final/*.jsonl via
@@ -54,36 +55,31 @@ set -euo pipefail
 LLM=${LLM:?'LLM= required (path to SFT checkpoint, e.g. output/agent-sft)'}
 
 NPROC=${NPROC:-8}
-# Conservative first-run defaults. Tune up after smoke-testing.
-#   GROUP_SIZE × MAX_CHUNKS × BATCH_SIZE = vLLM requests per training step.
-#   8 × 60 × 4 = 1920 reqs/step ≈ 5-15 min on 8×H20 with prefix cache.
-#   8 × 360 × 8 = 23040 reqs/step → 60-90 min/step. Only enable once
-#   smoke confirmed.
-GROUP_SIZE=${GROUP_SIZE:-4}
+# Production defaults. For smoke tests override MAX_CHUNKS=8 BATCH_SIZE=1
+# GROUP_SIZE=2 MAX_STEPS=2.
+GROUP_SIZE=${GROUP_SIZE:-8}
 MAXLEN=${MAXLEN:-16384}
-# P0.4 fix (post-review 2026-05-01): MAX_NEW_TOKEN sets verl's
-# rollout.response_length, which is the TOTAL stitched length across
-# all chunks' user_blocks + assistant turns. NOT a per-turn budget.
-# 60 chunks × ~120 tok/chunk ≈ 7K so we need ≥ 8K. Old default 2048
-# would force the loop to break after ~16 chunks.
-MAX_NEW_TOKEN=${MAX_NEW_TOKEN:-16384}
-MAX_CHUNKS=${MAX_CHUNKS:-60}
+# MAX_NEW_TOKEN sets verl's rollout.response_length, which is the TOTAL
+# stitched response buffer across all chunks. It is NOT the per-action
+# generation cap; MAX_ACTION_TOKENS below controls each vLLM request.
+MAX_NEW_TOKEN=${MAX_NEW_TOKEN:-32768}
+MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-4096}
+MAX_CHUNKS=${MAX_CHUNKS:-120}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
 LIMIT_IMAGES=${LIMIT_IMAGES:-64}
 TP_SIZE=${TP_SIZE:-2}
 BATCH_SIZE=${BATCH_SIZE:-4}
-PPO_MINI_BS=${PPO_MINI_BS:-16}
-LR=${LR:-1e-6}
+PPO_MINI_BS=${PPO_MINI_BS:-${BATCH_SIZE}}
+LR=${LR:-5e-7}
 EPOCHS=${EPOCHS:-1}
 MAX_STEPS=${MAX_STEPS:-}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
-RUN_NAME=${RUN_NAME:-grpo-v12.22-verl}
+RUN_NAME=${RUN_NAME:-grpo-v12.23-verl}
 WANDB_PROJECT=${WANDB_PROJECT:-thinkstream-v12}
-PARAM_OFFLOAD=${PARAM_OFFLOAD:-false}
-OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-false}
+PARAM_OFFLOAD=${PARAM_OFFLOAD:-true}
+OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
 ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-vllm}
-DATASET=${DATASET:-stream_agent_rl_traj}
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
@@ -148,6 +144,7 @@ echo "Group size G:      ${GROUP_SIZE}"
 echo "Max chunks:        ${MAX_CHUNKS}"
 echo "Max prompt len:    ${MAXLEN}"
 echo "Max new tokens:    ${MAX_NEW_TOKEN}"
+echo "Max action tokens: ${MAX_ACTION_TOKENS}"
 echo "GPU mem util:      ${GPU_MEM_UTIL}"
 echo "Image limit:       ${LIMIT_IMAGES}"
 echo "LR:                ${LR}"
@@ -179,45 +176,36 @@ export THINKSTREAM_TRAJ_INDEX_PATH="${TRAIN_JSONL}"
 # turn. Empty / unset → loop falls back to text-only RL.
 FRAMES_ROOT="${FRAMES_ROOT:-${AGENT_DATA_ROOT}/frames}"
 export THINKSTREAM_FRAMES_ROOT="${FRAMES_ROOT}"
+export THINKSTREAM_MAX_TOKENS_PER_ACTION="${MAX_ACTION_TOKENS}"
 
-TRAINING_STEPS_ARGS=()
+export THINKSTREAM_HOME="${PROJECT_DIR}"
+export HF_MODEL_PATH="${LLM}"
+export TRAIN_PARQUET="${TRAIN_PARQUET}"
+export VAL_PARQUET="${VAL_PARQUET}"
+export N_GPUS_PER_NODE="${NPROC}"
+export GEN_TP="${TP_SIZE}"
+export GROUP_SIZE="${GROUP_SIZE}"
+export BATCH_SIZE="${BATCH_SIZE}"
+export PPO_MINI_BS="${PPO_MINI_BS}"
+export LR="${LR}"
+export EPOCHS="${EPOCHS}"
+export GPU_MEM_UTIL="${GPU_MEM_UTIL}"
+export LIMIT_IMAGES="${LIMIT_IMAGES}"
+export MAX_PROMPT_LEN="${MAXLEN}"
+export MAX_RESP_LEN="${MAX_NEW_TOKEN}"
+export MAX_ACTION_TOKENS="${MAX_ACTION_TOKENS}"
+export MAX_TURNS="${MAX_CHUNKS}"
+export PROJECT_NAME="${WANDB_PROJECT}"
+export EXPERIMENT_NAME="${RUN_NAME}"
+export SAVE_DIR="${OUTPUT_DIR}"
+export SAVE_FREQ="${SAVE_FREQ}"
+export TEST_FREQ="${TEST_FREQ}"
+export PARAM_OFFLOAD="${PARAM_OFFLOAD}"
+export OPTIMIZER_OFFLOAD="${OPTIMIZER_OFFLOAD}"
+export ROLLOUT_BACKEND="${ROLLOUT_BACKEND}"
 if [[ -n "${MAX_STEPS}" ]]; then
-    TRAINING_STEPS_ARGS=(trainer.total_training_steps=${MAX_STEPS})
+    export MAX_STEPS
 fi
 
 cd "${VERL_DIR}"
-
-python3 -m verl.trainer.main_ppo \
-    --config-path="${RECIPE_DIR}" \
-    --config-name="${RECIPE_NAME}" \
-    actor_rollout_ref.model.path="${LLM}" \
-    actor_rollout_ref.actor.optim.lr=${LR} \
-    actor_rollout_ref.actor.ppo_mini_batch_size=${PPO_MINI_BS} \
-    actor_rollout_ref.actor.fsdp_config.param_offload=${PARAM_OFFLOAD} \
-    actor_rollout_ref.actor.fsdp_config.optimizer_offload=${OPTIMIZER_OFFLOAD} \
-    actor_rollout_ref.rollout.name=${ROLLOUT_BACKEND} \
-    actor_rollout_ref.rollout.n=${GROUP_SIZE} \
-    actor_rollout_ref.rollout.tensor_model_parallel_size=${TP_SIZE} \
-    actor_rollout_ref.rollout.gpu_memory_utilization=${GPU_MEM_UTIL} \
-    actor_rollout_ref.rollout.limit_images=${LIMIT_IMAGES} \
-    actor_rollout_ref.rollout.response_length=${MAX_NEW_TOKEN} \
-    actor_rollout_ref.rollout.prompt_length=${MAXLEN} \
-    actor_rollout_ref.rollout.multi_turn.max_assistant_turns=${MAX_CHUNKS} \
-    actor_rollout_ref.rollout.multi_turn.max_user_turns=${MAX_CHUNKS} \
-    data.train_files="${TRAIN_PARQUET}" \
-    data.val_files="[${VAL_PARQUET}]" \
-    data.train_batch_size=${BATCH_SIZE} \
-    data.val_batch_size=${BATCH_SIZE} \
-    data.max_prompt_length=${MAXLEN} \
-    data.max_response_length=${MAX_NEW_TOKEN} \
-    reward.custom_reward_function.path="${VERL_DIR}/recipe_thinkstream/thinkstream.py" \
-    reward.custom_reward_function.name=compute_score \
-    trainer.total_epochs=${EPOCHS} \
-    "${TRAINING_STEPS_ARGS[@]}" \
-    trainer.save_freq=${SAVE_FREQ} \
-    trainer.test_freq=${TEST_FREQ} \
-    trainer.experiment_name="${RUN_NAME}" \
-    trainer.project_name="${WANDB_PROJECT}" \
-    trainer.default_local_dir="${OUTPUT_DIR}" \
-    trainer.n_gpus_per_node=${NPROC} \
-    trainer.nnodes=1
+bash recipe_thinkstream/run_thinkstream_grpo.sh

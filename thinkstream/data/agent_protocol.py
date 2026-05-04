@@ -112,10 +112,10 @@ def append_timestamped_image_list(
         {"type": "text", "text": "<frame ts=\"12.5\" role=\"latest chunk\" />"}
         {"type": "image", "image": "/abs/frame_000026.jpg", ...}
 
-    OpenAI-compatible rollout uses the same timestamp text with
+    OpenAI-compatible rollout uses the same frame-tag text with
     ``image_url`` items by setting ``image_key="image_url"`` and passing an
     encoder. Local SFT/RL/eval use ``image`` items so qwen-vl-utils and vLLM
-    process them as images while the timestamp text supplies video time.
+    process them as images while the frame tag supplies video time.
     """
     frame_seq = list(frames) if frames is not None else []
     if not frame_seq:
@@ -386,8 +386,8 @@ def build_user_content(
     cache-miss boundary; placing it AFTER the stable text means the miss
     starts later in the sequence, not at the front.
 
-    Pre-extracted frames are rendered as timestamp text + image items, not
-    as a ``video`` block. The timestamp text is the project-level temporal
+    Pre-extracted frames are rendered as frame-tag text + image items, not
+    as a ``video`` block. The frame tag is the project-level temporal
     anchor shared by pass/SFT/RL/eval; vLLM still batches/schedules the image
     tensors while avoiding pre-sampled-video metadata edge cases.
 
@@ -553,12 +553,39 @@ def build_user_content(
 # Tools registered via system <tools> block (auto-rendered by chat_template
 # when tools=tools is passed to apply_chat_template).
 
+_FRAME_TAG_LINE_RE = re.compile(
+    r'\s*<frame\s+ts="[^"]+"\s+role="[^"]+"\s*/>\s*',
+    re.IGNORECASE,
+)
+_FRAME_TAG_INLINE_RE = re.compile(
+    r'<frame\s+ts="[^"]+"\s+role="[^"]+"\s*/>',
+    re.IGNORECASE,
+)
+
+
+def strip_frame_metadata_tags(text: str) -> str:
+    """Remove copied frame metadata tags from model-visible output text."""
+    if not text:
+        return text
+    kept_lines = []
+    for line in str(text).splitlines():
+        if _FRAME_TAG_LINE_RE.fullmatch(line):
+            continue
+        kept_lines.append(line)
+    cleaned = "\n".join(kept_lines)
+    cleaned = _FRAME_TAG_INLINE_RE.sub(" ", cleaned)
+    cleaned = re.sub(r"[ \t]{2,}", " ", cleaned)
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    return cleaned.strip()
+
 SYSTEM_PROMPT_V12 = (
     "You are a streaming video agent. You observe 1-second video chunks and maintain memory.\n\n"
-    "Each turn you receive: timestamped visual frames (recent 16s window) + memory state. "
-    "Every image is preceded by a line like 'Frame timestamp t=12.5s (...)'; "
-    "use these timestamps together with <visual_window>.current_time to identify "
-    "the current chunk. "
+    "Each turn you receive: frame-tagged visual frames (recent 16s window) + memory state. "
+    "Every image is preceded by a structural tag like <frame ts=\"12.5\" role=\"latest chunk\" />; "
+    "use these frame tags together with <visual_window>.current_time to identify "
+    "the current chunk. Frame tags are routing metadata only: never copy or "
+    "paraphrase any <frame .../> tag, timestamp marker, role marker, or metadata "
+    "line in your output. "
     "You may either (a) call a tool, (b) emit a final answer, or (c) emit an empty "
     "answer if no response is warranted.\n\n"
     "Tools:\n"
@@ -579,7 +606,7 @@ SYSTEM_PROMPT_V12 = (
     "    <answer>response text</answer>\n"
     "    <answer></answer>   (silent — no question to answer right now)\n\n"
     "Think rules: describe ONLY what is newly visible in the current chunk. "
-    "Evidence priority: (1) current timestamped frames determine the current think; "
+    "Evidence priority: (1) current frame-tagged images determine the current think; "
     "(2) memory is history and entity naming only; (3) if current frames "
     "conflict with memory, ignore memory for the current visual description. "
     "Do not use memory as evidence that a past object/action is still visible. "
@@ -734,6 +761,7 @@ def parse_agent_output_v12(output_text: str) -> Dict:
             "format_error": str | None,        # set when parsing fails
         }
     """
+    output_text = strip_frame_metadata_tags(output_text or "")
     result = {
         "raw": output_text,
         "think": "",

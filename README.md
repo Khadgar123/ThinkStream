@@ -76,20 +76,19 @@ under `final/`.
 # SFT on the batch's messages file
 THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
 bash scripts/sft_per_timestep.sh
-# → output/agent-sft/
+# → output/agent-sft-v12.23/
 
 # GRPO RL from the SFT checkpoint, using vendored verl
 THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
-LLM=output/agent-sft/checkpoint-616 \
+LLM=output/agent-sft-v12.23/checkpoint-<best> \
 bash scripts/grpo_train_verl.sh
-# → output/agent-grpo/  +  output/agent-grpo/audit/grpo_step.jsonl
+# → output/grpo-v12.23-verl/
 ```
 
-GDPO RL uses NVIDIA-style per-reward decoupled advantage aggregation
-([2601.05242](https://arxiv.org/abs/2601.05242)) over eight reward components
-(`correctness`, `silent_quality`, `timing`, `recall_quality`, `recall_hit_rate`,
-`range_tightness`, `format`, `overflow_pen`). See `thinkstream/trainer/gdpo_advantage.py`
-and `docs/design.md` §8 for the full design (canonical current-state).
+GRPO RL uses the vendored verl recipe with the shared v12 reward adapter.
+The production launcher defaults are `GROUP_SIZE=8`, `BATCH_SIZE=4`,
+`PPO_MINI_BS=4`, `LR=5e-7`, `EPOCHS=1`, `MAX_CHUNKS=120`,
+`MAX_NEW_TOKEN=32768`, and `MAX_ACTION_TOKENS=4096`.
 
 `scripts/grpo_train.sh` is only a backward-compatible forwarder. The active
 RL implementation is `scripts/grpo_train_verl.sh` plus
@@ -105,25 +104,21 @@ Run the respective `transfer_annotation_format.py` scripts under the `thinkstrea
 - `thinkstream/eval/ovo_bench/transfer_annotation_format.py`
 - `thinkstream/eval/rtvu/transfer_annotation_format.py`
 
-After conversion, run the v12 streaming agent eval. The canonical entry
-is `scripts/eval/ovo/run_sft.sh`, which drives `StreamingAgentLoop`
-(the same per-timestep, system-trigger-injecting, recall-orchestrating
-runtime the model was trained against — chunk-by-chunk fresh-KV
-inference with memory + queries text persistence).
+For OVO-Bench, run the full-format v12 streaming agent eval. It drives
+`StreamingAgentLoop` with the same timestamped-frame protocol as SFT/RL.
 
 ```bash
-bash scripts/eval/ovo/run_sft.sh \
-    --benchmark_dir /path/to/ovo_bench \
-    --model_path /path/to/ckpt \
-    --model_type qwen3vl
+bash scripts/eval/ovo/run_sft_full.sh \
+    --ckpt output/agent-sft-v12.23/checkpoint-<best> \
+    --benchmark_json /path/to/ovo_bench_new.json \
+    --video_root /path/to/videos \
+    --frames_root /path/to/pre_extracted_frames
 ```
-*Note: You need to change the model checkpoint (`--model_path`) and
-benchmark dir to your own paths.*
 
-The legacy `eval.sh` script does NOT drive the agent loop and should
-not be used for v12 evaluation. The retired `--use_agent_loop` flag
-referenced in earlier README revisions has been removed; `run_sft.sh`
-is now the only sanctioned path.
+Use `scripts/eval/ovo/run_rl_full.sh` for RL checkpoints
+(`compress_mode=self`) and `scripts/eval/run_matrix.sh` for the full
+base/SFT/RL matrix. Set `N_TEST=200 N_PER_OVO_TASK=30` for a smoke run;
+defaults run all samples.
 
 ### Inference
 

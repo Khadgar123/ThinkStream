@@ -236,9 +236,11 @@ def resolve_video_path(sample, video_root):
 
 
 SYSTEM_PROMPT = (
-    "You are a helpful video understanding assistant. Use the timestamped "
-    "frames carefully and answer questions based on what you observe. "
-    "Each frame is preceded by its real video timestamp. "
+    "You are a helpful video understanding assistant. Use the frame-tagged "
+    "images carefully and answer questions based on what you observe. "
+    "Each frame is preceded by structural metadata like "
+    "<frame ts=\"12.5\" role=\"visual frame\" />; use it as the real video "
+    "timestamp, but never copy it. "
     "If the question is yes/no, answer with Yes or No. If the "
     "question asks for a count, answer with the integer."
 )

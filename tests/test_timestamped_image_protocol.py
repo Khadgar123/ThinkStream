@@ -6,7 +6,11 @@ from scripts.agent_data_v5.pass2_rollout import (
     build_observation_request,
 )
 from scripts.agent_data_v5.pass5_messages import build_messages
-from thinkstream.data.agent_protocol import build_user_content
+from thinkstream.data.agent_protocol import (
+    SYSTEM_PROMPT_V12,
+    build_user_content,
+    parse_agent_output_v12,
+)
 
 
 def _jpeg_frames(tmp_path: Path, n: int):
@@ -23,7 +27,7 @@ def _frame_timestamp_texts(content):
         item.get("text", "")
         for item in content
         if item.get("type") == "text"
-        and item.get("text", "").startswith("Frame timestamp")
+        and item.get("text", "").startswith("<frame ")
     ]
 
 
@@ -44,10 +48,10 @@ def test_runtime_build_user_content_uses_timestamped_images():
     assert "video" not in types
     assert types.count("image") == 4
     assert _frame_timestamp_texts(content) == [
-        "Frame timestamp t=0.0s (older context).",
-        "Frame timestamp t=0.5s (older context).",
-        "Frame timestamp t=1.0s (latest chunk).",
-        "Frame timestamp t=1.5s (latest chunk).",
+        '<frame ts="0.0" role="older context" />',
+        '<frame ts="0.5" role="older context" />',
+        '<frame ts="1.0" role="latest chunk" />',
+        '<frame ts="1.5" role="latest chunk" />',
     ]
 
 
@@ -81,7 +85,7 @@ def test_pass5_sft_messages_use_same_timestamped_image_protocol():
     assert "video" not in types
     assert types.count("image") == 4
     assert _frame_timestamp_texts(content)[-1] == (
-        "Frame timestamp t=1.5s (latest chunk)."
+        '<frame ts="1.5" role="latest chunk" />'
     )
 
 
@@ -93,8 +97,8 @@ def test_teacher_passes_use_timestamped_image_url_protocol(tmp_path):
     assert "video_url" not in [item["type"] for item in p1_content]
     assert [item["type"] for item in p1_content].count("image_url") == 2
     assert _frame_timestamp_texts(p1_content) == [
-        "Frame timestamp t=1.0s (current chunk).",
-        "Frame timestamp t=1.5s (current chunk).",
+        '<frame ts="1.0" role="current chunk" />',
+        '<frame ts="1.5" role="current chunk" />',
     ]
 
     p2 = build_observation_request(
@@ -107,7 +111,19 @@ def test_teacher_passes_use_timestamped_image_url_protocol(tmp_path):
     assert "video_url" not in [item["type"] for item in p2_content]
     assert [item["type"] for item in p2_content].count("image_url") == 6
     assert _frame_timestamp_texts(p2_content)[-2:] == [
-        "Frame timestamp t=2.0s (latest chunk).",
-        "Frame timestamp t=2.5s (latest chunk).",
+        '<frame ts="2.0" role="latest chunk" />',
+        '<frame ts="2.5" role="latest chunk" />',
     ]
     assert "media_io_kwargs" not in p2
+
+
+def test_runtime_prompt_and_parser_use_frame_tags():
+    assert '<frame ts="12.5" role="latest chunk" />' in SYSTEM_PROMPT_V12
+    assert "never copy" in SYSTEM_PROMPT_V12.lower()
+
+    parsed = parse_agent_output_v12(
+        '<think><frame ts="2.0" role="latest chunk" /> new brush appears</think>'
+        '<answer>A</answer>'
+    )
+    assert parsed["think"] == "new brush appears"
+    assert parsed["answer_text"] == "A"

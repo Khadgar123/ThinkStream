@@ -23,12 +23,16 @@
 #   N_GPUS_PER_NODE [8] / NNODES [1]
 #   GEN_TP [2]              vLLM tensor_model_parallel_size
 #   GROUP_SIZE [8]          GRPO group size
-#   BATCH_SIZE [8]          videos per step
-#   PPO_MINI_BS [32]
-#   LR [1e-6]
+#   BATCH_SIZE [4]          videos per step
+#   PPO_MINI_BS [BATCH_SIZE]
+#                           verl multiplies this by rollout.n internally
+#                           for the generated-response mini-batch.
+#   LR [5e-7]
 #   EPOCHS [1]
 #   MAX_PROMPT_LEN [16384]
-#   MAX_RESP_LEN [2048]
+#   MAX_RESP_LEN [32768]    total stitched response buffer
+#   MAX_ACTION_TOKENS [4096]
+#                           per-action vLLM generation cap
 #   MAX_TURNS [120]   (covers batch1 max=95 + headroom. Stitched ceiling
 #                       ~180; for 240+ chunks see
 #                       docs/v12.14_recurrent_design.md for the recurrent
@@ -36,8 +40,9 @@
 #   GPU_MEM_UTIL [0.55]
 #   LIMIT_IMAGES [64]       vLLM limit_mm_per_prompt.image for timestamped frames
 #   PROJECT_NAME [thinkstream-v12]
-#   EXPERIMENT_NAME [grpo-v12.22-verl]
+#   EXPERIMENT_NAME [grpo-v12.23-verl]
 #   SAVE_DIR [./output/$EXPERIMENT_NAME]
+#   SAVE_FREQ [50] / TEST_FREQ [25]
 
 set -xeuo pipefail
 
@@ -59,9 +64,9 @@ N_GPUS_PER_NODE=${N_GPUS_PER_NODE:-8}
 NNODES=${NNODES:-1}
 GEN_TP=${GEN_TP:-2}
 GROUP_SIZE=${GROUP_SIZE:-8}
-BATCH_SIZE=${BATCH_SIZE:-8}
-PPO_MINI_BS=${PPO_MINI_BS:-256}
-LR=${LR:-1e-6}
+BATCH_SIZE=${BATCH_SIZE:-4}
+PPO_MINI_BS=${PPO_MINI_BS:-${BATCH_SIZE}}
+LR=${LR:-5e-7}
 EPOCHS=${EPOCHS:-1}
 MAX_PROMPT_LEN=${MAX_PROMPT_LEN:-16384}
 # v12.14 (2026-05-03): MAX_RESP_LEN is the STITCHED total across all chunk
@@ -87,6 +92,7 @@ MAX_PROMPT_LEN=${MAX_PROMPT_LEN:-16384}
 #     240-600s = 7%                  ← needs v12.14
 #     >=600s   = 3%                  ← needs v12.14
 MAX_RESP_LEN=${MAX_RESP_LEN:-32768}
+MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-4096}
 # Default 120 chunks comfortably covers all of current batch1 (max=95) and
 # the lower tier of batch2's 120-240s videos. Bump to 180 for batch2
 # coverage; for 240+ chunks switch to v12.14 recurrent rollout.
@@ -101,8 +107,14 @@ LIMIT_IMAGES=${LIMIT_IMAGES:-64}
 MM_CACHE_GB=${MM_CACHE_GB:-64}
 
 PROJECT_NAME=${PROJECT_NAME:-thinkstream-v12}
-EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v12.22-verl}
+EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v12.23-verl}
 SAVE_DIR=${SAVE_DIR:-./output/${EXPERIMENT_NAME}}
+SAVE_FREQ=${SAVE_FREQ:-50}
+TEST_FREQ=${TEST_FREQ:-25}
+PARAM_OFFLOAD=${PARAM_OFFLOAD:-true}
+OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
+ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-vllm}
+MAX_STEPS=${MAX_STEPS:-}
 
 # verl spawns Ray workers; each worker process inherits PYTHONPATH so the
 # reward function can import thinkstream.trainer.v12_rewards.
@@ -116,6 +128,7 @@ export THINKSTREAM_FRAMES_ROOT="${THINKSTREAM_FRAMES_ROOT:-${THINKSTREAM_DATA_RO
 export THINKSTREAM_FRAMES_PER_CHUNK="${THINKSTREAM_FRAMES_PER_CHUNK:-2}"
 export THINKSTREAM_VISUAL_WINDOW_CHUNKS="${THINKSTREAM_VISUAL_WINDOW_CHUNKS:-16}"
 export THINKSTREAM_RECALL_STUB="${THINKSTREAM_RECALL_STUB:-(no relevant past observation found)}"
+export THINKSTREAM_MAX_TOKENS_PER_ACTION="${THINKSTREAM_MAX_TOKENS_PER_ACTION:-${MAX_ACTION_TOKENS}}"
 
 # v12.13 (2026-05-02): visual-window mode for vLLM prefix cache.
 # ─────────────────────────────────────────────────────────────────
@@ -199,11 +212,17 @@ export THINKSTREAM_STATE_ADV_ALPHA="${THINKSTREAM_STATE_ADV_ALPHA:-0.7}"
 
 mkdir -p "${SAVE_DIR}"
 
+TRAINING_STEPS_ARGS=()
+if [[ -n "${MAX_STEPS}" ]]; then
+    TRAINING_STEPS_ARGS=(trainer.total_training_steps=${MAX_STEPS})
+fi
+
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     --config-path="$(pwd)/recipe_thinkstream/configs" \
     --config-name='thinkstream_grpo' \
     data.train_files="${TRAIN_PARQUET}" \
     data.val_files="[${VAL_PARQUET}]" \
+    data.val_batch_size=${BATCH_SIZE} \
     data.train_batch_size=${BATCH_SIZE} \
     data.max_prompt_length=${MAX_PROMPT_LEN} \
     data.max_response_length=${MAX_RESP_LEN} \
@@ -223,14 +242,14 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.actor.entropy_coeff=0.0 \
     actor_rollout_ref.actor.use_dynamic_bsz=True \
     actor_rollout_ref.actor.ppo_max_token_len_per_gpu=$((MAX_PROMPT_LEN + MAX_RESP_LEN)) \
-    actor_rollout_ref.actor.fsdp_config.param_offload=True \
-    actor_rollout_ref.actor.fsdp_config.optimizer_offload=True \
+    actor_rollout_ref.actor.fsdp_config.param_offload=${PARAM_OFFLOAD} \
+    actor_rollout_ref.actor.fsdp_config.optimizer_offload=${OPTIMIZER_OFFLOAD} \
     actor_rollout_ref.actor.checkpoint.save_contents=['model','hf_model','optimizer','extra'] \
     actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.ref.log_prob_use_dynamic_bsz=True \
     actor_rollout_ref.ref.log_prob_max_token_len_per_gpu=$((MAX_PROMPT_LEN + MAX_RESP_LEN)) \
     actor_rollout_ref.ref.fsdp_config.param_offload=True \
-    actor_rollout_ref.rollout.name=vllm \
+    actor_rollout_ref.rollout.name=${ROLLOUT_BACKEND} \
     actor_rollout_ref.rollout.mode=async \
     actor_rollout_ref.rollout.n=${GROUP_SIZE} \
     actor_rollout_ref.rollout.tensor_model_parallel_size=${GEN_TP} \
@@ -246,21 +265,22 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.prompt_length=${MAX_PROMPT_LEN} \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.rollout.log_prob_use_dynamic_bsz=True \
-    actor_rollout_ref.rollout.log_prob_max_token_len_per_gpu=8192 \
+    actor_rollout_ref.rollout.log_prob_max_token_len_per_gpu=$((MAX_PROMPT_LEN + MAX_RESP_LEN)) \
     actor_rollout_ref.rollout.multi_turn.enable=True \
     actor_rollout_ref.rollout.multi_turn.max_assistant_turns=${MAX_TURNS} \
     actor_rollout_ref.rollout.multi_turn.max_user_turns=${MAX_TURNS} \
     actor_rollout_ref.rollout.multi_turn.max_parallel_calls=1 \
-    custom_reward_function.path="recipe_thinkstream/thinkstream.py" \
-    custom_reward_function.name=compute_score \
+    reward.custom_reward_function.path="recipe_thinkstream/thinkstream.py" \
+    reward.custom_reward_function.name=compute_score \
     trainer.critic_warmup=0 \
     trainer.logger='["console","wandb"]' \
     trainer.val_before_train=False \
     trainer.n_gpus_per_node=${N_GPUS_PER_NODE} \
     trainer.nnodes=${NNODES} \
-    trainer.save_freq=50 \
-    trainer.test_freq=25 \
+    trainer.save_freq=${SAVE_FREQ} \
+    trainer.test_freq=${TEST_FREQ} \
     trainer.total_epochs=${EPOCHS} \
+    "${TRAINING_STEPS_ARGS[@]}" \
     trainer.project_name=${PROJECT_NAME} \
     trainer.experiment_name=${EXPERIMENT_NAME} \
     trainer.default_local_dir=${SAVE_DIR} 2>&1 | tee "${SAVE_DIR}/train.log"

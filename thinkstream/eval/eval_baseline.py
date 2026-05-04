@@ -57,6 +57,13 @@ from eval_common import (
 )
 from thinkstream.data.agent_protocol import append_timestamped_image_list
 
+FRAME_TAG_EVAL_SYSTEM = (
+    "You are a video understanding assistant. Each image is preceded by "
+    "structural metadata like <frame ts=\"12.5\" role=\"visual frame\" />. "
+    "Use the tag as the frame's real video timestamp, but never copy or "
+    "paraphrase any frame tag or metadata in the answer."
+)
+
 
 # ---------------------------------------------------------------------------
 # Logging setup — file-based, tail-friendly
@@ -410,7 +417,13 @@ def offline_predict_mcq(
                 max_pixels=max_pixels,
             )
             user_content.append({"type": "text", "text": query})
-            messages = [{"role": "user", "content": user_content}]
+            messages = [
+                {
+                    "role": "system",
+                    "content": [{"type": "text", "text": FRAME_TAG_EVAL_SYSTEM}],
+                },
+                {"role": "user", "content": user_content},
+            ]
 
             inputs = processor.apply_chat_template(
                 messages,

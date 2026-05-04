@@ -456,9 +456,13 @@ def test_pass4_silent_sample_skips_strict_check():
 
 
 def test_cache_versions_consistent():
-    """All construction stages share the current cache protocol version."""
+    """Construction stage cache versions reflect the latest touched protocol."""
     sv = cache_version.STAGE_VERSIONS
-    assert set(sv.values()) == {"v12.22"}
+    assert sv["1a"] == "v12.22"
+    assert sv["1b"] == "v12.22"
+    assert sv["3a"] == "v12.22"
+    for stage in ("2", "3b", "3c", "4", "5"):
+        assert sv[stage] == "v12.23"
 
 
 def test_pipeline_order_complete():

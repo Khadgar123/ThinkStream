@@ -130,9 +130,10 @@ def build_messages(frame_paths, question):
                 "type": "text",
                 "text": (
                     "You are a helpful video understanding assistant. Use "
-                    "the timestamped frames carefully and answer based on "
-                    "observations. Each frame is preceded by its real video "
-                    "timestamp. "
+                    "the frame-tagged images carefully and answer based on "
+                    "observations. Each frame is preceded by structural "
+                    "metadata like <frame ts=\"12.5\" role=\"visual frame\" />; "
+                    "use it as the real video timestamp, but never copy it. "
                     "If the question is yes/no, answer Yes or No. If it asks "
                     "for a count, answer with the integer. If it is multiple "
                     "choice, answer with a single letter A/B/C/D."

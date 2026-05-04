@@ -31,6 +31,7 @@ sys.path.insert(0, str(_EVAL_DIR))
 
 from eval_baseline import (
     DebugLogger,
+    FRAME_TAG_EVAL_SYSTEM,
     OfflineMCQDataset,
     _load_video_frames,
     parse_answer,
@@ -59,10 +60,16 @@ def _build_messages(datum: dict, frames, frame_meta: dict, options: list,
         context_label="visual frame",
     )
     user_content.append({"type": "text", "text": query})
-    messages = [{
-        "role": "user",
-        "content": user_content,
-    }]
+    messages = [
+        {
+            "role": "system",
+            "content": [{"type": "text", "text": FRAME_TAG_EVAL_SYSTEM}],
+        },
+        {
+            "role": "user",
+            "content": user_content,
+        },
+    ]
     return messages, query
 
 

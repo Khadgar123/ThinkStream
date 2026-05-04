@@ -615,7 +615,7 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
         )
     messages = _resolve_video_paths(sample["messages"], base_path)
 
-    # Current pass5 messages use timestamp text + image items, so no
+    # Current pass5 messages use frame-tag text + image items, so no
     # video_metadata is needed. Keep this only for legacy/raw-video fallback
     # rows that still contain type="video".
     video_metadata = []

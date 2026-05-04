@@ -325,7 +325,7 @@ def layer2_vllm_side(vllm_url: str, vllm_model: str, frame_dir: str) -> None:
     memory_block += "</memory>"
     content.append({"type": "text", "text": memory_block})
 
-    # Vision frames: project protocol uses timestamp text + image_url items.
+    # Vision frames: project protocol uses frame-tag text + image_url items.
     fps = float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC)
     append_timestamped_image_list(
         content,

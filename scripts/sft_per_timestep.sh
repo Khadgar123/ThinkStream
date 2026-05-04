@@ -32,15 +32,17 @@
 #   EVAL_STEPS  - Eval frequency in optimizer steps (PHASE=sft, default 50)
 #   EVAL_N      - Subsample size for in-loop eval (PHASE=sft, default 300)
 #   EVAL_BSZ    - Per-device eval batch size (PHASE=sft, default = BSZ)
-#   SAVE_LIMIT  - Max retained checkpoints (PHASE=sft, default 5; ~30-50GB each
-#                 for 8B + zero-3, plus the best ckpt is always preserved)
+#   MAX_STEPS   - Optional optimizer-step cap for very large batches
+#   SAVE_LIMIT  - Max retained checkpoints (PHASE=sft, default 0 = no rolling
+#                 deletion; 8B + zero-3 checkpoints can be ~30-50GB each)
 #   THINKSTREAM_DATA_ROOT / AGENT_DATA_DIR
 #               - Generated batch root; SFT reads final/train_sft_messages.jsonl
 #                 below it. Default: data/agent_v5.
 #
-# Step budget reference (BSZ=8 × NPROC=8 × GRAD_ACCUM=1 → eff. batch 64):
-#   PHASE=sft   : 9,900 / 64 = 154 steps/epoch × 4 epochs = 616 steps
-#   PHASE=mixed : 12,405 / 64 = 193 steps/epoch × 3 epochs = 579 steps
+# Step budget:
+#   effective_batch = BSZ × NPROC × GRAD_ACCUM.
+#   PHASE=sft default keeps exposure moderate for the v12 messages corpus:
+#   2 epochs at effective_batch=64. Set MAX_STEPS to cap very large batches.
 
 set -euo pipefail
 
@@ -63,11 +65,9 @@ extra_args=""
 
 case $PHASE in
     sft)
-        # v11.1 production: SFT-disjoint pool (train_sft.jsonl).
-        # train_rl.jsonl (~2.5k samples / 50 videos) is held out for
-        # the GDPO stage; see thinkstream/sft/data_list.py for the
-        # split manifest. epochs=4 gives ~39.6k samples-seen, matching
-        # the previous PHASE=mixed (12.4k × 3) corpus exposure.
+        # Production: SFT-disjoint messages pool. train_rl trajectories
+        # stay held out for verl GRPO so the policy does not optimize
+        # rewards on prompts it memorized during SFT.
         #
         # v11.2: in-loop eval on stream_agent_val (1,550-sample held-out
         # video-disjoint pool). Subsampled to EVAL_N (default 300) so
@@ -81,15 +81,14 @@ case $PHASE in
         llm=${LLM:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
         datasets=${DATASETS:-stream_agent_sft}
         eval_datasets=${EVAL_DATASETS:-stream_agent_val}
-        # v12.x: corpus is much larger; reduce default epochs proportionally
-        # so total steps stay in the v11.1 ballpark (was 4×154=616; now
-        # 2×285=570 with effective_bsz=64). Override with EPOCHS=N.
+        # v12.x: keep the default exposure conservative; exact steps scale
+        # with the current batch size. Override with EPOCHS=N or MAX_STEPS=N.
         lr=${LR:-2e-5}; epochs=${EPOCHS:-2}
-        run_name="agent-sft-v12.22"
+        run_name="agent-sft-v12.23"
         # Save aligned to eval cadence so every eval has a corresponding
         # ckpt to roll back to. load_best_model_at_end keeps the lowest
         # eval_loss ckpt even if it falls outside the rolling window.
-        # NB: this OVERRIDES the global --save_strategy epoch below.
+        # Save/eval cadence is step-based for the production phase.
         extra_args="--eval_dataset_use stream_agent_val \
             --eval_max_samples ${EVAL_N:-300} \
             --eval_strategy steps \
@@ -105,6 +104,9 @@ case $PHASE in
         # now the only supported protocol — see thinkstream/sft/argument.py).
         if [ -n "${RESUME_FROM_CHECKPOINT:-}" ]; then
             extra_args="${extra_args} --resume_from_checkpoint ${RESUME_FROM_CHECKPOINT}"
+        fi
+        if [ -n "${MAX_STEPS:-}" ]; then
+            extra_args="${extra_args} --max_steps ${MAX_STEPS}"
         fi
         ;;
     mixed|1|2|C1)
@@ -161,8 +163,6 @@ torchrun --nproc_per_node=${NPROC} \
     --num_train_epochs ${epochs} \
     --per_device_train_batch_size ${BSZ} \
     --gradient_accumulation_steps ${GRAD_ACCUM} \
-    --save_strategy epoch \
-    --save_total_limit ${SAVE_LIMIT:-0} \
     --learning_rate ${lr} \
     --weight_decay 0.0 \
     --warmup_ratio 0.03 \

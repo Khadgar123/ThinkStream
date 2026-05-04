@@ -55,9 +55,9 @@ SFT_CKPT="${SFT_CKPT:-output/agent-sft}"
 RL_CKPT="${RL_CKPT:-output/agent-rl}"
 
 # ── Eval scope (override via env) ─────────────────────────────────────────
-# Smoke-test = small N for quick correctness check.
-N_TEST="${N_TEST:-200}"               # samples per ckpt on test.jsonl
-N_PER_OVO_TASK="${N_PER_OVO_TASK:-30}" # samples per OVO task per ckpt
+# Full eval by default. For smoke tests set N_TEST=200 N_PER_OVO_TASK=30.
+N_TEST="${N_TEST:-0}"                 # 0 = all samples in test.jsonl
+N_PER_OVO_TASK="${N_PER_OVO_TASK:-0}" # 0 = all samples per OVO task
 
 # Frame budgets for base eval. Streaming uses fixed 24 (the agent's window);
 # offline sweeps the global-context dimension.

@@ -81,7 +81,7 @@ FRAMES_PER_CHUNK = 2         # 每 chunk 2 帧
 # v12.5: 12 → 16 chunks. New chunk semantics: 16 chunks × 1s = 16s of visual
 # context (32 frames). Other streaming systems for reference: LiveCC ~240s @
 # 2fps, VideoLLM-online ~unbounded @ 2fps, MMDuet token-budgeted, Streamo
-# 1fps. Current pre-extracted-frame prompts render explicit timestamp text
+# 1fps. Current pre-extracted-frame prompts render explicit frame-tag text
 # before each image, so timestamps still reflect real 2fps frame indices.
 # We're conservative for the 6-min batch1 footprint, but text
 # memory now comfortably exceeds visual (see RECENT_THINKS_TOKEN_BUDGET).
@@ -331,7 +331,7 @@ VLLM_PREFILL_BATCH_TOKEN_BUDGET = 32_000_000  # KV usage ~2.6% at 64 conc → 10
 # v12.12 (2026-05-02): visual budgets reflect mm_processor_kwargs profiles.
 # pass1a uses HIRES (~500 tok/frame typical) × 2 frames + template ≈ 2K visual.
 # pass2 uses RUNTIME (~235 tok/frame) × 32 frames + template ≈ 7.6K visual.
-# vLLM teacher/runtime server: pass1a/pass2/SFT/RL/eval use timestamp text +
+# vLLM teacher/runtime server: pass1a/pass2/SFT/RL/eval use frame-tag text +
 # image/image_url lists for pre-extracted frames. This keeps the latest chunk
 # visually explicit even when text memory is stale, and avoids relying on the
 # vLLM video_url/pre-sampled-video path to surface temporal anchors inside
