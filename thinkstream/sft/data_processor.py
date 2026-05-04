@@ -592,6 +592,7 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
                 meta = item.get("video_metadata")
                 frames = item.get("video")
                 if isinstance(meta, dict):
+                    meta = {k: v for k, v in meta.items() if k != "do_sample_frames"}
                     video_metadata.append(meta)
                 elif isinstance(frames, list) and frames:
                     from thinkstream.data.agent_protocol import infer_video_metadata
