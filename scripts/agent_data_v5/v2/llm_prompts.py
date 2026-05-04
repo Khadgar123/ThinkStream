@@ -155,8 +155,8 @@ Output ONLY a JSON list, no commentary:"""
 def response_generation_prompt(card: Dict, ask_chunk: int) -> str:
     """Ask 397B to write the assistant's response text.
 
-    For MC/binary/number/short_exact the canonical_answer is already the
-    answer (just the letter / value); LLM is only needed for descriptive.
+    For MC/binary/number/short_exact the answer is emitted deterministically
+    by pass3c. LLM rewriting is only used for descriptive single-emit cards.
     """
     af = card.get("answer_form", "")
     if af in ("multiple_choice", "binary", "number", "short_exact"):

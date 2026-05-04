@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 import logging
 import random
+import re
 from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -52,29 +53,75 @@ def _think_for_chunk(rollout: Dict, chunk_idx: int) -> str:
     return ""
 
 
+_OPTION_LABEL_RE = re.compile(r"^\s*[A-D][\).]\s*")
+
+
+def _strip_option_label(text: str) -> str:
+    return _OPTION_LABEL_RE.sub("", str(text or "")).strip()
+
+
+def _mc_answer_text(card: Dict, fallback: str = "") -> str:
+    """Return the answer text for an MC card without teaching letter-only SFT.
+
+    Pass3A LLM cards may put a local evidence phrase in gold_emits while the
+    actual answer is the canonical option. Use correct_option/options first so
+    the response answers the question, then fall back to canonical_answer.
+    """
+    options = list(card.get("options") or [])
+    correct = str(card.get("correct_option") or "").strip().upper()
+    if correct in {"A", "B", "C", "D"} and len(options) == 4:
+        idx = ord(correct) - ord("A")
+        if 0 <= idx < len(options):
+            text = _strip_option_label(options[idx])
+            if text:
+                return text
+    canonical = str(card.get("canonical_answer") or "").strip()
+    if canonical and canonical.upper() not in {"A", "B", "C", "D"}:
+        return _strip_option_label(canonical)
+    return str(fallback or "").strip()
+
+
+def _clean_emit_text(value: str) -> str:
+    """Humanize per-emit labels such as `pouring_butter@1`."""
+    text = str(value or "").strip()
+    text = re.sub(r"@\d+\s*$", "", text)
+    text = text.replace("_", " ")
+    return text.strip()
+
+
 def _response_text_for(card: Dict, value: str) -> str:
     """Map gold_emit value → assistant response text (synchronous fast path).
 
-    For MC: emits the option letter (A/B/C/D).
+    For MC: emits the full correct option text (not just A/B/C/D).
     For binary/number/short_exact: emits the value directly.
-    For descriptive: uses canonical_answer text.
+    For descriptive single_emit: uses canonical_answer; for multi_emit:
+    emits only the current per-event value to avoid future leakage.
     Use _response_text_via_llm when client is provided for richer descriptive text.
     """
     af = card.get("answer_form", "")
-    if af in ("multiple_choice", "binary", "number", "short_exact"):
+    if af == "multiple_choice":
+        return _mc_answer_text(card, value)
+    if af in ("binary", "number", "short_exact"):
         return value
-    return value or card.get("canonical_answer", "")
+    if card.get("question_type") == "multi_emit" and value:
+        return _clean_emit_text(value)
+    return card.get("canonical_answer", "") or value
 
 
 async def _response_text_via_llm(card: Dict, value: str, client, video_id: str,
                                   chunk_idx: int) -> str:
     """397B-driven response text. Falls back to _response_text_for on failure.
 
-    Only fires for descriptive answers (others have deterministic mapping).
+    Only fires for descriptive single-emit answers. MC, short forms, and
+    multi-emit narration/counting are deterministic so they cannot drift to
+    a wrong option or leak future emits.
     """
     af = card.get("answer_form", "")
-    if af in ("multiple_choice", "binary", "number", "short_exact"):
-        return value
+    if (
+        af in ("multiple_choice", "binary", "number", "short_exact")
+        or card.get("question_type") == "multi_emit"
+    ):
+        return _response_text_for(card, value)
     prompt = response_generation_prompt(card, chunk_idx)
     if not prompt:
         return _response_text_for(card, value)
