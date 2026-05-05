@@ -1,8 +1,8 @@
 import asyncio
 
 from scripts.agent_data_v5 import pass2_rollout
+from scripts.agent_data_v5.evidence_think import build_think_from_pass1_evidence
 from scripts.agent_data_v5.pass2b_rescue_from_pass1 import (
-    build_think_from_pass1_evidence,
     run_pass2b_single_video,
 )
 

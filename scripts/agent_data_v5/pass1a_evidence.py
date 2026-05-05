@@ -4,7 +4,9 @@ Pass 1-A: Independent Per-Chunk Annotation
 Each 1s chunk (v12.5) annotated independently with 2 frames at FPS=2.
 No sliding window, no prior context, fully parallel.
 
-Output: Per-chunk JSON with visible_entities(desc), atomic_facts, ocr, spatial.
+Output: Per-chunk JSON with visible_entities(desc), atomic_facts, ocr, spatial,
+        and a current-only `think` observation paragraph. This `think` is a
+        supervised text field, not Qwen/vLLM enable_thinking reasoning.
         No state_changes (derived in 1-B), no entity IDs (assigned in 1-B).
 
 Saved to: data/agent_v5/evidence_1a/{video_id}.json
@@ -24,6 +26,7 @@ from .config import (
     FRAMES_PER_CHUNK,
     PASS_CONFIG,
 )
+from .evidence_think import clean_text
 
 logger = logging.getLogger(__name__)
 
@@ -63,13 +66,19 @@ def build_evidence_request(
 
 def _walker_rescue(s: str) -> Optional[Dict]:
     """Element-by-element walker for truncated JSON. Returns a dict with the
-    expected fields when ANY array yielded a closed element, else None.
+    expected fields when ANY evidence field yielded a closed element, else None.
 
     Rationale: when max_tokens cuts a response mid-element, json.loads and
     brace-balance both fail to close the outer object. But the prefix of
     `visible_entities` / `atomic_facts` is intact and recoverable.
     """
-    out: Dict = {"visible_entities": [], "atomic_facts": [], "ocr": [], "spatial": ""}
+    out: Dict = {
+        "visible_entities": [],
+        "atomic_facts": [],
+        "ocr": [],
+        "spatial": "",
+        "think": "",
+    }
 
     def _walk_objects(start: int) -> List[Dict]:
         items: List[Dict] = []
@@ -176,6 +185,23 @@ def _walker_rescue(s: str) -> Optional[Dict]:
                     pass
                 break
             j += 1
+    m = re.search(r'"think"\s*:\s*"', s)
+    if m:
+        i = m.end() - 1
+        j = i + 1
+        esc = False
+        while j < len(s):
+            if esc:
+                esc = False
+            elif s[j] == "\\":
+                esc = True
+            elif s[j] == '"':
+                try:
+                    out["think"] = json.loads(s[i : j + 1])
+                except (json.JSONDecodeError, ValueError):
+                    pass
+                break
+            j += 1
 
     if (
         out["visible_entities"]
@@ -207,6 +233,7 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
         "atomic_facts": [],
         "ocr": [],
         "spatial": "",
+        "think": "",
         "parse_success": False,
     }
 
@@ -259,20 +286,25 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
     raw_entities = parsed.get("visible_entities", [])
     ocr = parsed.get("ocr", []) or []
     spatial = parsed.get("spatial", "") or ""
+    think = clean_text(parsed.get("think", ""), max_chars=900)
 
     # Empty-content guard: a JSON-valid but content-empty response is a
     # silent failure (~46% baseline). Mark it so the retry path can pick it
     # up; keep _raw so we can post-mortem the failure mode.
     has_content = bool(raw_entities or raw_facts or ocr or
                        (isinstance(spatial, str) and spatial.strip()))
+    has_think = bool(think)
+    parse_success = has_content and has_think
     return {
         "time": parsed.get("time", meta["time"]),
         "visible_entities": [_normalize_entity(e) for e in raw_entities],
         "atomic_facts": [_normalize_atomic_fact(f) for f in raw_facts],
         "ocr": ocr,
         "spatial": spatial,
-        "parse_success": has_content,
+        "think": think,
+        "parse_success": parse_success,
         **({} if has_content else {"_raw": raw[:4000], "_silent_empty": True}),
+        **({} if has_think else {"_missing_think": True}),
     }
 
 

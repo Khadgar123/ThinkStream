@@ -2,7 +2,15 @@
 Pass 2: Question-blind Streaming Rollout
 
 Simulates the student model's real streaming experience WITHOUT any questions.
-Generates: observations, compression decisions, memory snapshots.
+Generates memory snapshots and compression decisions.
+
+v12.25: current-chunk think text comes from pass1's independent ``think``
+observation-note JSON field (not Qwen/vLLM enable_thinking reasoning;
+fallback: deterministic rendering from pass1 evidence). Pass2 no longer asks
+the teacher to generate observation notes from full text memory plus the
+sliding visual window, because that setup repeatedly copied stale history into
+current thinks. The only remaining teacher call in pass2 is the text-only
+compression summary request.
 
 Key principle: Question-blind — no future question knowledge influences this pass.
 Compression summaries use ONLY student observations (not teacher captions).
@@ -40,6 +48,7 @@ from .config import (
     VISUAL_WINDOW_CHUNKS,
     compute_visual_window_start,
 )
+from .evidence_think import build_think_from_pass1_evidence, think_source_for_evidence
 from .pass1a_evidence import get_chunk_frame_paths
 from scripts.agent_data_pipeline.vllm_client import encode_image_base64
 from thinkstream.data.agent_protocol import append_timestamped_image_list
@@ -1056,6 +1065,17 @@ async def run_pass2_single_video(
     thinks = []
     compression_events = []
     snapshots = {}
+    enable_thinking = bool(PASS_CONFIG["pass2_rollout"].get("thinking", False))
+    evidence_by_chunk: Dict[int, Dict] = {}
+    if evidence:
+        for i, cap in enumerate(evidence):
+            if not isinstance(cap, dict):
+                continue
+            try:
+                cidx = int(cap.get("chunk_idx", i))
+            except (TypeError, ValueError):
+                cidx = i
+            evidence_by_chunk[cidx] = cap
 
     for chunk_idx in range(num_chunks):
         # --- 1. Snapshot BEFORE this step's think ---
@@ -1068,85 +1088,104 @@ async def run_pass2_single_video(
             and len(pre_action_thinks) >= COMPRESS_RANGE_MIN
         )
 
-        # --- 2. Generate think for current chunk ---
-        request = build_observation_request(chunk_idx, frame_paths, memory, video_id)
-        # v12.11 hotfix: cap max_tokens client-side so long-memory chunks
-        # don't trip vLLM's "max_tokens must be at least 1, got -<N>" error.
-        safe_obs_max = _safe_max_tokens_for_pass2(request, request["max_tokens"])
-        # v12.12: pass2 uses RUNTIME profile — same smart_resize bounds as
-        # student inference, so teacher and student see identical visual
-        # token sequences at every chunk (training-inference parity).
-        enable_thinking = bool(PASS_CONFIG["pass2_rollout"].get("thinking", False))
-        mm_kwargs = dict(RUNTIME_MM_PROCESSOR_KWARGS)
-        mm_kwargs["do_sample_frames"] = False
-        raw = await client._call_one(
-            messages=request["messages"],
-            max_tokens=safe_obs_max,
-            temperature=request["temperature"],
-            request_id=request["id"],
-            enable_thinking=enable_thinking,
-            mm_processor_kwargs=mm_kwargs,
-            media_io_kwargs=request.get("media_io_kwargs"),
-        )
-        think_text = parse_observation_result(raw)
+        # --- 2. Get think for current chunk ---
+        # v12.25: production path uses pass1's independent current-only
+        # `think` observation-note field. This is NOT model reasoning mode.
+        # It removes the old pass2 teacher-observation call that saw full
+        # text memory and could stale-repeat history.
         repaired = False
         repair_attempted = False
         repair_rejected = False
         repair_meta: Dict = {}
-        visual_delta_mse = _chunk_visual_delta_mse(frame_paths, chunk_idx)
-        should_repair, repair_meta = should_repair_observation(
-            think_text,
-            memory.recent_thinks,
-            chunk_idx=chunk_idx,
-            evidence=evidence,
-            visual_delta_mse=visual_delta_mse,
-        )
-        if should_repair:
-            repair_attempted = True
-            repair_request = build_observation_repair_request(
-                chunk_idx, frame_paths, memory, video_id, stale_text=think_text,
+        visual_delta_mse = None
+        think_source = "pass2_teacher_observation"
+
+        cap = evidence_by_chunk.get(chunk_idx)
+        if cap is not None:
+            think_text = build_think_from_pass1_evidence(cap)
+            think_source = think_source_for_evidence(cap)
+        else:
+            logger.warning(
+                "  [%s] missing pass1 evidence at chunk %d; falling back to "
+                "legacy pass2 teacher observation",
+                video_id,
+                chunk_idx,
             )
-            safe_repair_max = _safe_max_tokens_for_pass2(
-                repair_request, repair_request["max_tokens"],
+            request = build_observation_request(chunk_idx, frame_paths, memory, video_id)
+            # v12.11 hotfix: cap max_tokens client-side so long-memory chunks
+            # don't trip vLLM's "max_tokens must be at least 1, got -<N>" error.
+            safe_obs_max = _safe_max_tokens_for_pass2(request, request["max_tokens"])
+            # v12.12: pass2 uses RUNTIME profile — same smart_resize bounds as
+            # student inference, so teacher and student see identical visual
+            # token sequences at every chunk (training-inference parity).
+            mm_kwargs = dict(RUNTIME_MM_PROCESSOR_KWARGS)
+            mm_kwargs["do_sample_frames"] = False
+            raw = await client._call_one(
+                messages=request["messages"],
+                max_tokens=safe_obs_max,
+                temperature=request["temperature"],
+                request_id=request["id"],
+                enable_thinking=enable_thinking,
+                mm_processor_kwargs=mm_kwargs,
+                media_io_kwargs=request.get("media_io_kwargs"),
             )
-            try:
-                repair_raw = await client._call_one(
-                    messages=repair_request["messages"],
-                    max_tokens=safe_repair_max,
-                    temperature=repair_request["temperature"],
-                    request_id=repair_request["id"],
-                    enable_thinking=enable_thinking,
-                    mm_processor_kwargs=mm_kwargs,
-                    media_io_kwargs=repair_request.get("media_io_kwargs"),
+            think_text = parse_observation_result(raw)
+            visual_delta_mse = _chunk_visual_delta_mse(frame_paths, chunk_idx)
+            should_repair, repair_meta = should_repair_observation(
+                think_text,
+                memory.recent_thinks,
+                chunk_idx=chunk_idx,
+                evidence=evidence,
+                visual_delta_mse=visual_delta_mse,
+            )
+            if should_repair:
+                repair_attempted = True
+                repair_request = build_observation_repair_request(
+                    chunk_idx, frame_paths, memory, video_id, stale_text=think_text,
                 )
-                repaired_text = parse_observation_result(repair_raw)
-                if _is_repair_better(
-                    repaired_text,
-                    think_text,
-                    memory.recent_thinks,
-                ):
-                    think_text = repaired_text
-                    repaired = True
-                    logger.info(
-                        "  [%s] Repaired stale pass2 think at chunk %d: %s",
-                        video_id, chunk_idx, repair_meta.get("reason", ""),
+                safe_repair_max = _safe_max_tokens_for_pass2(
+                    repair_request, repair_request["max_tokens"],
+                )
+                try:
+                    repair_raw = await client._call_one(
+                        messages=repair_request["messages"],
+                        max_tokens=safe_repair_max,
+                        temperature=repair_request["temperature"],
+                        request_id=repair_request["id"],
+                        enable_thinking=enable_thinking,
+                        mm_processor_kwargs=mm_kwargs,
+                        media_io_kwargs=repair_request.get("media_io_kwargs"),
                     )
-                else:
-                    repair_rejected = True
+                    repaired_text = parse_observation_result(repair_raw)
+                    if _is_repair_better(
+                        repaired_text,
+                        think_text,
+                        memory.recent_thinks,
+                    ):
+                        think_text = repaired_text
+                        repaired = True
+                        think_source = "pass2_teacher_repair"
+                        logger.info(
+                            "  [%s] Repaired stale pass2 think at chunk %d: %s",
+                            video_id, chunk_idx, repair_meta.get("reason", ""),
+                        )
+                    else:
+                        repair_rejected = True
+                        logger.warning(
+                            "  [%s] Rejected stale pass2 repair at chunk %d: still too similar (%s)",
+                            video_id, chunk_idx, repair_meta.get("reason", ""),
+                        )
+                except Exception as exc:
                     logger.warning(
-                        "  [%s] Rejected stale pass2 repair at chunk %d: still too similar (%s)",
-                        video_id, chunk_idx, repair_meta.get("reason", ""),
+                        "  [%s] Stale pass2 repair failed at chunk %d: %s",
+                        video_id, chunk_idx, exc,
                     )
-            except Exception as exc:
-                logger.warning(
-                    "  [%s] Stale pass2 repair failed at chunk %d: %s",
-                    video_id, chunk_idx, exc,
-                )
 
         think_record = {
             "chunk_idx": chunk_idx,
             "time": [chunk_idx * AGENT_CHUNK_SEC, (chunk_idx + 1) * AGENT_CHUNK_SEC],
             "think": think_text,
+            "source": think_source,
         }
         if repaired:
             think_record["repair"] = repair_meta

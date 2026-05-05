@@ -601,7 +601,8 @@ Based on the frames above, output a STRICT JSON object:
   ],
   "atomic_facts": ["precise observable statement", ...],
   "ocr": ["exact text if visible"],
-  "spatial": "spatial relations between entities, sentence-form"
+  "spatial": "spatial relations between entities, sentence-form",
+  "think": "one current-only observation paragraph, 40-80 tokens"
 }}
 
 CRITICAL — minimum output requirement:
@@ -611,6 +612,8 @@ CRITICAL — minimum output requirement:
   even if the scene is dim/blurry/transition. The only exception is a fully
   black or fully white frame.
 - Empty arrays mean "I gave up" — not allowed.
+- think MUST be non-empty. This field is the exact student observation target
+  used by pass2/SFT. It must be grounded only in these two current frames.
 
 visible_entities[].desc — FINE-GRAINED (downstream questions ask 'What style of
   tattoo / what pattern on shorts / what material for the wing'). Include ALL
@@ -643,6 +646,16 @@ spatial — write 1-3 SENTENCES describing inter-entity relations using these
   The 'CALL ON ME' note is above the 'I'm here for you' note."
   This sentence-form replaces structured spatial_relations to keep schema simple
   and LLM output stable.
+
+think — write ONE natural paragraph, 40-80 tokens:
+  - Re-state the most important current visual facts in fluent prose
+  - Use only entities/actions/OCR/spatial relations visible in these two frames
+  - Mention current OCR/logos/title cards when visible
+  - Do not refer to any previous or future chunk
+  - Do not say "continues", "still", "remains", "same", "earlier", or "next"
+    unless that continuity is directly visible in the current frames alone
+  - Do not mention JSON fields, frame tags, timestamps, protocol, uncertainty,
+    or "I notice"
 
 Rules:
 - Only describe what is VISIBLE in these frames (no comparison to other clips)

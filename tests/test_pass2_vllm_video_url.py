@@ -5,6 +5,7 @@ from scripts.agent_data_v5.pass2_rollout import (
     build_observation_request,
     build_observation_repair_request,
     parse_observation_result,
+    run_pass2_single_video,
     should_repair_observation,
 )
 from scripts.agent_data_v5.config import FRAMES_PER_CHUNK, VISUAL_TOKENS_PER_FRAME_RUNTIME
@@ -256,14 +257,53 @@ def test_pass2_safe_token_estimate_counts_timestamped_image_frames(tmp_path):
 
 
 def test_pass2_cache_bump_invalidates_old_video_http_rollouts():
-    assert STAGE_VERSIONS["1a"] == "v12.22"
-    assert STAGE_VERSIONS["2"] == "v12.24"
-    # Downstream stages must not reuse cached data after the project-wide
-    # timestamped image-list protocol change.
-    assert STAGE_VERSIONS["3b"] == "v12.24"
-    assert STAGE_VERSIONS["3c"] == "v12.24"
-    assert STAGE_VERSIONS["4"] == "v12.24"
-    assert STAGE_VERSIONS["5"] == "v12.24"
+    assert STAGE_VERSIONS["1a"] == "v12.25"
+    assert STAGE_VERSIONS["1b"] == "v12.25"
+    assert STAGE_VERSIONS["2"] == "v12.25"
+    # Downstream stages must not reuse cached samples after pass1 native
+    # think and pass2 pass1-think rollouts changed the SFT targets.
+    assert STAGE_VERSIONS["3b"] == "v12.25"
+    assert STAGE_VERSIONS["3c"] == "v12.25"
+    assert STAGE_VERSIONS["4"] == "v12.25"
+    assert STAGE_VERSIONS["5"] == "v12.25"
+
+
+def test_pass2_uses_pass1_observation_note_without_observation_call():
+    class NoCallClient:
+        async def _call_one(self, **_kwargs):
+            raise AssertionError("pass2 observation should not call teacher")
+
+    evidence = [
+        {
+            "chunk_idx": 0,
+            "think": "The current frames show a red bowl on the counter.",
+            "visible_entities": [{"desc": "red bowl", "action": "static"}],
+            "atomic_facts": [{"fact": "a red bowl is on the counter"}],
+        },
+        {
+            "chunk_idx": 1,
+            "think": "The current frames show a spoon inside the red bowl.",
+            "visible_entities": [{"desc": "spoon", "action": "static"}],
+            "atomic_facts": [{"fact": "a spoon is inside the bowl"}],
+        },
+    ]
+
+    import asyncio
+
+    rollout = asyncio.run(run_pass2_single_video(
+        video_id="vid_pass1_think",
+        frame_paths=[],
+        num_chunks=2,
+        client=NoCallClient(),
+        evidence=evidence,
+    ))
+
+    assert [t["source"] for t in rollout["thinks"]] == [
+        "pass1_observation_note",
+        "pass1_observation_note",
+    ]
+    assert rollout["thinks"][1]["think"] == evidence[1]["think"]
+    assert rollout["snapshots"][1]["recent_thinks"][0]["text"] == evidence[0]["think"]
 
 
 def test_pass2_stale_audit_flags_repeated_thinks_when_evidence_changes():

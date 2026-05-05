@@ -40,6 +40,13 @@ STAGE_VERSIONS: Dict[str, str] = {
     # v12.11 audit-5 P1 #5 (2026-05-01): bumps below align with the v12.11
     # data-construction logic changes. Without these, an existing cluster
     # cache stamped v12.5 would silently reuse stale outputs:
+    #   v12.25 (2026-05-05): pass1a emits a current-only `think`
+    #        observation-note JSON field per chunk. This is supervised text,
+    #        not Qwen/vLLM enable_thinking reasoning. pass2 consumes that
+    #        pass1 note directly and only performs timeline/token accounting
+    #        plus text-only compression summary generation. This removes the
+    #        unstable pass2 teacher observation call that mixed full text
+    #        memory with the visual window and caused stale-repeat thinks.
     #   v12.24 (2026-05-05): pass2 teacher still keeps full compression,
     #        full memory, and the same 16s sliding visual window, but the
     #        OBSERVATION / REPAIR prompts now see memory as a structured
@@ -61,14 +68,14 @@ STAGE_VERSIONS: Dict[str, str] = {
     #   v12.18 background: pass3 display taxonomy fields, mixed MC answer
     #        protocols (letter/text/letter+text), semantic gold_answer split
     #        from SFT target, and verifier/rebalance updates.
-    "1a": "v12.22",
-    "1b": "v12.22",
-    "2":  "v12.24",
-    "3a": "v12.22",
-    "3b": "v12.24",
-    "3c": "v12.24",
-    "4":  "v12.24",  # canonical key — verification
-    "5":  "v12.24",  # pass5_messages render version
+    "1a": "v12.25",
+    "1b": "v12.25",
+    "2":  "v12.25",
+    "3a": "v12.25",
+    "3b": "v12.25",
+    "3c": "v12.25",
+    "4":  "v12.25",  # canonical key — verification
+    "5":  "v12.25",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

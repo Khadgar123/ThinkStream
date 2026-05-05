@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from scripts.agent_data_v5.pass1a_evidence import build_evidence_request
+from scripts.agent_data_v5.pass1a_evidence import build_evidence_request, parse_evidence_result
 from scripts.agent_data_v5.pass2_rollout import (
     MemoryState,
     build_observation_request,
@@ -127,3 +127,23 @@ def test_runtime_prompt_and_parser_use_frame_tags():
     )
     assert parsed["think"] == "new brush appears"
     assert parsed["answer_text"] == "A"
+
+
+def test_pass1a_parser_requires_observation_note_think_field():
+    meta = {"time": [0, 1]}
+    parsed = parse_evidence_result(
+        '{"time":[0,1],"visible_entities":[{"desc":"red bowl","action":"static"}],'
+        '"atomic_facts":["a red bowl is on the counter"],"ocr":[],"spatial":"",'
+        '"think":"The current frames show a red bowl resting on the counter."}',
+        meta,
+    )
+    assert parsed["parse_success"] is True
+    assert parsed["think"].startswith("The current frames show")
+
+    missing = parse_evidence_result(
+        '{"time":[0,1],"visible_entities":[{"desc":"red bowl","action":"static"}],'
+        '"atomic_facts":["a red bowl is on the counter"],"ocr":[],"spatial":""}',
+        meta,
+    )
+    assert missing["parse_success"] is False
+    assert missing["_missing_think"] is True
