@@ -523,7 +523,10 @@ def make_generate_fn(
                     meta = item.get("video_metadata")
                     frames = item.get("video")
                     if isinstance(meta, dict):
-                        video_metadata.append(meta)
+                        video_metadata.append({
+                            k: v for k, v in meta.items()
+                            if k != "do_sample_frames"
+                        })
                     elif isinstance(frames, list) and frames:
                         # auto-fill so VideoMetadata() doesn't crash on empty dict
                         from thinkstream.data.agent_protocol import infer_video_metadata

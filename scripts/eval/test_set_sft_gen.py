@@ -61,7 +61,10 @@ def collect_video_metadata(messages):
             if isinstance(item, dict) and item.get("type") == "video":
                 meta = item.get("video_metadata")
                 if isinstance(meta, dict):
-                    metas.append(meta)
+                    metas.append({
+                        k: v for k, v in meta.items()
+                        if k != "do_sample_frames"
+                    })
     return metas
 
 
@@ -83,8 +86,26 @@ def detect_model_class(ckpt: str):
 
 def extract_gold(sample):
     out = sample.get("output", "")
+    if not out and "messages" in sample:
+        for msg in reversed(sample.get("messages") or []):
+            if msg.get("role") != "assistant":
+                continue
+            content = msg.get("content")
+            if isinstance(content, list):
+                out = "".join(
+                    str(item.get("text") or "")
+                    for item in content
+                    if isinstance(item, dict)
+                )
+            elif isinstance(content, str):
+                out = content
+            if out:
+                break
     m = GOLD_RE.search(out)
-    return m.group("answer").strip() if m else None
+    if not m:
+        return None
+    answer = m.group("answer").strip()
+    return answer or None
 
 
 def gold_kind(gold):
