@@ -55,6 +55,7 @@ def collect_video_metadata(messages):
             if isinstance(item, dict) and item.get("type") == "video":
                 meta = item.get("video_metadata")
                 if isinstance(meta, dict):
+                    meta = {k: v for k, v in meta.items() if k != "do_sample_frames"}
                     metas.append(meta)
     return metas
 

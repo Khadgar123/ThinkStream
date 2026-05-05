@@ -35,10 +35,11 @@ def test_pass2_observation_uses_timestamped_image_window(tmp_path):
     assert "CURRENT TASK FIRST" in prompt
     assert "timestamp-tagged image list" in prompt
     assert f"({FRAMES_PER_CHUNK} frames)" in prompt
-    assert "untrusted history for entity naming only" in prompt
+    assert "History ledger below is archival memory for naming only" in prompt
     assert "only evidence for the current think" in prompt
     assert "Never copy or paraphrase any frame tag" in prompt
     assert "older context to the latest chunk" in prompt
+    assert "<history_ledger>" in prompt
     assert content[1]["text"] == '<frame ts="0.0" role="older context" />'
     assert content[2]["image_url"]["url"].startswith("data:image/jpeg;base64,")
     assert content[-2]["text"] == '<frame ts="2.5" role="latest chunk" />'
@@ -88,6 +89,36 @@ def test_parse_observation_result_strips_inline_frame_tags():
         "A white bowl rests on a wooden counter."
     )
     assert parse_observation_result(raw) == "A white bowl rests on a wooden counter."
+
+
+def test_memory_observation_prompt_uses_structured_history_ledger():
+    memory = MemoryState()
+    memory.add_think(0, "A woman in a red apron stands near a stove.")
+    memory.add_think(1, "The red-apron woman lifts a silver pan.")
+    memory.compress(
+        {"time_range": [0, 1], "text": "A red-apron cook appears by the stove and lifts a silver pan."},
+        selected_indices=[0, 1],
+    )
+    memory.add_think(2, "A white bowl sits on the wooden counter.")
+
+    text = memory.format_for_observation_prompt()
+    assert '"kind": "summary"' in text
+    assert '"kind": "think"' in text
+    assert '"history_only": true' in text
+    assert '"use": "entity_naming_only"' in text
+    assert '"use": "entity_naming_and_long_range_context_only"' in text
+    assert '[2-3]' not in text
+
+
+def test_memory_repair_prompt_uses_structured_recent_history():
+    memory = MemoryState()
+    for c in range(3):
+        memory.add_think(c, f"Think {c}")
+    text = memory.format_recent_for_repair_prompt(limit=2)
+    assert '"chunk": 1' in text
+    assert '"chunk": 2' in text
+    assert '"chunk": 0' not in text
+    assert '"history_only": true' in text
 
 
 def test_should_repair_observation_uses_evidence_drift():
@@ -226,13 +257,13 @@ def test_pass2_safe_token_estimate_counts_timestamped_image_frames(tmp_path):
 
 def test_pass2_cache_bump_invalidates_old_video_http_rollouts():
     assert STAGE_VERSIONS["1a"] == "v12.22"
-    assert STAGE_VERSIONS["2"] == "v12.23"
+    assert STAGE_VERSIONS["2"] == "v12.24"
     # Downstream stages must not reuse cached data after the project-wide
     # timestamped image-list protocol change.
-    assert STAGE_VERSIONS["3b"] == "v12.23"
-    assert STAGE_VERSIONS["3c"] == "v12.23"
-    assert STAGE_VERSIONS["4"] == "v12.23"
-    assert STAGE_VERSIONS["5"] == "v12.23"
+    assert STAGE_VERSIONS["3b"] == "v12.24"
+    assert STAGE_VERSIONS["3c"] == "v12.24"
+    assert STAGE_VERSIONS["4"] == "v12.24"
+    assert STAGE_VERSIONS["5"] == "v12.24"
 
 
 def test_pass2_stale_audit_flags_repeated_thinks_when_evidence_changes():

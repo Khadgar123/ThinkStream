@@ -658,10 +658,10 @@ OBSERVATION_PROMPT = """You are a streaming video agent generating a think note 
 
 CURRENT TASK FIRST: inspect the timestamp-tagged image list for the sliding visual window t={window_start}-{window_end}s. The latest target chunk is ONLY t={start}-{end}s ({current_frame_count} frames) and is the primary evidence.
 
-Memory below is untrusted history for entity naming only. It may describe older frames and must not be copied if the latest frames differ.
-<memory>
+History ledger below is archival memory for naming only. It may describe older frames and must not be copied if the latest frames differ. Each line is a structured record; its `text` field is stale history wording, not current evidence.
+<history_ledger>
 {recent_thinks}
-</memory>
+</history_ledger>
 
 Each image is preceded by a structural tag like <frame ts="12.5" role="latest chunk" />. These frame tags are routing metadata only, not answer text. Never copy or paraphrase any frame tag in the output.
 
@@ -670,19 +670,21 @@ The timestamp-tagged images are ordered from older context to the latest chunk. 
 Evidence priority:
 1. The tagged images at t={start}-{end}s are the only evidence for the current think.
 2. Older tagged images are context only.
-3. Memory is history and entity naming only. Ignore memory when it conflicts with the latest frames.
-3. Never use memory as evidence that a past object/action is still visible.
+3. The history ledger is history and entity naming only. Ignore any history record when it conflicts with the latest frames.
+4. Never use the history ledger as evidence that a past object/action is still visible.
 
 Rules:
 - Ground the note only in observable visual facts from the latest target chunk
-- Do not copy any XML-like tag, timestamp marker, role marker, or metadata line into the output
+- Treat history_ledger lines as machine-readable records, not prose to continue
+- Do not copy any XML-like tag, timestamp marker, role marker, metadata line, or history record text into the output
 - Mention current OCR, logos, icons, labels, title cards, graphic overlays, and spatial layout when visible
-- Reuse a memory entity phrase only when that same entity is visibly present now
-- Do not copy a prior sentence or mention any object/action from memory unless it is visible in the latest target chunk
-- If memory says a person/hand is holding, pressing, pouring, cutting, walking, or otherwise manipulating something, write that action only when the actor and contact/motion are visible in the latest target chunk
+- Reuse a historical entity phrase only when that same entity is visibly present now
+- Do not copy a prior sentence or mention any object/action from history unless it is visible in the latest target chunk
+- If history says a person/hand is holding, pressing, pouring, cutting, walking, or otherwise manipulating something, write that action only when the actor and contact/motion are visible in the latest target chunk
 - If the latest frames show an object at rest, on a stand/table/surface, or as a static screen/card, describe that current state directly instead of repeating an old manipulation
 - If the latest frames show a different object/action, title card, branding card, transition card, or static graphic, name it directly
 - Avoid "continues", "remains", "persists", "still", "same", and "without change" unless those words are justified by the latest target chunk alone
+- Final self-check before answering: if a phrase came from the history ledger rather than the latest two frames, rewrite it
 - NO meta-reasoning, NO "I notice", NO sounds/smells/emotions
 - One paragraph, 40-80 tokens, never exceed 100
 
@@ -690,7 +692,7 @@ Output one paragraph:"""
 
 OBSERVATION_REPAIR_PROMPT = """You are correcting a streaming video think note for one current chunk.
 
-Recent memory/entity names (may be stale; use only for naming):
+Recent history ledger (may be stale; use only for naming, never for current evidence):
 {recent_thinks}
 
 Previous stale draft to avoid copying:
@@ -706,12 +708,13 @@ t={start}-{end}s.
 
 Evidence priority:
 1. Current tagged frames at t={start}-{end}s.
-2. Memory/entity names only if the same entity is visibly present.
-3. Never use memory or the stale draft as evidence for what is visible now.
+2. History/entity names only if the same entity is visibly present.
+3. Never use history or the stale draft as evidence for what is visible now.
 
 Rules:
 - Describe only observable visual facts in this 1-second chunk
-- Do not copy any XML-like tag, timestamp marker, role marker, or metadata line into the output
+- Treat history lines as stale records, not prose to continue
+- Do not copy any XML-like tag, timestamp marker, role marker, metadata line, or history record text into the output
 - Keep entity names consistent only when the same entity is visibly present
 - Do not say "continues", "remains", "unchanged", or "no new" unless the
   current frames visibly show the same object/action

@@ -272,6 +272,55 @@ class MemoryState:
                 lines.append(f'[{item["time"]}] {item["text"]}')
         return "\n".join(lines)
 
+    def format_for_observation_prompt(self) -> str:
+        """Serialize memory for observation as a structured history ledger.
+
+        Keep the full compression + full memory contents, but render them as
+        machine-readable archival records instead of prose. This preserves
+        information while making it harder for the model to continue prior
+        narration verbatim when the latest frames differ.
+        """
+        import json as _json
+
+        records: List[str] = []
+        for item in self.timeline:
+            if item.get("type") == "summary":
+                record = {
+                    "kind": "summary",
+                    "time_range": list(item.get("time_range") or []),
+                    "history_only": True,
+                    "use": "entity_naming_and_long_range_context_only",
+                    "text": item.get("text", ""),
+                }
+            else:
+                record = {
+                    "kind": "think",
+                    "chunk": int(item.get("chunk", -1)),
+                    "time": item.get("time", ""),
+                    "history_only": True,
+                    "use": "entity_naming_only",
+                    "text": item.get("text", ""),
+                }
+            records.append(_json.dumps(record, ensure_ascii=False))
+        return "\n".join(records)
+
+    def format_recent_for_repair_prompt(self, limit: int = 8) -> str:
+        """Serialize recent thinks for repair as structured history lines."""
+        import json as _json
+
+        records: List[str] = []
+        for item in self.recent_thinks[-max(0, int(limit)):]:
+            record = {
+                "kind": "think",
+                "chunk": int(item.get("chunk", -1)),
+                "time": item.get("time", ""),
+                "history_only": True,
+                "use": "entity_naming_only",
+                "text": item.get("text", ""),
+            }
+            records.append(_json.dumps(record, ensure_ascii=False))
+        return "\n".join(records) or "(none)"
+
 
 # ---------------------------------------------------------------------------
 # Observation Generation
@@ -518,7 +567,7 @@ def build_observation_request(
     end = start + AGENT_CHUNK_SEC
     window_start = compute_visual_window_start(chunk_idx)
 
-    memory_text = memory.format_for_prompt()
+    memory_text = memory.format_for_observation_prompt()
 
     prompt = OBSERVATION_PROMPT.format(
         compressed_memory="(see memory timeline below)",
@@ -577,10 +626,7 @@ def build_observation_repair_request(
     ]
     fps = float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC)
 
-    recent_lines = []
-    for item in memory.recent_thinks[-8:]:
-        recent_lines.append(f'[{item["time"]}] {item.get("text", "")}')
-    recent_text = "\n".join(recent_lines) or "(none)"
+    recent_text = memory.format_recent_for_repair_prompt(limit=8)
 
     prompt = OBSERVATION_REPAIR_PROMPT.format(
         recent_thinks=recent_text,

@@ -1,0 +1,44 @@
+{
+  "api_base": "http://10.16.12.175:8000/v1",
+  "model": "/home/tione/notebook/gaozhenkun/model/Qwen3.5-397B-A17B-FP8",
+  "batch_root": "/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5/batch1",
+  "video_ids": [
+    "dA5GBOjQgeg",
+    "29M_i_-Qxg4",
+    "ETmzj5-XXOo"
+  ],
+  "max_chunks": 40,
+  "min_run_chunks": 8,
+  "drift_threshold": 0.55,
+  "variants": [
+    {
+      "name": "fulltag_strong_timeline_text_first_forward",
+      "memory_mode": "student_tags",
+      "block_order": "text_first",
+      "frame_order": "forward",
+      "visual_scope": "window",
+      "prompt_mode": "structured",
+      "memory_recent_limit": null,
+      "memory_include_summaries": true,
+      "memory_order": "timeline",
+      "instruction_mode": "strong",
+      "repair_mode": "current_only_visual",
+      "prepend_latest_chunk_first": false
+    },
+    {
+      "name": "fulltag_max_strict_timeline_text_first_forward",
+      "memory_mode": "student_tags",
+      "block_order": "text_first",
+      "frame_order": "forward",
+      "visual_scope": "window",
+      "prompt_mode": "structured",
+      "memory_recent_limit": null,
+      "memory_include_summaries": true,
+      "memory_order": "timeline",
+      "instruction_mode": "max_strict",
+      "repair_mode": "current_only_visual",
+      "prepend_latest_chunk_first": false
+    }
+  ],
+  "summary_tokens_max": 280
+}
