@@ -13,14 +13,15 @@ DATA_ROOT="${DATA_ROOT:-data/agent_v5/batch1}"
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-video_meta}"
 OUT_ROOT="${OUT_ROOT:-$ROOT/output/eval/batch1_post_sft_$(date +%Y%m%d_%H%M%S)}"
 
-# Pilot defaults. Set BASE_MAX_EVENTS_PER_SPLIT=0 for the full matrix.
-BASE_MAX_EVENTS_PER_SPLIT="${BASE_MAX_EVENTS_PER_SPLIT:-40}"
-BASE_MODES="${BASE_MODES:-streaming text_memory streaming_text_memory recall_oracle offline_past}"
+# Full defaults. Set BASE_MAX_EVENTS_PER_SPLIT>0 only for a quick smoke run.
+BASE_MAX_EVENTS_PER_SPLIT="${BASE_MAX_EVENTS_PER_SPLIT:-0}"
+BASE_MODES="${BASE_MODES:-streaming text_memory streaming_text_memory recall_oracle offline_past offline_full}"
 BASE_MAX_NEW_TOKENS="${BASE_MAX_NEW_TOKENS:-96}"
 
 ACTION_N="${ACTION_N:-100000}"
 SFT_GEN_N="${SFT_GEN_N:-0}"
-AGENT_N="${AGENT_N:-120}"
+AGENT_N="${AGENT_N:-0}"
+AGENT_AUDIT_N="${AGENT_AUDIT_N:-120}"
 RUN_OVO="${RUN_OVO:-1}"
 OVO_TASKS="${OVO_TASKS:-EPM,ASI,HLD,OCR,ACR,ATR,STU,FPD,OJR}"
 
@@ -67,91 +68,194 @@ PY
 )"
 echo "[post_sft_eval] sft_ckpt=$SFT_CKPT"
 
-common_inputs=(
-  --input "train_sft:${DATA_ROOT}/final/train_sft_trajectories.jsonl"
-  --input "train_rl:${DATA_ROOT}/final/train_rl_trajectories.jsonl"
-  --input "eval:${DATA_ROOT}/final/val_trajectories.jsonl"
-  --input "test:${DATA_ROOT}/final/test_trajectories.jsonl"
-)
+JOB_DIR="$OUT_ROOT/jobs"
+QUEUE_FILE="$OUT_ROOT/jobs.queue"
+LOCK_FILE="$OUT_ROOT/jobs.lock"
+FAILED_FILE="$OUT_ROOT/failed_jobs.txt"
+mkdir -p "$JOB_DIR"
+: >"$QUEUE_FILE"
+: >"$FAILED_FILE"
+JOB_INDEX=0
 
-run_base_probe() {
-  local gpu="$1"
-  local name="$2"
-  local ckpt="$3"
-  local out_json="$OUT_ROOT/base_probe/${name}.json"
-  local log="$OUT_ROOT/logs/base_${name}.log"
-  echo "[post_sft_eval] base probe start name=$name gpu=$gpu ckpt=$ckpt"
-  CUDA_VISIBLE_DEVICES="$gpu" "$PYTHON_BIN" -m scripts.eval.trajectory_base_probe \
-    --ckpt "$ckpt" \
-    "${common_inputs[@]}" \
-    --modes $BASE_MODES \
-    --max-events-per-split "$BASE_MAX_EVENTS_PER_SPLIT" \
-    --max-new-tokens "$BASE_MAX_NEW_TOKENS" \
-    --frame-protocol "$FRAME_PROTOCOL" \
-    --out "$out_json" \
-    >"$log" 2>&1
-  echo "[post_sft_eval] base probe done name=$name out=$out_json"
+add_job() {
+  local label="$1"
+  local script
+  script="$JOB_DIR/$(printf '%03d' "$JOB_INDEX")_${label}.sh"
+  JOB_INDEX=$((JOB_INDEX + 1))
+  cat >"$script"
+  chmod +x "$script"
+  printf '%s\n' "$script" >>"$QUEUE_FILE"
 }
 
-pids=()
-run_base_probe 0 qwen3vl2b /home/tione/notebook/gaozhenkun/model/Qwen3-VL-2B-Instruct &
-pids+=("$!")
-run_base_probe 1 qwen3vl4b /home/tione/notebook/gaozhenkun/model/Qwen3-VL-4B-Instruct &
-pids+=("$!")
-run_base_probe 2 qwen3vl8b /home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct &
-pids+=("$!")
+add_base_job() {
+  local name="$1"
+  local ckpt="$2"
+  local mode="$3"
+  add_job "base_${name}_${mode}" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$ROOT"
+export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
+"$PYTHON_BIN" -m scripts.eval.trajectory_base_probe \\
+  --ckpt "$ckpt" \\
+  --input "train_sft:${DATA_ROOT}/final/train_sft_trajectories.jsonl" \\
+  --input "train_rl:${DATA_ROOT}/final/train_rl_trajectories.jsonl" \\
+  --input "eval:${DATA_ROOT}/final/val_trajectories.jsonl" \\
+  --input "test:${DATA_ROOT}/final/test_trajectories.jsonl" \\
+  --modes "$mode" \\
+  --max-events-per-split "$BASE_MAX_EVENTS_PER_SPLIT" \\
+  --max-new-tokens "$BASE_MAX_NEW_TOKENS" \\
+  --frame-protocol "$FRAME_PROTOCOL" \\
+  --out "$OUT_ROOT/base_probe/${name}_${mode}.json"
+EOF
+}
 
-base_status=0
-for pid in "${pids[@]}"; do
-  if ! wait "$pid"; then
-    base_status=1
-  fi
+for spec in \
+  "qwen3vl2b|/home/tione/notebook/gaozhenkun/model/Qwen3-VL-2B-Instruct" \
+  "qwen3vl4b|/home/tione/notebook/gaozhenkun/model/Qwen3-VL-4B-Instruct" \
+  "qwen3vl8b|/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct"
+do
+  name="${spec%%|*}"
+  ckpt="${spec#*|}"
+  for mode in $BASE_MODES; do
+    add_base_job "$name" "$ckpt" "$mode"
+  done
 done
-if [[ "$base_status" != "0" ]]; then
-  echo "[post_sft_eval] one or more base probes failed; continuing with SFT evals" >&2
-fi
 
-CUDA_VISIBLE_DEVICES=3 "$PYTHON_BIN" -m scripts.eval.sft_action_acc \
-  --ckpt "$SFT_CKPT" \
-  --val "${DATA_ROOT}/rendered/video_meta_all/test_messages.jsonl" \
-  --n "$ACTION_N" \
-  --frame-protocol "$FRAME_PROTOCOL" \
-  --out "$OUT_ROOT/sft_eval/test_action_acc.json" \
-  >"$OUT_ROOT/logs/sft_action_acc.log" 2>&1
+add_job "sft_test_action_acc" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$ROOT"
+export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
+"$PYTHON_BIN" -m scripts.eval.sft_action_acc \\
+  --ckpt "$SFT_CKPT" \\
+  --val "${DATA_ROOT}/rendered/video_meta_all/test_messages.jsonl" \\
+  --n "$ACTION_N" \\
+  --frame-protocol "$FRAME_PROTOCOL" \\
+  --out "$OUT_ROOT/sft_eval/test_action_acc.json"
+EOF
 
-CUDA_VISIBLE_DEVICES=4 "$PYTHON_BIN" -m scripts.eval.test_set_sft_gen \
-  --ckpt "$SFT_CKPT" \
-  --test_jsonl "${DATA_ROOT}/rendered/video_meta_all/test_messages.jsonl" \
-  --n "$SFT_GEN_N" \
-  --frame-protocol "$FRAME_PROTOCOL" \
-  --out "$OUT_ROOT/sft_eval/test_answer_acc.json" \
-  >"$OUT_ROOT/logs/sft_answer_acc.log" 2>&1
+add_job "sft_test_answer_acc" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$ROOT"
+export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
+"$PYTHON_BIN" -m scripts.eval.test_set_sft_gen \\
+  --ckpt "$SFT_CKPT" \\
+  --test_jsonl "${DATA_ROOT}/rendered/video_meta_all/test_messages.jsonl" \\
+  --n "$SFT_GEN_N" \\
+  --frame-protocol "$FRAME_PROTOCOL" \\
+  --out "$OUT_ROOT/sft_eval/test_answer_acc.json"
+EOF
 
 for compress_mode in system self; do
-  CUDA_VISIBLE_DEVICES=5 "$PYTHON_BIN" -m scripts.eval.test_set_agent \
-    --ckpt "$SFT_CKPT" \
-    --test_jsonl "${DATA_ROOT}/final/test.jsonl" \
-    --video_root / \
-    --frames_root "${DATA_ROOT}/frames" \
-    --retriever bm25 \
-    --compress_mode "$compress_mode" \
-    --max_results 4 \
-    --n "$AGENT_N" \
-    --frame-protocol "$FRAME_PROTOCOL" \
-    --out "$OUT_ROOT/sft_eval/test_agent_${compress_mode}_bm25.json" \
-    >"$OUT_ROOT/logs/test_agent_${compress_mode}_bm25.log" 2>&1
+  add_job "sft_test_agent_${compress_mode}_bm25" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$ROOT"
+export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
+"$PYTHON_BIN" -m scripts.eval.test_set_agent \\
+  --ckpt "$SFT_CKPT" \\
+  --test_jsonl "${DATA_ROOT}/final/test.jsonl" \\
+  --video_root / \\
+  --frames_root "${DATA_ROOT}/frames" \\
+  --retriever bm25 \\
+  --compress_mode "$compress_mode" \\
+  --max_results 4 \\
+  --n "$AGENT_N" \\
+  --frame-protocol "$FRAME_PROTOCOL" \\
+  --out "$OUT_ROOT/sft_eval/test_agent_${compress_mode}_bm25.json"
+EOF
+done
+
+for split in val train_rl; do
+  add_job "sft_${split}_agent_system_bm25_think_audit" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$ROOT"
+export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
+"$PYTHON_BIN" -m scripts.eval.test_set_agent \\
+  --ckpt "$SFT_CKPT" \\
+  --test_jsonl "${DATA_ROOT}/final/${split}.jsonl" \\
+  --video_root / \\
+  --frames_root "${DATA_ROOT}/frames" \\
+  --retriever bm25 \\
+  --compress_mode system \\
+  --max_results 4 \\
+  --n "$AGENT_AUDIT_N" \\
+  --frame-protocol "$FRAME_PROTOCOL" \\
+  --out "$OUT_ROOT/sft_eval/${split}_agent_system_bm25_think_audit.json"
+EOF
 done
 
 if [[ "$RUN_OVO" == "1" ]]; then
-  CUDA_VISIBLE_DEVICES=6 "$PYTHON_BIN" -m scripts.eval.ovo.eval_sft_rtbt \
-    --ckpt "$SFT_CKPT" \
-    --benchmark_json /home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench/ovo_bench_new.json \
-    --video_root /home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench \
-    --frames_root /home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench/frames \
-    --tasks "$OVO_TASKS" \
-    --frame-protocol "$FRAME_PROTOCOL" \
-    --out "$OUT_ROOT/sft_eval/ovo_rtbt.json" \
-    >"$OUT_ROOT/logs/ovo_rtbt.log" 2>&1
+  add_job "sft_ovo_rtbt" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$ROOT"
+export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
+"$PYTHON_BIN" -m scripts.eval.ovo.eval_sft_rtbt \\
+  --ckpt "$SFT_CKPT" \\
+  --benchmark_json /home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench/ovo_bench_new.json \\
+  --video_root /home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench \\
+  --frames_root /home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench/frames \\
+  --tasks "$OVO_TASKS" \\
+  --frame-protocol "$FRAME_PROTOCOL" \\
+  --out "$OUT_ROOT/sft_eval/ovo_rtbt.json"
+EOF
+fi
+
+echo "[post_sft_eval] queued_jobs=$(wc -l < "$QUEUE_FILE")"
+
+claim_job() {
+  "$PYTHON_BIN" - "$QUEUE_FILE" "$LOCK_FILE" <<'PY'
+import fcntl
+import sys
+from pathlib import Path
+
+queue = Path(sys.argv[1])
+lock = Path(sys.argv[2])
+with lock.open("w") as lock_f:
+    fcntl.flock(lock_f, fcntl.LOCK_EX)
+    lines = queue.read_text().splitlines() if queue.exists() else []
+    if not lines:
+        raise SystemExit(1)
+    job = lines[0]
+    queue.write_text("\n".join(lines[1:]) + ("\n" if len(lines) > 1 else ""))
+    print(job)
+PY
+}
+
+worker() {
+  local gpu="$1"
+  local job
+  local label
+  while job="$(claim_job)"; do
+    label="$(basename "$job" .sh)"
+    echo "[post_sft_eval] START gpu=$gpu label=$label"
+    if GPU_ID="$gpu" bash "$job" >"$OUT_ROOT/logs/${label}.log" 2>&1; then
+      echo "[post_sft_eval] DONE  gpu=$gpu label=$label"
+    else
+      echo "[post_sft_eval] FAIL  gpu=$gpu label=$label" >&2
+      printf '%s\n' "$label" >>"$FAILED_FILE"
+    fi
+  done
+  echo "[post_sft_eval] worker gpu=$gpu idle: queue empty"
+}
+
+pids=()
+for gpu in 0 1 2 3 4 5 6 7; do
+  worker "$gpu" &
+  pids+=("$!")
+done
+for pid in "${pids[@]}"; do
+  wait "$pid"
+done
+
+if [[ -s "$FAILED_FILE" ]]; then
+  echo "[post_sft_eval] failed jobs:" >&2
+  cat "$FAILED_FILE" >&2
+  exit 1
 fi
 
 echo "[post_sft_eval] complete: $OUT_ROOT"
