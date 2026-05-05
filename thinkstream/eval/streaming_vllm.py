@@ -180,6 +180,8 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
                 user_question, ask_time,
                 options=meta.get("options"),
                 answer_form=meta.get("answer_form"),
+                answer_style=meta.get("answer_style"),
+                answer_instruction=meta.get("answer_instruction"),
             )
 
     compress_trigger = _maybe_compress_trigger(runner.memory, chunk_idx)
@@ -812,6 +814,8 @@ def streaming_vllm_rollout(
                 meta = {
                     "options": list(q.get("options") or []),
                     "answer_form": q.get("answer_form", ""),
+                    "answer_style": q.get("answer_style", ""),
+                    "answer_instruction": q.get("answer_instruction", ""),
                 }
                 for ac in q.get("ask_chunks") or []:
                     q_meta_at_chunk[int(ac)] = meta

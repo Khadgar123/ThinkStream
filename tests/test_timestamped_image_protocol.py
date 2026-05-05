@@ -9,6 +9,7 @@ from scripts.agent_data_v5.pass5_messages import build_messages
 from thinkstream.data.agent_protocol import (
     SYSTEM_PROMPT_V12,
     build_user_content,
+    format_memory_block,
     parse_agent_output_v12,
 )
 
@@ -89,6 +90,42 @@ def test_pass5_sft_messages_use_same_timestamped_image_protocol():
     )
 
 
+def test_pass5_relocates_moved_absolute_frame_paths(tmp_path):
+    frame_dir = tmp_path / "frames" / "vid0"
+    frame_dir.mkdir(parents=True)
+    for idx in range(4):
+        (frame_dir / f"frame_{idx + 1:06d}.jpg").write_bytes(b"\xff\xd8\xff\xd9")
+    old_paths = [
+        f"/old/cluster/root/frames/vid0/frame_{idx + 1:06d}.jpg"
+        for idx in range(4)
+    ]
+    sample = {
+        "sample_id": "s0",
+        "video_id": "vid0",
+        "video_path": "videos/vid0.mp4",
+        "sample_type": "silent",
+        "chunk_idx": 1,
+        "input": {
+            "memory": {"compressed_segments": [], "recent_thinks": []},
+            "visual_window": {
+                "video_start": 0,
+                "video_end": 2,
+                "frames": 4,
+                "frame_paths": old_paths,
+            },
+        },
+        "output": "<think>x</think><answer></answer>",
+    }
+    messages = build_messages(sample, tmp_path)
+    image_paths = [
+        item["image"]
+        for item in messages[1]["content"]
+        if item.get("type") == "image"
+    ]
+    assert all(Path(p).exists() for p in image_paths)
+    assert str(frame_dir / "frame_000004.jpg") in image_paths
+
+
 def test_teacher_passes_use_timestamped_image_url_protocol(tmp_path):
     frames = _jpeg_frames(tmp_path, 6)
 
@@ -147,3 +184,52 @@ def test_pass1a_parser_requires_observation_note_think_field():
     )
     assert missing["parse_success"] is False
     assert missing["_missing_think"] is True
+
+
+def test_memory_recent_thinks_are_tagged_json_records():
+    text = format_memory_block({
+        "compressed": [{"time_range": [0, 8], "text": "Earlier setup."}],
+        "recent_thinks": ["[8-9] A red bowl appears on the counter."],
+    })
+    assert "<compressed>{" in text
+    assert "<memory_think>{" in text
+    assert '"time": "8-9"' in text
+    assert '"text": "A red bowl appears on the counter."' in text
+
+
+def test_inter_chunk_compress_omits_queries_like_sft_messages():
+    content = build_user_content(
+        memory_text='<memory_think>{"time":"0-1","text":"setup"}</memory_think>',
+        chunk_idx=5,
+        video_path="/unused.mp4",
+        user_input="<compress_trigger/>",
+        queries=[{
+            "question": "What color is the bowl?",
+            "ask_time": 4,
+            "answer_form": "multiple_choice",
+            "options": ["A) red", "B) blue", "C) green", "D) black"],
+            "answer_instruction": "Answer format: one letter only (A, B, C, or D).",
+            "answers": [],
+        }],
+        frame_paths=["frame_000001.jpg", "frame_000002.jpg"],
+        inter_chunk=True,
+    )
+    joined = "\n".join(item.get("text", "") for item in content if item.get("type") == "text")
+    assert "<queries>" not in joined
+    assert "<visual_window>" not in joined
+    assert "<compress_trigger/>" in joined
+
+
+def test_query_renderer_keeps_mc_answer_instruction():
+    from thinkstream.data.agent_protocol import format_queries_block
+    text = format_queries_block([{
+        "question": "Which object appears?",
+        "ask_time": 3,
+        "options": ["A) brush", "B) spoon", "C) cup", "D) book"],
+        "answer_form": "multiple_choice",
+        "answer_style": "letter_only",
+        "answer_instruction": "Answer format: one letter only (A, B, C, or D).",
+        "answers": [],
+    }])
+    assert "Options: A) brush B) spoon C) cup D) book" in text
+    assert "Answer format: one letter only" in text

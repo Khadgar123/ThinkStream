@@ -176,6 +176,53 @@ def _format_memory_block(memory: Dict) -> str:
     return _shared_format_memory(memory)
 
 
+def _resolve_frame_paths(paths: List[str], base_path: Path) -> List[str]:
+    """Resolve frame paths after a batch directory is copied to a new root."""
+    roots = [base_path]
+    for value in (os.environ.get("THINKSTREAM_DATA_ROOT"), os.environ.get("AGENT_DATA_DIR")):
+        if value:
+            root = Path(value)
+            if root not in roots:
+                roots.append(root)
+    out: List[str] = []
+    for raw in paths:
+        p = Path(str(raw))
+        if not p.is_absolute():
+            direct = base_path / p
+            if direct.exists():
+                out.append(str(direct))
+                continue
+            parts = p.parts
+            if "frames" in parts:
+                idx = parts.index("frames")
+                for root in roots:
+                    candidate = root / "frames" / Path(*parts[idx + 1:])
+                    if candidate.exists():
+                        out.append(str(candidate))
+                        break
+                else:
+                    out.append(str(direct))
+                continue
+            out.append(str(direct))
+            continue
+        if p.exists():
+            out.append(str(p))
+            continue
+        parts = p.parts
+        if "frames" in parts:
+            idx = parts.index("frames")
+            for root in roots:
+                candidate = root / "frames" / Path(*parts[idx + 1:])
+                if candidate.exists():
+                    out.append(str(candidate))
+                    break
+            else:
+                out.append(str(p))
+            continue
+        out.append(str(p))
+    return out
+
+
 def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]:
     """v12.0: Build messages for the official Qwen tool-call protocol.
 
@@ -334,8 +381,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                 vw["frame_paths"] = paths
 
         if "frame_paths" in vw:
-            paths = [str(base_path / p) if not Path(p).is_absolute() else p
-                     for p in vw["frame_paths"]]
+            paths = _resolve_frame_paths(vw["frame_paths"], base_path)
             try:
                 from scripts.agent_data_v5.config import (
                     RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
@@ -387,8 +433,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
             "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
         })
         if "frame_paths" in rf:
-            paths = [str(base_path / p) if not Path(p).is_absolute() else p
-                     for p in rf["frame_paths"]]
+            paths = _resolve_frame_paths(rf["frame_paths"], base_path)
             try:
                 from scripts.agent_data_v5.config import (
                     RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
@@ -472,8 +517,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                 "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
             })
             if "frame_paths" in rf:
-                paths = [str(base_path / p) if not Path(p).is_absolute() else p
-                         for p in rf["frame_paths"]]
+                paths = _resolve_frame_paths(rf["frame_paths"], base_path)
                 try:
                     from scripts.agent_data_v5.config import (
                         RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,

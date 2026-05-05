@@ -107,6 +107,12 @@ def check_protocol(a: Audit):
     a.check("SYSTEM_PROMPT mentions '16s window'", "16s window" in sp)
     a.check("SYSTEM_PROMPT does NOT mention '2-second'", "2-second" not in sp)
     a.check("SYSTEM_PROMPT does NOT mention '24s'", "24s window" not in sp)
+    mem_text = ap.format_memory_block({
+        "compressed": [{"time_range": [0, 8], "text": "setup"}],
+        "recent_thinks": [{"time": "8-9", "text": "new object appears"}],
+    })
+    a.check("memory renders tagged records",
+            "<compressed>{" in mem_text and "<memory_think>{" in mem_text)
 
     # Tool schema
     tools = ap.TOOLS_SCHEMA
@@ -152,8 +158,11 @@ def check_data_pipeline(a: Audit):
     # pass2 MemoryState
     from scripts.agent_data_v5.pass2_rollout import MemoryState
     ms = MemoryState()
+    ms.add_think(0, "A red bowl is on the table.")
     a.check("MemoryState has timeline + retrieval_archive",
             hasattr(ms, "timeline") and hasattr(ms, "_retrieval_archive"))
+    a.check("pass2 teacher memory uses student memory tags",
+            "<memory_think>{" in ms.format_for_observation_prompt())
 
     # add_think uses AGENT_CHUNK_SEC
     src = inspect.getsource(MemoryState.add_think)

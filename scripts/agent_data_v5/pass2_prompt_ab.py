@@ -494,18 +494,7 @@ def _serialize_student_tags_memory(
         recent_limit=recent_limit,
         memory_order=memory_order,
     ):
-        if item.get("type") == "summary":
-            tr = item.get("time_range") or []
-            if len(tr) == 2:
-                lines.append(f'<memory t="{tr[0]}-{tr[1]}">{item.get("text", "")}</memory>')
-            else:
-                lines.append(f'<memory>{item.get("text", "")}</memory>')
-        else:
-            time_text = item.get("time", "")
-            if time_text:
-                lines.append(f'<memory t="{time_text}">{item.get("text", "")}</memory>')
-            else:
-                lines.append(f'<memory>{item.get("text", "")}</memory>')
+        lines.append(MemoryState._format_timeline_item_as_memory_tag(item))
     return "\n".join(lines) or "(none)"
 
 

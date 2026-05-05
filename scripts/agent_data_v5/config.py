@@ -576,6 +576,7 @@ SPECIAL_TOKENS_PER_TIMESTEP = [
     # Input structure tags
     "<memory>", "</memory>",                    # wraps memory timeline
     "<compressed>", "</compressed>",            # memory timeline: compressed segment (inline)
+    "<memory_think>", "</memory_think>",        # memory timeline: recent observation record
     "<pending>", "</pending>",                  # memory timeline: pending question
     "<visual_window>", "</visual_window>",      # visual window header
     "<recalled_frames>", "</recalled_frames>",  # recalled frames header
@@ -593,7 +594,7 @@ SPECIAL_TOKENS_PER_TIMESTEP = [
 
 EVIDENCE_GRAPH_PROMPT = """You are annotating a 1-second video clip (t={start}-{end}s, 2 frames).
 
-Based on the frames above, output a STRICT JSON object:
+Based on the timestamp-tagged frames in this message, output a STRICT JSON object:
 {{
   "time": [{start}, {end}],
   "visible_entities": [
@@ -606,7 +607,7 @@ Based on the frames above, output a STRICT JSON object:
 }}
 
 CRITICAL — minimum output requirement:
-- The frames above almost always contain SOMETHING describable: a person,
+- The timestamp-tagged frames in this message almost always contain SOMETHING describable: a person,
   an object being manipulated, a setting, on-screen text, a tool, food, etc.
 - visible_entities MUST have ≥1 element AND atomic_facts MUST have ≥1 element,
   even if the scene is dim/blurry/transition. The only exception is a fully
@@ -671,7 +672,7 @@ OBSERVATION_PROMPT = """You are a streaming video agent generating a think note 
 
 CURRENT TASK FIRST: inspect the timestamp-tagged image list for the sliding visual window t={window_start}-{window_end}s. The latest target chunk is ONLY t={start}-{end}s ({current_frame_count} frames) and is the primary evidence.
 
-History ledger below is archival memory for naming only. It may describe older frames and must not be copied if the latest frames differ. Each line is a structured record; its `text` field is stale history wording, not current evidence.
+History ledger below is archival memory for naming only. It may describe older frames and must not be copied if the latest frames differ. It contains tagged records such as <memory_think>{{"time": "...", "text": "..."}}</memory_think> or <compressed>{{"time_range": [...], "text": "..."}}</compressed>; each `text` field is stale history wording, not current evidence.
 <history_ledger>
 {recent_thinks}
 </history_ledger>
@@ -705,7 +706,7 @@ Output one paragraph:"""
 
 OBSERVATION_REPAIR_PROMPT = """You are correcting a streaming video think note for one current chunk.
 
-Recent history ledger (may be stale; use only for naming, never for current evidence):
+Recent history ledger (tagged stale records; use only for naming, never for current evidence):
 {recent_thinks}
 
 Previous stale draft to avoid copying:
@@ -736,13 +737,15 @@ Rules:
 
 Output one paragraph:"""
 
-COMPRESS_PROMPT = """Compress these observations into a structured summary.
+COMPRESS_PROMPT = """Compress these tagged observation records into a structured summary.
 
-Observations to compress:
+Tagged observations to compress:
 {observations_text}
 
 Rules:
 - Use coarse time sub-ranges: [X-Y]
+- Read <memory_think>{{"time": "...", "text": "..."}}</memory_think> as one raw chunk observation
+- Read <compressed>{{"time_range": [...], "text": "..."}}</compressed> as an older summary
 - Keep ALL entities with their appearance descriptions
 - Keep ALL OCR content verbatim
 - Keep state changes as before→after

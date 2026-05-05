@@ -329,6 +329,7 @@ def init_processor(
              "</response>",
              "<recall_result>", "</recall_result>",
              "<compressed>", "</compressed>",
+             "<memory_think>", "</memory_think>",
              "<pending>", "</pending>",
              # v12.12 (2026-05-02): switched from open/close pair to the
              # self-closing form actually emitted by pass3c / agent_loop /

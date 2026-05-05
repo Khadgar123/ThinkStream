@@ -616,7 +616,7 @@ def _register_streaming_agent_loop():
                 queries_text = format_queries_block(queries or [])
             except Exception:
                 queries_text = ""
-            if queries_text:
+            if queries_text and not inter_chunk:
                 content.append({
                     "type": "text",
                     "text": f"\n{queries_text}",

@@ -245,14 +245,16 @@ class MemoryState:
 
     def add_query(self, question: str, ask_time: float,
                    options: Optional[List[str]] = None,
-                   answer_form: Optional[str] = None):
+                   answer_form: Optional[str] = None,
+                   answer_style: Optional[str] = None,
+                   answer_instruction: Optional[str] = None):
         """Register a question (pending until answered).
 
         v12.13 fix (P0-1): accept options + answer_form so format_queries_block
         can render "Options: A) ... B) ..." for pending MC queries at
-        inference / RL rollout time. SFT data has options via pass3c
-        queries_state; without this in runtime, RL/eval prompts omit the
-        choices and forward MC questions become unanswerable.
+        inference / RL rollout time. v12.25 also stores answer_style /
+        answer_instruction so SFT, RL, and eval see the same MC answer
+        protocol hint.
         """
         if not hasattr(self, "_queries"):
             self._queries = []
@@ -261,6 +263,8 @@ class MemoryState:
             "ask_time": ask_time,
             "options": list(options or []),
             "answer_form": answer_form or "",
+            "answer_style": answer_style or "",
+            "answer_instruction": answer_instruction or "",
             "answers": [],
         })
 
@@ -777,23 +781,18 @@ class StreamingAgentLoop:
                     user_question, ask_time,
                     options=meta.get("options"),
                     answer_form=meta.get("answer_form"),
+                    answer_style=meta.get("answer_style"),
+                    answer_instruction=meta.get("answer_instruction"),
                 )
 
         # 2. Check compression trigger (system-triggered, not model-triggered).
-        #
-        # The trigger MUST embed a `range="t_start-t_end"` attribute that
-        # mirrors render_samples.py:174-180 exactly — every SFT compress
-        # sample saw a trigger with this attribute, so a no-attribute
-        # variant is out-of-distribution and risks (a) format drift in
-        # the summary's time_range field, (b) the model failing to copy
-        # the range and inventing one.
         #
         # v11.3: range size is token-driven via select_compress_range_by_tokens
         # (was hardcoded to COMPRESS_RANGE_MIN=4). Pass2 already enumerated
         # variable ranges in [4, 8] via score_range_for_compression; agent_loop
         # now matches that variability so inference and training agree on
-        # the policy. The model still doesn't choose the range — it only
-        # writes the summary text given a system-supplied range.
+        # the policy. v12.12+ injects only a bare <compress_trigger/>; the
+        # model derives and emits time_range inside the compress tool_call.
         compress_trigger = ""
         # v9.4.2: telemetry for streaming eval — record state at the moment
         # compression FIRES so eval can stat: how many thinks were buffered

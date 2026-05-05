@@ -173,6 +173,28 @@ def append_timestamped_image_list(
 # Memory Formatting
 # ---------------------------------------------------------------------------
 
+_RECENT_THINK_LINE_RE = re.compile(r"^\s*\[([^\]]+)\]\s*(.*)$", re.DOTALL)
+
+
+def _coerce_memory_think(item: Any) -> Dict[str, str]:
+    """Normalize a recent-think memory item for tagged rendering."""
+    if isinstance(item, str):
+        m = _RECENT_THINK_LINE_RE.match(item)
+        if m:
+            return {"time": m.group(1).strip(), "text": m.group(2).strip()}
+        return {"time": "", "text": item.strip()}
+    if isinstance(item, dict):
+        time_str = item.get(
+            "time",
+            f'{item.get("chunk", 0) * AGENT_CHUNK_SEC}-'
+            f'{item.get("chunk", 0) * AGENT_CHUNK_SEC + AGENT_CHUNK_SEC}',
+        )
+        return {
+            "time": str(time_str),
+            "text": str(item.get("text", item.get("obs", ""))).strip(),
+        }
+    return {"time": "", "text": str(item).strip()}
+
 
 def format_memory_block(memory: Dict) -> str:
     """Format memory state as text with tags.
@@ -203,20 +225,14 @@ def format_memory_block(memory: Dict) -> str:
         )
         parts.append(f"<compressed>{seg_json}</compressed>")
 
-    # Recent thinks
+    # Recent thinks. Render as tagged JSON records rather than prose lines so
+    # the model treats them as archival memory, not a continuation template.
     recent = memory.get("recent_thinks", memory.get("recent_observations", []))
     for item in recent:
-        if isinstance(item, str):
-            # Already formatted "[time] text" string (from pipeline samples)
-            parts.append(item)
-        elif isinstance(item, dict):
-            time_str = item.get(
-                "time",
-                f'{item.get("chunk", 0) * AGENT_CHUNK_SEC}-'
-                f'{item.get("chunk", 0) * AGENT_CHUNK_SEC + AGENT_CHUNK_SEC}',
-            )
-            text = item.get("text", item.get("obs", ""))
-            parts.append(f"[{time_str}] {text}")
+        rec = _coerce_memory_think(item)
+        if rec.get("text"):
+            rec_json = json.dumps(rec, ensure_ascii=False)
+            parts.append(f"<memory_think>{rec_json}</memory_think>")
 
     # Defensive: SFT data has no <pending> tags; runtime no longer
     # populates pending_questions. If anyone smuggles in a non-empty
@@ -371,7 +387,7 @@ def build_user_content(
     """Build the user content list for a single-step message.
 
     Ordering (v12.12, 2026-05-01 — supersedes v3.0 zone order):
-    <memory> → <queries> → <visual_window> + frames →
+    <memory> → <queries> (visual turns only) → <visual_window> + frames →
     <recalled_frames> + frames → <recall_result> → <user_input>
 
     Why this order: memory and queries are monotonically appended across
@@ -421,7 +437,9 @@ def build_user_content(
     })
 
     # ── Queries (past Q&A, also monotonic; second-stable prefix) ──
-    if queries:
+    # Inter-chunk compression is a system memory-pressure event. SFT/pass5
+    # train it as memory + bare trigger only, so omit queries here too.
+    if queries and not inter_chunk:
         queries_text = format_queries_block(queries)
         if queries_text:
             user_content.append({
@@ -580,7 +598,7 @@ def strip_frame_metadata_tags(text: str) -> str:
 
 SYSTEM_PROMPT_V12 = (
     "You are a streaming video agent. You observe 1-second video chunks and maintain memory.\n\n"
-    "Each turn you receive: frame-tagged visual frames (recent 16s window) + memory state. "
+    "Each turn you receive: frame-tagged visual frames (recent 16s window) + tagged memory state. "
     "Every image is preceded by a structural tag like <frame ts=\"12.5\" role=\"latest chunk\" />; "
     "use these frame tags together with <visual_window>.current_time to identify "
     "the current chunk. Frame tags are routing metadata only: never copy or "
@@ -599,15 +617,15 @@ SYSTEM_PROMPT_V12 = (
     "contents (oldest contiguous chunks that can be safely condensed). "
     "Retain entity names, visual attributes, OCR, state changes.\n\n"
     "Output format (every turn must follow this exactly):\n"
-    "  <think>40-60 tokens describing only what is newly visible</think>\n"
+    "  <think>40-80 tokens describing only the current chunk</think>\n"
     "  Then ONE of:\n"
     "    <tool_call>{\"name\":\"recall\",\"arguments\":{...}}</tool_call>\n"
     "    <tool_call>{\"name\":\"compress\",\"arguments\":{...}}</tool_call>\n"
     "    <answer>response text</answer>\n"
     "    <answer></answer>   (silent — no question to answer right now)\n\n"
-    "Think rules: describe ONLY what is newly visible in the current chunk. "
+    "Think rules: describe ONLY observable visual facts in the current chunk. "
     "Evidence priority: (1) current frame-tagged images determine the current think; "
-    "(2) memory is history and entity naming only; (3) if current frames "
+    "(2) tagged memory records are history and entity naming only; (3) if current frames "
     "conflict with memory, ignore memory for the current visual description. "
     "Do not use memory as evidence that a past object/action is still visible. "
     "Use continuation phrases such as 'continues', 'remains', or 'unchanged' "
@@ -705,7 +723,7 @@ def build_assistant_content_v12(
     of: <tool_call>{...}</tool_call> | <answer>...</answer>.
 
     Args:
-        think: think content (40-60 tokens recommended).
+        think: think content (40-80 tokens recommended).
         kind: which terminal to emit.
         answer_text: text inside <answer>...</answer> (empty for silent).
         recall_query: dict with "query" + "time_range" keys.

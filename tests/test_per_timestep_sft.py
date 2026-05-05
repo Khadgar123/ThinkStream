@@ -397,7 +397,9 @@ class TestMemoryFormat:
         text = _format_memory_block(mem)
         assert "<compressed>" in text
         assert '"time_range": [0, 10]' in text
-        assert "[10-12] Slicing tomato." in text
+        assert "<memory_think>" in text
+        assert '"time": "10-12"' in text
+        assert '"text": "Slicing tomato."' in text
 
     def test_pending_format(self):
         from thinkstream.sft.data_processor import _format_memory_block

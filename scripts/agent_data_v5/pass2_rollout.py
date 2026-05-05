@@ -269,65 +269,44 @@ class MemoryState:
 
         self.timeline = new_timeline
 
-    def format_for_prompt(self) -> str:
-        """Format timeline as a single string for model input."""
-        import json as _json
-        lines = []
-        for item in self.timeline:
-            if item.get("type") == "summary":
-                tr = item["time_range"]
-                lines.append(f'<summary t="{tr[0]}-{tr[1]}">{item["text"]}</summary>')
-            else:
-                lines.append(f'[{item["time"]}] {item["text"]}')
-        return "\n".join(lines)
-
-    def format_for_observation_prompt(self) -> str:
-        """Serialize memory for observation as a structured history ledger.
-
-        Keep the full compression + full memory contents, but render them as
-        machine-readable archival records instead of prose. This preserves
-        information while making it harder for the model to continue prior
-        narration verbatim when the latest frames differ.
-        """
-        import json as _json
-
-        records: List[str] = []
-        for item in self.timeline:
-            if item.get("type") == "summary":
-                record = {
-                    "kind": "summary",
-                    "time_range": list(item.get("time_range") or []),
-                    "history_only": True,
-                    "use": "entity_naming_and_long_range_context_only",
-                    "text": item.get("text", ""),
-                }
-            else:
-                record = {
-                    "kind": "think",
-                    "chunk": int(item.get("chunk", -1)),
-                    "time": item.get("time", ""),
-                    "history_only": True,
-                    "use": "entity_naming_only",
-                    "text": item.get("text", ""),
-                }
-            records.append(_json.dumps(record, ensure_ascii=False))
-        return "\n".join(records)
-
-    def format_recent_for_repair_prompt(self, limit: int = 8) -> str:
-        """Serialize recent thinks for repair as structured history lines."""
-        import json as _json
-
-        records: List[str] = []
-        for item in self.recent_thinks[-max(0, int(limit)):]:
-            record = {
-                "kind": "think",
-                "chunk": int(item.get("chunk", -1)),
-                "time": item.get("time", ""),
-                "history_only": True,
-                "use": "entity_naming_only",
+    @staticmethod
+    def _format_timeline_item_as_memory_tag(item: Dict) -> str:
+        """Render one timeline item with the same tags the student sees."""
+        if item.get("type") == "summary":
+            payload = {
+                "time_range": list(item.get("time_range") or []),
                 "text": item.get("text", ""),
             }
-            records.append(_json.dumps(record, ensure_ascii=False))
+            return f"<compressed>{json.dumps(payload, ensure_ascii=False)}</compressed>"
+        payload = {
+            "time": item.get("time", ""),
+            "text": item.get("text", ""),
+        }
+        return f"<memory_think>{json.dumps(payload, ensure_ascii=False)}</memory_think>"
+
+    def format_for_prompt(self) -> str:
+        """Format timeline with the same memory tags used by SFT/RL/eval."""
+        return "\n".join(
+            self._format_timeline_item_as_memory_tag(item)
+            for item in self.timeline
+        )
+
+    def format_for_observation_prompt(self) -> str:
+        """Serialize memory for observation as tagged archival records.
+
+        Keep the full compression + full memory contents, but render them as
+        the same machine-readable tags used by the student prompt. This
+        preserves information while making it harder for the model to continue
+        prior narration verbatim when the latest frames differ.
+        """
+        return self.format_for_prompt()
+
+    def format_recent_for_repair_prompt(self, limit: int = 8) -> str:
+        """Serialize recent thinks for repair as tagged archival records."""
+        records = [
+            self._format_timeline_item_as_memory_tag(item)
+            for item in self.recent_thinks[-max(0, int(limit)):]
+        ]
         return "\n".join(records) or "(none)"
 
 
@@ -912,11 +891,7 @@ def build_compress_request(
 
     obs_lines = []
     for item in to_compress:
-        if item.get("type") == "think":
-            obs_lines.append(f'[{item["time"]}] {item.get("text", "")}')
-        elif item.get("type") == "summary":
-            tr = item["time_range"]
-            obs_lines.append(f'<summary t="{tr[0]}-{tr[1]}">{item.get("text", "")}</summary>')
+        obs_lines.append(MemoryState._format_timeline_item_as_memory_tag(item))
     obs_text = "\n".join(obs_lines)
 
     # Compute time range from items (thinks have "chunk", summaries have "time_range")
@@ -963,7 +938,22 @@ def build_compress_request(
 def _fallback_compress_text(meta: Dict) -> str:
     """Extract a deterministic summary fallback from the selected observations."""
     obs = meta.get("observations_text", "")
-    obs = re.sub(r"</?summary[^>]*>", " ", obs)
+    tagged_texts = []
+    for m in re.finditer(
+        r"<(?:memory_think|compressed)>(.*?)</(?:memory_think|compressed)>",
+        obs,
+        flags=re.DOTALL,
+    ):
+        try:
+            payload = json.loads(m.group(1))
+        except (TypeError, json.JSONDecodeError):
+            continue
+        text = str(payload.get("text", "")).strip()
+        if text:
+            tagged_texts.append(text)
+    if tagged_texts:
+        obs = " ".join(tagged_texts)
+    obs = re.sub(r"</?(?:summary|memory_think|compressed)[^>]*>", " ", obs)
     obs = re.sub(r"\[[^\]]+\]\s*", " ", obs)
     obs = " ".join(obs.split())
     if not obs:

@@ -92,7 +92,47 @@ SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO = 0.35
 # ---------------------------------------------------------------------------
 
 def _resolve_paths(paths: List[str], base_path: Path) -> List[str]:
-    return [str(base_path / p) if not Path(p).is_absolute() else p for p in paths]
+    """Resolve frame paths after moving a batch directory between machines."""
+    roots = [base_path]
+    if DEFAULT_DATA_DIR not in roots:
+        roots.append(DEFAULT_DATA_DIR)
+    out: List[str] = []
+    for raw in paths:
+        p = Path(str(raw))
+        if not p.is_absolute():
+            direct = base_path / p
+            if direct.exists():
+                out.append(str(direct))
+                continue
+            parts = p.parts
+            if "frames" in parts:
+                idx = parts.index("frames")
+                for root in roots:
+                    candidate = root / "frames" / Path(*parts[idx + 1:])
+                    if candidate.exists():
+                        out.append(str(candidate))
+                        break
+                else:
+                    out.append(str(direct))
+                continue
+            out.append(str(direct))
+            continue
+        if p.exists():
+            out.append(str(p))
+            continue
+        parts = p.parts
+        if "frames" in parts:
+            idx = parts.index("frames")
+            for root in roots:
+                candidate = root / "frames" / Path(*parts[idx + 1:])
+                if candidate.exists():
+                    out.append(str(candidate))
+                    break
+            else:
+                out.append(str(p))
+            continue
+        out.append(str(p))
+    return out
 
 
 def build_messages(sample: Dict, base_path: Path) -> List[Dict]:

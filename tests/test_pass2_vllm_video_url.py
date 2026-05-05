@@ -103,11 +103,10 @@ def test_memory_observation_prompt_uses_structured_history_ledger():
     memory.add_think(2, "A white bowl sits on the wooden counter.")
 
     text = memory.format_for_observation_prompt()
-    assert '"kind": "summary"' in text
-    assert '"kind": "think"' in text
-    assert '"history_only": true' in text
-    assert '"use": "entity_naming_only"' in text
-    assert '"use": "entity_naming_and_long_range_context_only"' in text
+    assert "<compressed>{" in text
+    assert "<memory_think>{" in text
+    assert '"time_range": [0, 1]' in text
+    assert '"time": "2-3"' in text
     assert '[2-3]' not in text
 
 
@@ -116,10 +115,9 @@ def test_memory_repair_prompt_uses_structured_recent_history():
     for c in range(3):
         memory.add_think(c, f"Think {c}")
     text = memory.format_recent_for_repair_prompt(limit=2)
-    assert '"chunk": 1' in text
-    assert '"chunk": 2' in text
-    assert '"chunk": 0' not in text
-    assert '"history_only": true' in text
+    assert '<memory_think>{"time": "1-2", "text": "Think 1"}</memory_think>' in text
+    assert '<memory_think>{"time": "2-3", "text": "Think 2"}</memory_think>' in text
+    assert '"time": "0-1"' not in text
 
 
 def test_should_repair_observation_uses_evidence_drift():
