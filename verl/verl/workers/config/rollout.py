@@ -265,6 +265,8 @@ class RolloutConfig(BaseConfig):
 
     limit_images: Optional[int] = None
 
+    limit_videos: Optional[int] = None
+
     skip_tokenizer_init: bool = False
 
     quantization: Optional[str] = None

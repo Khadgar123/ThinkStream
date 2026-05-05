@@ -60,7 +60,8 @@ from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
     VISUAL_WINDOW_CHUNKS,
-    append_timestamped_image_list,
+    append_visual_frames,
+    normalize_frame_protocol,
 )
 from thinkstream.trainer.outcome_match import score_outcome_by_form
 
@@ -235,18 +236,30 @@ def resolve_video_path(sample, video_root):
     return str(base / vp)
 
 
-SYSTEM_PROMPT = (
-    "You are a helpful video understanding assistant. Use the frame-tagged "
-    "images carefully and answer questions based on what you observe. "
-    "Each frame is preceded by structural metadata like "
-    "<frame ts=\"12.5\" role=\"visual frame\" />; use it as the real video "
-    "timestamp, but never copy it. "
-    "If the question is yes/no, answer with Yes or No. If the "
-    "question asks for a count, answer with the integer."
-)
+def system_prompt(frame_protocol: str) -> str:
+    if normalize_frame_protocol(frame_protocol) == "video_meta":
+        visual = (
+            "You receive pre-sampled video blocks whose Qwen video_metadata "
+            "carries fps, frame indices, and timestamps. Use those timestamps "
+            "as real video time."
+        )
+    else:
+        visual = (
+            "You receive timestamp-tagged images. Each frame is preceded by "
+            "structural metadata like <frame ts=\"12.5\" role=\"visual frame\" />; "
+            "use it as real video time, but never copy it."
+        )
+    return (
+        "You are a helpful video understanding assistant. "
+        f"{visual} "
+        "Answer using the requested format: yes/no questions -> Yes or No; "
+        "counting questions -> an integer; multiple-choice questions -> a "
+        "single letter A/B/C/D unless explicitly instructed otherwise."
+    )
 
 
-def build_messages(question, frames=None, recall_frames=None):
+def build_messages(question, frames=None, recall_frames=None, *,
+                   frame_protocol="ts_image"):
     """Build messages for base-model eval.
 
     - frames=None, recall_frames=None: text-only (probe B: text-leak).
@@ -256,25 +269,31 @@ def build_messages(question, frames=None, recall_frames=None):
     `frames` and `recall_frames` are lists of pre-extracted frame paths.
     """
     user_content = []
+    frame_protocol = normalize_frame_protocol(frame_protocol)
     if frames:
         frame_list = list(frames)
-        append_timestamped_image_list(
+        append_visual_frames(
             user_content,
             frame_list,
+            frame_protocol=frame_protocol,
             fps=float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC),
             context_label="visual frame",
         )
     if recall_frames:
         recall_list = list(recall_frames)
-        append_timestamped_image_list(
+        append_visual_frames(
             user_content,
             recall_list,
+            frame_protocol=frame_protocol,
             fps=float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC),
             context_label="recalled frame",
         )
     user_content.append({"type": "text", "text": question})
     return [
-        {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT}]},
+        {
+            "role": "system",
+            "content": [{"type": "text", "text": system_prompt(frame_protocol)}],
+        },
         {"role": "user", "content": user_content},
     ]
 
@@ -288,6 +307,16 @@ def run_inference(
         tokenize=True, return_dict=True, return_tensors="pt",
         add_generation_prompt=True, do_sample_frames=False,
     )
+    video_metadata = []
+    for msg in messages:
+        for item in msg.get("content", []):
+            if isinstance(item, dict) and item.get("type") == "video":
+                meta = item.get("video_metadata")
+                if isinstance(meta, dict):
+                    video_metadata.append({k: v for k, v in meta.items()
+                                           if k != "do_sample_frames"})
+    if video_metadata:
+        template_kwargs["video_metadata"] = video_metadata
     inputs = processor.apply_chat_template(
         messages, **template_kwargs,
     )
@@ -398,9 +427,16 @@ def main():
                         "default and output JSON metadata — base VLM doesn't "
                         "use queries/recall caps. Stamping the profile in the "
                         "output enables fair comparison with agent runs.")
+    p.add_argument(
+        "--frame-protocol",
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
+        choices=["ts_image", "video_meta"],
+        help="Visual carrier for pre-extracted frames in this baseline eval.",
+    )
     p.add_argument("--out", default=None)
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
+    frame_protocol = normalize_frame_protocol(args.frame_protocol)
 
     if args.max_frames is None:
         args.max_frames = 64 if args.mode == "offline" else (
@@ -504,9 +540,20 @@ def main():
                 visual_frames = _sampled_visual_frames(s)
                 recall_frames = _sampled_recall_frames(s, args.probe_max_recall_frames)
 
-                msgs_A = build_messages(question, frames=visual_frames) if visual_frames else None
-                msgs_B = build_messages(question)
-                msgs_C = (build_messages(question, frames=visual_frames, recall_frames=recall_frames)
+                msgs_A = (
+                    build_messages(
+                        question, frames=visual_frames,
+                        frame_protocol=frame_protocol,
+                    )
+                    if visual_frames else None
+                )
+                msgs_B = build_messages(question, frame_protocol=frame_protocol)
+                msgs_C = (build_messages(
+                    question,
+                    frames=visual_frames,
+                    recall_frames=recall_frames,
+                    frame_protocol=frame_protocol,
+                )
                           if visual_frames and recall_frames else None)
 
                 p_A, n_A = _estimate_p(msgs_A)
@@ -558,13 +605,21 @@ def main():
                     sampled = [str(all_frames[i]) for i in indices]
                 else:
                     sampled = [str(f) for f in all_frames]
-                messages = build_messages(question, frames=sampled)
+                messages = build_messages(
+                    question,
+                    frames=sampled,
+                    frame_protocol=frame_protocol,
+                )
             else:  # streaming: use pre-extracted frame_paths from visual_window
                 abs_paths = _sampled_visual_frames(s)
                 if not abs_paths:
                     skipped += 1
                     continue
-                messages = build_messages(question, frames=abs_paths)
+                messages = build_messages(
+                    question,
+                    frames=abs_paths,
+                    frame_protocol=frame_protocol,
+                )
 
             text = run_inference(
                 model, processor, messages,
@@ -671,6 +726,7 @@ def main():
                 "mode": args.mode,
                 "scoring": args.scoring,
                 "profile": args.profile,
+                "frame_protocol": frame_protocol,
                 "test_jsonl": args.test_jsonl,
                 "n_samples": len(results),
                 "n_skipped": skipped,

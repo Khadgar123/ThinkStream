@@ -55,7 +55,10 @@ from eval_common import (
     setup_distributed,
     cleanup_distributed,
 )
-from thinkstream.data.agent_protocol import append_timestamped_image_list
+from thinkstream.data.agent_protocol import (
+    append_visual_frames,
+    normalize_frame_protocol,
+)
 
 FRAME_TAG_EVAL_SYSTEM = (
     "You are a video understanding assistant. Each image is preceded by "
@@ -63,6 +66,20 @@ FRAME_TAG_EVAL_SYSTEM = (
     "Use the tag as the frame's real video timestamp, but never copy or "
     "paraphrase any frame tag or metadata in the answer."
 )
+
+
+def eval_system_prompt(frame_protocol: str = "ts_image") -> str:
+    if normalize_frame_protocol(frame_protocol) == "video_meta":
+        return (
+            "You are a video understanding assistant. The visual input is a "
+            "pre-sampled video block whose Qwen video_metadata carries fps, "
+            "frame indices, and timestamps. Use those timestamps as real video "
+            "time, but never copy metadata in the answer. Answer multiple-choice "
+            "questions with the requested option letter."
+        )
+    return FRAME_TAG_EVAL_SYSTEM + (
+        " Answer multiple-choice questions with the requested option letter."
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -299,6 +316,12 @@ def add_offline_args(parser):
     parser.add_argument("--max_frames", type=int, default=64)
     parser.add_argument("--min_pixels", type=int, default=130_000)
     parser.add_argument("--max_pixels", type=int, default=220_000)
+    parser.add_argument(
+        "--frame_protocol",
+        type=str,
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
+        choices=["ts_image", "video_meta"],
+    )
     parser.add_argument("--sample", type=int, default=None)
     parser.add_argument("--debug", action="store_true",
                         help="Enable per-sample JSONL debug log.")
@@ -322,6 +345,7 @@ def offline_predict_mcq(
     sample: int = None,
     debug: bool = False,
     debug_dir: str = None,
+    frame_protocol: str = "ts_image",
 ):
     """Offline MCQ prediction with full diagnostic logging.
 
@@ -329,6 +353,7 @@ def offline_predict_mcq(
     --debug additionally writes per-sample JSONL with full input/output.
     """
     dataset = OfflineMCQDataset(benchmark_path, sample=sample)
+    frame_protocol = normalize_frame_protocol(frame_protocol)
 
     if world_size > 1:
         sampler = NoPadDistributedSampler(dataset, num_replicas=world_size, rank=rank)
@@ -406,9 +431,10 @@ def offline_predict_mcq(
             debug_record["query"] = query
 
             user_content = []
-            append_timestamped_image_list(
+            append_visual_frames(
                 user_content,
                 frames,
+                frame_protocol=frame_protocol,
                 fps=float(frame_meta.get("fps") or 2.0),
                 start_frame_index=int(frame_meta.get("start_frame") or 0),
                 total_num_frames=int(frame_meta.get("total_frames") or len(frames)),
@@ -420,18 +446,36 @@ def offline_predict_mcq(
             messages = [
                 {
                     "role": "system",
-                    "content": [{"type": "text", "text": FRAME_TAG_EVAL_SYSTEM}],
+                    "content": [{
+                        "type": "text",
+                        "text": eval_system_prompt(frame_protocol),
+                    }],
                 },
                 {"role": "user", "content": user_content},
             ]
 
-            inputs = processor.apply_chat_template(
-                messages,
+            template_kwargs = dict(
                 tokenize=True,
                 return_dict=True,
                 return_tensors="pt",
                 add_generation_prompt=True,
                 do_sample_frames=False,
+            )
+            if frame_protocol == "video_meta":
+                video_metadata = []
+                for item in user_content:
+                    if isinstance(item, dict) and item.get("type") == "video":
+                        meta = item.get("video_metadata")
+                        if isinstance(meta, dict):
+                            video_metadata.append(
+                                {k: v for k, v in meta.items()
+                                 if k != "do_sample_frames"}
+                            )
+                if video_metadata:
+                    template_kwargs["video_metadata"] = video_metadata
+            inputs = processor.apply_chat_template(
+                messages,
+                **template_kwargs,
             ).to(model.device)
 
             debug_record["input_ids_len"] = inputs["input_ids"].shape[1]

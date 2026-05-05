@@ -15,6 +15,7 @@ Usage:
 """
 import argparse
 import json
+import os
 import sys
 import time
 from collections import defaultdict
@@ -29,9 +30,10 @@ from transformers import AutoProcessor, AutoTokenizer
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
-    SYSTEM_PROMPT_V12,
     VISUAL_WINDOW_CHUNKS,
     build_user_content,
+    normalize_frame_protocol,
+    system_prompt_for_frame_protocol,
 )
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
@@ -158,9 +160,15 @@ def main():
     p.add_argument("--frames_root", default=None)
     p.add_argument("--tasks", default=None)
     p.add_argument("--max_new_tokens", type=int, default=512)
+    p.add_argument(
+        "--frame-protocol",
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
+        choices=["ts_image", "video_meta"],
+    )
     p.add_argument("--no_bf16", action="store_true")
     p.add_argument("--out", default=None)
     args = p.parse_args()
+    frame_protocol = normalize_frame_protocol(args.frame_protocol)
 
     # detect model class (copied from eval_full.py)
     name = args.ckpt.lower()
@@ -234,9 +242,16 @@ def main():
             min_pixels=130_000,    # v12.12: RUNTIME profile (was 100352*2)
             max_pixels=220_000,    #          (was 100352*4)
             frame_paths=frame_paths,
+            frame_protocol=frame_protocol,
         )
         messages = [
-            {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT_V12}]},
+            {
+                "role": "system",
+                "content": [{
+                    "type": "text",
+                    "text": system_prompt_for_frame_protocol(frame_protocol),
+                }],
+            },
             {"role": "user", "content": user_content},
         ]
 
@@ -316,6 +331,7 @@ def main():
     with open(out_path, "w") as f:
         json.dump({
             "ckpt": args.ckpt,
+            "frame_protocol": frame_protocol,
             "tasks_evaluated": sorted(task_filter),
             "n_samples": len(results),
             "rt_avg": sum(rt_accs) / len(rt_accs) if rt_accs else 0,

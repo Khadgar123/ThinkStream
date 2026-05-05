@@ -410,9 +410,10 @@ VLLM_MODEL = "/home/tione/notebook/gaozhenkun/model/Qwen3.5-397B-A17B-FP8"
 VLLM_MAX_MODEL_LEN = 65536
 
 PASS_CONFIG = {
-    # All passes: thinking enabled, --reasoning-parser qwen3 separates
-    # thinking into reasoning_content, content is clean output.
-    # max_tokens covers thinking + response total. Set generously
+    # All teacher/data-construction calls run with enable_thinking=False.
+    # The `think` field produced by pass1a is an ordinary supervised
+    # observation note in the JSON payload, not Qwen reasoning_content.
+    # max_tokens covers the visible response only and stays generous enough
     # to avoid truncation — data quality > token efficiency.
     #
     # Concurrency rationale (v11, 2026-04-27): each outer pass owns a
@@ -449,12 +450,11 @@ PASS_CONFIG = {
         "concurrent": 1024,
     },
     "pass2_rollout": {
-        # v12.5 (2026-04-29): thinking True → False per user audit "整个pipeline
-        # enable_think=false". Pass2 generates per-chunk observations and
-        # summary compress payloads against an explicit OBSERVATION_PROMPT /
-        # COMPRESS_PROMPT — both are template-driven with hard rules
-        # (length, "what's NEW only", structured summary JSON), no CoT
-        # required. Removing thinking matches pass3 family + cuts wall-time.
+        # v12.25: pass2 no longer asks the teacher for per-chunk observation
+        # notes. It consumes pass1a's independent current-only `think` field
+        # and only calls the teacher for text-only compression summaries.
+        # Those summaries are template-driven by COMPRESS_PROMPT; no CoT is
+        # required.
         # v12.11 hotfix (2026-05-01): 16384 → tight values right-sized to
         # actual output target. KV cache reservation per request is bounded
         # by max_tokens; reducing 16K → 1024/4096 frees ~75% of reserved KV
@@ -465,8 +465,9 @@ PASS_CONFIG = {
         #     optional JSON wrapper ≈ 320 tok worst case. 4096 = 13× margin
         #     (JSON CANNOT be truncated mid-way; keep generous; user
         #     directive 2026-05-01).
-        # Visual window NOT touched (kept at VISUAL_WINDOW_CHUNKS=16) to
-        # preserve teacher think distribution match with SFT/RL inference.
+        # VISUAL_WINDOW_CHUNKS is still shared by pass2 memory snapshots and
+        # student SFT/RL/eval rendering, even though pass2 no longer uses the
+        # teacher to generate current observations from that window.
         "max_tokens_observation": 1024,
         "max_tokens_compress": 4096,
         "temperature": 0.3,
@@ -505,9 +506,8 @@ PASS_CONFIG = {
     # went unused. max_tokens KEPT at 16K so a verbose response never
     # truncates: GPU has the headroom for 16K @ 1024 concurrent and the
     # speedup comes from disabling reasoning, not from cap reduction.
-    # Card generation (pass3a) and fork_think (pass3c_fork_think) keep
-    # thinking — the former needs multi-family multi-constraint reasoning,
-    # the latter needs answer-leakage avoidance.
+    # Card generation and fork_think are also non-thinking in v12.5+; their
+    # prompts carry the multi-constraint and anti-leakage rules explicitly.
     "pass3a_verify": {
         "max_tokens": 16384,
         "temperature": 0.1,

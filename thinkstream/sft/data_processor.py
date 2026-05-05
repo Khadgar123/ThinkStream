@@ -276,15 +276,17 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
     # root. Going through agent_protocol routes through the same fallback
     # chain SFT/eval/RL all use.
     from thinkstream.data.agent_protocol import (
-        SYSTEM_PROMPT_V12,
         AGENT_CHUNK_SEC,
         FRAMES_PER_CHUNK,
-        append_timestamped_image_list,
+        append_visual_frames,
+        normalize_frame_protocol,
+        system_prompt_for_frame_protocol,
     )
 
     inp = sample["input"]
     chunk_idx = sample["chunk_idx"]
     chunk_sec = float(AGENT_CHUNK_SEC)
+    frame_protocol = normalize_frame_protocol(sample.get("frame_protocol"))
     inter_chunk = bool(sample.get("v12_inter_chunk", False))
     is_recall_multiturn = (
         sample.get("sample_type") == "recall"
@@ -292,7 +294,13 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
     )
 
     messages = [
-        {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT_V12}]}
+        {
+            "role": "system",
+            "content": [{
+                "type": "text",
+                "text": system_prompt_for_frame_protocol(frame_protocol),
+            }],
+        }
     ]
 
     video_path = sample.get("video_path", "")
@@ -390,9 +398,10 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                 _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
             start_frame = int(round(float(vw["video_start"]) / chunk_sec)) * FRAMES_PER_CHUNK
             total_frames = int(round(float(vw["video_end"]) / chunk_sec)) * FRAMES_PER_CHUNK
-            append_timestamped_image_list(
+            append_visual_frames(
                 user_content,
                 paths,
+                frame_protocol=frame_protocol,
                 fps=float(FRAMES_PER_CHUNK / chunk_sec),
                 start_frame_index=start_frame,
                 total_num_frames=total_frames,
@@ -442,9 +451,10 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                 _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
             start_frame = int(round(float(rf["time_range"][0]) / chunk_sec)) * FRAMES_PER_CHUNK
             total_frames = int(round(float(rf["time_range"][1]) / chunk_sec)) * FRAMES_PER_CHUNK
-            append_timestamped_image_list(
+            append_visual_frames(
                 user_content,
                 paths,
+                frame_protocol=frame_protocol,
                 fps=float(FRAMES_PER_CHUNK / chunk_sec),
                 start_frame_index=start_frame,
                 total_num_frames=total_frames,
@@ -526,9 +536,10 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                     _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
                 start_frame = int(round(float(rf["time_range"][0]) / chunk_sec)) * FRAMES_PER_CHUNK
                 total_frames = int(round(float(rf["time_range"][1]) / chunk_sec)) * FRAMES_PER_CHUNK
-                append_timestamped_image_list(
+                append_visual_frames(
                     tool_payload,
                     paths,
+                    frame_protocol=frame_protocol,
                     fps=float(FRAMES_PER_CHUNK / chunk_sec),
                     start_frame_index=start_frame,
                     total_num_frames=total_frames,

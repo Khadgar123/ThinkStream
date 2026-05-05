@@ -48,7 +48,10 @@ _REPO = _THIS.parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12  # noqa: E402
+from thinkstream.data.agent_protocol import (  # noqa: E402
+    normalize_frame_protocol,
+    system_prompt_for_frame_protocol,
+)
 
 
 def _open_jsonl(path: Path):
@@ -57,7 +60,13 @@ def _open_jsonl(path: Path):
     return open(path, "rt", encoding="utf-8")
 
 
-def _iter_rows(jsonl_path: Path, max_questions_per_traj: int) -> Iterator[Dict[str, Any]]:
+def _iter_rows(
+    jsonl_path: Path,
+    max_questions_per_traj: int,
+    *,
+    frame_protocol: str,
+) -> Iterator[Dict[str, Any]]:
+    system_prompt = system_prompt_for_frame_protocol(frame_protocol)
     with _open_jsonl(jsonl_path) as f:
         for line in f:
             line = line.strip()
@@ -116,7 +125,7 @@ def _iter_rows(jsonl_path: Path, max_questions_per_traj: int) -> Iterator[Dict[s
                     q_gold_action = {ck: "silent" for ck in (gold_action or {}).keys()}
 
                 prompt = [
-                    {"role": "system", "content": SYSTEM_PROMPT_V12},
+                    {"role": "system", "content": system_prompt},
                     {"role": "user", "content": question},
                 ]
 
@@ -174,11 +183,15 @@ def _iter_rows(jsonl_path: Path, max_questions_per_traj: int) -> Iterator[Dict[s
                         "style": "thinkstream_v12",
                     },
                     "data_source": "thinkstream_v12_streaming",
+                    "frame_protocol": frame_protocol,
                 }
 
 
 def _iter_rows_multi_q(
-    jsonl_path: Path, max_questions_per_traj: int
+    jsonl_path: Path,
+    max_questions_per_traj: int,
+    *,
+    frame_protocol: str,
 ) -> Iterator[Dict[str, Any]]:
     """Multi-Q trajectory rows: 1 video → 1 row containing ALL questions.
 
@@ -202,6 +215,7 @@ def _iter_rows_multi_q(
     question's text into <user_input> at its `ask_chunk`; compute_score
     then evaluates each Q independently and aggregates (mean by default).
     """
+    system_prompt = system_prompt_for_frame_protocol(frame_protocol)
     with _open_jsonl(jsonl_path) as f:
         for line in f:
             line = line.strip()
@@ -255,7 +269,7 @@ def _iter_rows_multi_q(
             # by the agent loop at each ask_chunk. Streamed multi-Q agent
             # gets a generic role description here, not a single question.
             prompt = [
-                {"role": "system", "content": SYSTEM_PROMPT_V12},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": (
                     "You are a streaming-video agent. You will receive video "
                     "frames in chunks and questions at specific time points. "
@@ -285,6 +299,7 @@ def _iter_rows_multi_q(
                     "style": "thinkstream_v12_multi_q",
                 },
                 "data_source": "thinkstream_v12_streaming_multi_q",
+                "frame_protocol": frame_protocol,
             }
 
 
@@ -308,16 +323,34 @@ def main() -> int:
             "(video, question) flatten path."
         ),
     )
+    ap.add_argument(
+        "--frame-protocol",
+        default="ts_image",
+        choices=["ts_image", "video_meta"],
+        help=(
+            "Visual protocol used by the RL rollout loop. Must match "
+            "THINKSTREAM_FRAME_PROTOCOL at training/eval time."
+        ),
+    )
     args = ap.parse_args()
+    frame_protocol = normalize_frame_protocol(args.frame_protocol)
 
     in_path = Path(args.jsonl)
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     iterator = (
-        _iter_rows_multi_q(in_path, max_questions_per_traj=args.max_questions_per_traj)
+        _iter_rows_multi_q(
+            in_path,
+            max_questions_per_traj=args.max_questions_per_traj,
+            frame_protocol=frame_protocol,
+        )
         if args.multi_q
-        else _iter_rows(in_path, max_questions_per_traj=args.max_questions_per_traj)
+        else _iter_rows(
+            in_path,
+            max_questions_per_traj=args.max_questions_per_traj,
+            frame_protocol=frame_protocol,
+        )
     )
     rows: List[Dict[str, Any]] = list(iterator)
     if not rows:
@@ -329,7 +362,8 @@ def main() -> int:
     shape_label = "video" if args.multi_q else "(video,question)"
     print(
         f"[build_verl_parquet] {in_path.name}: {len(rows)} {shape_label} rows "
-        f"→ {out_path} ({out_path.stat().st_size/1024:.1f} KiB)"
+        f"→ {out_path} ({out_path.stat().st_size/1024:.1f} KiB, "
+        f"frame_protocol={frame_protocol})"
     )
     return 0
 

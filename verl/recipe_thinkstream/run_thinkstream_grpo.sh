@@ -38,9 +38,11 @@
 #                       docs/v12.14_recurrent_design.md for the recurrent
 #                       path that lifts this to 600+ without OOM.)
 #   GPU_MEM_UTIL [0.55]
+#   THINKSTREAM_FRAME_PROTOCOL [ts_image]
 #   LIMIT_IMAGES [64]       vLLM limit_mm_per_prompt.image for timestamped frames
+#   LIMIT_VIDEOS [2]        vLLM limit_mm_per_prompt.video for video_meta blocks
 #   PROJECT_NAME [thinkstream-v12]
-#   EXPERIMENT_NAME [grpo-v12.23-verl]
+#   EXPERIMENT_NAME [grpo-v12.26-verl-$THINKSTREAM_FRAME_PROTOCOL]
 #   SAVE_DIR [./output/$EXPERIMENT_NAME]
 #   SAVE_FREQ [50] / TEST_FREQ [25]
 
@@ -99,6 +101,7 @@ MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-4096}
 MAX_TURNS=${MAX_TURNS:-120}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
 LIMIT_IMAGES=${LIMIT_IMAGES:-64}
+LIMIT_VIDEOS=${LIMIT_VIDEOS:-2}
 # v12.13: vLLM mm_processor_cache_gb (CPU-side image preprocessor cache).
 # pass2's teacher run uses 512GB and gets 93.8% mm-cache hit on the same
 # streaming-video workload. RL is co-located with actor/ref FSDP shards
@@ -107,7 +110,7 @@ LIMIT_IMAGES=${LIMIT_IMAGES:-64}
 MM_CACHE_GB=${MM_CACHE_GB:-64}
 
 PROJECT_NAME=${PROJECT_NAME:-thinkstream-v12}
-EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v12.23-verl}
+EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v12.26-verl-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}
 SAVE_DIR=${SAVE_DIR:-./output/${EXPERIMENT_NAME}}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
@@ -125,6 +128,7 @@ export THINKSTREAM_TRAJ_INDEX_PATH="${THINKSTREAM_TRAJ_INDEX_PATH:-${THINKSTREAM
 # rejects custom keys, so we pass them as env vars; streaming_agent_loop.py
 # reads them in __init__ at line 316+). frames_root="" → text-only run.
 export THINKSTREAM_FRAMES_ROOT="${THINKSTREAM_FRAMES_ROOT:-${THINKSTREAM_DATA_ROOT}/frames}"
+export THINKSTREAM_FRAME_PROTOCOL="${THINKSTREAM_FRAME_PROTOCOL:-ts_image}"
 export THINKSTREAM_FRAMES_PER_CHUNK="${THINKSTREAM_FRAMES_PER_CHUNK:-2}"
 export THINKSTREAM_VISUAL_WINDOW_CHUNKS="${THINKSTREAM_VISUAL_WINDOW_CHUNKS:-16}"
 export THINKSTREAM_RECALL_STUB="${THINKSTREAM_RECALL_STUB:-(no relevant past observation found)}"
@@ -256,6 +260,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.gpu_memory_utilization=${GPU_MEM_UTIL} \
     actor_rollout_ref.rollout.max_num_batched_tokens=32768 \
     actor_rollout_ref.rollout.limit_images=${LIMIT_IMAGES} \
+    actor_rollout_ref.rollout.limit_videos=${LIMIT_VIDEOS} \
     actor_rollout_ref.rollout.enforce_eager=True \
     actor_rollout_ref.rollout.free_cache_engine=True \
     actor_rollout_ref.rollout.enable_chunked_prefill=True \

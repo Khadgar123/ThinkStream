@@ -46,15 +46,17 @@ fi
 
 OUTPUT_DIR="${OUTPUT_DIR:-${PROJECT_DIR}/output/agent-verl-debug-$(date +%Y%m%d_%H%M%S)}"
 mkdir -p "${OUTPUT_DIR}"
+FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
+export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 
 # ── Synthetic trajectory data — generate if missing.
 TRAJ_DIR="${PROJECT_DIR}/data/test_rl"
 TRAJ_JSONL="${TRAJ_DIR}/synthetic_trajectories.jsonl"
 MULTI_Q="${MULTI_Q:-1}"
 if [[ "${MULTI_Q}" == "1" ]]; then
-    TRAIN_PARQUET="${TRAJ_DIR}/synthetic_train_multi_q.parquet"
+    TRAIN_PARQUET="${TRAJ_DIR}/synthetic_train_multi_q_${FRAME_PROTOCOL}.parquet"
 else
-    TRAIN_PARQUET="${TRAJ_DIR}/synthetic_train_single_q.parquet"
+    TRAIN_PARQUET="${TRAJ_DIR}/synthetic_train_single_q_${FRAME_PROTOCOL}.parquet"
 fi
 mkdir -p "${TRAJ_DIR}"
 if [[ ! -f "${TRAJ_JSONL}" || "${REGEN_DATA:-0}" == "1" ]]; then
@@ -72,7 +74,8 @@ if [[ ! -f "${TRAIN_PARQUET}" || "${REGEN_DATA:-0}" == "1" ]]; then
         echo "[debug] flattening to (video,question) parquet → ${TRAIN_PARQUET}"
     fi
     python -m scripts.agent_data_v5.build_verl_parquet \
-        --jsonl "${TRAJ_JSONL}" --out "${TRAIN_PARQUET}" ${MULTI_Q_FLAG}
+        --jsonl "${TRAJ_JSONL}" --out "${TRAIN_PARQUET}" \
+        --frame-protocol "${FRAME_PROTOCOL}" ${MULTI_Q_FLAG}
 fi
 VAL_PARQUET="${VAL_PARQUET:-${TRAIN_PARQUET}}"
 
@@ -101,6 +104,7 @@ export VLLM_LOGGING_LEVEL=WARN
 echo "═══ ThinkStream verl GRPO 2-GPU debug ═══"
 echo "  Checkpoint:    ${LLM}"
 echo "  Train parquet: ${TRAIN_PARQUET}"
+echo "  Protocol:      ${FRAME_PROTOCOL}"
 echo "  Frames root:   ${THINKSTREAM_FRAMES_ROOT:-<text-only>}"
 echo "  Window mode:   ${THINKSTREAM_VISUAL_WINDOW_MODE}"
 echo "  Output:        ${OUTPUT_DIR}"
@@ -129,6 +133,8 @@ python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.tensor_model_parallel_size=1 \
     actor_rollout_ref.rollout.gpu_memory_utilization=0.40 \
     actor_rollout_ref.rollout.max_num_batched_tokens=8192 \
+    actor_rollout_ref.rollout.limit_images=${LIMIT_IMAGES:-64} \
+    actor_rollout_ref.rollout.limit_videos=${LIMIT_VIDEOS:-2} \
     actor_rollout_ref.rollout.enforce_eager=True \
     actor_rollout_ref.rollout.free_cache_engine=True \
     actor_rollout_ref.rollout.enable_chunked_prefill=True \

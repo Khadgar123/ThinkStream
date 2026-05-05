@@ -36,8 +36,13 @@
 #   SAVE_LIMIT  - Max retained checkpoints (PHASE=sft, default 0 = no rolling
 #                 deletion; 8B + zero-3 checkpoints can be ~30-50GB each)
 #   THINKSTREAM_DATA_ROOT / AGENT_DATA_DIR
-#               - Generated batch root; SFT reads final/train_sft_messages.jsonl
-#                 below it. Default: data/agent_v5.
+#               - Generated batch root. Default: data/agent_v5.
+#   THINKSTREAM_FINAL_DIR
+#               - Optional rendered messages dir. If unset and
+#                 rendered/$FRAME_PROTOCOL exists, this script uses it.
+#   FRAME_PROTOCOL / THINKSTREAM_FRAME_PROTOCOL
+#               - ts_image | video_meta. Must match the rendered SFT
+#                 messages and later RL/eval protocol.
 #
 # Step budget:
 #   effective_batch = BSZ × NPROC × GRAD_ACCUM.
@@ -58,6 +63,15 @@ ENTRY="${PROJECT_DIR}/thinkstream/sft/train.py"
 AGENT_DATA_ROOT="${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-${PROJECT_DIR}/data/agent_v5}}"
 if [[ "${AGENT_DATA_ROOT}" == */final ]]; then
     AGENT_DATA_ROOT="$(dirname "${AGENT_DATA_ROOT}")"
+fi
+FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
+export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
+if [[ -z "${THINKSTREAM_FINAL_DIR:-}" ]]; then
+    if [[ -d "${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}" ]]; then
+        export THINKSTREAM_FINAL_DIR="${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}"
+    else
+        export THINKSTREAM_FINAL_DIR="${AGENT_DATA_ROOT}/final"
+    fi
 fi
 
 # extra_args is appended in the case-block when phase needs special flags
@@ -84,7 +98,7 @@ case $PHASE in
         # v12.x: keep the default exposure conservative; exact steps scale
         # with the current batch size. Override with EPOCHS=N or MAX_STEPS=N.
         lr=${LR:-2e-5}; epochs=${EPOCHS:-2}
-        run_name="agent-sft-v12.23"
+        run_name="${RUN_NAME:-agent-sft-v12.26-${FRAME_PROTOCOL}}"
         # Save aligned to eval cadence so every eval has a corresponding
         # ckpt to roll back to. load_best_model_at_end keeps the lowest
         # eval_loss ckpt even if it falls outside the rolling window.
@@ -141,6 +155,8 @@ echo "Model:    ${llm}"
 echo "Dataset:  ${datasets}"
 echo "Eval:     ${eval_datasets:-none}"
 echo "Data:     ${AGENT_DATA_ROOT}"
+echo "Final:    ${THINKSTREAM_FINAL_DIR}"
+echo "Protocol: ${FRAME_PROTOCOL}"
 echo "LR:       ${lr}"
 echo "Epochs:   ${epochs}"
 echo "Output:   ${output_dir}"

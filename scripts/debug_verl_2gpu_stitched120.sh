@@ -28,17 +28,20 @@ fi
 
 OUTPUT_DIR="${OUTPUT_DIR:-${PROJECT_DIR}/output/agent-verl-stitched120-$(date +%Y%m%d_%H%M%S)}"
 mkdir -p "${OUTPUT_DIR}"
+FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
+export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 
 TRAJ_DIR="${PROJECT_DIR}/data/test_rl"
 TRAJ_JSONL="${TRAJ_DIR}/synthetic_trajectories.jsonl"
-TRAIN_PARQUET="${TRAJ_DIR}/synthetic_train.parquet"
+TRAIN_PARQUET="${TRAJ_DIR}/synthetic_train_${FRAME_PROTOCOL}.parquet"
 mkdir -p "${TRAJ_DIR}"
 if [[ ! -f "${TRAJ_JSONL}" || "${REGEN_DATA:-0}" == "1" ]]; then
     python -m scripts.test_rl.synthetic_traj --out "${TRAJ_JSONL}"
 fi
 if [[ ! -f "${TRAIN_PARQUET}" || "${REGEN_DATA:-0}" == "1" ]]; then
     python -m scripts.agent_data_v5.build_verl_parquet \
-        --jsonl "${TRAJ_JSONL}" --out "${TRAIN_PARQUET}"
+        --jsonl "${TRAJ_JSONL}" --out "${TRAIN_PARQUET}" \
+        --frame-protocol "${FRAME_PROTOCOL}"
 fi
 VAL_PARQUET="${VAL_PARQUET:-${TRAIN_PARQUET}}"
 
@@ -73,6 +76,7 @@ MAX_TOK_LEN=$((MAX_MODEL_LEN))
 echo "═══ ThinkStream verl GRPO 2-GPU stitched MAX_TURNS=120 ═══"
 echo "  Checkpoint:    ${LLM}"
 echo "  Train parquet: ${TRAIN_PARQUET}"
+echo "  Protocol:      ${FRAME_PROTOCOL}"
 echo "  max_model_len: ${MAX_MODEL_LEN}"
 echo "  response_len:  ${RESP_LEN}"
 echo "  prompt_len:    ${PROMPT_LEN}"
@@ -103,6 +107,8 @@ python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.tensor_model_parallel_size=1 \
     actor_rollout_ref.rollout.gpu_memory_utilization=0.40 \
     actor_rollout_ref.rollout.max_num_batched_tokens=${MAX_MODEL_LEN} \
+    actor_rollout_ref.rollout.limit_images=${LIMIT_IMAGES:-64} \
+    actor_rollout_ref.rollout.limit_videos=${LIMIT_VIDEOS:-2} \
     actor_rollout_ref.rollout.enforce_eager=True \
     actor_rollout_ref.rollout.free_cache_engine=True \
     actor_rollout_ref.rollout.enable_chunked_prefill=True \

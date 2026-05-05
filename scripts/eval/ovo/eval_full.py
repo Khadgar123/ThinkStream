@@ -54,6 +54,7 @@ Usage:
 """
 import argparse
 import json
+import os
 import re
 import sys
 import time
@@ -73,6 +74,7 @@ from thinkstream.model.agent_loop import (
     AGENT_CHUNK_SEC,
 )
 from thinkstream.model.retrieval import make_retriever
+from thinkstream.data.agent_protocol import normalize_frame_protocol
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
     update_processor_pixels,
@@ -198,7 +200,8 @@ def is_no(text):
 # ─── Agent runner: shared streaming loop ─────────────────────────────────────
 
 
-def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None):
+def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None,
+              ask_meta=None):
     """Run agent through chunks 0..max_chunk, injecting questions per ask_chunks.
 
     ask_chunks: dict {chunk_idx: question_text} — question(s) to inject at
@@ -212,10 +215,16 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None):
     Returns: dict {chunk_idx: (action, response_text)}
     """
     per_chunk = {}
+    ask_meta = ask_meta or {}
     for chunk_idx in range(max_chunk + 1):
         q = ask_chunks.get(chunk_idx)
         try:
-            result = loop.step(chunk_idx=chunk_idx, video_path=video_path, user_question=q)
+            result = loop.step(
+                chunk_idx=chunk_idx,
+                video_path=video_path,
+                user_question=q,
+                user_question_meta=ask_meta.get(chunk_idx),
+            )
         except Exception as e:
             per_chunk[chunk_idx] = ("error", str(e))
             continue
@@ -279,7 +288,8 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None):
 
 
 def make_loop(model, processor, tokenizer, model_type, retriever,
-              compress_mode, max_new_tokens, frames_root=None, video_root=None):
+              compress_mode, max_new_tokens, frames_root=None, video_root=None,
+              frame_protocol="ts_image"):
     # v12.12 (2026-05-02): RUNTIME profile aligned with pass2/SFT/RL
     # (was 100352/150528, before that 200704/401408). Empirically measured
     # 130k/220k → ~235 tok/frame, 32-frame window = 7,520 vis tok in 16K.
@@ -295,6 +305,7 @@ def make_loop(model, processor, tokenizer, model_type, retriever,
         compress_mode=compress_mode,
         frames_root=frames_root,
         video_root=video_root,
+        frame_protocol=frame_protocol,
     )
 
 
@@ -333,11 +344,22 @@ def eval_mcq(sample, loop, retriever, video_root, scoring="strict"):
     max_chunk = ask_chunk + extra
 
     question = build_mcq_question(sample)
+    q_meta = {
+        ask_chunk: {
+            "options": [
+                f"{chr(65+i)}) {opt}"
+                for i, opt in enumerate(sample.get("options", []))
+            ],
+            "answer_form": "multiple_choice",
+            "answer_style": "letter_only",
+            "answer_instruction": "Answer format: one letter only (A, B, C, or D).",
+        }
+    }
     loop.reset()
     reset_visual_index(retriever)
     telemetry: Dict = {}
     per_chunk = run_agent(loop, video_path, {ask_chunk: question}, max_chunk,
-                          telemetry=telemetry)
+                          telemetry=telemetry, ask_meta=q_meta)
 
     # Find first response at or after ask_chunk. Premature responses
     # (chunk < ask_chunk) are flagged in telemetry but not used as the answer.
@@ -408,7 +430,13 @@ def eval_rec(sample, loop, retriever, video_root):
     question = build_rec_question(sample)
     loop.reset()
     reset_visual_index(retriever)
-    per_chunk = run_agent(loop, video_path, {0: question}, max_chunk)
+    per_chunk = run_agent(
+        loop,
+        video_path,
+        {0: question},
+        max_chunk,
+        ask_meta={0: {"answer_form": "number"}},
+    )
 
     probes = []
     for probe in test_info:
@@ -458,7 +486,13 @@ def eval_ssr(sample, loop, retriever, video_root):
 
     loop.reset()
     reset_visual_index(retriever)
-    per_chunk = run_agent(loop, video_path, ask_chunks, max_chunk)
+    per_chunk = run_agent(
+        loop,
+        video_path,
+        ask_chunks,
+        max_chunk,
+        ask_meta={c: {"answer_form": "binary"} for c in ask_chunks},
+    )
 
     probes = []
     for meta in probes_meta:
@@ -504,7 +538,13 @@ def eval_crr(sample, loop, retriever, video_root):
     question = build_crr_question(sample)
     loop.reset()
     reset_visual_index(retriever)
-    per_chunk = run_agent(loop, video_path, {ask_chunk: question}, max_chunk)
+    per_chunk = run_agent(
+        loop,
+        video_path,
+        {ask_chunk: question},
+        max_chunk,
+        ask_meta={ask_chunk: {"answer_form": "binary"}},
+    )
 
     probes = []
     for probe in test_info:
@@ -682,9 +722,16 @@ def main():
                         "walk up to 60 chunks past ask_chunk; any response "
                         "counts. REC/SSR/CRR ignore this flag (their timing "
                         "is the test).")
+    p.add_argument(
+        "--frame-protocol",
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
+        choices=["ts_image", "video_meta"],
+        help="Visual carrier for pre-extracted frames in the streaming agent.",
+    )
     p.add_argument("--out", default=None)
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
+    frame_protocol = normalize_frame_protocol(args.frame_protocol)
 
     # Apply eval profile FIRST (mutates agent_protocol globals).
     from scripts.eval.eval_profiles import apply_profile, describe_profile
@@ -729,7 +776,8 @@ def main():
 
     loop = make_loop(model, processor, tokenizer, model_type, retriever,
                      args.compress_mode, args.max_new_tokens,
-                     frames_root=args.frames_root, video_root=args.video_root)
+                     frames_root=args.frames_root, video_root=args.video_root,
+                     frame_protocol=frame_protocol)
 
     with open(args.benchmark_json) as f:
         all_samples = json.load(f)
@@ -786,6 +834,7 @@ def main():
                           "siglip_path": args.siglip_path if args.retriever == "hybrid" else None},
             "scoring": args.scoring,
             "profile": args.profile,
+            "frame_protocol": frame_protocol,
             "profile_cfg": profile_cfg,
             "tasks_evaluated": sorted(by_task.keys()),
             "n_samples": len(results),

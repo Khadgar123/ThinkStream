@@ -60,6 +60,7 @@ from thinkstream.model.agent_loop import (
     AGENT_CHUNK_SEC,
 )
 from thinkstream.model.retrieval import make_retriever
+from thinkstream.data.agent_protocol import normalize_frame_protocol
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
     update_processor_pixels,
@@ -132,6 +133,25 @@ def extract_question(sample):
         if qtext.strip():
             return qtext
     return None
+
+
+def extract_question_meta(sample):
+    """Structured answer-format hint passed into the runtime <queries> block."""
+    meta = sample.get("metadata") or {}
+    return {
+        "options": sample.get("options") or meta.get("options") or [],
+        "answer_form": (
+            sample.get("answer_form") or meta.get("answer_form") or ""
+        ),
+        "answer_style": (
+            sample.get("answer_style") or meta.get("answer_style") or ""
+        ),
+        "answer_instruction": (
+            sample.get("answer_instruction")
+            or meta.get("answer_instruction")
+            or ""
+        ),
+    }
 
 
 def score(pred_text, gold, kind):
@@ -242,6 +262,7 @@ def walk_and_score(sample, loop, video_path, ask_chunk,
     question = extract_question(sample)
     if not question:
         return None
+    question_meta = extract_question_meta(sample)
 
     if scoring == "lenient":
         max_chunk = num_chunks_video - 1 if num_chunks_video else ask_chunk + 60
@@ -282,7 +303,8 @@ def walk_and_score(sample, loop, video_path, ask_chunk,
         q = question if chunk_idx == ask_chunk else None
         try:
             result = loop.step(chunk_idx=chunk_idx, video_path=video_path,
-                               user_question=q)
+                               user_question=q,
+                               user_question_meta=question_meta if q else None)
         except Exception as e:
             # v9.4.2: lenient mode walks ask_chunk + 60 chunks regardless of
             # video duration → step() can throw on out-of-bounds frames near
@@ -445,9 +467,16 @@ def main():
                         "of ask_chunk. lenient: walk full video, take any "
                         "response after ask_chunk — measures correctness "
                         "independent of response-timing.")
+    p.add_argument(
+        "--frame-protocol",
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
+        choices=["ts_image", "video_meta"],
+        help="Visual carrier for pre-extracted frames in the streaming agent.",
+    )
     p.add_argument("--out", default=None)
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
+    frame_protocol = normalize_frame_protocol(args.frame_protocol)
 
     # Apply eval profile FIRST — must run before agent_loop / agent_protocol
     # are used so the module-level caps reflect the requested profile.
@@ -498,6 +527,7 @@ def main():
         max_new_tokens=args.max_new_tokens,
         retriever=retriever, compress_mode=args.compress_mode,
         frames_root=args.frames_root, video_root=args.video_root,
+        frame_protocol=frame_protocol,
     )
 
     # Filter scorable samples
@@ -770,6 +800,7 @@ def main():
             "retriever": {"kind": args.retriever, "alpha": args.alpha},
             "scoring": args.scoring,
             "profile": args.profile,
+            "frame_protocol": frame_protocol,
             "profile_cfg": profile_cfg,
             "n_samples": len(results),
             "n_skipped": skipped,

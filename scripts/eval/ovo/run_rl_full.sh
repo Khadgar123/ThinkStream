@@ -35,6 +35,7 @@ SIGLIP_PATH=${SIGLIP_PATH:-google/siglip-base-patch16-224}
 MAX_NEW_TOKENS=${MAX_NEW_TOKENS:-128}
 PROFILE=${PROFILE:-16k}
 SCORING=${SCORING:-strict}
+FRAME_PROTOCOL=${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}
 
 COMPRESS_MODE=self
 
@@ -52,9 +53,11 @@ while [[ $# -gt 0 ]]; do
         --max_new_tokens)  MAX_NEW_TOKENS="$2"; shift 2 ;;
         --profile)         PROFILE="$2"; shift 2 ;;
         --scoring)         SCORING="$2"; shift 2 ;;
+        --frame_protocol|--frame-protocol) FRAME_PROTOCOL="$2"; shift 2 ;;
         *) echo "Unknown parameter: $1" >&2; exit 1 ;;
     esac
 done
+export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 
 if [[ -z "$CKPT" || -z "$BENCHMARK_JSON" || -z "$VIDEO_ROOT" ]]; then
     echo "ERROR: --ckpt, --benchmark_json, --video_root required" >&2; exit 1
@@ -69,7 +72,7 @@ cd "$ROOT"
 OUT_DIR="${CKPT}/eval/ovo_full"
 mkdir -p "${OUT_DIR}" 2>/dev/null || OUT_DIR="${ROOT}/output/ovo_full"
 mkdir -p "${OUT_DIR}"
-OUT_JSON="${OUT_DIR}/rl_${RETRIEVER}_compress-self.json"
+OUT_JSON="${OUT_DIR}/rl_${RETRIEVER}_compress-self_${FRAME_PROTOCOL}.json"
 
 echo "============================================================"
 echo "OVO full eval — RL (compress=self, all 12 sub-tasks)"
@@ -81,6 +84,7 @@ echo "  retriever:  ${RETRIEVER}$([ "$RETRIEVER" = "hybrid" ] && echo " (alpha=$
 echo "  compress:   ${COMPRESS_MODE} (model decides when AND which range)"
 echo "  profile:    ${PROFILE}"
 echo "  scoring:    ${SCORING}"
+echo "  protocol:   ${FRAME_PROTOCOL}"
 [ -n "$TASKS" ] && echo "  tasks:      ${TASKS}"
 [ -n "$N_PER_TASK" ] && echo "  n_per_task: ${N_PER_TASK}"
 echo "  out:        ${OUT_JSON}"
@@ -101,11 +105,12 @@ python scripts/eval/ovo/eval_full.py \
     --max_new_tokens "${MAX_NEW_TOKENS}" \
     --profile "${PROFILE}" \
     --scoring "${SCORING}" \
+    --frame-protocol "${FRAME_PROTOCOL}" \
     --compress_mode "${COMPRESS_MODE}" \
     --out "${OUT_JSON}" \
     "${EXTRA[@]}"
 
 echo ""
 echo "Done. Compare to SFT report:"
-echo "  diff <(jq .summary.category <SFT>/eval/ovo_full/sft_${RETRIEVER}_compress-system.json) \\"
+echo "  diff <(jq .summary.category <SFT>/eval/ovo_full/sft_${RETRIEVER}_compress-system_${FRAME_PROTOCOL}.json) \\"
 echo "       <(jq .summary.category ${OUT_JSON})"

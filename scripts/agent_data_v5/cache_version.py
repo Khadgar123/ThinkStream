@@ -40,6 +40,12 @@ STAGE_VERSIONS: Dict[str, str] = {
     # v12.11 audit-5 P1 #5 (2026-05-01): bumps below align with the v12.11
     # data-construction logic changes. Without these, an existing cluster
     # cache stamped v12.5 would silently reuse stale outputs:
+    #   v12.26 (2026-05-05): pass5/render + SFT/RL/eval support late-bound
+    #        AB visual carriers for the same pre-extracted frames:
+    #        timestamped image list (`ts_image`) and native Qwen video block
+    #        with explicit video_metadata (`video_meta`). Pending queries now
+    #        render Answer format instructions consistently across SFT, RL,
+    #        and eval/test prompts.
     #   v12.25 (2026-05-05): pass1a emits a current-only `think`
     #        observation-note JSON field per chunk. This is supervised text,
     #        not Qwen/vLLM enable_thinking reasoning. pass2 consumes that
@@ -75,7 +81,7 @@ STAGE_VERSIONS: Dict[str, str] = {
     "3b": "v12.25",
     "3c": "v12.25",
     "4":  "v12.25",  # canonical key — verification
-    "5":  "v12.25",  # pass5_messages render version
+    "5":  "v12.26",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

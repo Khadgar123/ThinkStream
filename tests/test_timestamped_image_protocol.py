@@ -8,9 +8,12 @@ from scripts.agent_data_v5.pass2_rollout import (
 from scripts.agent_data_v5.pass5_messages import build_messages
 from thinkstream.data.agent_protocol import (
     SYSTEM_PROMPT_V12,
+    answer_format_instruction,
     build_user_content,
     format_memory_block,
+    format_queries_block,
     parse_agent_output_v12,
+    system_prompt_for_frame_protocol,
 )
 
 
@@ -56,6 +59,36 @@ def test_runtime_build_user_content_uses_timestamped_images():
     ]
 
 
+def test_runtime_build_user_content_can_use_video_metadata_protocol():
+    content = build_user_content(
+        memory_text="",
+        chunk_idx=1,
+        video_path="/unused.mp4",
+        frame_paths=[
+            "frame_000001.jpg",
+            "frame_000002.jpg",
+            "frame_000003.jpg",
+            "frame_000004.jpg",
+        ],
+        frame_protocol="video_meta",
+    )
+
+    types = [item["type"] for item in content]
+    assert types.count("video") == 1
+    assert "image" not in types
+    video = next(item for item in content if item["type"] == "video")
+    assert video["video"] == [
+        "frame_000001.jpg",
+        "frame_000002.jpg",
+        "frame_000003.jpg",
+        "frame_000004.jpg",
+    ]
+    assert video["video_metadata"]["fps"] == 2.0
+    assert video["video_metadata"]["frames_indices"] == [0, 1, 2, 3]
+    assert video["video_metadata"]["total_num_frames"] == 4
+    assert video["video_metadata"]["do_sample_frames"] is False
+
+
 def test_pass5_sft_messages_use_same_timestamped_image_protocol():
     sample = {
         "sample_id": "s0",
@@ -88,6 +121,39 @@ def test_pass5_sft_messages_use_same_timestamped_image_protocol():
     assert _frame_timestamp_texts(content)[-1] == (
         '<frame ts="1.5" role="latest chunk" />'
     )
+
+
+def test_pass5_sft_messages_can_render_video_meta_protocol():
+    sample = {
+        "sample_id": "s0",
+        "video_id": "vid0",
+        "video_path": "videos/vid0.mp4",
+        "sample_type": "silent",
+        "chunk_idx": 1,
+        "input": {
+            "memory": {"compressed_segments": [], "recent_thinks": []},
+            "visual_window": {
+                "video_start": 0,
+                "video_end": 2,
+                "frames": 4,
+                "frame_paths": [
+                    "data/agent_v5/frames/vid0/frame_000001.jpg",
+                    "data/agent_v5/frames/vid0/frame_000002.jpg",
+                    "data/agent_v5/frames/vid0/frame_000003.jpg",
+                    "data/agent_v5/frames/vid0/frame_000004.jpg",
+                ],
+            },
+        },
+        "output": "<think>x</think><answer></answer>",
+    }
+    messages = build_messages(sample, Path("/repo"), frame_protocol="video_meta")
+    content = messages[1]["content"]
+
+    assert "pre-sampled video block" in messages[0]["content"][0]["text"]
+    assert [item["type"] for item in content].count("video") == 1
+    video = next(item for item in content if item.get("type") == "video")
+    assert video["video_metadata"]["frames_indices"] == [0, 1, 2, 3]
+    assert video["video_metadata"]["do_sample_frames"] is False
 
 
 def test_pass5_relocates_moved_absolute_frame_paths(tmp_path):
@@ -164,6 +230,27 @@ def test_runtime_prompt_and_parser_use_frame_tags():
     )
     assert parsed["think"] == "new brush appears"
     assert parsed["answer_text"] == "A"
+
+
+def test_protocol_prompts_and_query_answer_format_are_explicit():
+    ts_prompt = system_prompt_for_frame_protocol("ts_image")
+    vm_prompt = system_prompt_for_frame_protocol("video_meta")
+    assert "frame-tagged visual frames" in ts_prompt
+    assert "pre-sampled video block" in vm_prompt
+    assert "Answer rules:" in ts_prompt
+    assert "Answer rules:" in vm_prompt
+
+    assert answer_format_instruction("number") == (
+        "Answer format: a number only, no explanation."
+    )
+    queries = [{
+        "question": "How many cups are visible?",
+        "ask_time": 3,
+        "answer_form": "number",
+        "answers": [],
+    }]
+    rendered = format_queries_block(queries)
+    assert "[3s] Answer format: a number only, no explanation." in rendered
 
 
 def test_pass1a_parser_requires_observation_note_think_field():

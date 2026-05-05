@@ -86,26 +86,18 @@
 #
 # SFT ALIGNMENT (the 5 things that must match pass5_messages.py):
 #   1. Frame paths use 1-indexed numbering: frame_{ci*FPC + fi + 1:06d}.jpg
-#   2. Pre-extracted frames render as frame-tag text + image items. The
-#      frame-tag timestamp is the temporal anchor; vLLM schedules image tensors.
-#   3. Frame-tag text uses frame_idx / fps, where
+#   2. Pre-extracted frames render through the selected frame protocol:
+#      `ts_image` uses frame-tag text + image items; `video_meta` uses one
+#      Qwen video block with explicit video_metadata. Both carry real time.
+#   3. Frame timestamps/metadata use frame_idx / fps, where
 #      frame_idx = window_start*FPC + i.
 #   4. Compress turn uses bare <compress_trigger/> (v12.12: no range,
 #      no visual_window). Model derives time_range from memory.
 #   5. Recall result rendering as <recall_result>{...}</recall_result>
 #      JSON dict (source/time/text).
 #
-# DEFERRED (must be addressed before claiming SFT-RL parity):
-#   D1. Intra-chunk recall multi-turn shape (P0.6 from review).
-#       SFT shape B is: assistant→tool(recall_result + recalled_frames)
-#       →assistant within ONE chunk. Current loop puts recall_result on
-#       the NEXT chunk's user message AND drops recalled_frames. Effect:
-#       model trains on a different recall topology than SFT — recall is
-#       still learnable but with one-chunk delay and missing visual
-#       context. Fix needs: when kind=recall, immediately build a tool
-#       turn with recall_result + recalled-frame timestamped images, append to
-#       prompt_ids with mask=0, generate again before advancing chunk_idx.
-#   D2. Per-chunk attention reset / training-time per-chunk forward
+# DEFERRED (must be addressed before claiming full deploy parity):
+#   D1. Per-chunk attention reset / training-time per-chunk forward
 #       (P0.4 / P0.3). At training time verl's actor sees the stitched
 #       long sequence; user-block tokens have mask=0 so they don't
 #       contribute to loss, but attention activations at assistant
@@ -407,7 +399,8 @@ def _register_streaming_agent_loop():
 
     from thinkstream.data.agent_protocol import (  # type: ignore
         TOOLS_SCHEMA,
-        append_timestamped_image_list,
+        append_visual_frames,
+        normalize_frame_protocol,
         parse_agent_output_v12,
         format_memory_block,
         format_queries_block,
@@ -432,6 +425,9 @@ def _register_streaming_agent_loop():
             # whole-trajectory buffer with one vLLM request.
             self.max_tokens_per_action = int(
                 os.environ.get("THINKSTREAM_MAX_TOKENS_PER_ACTION", "4096") or 4096
+            )
+            self.frame_protocol = normalize_frame_protocol(
+                os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image")
             )
             mt = self.rollout_config.multi_turn
             # v12.13 (2026-05-02): verl's MultiTurnConfig dataclass rejects
@@ -516,8 +512,8 @@ def _register_streaming_agent_loop():
 
         # -------------------------------------------------------------------
         # Per-chunk user-side text. Mirrors SFT/pass5 layout so train/RL
-        # distributions line up. Pre-extracted frames render as timestamp
-        # text + image items through append_timestamped_image_list().
+        # distributions line up. Pre-extracted frames are rendered through the
+        # same late-bound frame protocol as pass5/SFT/eval.
         # -------------------------------------------------------------------
         def _format_user_input(
             self,
@@ -577,7 +573,7 @@ def _register_streaming_agent_loop():
             v12.13 (2026-05-02): mirrors SFT layout in
             thinkstream/data/agent_protocol.py:213-214 build_user_content
             EXACTLY:
-              <memory> → (queries) → <visual_window> + timestamped images →
+              <memory> → (queries) → <visual_window> + protocol visual frames →
               <recall_result> → <user_input> or <compress_trigger/>
 
             Memory FIRST (per SFT) — train/RL distribution alignment is
@@ -622,8 +618,9 @@ def _register_streaming_agent_loop():
                     "text": f"\n{queries_text}",
                 })
 
-            # ── Visual window header + timestamped image list (after memory, matches
-            # SFT). Header layout copies agent_protocol.py:283-292: keys
+            # ── Visual window header + protocol-selected frame carrier
+            # (after memory, matches SFT). Header layout copies
+            # agent_protocol.py: keys
             # `start`, `end`, `frames`, `current_time` are all required —
             # SFT trained the model on this exact JSON shape, removing
             # any field would diverge train/RL distribution.
@@ -656,9 +653,10 @@ def _register_streaming_agent_loop():
                         )
                     except ImportError:
                         _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-                    append_timestamped_image_list(
+                    append_visual_frames(
                         content,
                         window_paths,
+                        frame_protocol=self.frame_protocol,
                         fps=float(self.frames_per_chunk) / float(self.chunk_sec),
                         start_frame_index=window_start_chunk * self.frames_per_chunk,
                         total_num_frames=(chunk_idx + 1) * self.frames_per_chunk,
@@ -725,9 +723,9 @@ def _register_streaming_agent_loop():
                                    — same shape as pass3c rendering input
               }
 
-            Both fields go into the next chunk_messages user payload. The
-            prompt builder renders recalled frame paths with frame-tag text
-            anchored to the HISTORICAL chunk timestamps (not the current
+            In normal v12.13+ mode these fields are rendered immediately as
+            the same-chunk tool response. The prompt builder anchors recalled
+            frame paths to HISTORICAL chunk timestamps (not the current
             chunk), so the model sees these as old frames from time T, not
             current visual evidence.
             """
@@ -825,8 +823,7 @@ def _register_streaming_agent_loop():
             Mirrors pass5_messages.py:280-380 ordering EXACTLY (the v12.11
             audit P0 fix order is the SFT contract):
               1. <recalled_frames>{json header}</recalled_frames> text
-              2. frame-tag text + image items anchored to historical chunk
-                 timestamps
+              2. protocol visual frames anchored to historical chunk timestamps
               3. <recall_result>{json}</recall_result> text
 
             We use role="user" (not "tool") to match pass5's DeepEyesV2
@@ -850,7 +847,7 @@ def _register_streaming_agent_loop():
                     "type": "text",
                     "text": f"<recalled_frames>{rf_header}</recalled_frames>",
                 })
-                # 2. timestamped historical frames
+                # 2. historical frames via the active frame protocol.
                 try:
                     from scripts.agent_data_v5.config import (
                         RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
@@ -858,9 +855,10 @@ def _register_streaming_agent_loop():
                 except ImportError:
                     _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
                 tr_start, tr_end = rf["time_range"]
-                append_timestamped_image_list(
+                append_visual_frames(
                     content,
                     rf["frame_paths"],
+                    frame_protocol=self.frame_protocol,
                     fps=float(self.frames_per_chunk) / float(self.chunk_sec),
                     start_frame_index=int(tr_start) * self.frames_per_chunk,
                     total_num_frames=int(tr_end + 1) * self.frames_per_chunk,
@@ -1045,8 +1043,8 @@ def _register_streaming_agent_loop():
             chunk_video_indices: List[int] = []
 
             # multi_modal_data accumulator: one (tensor, metadata) per
-            # Accumulators for multi-modal payloads. Current protocol uses
-            # timestamped images; video remains only for legacy/raw fallback.
+            # Accumulators for multi-modal payloads. `ts_image` contributes
+            # images; `video_meta` contributes videos with explicit metadata.
             accumulated_images: List[Any] = list(initial_images)
             accumulated_videos: List[Any] = list(initial_videos)
 
@@ -1253,11 +1251,10 @@ def _register_streaming_agent_loop():
                         per_action_response_logprobs.append(list(output.log_probs))
                     else:
                         per_action_response_logprobs.append(None)
-                    # mm payload: stitched mode accumulates videos globally;
-                    # recurrent mode needs per-action attribution. Use
-                    # Pre-extracted frames now arrive as timestamped image
-                    # items; legacy video payloads are still forwarded if a
-                    # fallback message path produces them.
+                    # mm payload: stitched mode accumulates media globally;
+                    # recurrent mode needs per-action attribution. The active
+                    # frame protocol decides whether frames are images or
+                    # video blocks with metadata.
                     _ac_mm = None
                     if chunk_videos:
                         _ac_mm = {"videos": list(chunk_videos)}
@@ -1456,6 +1453,7 @@ def _register_streaming_agent_loop():
             common_extras = {
                 "turn_scores": [],
                 "tool_rewards": [],
+                "ts_frame_protocol": self.frame_protocol,
                 "ts_n_recall": float(state.n_recall_calls),
                 "ts_n_compress": float(state.n_compress_calls),
                 "ts_chunks_used": float(num_assistant_turns),

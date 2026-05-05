@@ -322,6 +322,20 @@ class AgentLoopBase(ABC):
             list[int]: Prompt token ids.
         """
         if self.processor is not None:
+            # split the videos and according metadatas before rendering the
+            # chat template. Qwen3-VL uses video_metadata not only for tensor
+            # processing but also for text-layer timestamp anchors in the
+            # rendered prompt.
+            if videos is not None:
+                videos, video_metadatas = zip(*videos, strict=False)
+                videos, video_metadatas = list(videos), list(video_metadatas)
+            else:
+                video_metadatas = None
+
+            template_kwargs = dict(self.apply_chat_template_kwargs)
+            if video_metadatas is not None:
+                template_kwargs["video_metadata"] = video_metadatas
+                template_kwargs["do_sample_frames"] = False
             raw_prompt = await self.loop.run_in_executor(
                 None,
                 lambda: apply_chat_template(
@@ -330,16 +344,9 @@ class AgentLoopBase(ABC):
                     tools=tools,
                     add_generation_prompt=True,
                     tokenize=False,
-                    **self.apply_chat_template_kwargs,
+                    **template_kwargs,
                 ),
             )
-
-            # split the videos and according metadatas
-            if videos is not None:
-                videos, video_metadatas = zip(*videos, strict=False)
-                videos, video_metadatas = list(videos), list(video_metadatas)
-            else:
-                video_metadatas = None
 
             model_inputs = self.processor(
                 text=[raw_prompt],

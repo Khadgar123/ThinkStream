@@ -263,7 +263,7 @@ def test_pass2_cache_bump_invalidates_old_video_http_rollouts():
     assert STAGE_VERSIONS["3b"] == "v12.25"
     assert STAGE_VERSIONS["3c"] == "v12.25"
     assert STAGE_VERSIONS["4"] == "v12.25"
-    assert STAGE_VERSIONS["5"] == "v12.25"
+    assert STAGE_VERSIONS["5"] == "v12.26"
 
 
 def test_pass2_uses_pass1_observation_note_without_observation_call():

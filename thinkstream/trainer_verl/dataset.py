@@ -20,7 +20,11 @@ from typing import Dict, List, Iterator, Optional
 
 from torch.utils.data import Dataset
 
-from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12, TOOLS_SCHEMA
+from thinkstream.data.agent_protocol import (
+    TOOLS_SCHEMA,
+    normalize_frame_protocol,
+    system_prompt_for_frame_protocol,
+)
 from thinkstream.trainer.v12_rollout import VideoTrajectoryState
 
 
@@ -37,9 +41,11 @@ class ThinkStreamRLDataset(Dataset):
         annotation_path: str,
         *,
         max_questions_per_traj: int = 5,
+        frame_protocol: str = "ts_image",
     ):
         self.path = Path(annotation_path)
         self.max_questions_per_traj = max_questions_per_traj
+        self.frame_protocol = normalize_frame_protocol(frame_protocol)
         self._index: List[Dict] = self._load(self.path)
 
     def _load(self, path: Path) -> List[Dict]:
@@ -116,7 +122,12 @@ class ThinkStreamRLDataset(Dataset):
 
         return {
             "prompt": [
-                {"role": "system", "content": SYSTEM_PROMPT_V12},
+                {
+                    "role": "system",
+                    "content": system_prompt_for_frame_protocol(
+                        self.frame_protocol
+                    ),
+                },
             ],
             "ground_truth": ground_truth,
             "extra_info": {
@@ -126,6 +137,7 @@ class ThinkStreamRLDataset(Dataset):
                 "n_chunks_total": traj.get("stats", {}).get("n_chunks_covered", 0),
                 "seed_state": seed_state,
                 "tools": TOOLS_SCHEMA,
+                "frame_protocol": self.frame_protocol,
             },
         }
 

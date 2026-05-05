@@ -39,8 +39,12 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Optional
 
 from thinkstream.data.agent_protocol import (
-    AGENT_CHUNK_SEC, SYSTEM_PROMPT_V12, format_memory_block, format_queries_block,
-    append_timestamped_image_list,
+    AGENT_CHUNK_SEC,
+    format_memory_block,
+    format_queries_block,
+    append_visual_frames,
+    normalize_frame_protocol,
+    system_prompt_for_frame_protocol,
 )
 
 logger = logging.getLogger(__name__)
@@ -135,13 +139,18 @@ def _resolve_paths(paths: List[str], base_path: Path) -> List[str]:
     return out
 
 
-def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
+def build_messages(
+    sample: Dict,
+    base_path: Path,
+    *,
+    frame_protocol: str = "ts_image",
+) -> List[Dict]:
     """Produce v12 ShareGPT messages for one sample. Stdlib-only.
 
     This is the canonical offline renderer. It must stay aligned with
     thinkstream.data.agent_protocol.build_user_content and the verl RL
-    prompt builder: memory, queries, visual_window, timestamped images,
-    recalled frames, recall_result, then user input.
+    prompt builder: memory, queries, visual_window, protocol-selected visual
+    frames, recalled frames, recall_result, then user input.
     """
     inp = sample["input"]
     chunk_idx = sample["chunk_idx"]
@@ -153,7 +162,13 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
     )
 
     messages: List[Dict] = [
-        {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT_V12}]}
+        {
+            "role": "system",
+            "content": [{
+                "type": "text",
+                "text": system_prompt_for_frame_protocol(frame_protocol),
+            }],
+        }
     ]
 
     video_path = sample.get("video_path", "")
@@ -234,9 +249,10 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                 )
             except ImportError:
                 _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-            append_timestamped_image_list(
+            append_visual_frames(
                 user_content,
                 _resolve_paths(vw["frame_paths"], base_path),
+                frame_protocol=frame_protocol,
                 fps=float(_FPC / chunk_sec),
                 start_frame_index=window_start * _FPC,
                 total_num_frames=(chunk_idx + 1) * _FPC,
@@ -283,9 +299,10 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                 )
             except ImportError:
                 _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-            append_timestamped_image_list(
+            append_visual_frames(
                 user_content,
                 _resolve_paths(rf["frame_paths"], base_path),
+                frame_protocol=frame_protocol,
                 fps=float(_FPC / chunk_sec),
                 start_frame_index=int(tr0 * _FPC),
                 total_num_frames=int(tr1 * _FPC),
@@ -371,9 +388,10 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                 except ImportError:
                     _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
                 tr_start_chunk = int(tr_start / float(_CHUNK_SEC))
-                append_timestamped_image_list(
+                append_visual_frames(
                     tool_payload,
                     _resolve_paths(rf["frame_paths"], base_path),
+                    frame_protocol=frame_protocol,
                     fps=float(_FPC / float(_CHUNK_SEC)),
                     start_frame_index=tr_start_chunk * _FPC,
                     total_num_frames=int(tr_end / float(_CHUNK_SEC)) * _FPC,
@@ -443,7 +461,7 @@ def _iter_trajectories(path: Path) -> Iterable[Dict]:
                 yield s
 
 
-def _emit_row(sample: Dict, messages: List[Dict]) -> Dict:
+def _emit_row(sample: Dict, messages: List[Dict], *, frame_protocol: str) -> Dict:
     # v12.12 fix (P0-5): propagate verification verdict + metadata so SFT
     # data_processor can filter / downweight failed samples. pipeline.py
     # tags every sample via pass3e with verification.passed/.fail_reasons
@@ -456,6 +474,7 @@ def _emit_row(sample: Dict, messages: List[Dict]) -> Dict:
         "chunk_idx": sample.get("chunk_idx", -1),
         "sample_type": sample.get("sample_type", ""),
         "sample_id": sample.get("sample_id", ""),
+        "frame_protocol": frame_protocol,
         "v12_inter_chunk": bool(sample.get("v12_inter_chunk", False)),
         "messages": messages,
         "videos": None,
@@ -632,6 +651,7 @@ def convert(
     base_path: Path,
     limit: Optional[int] = None,
     balance_sft: bool = False,
+    frame_protocol: str = "ts_image",
 ) -> Dict[str, int]:
     iter_fn = _iter_trajectories if is_trajectory else _iter_flat
     counts = {"ok": 0, "failed": 0}
@@ -651,7 +671,11 @@ def convert(
             if limit and counts["ok"] >= limit:
                 break
             try:
-                messages = build_messages(sample, base_path)
+                messages = build_messages(
+                    sample,
+                    base_path,
+                    frame_protocol=frame_protocol,
+                )
             except (KeyError, ValueError) as exc:
                 counts["failed"] += 1
                 if counts["failed"] <= 5:
@@ -659,7 +683,7 @@ def convert(
                     logger.warning(f"[{src.name}] sample {sid} skipped: {exc}")
                 continue
 
-            row = _emit_row(sample, messages)
+            row = _emit_row(sample, messages, frame_protocol=frame_protocol)
             out.write(json.dumps(row, ensure_ascii=False) + "\n")
             counts["ok"] += 1
             by_type[row["sample_type"]] = by_type.get(row["sample_type"], 0) + 1
@@ -707,6 +731,26 @@ def main() -> None:
         ),
     )
     parser.add_argument("--final-dir", default=str(FINAL_DIR))
+    parser.add_argument(
+        "--output-dir",
+        default="",
+        help=(
+            "Directory for rendered *_messages.jsonl outputs. Defaults to "
+            "--final-dir. Use this to render AB variants from one canonical "
+            "trajectory set, e.g. final/rendered/ts_image and "
+            "final/rendered/video_meta."
+        ),
+    )
+    parser.add_argument(
+        "--frame-protocol",
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
+        choices=["ts_image", "video_meta"],
+        help=(
+            "Student/eval visual carrier. ts_image = timestamp text + image "
+            "items; video_meta = pre-extracted frame list as Qwen video block "
+            "with video_metadata. Teacher pass caches are unchanged."
+        ),
+    )
     parser.add_argument("--base-path", default=str(PROJECT_ROOT),
                         help="Project root for resolving relative video/frame paths. "
                         "Generated samples store frame paths relative to the repo "
@@ -717,9 +761,12 @@ def main() -> None:
     args = parser.parse_args()
 
     final_dir = Path(args.final_dir)
+    output_dir = Path(args.output_dir) if args.output_dir else final_dir
     base_path = Path(args.base_path)
+    frame_protocol = normalize_frame_protocol(args.frame_protocol)
     if not final_dir.exists():
         raise SystemExit(f"final dir not found: {final_dir}")
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     splits_done: List[str] = []
     for flat_stem, traj_stem, out_stem in SPLITS:
@@ -743,11 +790,15 @@ def main() -> None:
             logger.warning(f"Input missing: {src}, skipping.")
             continue
 
-        dst = final_dir / f"{out_stem}.jsonl"
-        logger.info(f"Converting {src.name} → {dst.name} (is_trajectory={is_traj})")
+        dst = output_dir / f"{out_stem}.jsonl"
+        logger.info(
+            f"Converting {src.name} → {dst} "
+            f"(is_trajectory={is_traj}, frame_protocol={frame_protocol})"
+        )
         balance = out_stem == "train_sft_messages" and not args.no_balance_sft
         counts = convert(src, dst, is_trajectory=is_traj, base_path=base_path,
-                         limit=args.limit or None, balance_sft=balance)
+                         limit=args.limit or None, balance_sft=balance,
+                         frame_protocol=frame_protocol)
         logger.info(
             f"  ok={counts['ok']} failed={counts['failed']} by_type={counts['by_type']}"
         )
@@ -756,8 +807,15 @@ def main() -> None:
         splits_done.append(out_stem.replace("_messages", ""))
 
     if splits_done:
-        write_dataset_info(final_dir, splits_done)
-        logger.info(f"Wrote dataset_info.json → {final_dir / 'dataset_info.json'}")
+        write_dataset_info(output_dir, splits_done)
+        (output_dir / "render_manifest.json").write_text(json.dumps({
+            "generated_by": "pass5_messages.py",
+            "source_final_dir": str(final_dir),
+            "output_dir": str(output_dir),
+            "frame_protocol": frame_protocol,
+            "splits": splits_done,
+        }, ensure_ascii=False, indent=2))
+        logger.info(f"Wrote dataset_info.json → {output_dir / 'dataset_info.json'}")
 
 
 if __name__ == "__main__":

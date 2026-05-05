@@ -202,8 +202,13 @@ class vLLMHttpServer:
         # 1. setup vllm serve cli args
         engine_kwargs = self.config.get("engine_kwargs", {}).get(self._get_engine_kwargs_key(), {}) or {}
         engine_kwargs = {key: val for key, val in engine_kwargs.items() if val is not None}
+        limit_mm_per_prompt = dict(engine_kwargs.get("limit_mm_per_prompt") or {})
         if self.config.get("limit_images", None):  # support for multi-image data
-            engine_kwargs["limit_mm_per_prompt"] = {"image": self.config.get("limit_images")}
+            limit_mm_per_prompt["image"] = self.config.get("limit_images")
+        if self.config.get("limit_videos", None):  # support for pre-sampled video blocks
+            limit_mm_per_prompt["video"] = self.config.get("limit_videos")
+        if limit_mm_per_prompt:
+            engine_kwargs["limit_mm_per_prompt"] = limit_mm_per_prompt
         if self.config.cudagraph_capture_sizes:
             engine_kwargs["cuda_graph_sizes"] = self.config.cudagraph_capture_sizes
 

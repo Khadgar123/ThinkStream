@@ -28,7 +28,9 @@
 #   MAX_ACTION_TOKENS — per-action vLLM generation cap (4096)
 #   MAX_CHUNKS      — max turns per video (120 by default; use recurrent for 240+)
 #   GPU_MEM_UTIL    — vLLM gpu_memory_utilization (0.55 — leave room for FSDP)
+#   FRAME_PROTOCOL  — ts_image | video_meta (default: ts_image). Must match SFT/eval.
 #   LIMIT_IMAGES    — vLLM limit_mm_per_prompt.image for timestamped frames (64)
+#   LIMIT_VIDEOS    — vLLM limit_mm_per_prompt.video for video_meta blocks (2)
 #   TP_SIZE         — tensor_parallel_size for vLLM rollout (2 on 8-GPU node)
 #   BATCH_SIZE      — videos per training step (4)
 #   PPO_MINI_BS     — ppo_mini_batch_size in prompt units (default=BATCH_SIZE)
@@ -36,7 +38,7 @@
 #   EPOCHS          — total_epochs (1)
 #   SAVE_FREQ       — save every N steps (50)
 #   TEST_FREQ       — eval on val every N steps (25)
-#   RUN_NAME        — wandb experiment name (grpo-v12.23-verl)
+#   RUN_NAME        — wandb experiment name (grpo-v12.26-verl-$FRAME_PROTOCOL)
 #   WANDB_PROJECT   — wandb project (thinkstream-v12)
 #   PARAM_OFFLOAD   — FSDP offload params to CPU (true).
 #   OPTIMIZER_OFFLOAD — FSDP offload optimizer state (true).
@@ -67,6 +69,7 @@ MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-4096}
 MAX_CHUNKS=${MAX_CHUNKS:-120}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
 LIMIT_IMAGES=${LIMIT_IMAGES:-64}
+LIMIT_VIDEOS=${LIMIT_VIDEOS:-2}
 TP_SIZE=${TP_SIZE:-2}
 BATCH_SIZE=${BATCH_SIZE:-4}
 PPO_MINI_BS=${PPO_MINI_BS:-${BATCH_SIZE}}
@@ -75,7 +78,8 @@ EPOCHS=${EPOCHS:-1}
 MAX_STEPS=${MAX_STEPS:-}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
-RUN_NAME=${RUN_NAME:-grpo-v12.23-verl}
+FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
+RUN_NAME=${RUN_NAME:-grpo-v12.26-verl-${FRAME_PROTOCOL}}
 WANDB_PROJECT=${WANDB_PROJECT:-thinkstream-v12}
 PARAM_OFFLOAD=${PARAM_OFFLOAD:-true}
 OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
@@ -95,15 +99,16 @@ OUTPUT_DIR="${THINKSTREAM_OUTPUT_DIR:-${PROJECT_DIR}/output/${RUN_NAME}}"
 TRAIN_JSONL="${TRAIN_JSONL:-${AGENT_DATA_ROOT}/final/train_rl_trajectories.jsonl}"
 VAL_JSONL="${VAL_JSONL:-${AGENT_DATA_ROOT}/final/val_trajectories.jsonl}"
 MULTI_Q="${MULTI_Q:-1}"
+PARQUET_DIR="${PARQUET_DIR:-${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}}"
 
 # verl's RLHFDataset reads parquet; auto-build from JSONL if user didn't
 # supply a parquet directly.
 if [[ "${MULTI_Q}" == "1" ]]; then
-    DEFAULT_TRAIN_PARQUET="${AGENT_DATA_ROOT}/final/train_rl_multi_q.parquet"
-    DEFAULT_VAL_PARQUET="${AGENT_DATA_ROOT}/final/val_rl_multi_q.parquet"
+    DEFAULT_TRAIN_PARQUET="${PARQUET_DIR}/train_rl_multi_q.parquet"
+    DEFAULT_VAL_PARQUET="${PARQUET_DIR}/val_rl_multi_q.parquet"
 else
-    DEFAULT_TRAIN_PARQUET="${AGENT_DATA_ROOT}/final/train_rl_single_q.parquet"
-    DEFAULT_VAL_PARQUET="${AGENT_DATA_ROOT}/final/val_rl_single_q.parquet"
+    DEFAULT_TRAIN_PARQUET="${PARQUET_DIR}/train_rl_single_q.parquet"
+    DEFAULT_VAL_PARQUET="${PARQUET_DIR}/val_rl_single_q.parquet"
 fi
 TRAIN_PARQUET="${TRAIN_PARQUET:-${DEFAULT_TRAIN_PARQUET}}"
 VAL_PARQUET="${VAL_PARQUET:-${DEFAULT_VAL_PARQUET}}"
@@ -117,12 +122,14 @@ fi
 if [[ ! -f "${TRAIN_PARQUET}" ]]; then
     echo "Building train parquet from ${TRAIN_JSONL}…  (multi_q=${MULTI_Q})"
     python3 "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
-        --jsonl "${TRAIN_JSONL}" --out "${TRAIN_PARQUET}" ${MULTI_Q_FLAG}
+        --jsonl "${TRAIN_JSONL}" --out "${TRAIN_PARQUET}" \
+        --frame-protocol "${FRAME_PROTOCOL}" ${MULTI_Q_FLAG}
 fi
 if [[ ! -f "${VAL_PARQUET}" ]]; then
     echo "Building val parquet from ${VAL_JSONL}…  (multi_q=${MULTI_Q})"
     python3 "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
-        --jsonl "${VAL_JSONL}" --out "${VAL_PARQUET}" ${MULTI_Q_FLAG}
+        --jsonl "${VAL_JSONL}" --out "${VAL_PARQUET}" \
+        --frame-protocol "${FRAME_PROTOCOL}" ${MULTI_Q_FLAG}
 fi
 
 mkdir -p "${OUTPUT_DIR}"
@@ -133,6 +140,7 @@ echo "Vendored verl:     ${VERL_DIR}"
 echo "Recipe dir:        ${RECIPE_DIR}"
 echo "Recipe name:       ${RECIPE_NAME}"
 echo "Data root:         ${AGENT_DATA_ROOT}"
+echo "Frame protocol:    ${FRAME_PROTOCOL}"
 echo "Train parquet:     ${TRAIN_PARQUET}"
 echo "Val parquet:       ${VAL_PARQUET}"
 echo "Multi-Q rows:      ${MULTI_Q}"
@@ -147,6 +155,7 @@ echo "Max new tokens:    ${MAX_NEW_TOKEN}"
 echo "Max action tokens: ${MAX_ACTION_TOKENS}"
 echo "GPU mem util:      ${GPU_MEM_UTIL}"
 echo "Image limit:       ${LIMIT_IMAGES}"
+echo "Video limit:       ${LIMIT_VIDEOS}"
 echo "LR:                ${LR}"
 echo "Epochs:            ${EPOCHS}"
 echo "Max steps:         ${MAX_STEPS:-<epoch-based>}"
@@ -179,6 +188,7 @@ export THINKSTREAM_FRAMES_ROOT="${FRAMES_ROOT}"
 export THINKSTREAM_MAX_TOKENS_PER_ACTION="${MAX_ACTION_TOKENS}"
 
 export THINKSTREAM_HOME="${PROJECT_DIR}"
+export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 export HF_MODEL_PATH="${LLM}"
 export TRAIN_PARQUET="${TRAIN_PARQUET}"
 export VAL_PARQUET="${VAL_PARQUET}"
@@ -191,6 +201,7 @@ export LR="${LR}"
 export EPOCHS="${EPOCHS}"
 export GPU_MEM_UTIL="${GPU_MEM_UTIL}"
 export LIMIT_IMAGES="${LIMIT_IMAGES}"
+export LIMIT_VIDEOS="${LIMIT_VIDEOS}"
 export MAX_PROMPT_LEN="${MAXLEN}"
 export MAX_RESP_LEN="${MAX_NEW_TOKEN}"
 export MAX_ACTION_TOKENS="${MAX_ACTION_TOKENS}"

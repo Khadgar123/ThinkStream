@@ -39,6 +39,7 @@ from thinkstream.sft.data_processor import (
 from scripts.agent_data_v5.pass5_messages import (
     build_messages as build_per_timestep_messages,
 )
+from thinkstream.data.agent_protocol import normalize_frame_protocol
 from thinkstream.trainer.outcome_match import score_outcome_by_form
 
 GOLD_RE = re.compile(
@@ -186,8 +187,15 @@ def main():
     p.add_argument("--n", type=int, default=200, help="Max samples to evaluate (0 = all)")
     p.add_argument("--max_new_tokens", type=int, default=256)
     p.add_argument("--out", default=None)
+    p.add_argument(
+        "--frame-protocol",
+        default=None,
+        choices=["ts_image", "video_meta"],
+        help="Used only when --test_jsonl is a flat row file rendered on the fly.",
+    )
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
+    frame_protocol = normalize_frame_protocol(args.frame_protocol)
 
     Cls, model_type = detect_model_class(args.ckpt)
     print(f"Loading {Cls.__name__} from {args.ckpt} ...")
@@ -238,7 +246,9 @@ def main():
             messages = (
                 _resolve_video_paths(s["messages"], root_path)
                 if "messages" in s
-                else build_per_timestep_messages(s, root_path)
+                else build_per_timestep_messages(
+                    s, root_path, frame_protocol=frame_protocol
+                )
             )
             # Remove assistant turn; keep system + user timestamped frames.
             messages = [m for m in messages if m["role"] != "assistant"]
@@ -323,6 +333,7 @@ def main():
             json.dump({
                 "ckpt": args.ckpt,
                 "test_jsonl": args.test_jsonl,
+                "frame_protocol": frame_protocol,
                 "n_samples": len(results),
                 "n_skipped": skipped,
                 "by_kind": {k: dict(v) for k, v in by.items()},

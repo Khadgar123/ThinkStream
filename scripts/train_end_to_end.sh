@@ -1,5 +1,5 @@
 #!/bin/bash
-# End-to-end SFT + verl RL training pipeline for ThinkStream agent v12.23.
+# End-to-end SFT + verl RL training pipeline for ThinkStream agent v12.26.
 #
 # Features:
 #   - Uninterruptible (run inside tmux/screen)
@@ -29,6 +29,11 @@ cd "${PROJECT_DIR}"
 # Generated batch root. SFT reads final/train_sft_messages.jsonl underneath it;
 # RL reads final/train_rl_trajectories.jsonl and frames/ underneath it.
 export THINKSTREAM_DATA_ROOT=${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-${PROJECT_DIR}/data/agent_v5}}
+FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
+export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
+if [[ -z "${THINKSTREAM_FINAL_DIR:-}" && -d "${THINKSTREAM_DATA_ROOT}/rendered/${FRAME_PROTOCOL}" ]]; then
+    export THINKSTREAM_FINAL_DIR="${THINKSTREAM_DATA_ROOT}/rendered/${FRAME_PROTOCOL}"
+fi
 
 # ------------------------------------------------------------------
 # Configurable overrides (env vars)
@@ -47,8 +52,8 @@ MAX_CHUNKS_RL=${MAX_CHUNKS_RL:-120}
 MAX_RESP_LEN_RL=${MAX_RESP_LEN_RL:-32768}
 MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-4096}
 
-SFT_RUN_NAME="agent-sft-v12.23"
-RL_RUN_NAME="agent-grpo-v12.23"
+SFT_RUN_NAME="agent-sft-v12.26-${FRAME_PROTOCOL}"
+RL_RUN_NAME="agent-grpo-v12.26-${FRAME_PROTOCOL}"
 SFT_OUTPUT="${PROJECT_DIR}/output/${SFT_RUN_NAME}"
 RL_OUTPUT="${PROJECT_DIR}/output/${RL_RUN_NAME}"
 
@@ -77,6 +82,7 @@ fi
 
 # Build SFT command
 sft_cmd="PHASE=sft \
+    FRAME_PROTOCOL=${FRAME_PROTOCOL} \
     LLM=${LLM_BASE} \
     NPROC=${NPROC} \
     BSZ=${BSZ} \
@@ -131,6 +137,7 @@ echo "Phase 2: RL (GRPO)"
 echo "============================================"
 
 rl_cmd="LLM=${best_ckpt} \
+    FRAME_PROTOCOL=${FRAME_PROTOCOL} \
     NPROC=${NPROC} \
     GROUP_SIZE=${GROUP_SIZE} \
     BATCH_SIZE=${BATCH_SIZE_RL} \

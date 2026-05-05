@@ -43,6 +43,8 @@ if [[ "${DATA_ROOT}" == */final ]]; then
     DATA_ROOT="$(dirname "${DATA_ROOT}")"
 fi
 FRAMES_ROOT="${FRAMES_ROOT:-${THINKSTREAM_FRAMES_ROOT:-${DATA_ROOT}/frames}}"
+FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
+export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 
 # ── Models (override via env) ─────────────────────────────────────────────
 # For base eval — public Qwen3-VL checkpoints. Sized to study scaling.
@@ -87,7 +89,7 @@ log() { echo "[$(date +%H:%M:%S)] $*"; }
 
 run_base_one() {
     local ckpt="$1" mode="$2" budget="$3" bench="$4" scoring="$5"
-    local label="$(basename "$ckpt")_${bench}_${mode}_${budget}_${scoring}"
+    local label="$(basename "$ckpt")_${bench}_${mode}_${budget}_${scoring}_${FRAME_PROTOCOL}"
     log "BASE ${label}"
     if [[ "$bench" == "test" ]]; then
         python scripts/eval/test_set_base.py \
@@ -97,8 +99,9 @@ run_base_one() {
             --mode "$mode" \
             --max_frames "$budget" \
             --scoring "$scoring" \
+            --frame-protocol "$FRAME_PROTOCOL" \
             --n "$N_TEST" \
-            --out "${ckpt}/eval/test_base/${mode}_${budget}_${scoring}.json"
+            --out "${ckpt}/eval/test_base/${mode}_${budget}_${scoring}_${FRAME_PROTOCOL}.json"
     else  # ovo
         python scripts/eval/ovo/base.py \
             --ckpt "$ckpt" \
@@ -108,14 +111,15 @@ run_base_one() {
             --mode "$mode" \
             --max_frames "$budget" \
             --scoring "$scoring" \
+            --frame-protocol "$FRAME_PROTOCOL" \
             --n_per_task "$N_PER_OVO_TASK" \
-            --out "${ckpt}/eval/ovo_base/${mode}_${budget}_${scoring}.json"
+            --out "${ckpt}/eval/ovo_base/${mode}_${budget}_${scoring}_${FRAME_PROTOCOL}.json"
     fi
 }
 
 run_agent_one() {
     local ckpt="$1" retriever="$2" compress_mode="$3" bench="$4" scoring="$5" profile="$6"
-    local label="$(basename "$ckpt")_${bench}_${retriever}_${compress_mode}_${scoring}_${profile}"
+    local label="$(basename "$ckpt")_${bench}_${retriever}_${compress_mode}_${scoring}_${profile}_${FRAME_PROTOCOL}"
     log "AGENT ${label}"
     if [[ "$bench" == "test" ]]; then
         python scripts/eval/test_set_agent.py \
@@ -127,8 +131,9 @@ run_agent_one() {
             --compress_mode "$compress_mode" \
             --scoring "$scoring" \
             --profile "$profile" \
+            --frame-protocol "$FRAME_PROTOCOL" \
             --n "$N_TEST" \
-            --out "${ckpt}/eval/test_agent/${compress_mode}_${retriever}_${scoring}_${profile}.json"
+            --out "${ckpt}/eval/test_agent/${compress_mode}_${retriever}_${scoring}_${profile}_${FRAME_PROTOCOL}.json"
     else
         python scripts/eval/ovo/eval_full.py \
             --ckpt "$ckpt" \
@@ -139,8 +144,9 @@ run_agent_one() {
             --compress_mode "$compress_mode" \
             --scoring "$scoring" \
             --profile "$profile" \
+            --frame-protocol "$FRAME_PROTOCOL" \
             --n_per_task "$N_PER_OVO_TASK" \
-            --out "${ckpt}/eval/ovo_agent/${compress_mode}_${retriever}_${scoring}_${profile}.json"
+            --out "${ckpt}/eval/ovo_agent/${compress_mode}_${retriever}_${scoring}_${profile}_${FRAME_PROTOCOL}.json"
     fi
 }
 

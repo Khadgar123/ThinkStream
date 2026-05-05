@@ -38,6 +38,7 @@ from thinkstream.data.agent_protocol import (
     FRAMES_PER_CHUNK,
     TOOLS_SCHEMA,
     VISUAL_WINDOW_CHUNKS,
+    normalize_frame_protocol,
 )
 from thinkstream.model.agent_loop import (
     COMPRESS_RANGE_MIN,
@@ -66,6 +67,9 @@ class _SampleRunner:
     video_root: Optional[str]
     min_pixels: int
     max_pixels: int
+    frame_protocol: str = field(
+        default_factory=lambda: normalize_frame_protocol(None)
+    )
     current_chunk: int = 0
     done: bool = False
     answer_text: Optional[str] = None
@@ -217,6 +221,7 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
         min_pixels=runner.min_pixels,
         max_pixels=runner.max_pixels,
         frame_paths=frame_paths,
+        frame_protocol=getattr(runner, "frame_protocol", None),
         inter_chunk=is_inter_chunk,
     )
 
@@ -292,7 +297,9 @@ def _build_runners(
     frames_root: Optional[str],
     video_root: Optional[str],
     tokenizer=None,
+    frame_protocol: Optional[str] = None,
 ) -> List[_SampleRunner]:
+    frame_protocol = normalize_frame_protocol(frame_protocol)
     runners: List[_SampleRunner] = []
     for i in range(len(dataset)):
         idx = i
@@ -330,6 +337,7 @@ def _build_runners(
                 video_root=video_root,
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
+                frame_protocol=frame_protocol,
             ))
         except Exception as e:
             runners.append(_SampleRunner(
@@ -345,6 +353,7 @@ def _build_runners(
                 video_root=video_root,
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
+                frame_protocol=frame_protocol,
                 done=True,
                 error=str(e),
             ))
@@ -370,6 +379,7 @@ def streaming_predict_mcq_vllm(
     repetition_penalty: float = 1.1,
     debug: bool = False,
     debug_dir: Optional[str] = None,
+    frame_protocol: Optional[str] = None,
 ):
     """Chunk-lockstep streaming MCQ eval via vLLM batched generate.
 
@@ -395,15 +405,18 @@ def streaming_predict_mcq_vllm(
     )
 
     tokenizer = processor.tokenizer
+    frame_protocol = normalize_frame_protocol(frame_protocol)
     runners = _build_runners(
         dataset, options, question_prefix, question_postfix,
         frames_per_chunk, max_chunks, min_pixels, max_pixels,
         frames_root, video_root, tokenizer=tokenizer,
+        frame_protocol=frame_protocol,
     )
 
     log.info(
         f"vLLM streaming eval: {len(runners)} samples, "
-        f"max_chunks={max_chunks}, frames_per_chunk={frames_per_chunk}"
+        f"max_chunks={max_chunks}, frames_per_chunk={frames_per_chunk}, "
+        f"frame_protocol={frame_protocol}"
     )
 
     # repetition_penalty>1.0 is critical for think generation — the v11.2
@@ -578,6 +591,9 @@ class _RolloutRunner:
     video_root: Optional[str]
     min_pixels: int
     max_pixels: int
+    frame_protocol: str = field(
+        default_factory=lambda: normalize_frame_protocol(None)
+    )
     current_chunk: int = 0
     done: bool = False
     error: Optional[str] = None
@@ -753,6 +769,7 @@ def streaming_vllm_rollout(
     video_root: Optional[str] = None,
     compress_budget: Optional[int] = None,
     enable_recall: bool = True,
+    frame_protocol: Optional[str] = None,
 ) -> List[Dict]:
     """vLLM-batched RL rollout matching grpo.py:617-803 output contract.
 
@@ -785,6 +802,7 @@ def streaming_vllm_rollout(
     if compress_budget is None:
         from thinkstream.model.agent_loop import RECENT_THINKS_TOKEN_BUDGET
         compress_budget = RECENT_THINKS_TOKEN_BUDGET
+    frame_protocol = normalize_frame_protocol(frame_protocol)
 
     # ── Build N × G runners ──
     runners: List[_RolloutRunner] = []
@@ -860,6 +878,7 @@ def streaming_vllm_rollout(
                 video_root=video_root,
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
+                frame_protocol=frame_protocol,
                 question_at_chunk=q_at_chunk,
                 question_meta_at_chunk=q_meta_at_chunk,    # v12.13 P0-1
                 retriever=runner_retriever,

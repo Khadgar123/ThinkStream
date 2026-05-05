@@ -20,11 +20,13 @@ from typing import Callable, Dict, List, Optional
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
-    SYSTEM_PROMPT_V12,
     VISUAL_WINDOW_CHUNKS,
+    append_visual_frames,
     build_user_content,
     format_memory_block,
+    normalize_frame_protocol,
     parse_agent_output_v12,
+    system_prompt_for_frame_protocol,
 )
 
 
@@ -301,14 +303,15 @@ def build_single_step_messages(
     min_pixels: int = 130_000,
     max_pixels: int = 220_000,
     frame_paths: Optional[List[str]] = None,
+    frame_protocol: Optional[str] = None,
     inter_chunk: bool = False,
 ) -> List[Dict]:
     """Build single-step chat messages matching training format.
 
     Delegates text formatting to shared agent_protocol.build_user_content.
-    Uses ``SYSTEM_PROMPT_V12`` (the only protocol). The ``<tools>`` block is
-    rendered by the chat_template — callers must pass ``tools=TOOLS_SCHEMA``
-    when invoking ``processor.apply_chat_template``.
+    Uses the protocol-aligned system prompt. The ``<tools>`` block is rendered
+    by the chat_template — callers must pass ``tools=TOOLS_SCHEMA`` when
+    invoking ``processor.apply_chat_template``.
 
     inter_chunk=True drops <visual_window> + frames so the prompt matches
     pass5 shape C (compress system trigger between visual chunks).
@@ -325,11 +328,18 @@ def build_single_step_messages(
         min_pixels=min_pixels,
         max_pixels=max_pixels,
         frame_paths=frame_paths,
+        frame_protocol=frame_protocol,
         inter_chunk=inter_chunk,
     )
 
     return [
-        {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT_V12}]},
+        {
+            "role": "system",
+            "content": [{
+                "type": "text",
+                "text": system_prompt_for_frame_protocol(frame_protocol),
+            }],
+        },
         {"role": "user", "content": user_content},
     ]
 
@@ -604,6 +614,7 @@ class StreamingAgentLoop:
         compress_mode: str = "system",
         frames_root: Optional[str] = None,
         video_root: Optional[str] = None,
+        frame_protocol: Optional[str] = None,
     ):
         """
         Args:
@@ -645,6 +656,7 @@ class StreamingAgentLoop:
         self.min_pixels = min_pixels
         self.max_pixels = max_pixels
         self.max_new_tokens = max_new_tokens
+        self.frame_protocol = normalize_frame_protocol(frame_protocol)
         # Resolve retriever: explicit `retriever` > `retrieve_fn` > BM25 default.
         # The new Retriever API has both __call__ and index_chunk; legacy
         # retrieve_fn callables are wrapped via coerce_retriever.
@@ -853,6 +865,7 @@ class StreamingAgentLoop:
             min_pixels=self.min_pixels,
             max_pixels=self.max_pixels,
             frame_paths=frame_paths,
+            frame_protocol=self.frame_protocol,
             inter_chunk=is_inter_chunk,
         )
         # v12.6: stash the EXACT messages used for generation so RL loss-time
@@ -981,14 +994,12 @@ class StreamingAgentLoop:
                         "text": f"<recalled_frames>{rf_header}</recalled_frames>",
                     })
                     if "frame_paths" in recalled_frames:
-                        from thinkstream.data.agent_protocol import (
-                            append_timestamped_image_list,
-                        )
                         tr_start, tr_end = recalled_frames["time_range"]
                         tr_start_chunk = int(tr_start / float(AGENT_CHUNK_SEC))
-                        append_timestamped_image_list(
+                        append_visual_frames(
                             tool_user_content,
                             recalled_frames["frame_paths"],
+                            frame_protocol=self.frame_protocol,
                             fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
                             start_frame_index=tr_start_chunk * FRAMES_PER_CHUNK,
                             total_num_frames=int(

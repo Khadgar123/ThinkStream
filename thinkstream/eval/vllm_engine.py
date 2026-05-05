@@ -95,18 +95,6 @@ def prepare_vllm_input(
     """
     from qwen_vl_utils import process_vision_info
 
-    template_kwargs = dict(tokenize=False, add_generation_prompt=True)
-    if tools is not None:
-        template_kwargs["tools"] = tools
-    text = processor.apply_chat_template(messages, **template_kwargs)
-
-    image_inputs, video_inputs, video_kwargs = process_vision_info(
-        messages,
-        image_patch_size=processor.image_processor.patch_size,
-        return_video_kwargs=True,
-        return_video_metadata=True,
-    )
-
     explicit_video_metadata: List[Dict] = []
     for msg in messages:
         content = msg.get("content", [])
@@ -116,7 +104,28 @@ def prepare_vllm_input(
             if isinstance(item, dict) and item.get("type") == "video":
                 meta = item.get("video_metadata")
                 if isinstance(meta, dict):
-                    explicit_video_metadata.append(meta)
+                    explicit_video_metadata.append(
+                        {k: v for k, v in meta.items()
+                         if k != "do_sample_frames"}
+                    )
+
+    template_kwargs = dict(
+        tokenize=False,
+        add_generation_prompt=True,
+        do_sample_frames=False,
+    )
+    if tools is not None:
+        template_kwargs["tools"] = tools
+    if explicit_video_metadata:
+        template_kwargs["video_metadata"] = explicit_video_metadata
+    text = processor.apply_chat_template(messages, **template_kwargs)
+
+    image_inputs, video_inputs, video_kwargs = process_vision_info(
+        messages,
+        image_patch_size=processor.image_processor.patch_size,
+        return_video_kwargs=True,
+        return_video_metadata=True,
+    )
 
     if video_inputs is not None and explicit_video_metadata:
         fixed_video_inputs = []

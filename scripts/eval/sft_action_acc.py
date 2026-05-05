@@ -42,7 +42,10 @@ from thinkstream.sft.argument import DataArguments
 from scripts.agent_data_v5.pass5_messages import (
     build_messages as build_per_timestep_messages,
 )
-from thinkstream.data.agent_protocol import parse_agent_output_v12
+from thinkstream.data.agent_protocol import (
+    normalize_frame_protocol,
+    parse_agent_output_v12,
+)
 
 
 def collect_video_metadata(messages):
@@ -117,8 +120,15 @@ def main():
     p.add_argument("--n", type=int, default=200, help="Max samples to evaluate")
     p.add_argument("--max_new_tokens", type=int, default=512)
     p.add_argument("--out", default=None, help="Output JSON path")
+    p.add_argument(
+        "--frame-protocol",
+        default=None,
+        choices=["ts_image", "video_meta"],
+        help="Used only when --val is a flat row file rendered on the fly.",
+    )
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
+    frame_protocol = normalize_frame_protocol(args.frame_protocol)
 
     model = load_model(args.ckpt, bf16=not args.no_bf16)
     processor = AutoProcessor.from_pretrained(args.ckpt)
@@ -147,7 +157,9 @@ def main():
                 # Drop assistant turn so the model has to produce it
                 msgs = _resolve_video_paths(s["messages"][:-1], base_path)
             else:
-                full = build_per_timestep_messages(s, base_path)
+                full = build_per_timestep_messages(
+                    s, base_path, frame_protocol=frame_protocol
+                )
                 msgs = full[:-1]
 
             template_kwargs = dict(
@@ -233,6 +245,7 @@ def main():
                 {
                     "ckpt": args.ckpt,
                     "val": args.val,
+                    "frame_protocol": frame_protocol,
                     "n_samples": len(results),
                     "by_sample_type": {k: dict(v) for k, v in by.items()},
                     "samples": results,

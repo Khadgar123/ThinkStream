@@ -87,11 +87,14 @@ actor_rollout_ref:
     tensor_model_parallel_size: 2
     gpu_memory_utilization: 0.55
     max_num_batched_tokens: 32768
-    # Current ThinkStream visual protocol sends each sliding-window frame as
-    # a timestamped image part, not as a raw video block. The default vLLM
-    # limit is too small for a 16-chunk × 2fps window, so set this explicitly
-    # and keep it aligned with pass2 / SFT / eval.
+    # ThinkStream supports two late-bound visual carriers for the same
+    # pre-extracted frame sequence:
+    #   ts_image   → timestamp text + image items, bounded by limit_images.
+    #   video_meta → one Qwen video block with explicit video_metadata,
+    #                bounded by limit_videos.
+    # Keep these aligned with pass5 / SFT / eval.
     limit_images: 64
+    limit_videos: 2
     enforce_eager: True
     free_cache_engine: True
     enable_chunked_prefill: True

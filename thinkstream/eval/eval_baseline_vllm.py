@@ -31,18 +31,20 @@ sys.path.insert(0, str(_EVAL_DIR))
 
 from eval_baseline import (
     DebugLogger,
-    FRAME_TAG_EVAL_SYSTEM,
     OfflineMCQDataset,
     _load_video_frames,
+    eval_system_prompt,
     parse_answer,
     setup_eval_logging,
 )
 from vllm_engine import make_sampling_params, prepare_vllm_input
-from thinkstream.data.agent_protocol import append_timestamped_image_list
+from thinkstream.data.agent_protocol import append_visual_frames, normalize_frame_protocol
 
 
 def _build_messages(datum: dict, frames, frame_meta: dict, options: list,
-                    question_prefix: str, question_postfix: str) -> tuple:
+                    question_prefix: str, question_postfix: str,
+                    frame_protocol: str = "ts_image") -> tuple:
+    frame_protocol = normalize_frame_protocol(frame_protocol)
     if "options" in datum and datum["options"]:
         query = (
             question_prefix + datum["question"] + "\n"
@@ -51,9 +53,10 @@ def _build_messages(datum: dict, frames, frame_meta: dict, options: list,
     else:
         query = datum["question"]
     user_content = []
-    append_timestamped_image_list(
+    append_visual_frames(
         user_content,
         frames,
+        frame_protocol=frame_protocol,
         fps=float(frame_meta.get("fps") or 2.0),
         start_frame_index=int(frame_meta.get("start_frame") or 0),
         total_num_frames=int(frame_meta.get("total_frames") or len(frames)),
@@ -63,7 +66,7 @@ def _build_messages(datum: dict, frames, frame_meta: dict, options: list,
     messages = [
         {
             "role": "system",
-            "content": [{"type": "text", "text": FRAME_TAG_EVAL_SYSTEM}],
+            "content": [{"type": "text", "text": eval_system_prompt(frame_protocol)}],
         },
         {
             "role": "user",
@@ -87,6 +90,7 @@ def offline_predict_mcq_vllm(
     debug: bool = False,
     debug_dir: Optional[str] = None,
     protocol_version: str = "v11",
+    frame_protocol: str = "ts_image",
 ):
     """Offline MCQ prediction via vLLM batch generate.
 
@@ -95,6 +99,7 @@ def offline_predict_mcq_vllm(
     `llm.generate()` call covering the whole dataset, then parses outputs.
     """
     dataset = OfflineMCQDataset(benchmark_path, sample=sample)
+    frame_protocol = normalize_frame_protocol(frame_protocol)
 
     if debug_dir is None:
         debug_dir = os.path.join(os.path.dirname(benchmark_path), "debug")
@@ -139,7 +144,7 @@ def offline_predict_mcq_vllm(
 
             messages, query = _build_messages(
                 datum, frames, frame_meta, options, question_prefix,
-                question_postfix,
+                question_postfix, frame_protocol=frame_protocol,
             )
             req = prepare_vllm_input(messages, processor, tools=tools_for_template)
 

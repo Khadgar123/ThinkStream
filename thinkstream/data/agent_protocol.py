@@ -12,6 +12,7 @@ train/inference format identity.
 """
 
 import json
+import os
 import re
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence
@@ -88,6 +89,42 @@ def infer_video_metadata(
     }
 
 
+FRAME_PROTOCOL_TS_IMAGE = "ts_image"
+FRAME_PROTOCOL_VIDEO_META = "video_meta"
+FRAME_PROTOCOL_ENV = "THINKSTREAM_FRAME_PROTOCOL"
+VALID_FRAME_PROTOCOLS = {FRAME_PROTOCOL_TS_IMAGE, FRAME_PROTOCOL_VIDEO_META}
+
+
+def normalize_frame_protocol(frame_protocol: Optional[str] = None) -> str:
+    """Return the active student/eval frame protocol.
+
+    The protocol switch is deliberately late-bound. Teacher pass caches store
+    frame paths, timestamps, memory, questions, and answers; SFT/RL/eval decide
+    only at render time whether those same frames are carried as timestamped
+    images or as a pre-sampled Qwen video block with metadata.
+    """
+    value = (frame_protocol or os.environ.get(FRAME_PROTOCOL_ENV)
+             or FRAME_PROTOCOL_TS_IMAGE)
+    value = str(value).strip().lower().replace("-", "_")
+    aliases = {
+        "timestamp_image": FRAME_PROTOCOL_TS_IMAGE,
+        "timestamped_image": FRAME_PROTOCOL_TS_IMAGE,
+        "timestamped_images": FRAME_PROTOCOL_TS_IMAGE,
+        "image": FRAME_PROTOCOL_TS_IMAGE,
+        "images": FRAME_PROTOCOL_TS_IMAGE,
+        "video": FRAME_PROTOCOL_VIDEO_META,
+        "video_metadata": FRAME_PROTOCOL_VIDEO_META,
+        "video_meta_frames": FRAME_PROTOCOL_VIDEO_META,
+    }
+    value = aliases.get(value, value)
+    if value not in VALID_FRAME_PROTOCOLS:
+        raise ValueError(
+            f"Unsupported frame protocol {frame_protocol!r}; expected one of "
+            f"{sorted(VALID_FRAME_PROTOCOLS)}"
+        )
+    return value
+
+
 def append_timestamped_image_list(
     content: List[Dict],
     frames: Sequence[Any],
@@ -105,9 +142,10 @@ def append_timestamped_image_list(
 ) -> None:
     """Append canonical timestamped pre-extracted frames to chat content.
 
-    Runtime and data construction do NOT send pre-extracted frames as a
-    Qwen/VLLM ``video`` block because vLLM's pre-sampled video path has been
-    version-sensitive around metadata. The reliable project protocol is:
+    This is the robust timestamped-image side of the AB test. The same
+    ordered pre-extracted frames can alternatively be rendered by
+    append_video_metadata_frame_list() as a native Qwen video block with
+    explicit metadata. The timestamped-image protocol is:
 
         {"type": "text", "text": "<frame ts=\"12.5\" role=\"latest chunk\" />"}
         {"type": "image", "image": "/abs/frame_000026.jpg", ...}
@@ -168,6 +206,103 @@ def append_timestamped_image_list(
             if max_pixels is not None:
                 item["max_pixels"] = max_pixels
             content.append(item)
+
+
+def append_video_metadata_frame_list(
+    content: List[Dict],
+    frames: Sequence[Any],
+    *,
+    fps: Optional[float] = None,
+    start_frame_index: int = 0,
+    total_num_frames: Optional[int] = None,
+    min_pixels: Optional[int] = None,
+    max_pixels: Optional[int] = None,
+) -> None:
+    """Append pre-extracted frames as one Qwen video block with metadata.
+
+    This is the native-video side of the AB test. The frames are still the
+    exact project-extracted JPEGs, so no server-side video decoding or
+    re-sampling is introduced. Qwen receives the frame list plus
+    ``video_metadata`` and ``do_sample_frames=False`` so timestamps are derived
+    from ``fps`` and ``frames_indices``.
+    """
+    frame_seq = list(frames) if frames is not None else []
+    if not frame_seq:
+        return
+
+    metadata = infer_video_metadata(
+        frame_seq,
+        fps=fps,
+        start_frame_index=start_frame_index,
+        total_num_frames=total_num_frames,
+    )
+    item: Dict[str, Any] = {
+        "type": "video",
+        "video": frame_seq,
+        "video_metadata": metadata,
+    }
+    if min_pixels is not None:
+        item["min_pixels"] = min_pixels
+    if max_pixels is not None:
+        item["max_pixels"] = max_pixels
+    content.append(item)
+
+
+def append_visual_frames(
+    content: List[Dict],
+    frames: Sequence[Any],
+    *,
+    frame_protocol: Optional[str] = None,
+    fps: Optional[float] = None,
+    start_frame_index: int = 0,
+    total_num_frames: Optional[int] = None,
+    latest_start_frame_index: Optional[int] = None,
+    context_label: str = "older context",
+    timestamp_labels: Optional[Sequence[str]] = None,
+    image_key: str = "image",
+    image_url_encoder: Optional[Callable[[Any], str]] = None,
+    min_pixels: Optional[int] = None,
+    max_pixels: Optional[int] = None,
+) -> None:
+    """Append frames using the selected student/eval visual protocol.
+
+    Both protocols consume the same ordered ``frames`` list and the same
+    ``<visual_window>`` text block. The only difference is the media carrier:
+    timestamped individual images versus one native video block with explicit
+    Qwen video metadata.
+    """
+    protocol = normalize_frame_protocol(frame_protocol)
+    if protocol == FRAME_PROTOCOL_TS_IMAGE:
+        append_timestamped_image_list(
+            content,
+            frames,
+            fps=fps,
+            start_frame_index=start_frame_index,
+            total_num_frames=total_num_frames,
+            latest_start_frame_index=latest_start_frame_index,
+            context_label=context_label,
+            timestamp_labels=timestamp_labels,
+            image_key=image_key,
+            image_url_encoder=image_url_encoder,
+            min_pixels=min_pixels,
+            max_pixels=max_pixels,
+        )
+        return
+
+    if image_key != "image":
+        raise ValueError(
+            "video_meta protocol is only supported for local frame paths "
+            "(image_key='image'), not image_url API payloads"
+        )
+    append_video_metadata_frame_list(
+        content,
+        frames,
+        fps=fps,
+        start_frame_index=start_frame_index,
+        total_num_frames=total_num_frames,
+        min_pixels=min_pixels,
+        max_pixels=max_pixels,
+    )
 
 # ---------------------------------------------------------------------------
 # Memory Formatting
@@ -258,6 +393,39 @@ QUERIES_HISTORY_CAP = 8
 RECALL_TEXT_MAX_CHARS = 1600
 
 
+def answer_format_instruction(
+    answer_form: str,
+    *,
+    answer_style: str = "",
+    options: Optional[Sequence[str]] = None,
+) -> str:
+    """Render the model-visible answer-format instruction for a question.
+
+    This is part of the data/eval contract. Gold labels store structured
+    fields (answer_form, options, correct_option, accepted_answers), while the
+    prompt must still tell the model which surface form to emit.
+    """
+    form = str(answer_form or "").strip().lower()
+    style = str(answer_style or "").strip().lower()
+
+    if form == "multiple_choice":
+        if style == "letter_plus_text":
+            return "Answer format: letter plus option text, e.g. A) option text."
+        if style == "text_only":
+            return "Answer format: answer text only, no option letter."
+        # Default and OvO-compatible style.
+        return "Answer format: one letter only (A, B, C, or D)."
+    if form == "binary":
+        return "Answer format: a concise binary answer such as Yes or No."
+    if form == "number":
+        return "Answer format: a number only, no explanation."
+    if form == "short_exact":
+        return "Answer format: a concise exact phrase, no explanation."
+    if form == "descriptive":
+        return "Answer format: a short natural-language answer."
+    return ""
+
+
 def format_queries_block(queries: List[Dict]) -> str:
     """Format the queries zone as a chronological event stream.
 
@@ -326,7 +494,14 @@ def format_queries_block(queries: List[Dict]) -> str:
                 and q.get("options")):
             opts = " ".join(q["options"])    # e.g., "A) red B) blue C) ..."
             events.append((ask_t, "O", opts))
+        if is_open:
             instruction = (q.get("answer_instruction") or "").strip()
+            if not instruction:
+                instruction = answer_format_instruction(
+                    q.get("answer_form", ""),
+                    answer_style=q.get("answer_style", ""),
+                    options=q.get("options") or [],
+                )
             if instruction:
                 events.append((ask_t, "F", instruction))
         if is_open and answers:
@@ -382,6 +557,7 @@ def build_user_content(
     min_pixels: int = 130_000,
     max_pixels: int = 220_000,
     frame_paths: Optional[List[str]] = None,
+    frame_protocol: Optional[str] = None,
     inter_chunk: bool = False,
 ) -> List[Dict]:
     """Build the user content list for a single-step message.
@@ -402,10 +578,10 @@ def build_user_content(
     cache-miss boundary; placing it AFTER the stable text means the miss
     starts later in the sequence, not at the front.
 
-    Pre-extracted frames are rendered as frame-tag text + image items, not
-    as a ``video`` block. The frame tag is the project-level temporal
-    anchor shared by pass/SFT/RL/eval; vLLM still batches/schedules the image
-    tensors while avoiding pre-sampled-video metadata edge cases.
+    Pre-extracted frames are rendered by the late-bound frame protocol:
+    ``ts_image`` (frame-tag text + image items) or ``video_meta`` (one Qwen
+    video block with explicit metadata). All other text state is identical
+    across protocols.
 
     Args:
         memory_text: Pre-formatted memory block from format_memory_block().
@@ -416,8 +592,10 @@ def build_user_content(
         recall_result: Optional recall result for recall_response.
         min_pixels, max_pixels: Resolution limits.
         frame_paths: Optional explicit frame paths. This is the canonical path
-                     for pass/SFT/RL/eval and renders timestamped images. If
-                     None, uses video_path with time range as a legacy fallback.
+                     for pass/SFT/RL/eval. If None, uses video_path with time
+                     range as a legacy fallback.
+        frame_protocol: "ts_image" or "video_meta"; defaults to
+                        THINKSTREAM_FRAME_PROTOCOL or "ts_image".
         inter_chunk: v12.6 — when True (compress system trigger fires
                      between two visual chunks), DROP <visual_window> and
                      the visual frame block. Matches pass5 inter_chunk
@@ -447,7 +625,7 @@ def build_user_content(
                 "text": f"\n{queries_text}",
             })
 
-    # ── Visual window + timestamped images (cache-miss boundary) ──
+    # ── Visual window + protocol-selected frame carrier (cache-miss boundary) ──
     # v12.6: inter_chunk compress turns SKIP this block entirely (matches
     # pass5 shape C). Compression is a system event between visual chunks
     # and consumes no new frames; including a visual_window here would
@@ -472,9 +650,10 @@ def build_user_content(
         })
 
         if frame_paths:
-            append_timestamped_image_list(
+            append_visual_frames(
                 user_content,
                 frame_paths,
+                frame_protocol=frame_protocol,
                 fps=float(FRAMES_PER_CHUNK / chunk_sec),
                 start_frame_index=window_start * FRAMES_PER_CHUNK,
                 total_num_frames=(chunk_idx + 1) * FRAMES_PER_CHUNK,
@@ -506,9 +685,10 @@ def build_user_content(
         if recalled_frames.get("frame_paths"):
             # Timestamp recalled images at their ORIGINAL video time.
             tr_start, tr_end = recalled_frames["time_range"]
-            append_timestamped_image_list(
+            append_visual_frames(
                 user_content,
                 recalled_frames["frame_paths"],
+                frame_protocol=frame_protocol,
                 fps=float(FRAMES_PER_CHUNK / chunk_sec),
                 start_frame_index=int(tr_start * FRAMES_PER_CHUNK),
                 total_num_frames=int(tr_end * FRAMES_PER_CHUNK),
@@ -623,6 +803,9 @@ SYSTEM_PROMPT_V12 = (
     "    <tool_call>{\"name\":\"compress\",\"arguments\":{...}}</tool_call>\n"
     "    <answer>response text</answer>\n"
     "    <answer></answer>   (silent — no question to answer right now)\n\n"
+    "Answer rules: if a pending query includes an 'Answer format:' line, "
+    "the text inside <answer> must follow that line exactly. For MC questions, "
+    "do not add explanation when the requested format is one letter only.\n\n"
     "Think rules: describe ONLY observable visual facts in the current chunk. "
     "Evidence priority: (1) current frame-tagged images determine the current think; "
     "(2) tagged memory records are history and entity naming only; (3) if current frames "
@@ -633,6 +816,42 @@ SYSTEM_PROMPT_V12 = (
     "otherwise name the new object/action directly. No meta-reasoning, no "
     "sound/smell/emotion, no speculation."
 )
+
+SYSTEM_PROMPT_V12_VIDEO_META = (
+    SYSTEM_PROMPT_V12
+    .replace(
+        "Each turn you receive: frame-tagged visual frames (recent 16s window) + tagged memory state. "
+        "Every image is preceded by a structural tag like <frame ts=\"12.5\" role=\"latest chunk\" />; "
+        "use these frame tags together with <visual_window>.current_time to identify "
+        "the current chunk. Frame tags are routing metadata only: never copy or "
+        "paraphrase any <frame .../> tag, timestamp marker, role marker, or metadata "
+        "line in your output. ",
+        "Each turn you receive: a pre-sampled video block (recent 16s window) + tagged memory state. "
+        "The video block uses Qwen video_metadata (fps, frames_indices, total_num_frames) "
+        "to carry frame timestamps; use those timestamps together with "
+        "<visual_window>.current_time to identify the current chunk. Temporal metadata "
+        "is routing metadata only: never copy or paraphrase timestamp markers, frame "
+        "indices, role markers, or metadata lines in your output. ",
+    )
+    .replace(
+        "Evidence priority: (1) current frame-tagged images determine the current think; ",
+        "Evidence priority: (1) current visual frames determine the current think; ",
+    )
+)
+
+
+def system_prompt_for_frame_protocol(frame_protocol: Optional[str] = None) -> str:
+    """Return the protocol-aligned system prompt.
+
+    Prompt semantics stay aligned across AB variants: same tools, memory rules,
+    output format, and evidence priority. Only the sentence describing the
+    visual carrier differs, because one protocol exposes text frame tags and
+    the other relies on Qwen video metadata.
+    """
+    protocol = normalize_frame_protocol(frame_protocol)
+    if protocol == FRAME_PROTOCOL_VIDEO_META:
+        return SYSTEM_PROMPT_V12_VIDEO_META
+    return SYSTEM_PROMPT_V12
 
 
 # Tool JSON schemas — passed as `tools=TOOLS_SCHEMA` to apply_chat_template.

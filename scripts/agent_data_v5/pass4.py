@@ -182,10 +182,11 @@ def _build_trajectory_record(
     first = sorted_samples[0]
 
     # ── v12.4: extract ALL questions (one per distinct card_id) ──
-    # A trajectory typically has multiple cards (max_per_traj=3 in pass3b).
-    # Each card carries its own gold_answer, family, support_chunks. Group
-    # by card_id and pick the response/recall_response sample's chunk_idx
-    # as the canonical ask_chunk for that question.
+    # A trajectory typically has multiple cards (adaptive 6-14 questions in
+    # pass3b). Each card carries its own gold answer, answer format, options,
+    # support chunks, and placement ask time. Group by card_id and preserve
+    # metadata.ask_chunk as the canonical question time; answer_chunks stay
+    # separate so forward / delayed-answer timing remains evaluable.
     questions: List[Dict] = []
     seen_cards: set = set()
     for s in sorted_samples:

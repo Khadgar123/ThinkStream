@@ -55,7 +55,8 @@ from thinkstream.data.agent_protocol import (  # canonical v12.5 timing
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
     VISUAL_WINDOW_CHUNKS,
-    append_timestamped_image_list,
+    append_visual_frames,
+    normalize_frame_protocol,
 )
 DEFAULT_VISUAL_WINDOW_SEC = float(VISUAL_WINDOW_CHUNKS * AGENT_CHUNK_SEC)
 DEFAULT_FRAME_FPS = float(FRAMES_PER_CHUNK / AGENT_CHUNK_SEC)
@@ -113,16 +114,40 @@ def sample_frame_paths(frame_dir: Path,
     return [str(in_range[i]) for i in indices]
 
 
-def build_messages(frame_paths, question):
+def _base_system_prompt(frame_protocol: str) -> str:
+    if normalize_frame_protocol(frame_protocol) == "video_meta":
+        visual = (
+            "You receive a pre-sampled video block whose Qwen video_metadata "
+            "carries fps, frame indices, and timestamps. Use those timestamps "
+            "as real video time."
+        )
+    else:
+        visual = (
+            "You receive timestamp-tagged images. Each frame is preceded by "
+            "structural metadata like <frame ts=\"12.5\" role=\"visual frame\" />; "
+            "use it as real video time, but never copy it."
+        )
+    return (
+        "You are a helpful video understanding assistant. "
+        f"{visual} "
+        "Answer using the requested format: yes/no questions -> Yes or No; "
+        "counting questions -> an integer; multiple-choice questions -> a "
+        "single letter A/B/C/D unless explicitly instructed otherwise."
+    )
+
+
+def build_messages(frame_paths, question, *, frame_protocol="ts_image"):
+    frame_protocol = normalize_frame_protocol(frame_protocol)
     frame_list = list(frame_paths)
     user_content = []
     # Fallback: if single element is a video file, use video block directly
     if len(frame_list) == 1 and str(frame_list[0]).endswith(('.mp4', '.avi', '.mov', '.mkv')):
         user_content.append({"type": "video", "video": str(frame_list[0])})
     else:
-        append_timestamped_image_list(
+        append_visual_frames(
             user_content,
             frame_list,
+            frame_protocol=frame_protocol,
             fps=DEFAULT_FRAME_FPS,
             context_label="visual frame",
         )
@@ -132,16 +157,7 @@ def build_messages(frame_paths, question):
             "role": "system",
             "content": [{
                 "type": "text",
-                "text": (
-                    "You are a helpful video understanding assistant. Use "
-                    "the frame-tagged images carefully and answer based on "
-                    "observations. Each frame is preceded by structural "
-                    "metadata like <frame ts=\"12.5\" role=\"visual frame\" />; "
-                    "use it as the real video timestamp, but never copy it. "
-                    "If the question is yes/no, answer Yes or No. If it asks "
-                    "for a count, answer with the integer. If it is multiple "
-                    "choice, answer with a single letter A/B/C/D."
-                ),
+                "text": _base_system_prompt(frame_protocol),
             }],
         },
         {
@@ -155,9 +171,14 @@ def build_messages(frame_paths, question):
 
 
 def eval_one_probe(model, processor, pad_id,
-                   frame_paths, question, max_new_tokens):
+                   frame_paths, question, max_new_tokens,
+                   frame_protocol="ts_image"):
     """Single VLM forward. Returns the decoded text."""
-    messages = build_messages(frame_paths, question)
+    messages = build_messages(
+        frame_paths,
+        question,
+        frame_protocol=frame_protocol,
+    )
     template_kwargs = dict(
         tokenize=True, return_dict=True, return_tensors="pt",
         add_generation_prompt=True,
@@ -170,6 +191,16 @@ def eval_one_probe(model, processor, pad_id,
         template_kwargs["processor_kwargs"] = {"do_sample_frames": False}
     else:
         template_kwargs["do_sample_frames"] = False
+    video_metadata = []
+    for msg in messages:
+        for item in msg.get("content", []):
+            if isinstance(item, dict) and item.get("type") == "video":
+                meta = item.get("video_metadata")
+                if isinstance(meta, dict):
+                    video_metadata.append({k: v for k, v in meta.items()
+                                           if k != "do_sample_frames"})
+    if video_metadata:
+        template_kwargs["video_metadata"] = video_metadata
     inputs = processor.apply_chat_template(
         messages, **template_kwargs,
     )
@@ -230,7 +261,7 @@ def _strict_int(text: str):
 
 def eval_mcq_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient"):
+                  scoring="lenient", frame_protocol="ts_image"):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
         return None
@@ -240,7 +271,10 @@ def eval_mcq_base(sample, model, processor, pad_id, video_root, frames_root,
     if not fp:
         return None
     question = build_mcq_question(sample)
-    text = eval_one_probe(model, processor, pad_id, fp, question, max_new_tokens)
+    text = eval_one_probe(
+        model, processor, pad_id, fp, question, max_new_tokens,
+        frame_protocol=frame_protocol,
+    )
     pred = _strict_letter(text) if scoring == "strict" else extract_letter(text)
     gt = chr(65 + sample["gt"])
     return {
@@ -254,7 +288,7 @@ def eval_mcq_base(sample, model, processor, pad_id, video_root, frames_root,
 
 def eval_rec_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient"):
+                  scoring="lenient", frame_protocol="ts_image"):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
         return None
@@ -266,7 +300,10 @@ def eval_rec_base(sample, model, processor, pad_id, video_root, frames_root,
                                visual_window_sec, max_frames)
         if not fp:
             continue
-        text = eval_one_probe(model, processor, pad_id, fp, question, max_new_tokens)
+        text = eval_one_probe(
+            model, processor, pad_id, fp, question, max_new_tokens,
+            frame_protocol=frame_protocol,
+        )
         if scoring == "strict":
             s = _strict_int(text)
             pred = int(s) if s else None
@@ -292,7 +329,7 @@ def _yes_no_pred(text, scoring):
 
 def eval_ssr_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient"):
+                  scoring="lenient", frame_protocol="ts_image"):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
         return None
@@ -304,7 +341,10 @@ def eval_ssr_base(sample, model, processor, pad_id, video_root, frames_root,
         if not fp:
             continue
         question = build_ssr_question(probe.get("step", ""))
-        text = eval_one_probe(model, processor, pad_id, fp, question, max_new_tokens)
+        text = eval_one_probe(
+            model, processor, pad_id, fp, question, max_new_tokens,
+            frame_protocol=frame_protocol,
+        )
         gt = "Yes" if probe.get("type") == 1 else "No"
         pred = _yes_no_pred(text, scoring)
         probes.append({
@@ -316,7 +356,7 @@ def eval_ssr_base(sample, model, processor, pad_id, video_root, frames_root,
 
 def eval_crr_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient"):
+                  scoring="lenient", frame_protocol="ts_image"):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
         return None
@@ -328,7 +368,10 @@ def eval_crr_base(sample, model, processor, pad_id, video_root, frames_root,
                                visual_window_sec, max_frames)
         if not fp:
             continue
-        text = eval_one_probe(model, processor, pad_id, fp, question, max_new_tokens)
+        text = eval_one_probe(
+            model, processor, pad_id, fp, question, max_new_tokens,
+            frame_protocol=frame_protocol,
+        )
         gt = "Yes" if probe.get("type") == 1 else "No"
         pred = _yes_no_pred(text, scoring)
         probes.append({
@@ -426,9 +469,16 @@ def main():
                         "base eval the only effect is metadata stamping in "
                         "the output JSON — base VLM doesn't use queries/recall "
                         "caps. Match the agent profile when comparing.")
+    p.add_argument(
+        "--frame-protocol",
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
+        choices=["ts_image", "video_meta"],
+        help="Visual carrier for pre-extracted frames in this baseline eval.",
+    )
     p.add_argument("--out", default=None)
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
+    frame_protocol = normalize_frame_protocol(args.frame_protocol)
 
     Cls, _ = detect_model_class(args.ckpt)
     print(f"[mode={args.mode} max_frames={args.max_frames}] Loading {Cls.__name__} from {args.ckpt}")
@@ -464,6 +514,7 @@ def main():
         mode=args.mode, visual_window_sec=args.visual_window_sec,
         max_frames=args.max_frames, max_new_tokens=args.max_new_tokens,
         scoring=args.scoring,
+        frame_protocol=frame_protocol,
     )
 
     results = []
@@ -501,6 +552,7 @@ def main():
             "visual_window_sec": args.visual_window_sec,
             "scoring": args.scoring,
             "profile": args.profile,
+            "frame_protocol": frame_protocol,
             "tasks_evaluated": sorted(by_task.keys()),
             "n_samples": len(results),
             "summary": agg, "samples": results,

@@ -7,6 +7,8 @@ set -euo pipefail
 CKPT=${1:-output/agent-sft/checkpoint-100}
 VIDEO_ROOT=${2:-/home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench}
 FRAMES_ROOT=${3:-/home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench/frames}
+FRAME_PROTOCOL=${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}
+export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 
 PYTHON=/home/tione/notebook/gaozhenkun/hzh/envs/thinkstream/bin/python
 SCRIPT=scripts/eval/ovo/eval_full.py
@@ -18,11 +20,12 @@ COMMON_ARGS=(
     --frames_root "$FRAMES_ROOT"
     --retriever bm25
     --compress_mode system
+    --frame-protocol "$FRAME_PROTOCOL"
     --max_new_tokens 128
     --scoring strict
 )
 
-OUT_BASE="${CKPT}/eval/ovo_streaming_16gpu"
+OUT_BASE="${CKPT}/eval/ovo_streaming_16gpu_${FRAME_PROTOCOL}"
 mkdir -p "$OUT_BASE"
 
 launch() {

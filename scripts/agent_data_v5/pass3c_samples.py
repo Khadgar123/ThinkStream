@@ -135,7 +135,8 @@ def _clean_emit_text(value: str) -> str:
 def _response_text_for(card: Dict, value: str) -> str:
     """Map gold_emit value → assistant response text (synchronous fast path).
 
-    For MC: emits the full correct option text (not just A/B/C/D).
+    For MC: emits the card-stable target style (letter-only, letter+text,
+    or text-only) using correct_option/options metadata.
     For binary/number/short_exact: emits the value directly.
     For descriptive single_emit: uses canonical_answer; for multi_emit:
     emits only the current per-event value to avoid future leakage.

@@ -32,6 +32,7 @@ TEST_JSONL=${TEST_JSONL:-}
 VIDEO_ROOT=${VIDEO_ROOT:-}
 VWIN=${VWIN:-12}
 CHUNK_SEC=${CHUNK_SEC:-2.0}
+FRAME_PROTOCOL=${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -42,9 +43,11 @@ while [[ $# -gt 0 ]]; do
         --video_root)  VIDEO_ROOT="$2"; shift 2 ;;
         --vwin)        VWIN="$2"; shift 2 ;;
         --chunk_sec)   CHUNK_SEC="$2"; shift 2 ;;
+        --frame_protocol|--frame-protocol) FRAME_PROTOCOL="$2"; shift 2 ;;
         *) echo "Unknown parameter: $1" >&2; exit 1 ;;
     esac
 done
+export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 
 case "$FORM" in
     offline|streaming) ;;
@@ -59,8 +62,8 @@ if [[ ! -f "$TEST_JSONL" ]]; then
     echo "ERROR: test jsonl not found: $TEST_JSONL" >&2; exit 1
 fi
 
-OUT_DIR="${CKPT}/eval/test_base_${FORM}"
-mkdir -p "${OUT_DIR}" 2>/dev/null || OUT_DIR="${ROOT}/output/test_base_${FORM}"
+OUT_DIR="${CKPT}/eval/test_base_${FORM}_${FRAME_PROTOCOL}"
+mkdir -p "${OUT_DIR}" 2>/dev/null || OUT_DIR="${ROOT}/output/test_base_${FORM}_${FRAME_PROTOCOL}"
 mkdir -p "${OUT_DIR}"
 OUT_JSON="${OUT_DIR}/results.json"
 
@@ -69,6 +72,7 @@ echo "Test set — BASE (form=${FORM})"
 echo "  ckpt:  ${CKPT}"
 echo "  test:  ${TEST_JSONL}"
 echo "  N:     ${N}"
+echo "  proto: ${FRAME_PROTOCOL}"
 if [[ "$FORM" == "streaming" ]]; then
     echo "  vwin:  ${VWIN} chunks × ${CHUNK_SEC}s = $(echo "${VWIN} * ${CHUNK_SEC}" | bc)s"
 fi
@@ -87,6 +91,7 @@ python scripts/eval/test_set_base.py \
     --n "${N}" \
     --visual_window_chunks "${VWIN}" \
     --agent_chunk_sec "${CHUNK_SEC}" \
+    --frame-protocol "${FRAME_PROTOCOL}" \
     --out "${OUT_JSON}" \
     "${EXTRA_ARGS[@]}"
 
