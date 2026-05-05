@@ -8,6 +8,7 @@ PYTHON_BIN="${PYTHON_BIN:-/home/tione/notebook/gaozhenkun/hzh/envs/thinkstream/b
 SFT_RUN_NAME="${SFT_RUN_NAME:-agent-sft-batch1-video_meta_all-8807-20260505-fixedenv}"
 SFT_OUT="${SFT_OUT:-$ROOT/output/$SFT_RUN_NAME}"
 WAIT_FOR_SFT="${WAIT_FOR_SFT:-1}"
+WAIT_INTERVAL="${WAIT_INTERVAL:-30}"
 
 DATA_ROOT="${DATA_ROOT:-data/agent_v5/batch1}"
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-video_meta}"
@@ -31,7 +32,7 @@ echo "[post_sft_eval] out_root=$OUT_ROOT"
 if [[ "$WAIT_FOR_SFT" == "1" ]]; then
   while pgrep -f "thinkstream/sft/train.py.*${SFT_RUN_NAME}" >/dev/null; do
     echo "[post_sft_eval] waiting for SFT run to finish: $SFT_RUN_NAME"
-    sleep 300
+    sleep "$WAIT_INTERVAL"
   done
 fi
 
