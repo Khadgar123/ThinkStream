@@ -77,7 +77,8 @@ def _default_frames_root() -> str:
 
 
 def sample_frame_paths(frame_dir: Path,
-                       t_start: float, t_end: float, n_frames: int):
+                       t_start: float, t_end: float, n_frames: int,
+                       fps: float = DEFAULT_FRAME_FPS):
     """Pick at most n_frames frame paths from [t_start, t_end].
 
     Frames are pre-extracted at the project runtime FPS. Project frame_*.jpg
@@ -101,7 +102,7 @@ def sample_frame_paths(frame_dir: Path,
                 frame_idx = int(stem)
         except ValueError:
             continue
-        frame_t = max(0, frame_idx) / DEFAULT_FRAME_FPS
+        frame_t = max(0, frame_idx) / float(fps)
         if t_start <= frame_t <= t_end:
             in_range.append(fp)
     if not in_range:
@@ -136,7 +137,15 @@ def _base_system_prompt(frame_protocol: str) -> str:
     )
 
 
-def build_messages(frame_paths, question, *, frame_protocol="ts_image"):
+def _chat_template_supports_thinking(processor) -> bool:
+    tmpl = getattr(processor, "chat_template", None)
+    if not tmpl and hasattr(processor, "tokenizer"):
+        tmpl = getattr(processor.tokenizer, "chat_template", None)
+    return "enable_thinking" in (tmpl or "")
+
+
+def build_messages(frame_paths, question, *, frame_protocol="ts_image",
+                   fps: float = DEFAULT_FRAME_FPS):
     frame_protocol = normalize_frame_protocol(frame_protocol)
     frame_list = list(frame_paths)
     user_content = []
@@ -148,7 +157,7 @@ def build_messages(frame_paths, question, *, frame_protocol="ts_image"):
             user_content,
             frame_list,
             frame_protocol=frame_protocol,
-            fps=DEFAULT_FRAME_FPS,
+            fps=fps,
             context_label="visual frame",
         )
     user_content.append({"type": "text", "text": question})
@@ -172,12 +181,14 @@ def build_messages(frame_paths, question, *, frame_protocol="ts_image"):
 
 def eval_one_probe(model, processor, pad_id,
                    frame_paths, question, max_new_tokens,
-                   frame_protocol="ts_image"):
+                   frame_protocol="ts_image", fps: float = DEFAULT_FRAME_FPS,
+                   enable_thinking=None):
     """Single VLM forward. Returns the decoded text."""
     messages = build_messages(
         frame_paths,
         question,
         frame_protocol=frame_protocol,
+        fps=fps,
     )
     template_kwargs = dict(
         tokenize=True, return_dict=True, return_tensors="pt",
@@ -201,6 +212,8 @@ def eval_one_probe(model, processor, pad_id,
                                            if k != "do_sample_frames"})
     if video_metadata:
         template_kwargs["video_metadata"] = video_metadata
+    if enable_thinking is not None:
+        template_kwargs["enable_thinking"] = bool(enable_thinking)
     inputs = processor.apply_chat_template(
         messages, **template_kwargs,
     )
@@ -217,7 +230,8 @@ def eval_one_probe(model, processor, pad_id,
 
 
 def _frames_for_probe(frames_root, video_root, video_path, mode, ask_t,
-                      visual_window_sec, max_frames):
+                      visual_window_sec, max_frames,
+                      fps: float = DEFAULT_FRAME_FPS):
     """Pick frame range for a probe at time ask_t (seconds)."""
     vp = Path(video_path)
     if video_root:
@@ -234,7 +248,7 @@ def _frames_for_probe(frames_root, video_root, video_path, mode, ask_t,
     else:  # offline
         t_start = 0.0
         t_end = ask_t
-    return sample_frame_paths(frame_dir, t_start, t_end, max_frames)
+    return sample_frame_paths(frame_dir, t_start, t_end, max_frames, fps=fps)
 
 
 def _strict_letter(text: str):
@@ -261,19 +275,21 @@ def _strict_int(text: str):
 
 def eval_mcq_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient", frame_protocol="ts_image"):
+                  scoring="lenient", frame_protocol="ts_image",
+                  fps: float = DEFAULT_FRAME_FPS, enable_thinking=None):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
         return None
     realtime = float(sample["realtime"])
     fp = _frames_for_probe(frames_root, video_root, video_path, mode, realtime,
-                           visual_window_sec, max_frames)
+                           visual_window_sec, max_frames, fps=fps)
     if not fp:
         return None
     question = build_mcq_question(sample)
     text = eval_one_probe(
         model, processor, pad_id, fp, question, max_new_tokens,
-        frame_protocol=frame_protocol,
+        frame_protocol=frame_protocol, fps=fps,
+        enable_thinking=enable_thinking,
     )
     pred = _strict_letter(text) if scoring == "strict" else extract_letter(text)
     gt = chr(65 + sample["gt"])
@@ -288,7 +304,8 @@ def eval_mcq_base(sample, model, processor, pad_id, video_root, frames_root,
 
 def eval_rec_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient", frame_protocol="ts_image"):
+                  scoring="lenient", frame_protocol="ts_image",
+                  fps: float = DEFAULT_FRAME_FPS, enable_thinking=None):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
         return None
@@ -297,12 +314,13 @@ def eval_rec_base(sample, model, processor, pad_id, video_root, frames_root,
     for probe in sample["test_info"]:
         ask_t = float(probe["realtime"])
         fp = _frames_for_probe(frames_root, video_root, video_path, mode, ask_t,
-                               visual_window_sec, max_frames)
+                               visual_window_sec, max_frames, fps=fps)
         if not fp:
             continue
         text = eval_one_probe(
             model, processor, pad_id, fp, question, max_new_tokens,
-            frame_protocol=frame_protocol,
+            frame_protocol=frame_protocol, fps=fps,
+            enable_thinking=enable_thinking,
         )
         if scoring == "strict":
             s = _strict_int(text)
@@ -329,7 +347,8 @@ def _yes_no_pred(text, scoring):
 
 def eval_ssr_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient", frame_protocol="ts_image"):
+                  scoring="lenient", frame_protocol="ts_image",
+                  fps: float = DEFAULT_FRAME_FPS, enable_thinking=None):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
         return None
@@ -337,13 +356,14 @@ def eval_ssr_base(sample, model, processor, pad_id, video_root, frames_root,
     for probe in sample["test_info"]:
         ask_t = float(probe["realtime"])
         fp = _frames_for_probe(frames_root, video_root, video_path, mode, ask_t,
-                               visual_window_sec, max_frames)
+                               visual_window_sec, max_frames, fps=fps)
         if not fp:
             continue
         question = build_ssr_question(probe.get("step", ""))
         text = eval_one_probe(
             model, processor, pad_id, fp, question, max_new_tokens,
-            frame_protocol=frame_protocol,
+            frame_protocol=frame_protocol, fps=fps,
+            enable_thinking=enable_thinking,
         )
         gt = "Yes" if probe.get("type") == 1 else "No"
         pred = _yes_no_pred(text, scoring)
@@ -356,7 +376,8 @@ def eval_ssr_base(sample, model, processor, pad_id, video_root, frames_root,
 
 def eval_crr_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient", frame_protocol="ts_image"):
+                  scoring="lenient", frame_protocol="ts_image",
+                  fps: float = DEFAULT_FRAME_FPS, enable_thinking=None):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
         return None
@@ -365,12 +386,13 @@ def eval_crr_base(sample, model, processor, pad_id, video_root, frames_root,
     for probe in sample["test_info"]:
         ask_t = float(probe["realtime"])
         fp = _frames_for_probe(frames_root, video_root, video_path, mode, ask_t,
-                               visual_window_sec, max_frames)
+                               visual_window_sec, max_frames, fps=fps)
         if not fp:
             continue
         text = eval_one_probe(
             model, processor, pad_id, fp, question, max_new_tokens,
-            frame_protocol=frame_protocol,
+            frame_protocol=frame_protocol, fps=fps,
+            enable_thinking=enable_thinking,
         )
         gt = "Yes" if probe.get("type") == 1 else "No"
         pred = _yes_no_pred(text, scoring)
@@ -458,6 +480,9 @@ def main():
                         "Offline sweep: 64 / 128 / 256 / 512 / 1024.")
     p.add_argument("--visual_window_sec", type=float, default=DEFAULT_VISUAL_WINDOW_SEC,
                    help="Window size for streaming mode (canonical runtime default)")
+    p.add_argument("--fps", type=float, default=DEFAULT_FRAME_FPS,
+                   help="FPS used to map pre-extracted frame indices to seconds. "
+                        "Default is the canonical runtime FPS=2.")
     p.add_argument("--max_new_tokens", type=int, default=64)
     p.add_argument("--scoring", default="lenient", choices=["lenient", "strict"],
                    help="lenient (default): first-matching-token wins. strict: "
@@ -491,6 +516,9 @@ def main():
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
         processor.video_processor.do_sample_frames = False
     pad_id = processor.tokenizer.pad_token_id or processor.tokenizer.eos_token_id
+    enable_thinking = False if _chat_template_supports_thinking(processor) else None
+    if enable_thinking is False:
+        print("[chat_template] Disabling thinking mode for answer-only base eval.")
 
     with open(args.benchmark_json) as f:
         all_samples = json.load(f)
@@ -515,6 +543,8 @@ def main():
         max_frames=args.max_frames, max_new_tokens=args.max_new_tokens,
         scoring=args.scoring,
         frame_protocol=frame_protocol,
+        fps=args.fps,
+        enable_thinking=enable_thinking,
     )
 
     results = []
@@ -548,11 +578,16 @@ def main():
     with open(out, "w") as f:
         json.dump({
             "ckpt": args.ckpt, "mode": args.mode,
+            "benchmark_json": args.benchmark_json,
+            "video_root": args.video_root,
+            "frames_root": args.frames_root,
             "max_frames": args.max_frames,
             "visual_window_sec": args.visual_window_sec,
+            "fps": args.fps,
             "scoring": args.scoring,
             "profile": args.profile,
             "frame_protocol": frame_protocol,
+            "enable_thinking": enable_thinking,
             "tasks_evaluated": sorted(by_task.keys()),
             "n_samples": len(results),
             "summary": agg, "samples": results,
