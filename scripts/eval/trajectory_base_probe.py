@@ -155,11 +155,46 @@ def sample_frames_from_dir(
     return [str(fp) for fp in frames]
 
 
-def visual_window_frames(samples_by_chunk: Dict[int, List[Dict[str, Any]]], chunk: int) -> List[str]:
+def cap_evenly(paths: List[str], max_items: int) -> List[str]:
+    if max_items <= 0 or len(paths) <= max_items:
+        return paths
+    if max_items == 1:
+        return [paths[len(paths) // 2]]
+    idxs = [int(i * (len(paths) - 1) / (max_items - 1)) for i in range(max_items)]
+    return [paths[i] for i in idxs]
+
+
+def visual_window_frames(
+    samples_by_chunk: Dict[int, List[Dict[str, Any]]],
+    chunk: int,
+    *,
+    frame_dir: Optional[Path] = None,
+    fps: float = DEFAULT_FPS,
+) -> List[str]:
     for sample in samples_by_chunk.get(chunk, []):
-        paths = (((sample.get("input") or {}).get("visual_window") or {}).get("frame_paths") or [])
+        window = ((sample.get("input") or {}).get("visual_window") or {})
+        paths = window.get("frame_paths") or []
         if paths:
             return [str(Path(p) if Path(p).is_absolute() else ROOT / p) for p in paths]
+        frames = window.get("frames")
+        if isinstance(frames, list) and frames:
+            return [str(Path(p) if Path(p).is_absolute() else ROOT / p) for p in frames]
+        if frame_dir and frame_dir.exists():
+            try:
+                start_t = float(window.get("video_start", chunk * AGENT_CHUNK_SEC))
+                end_t = float(window.get("video_end", (chunk + 1) * AGENT_CHUNK_SEC))
+            except Exception:
+                start_t = chunk * AGENT_CHUNK_SEC
+                end_t = (chunk + 1) * AGENT_CHUNK_SEC
+            paths = sample_frames_from_dir(
+                frame_dir,
+                start_t=start_t,
+                end_t=end_t,
+                max_frames=0,
+                fps=fps,
+            )
+            if paths:
+                return paths
     return []
 
 
@@ -201,6 +236,8 @@ def recalled_frame_paths(
     chunk: int,
     card_id: str,
     max_frames: int,
+    frame_dir: Optional[Path] = None,
+    fps: float = DEFAULT_FPS,
 ) -> List[str]:
     candidates = []
     for sample in samples_by_chunk.get(chunk, []):
@@ -217,6 +254,38 @@ def recalled_frame_paths(
             if paths:
                 out = [str(Path(p) if Path(p).is_absolute() else ROOT / p) for p in paths]
                 return out[:max_frames] if max_frames > 0 else out
+            if not frame_dir or not frame_dir.exists():
+                continue
+            returned_chunks = obj.get("returned_chunks") or []
+            if returned_chunks:
+                out = []
+                for c in returned_chunks:
+                    try:
+                        ci = int(c)
+                    except Exception:
+                        continue
+                    out.extend(sample_frames_from_dir(
+                        frame_dir,
+                        start_t=ci * AGENT_CHUNK_SEC,
+                        end_t=(ci + 1) * AGENT_CHUNK_SEC,
+                        max_frames=0,
+                        fps=fps,
+                    ))
+                if out:
+                    return cap_evenly(out, max_frames)
+            time_range = str(obj.get("time") or "")
+            m = re.search(r"(\d+(?:\.\d+)?)\s*[-,]\s*(\d+(?:\.\d+)?)", time_range)
+            if m:
+                start_t, end_t = float(m.group(1)), float(m.group(2))
+                paths = sample_frames_from_dir(
+                    frame_dir,
+                    start_t=start_t,
+                    end_t=end_t,
+                    max_frames=max_frames,
+                    fps=fps,
+                )
+                if paths:
+                    return paths
     return []
 
 
@@ -461,7 +530,12 @@ def main() -> int:
                 if args.max_events_per_split and split_events >= args.max_events_per_split:
                     break
                 chunk = int(ev["emit_chunk"])
-                visual_frames = visual_window_frames(by_chunk, chunk)
+                visual_frames = visual_window_frames(
+                    by_chunk,
+                    chunk,
+                    frame_dir=frame_dir,
+                    fps=args.fps,
+                )
                 if args.max_visual_frames > 0 and len(visual_frames) > args.max_visual_frames:
                     visual_frames = visual_frames[-args.max_visual_frames:]
                 text_mem = memory_text(by_chunk, chunk=chunk, max_chars=args.max_memory_chars)
@@ -470,6 +544,8 @@ def main() -> int:
                     chunk=chunk,
                     card_id=ev.get("card_id", ""),
                     max_frames=args.max_recall_frames,
+                    frame_dir=frame_dir,
+                    fps=args.fps,
                 )
                 event_end_t = (chunk + 1) * AGENT_CHUNK_SEC
                 offline_past = sample_frames_from_dir(
