@@ -93,6 +93,9 @@ ALL_TASKS = RT_TASKS | BT_TASKS | FT_TASKS
 def detect_model_class(ckpt: str):
     name = ckpt.lower()
     basename = Path(ckpt.rstrip("/")).name.lower()
+    if "qwen3.5" in name or "qwen_3.5" in name or "qwen3_5" in name:
+        from transformers import Qwen3_5ForConditionalGeneration as Cls
+        return Cls, "qwen3_5"
     if "qwen3" in name and "a" in basename:
         from transformers import Qwen3VLMoeForConditionalGeneration as Cls
         return Cls, "qwen3vl"

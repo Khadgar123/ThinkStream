@@ -1,0 +1,1044 @@
+{
+  "ckpt": "/home/tione/notebook/gaozhenkun/model/Qwen3-VL-2B-Instruct",
+  "mode": "offline",
+  "max_frames": 24,
+  "visual_window_sec": 16.0,
+  "scoring": "strict",
+  "profile": "16k",
+  "tasks_evaluated": [
+    "ACR",
+    "ASI",
+    "ATR",
+    "CRR",
+    "EPM",
+    "FPD",
+    "HLD",
+    "OCR",
+    "OJR",
+    "REC",
+    "SSR",
+    "STU"
+  ],
+  "n_samples": 36,
+  "summary": {
+    "per_task": {
+      "ACR": {
+        "n": 3,
+        "acc": 0.3333333333333333
+      },
+      "ASI": {
+        "n": 3,
+        "acc": 1.0
+      },
+      "ATR": {
+        "n": 3,
+        "acc": 0.3333333333333333
+      },
+      "CRR": {
+        "n": 15,
+        "acc": 0.4
+      },
+      "EPM": {
+        "n": 3,
+        "acc": 0.3333333333333333
+      },
+      "FPD": {
+        "n": 3,
+        "acc": 1.0
+      },
+      "HLD": {
+        "n": 3,
+        "acc": 0.6666666666666666
+      },
+      "OCR": {
+        "n": 3,
+        "acc": 1.0
+      },
+      "OJR": {
+        "n": 3,
+        "acc": 0.3333333333333333
+      },
+      "REC": {
+        "n": 9,
+        "acc": 0.4444444444444444
+      },
+      "SSR": {
+        "n": 52,
+        "acc": 0.5192307692307693
+      },
+      "STU": {
+        "n": 3,
+        "acc": 0.3333333333333333
+      }
+    },
+    "category": {
+      "RT": {
+        "avg": 0.5555555555555555,
+        "n_tasks": 6
+      },
+      "BT": {
+        "avg": 0.6666666666666666,
+        "n_tasks": 3
+      },
+      "FT": {
+        "avg": 0.45455840455840457,
+        "n_tasks": 3
+      }
+    },
+    "overall": 0.5589268755935423
+  },
+  "samples": [
+    {
+      "task": "ACR",
+      "id": 1210,
+      "probes": [
+        {
+          "realtime": 201.93,
+          "gt": "D",
+          "pred": "C",
+          "raw": "C",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "ACR",
+      "id": 1211,
+      "probes": [
+        {
+          "realtime": 228.93,
+          "gt": "D",
+          "pred": "B",
+          "raw": "B",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "ACR",
+      "id": 1212,
+      "probes": [
+        {
+          "realtime": 210.93,
+          "gt": "D",
+          "pred": "D",
+          "raw": "D",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "ASI",
+      "id": 483,
+      "probes": [
+        {
+          "realtime": 136.0,
+          "gt": "A",
+          "pred": "A",
+          "raw": "A",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "ASI",
+      "id": 484,
+      "probes": [
+        {
+          "realtime": 98.0,
+          "gt": "A",
+          "pred": "A",
+          "raw": "A",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "ASI",
+      "id": 485,
+      "probes": [
+        {
+          "realtime": 71.0,
+          "gt": "C",
+          "pred": "C",
+          "raw": "C",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "ATR",
+      "id": 993,
+      "probes": [
+        {
+          "realtime": 279.0,
+          "gt": "B",
+          "pred": "B",
+          "raw": "B",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "ATR",
+      "id": 994,
+      "probes": [
+        {
+          "realtime": 725.0,
+          "gt": "A",
+          "pred": "D",
+          "raw": "D",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "ATR",
+      "id": 995,
+      "probes": [
+        {
+          "realtime": 1695.0,
+          "gt": "A",
+          "pred": "B",
+          "raw": "B",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "CRR",
+      "id": 1468,
+      "probes": [
+        {
+          "realtime": 297.0,
+          "gt": "No",
+          "pred": "No",
+          "type": 0,
+          "raw": "No",
+          "correct": true
+        },
+        {
+          "realtime": 302.0,
+          "gt": "No",
+          "pred": "No",
+          "type": 0,
+          "raw": "No",
+          "correct": true
+        },
+        {
+          "realtime": 310.0,
+          "gt": "Yes",
+          "pred": "No",
+          "type": 1,
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 318.0,
+          "gt": "Yes",
+          "pred": "No",
+          "type": 1,
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 338.0,
+          "gt": "Yes",
+          "pred": "No",
+          "type": 1,
+          "raw": "No",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "CRR",
+      "id": 1469,
+      "probes": [
+        {
+          "realtime": 310.0,
+          "gt": "No",
+          "pred": "Yes",
+          "type": 0,
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 313.0,
+          "gt": "No",
+          "pred": "No",
+          "type": 0,
+          "raw": "No",
+          "correct": true
+        },
+        {
+          "realtime": 319.0,
+          "gt": "Yes",
+          "pred": "No",
+          "type": 1,
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 327.0,
+          "gt": "Yes",
+          "pred": "No",
+          "type": 1,
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 347.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "type": 1,
+          "raw": "Yes",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "CRR",
+      "id": 1470,
+      "probes": [
+        {
+          "realtime": 323.0,
+          "gt": "No",
+          "pred": "No",
+          "type": 0,
+          "raw": "No",
+          "correct": true
+        },
+        {
+          "realtime": 360.0,
+          "gt": "No",
+          "pred": "Yes",
+          "type": 0,
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 400.0,
+          "gt": "Yes",
+          "pred": "No",
+          "type": 1,
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 408.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "type": 1,
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 428.0,
+          "gt": "Yes",
+          "pred": "No",
+          "type": 1,
+          "raw": "No",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "EPM",
+      "id": 0,
+      "probes": [
+        {
+          "realtime": 215.0,
+          "gt": "C",
+          "pred": "D",
+          "raw": "D",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "EPM",
+      "id": 1,
+      "probes": [
+        {
+          "realtime": 244.0,
+          "gt": "C",
+          "pred": "C",
+          "raw": "C",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "EPM",
+      "id": 2,
+      "probes": [
+        {
+          "realtime": 265.0,
+          "gt": "A",
+          "pred": "B",
+          "raw": "B",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "FPD",
+      "id": 1109,
+      "probes": [
+        {
+          "realtime": 88.43,
+          "gt": "B",
+          "pred": "B",
+          "raw": "B",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "FPD",
+      "id": 1110,
+      "probes": [
+        {
+          "realtime": 107.03,
+          "gt": "A",
+          "pred": "A",
+          "raw": "A",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "FPD",
+      "id": 1111,
+      "probes": [
+        {
+          "realtime": 83.9,
+          "gt": "D",
+          "pred": "D",
+          "raw": "D",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "HLD",
+      "id": 297,
+      "probes": [
+        {
+          "realtime": 371.0,
+          "gt": "B",
+          "pred": "B",
+          "raw": "B",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "HLD",
+      "id": 298,
+      "probes": [
+        {
+          "realtime": 392.0,
+          "gt": "B",
+          "pred": "B",
+          "raw": "B",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "HLD",
+      "id": 299,
+      "probes": [
+        {
+          "realtime": 420.0,
+          "gt": "D",
+          "pred": "C",
+          "raw": "C",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "OCR",
+      "id": 1319,
+      "probes": [
+        {
+          "realtime": 54.2,
+          "gt": "A",
+          "pred": "A",
+          "raw": "A",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "OCR",
+      "id": 1320,
+      "probes": [
+        {
+          "realtime": 136.38,
+          "gt": "A",
+          "pred": "A",
+          "raw": "A",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "OCR",
+      "id": 1321,
+      "probes": [
+        {
+          "realtime": 173.85,
+          "gt": "D",
+          "pred": "D",
+          "raw": "D",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "OJR",
+      "id": 809,
+      "probes": [
+        {
+          "realtime": 172.0,
+          "gt": "C",
+          "pred": "C",
+          "raw": "C",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "OJR",
+      "id": 810,
+      "probes": [
+        {
+          "realtime": 506.0,
+          "gt": "C",
+          "pred": "A",
+          "raw": "A",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "OJR",
+      "id": 811,
+      "probes": [
+        {
+          "realtime": 560.0,
+          "gt": "A",
+          "pred": "D",
+          "raw": "D",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "REC",
+      "id": 1558,
+      "probes": [
+        {
+          "realtime": 17.0,
+          "gt": 1,
+          "pred": 1,
+          "raw": "1",
+          "correct": true
+        },
+        {
+          "realtime": 19.0,
+          "gt": 1,
+          "pred": 1,
+          "raw": "1",
+          "correct": true
+        },
+        {
+          "realtime": 32.0,
+          "gt": 1,
+          "pred": 1,
+          "raw": "1",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "REC",
+      "id": 1559,
+      "probes": [
+        {
+          "realtime": 5.0,
+          "gt": 1,
+          "pred": 2,
+          "raw": "2",
+          "correct": false
+        },
+        {
+          "realtime": 13.0,
+          "gt": 2,
+          "pred": 2,
+          "raw": "2",
+          "correct": true
+        },
+        {
+          "realtime": 18.0,
+          "gt": 3,
+          "pred": 2,
+          "raw": "2",
+          "correct": false
+        },
+        {
+          "realtime": 20.0,
+          "gt": 3,
+          "pred": 2,
+          "raw": "2",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "REC",
+      "id": 1560,
+      "probes": [
+        {
+          "realtime": 14.0,
+          "gt": 1,
+          "pred": 2,
+          "raw": "2",
+          "correct": false
+        },
+        {
+          "realtime": 22.0,
+          "gt": 1,
+          "pred": 2,
+          "raw": "2",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "SSR",
+      "id": 1516,
+      "probes": [
+        {
+          "realtime": 27.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 30.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 26.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 29.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 33.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 36.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 49.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 102.0,
+          "gt": "No",
+          "pred": "No",
+          "raw": "No",
+          "correct": true
+        },
+        {
+          "realtime": 105.0,
+          "gt": "No",
+          "pred": "No",
+          "raw": "No",
+          "correct": true
+        },
+        {
+          "realtime": 109.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 112.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 117.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "SSR",
+      "id": 1517,
+      "probes": [
+        {
+          "realtime": 43.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 46.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 49.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 62.0,
+          "gt": "No",
+          "pred": "No",
+          "raw": "No",
+          "correct": true
+        },
+        {
+          "realtime": 65.0,
+          "gt": "No",
+          "pred": "No",
+          "raw": "No",
+          "correct": true
+        },
+        {
+          "realtime": 69.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 71.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 67.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 70.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 74.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 77.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 93.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 97.0,
+          "gt": "No",
+          "pred": "No",
+          "raw": "No",
+          "correct": true
+        },
+        {
+          "realtime": 100.0,
+          "gt": "No",
+          "pred": "No",
+          "raw": "No",
+          "correct": true
+        },
+        {
+          "realtime": 104.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 107.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 112.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "SSR",
+      "id": 1518,
+      "probes": [
+        {
+          "realtime": 2.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 5.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 22.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 26.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 29.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 33.0,
+          "gt": "Yes",
+          "pred": "No",
+          "raw": "No",
+          "correct": false
+        },
+        {
+          "realtime": 36.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 50.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 46.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 49.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 53.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 56.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 65.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 61.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 64.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 68.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 71.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 93.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 100.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 103.0,
+          "gt": "No",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": false
+        },
+        {
+          "realtime": 107.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 110.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        },
+        {
+          "realtime": 132.0,
+          "gt": "Yes",
+          "pred": "Yes",
+          "raw": "Yes",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "STU",
+      "id": 631,
+      "probes": [
+        {
+          "realtime": 172.0,
+          "gt": "B",
+          "pred": "B",
+          "raw": "B",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "task": "STU",
+      "id": 632,
+      "probes": [
+        {
+          "realtime": 488.0,
+          "gt": "B",
+          "pred": "C",
+          "raw": "C",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "STU",
+      "id": 633,
+      "probes": [
+        {
+          "realtime": 171.0,
+          "gt": "A",
+          "pred": "D",
+          "raw": "D",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

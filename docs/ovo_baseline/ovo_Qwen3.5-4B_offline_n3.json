@@ -1,0 +1,1044 @@
+{
+  "ckpt": "/home/tione/notebook/gaozhenkun/model/Qwen3.5-4B",
+  "mode": "offline",
+  "max_frames": 24,
+  "visual_window_sec": 16.0,
+  "scoring": "strict",
+  "profile": "16k",
+  "tasks_evaluated": [
+    "ACR",
+    "ASI",
+    "ATR",
+    "CRR",
+    "EPM",
+    "FPD",
+    "HLD",
+    "OCR",
+    "OJR",
+    "REC",
+    "SSR",
+    "STU"
+  ],
+  "n_samples": 36,
+  "summary": {
+    "per_task": {
+      "ACR": {
+        "n": 3,
+        "acc": 0.0
+      },
+      "ASI": {
+        "n": 3,
+        "acc": 0.0
+      },
+      "ATR": {
+        "n": 3,
+        "acc": 0.0
+      },
+      "CRR": {
+        "n": 15,
+        "acc": 0.0
+      },
+      "EPM": {
+        "n": 3,
+        "acc": 0.0
+      },
+      "FPD": {
+        "n": 3,
+        "acc": 0.0
+      },
+      "HLD": {
+        "n": 3,
+        "acc": 0.0
+      },
+      "OCR": {
+        "n": 3,
+        "acc": 0.0
+      },
+      "OJR": {
+        "n": 3,
+        "acc": 0.0
+      },
+      "REC": {
+        "n": 9,
+        "acc": 0.0
+      },
+      "SSR": {
+        "n": 52,
+        "acc": 0.0
+      },
+      "STU": {
+        "n": 3,
+        "acc": 0.0
+      }
+    },
+    "category": {
+      "RT": {
+        "avg": 0.0,
+        "n_tasks": 6
+      },
+      "BT": {
+        "avg": 0.0,
+        "n_tasks": 3
+      },
+      "FT": {
+        "avg": 0.0,
+        "n_tasks": 3
+      }
+    },
+    "overall": 0.0
+  },
+  "samples": [
+    {
+      "task": "ACR",
+      "id": 1210,
+      "probes": [
+        {
+          "realtime": 201.93,
+          "gt": "D",
+          "pred": null,
+          "raw": "The user wants me to identify the action being performed with a tool in the video.\n\n1.  **Analyze the video content:**\n    *   The video shows a person in a workshop setting, likely a bike shop.\n    *",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "ACR",
+      "id": 1211,
+      "probes": [
+        {
+          "realtime": 228.93,
+          "gt": "D",
+          "pred": null,
+          "raw": "The user wants me to identify the main activity shown in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with a person in a workshop setting. There are tools, a bicycle frame, ",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "ACR",
+      "id": 1212,
+      "probes": [
+        {
+          "realtime": 210.93,
+          "gt": "D",
+          "pred": null,
+          "raw": "The user wants me to identify the action being performed on the tire based on the video frames.\n\n1.  **Analyze the video frames:**\n    *   **Frame 0.0 - 46.5:** The person is in a workshop, looking at",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "ASI",
+      "id": 483,
+      "probes": [
+        {
+          "realtime": 136.0,
+          "gt": "A",
+          "pred": null,
+          "raw": "The user wants to identify the action performed after loading the wheel.\n\n1.  **Analyze the video sequence:**\n    *   **0.0 - 20.0:** Intro and tools.\n    *   **20.0 - 30.0:** A person is working on",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "ASI",
+      "id": 484,
+      "probes": [
+        {
+          "realtime": 98.0,
+          "gt": "A",
+          "pred": null,
+          "raw": "The user wants to identify the action taken after installing the SSD into the hard disk tray.\n\n1.  **Analyze the video sequence:**\n    *   Around `00:51`, the text says \"Insert Hard Drive Into Gaddy\".",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "ASI",
+      "id": 485,
+      "probes": [
+        {
+          "realtime": 71.0,
+          "gt": "C",
+          "pred": null,
+          "raw": "The user wants to identify the action performed immediately before arranging the separated wires.\n\n1.  **Analyze the video sequence:**\n    *   **0.0 - 3.0:** Intro animation.\n    *   **3.0 - 15.0:** I",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "ATR",
+      "id": 993,
+      "probes": [
+        {
+          "realtime": 279.0,
+          "gt": "B",
+          "pred": null,
+          "raw": "The user is asking for the color of a dog. I need to scan the video frames to find a dog.\n\n1.  **Scanning frames:**\n    *   Frames 0.0 - 24.5: Title screen, menu screens. No dog.\n    *   Frames 3",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "ATR",
+      "id": 994,
+      "probes": [
+        {
+          "realtime": 725.0,
+          "gt": "A",
+          "pred": null,
+          "raw": "The user wants to identify the color of the fire being collected in the video.\n\n1.  **Scan the video for fire collection:** I need to look for a moment where the character interacts with a fire source",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "ATR",
+      "id": 995,
+      "probes": [
+        {
+          "realtime": 1695.0,
+          "gt": "A",
+          "pred": null,
+          "raw": "The user wants to identify the color of the fire being collected in the video.\n\n1.  **Scan the video for fire collection:** I need to look for a moment where the character interacts with a fire source",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "CRR",
+      "id": 1468,
+      "probes": [
+        {
+          "realtime": 297.0,
+          "gt": "No",
+          "pred": null,
+          "type": 0,
+          "raw": "The user wants to know if a woman in a black coat walks towards a black car and interacts with it.\n\n1.  **Scan the video for a woman in a black coat.**\n    *   Frame 168.0: A woman in a long black coa",
+          "correct": false
+        },
+        {
+          "realtime": 302.0,
+          "gt": "No",
+          "pred": null,
+          "type": 0,
+          "raw": "The user wants to know if the woman in the black coat interacts with a black car.\n\n1.  **Identify the woman in the black coat:** She appears in several frames (e.g., 157.5, 170.5, 210.0, 2",
+          "correct": false
+        },
+        {
+          "realtime": 310.0,
+          "gt": "Yes",
+          "pred": null,
+          "type": 1,
+          "raw": "The user is asking about a specific action involving a woman in a black coat and a black car.\n\n1.  **Scan the video for a woman in a black coat.**\n    *   Frame 148.5: A woman in a dark (possibly blac",
+          "correct": false
+        },
+        {
+          "realtime": 318.0,
+          "gt": "Yes",
+          "pred": null,
+          "type": 1,
+          "raw": "The user wants to know if a woman in a black coat walks towards a black car and interacts with it.\n\n1.  **Scan the video for a woman in a black coat.**\n    *   Around `01:52` (166.0s), there's a shot ",
+          "correct": false
+        },
+        {
+          "realtime": 338.0,
+          "gt": "Yes",
+          "pred": null,
+          "type": 1,
+          "raw": "The user is asking a question about a specific action involving a woman in a black coat and a black car. I need to scan the video frames to find this scene.\n\n1.  **Scan for \"woman in a black coat\":**\n",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "CRR",
+      "id": 1469,
+      "probes": [
+        {
+          "realtime": 310.0,
+          "gt": "No",
+          "pred": null,
+          "type": 0,
+          "raw": "The user wants to know if a specific interaction happens in the video.\n1.  **Identify the characters:**\n    *   \"woman in black coat\": I see a woman in a dark coat around timestamp 01:54 (ts=\"161.5\") ",
+          "correct": false
+        },
+        {
+          "realtime": 313.0,
+          "gt": "No",
+          "pred": null,
+          "type": 0,
+          "raw": "The user wants to know if the woman in the black coat interacts with the man in yellow.\n\n1.  **Identify the woman in the black coat:**\n    *   Frame 163.5: A woman in a long black coat is walking down",
+          "correct": false
+        },
+        {
+          "realtime": 319.0,
+          "gt": "Yes",
+          "pred": null,
+          "type": 1,
+          "raw": "The user wants to know if the woman in the black coat interacts with the man in yellow.\n\n1.  **Identify the characters:**\n    *   **Woman in black coat:** I see a woman in a dark coat walking down the",
+          "correct": false
+        },
+        {
+          "realtime": 327.0,
+          "gt": "Yes",
+          "pred": null,
+          "type": 1,
+          "raw": "The user wants to know if the woman in the black coat interacts with the man in yellow.\n\n1.  **Identify the characters:**\n    *   **Man in yellow:** Seen in frames 156.5, 170.5, 199.0, 2",
+          "correct": false
+        },
+        {
+          "realtime": 347.0,
+          "gt": "Yes",
+          "pred": null,
+          "type": 1,
+          "raw": "The user wants to know if the woman in the black coat interacts with the man in yellow.\n\n1.  **Identify the characters:**\n    *   **Woman in black coat:** I see a woman in a dark coat walking down a s",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "CRR",
+      "id": 1470,
+      "probes": [
+        {
+          "realtime": 323.0,
+          "gt": "No",
+          "pred": null,
+          "type": 0,
+          "raw": "The user wants to know if the man looks at the woman and then does something specific.\n1.  **Identify the relevant frames:** I need to find the scene where a man looks at a woman.\n    *   Frame at 238",
+          "correct": false
+        },
+        {
+          "realtime": 360.0,
+          "gt": "No",
+          "pred": null,
+          "type": 0,
+          "raw": "The user wants to know if the man looks at the woman and then does something specific.\n1.  **Identify the relevant frames:** I need to find the scene where a man and a woman are together.\n    *   Fram",
+          "correct": false
+        },
+        {
+          "realtime": 400.0,
+          "gt": "Yes",
+          "pred": null,
+          "type": 1,
+          "raw": "The user wants to know if the man looks in the direction of the woman and then does something specific.\n1.  **Identify the relevant frames:** I need to find a scene where a man looks at a woman.\n    *",
+          "correct": false
+        },
+        {
+          "realtime": 408.0,
+          "gt": "Yes",
+          "pred": null,
+          "type": 1,
+          "raw": "The user wants to know if the man looks at the woman and then does something specific.\n1.  **Identify the relevant frames:** I need to find the scene where a man looks at a woman.\n    *   Frame at 355",
+          "correct": false
+        },
+        {
+          "realtime": 428.0,
+          "gt": "Yes",
+          "pred": null,
+          "type": 1,
+          "raw": "The user wants to know if the man looks at the woman and then does something specific.\n1.  **Identify the relevant frames:** I need to find the scene where a man looks at a woman.\n    *   Frame at 260",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "EPM",
+      "id": 0,
+      "probes": [
+        {
+          "realtime": 215.0,
+          "gt": "C",
+          "pred": null,
+          "raw": "The user wants to know who they communicated with while chopping eggplants.\n\n1.  **Analyze the video:** I need to watch the segment where the person is chopping eggplants.\n2.  **Locate the chopping sc",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "EPM",
+      "id": 1,
+      "probes": [
+        {
+          "realtime": 244.0,
+          "gt": "C",
+          "pred": null,
+          "raw": "The user wants to identify what was dropped into the bowl in the sink.\n\n1.  **Analyze the video sequence:**\n    *   **0.0s - 10.5s:** The scene is a kitchen counter. A person is preparing to cook.\n   ",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "EPM",
+      "id": 2,
+      "probes": [
+        {
+          "realtime": 265.0,
+          "gt": "A",
+          "pred": null,
+          "raw": "The user wants to identify the location of the microwave in the video.\n\n1.  **Scan the video for a microwave.** I'll look through the frames to find an appliance that looks like a microwave.\n2.  **Fra",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "FPD",
+      "id": 1109,
+      "probes": [
+        {
+          "realtime": 88.43,
+          "gt": "B",
+          "pred": null,
+          "raw": "The user wants me to predict the next action based on the video frames.\n\n1.  **Analyze the video content:**\n    *   The video shows a person working on electrical or data cabling under a desk or table",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "FPD",
+      "id": 1110,
+      "probes": [
+        {
+          "realtime": 107.03,
+          "gt": "A",
+          "pred": null,
+          "raw": "The user wants me to identify what the person in the video is preparing to manipulate.\n\n1.  **Analyze the video frames:**\n    *   **Frame 0.0 - 4.5:** The person is holding a bundle of wires (blue, ye",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "FPD",
+      "id": 1111,
+      "probes": [
+        {
+          "realtime": 83.9,
+          "gt": "D",
+          "pred": null,
+          "raw": "The user wants me to predict the next action based on the video frames.\n\n1.  **Analyze the current state:**\n    *   The person is working on cables under a workbench.\n    *   They are holding a white ",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "HLD",
+      "id": 297,
+      "probes": [
+        {
+          "realtime": 371.0,
+          "gt": "B",
+          "pred": null,
+          "raw": "The user wants to know what was put in the black dustbin.\n\n1.  **Scan the video for a black dustbin.**\n    *   Frame 0.0: Bedroom scene. No obvious dustbin.\n    *   Frame 10.5: Hallway with dogs. No d",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "HLD",
+      "id": 298,
+      "probes": [
+        {
+          "realtime": 392.0,
+          "gt": "B",
+          "pred": null,
+          "raw": "The user wants to know where the vacuum cleaner head was put.\n\n1.  **Analyze the video:** I need to scan the video for a vacuum cleaner head and see where it is placed.\n2.  **Scan for vacuum cleaner h",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "HLD",
+      "id": 299,
+      "probes": [
+        {
+          "realtime": 420.0,
+          "gt": "D",
+          "pred": null,
+          "raw": "The user wants to know where the shoe was placed based on the video.\n\n1.  **Analyze the video:**\n    *   The video starts with a woman sitting on the floor in a room. There are shoes on the floor near",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "OCR",
+      "id": 1319,
+      "probes": [
+        {
+          "realtime": 54.2,
+          "gt": "A",
+          "pred": null,
+          "raw": "The user wants me to identify the names of the swimmers listed on the pool lanes based on the video frames.\n\n1.  **Analyze the frames:** I need to look for frames that show the starting blocks or a gr",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "OCR",
+      "id": 1320,
+      "probes": [
+        {
+          "realtime": 136.38,
+          "gt": "A",
+          "pred": null,
+          "raw": "The user wants to find the leading player's time at the 150m mark.\n\n1.  **Identify the relevant frame:** I need to look for a frame that shows the race progress around the 150m mark.\n2.  **Scan the fr",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "OCR",
+      "id": 1321,
+      "probes": [
+        {
+          "realtime": 173.85,
+          "gt": "D",
+          "pred": null,
+          "raw": "The user wants to find the winning time for the 200m freestyle men's final.\n\n1.  **Identify the winner:** I need to look for a frame that shows the results or the winner crossing the finish line.\n2.  ",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "OJR",
+      "id": 809,
+      "probes": [
+        {
+          "realtime": 172.0,
+          "gt": "C",
+          "pred": null,
+          "raw": "The user wants to identify what is under the monkey in the video.\n\n1.  **Analyze the frames:** I need to look for frames where the monkey character is visible and see what is beneath him.\n2.  **Scan t",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "OJR",
+      "id": 810,
+      "probes": [
+        {
+          "realtime": 506.0,
+          "gt": "C",
+          "pred": null,
+          "raw": "The user wants me to identify what is in the bottom and right side of the video frames.\n\n1.  **Analyze the frames:** I'll look at the bottom and right side of the provided frames.\n    *   Frame 0.0: B",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "OJR",
+      "id": 811,
+      "probes": [
+        {
+          "realtime": 560.0,
+          "gt": "A",
+          "pred": null,
+          "raw": "The user wants to identify the dominant vegetation or environment around the character in the video.\n\n1.  **Analyze the frames:** I'll scan through the provided frames to see the environment.\n    *   ",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "REC",
+      "id": 1558,
+      "probes": [
+        {
+          "realtime": 17.0,
+          "gt": 1,
+          "pred": null,
+          "raw": "The user wants to count the number of times the person in the video breaks something.\n\n1.  **Analyze the video:** I'll scan through the frames to identify actions involving breaking an object.\n2.  **F",
+          "correct": false
+        },
+        {
+          "realtime": 19.0,
+          "gt": 1,
+          "pred": null,
+          "raw": "The user wants to count the number of times the person in the video breaks something.\n\n1.  **Analyze the video:** I'll scan through the frames to identify actions involving breaking an object.\n2.  **F",
+          "correct": false
+        },
+        {
+          "realtime": 32.0,
+          "gt": 1,
+          "pred": null,
+          "raw": "The user wants to count the number of times the person in the video breaks something.\n\n1.  **Analyze the video:** I'll scan through the frames to identify actions involving breaking an object.\n2.  **F",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "REC",
+      "id": 1559,
+      "probes": [
+        {
+          "realtime": 5.0,
+          "gt": 1,
+          "pred": null,
+          "raw": "The user wants to count the number of times the person in the video shows something to the camera.\n\n1.  **Analyze the frames:**\n    *   **Frame 0.0 - 0.5:** A person is standing on the left, wearing a",
+          "correct": false
+        },
+        {
+          "realtime": 13.0,
+          "gt": 2,
+          "pred": null,
+          "raw": "The user wants to count the number of times the person in the video shows something to the camera.\n\n1.  **Analyze the video:**\n    *   **0.0s - 0.5s:** A person is standing on the left. Nothing is bei",
+          "correct": false
+        },
+        {
+          "realtime": 18.0,
+          "gt": 3,
+          "pred": null,
+          "raw": "The user wants to count the number of times the person in the video shows something to the camera.\n\n1.  **Analyze the video:**\n    *   **0.0s - 0.5s:** A person is standing on the left. Nothing is bei",
+          "correct": false
+        },
+        {
+          "realtime": 20.0,
+          "gt": 3,
+          "pred": null,
+          "raw": "The user wants to count the number of times the person in the video shows something to the camera.\n\n1.  **Analyze the video:**\n    *   **0.0s - 0.5s:** A person is standing on the left. Nothing is bei",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "REC",
+      "id": 1560,
+      "probes": [
+        {
+          "realtime": 14.0,
+          "gt": 1,
+          "pred": null,
+          "raw": "The user wants to count the number of times the person in the video opens something.\n\n1.  **Analyze the video:**\n    *   **0.0s - 1.0s:** The person is standing behind a table. There's a wallet on the",
+          "correct": false
+        },
+        {
+          "realtime": 22.0,
+          "gt": 1,
+          "pred": null,
+          "raw": "The user wants to count the number of times the person in the video opens something.\n\n1.  **Analyze the video:**\n    *   **0.0s - 1.0s:** The person is standing behind a table. There's a wallet on the",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "SSR",
+      "id": 1516,
+      "probes": [
+        {
+          "realtime": 27.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"pull up the hair to reserve place for the hair extensions\" is happening in the video.\n\n1.  **Analyze the video:**\n    *   The video starts with an intro.\n    ",
+          "correct": false
+        },
+        {
+          "realtime": 30.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"pull up the hair to reserve place for the hair extensions\" is happening in the video.\n\n1.  **Analyze the video:**\n    *   The video starts with an intro.\n    *   ",
+          "correct": false
+        },
+        {
+          "realtime": 26.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is currently putting on hair extensions.\n\n1.  **Analyze the video content:**\n    *   The video starts with an introduction by a woman named Lori Smith",
+          "correct": false
+        },
+        {
+          "realtime": 29.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is currently performing the step \"put on the hair extensions\".\n\n1.  **Analyze the video content:**\n    *   The video starts with an introduction by Lo",
+          "correct": false
+        },
+        {
+          "realtime": 33.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is currently performing the step \"put on the hair extensions\".\n\n1.  **Analyze the video content:**\n    *   The video starts with an introduction by Lo",
+          "correct": false
+        },
+        {
+          "realtime": 36.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is currently putting on hair extensions.\n\n1.  **Analyze the video content:**\n    *   The video starts with an introduction by a woman named Lori Smith",
+          "correct": false
+        },
+        {
+          "realtime": 49.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"put on the hair extensions\" is happening in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with an introduction by a woman named Lori Smi",
+          "correct": false
+        },
+        {
+          "realtime": 102.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"put down the hair and comb\" is happening in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with an introduction.\n    *   Then, it sho",
+          "correct": false
+        },
+        {
+          "realtime": 105.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"put down the hair and comb\" is happening in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with an introduction.\n    *   Then, it sho",
+          "correct": false
+        },
+        {
+          "realtime": 109.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"put down the hair and comb\" is happening in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with an introduction.\n    *   Then, it sho",
+          "correct": false
+        },
+        {
+          "realtime": 112.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"put down the hair and comb\" is happening in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with an introduction.\n    *   Then, it sho",
+          "correct": false
+        },
+        {
+          "realtime": 117.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"put down the hair and comb\" is happening in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with an introduction.\n    *   Then, it sho",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "SSR",
+      "id": 1517,
+      "probes": [
+        {
+          "realtime": 43.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"pour the egg into the bowl\" is happening in the video.\n\n1.  **Analyze the video:** I'll scan through the frames to find the specific action.\n2.  **Frame 0.0 - 10.",
+          "correct": false
+        },
+        {
+          "realtime": 46.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"pour the egg into the bowl\" is happening in the video.\n\n1.  **Analyze the video:** I'll scan through the frames to find the specific action.\n2.  **Locate the acti",
+          "correct": false
+        },
+        {
+          "realtime": 49.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"pour the egg into the bowl\" is happening in the video.\n\n1.  **Analyze the video:** I'll scan through the frames to find the specific action.\n2.  **Locate the acti",
+          "correct": false
+        },
+        {
+          "realtime": 62.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"pour the egg into the pot\" is happening in the video.\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 5.0: Intro with a bicycle.\n    *   Frames 8.0 - ",
+          "correct": false
+        },
+        {
+          "realtime": 65.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"pour the egg into the pot\" is happening in the video.\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 5.0: Intro with a bicycle.\n    *   Frames 8.0 - ",
+          "correct": false
+        },
+        {
+          "realtime": 69.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"pour the egg into the pot\" is happening in the video.\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 5.0: Intro with a bicycle.\n    *   Frames 8.0 - ",
+          "correct": false
+        },
+        {
+          "realtime": 71.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"pour the egg into the pot\" is happening in the video.\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 5.0: Intro with a bicycle.\n    *   Frames 8.0 - ",
+          "correct": false
+        },
+        {
+          "realtime": 67.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to know if the action \"fry eggs\" is happening in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with a bicycle intro.\n    *   Then it transitions to a kitchen s",
+          "correct": false
+        },
+        {
+          "realtime": 70.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to know if the action \"fry eggs\" is happening in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with a bicycle intro.\n    *   Then it transitions to a kitchen s",
+          "correct": false
+        },
+        {
+          "realtime": 74.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"fry eggs\" is happening in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with a bicycle intro.\n    *   Then it transitions to a kitchen s",
+          "correct": false
+        },
+        {
+          "realtime": 77.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"fry eggs\" is happening in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with a bicycle intro.\n    *   Then it transitions to a kitchen s",
+          "correct": false
+        },
+        {
+          "realtime": 93.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"fry eggs\" is happening in the video.\n\n1.  **Analyze the video content:**\n    *   The video starts with a bicycle intro.\n    *   Then it transitions to a kitchen s",
+          "correct": false
+        },
+        {
+          "realtime": 97.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to know if the action \"pour the egg onto the plate\" is happening in the video.\n\n1.  **Analyze the video:**\n    *   00:00 - 00:04: Intro with a bike.\n    *   00:0",
+          "correct": false
+        },
+        {
+          "realtime": 100.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to know if the action \"pour the egg onto the plate\" is happening in the video.\n\n1.  **Analyze the video:**\n    *   00:00 - 00:04: Intro with a bike.\n    *   00:0",
+          "correct": false
+        },
+        {
+          "realtime": 104.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"pour the egg onto the plate\" is happening in the video.\n\n1.  **Analyze the video:**\n    *   00:00 - 00:04: Intro with a bike.\n    *   00:0",
+          "correct": false
+        },
+        {
+          "realtime": 107.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"pour the egg onto the plate\" is happening in the video.\n\n1.  **Analyze the video:**\n    *   00:00 - 00:04: Intro with a bike.\n    *   00:0",
+          "correct": false
+        },
+        {
+          "realtime": 112.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"pour the egg onto the plate\" is happening in the video.\n\n1.  **Analyze the video:**\n    *   00:00 - 00:04: Intro with a bike.\n    *   00:0",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "SSR",
+      "id": 1518,
+      "probes": [
+        {
+          "realtime": 2.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is \"looking for leaks\".\n\n1.  **Analyze the video content:**\n    *   The video shows a close-up of a bicycle tire.\n    *   The tire is submerged in wat",
+          "correct": false
+        },
+        {
+          "realtime": 5.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is performing the step \"look for leaks\".\n\n1.  **Analyze the video content:**\n    *   The video shows a close-up of a bicycle tire.\n    *   Water is be",
+          "correct": false
+        },
+        {
+          "realtime": 22.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is currently \"looking for leaks\".\n\n1.  **Analyze the video content:**\n    *   The video starts with a close-up of a bicycle tire.\n    *   Water is bei",
+          "correct": false
+        },
+        {
+          "realtime": 26.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to know if the action \"use sandpaper/metal to polish rubber near leak\" is happening in the video.\n\n1.  **Analyze the video frames:**\n    *   **0.0 - 4.5:** The video starts with a close",
+          "correct": false
+        },
+        {
+          "realtime": 29.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to identify if a specific step is being performed in the video.\nThe step is: \"use sandpaper/metal to polish rubber near leak\".\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 4.",
+          "correct": false
+        },
+        {
+          "realtime": 33.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if a specific step is being performed in the video.\nThe step is: \"use sandpaper/metal to polish rubber near leak\".\n\n1.  **Analyze the video frames:**\n    *   **0.0 - 11.5:**",
+          "correct": false
+        },
+        {
+          "realtime": 36.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if a specific step is being performed in the video.\nThe step is: \"use sandpaper/metal to polish rubber near leak\".\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 4.",
+          "correct": false
+        },
+        {
+          "realtime": 50.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if a specific step is being performed in the video.\nThe step is: \"use sandpaper/metal to polish rubber near leak\".\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 4.",
+          "correct": false
+        },
+        {
+          "realtime": 46.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"apply glue\" is happening in the video.\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 11.0: The person is cleaning the tire with a green cloth.\n    *",
+          "correct": false
+        },
+        {
+          "realtime": 49.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"apply glue\" is happening in the video.\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 4.5: The person is inspecting a punctured tire, wetting it with",
+          "correct": false
+        },
+        {
+          "realtime": 53.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"apply glue\" is happening in the video.\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 11.5: The person is inspecting a tire, finding a puncture.\n    ",
+          "correct": false
+        },
+        {
+          "realtime": 56.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"apply glue\" is happening in the video.\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 11.5: The person is inspecting a punctured tire, finding the ho",
+          "correct": false
+        },
+        {
+          "realtime": 65.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"apply glue\" is happening in the video.\n\n1.  **Analyze the video frames:**\n    *   Frames 0.0 - 11.5: The person is inspecting a punctured tire, using water to",
+          "correct": false
+        },
+        {
+          "realtime": 61.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"paste patch\" is happening in the video.\n\n1.  **Analyze the video sequence:**\n    *   The video starts with finding a puncture on a tire tube using soapy water",
+          "correct": false
+        },
+        {
+          "realtime": 64.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"paste patch\" is happening in the video.\n\n1.  **Analyze the video sequence:**\n    *   00:00 - 00:04: Water test on a tire to find a leak.\n    *   00",
+          "correct": false
+        },
+        {
+          "realtime": 68.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to identify if the action \"paste patch\" is happening in the video.\n\n1.  **Analyze the video sequence:**\n    *   The video starts with a close-up of a tire, seemingly wet.\n    *   Text o",
+          "correct": false
+        },
+        {
+          "realtime": 71.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"paste patch\" is happening in the video.\n\n1.  **Analyze the video:**\n    *   The video shows a person fixing a puncture in a bicycle tire.\n    *   Frames 0.0 - 3.0",
+          "correct": false
+        },
+        {
+          "realtime": 93.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the action \"paste patch\" is happening in the video.\n\n1.  **Analyze the video:** I need to scan the video frames to find the moment where a patch is being applied to the inner",
+          "correct": false
+        },
+        {
+          "realtime": 100.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is performing the step \"put inner tube back\".\n\n1.  **Analyze the video content:**\n    *   The video starts with a close-up of a punctured inner tube.\n",
+          "correct": false
+        },
+        {
+          "realtime": 103.0,
+          "gt": "No",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is performing the step \"put inner tube back\".\n\n1.  **Analyze the video content:**\n    *   The video starts with a close-up of a punctured inner tube.\n",
+          "correct": false
+        },
+        {
+          "realtime": 107.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is performing the step \"put inner tube back\".\n\n1.  **Analyze the video content:**\n    *   The video starts with a close-up of a punctured inner tube.\n",
+          "correct": false
+        },
+        {
+          "realtime": 110.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is performing the step \"put inner tube back\".\n\n1.  **Analyze the video content:**\n    *   The video starts with a close-up of a punctured inner tube.\n",
+          "correct": false
+        },
+        {
+          "realtime": 132.0,
+          "gt": "Yes",
+          "pred": null,
+          "raw": "The user wants to know if the person in the video is performing the step \"put inner tube back\".\n\n1.  **Analyze the video content:**\n    *   The video starts with a close-up of a punctured inner tube.\n",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "STU",
+      "id": 631,
+      "probes": [
+        {
+          "realtime": 172.0,
+          "gt": "B",
+          "pred": null,
+          "raw": "The user wants to identify the position of the \"biggest giant\" relative to other giants.\n\n1.  **Analyze the frames:** I need to find a frame where multiple giants are visible and their relative sizes/",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "STU",
+      "id": 632,
+      "probes": [
+        {
+          "realtime": 488.0,
+          "gt": "B",
+          "pred": null,
+          "raw": "The user wants to identify the direction from which the man in white attacks the monkey.\n\n1.  **Analyze the frames:** I need to look for the specific moment of combat between the man in white and the ",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "task": "STU",
+      "id": 633,
+      "probes": [
+        {
+          "realtime": 171.0,
+          "gt": "A",
+          "pred": null,
+          "raw": "The user wants me to count the \"giants monster\" in the video.\n\n1.  **Analyze the frames:** I need to look for scenes depicting large, monstrous figures.\n    *   Frames 0-22 show a title screen and men",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

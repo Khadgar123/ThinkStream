@@ -116,12 +116,16 @@ def sample_frame_paths(frame_dir: Path,
 def build_messages(frame_paths, question):
     frame_list = list(frame_paths)
     user_content = []
-    append_timestamped_image_list(
-        user_content,
-        frame_list,
-        fps=DEFAULT_FRAME_FPS,
-        context_label="visual frame",
-    )
+    # Fallback: if single element is a video file, use video block directly
+    if len(frame_list) == 1 and str(frame_list[0]).endswith(('.mp4', '.avi', '.mov', '.mkv')):
+        user_content.append({"type": "video", "video": str(frame_list[0])})
+    else:
+        append_timestamped_image_list(
+            user_content,
+            frame_list,
+            fps=DEFAULT_FRAME_FPS,
+            context_label="visual frame",
+        )
     user_content.append({"type": "text", "text": question})
     return [
         {
@@ -156,8 +160,16 @@ def eval_one_probe(model, processor, pad_id,
     messages = build_messages(frame_paths, question)
     template_kwargs = dict(
         tokenize=True, return_dict=True, return_tensors="pt",
-        add_generation_prompt=True, do_sample_frames=False,
+        add_generation_prompt=True,
     )
+    # Compatibility: transformers >= 5.0 requires do_sample_frames
+    # via processor_kwargs; older versions accept it directly.
+    import inspect
+    sig = inspect.signature(processor.apply_chat_template)
+    if "processor_kwargs" in sig.parameters:
+        template_kwargs["processor_kwargs"] = {"do_sample_frames": False}
+    else:
+        template_kwargs["do_sample_frames"] = False
     inputs = processor.apply_chat_template(
         messages, **template_kwargs,
     )
