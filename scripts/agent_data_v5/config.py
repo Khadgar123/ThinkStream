@@ -9,6 +9,26 @@ import os
 from pathlib import Path
 from typing import Dict
 
+
+def _env_int(name: str, default: int) -> int:
+    raw = os.environ.get(name)
+    if raw is None or str(raw).strip() == "":
+        return int(default)
+    try:
+        return int(raw)
+    except ValueError:
+        return int(default)
+
+
+def _env_float(name: str, default: float) -> float:
+    raw = os.environ.get(name)
+    if raw is None or str(raw).strip() == "":
+        return float(default)
+    try:
+        return float(raw)
+    except ValueError:
+        return float(default)
+
 # ---------------------------------------------------------------------------
 # 1. Directory layout
 # ---------------------------------------------------------------------------
@@ -324,8 +344,11 @@ MAX_SAMPLE_TOKENS = 16384
 # ---------------------------------------------------------------------------
 
 # Construction-time guards to prevent over-long or too-wide batches.
-VLLM_CONTEXT_SAFETY_RATIO = 0.85
-VLLM_PREFILL_BATCH_TOKEN_BUDGET = 32_000_000  # KV usage ~2.6% at 64 conc → 1024 conc fits easily
+VLLM_CONTEXT_SAFETY_RATIO = _env_float("THINKSTREAM_VLLM_CONTEXT_SAFETY_RATIO", 0.85)
+VLLM_PREFILL_BATCH_TOKEN_BUDGET = _env_int(
+    "THINKSTREAM_VLLM_PREFILL_BATCH_TOKEN_BUDGET",
+    32_000_000,
+)  # KV usage ~2.6% at 64 conc → 1024 conc fits easily
 
 # Per-request token estimates (text + vision + output + thinking).
 # v12.12 (2026-05-02): visual budgets reflect mm_processor_kwargs profiles.
@@ -382,6 +405,13 @@ def safe_concurrency_for_pass(pass_name: str) -> int:
     """
     cfg = PASS_CONFIG.get(pass_name, {})
     requested = int(cfg.get("concurrent_videos", cfg.get("concurrent", 1)))
+    env_key = "THINKSTREAM_" + "".join(
+        ch if ch.isalnum() else "_" for ch in pass_name.upper()
+    ) + "_CONCURRENT"
+    requested = _env_int(env_key, requested)
+    global_cap = _env_int("THINKSTREAM_VLLM_MAX_CONCURRENT", 0)
+    if global_cap > 0:
+        requested = min(requested, global_cap)
     per_request = max(1, estimated_request_tokens(pass_name))
     if per_request > max_safe_context_tokens():
         return 1
@@ -406,8 +436,11 @@ PROACTIVE_RECALL_RATE = 0.05        # ~5% of chunks trigger proactive recall
 # 6. 397B vLLM configuration
 # ---------------------------------------------------------------------------
 
-VLLM_MODEL = "/home/tione/notebook/gaozhenkun/model/Qwen3.5-397B-A17B-FP8"
-VLLM_MAX_MODEL_LEN = 65536
+VLLM_MODEL = os.environ.get(
+    "THINKSTREAM_VLLM_MODEL",
+    "/home/tione/notebook/gaozhenkun/model/Qwen3.5-397B-A17B-FP8",
+)
+VLLM_MAX_MODEL_LEN = _env_int("THINKSTREAM_VLLM_MAX_MODEL_LEN", 65536)
 
 PASS_CONFIG = {
     # All teacher/data-construction calls run with enable_thinking=False.
@@ -472,7 +505,7 @@ PASS_CONFIG = {
         "max_tokens_compress": 4096,
         "temperature": 0.3,
         "thinking": False,
-        "concurrent_videos": 512,
+        "concurrent_videos": 1024,
     },
     "pass3a": {
         # v12.5 (2026-04-30): thinking True → False per user audit "在pass3
@@ -512,13 +545,13 @@ PASS_CONFIG = {
         "max_tokens": 16384,
         "temperature": 0.1,
         "thinking": False,
-        "concurrent": 256,    # bound by client_3a
+        "concurrent": 1024,   # bound by client_3a
     },
     "pass3b_visibility": {
         "max_tokens": 16384,
         "temperature": 0.1,
         "thinking": False,
-        "concurrent": 512,    # bound by client_3b
+        "concurrent": 1024,   # bound by client_3b
     },
     # v11.3: pass3c split into per-call-type sub-configs so thinking can
     # be controlled per call. The umbrella "pass3c" entry above stays as a

@@ -164,9 +164,25 @@ def _write_batch_manifest(videos: List[Dict], *, source: str, seed: int) -> None
         "final_files": {
             "sft_messages": str(FINAL_DIR / "train_sft_messages.jsonl"),
             "rl_trajectories": str(FINAL_DIR / "train_rl_trajectories.jsonl"),
-            "verl_multi_q": str(FINAL_DIR / "train_rl_multi_q.parquet"),
+            "val_trajectories": str(FINAL_DIR / "val_trajectories.jsonl"),
+            "test_trajectories": str(FINAL_DIR / "test_trajectories.jsonl"),
             "val_messages": str(FINAL_DIR / "val_messages.jsonl"),
             "test_messages": str(FINAL_DIR / "test_messages.jsonl"),
+            "dataset_info": str(FINAL_DIR / "dataset_info.json"),
+        },
+        "derived_files": {
+            "train_parquet_ts_image": str(
+                DATA_ROOT / "rendered" / "ts_image" / "train_rl_multi_q.parquet"
+            ),
+            "val_parquet_ts_image": str(
+                DATA_ROOT / "rendered" / "ts_image" / "val_rl_multi_q.parquet"
+            ),
+            "train_parquet_video_meta": str(
+                DATA_ROOT / "rendered" / "video_meta" / "train_rl_multi_q.parquet"
+            ),
+            "val_parquet_video_meta": str(
+                DATA_ROOT / "rendered" / "video_meta" / "val_rl_multi_q.parquet"
+            ),
         },
     }
     (DATA_ROOT / "batch_manifest.json").write_text(

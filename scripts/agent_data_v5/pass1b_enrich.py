@@ -27,6 +27,7 @@ from .config import (
     AGENT_CHUNK_SEC,
     EVIDENCE_1B_DIR,
     PASS_CONFIG,
+    VLLM_MAX_MODEL_LEN,
 )
 
 logger = logging.getLogger(__name__)
@@ -344,21 +345,21 @@ def _parse_combined_json(raw: str):
 # ---------------------------------------------------------------------------
 
 
-MAX_MODEL_LEN = 65536
+MAX_MODEL_LEN = VLLM_MAX_MODEL_LEN
 INPUT_MARGIN = 1000  # safety margin for tokenizer differences
 
 
 def _safe_max_tokens(prompt: str, configured_max: int) -> int:
     """Dynamically cap max_tokens so input + max_tokens <= MAX_MODEL_LEN.
 
-    For short inputs (~1K), max_tokens ≈ configured_max (60K).
-    For long inputs (~5K), max_tokens drops to ~59K.
-    Prevents 400 error on long videos.
+    The model context limit is exported by the batch launcher. For batch2's
+    4-card teacher this is 32K, so output budget must be capped by remaining
+    context rather than assuming the historical 64K server.
     """
     # Estimate input tokens: ~1 token per 3.5 chars for mixed EN/CJK
     estimated_input = len(prompt) // 3 + INPUT_MARGIN
     available = MAX_MODEL_LEN - estimated_input
-    return max(8192, min(configured_max, available))  # floor 8K for thinking room
+    return max(1, min(configured_max, available))
 
 
 async def _call_with_semaphore(client, prompt, max_tokens, temperature, request_id, semaphore,
