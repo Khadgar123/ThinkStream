@@ -20,12 +20,16 @@ from typing import Callable, Dict, List, Optional
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
+    RECALL_RETURN_CHUNKS,
     VISUAL_WINDOW_CHUNKS,
     append_visual_frames,
+    build_recalled_frames_metadata,
     build_user_content,
     format_memory_block,
     normalize_frame_protocol,
     parse_agent_output_v12,
+    recall_time_string_for_chunks,
+    select_recall_chunks,
     system_prompt_for_frame_protocol,
 )
 
@@ -218,22 +222,10 @@ class MemoryState:
                 summary = dict(summary)
                 summary["text"] = self._tokenizer.decode(ids[:SUMMARY_TOKENS_MAX])
                 summary["_truncated"] = True
-        # v12.12 (2026-05-02): hard cap removed. Per the unified compress
-        # policy (matching pass2_rollout): there is NO upper limit on the
-        # number of summaries; the system trigger + range-selection scoring
-        # uses merge_level as a SOFT penalty (already implemented in pass2's
-        # score_range_for_compression) to discourage repeatedly re-merging
-        # already-summarized content. Letting summaries pile up here is OK
-        # because the trigger fires on TOTAL memory tokens (thinks +
-        # summaries) — once total exceeds threshold, the system selects an
-        # optimal range from the full timeline (potentially including old
-        # summaries with high merge_level). Old behavior (`while len > 5:
-        # brutal text concat`) destroyed information irreversibly and
-        # diverged from pass2's design.
-        #
-        # Caller is expected to drive merging via the normal compress
-        # trigger pipeline (system → range → model summary), NOT via a
-        # post-hoc bookkeeping merge here.
+        # Summaries are prompt memory only. Compression trigger/range
+        # selection operate on raw recent thinks, while recall uses the raw
+        # retrieval archive. Runtime removes covered recent thinks and appends
+        # this summary without re-merging old summaries here.
         self.compressed_segments.append(summary)
 
     # --- Queries tracking (matches SFT <queries> zone) ---
@@ -406,7 +398,7 @@ def filter_archive_by_time_range(
 def bm25_retrieve(
     query: Dict,
     archive: List[Dict],
-    max_results: int = 4,
+    max_results: int = RECALL_RETURN_CHUNKS,
 ) -> Dict:
     """BM25-based retrieval from archive.
 
@@ -463,17 +455,22 @@ def bm25_retrieve(
         }
 
     top_items = [archive[i] for i in top_indices]
-    returned_chunks = [item["chunk"] for item in top_items]
-    text_parts = [f'[{item["time"]}] {item["text"]}' for item in top_items]
-
-    t_start = returned_chunks[0] * AGENT_CHUNK_SEC
-    t_end = (returned_chunks[-1] + 1) * AGENT_CHUNK_SEC
+    returned_chunks = select_recall_chunks(
+        [item["chunk"] for item in top_items],
+        max_chunks=max_results,
+    )
+    returned_set = set(returned_chunks)
+    text_parts = [
+        f'[{item["time"]}] {item["text"]}'
+        for item in top_items
+        if int(item.get("chunk", -1)) in returned_set
+    ]
 
     return {
         "source": "historical_frames",
-        "time": f"{int(t_start)}-{int(t_end)}",
+        "time": recall_time_string_for_chunks(returned_chunks),
         "text_content": "\n".join(text_parts),
-        "returned_chunks": sorted(returned_chunks),
+        "returned_chunks": returned_chunks,
     }
 
 
@@ -891,8 +888,10 @@ class StreamingAgentLoop:
             print(f"[AGENT_DEBUG] raw_output={output_text!r}")
             print(f"[AGENT_DEBUG] parsed action={parsed['action']!r} think_len={len(parsed['think'])}")
 
-        # 7. Update memory state based on action
-        if parsed["think"]:
+        # 7. Update memory state based on action. Compress turns are
+        # memory-management tool calls, not video observations, so their
+        # <think> is not inserted into recent_thinks / recall archive.
+        if parsed["think"] and parsed["action"] != "compress":
             self.memory.add_think(chunk_idx, parsed["think"])
             # Stateful retrievers (e.g. HybridRetriever) hook here to
             # encode the chunk's frames into their visual index. BM25Retriever
@@ -926,19 +925,17 @@ class StreamingAgentLoop:
                 recall_result = self.retriever(
                     query, self.memory.retrieval_archive
                 )
-                returned_chunks = recall_result.get("returned_chunks", [])
+                returned_chunks = select_recall_chunks(
+                    recall_result.get("returned_chunks", [])
+                )
+                recall_result["returned_chunks"] = returned_chunks
 
                 # Build recalled_frames info (including frame_paths so we
                 # don't fallback to full-video decoding in recall_response).
                 recalled_frames = None
                 if returned_chunks and recall_result.get("source") == "historical_frames":
-                    t_start = returned_chunks[0] * AGENT_CHUNK_SEC
-                    t_end = (returned_chunks[-1] + 1) * AGENT_CHUNK_SEC
-                    recalled_frames = {
-                        "time_range": [int(t_start), int(t_end)],
-                        "n_frames": len(returned_chunks) * FRAMES_PER_CHUNK,
-                        "source": "historical_frames",
-                    }
+                    rf_paths = []
+                    frame_chunks = []
                     # Build recalled frame_paths by resolving per-chunk frames
                     # under the same frames_root logic.
                     if self.frames_root:
@@ -952,20 +949,27 @@ class StreamingAgentLoop:
                                 frame_dir = Path(self.frames_root) / vp.with_suffix("")
                         else:
                             frame_dir = Path(self.frames_root) / vp.with_suffix("")
-                        rf_paths = []
                         if frame_dir.exists():
                             # v12.6 fix: same chunk×FRAMES_PER_CHUNK convention
                             # used everywhere else (pass1a, _get_frame_paths,
                             # streaming_vllm). Old code used seconds-based
                             # offsets which were off-by-half under FPS=2.
                             for rc in returned_chunks:
+                                chunk_paths = []
                                 for fi in range(FRAMES_PER_CHUNK):
                                     fnum = rc * FRAMES_PER_CHUNK + fi + 1
                                     fp = frame_dir / f"frame_{fnum:06d}.jpg"
                                     if fp.exists():
-                                        rf_paths.append(str(fp))
-                        if rf_paths:
-                            recalled_frames["frame_paths"] = rf_paths
+                                        chunk_paths.append(str(fp))
+                                if chunk_paths:
+                                    frame_chunks.append(rc)
+                                    rf_paths.extend(chunk_paths)
+                    recalled_frames = build_recalled_frames_metadata(
+                        frame_chunks if rf_paths else returned_chunks,
+                        rf_paths,
+                        chunk_sec=AGENT_CHUNK_SEC,
+                        frames_per_chunk=FRAMES_PER_CHUNK,
+                    )
 
                 # v12.6 fix: build true multi-turn recall prompt matching
                 # SFT shape B (pass5_messages.py:212-260).

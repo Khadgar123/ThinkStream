@@ -29,12 +29,14 @@ try:
         AGENT_CHUNK_SEC,
         VISUAL_WINDOW_CHUNKS,
         FRAMES_PER_CHUNK,
+        RECALL_RETURN_CHUNKS,
         compute_visual_window_start,
     )
 except ImportError:
     AGENT_CHUNK_SEC = 1
     VISUAL_WINDOW_CHUNKS = 16
     FRAMES_PER_CHUNK = 2
+    RECALL_RETURN_CHUNKS = 4
 
     def compute_visual_window_start(
         chunk_idx: int,
@@ -42,6 +44,91 @@ except ImportError:
         mode: Optional[str] = None,
     ) -> int:
         return max(0, int(chunk_idx) - int(visual_window_chunks) + 1)
+
+
+def select_recall_chunks(
+    chunks: Optional[Sequence[Any]],
+    max_chunks: Optional[int] = None,
+) -> List[int]:
+    """Canonical recall chunk post-processing.
+
+    Retrieval ranks candidate chunks first; every SFT/RL/eval caller then
+    de-duplicates, caps to top-K, and sorts the selected chunk ids before
+    rendering frames. This prevents any path from expanding a recall time range
+    into an unbounded number of visual frames.
+    """
+    limit = RECALL_RETURN_CHUNKS if max_chunks is None else int(max_chunks)
+    if limit <= 0:
+        return []
+    selected: List[int] = []
+    seen = set()
+    for raw in chunks or []:
+        try:
+            chunk = int(raw)
+        except (TypeError, ValueError):
+            continue
+        if chunk < 0 or chunk in seen:
+            continue
+        selected.append(chunk)
+        seen.add(chunk)
+        if len(selected) >= limit:
+            break
+    return sorted(selected)
+
+
+def recall_time_range_for_chunks(
+    chunks: Optional[Sequence[Any]],
+    *,
+    chunk_sec: float = AGENT_CHUNK_SEC,
+) -> Optional[List[int]]:
+    """Return the exclusive-end video time range covered by selected chunks."""
+    selected = select_recall_chunks(chunks)
+    if not selected:
+        return None
+    start = min(selected) * float(chunk_sec)
+    end = (max(selected) + 1) * float(chunk_sec)
+    return [int(start), int(end)]
+
+
+def recall_time_string_for_chunks(
+    chunks: Optional[Sequence[Any]],
+    *,
+    chunk_sec: float = AGENT_CHUNK_SEC,
+) -> str:
+    tr = recall_time_range_for_chunks(chunks, chunk_sec=chunk_sec)
+    if not tr:
+        return ""
+    return f"{tr[0]}-{tr[1]}"
+
+
+def build_recalled_frames_metadata(
+    chunks: Optional[Sequence[Any]],
+    frame_paths: Optional[Sequence[Any]] = None,
+    *,
+    source: str = "historical_frames",
+    chunk_sec: float = AGENT_CHUNK_SEC,
+    frames_per_chunk: int = FRAMES_PER_CHUNK,
+) -> Optional[Dict[str, Any]]:
+    """Build the canonical <recalled_frames> metadata block.
+
+    When frame_paths are supplied, callers should build them from the same
+    selected chunks returned by select_recall_chunks().
+    """
+    selected = select_recall_chunks(chunks)
+    if not selected:
+        return None
+    tr = recall_time_range_for_chunks(selected, chunk_sec=chunk_sec)
+    if not tr:
+        return None
+    paths = list(frame_paths or [])
+    out: Dict[str, Any] = {
+        "time_range": tr,
+        "n_frames": len(paths) if paths else len(selected) * int(frames_per_chunk),
+        "source": source,
+    }
+    if paths:
+        out["frame_paths"] = paths
+    return out
 
 
 def infer_video_metadata(
@@ -800,7 +887,8 @@ SYSTEM_PROMPT_V12 = (
     "contents (oldest contiguous chunks that can be safely condensed). "
     "Retain entity names, visual attributes, OCR, state changes.\n\n"
     "Output format (every turn must follow this exactly):\n"
-    "  <think>40-80 tokens describing only the current chunk</think>\n"
+    "  <think>40-80 tokens describing the current chunk, except on "
+    "compress turns where it describes the memory-management decision</think>\n"
     "  Then ONE of:\n"
     "    <tool_call>{\"name\":\"recall\",\"arguments\":{...}}</tool_call>\n"
     "    <tool_call>{\"name\":\"compress\",\"arguments\":{...}}</tool_call>\n"
@@ -809,7 +897,10 @@ SYSTEM_PROMPT_V12 = (
     "Answer rules: if a pending query includes an 'Answer format:' line, "
     "the text inside <answer> must follow that line exactly. For MC questions, "
     "do not add explanation when the requested format is one letter only.\n\n"
-    "Think rules: describe ONLY observable visual facts in the current chunk. "
+    "Think rules: on visual turns, describe ONLY observable visual facts in "
+    "the current chunk. On compress turns, do not invent a visual observation; "
+    "state that memory is over budget and which older time range should be "
+    "compressed. "
     "Evidence priority: (1) current frame-tagged images determine the current think; "
     "(2) tagged memory records are history and entity naming only; (3) if current frames "
     "conflict with memory, ignore memory for the current visual description. "

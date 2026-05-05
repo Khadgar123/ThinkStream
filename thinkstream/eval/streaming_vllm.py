@@ -38,7 +38,10 @@ from thinkstream.data.agent_protocol import (
     FRAMES_PER_CHUNK,
     TOOLS_SCHEMA,
     VISUAL_WINDOW_CHUNKS,
+    append_visual_frames,
+    build_recalled_frames_metadata,
     normalize_frame_protocol,
+    select_recall_chunks,
 )
 from thinkstream.model.agent_loop import (
     COMPRESS_RANGE_MIN,
@@ -78,6 +81,7 @@ class _SampleRunner:
     # last_compress_trigger: True when system injected a trigger this step
     # so caller can skip user_question on the same step.
     _last_trigger: bool = False
+    _last_action: str = "unknown"
     chunks_generated: int = 0
 
 
@@ -128,6 +132,36 @@ def _resolve_frame_paths(
 
     if len(paths) < max(1, n_frames // 2):
         return None
+    return paths
+
+
+def _resolve_chunk_frame_paths(
+    video_path: str,
+    chunk_idx: int,
+    frames_root: Optional[str],
+    video_root: Optional[str],
+) -> List[str]:
+    """Resolve exactly one chunk's pre-extracted frames."""
+    if not frames_root:
+        return []
+    vp = Path(video_path)
+    if video_root:
+        try:
+            rel = vp.relative_to(Path(video_root))
+            frame_dir = Path(frames_root) / rel.with_suffix("")
+        except ValueError:
+            frame_dir = Path(frames_root) / vp.with_suffix("")
+    else:
+        frame_dir = Path(frames_root) / vp.with_suffix("")
+    if not frame_dir.exists():
+        return []
+    paths: List[str] = []
+    for fi in range(FRAMES_PER_CHUNK):
+        fnum = int(chunk_idx) * FRAMES_PER_CHUNK + fi + 1
+        fp = frame_dir / f"frame_{fnum:06d}.jpg"
+        if not fp.exists():
+            return []
+        paths.append(str(fp))
     return paths
 
 
@@ -226,7 +260,7 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     )
 
 
-def _apply_step_output(runner: _SampleRunner, output_text: str) -> None:
+def _apply_step_output(runner: _SampleRunner, output_text: str) -> str:
     """Replicates the post-generate state update in StreamingAgentLoop.step().
 
     Eval mode → recall path is dead (allow_recall=False at sampler level
@@ -235,10 +269,10 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> None:
     parsed = _parse_agent_output(output_text)
     chunk_idx = runner.current_chunk
 
-    if parsed.get("think"):
+    action = parsed.get("action") or "unknown"
+    runner._last_action = action
+    if parsed.get("think") and action != "compress":
         runner.memory.add_think(chunk_idx, parsed["think"])
-
-    action = parsed.get("action")
     if action == "compress":
         summary = parsed["payload"].get("summary", {})
         if summary and "time_range" in summary:
@@ -261,6 +295,7 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> None:
                     break
             runner.answer_text = answer_text
             runner.done = True
+    return action
 
 
 def _option_match(answer_text: str, options: List[str]) -> int:
@@ -479,7 +514,7 @@ def streaming_predict_mcq_vllm(
         for (r, _), out in zip(active_pairs, outputs):
             try:
                 text = out.outputs[0].text
-                _apply_step_output(r, text)
+                action = _apply_step_output(r, text)
                 r.chunks_generated += 1
                 if debug:
                     dbg.log({
@@ -489,6 +524,7 @@ def streaming_predict_mcq_vllm(
                         "memory_thinks": len(r.memory.recent_thinks),
                         "memory_compressed": len(r.memory.compressed_segments),
                         "compress_trigger": r._last_trigger,
+                        "action": action,
                     })
             except Exception as e:
                 r.error = f"apply:{e}"
@@ -497,6 +533,8 @@ def streaming_predict_mcq_vllm(
         # Advance chunk pointer for all runners that participated this round
         for r, _ in active_pairs:
             if not r.done:
+                if r._last_action == "compress" and r._last_trigger:
+                    continue
                 r.current_chunk += 1
                 if r.current_chunk >= r.num_chunks:
                     # Reached end without ever emitting <answer> (v12 response); mark done.
@@ -706,10 +744,9 @@ def _apply_rollout_output(
     chunk_idx = runner.current_chunk
     parsed = _parse_agent_output(output_text)
 
-    if parsed.get("think"):
-        runner.memory.add_think(chunk_idx, parsed["think"])
-
     action = parsed.get("action") or "unknown"
+    if parsed.get("think") and action != "compress":
+        runner.memory.add_think(chunk_idx, parsed["think"])
     if action == "compress":
         summary = parsed.get("payload", {}).get("summary", {})
         if summary and "time_range" in summary:
@@ -958,6 +995,11 @@ def streaming_vllm_rollout(
                 recall_runners.append((r, msgs, text))
                 continue
 
+            if last_action == "compress" and r._last_trigger:
+                # Compression is an inter-chunk memory-management turn.
+                # It should fold recent memory, then retry the same video chunk.
+                continue
+
             r.current_chunk += 1
             # RL stops only when (a) the runner reached max_chunks (a few
             # past ask_chunk) or (b) it emitted a response after ask_chunk.
@@ -988,19 +1030,30 @@ def streaming_vllm_rollout(
                             r.done = True
                         continue
                     recall_result = r.retriever(query, r.memory.retrieval_archive)
-                    returned_chunks = recall_result.get("returned_chunks", [])
+                    returned_chunks = select_recall_chunks(
+                        recall_result.get("returned_chunks", [])
+                    )
+                    recall_result["returned_chunks"] = returned_chunks
                     r.chunk_results[-1]["recall_returned_chunks"] = list(returned_chunks)
 
                     # Build recalled_frames metadata (matching shape B in pass5)
                     recalled_frames = None
                     if returned_chunks and recall_result.get("source") == "historical_frames":
-                        t_start = returned_chunks[0] * AGENT_CHUNK_SEC
-                        t_end = (returned_chunks[-1] + 1) * AGENT_CHUNK_SEC
-                        recalled_frames = {
-                            "time_range": [int(t_start), int(t_end)],
-                            "n_frames": len(returned_chunks) * FRAMES_PER_CHUNK,
-                            "source": "historical_frames",
-                        }
+                        rf_paths: List[str] = []
+                        frame_chunks: List[int] = []
+                        for rc in returned_chunks:
+                            cf = _resolve_chunk_frame_paths(
+                                r.video_path, rc, r.frames_root, r.video_root,
+                            )
+                            if cf:
+                                frame_chunks.append(rc)
+                                rf_paths.extend(cf)
+                        recalled_frames = build_recalled_frames_metadata(
+                            frame_chunks or returned_chunks,
+                            rf_paths,
+                            chunk_sec=AGENT_CHUNK_SEC,
+                            frames_per_chunk=FRAMES_PER_CHUNK,
+                        )
 
                     # Multi-turn message construction: original prompt +
                     # assistant(first_text) + user(tool result + frames)
@@ -1020,6 +1073,19 @@ def streaming_vllm_rollout(
                             "type": "text",
                             "text": f"<recalled_frames>{rf_header}</recalled_frames>",
                         })
+                        if recalled_frames.get("frame_paths"):
+                            tr_start, tr_end = recalled_frames["time_range"]
+                            append_visual_frames(
+                                tool_user_content,
+                                recalled_frames["frame_paths"],
+                                frame_protocol=r.frame_protocol,
+                                fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
+                                start_frame_index=int(tr_start) * FRAMES_PER_CHUNK,
+                                total_num_frames=int(tr_end) * FRAMES_PER_CHUNK,
+                                context_label="recalled frame",
+                                min_pixels=r.min_pixels,
+                                max_pixels=r.max_pixels,
+                            )
                     rr_json = json.dumps({
                         "source": recall_result.get("source", ""),
                         "time": recall_result.get("time", ""),

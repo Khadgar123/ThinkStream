@@ -35,15 +35,19 @@ import hashlib
 import json
 import logging
 import os
+import re
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional
 
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
+    FRAMES_PER_CHUNK,
     format_memory_block,
     format_queries_block,
     append_visual_frames,
+    build_recalled_frames_metadata,
     normalize_frame_protocol,
+    select_recall_chunks,
     system_prompt_for_frame_protocol,
 )
 
@@ -71,11 +75,6 @@ except Exception:
         DEFAULT_DATA_DIR = DEFAULT_DATA_DIR.parent
 FINAL_DIR = DEFAULT_DATA_DIR / "final"
 
-try:
-    _FRAME_REL_PREFIX = str((DEFAULT_DATA_DIR / "frames").relative_to(PROJECT_ROOT))
-except ValueError:
-    _FRAME_REL_PREFIX = str(DEFAULT_DATA_DIR / "frames")
-
 SPLITS = [
     ("train_sft_full", "train_sft_trajectories", "train_sft_messages"),
     ("val", "val_trajectories", "val_messages"),
@@ -95,35 +94,33 @@ SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO = 0.35
 # Messages construction (self-contained mirror of data_processor logic)
 # ---------------------------------------------------------------------------
 
-def _resolve_paths(paths: List[str], base_path: Path) -> List[str]:
+def _resolve_cli_path(raw: str, *, base: Path = PROJECT_ROOT) -> Path:
+    p = Path(raw).expanduser()
+    return p if p.is_absolute() else base / p
+
+
+def _frame_rel_prefix(data_dir: Path) -> str:
+    try:
+        return str((data_dir / "frames").relative_to(PROJECT_ROOT))
+    except ValueError:
+        return str(data_dir / "frames")
+
+
+def _resolve_paths(paths: List[str], base_path: Path, data_dir: Path) -> List[str]:
     """Resolve frame paths after moving a batch directory between machines."""
     roots = [base_path]
+    if data_dir not in roots:
+        roots.append(data_dir)
     if DEFAULT_DATA_DIR not in roots:
         roots.append(DEFAULT_DATA_DIR)
     out: List[str] = []
     for raw in paths:
         p = Path(str(raw))
-        if not p.is_absolute():
-            direct = base_path / p
-            if direct.exists():
-                out.append(str(direct))
-                continue
-            parts = p.parts
-            if "frames" in parts:
-                idx = parts.index("frames")
-                for root in roots:
-                    candidate = root / "frames" / Path(*parts[idx + 1:])
-                    if candidate.exists():
-                        out.append(str(candidate))
-                        break
-                else:
-                    out.append(str(direct))
-                continue
+        direct = p if p.is_absolute() else base_path / p
+        if direct.exists():
             out.append(str(direct))
             continue
-        if p.exists():
-            out.append(str(p))
-            continue
+
         parts = p.parts
         if "frames" in parts:
             idx = parts.index("frames")
@@ -133,16 +130,110 @@ def _resolve_paths(paths: List[str], base_path: Path) -> List[str]:
                     out.append(str(candidate))
                     break
             else:
-                out.append(str(p))
+                out.append(str(direct))
             continue
-        out.append(str(p))
+        out.append(str(direct))
     return out
+
+
+def _chunks_from_recalled_time_range(rf: Dict, chunk_sec: float) -> List[int]:
+    tr = rf.get("time_range") or []
+    if len(tr) < 2:
+        return []
+    try:
+        start = int(float(tr[0]) / float(chunk_sec))
+        end = int((float(tr[1]) - float(chunk_sec)) / float(chunk_sec))
+    except (TypeError, ValueError, ZeroDivisionError):
+        return []
+    if end < start:
+        return []
+    return list(range(max(0, start), end + 1))
+
+
+def _normalise_recalled_frames(inp: Dict, chunk_sec: float) -> Optional[Dict]:
+    """Cap recalled frames with the same helper used by RL/eval/runtime."""
+    rf = inp.get("recalled_frames") or {}
+    if not rf:
+        return None
+    rr = inp.get("recall_result") or {}
+    original_chunks: List[int] = []
+    for raw in rr.get("returned_chunks") or []:
+        try:
+            original_chunks.append(int(raw))
+        except (TypeError, ValueError):
+            continue
+    if not original_chunks:
+        original_chunks = _chunks_from_recalled_time_range(rf, chunk_sec)
+    selected_chunks = select_recall_chunks(original_chunks)
+    if not selected_chunks:
+        return None
+
+    original_paths = list(rf.get("frame_paths") or [])
+    selected_paths: List[str] = []
+    if original_paths and original_chunks:
+        by_chunk: Dict[int, List[str]] = {}
+        cursor = 0
+        for chunk in original_chunks:
+            chunk_paths = original_paths[cursor:cursor + FRAMES_PER_CHUNK]
+            cursor += FRAMES_PER_CHUNK
+            if chunk_paths:
+                by_chunk[int(chunk)] = chunk_paths
+        for chunk in selected_chunks:
+            selected_paths.extend(by_chunk.get(int(chunk), []))
+    if original_paths and not selected_paths:
+        selected_paths = original_paths[:len(selected_chunks) * FRAMES_PER_CHUNK]
+
+    return build_recalled_frames_metadata(
+        selected_chunks,
+        selected_paths,
+        chunk_sec=chunk_sec,
+        frames_per_chunk=FRAMES_PER_CHUNK,
+    )
+
+
+def _compress_management_think_from_output(output: str) -> str:
+    think = (
+        "Memory is over budget, so I should compress older observations "
+        "into a concise summary."
+    )
+    m = re.search(r"<tool_call>\s*(.*?)\s*</tool_call>", output or "", re.DOTALL)
+    if not m:
+        return think
+    try:
+        tool_call = json.loads(m.group(1))
+        tr = (tool_call.get("arguments") or {}).get("time_range") or []
+        if isinstance(tr, list) and len(tr) == 2:
+            return (
+                f"Memory is over budget, so I should compress older observations "
+                f"from t={int(tr[0])}-{int(tr[1])} into a concise summary."
+            )
+    except Exception:
+        return think
+    return think
+
+
+def _normalise_assistant_output(sample: Dict) -> str:
+    output = str(sample.get("output", ""))
+    if sample.get("sample_type") != "compress":
+        return output
+    think = _compress_management_think_from_output(output)
+    replacement = f"<think>{think}</think>"
+    if re.search(r"<think>.*?</think>", output, flags=re.DOTALL):
+        return re.sub(
+            r"<think>.*?</think>",
+            replacement,
+            output,
+            count=1,
+            flags=re.DOTALL,
+        )
+    return replacement + output
 
 
 def build_messages(
     sample: Dict,
     base_path: Path,
     *,
+    data_dir: Optional[Path] = None,
     frame_protocol: str = "ts_image",
 ) -> List[Dict]:
     """Produce v12 ShareGPT messages for one sample. Stdlib-only.
@@ -152,6 +243,9 @@ def build_messages(
     prompt builder: memory, queries, visual_window, protocol-selected visual
     frames, recalled frames, recall_result, then user input.
     """
+    data_dir = data_dir or DEFAULT_DATA_DIR
+    frame_rel_prefix = _frame_rel_prefix(data_dir)
+
     inp = sample["input"]
     chunk_idx = sample["chunk_idx"]
     chunk_sec = float(AGENT_CHUNK_SEC)
@@ -230,7 +324,7 @@ def build_messages(
                     for fi in range(_FPC):
                         fnum = ci * _FPC + fi + 1
                         paths.append(
-                            f"{_FRAME_REL_PREFIX}/{vid}/frame_{fnum:06d}.jpg"
+                            f"{frame_rel_prefix}/{vid}/frame_{fnum:06d}.jpg"
                         )
                 vw["frame_paths"] = paths
 
@@ -251,7 +345,7 @@ def build_messages(
                 _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
             append_visual_frames(
                 user_content,
-                _resolve_paths(vw["frame_paths"], base_path),
+                _resolve_paths(vw["frame_paths"], base_path, data_dir),
                 frame_protocol=frame_protocol,
                 fps=float(_FPC / chunk_sec),
                 start_frame_index=window_start * _FPC,
@@ -278,7 +372,7 @@ def build_messages(
         and not is_recall_multiturn
         and not inter_chunk
     ):
-        rf = inp["recalled_frames"]
+        rf = _normalise_recalled_frames(inp, chunk_sec) or inp["recalled_frames"]
         rf_header = json.dumps({
             "time_range": rf["time_range"],
             "source": rf.get("source", "historical_frames"),
@@ -289,9 +383,6 @@ def build_messages(
             "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
         })
         if "frame_paths" in rf:
-            from thinkstream.data.agent_protocol import (
-                FRAMES_PER_CHUNK as _FPC,
-            )
             tr0, tr1 = rf["time_range"]
             try:
                 from scripts.agent_data_v5.config import (
@@ -301,11 +392,11 @@ def build_messages(
                 _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
             append_visual_frames(
                 user_content,
-                _resolve_paths(rf["frame_paths"], base_path),
+                _resolve_paths(rf["frame_paths"], base_path, data_dir),
                 frame_protocol=frame_protocol,
-                fps=float(_FPC / chunk_sec),
-                start_frame_index=int(tr0 * _FPC),
-                total_num_frames=int(tr1 * _FPC),
+                fps=float(FRAMES_PER_CHUNK / chunk_sec),
+                start_frame_index=int(tr0 * FRAMES_PER_CHUNK),
+                total_num_frames=int(tr1 * FRAMES_PER_CHUNK),
                 context_label="recalled frame",
                 min_pixels=_RTKW["min_pixels"],
                 max_pixels=_RTKW["max_pixels"],
@@ -362,7 +453,7 @@ def build_messages(
         }, ensure_ascii=False)
         tool_payload: List[Dict] = []
 
-        rf = inp.get("recalled_frames")
+        rf = _normalise_recalled_frames(inp, chunk_sec)
         if rf:
             rf_header = json.dumps({
                 "time_range": rf["time_range"],
@@ -374,9 +465,6 @@ def build_messages(
                 "text": f"<recalled_frames>{rf_header}</recalled_frames>",
             })
             if "frame_paths" in rf:
-                from thinkstream.data.agent_protocol import (
-                    FRAMES_PER_CHUNK as _FPC,
-                )
                 from scripts.agent_data_v5.config import (
                     AGENT_CHUNK_SEC as _CHUNK_SEC,
                 )
@@ -390,11 +478,11 @@ def build_messages(
                 tr_start_chunk = int(tr_start / float(_CHUNK_SEC))
                 append_visual_frames(
                     tool_payload,
-                    _resolve_paths(rf["frame_paths"], base_path),
+                    _resolve_paths(rf["frame_paths"], base_path, data_dir),
                     frame_protocol=frame_protocol,
-                    fps=float(_FPC / float(_CHUNK_SEC)),
-                    start_frame_index=tr_start_chunk * _FPC,
-                    total_num_frames=int(tr_end / float(_CHUNK_SEC)) * _FPC,
+                    fps=float(FRAMES_PER_CHUNK / float(_CHUNK_SEC)),
+                    start_frame_index=tr_start_chunk * FRAMES_PER_CHUNK,
+                    total_num_frames=int(tr_end / float(_CHUNK_SEC)) * FRAMES_PER_CHUNK,
                     context_label="recalled frame",
                     min_pixels=_RTKW["min_pixels"],
                     max_pixels=_RTKW["max_pixels"],
@@ -425,7 +513,7 @@ def build_messages(
     else:
         messages.append({
             "role": "assistant",
-            "content": [{"type": "text", "text": sample["output"]}],
+            "content": [{"type": "text", "text": _normalise_assistant_output(sample)}],
         })
 
     return messages
@@ -649,10 +737,12 @@ def convert(
     *,
     is_trajectory: bool,
     base_path: Path,
+    data_dir: Optional[Path] = None,
     limit: Optional[int] = None,
     balance_sft: bool = False,
     frame_protocol: str = "ts_image",
 ) -> Dict[str, int]:
+    data_dir = data_dir or DEFAULT_DATA_DIR
     iter_fn = _iter_trajectories if is_trajectory else _iter_flat
     counts = {"ok": 0, "failed": 0}
     by_type: Dict[str, int] = {}
@@ -674,6 +764,7 @@ def convert(
                 messages = build_messages(
                     sample,
                     base_path,
+                    data_dir=data_dir,
                     frame_protocol=frame_protocol,
                 )
             except (KeyError, ValueError) as exc:
@@ -754,15 +845,17 @@ def main() -> None:
     parser.add_argument("--base-path", default=str(PROJECT_ROOT),
                         help="Project root for resolving relative video/frame paths. "
                         "Generated samples store frame paths relative to the repo "
-                        "or absolute paths under the batch root.")
+                        "or absolute paths under the batch root. The batch root "
+                        "for frame lookup is inferred from --final-dir.")
     parser.add_argument("--limit", type=int, default=0, help="Per-split sample cap (0 = unlimited).")
     parser.add_argument("--no-balance-sft", action="store_true",
                         help="Disable train_sft_messages silent downsampling.")
     args = parser.parse_args()
 
-    final_dir = Path(args.final_dir)
-    output_dir = Path(args.output_dir) if args.output_dir else final_dir
-    base_path = Path(args.base_path)
+    final_dir = _resolve_cli_path(args.final_dir)
+    output_dir = _resolve_cli_path(args.output_dir) if args.output_dir else final_dir
+    base_path = _resolve_cli_path(args.base_path)
+    data_dir = final_dir.parent if final_dir.name == "final" else DEFAULT_DATA_DIR
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
     if not final_dir.exists():
         raise SystemExit(f"final dir not found: {final_dir}")
@@ -797,6 +890,7 @@ def main() -> None:
         )
         balance = out_stem == "train_sft_messages" and not args.no_balance_sft
         counts = convert(src, dst, is_trajectory=is_traj, base_path=base_path,
+                         data_dir=data_dir,
                          limit=args.limit or None, balance_sft=balance,
                          frame_protocol=frame_protocol)
         logger.info(

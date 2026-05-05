@@ -50,7 +50,13 @@ from verl.recurrent.interface import (
 from verl.recurrent.utils import log_step, msg
 from verl.protocol import DataProtoItem
 from verl.trainer.ppo.ray_trainer import _timer
-from thinkstream.data.agent_protocol import append_timestamped_image_list
+from thinkstream.data.agent_protocol import (
+    RECALL_RETURN_CHUNKS,
+    build_recalled_frames_metadata,
+    recall_time_string_for_chunks,
+    select_recall_chunks,
+    append_timestamped_image_list,
+)
 
 logger = logging.getLogger(__file__)
 logger.setLevel("INFO")
@@ -328,7 +334,7 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
                 recalled_frames["frame_paths"],
                 fps=float(self.config.frames_per_chunk) / float(self.config.chunk_sec),
                 start_frame_index=int(tr_start) * self.config.frames_per_chunk,
-                total_num_frames=int(tr_end + 1) * self.config.frames_per_chunk,
+                total_num_frames=int(tr_end) * self.config.frames_per_chunk,
                 context_label="recalled frame",
             )
             mm_payload = {
@@ -433,6 +439,7 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
         # Trajectory-level state (mirrors VideoTrajectoryState)
         compressed_summaries: List[Dict] = []
         recent_thinks: List[Dict] = []
+        think_archive: List[Dict] = []
         per_q_answer_chunk: List[int] = [-1] * len(questions)
         per_q_answer_text: List[str] = [""] * len(questions)
         pending_q: List[int] = []
@@ -516,7 +523,7 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
                 with _timer("mt_mics", timing_raw):
                     args = (parsed.get("tool_call") or {}).get("arguments") or {}
                     recall_payload = self._execute_recall_for_action(
-                        args, video_path, compressed_summaries, recent_thinks,
+                        args, video_path, think_archive,
                     )
                     tool_msg, tool_mm = self._build_recall_tool_message(
                         recall_payload["recall_result"],
@@ -568,11 +575,16 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
             # State evolution
             think_text = parsed.get("think") or ""
             if not inter_chunk and think_text and kind in ("answer", "recall", "unknown"):
-                recent_thinks.append({"chunk": chunk_idx, "text": think_text})
+                item = {"chunk": chunk_idx, "text": think_text}
+                recent_thinks.append(item)
+                think_archive.append(dict(item))
 
             # Compress state update (only on compress turn)
             if inter_chunk and kind == "compress":
-                summary = (parsed.get("tool_call") or {}).get("arguments", {}).get("summary", {})
+                args = (parsed.get("tool_call") or {}).get("arguments", {})
+                summary = args.get("summary") if isinstance(args, dict) else {}
+                if not isinstance(summary, dict) or not summary:
+                    summary = args if isinstance(args, dict) else {}
                 if summary and isinstance(summary, dict):
                     tr = summary.get("time_range", [])
                     if isinstance(tr, list) and len(tr) == 2:
@@ -627,7 +639,7 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
 
     def _execute_recall_for_action(
         self, args: Dict, video_path: str,
-        compressed_summaries: List[Dict], recent_thinks: List[Dict],
+        think_archive: List[Dict],
     ) -> Dict:
         """Synchronous recall — text retrieval + historical frame extraction.
         Mirrors streaming_agent_loop._execute_recall."""
@@ -647,48 +659,69 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
             except (TypeError, ValueError):
                 pass
 
-        # Text — keyword overlap (matches streaming_agent_loop's
-        # _retrieve_from_memory minus the candidates ranking).
-        text_hit = ""
+        # Text retrieval runs over raw per-chunk thinks only. Compressed
+        # summaries are prompt memory for the model, not the recall index.
+        archive: List[Dict] = []
         if query:
-            kws = [w for w in re.findall(r"[a-z0-9]+", query.lower()) if len(w) >= 3]
-            for entry in (compressed_summaries or []) + (recent_thinks or []):
-                text = entry.get("text", "") if isinstance(entry, dict) else ""
-                if text and any(kw in text.lower() for kw in kws):
-                    text_hit = text
-                    break
+            for entry in think_archive or []:
+                text = entry.get("text", entry.get("think", "")) if isinstance(entry, dict) else ""
+                if not text:
+                    continue
+                try:
+                    chunk = int(entry.get("chunk", entry.get("chunk_idx", -1)))
+                except (TypeError, ValueError):
+                    continue
+                if chunk < 0:
+                    continue
+                archive.append({
+                    "chunk": chunk,
+                    "time": entry.get("time") or (
+                        f"{int(chunk * self.config.chunk_sec)}-"
+                        f"{int((chunk + 1) * self.config.chunk_sec)}"
+                    ),
+                    "text": text,
+                })
+        selected_chunks: List[int] = []
+        text_hit = ""
+        if archive:
+            from thinkstream.model.agent_loop import bm25_retrieve
+            query_dict = {"query": query}
+            if tr_tuple is not None:
+                query_dict["time_range"] = [float(tr_tuple[0]), float(tr_tuple[1])]
+            text_result = bm25_retrieve(
+                query_dict, archive, max_results=RECALL_RETURN_CHUNKS
+            )
+            selected_chunks = select_recall_chunks(
+                text_result.get("returned_chunks") or []
+            )
+            text_hit = text_result.get("text_content", "")
 
         # Frames
-        recalled_frames = None
         recalled_paths: List[str] = []
-        tr_start_chunk = tr_end_chunk = -1
-        if tr_tuple and self.config.frames_root and video_path:
-            try:
-                tr_start_chunk = int(tr_tuple[0] / float(self.config.chunk_sec))
-                tr_end_chunk = int(tr_tuple[1] / float(self.config.chunk_sec))
-            except (TypeError, ValueError, ZeroDivisionError):
-                tr_start_chunk = tr_end_chunk = -1
-            if tr_start_chunk >= 0 and tr_end_chunk >= tr_start_chunk:
-                for ci in range(tr_start_chunk, tr_end_chunk + 1):
-                    cf = self._frames_for_chunk(video_path, ci)
-                    if cf:
-                        recalled_paths.extend(cf)
-                if recalled_paths:
-                    recalled_frames = {
-                        "time_range": [tr_start_chunk, tr_end_chunk],
-                        "source": "historical_frames",
-                        "n_frames": len(recalled_paths),
-                        "frame_paths": recalled_paths,
-                    }
-        success = bool(recalled_paths) or bool(text_hit)
+        frame_chunks: List[int] = []
+        if selected_chunks and self.config.frames_root and video_path:
+            for ci in selected_chunks:
+                cf = self._frames_for_chunk(video_path, ci)
+                if cf:
+                    frame_chunks.append(ci)
+                    recalled_paths.extend(cf)
+        recalled_frames = build_recalled_frames_metadata(
+            frame_chunks,
+            recalled_paths,
+            chunk_sec=self.config.chunk_sec,
+            frames_per_chunk=self.config.frames_per_chunk,
+        ) if recalled_paths else None
+        success = bool(selected_chunks) or bool(text_hit)
         recall_result = {
             "source": "historical_frames" if recalled_paths else (
                 "memory" if success else "failure"
             ),
             "text_content": text_hit if success else "No matching results found.",
             "text": text_hit if success else "No matching results found.",
-            "returned_chunks": list(range(tr_start_chunk, tr_end_chunk + 1)) if recalled_paths else [],
-            "time": (f"{tr_start_chunk}-{tr_end_chunk}" if tr_start_chunk >= 0 else ""),
+            "returned_chunks": selected_chunks,
+            "time": recall_time_string_for_chunks(
+                selected_chunks, chunk_sec=self.config.chunk_sec
+            ),
         }
         return {"recall_result": recall_result, "recalled_frames": recalled_frames}
 

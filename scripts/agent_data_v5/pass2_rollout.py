@@ -150,9 +150,10 @@ def _safe_max_tokens_for_pass2(
 class MemoryState:
     """Tracks the student model's text memory at each timestep.
 
-    v8.0: Unified timeline — summary and thinks in one list, chronological order.
-    Compression = in-place replacement (selected thinks → summary, same position).
-    No separate compressed_segments / recent_thinks zones.
+    Timeline stores visible memory in chronological order: raw think items and
+    compressed summaries share one list. ``compressed_segments`` and
+    ``recent_thinks`` are derived views used for compatibility with downstream
+    renderers and runtime state.
 
     Queries managed in separate <queries> zone, independent of memory.
     """
@@ -201,25 +202,33 @@ class MemoryState:
         self.timeline.append(item)
         self._retrieval_archive.append(item)
 
-    def count_tokens(self) -> int:
-        """Count total tokens in timeline (thinks + summaries)."""
+    def _count_item_tokens(self, item: Dict) -> int:
+        text = item.get("text", "")
         tokenizer = get_tokenizer()
+        if tokenizer:
+            return len(tokenizer.encode(text, add_special_tokens=False))
+        return len(text) // 4
+
+    def count_tokens(self) -> int:
+        """Count total visible-memory tokens (thinks + summaries)."""
         total = 0
         for item in self.timeline:
-            text = item.get("text", "")
-            if tokenizer:
-                total += len(tokenizer.encode(text, add_special_tokens=False))
-            else:
-                total += len(text) // 4
+            total += self._count_item_tokens(item)
         return total
 
-    # Keep old name for compat
     def count_recent_tokens(self) -> int:
-        return self.count_tokens()
+        """Count only raw recent-think tokens.
+
+        Compression trigger parity: SFT data construction, HF runtime, eval,
+        and RL all fire compression based on recent raw thinks. Compressed
+        summaries are prompt memory for the model; they do not drive trigger
+        timing and are not part of the recall index.
+        """
+        return sum(self._count_item_tokens(item) for item in self.recent_thinks)
 
     def should_compress(self) -> bool:
-        """Trigger when timeline tokens reach 80% of budget."""
-        return self.count_tokens() >= COMPRESS_TOKEN_THRESHOLD
+        """Trigger when recent raw-think tokens reach 80% of budget."""
+        return self.count_recent_tokens() >= COMPRESS_TOKEN_THRESHOLD
 
     def compress(self, summary: Dict, selected_indices: List[int]):
         """In-place replacement: selected timeline items → summary.
@@ -783,46 +792,43 @@ def choose_optimal_compress_range(
     timeline: List[Dict],
     evidence: Optional[List[Dict]] = None,
 ) -> Tuple[List[int], Dict]:
-    """Choose the best contiguous range in timeline to compress.
+    """Choose the best contiguous recent-think range to compress.
 
-    Allows cross-summary ranges (thinks + summaries mixed).
-    Summaries in the range get merge_level penalty in scoring.
+    Summaries are prompt memory only. They are not part of trigger timing,
+    recall retrieval, or compression range selection; runtime/eval/RL remove
+    raw recent thinks and append the new summary.
 
     Returns: (selected_indices in timeline, policy_meta)
     """
-    n = len(timeline)
+    think_positions = [
+        i for i, item in enumerate(timeline) if item.get("type") == "think"
+    ]
+    n = len(think_positions)
     best_indices = None
     best_score = float("inf")
 
-    # Enumerate all contiguous ranges of size 3 to COMPRESS_RANGE_MAX
+    # Enumerate contiguous ranges in recent raw-think order.
     for size in range(COMPRESS_RANGE_MIN, min(COMPRESS_RANGE_MAX + 1, n + 1)):
         for start in range(0, n - size + 1):
-            candidate_indices = list(range(start, start + size))
+            candidate_indices = think_positions[start:start + size]
             candidate_items = [timeline[i] for i in candidate_indices]
-
-            # Must contain at least 2 thinks (can't compress only summaries)
-            n_thinks = sum(1 for it in candidate_items if it.get("type") == "think")
-            if n_thinks < 2:
-                continue
-
             score = score_range_for_compression(candidate_items, start, n, evidence)
             if score < best_score:
                 best_score = score
                 best_indices = candidate_indices
 
     if best_indices is None:
-        # Fallback: last COMPRESS_RANGE_MIN items (most recent)
-        think_indices = [i for i, t in enumerate(timeline) if t.get("type") == "think"]
-        if len(think_indices) >= COMPRESS_RANGE_MIN:
-            best_indices = think_indices[-COMPRESS_RANGE_MIN:]
+        if len(think_positions) >= COMPRESS_RANGE_MIN:
+            best_indices = think_positions[:COMPRESS_RANGE_MIN]
         else:
-            best_indices = think_indices
+            best_indices = think_positions
 
     meta = {
         "score": round(best_score, 2) if best_score < float("inf") else -1,
         "range_indices": best_indices,
         "range_size": len(best_indices) if best_indices else 0,
-        "timeline_size": n,
+        "timeline_size": len(timeline),
+        "recent_thinks_size": n,
         "n_thinks_in_range": sum(1 for i in (best_indices or []) if timeline[i].get("type") == "think"),
         "n_summaries_in_range": sum(1 for i in (best_indices or []) if timeline[i].get("type") == "summary"),
     }
@@ -894,7 +900,8 @@ def build_compress_request(
         obs_lines.append(MemoryState._format_timeline_item_as_memory_tag(item))
     obs_text = "\n".join(obs_lines)
 
-    # Compute time range from items (thinks have "chunk", summaries have "time_range")
+    # Compute time range from selected raw thinks. Summaries are no longer
+    # eligible for compression ranges.
     all_times = []
     for item in to_compress:
         if item.get("type") == "think":

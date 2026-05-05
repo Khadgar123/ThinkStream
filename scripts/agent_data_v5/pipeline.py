@@ -170,7 +170,29 @@ def _write_batch_manifest(videos: List[Dict], *, source: str, seed: int) -> None
             "test_messages": str(FINAL_DIR / "test_messages.jsonl"),
             "dataset_info": str(FINAL_DIR / "dataset_info.json"),
         },
+        "rendered_dirs": {
+            "ts_image": str(DATA_ROOT / "rendered" / "ts_image"),
+            "video_meta": str(DATA_ROOT / "rendered" / "video_meta"),
+        },
         "derived_files": {
+            "sft_messages_ts_image": str(
+                DATA_ROOT / "rendered" / "ts_image" / "train_sft_messages.jsonl"
+            ),
+            "val_messages_ts_image": str(
+                DATA_ROOT / "rendered" / "ts_image" / "val_messages.jsonl"
+            ),
+            "test_messages_ts_image": str(
+                DATA_ROOT / "rendered" / "ts_image" / "test_messages.jsonl"
+            ),
+            "sft_messages_video_meta": str(
+                DATA_ROOT / "rendered" / "video_meta" / "train_sft_messages.jsonl"
+            ),
+            "val_messages_video_meta": str(
+                DATA_ROOT / "rendered" / "video_meta" / "val_messages.jsonl"
+            ),
+            "test_messages_video_meta": str(
+                DATA_ROOT / "rendered" / "video_meta" / "test_messages.jsonl"
+            ),
             "train_parquet_ts_image": str(
                 DATA_ROOT / "rendered" / "ts_image" / "train_rl_multi_q.parquet"
             ),
@@ -730,8 +752,19 @@ async def run_pipeline(
                         num_chunks=video["num_chunks"],
                         client=client_1a,
                     )
-                save_1a(vid, caps)
                 n_ok = sum(1 for c in caps if c.get("parse_success"))
+                if n_ok <= 0:
+                    await tracker_1a.record(
+                        success=False, video_id=vid,
+                        chunks=len(caps), parsed=n_ok,
+                    )
+                    logger.error(
+                        "  [%s] PASS 1-A produced zero parsed chunks; "
+                        "not using this video cache",
+                        vid,
+                    )
+                    return vid, None
+                save_1a(vid, caps)
                 await tracker_1a.record(
                     success=n_ok > 0, video_id=vid,
                     chunks=len(caps), parsed=n_ok,
@@ -743,6 +776,14 @@ async def run_pipeline(
                         f"(video_concurrency={VIDEO_CONCURRENCY_1A})")
             logger.info("=" * 60)
             wave1_results = await asyncio.gather(*[_do_pass1a(v) for v in videos])
+            failed_1a = [vid for vid, caps in wave1_results if not caps]
+            if failed_1a:
+                preview = ", ".join(failed_1a[:10])
+                suffix = "..." if len(failed_1a) > 10 else ""
+                raise RuntimeError(
+                    "PASS 1-A failed with zero parsed chunks for "
+                    f"{len(failed_1a)}/{len(videos)} videos: {preview}{suffix}"
+                )
             evidence_1a_map = {vid: caps for vid, caps in wave1_results}
             tracker_1a.summary()
 
@@ -1560,29 +1601,11 @@ async def run_pipeline(
                 "train_rl_trajectories",
             )
 
-        logger.info("=" * 60)
-        logger.info("PASS 5: messages-format conversion (LLaMA-Factory ShareGPT)")
-        logger.info("=" * 60)
-        try:
-            from scripts.agent_data_v5 import pass5_messages as _pass5_mod
-            _sys.argv = ["pass5_messages", "--input", "traj"]
-            try:
-                _pass5_mod.main()
-                # v12.11 review-fix: stamp pass5 stage version on success.
-                from .cache_version import write_stage_version as _write_v5
-                _write_v5("5")
-            finally:
-                _sys.argv = _argv_backup
-        except SystemExit as _e:
-            logger.warning(f"pass5_messages SystemExit (rc={_e.code}); inspect logs above")
-        except Exception as e:
-            logger.error(f"pass5_messages failed: {e}; SFT default dataset missing")
-            _sys.argv = _argv_backup
-
         # v12.14: MC option letters must not carry a dataset-level prior.
         # Pass3A LLM generations can skew correct_option heavily toward A
-        # even when the answer text is valid. Rebalance after pass4/pass5 so
-        # flat samples, trajectory rows, and messages-format rows stay in sync.
+        # even when the answer text is valid. Rebalance after pass4 and before
+        # rendering pass5 variants so flat samples, trajectory rows, and both
+        # messages-format protocols stay in sync.
         try:
             from scripts.agent_data_v5 import rebalance_mc_options as _mc_mod
 
@@ -1608,13 +1631,129 @@ async def run_pipeline(
         except Exception as e:
             logger.error(f"MC option rebalance failed: {e}; inspect MC balance audit")
 
+        logger.info("=" * 60)
+        logger.info("PASS 5: messages-format conversion (LLaMA-Factory ShareGPT)")
+        logger.info("=" * 60)
+        pass5_ok = True
+        try:
+            from scripts.agent_data_v5 import pass5_messages as _pass5_mod
+
+            # Keep the legacy final/ files for existing configs, and also
+            # render protocol-specific AB directories. sft_per_timestep.sh
+            # auto-selects DATA_ROOT/rendered/$FRAME_PROTOCOL when present.
+            pass5_jobs = [
+                ("legacy final ts_image", FINAL_DIR, "ts_image"),
+                ("rendered ts_image", DATA_ROOT / "rendered" / "ts_image", "ts_image"),
+                ("rendered video_meta", DATA_ROOT / "rendered" / "video_meta", "video_meta"),
+            ]
+            for label, output_dir, frame_protocol in pass5_jobs:
+                logger.info(
+                    "PASS 5 render: %s → %s (frame_protocol=%s)",
+                    label,
+                    output_dir,
+                    frame_protocol,
+                )
+                _sys.argv = [
+                    "pass5_messages",
+                    "--input", "traj",
+                    "--final-dir", str(FINAL_DIR),
+                    "--output-dir", str(output_dir),
+                    "--frame-protocol", frame_protocol,
+                ]
+                try:
+                    _pass5_mod.main()
+                finally:
+                    _sys.argv = _argv_backup
+
+            # v12.11 review-fix: stamp pass5 stage version on success.
+            from .cache_version import write_stage_version as _write_v5
+            _write_v5("5")
+        except SystemExit as _e:
+            pass5_ok = False
+            logger.warning(f"pass5_messages SystemExit (rc={_e.code}); inspect logs above")
+            _sys.argv = _argv_backup
+        except Exception as e:
+            pass5_ok = False
+            logger.error(f"pass5_messages failed: {e}; SFT/eval default datasets may be missing")
+            _sys.argv = _argv_backup
+
+        logger.info("=" * 60)
+        logger.info("RL PARQUET: build both frame-protocol variants")
+        logger.info("=" * 60)
+        try:
+            from scripts.agent_data_v5 import build_verl_parquet as _parquet_mod
+
+            parquet_jobs = [
+                (
+                    "ts_image train",
+                    FINAL_DIR / "train_rl_trajectories.jsonl",
+                    DATA_ROOT / "rendered" / "ts_image" / "train_rl_multi_q.parquet",
+                    "ts_image",
+                ),
+                (
+                    "ts_image val",
+                    FINAL_DIR / "val_trajectories.jsonl",
+                    DATA_ROOT / "rendered" / "ts_image" / "val_rl_multi_q.parquet",
+                    "ts_image",
+                ),
+                (
+                    "video_meta train",
+                    FINAL_DIR / "train_rl_trajectories.jsonl",
+                    DATA_ROOT / "rendered" / "video_meta" / "train_rl_multi_q.parquet",
+                    "video_meta",
+                ),
+                (
+                    "video_meta val",
+                    FINAL_DIR / "val_trajectories.jsonl",
+                    DATA_ROOT / "rendered" / "video_meta" / "val_rl_multi_q.parquet",
+                    "video_meta",
+                ),
+            ]
+            for label, src, out_path, frame_protocol in parquet_jobs:
+                if not src.exists():
+                    logger.warning("RL parquet skipped (%s): missing %s", label, src)
+                    continue
+                logger.info(
+                    "RL parquet: %s → %s (frame_protocol=%s)",
+                    src.name,
+                    out_path,
+                    frame_protocol,
+                )
+                _sys.argv = [
+                    "build_verl_parquet",
+                    "--jsonl", str(src),
+                    "--out", str(out_path),
+                    "--multi_q",
+                    "--frame-protocol", frame_protocol,
+                ]
+                try:
+                    rc = _parquet_mod.main()
+                finally:
+                    _sys.argv = _argv_backup
+                if rc:
+                    logger.error("RL parquet build failed (%s) with rc=%s", label, rc)
+        except SystemExit as _e:
+            logger.warning(f"build_verl_parquet SystemExit (rc={_e.code}); inspect logs above")
+            _sys.argv = _argv_backup
+        except Exception as e:
+            logger.error(f"build_verl_parquet failed: {e}; RL default parquet may be missing")
+            _sys.argv = _argv_backup
+
+        if pass5_ok:
+            logger.info(
+                "Rendered protocol variants: %s and %s",
+                DATA_ROOT / "rendered" / "ts_image",
+                DATA_ROOT / "rendered" / "video_meta",
+            )
+
     logger.info("=" * 60)
     logger.info("PIPELINE COMPLETE")
     logger.info(f"Total samples: {len(passed_samples)}")
     logger.info(f"Output: {FINAL_DIR}")
     logger.info("Next:")
-    logger.info("  SFT: bash scripts/sft_per_timestep.sh   (reads train_sft_messages.jsonl)")
-    logger.info("  RL:  bash scripts/grpo_train_verl.sh    (builds/reads train_rl_multi_q.parquet)")
+    logger.info("  SFT: FRAME_PROTOCOL=ts_image|video_meta bash scripts/sft_per_timestep.sh")
+    logger.info("  RL:  FRAME_PROTOCOL=ts_image|video_meta bash scripts/grpo_train_verl.sh")
+    logger.info("  Eval/test: use matching FRAME_PROTOCOL and rendered/<protocol> messages/parquet")
     logger.info("=" * 60)
 
     return stats

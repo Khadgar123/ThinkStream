@@ -21,9 +21,15 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from thinkstream.data.agent_protocol import build_assistant_content_v12
+from thinkstream.data.agent_protocol import (
+    RECALL_RETURN_CHUNKS,
+    build_assistant_content_v12,
+    recall_time_string_for_chunks,
+    select_recall_chunks,
+)
+from thinkstream.model.agent_loop import bm25_retrieve
 
-from .config import AGENT_CHUNK_SEC, PASS_CONFIG, SAMPLES_3C_DIR
+from .config import AGENT_CHUNK_SEC, FRAMES_PER_CHUNK, PASS_CONFIG, SAMPLES_3C_DIR
 from .pass3a_cards import dict_to_card
 from .pass3b_placement import _dict_to_placement
 from .stable_hash import stable_mod
@@ -186,9 +192,32 @@ async def _response_text_via_llm(card: Dict, value: str, client, video_id: str,
 
 
 def _query_keywords(question: str) -> str:
-    return " ".join(
+    keywords = " ".join(
         w.lower() for w in str(question or "").split() if len(w) > 3
     )[:80]
+    return keywords or str(question or "").strip().lower()[:80]
+
+
+_RECALL_TIME_RANGE_RE = re.compile(
+    r"^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$"
+)
+
+
+def _valid_recall_time_range(value: object) -> bool:
+    """Return True for a non-empty past-time range like ``0-12``."""
+    if not isinstance(value, str):
+        return False
+    m = _RECALL_TIME_RANGE_RE.fullmatch(value)
+    if not m:
+        return False
+    start, end = float(m.group(1)), float(m.group(2))
+    return end > start
+
+
+def _valid_recall_query(query: Dict) -> bool:
+    return bool((query or {}).get("query")) and _valid_recall_time_range(
+        (query or {}).get("time_range")
+    )
 
 
 def _recall_query_for(card: Dict, ask_chunk: int) -> Dict:
@@ -196,7 +225,7 @@ def _recall_query_for(card: Dict, ask_chunk: int) -> Dict:
 
     Returns card.recall_query if pre-generated, else heuristic.
     """
-    if card.get("recall_query"):
+    if card.get("recall_query") and _valid_recall_query(card["recall_query"]):
         return card["recall_query"]
     grounding = card.get("grounding_frames", [])
     if grounding:
@@ -229,7 +258,7 @@ def _recall_wait_query_for(card: Dict, chunk_idx: int) -> Dict:
 async def _recall_query_via_llm(card: Dict, client, video_id: str,
                                   chunk_idx: int) -> Dict:
     """397B-driven recall_query. Caches result on card so we don't re-call."""
-    if card.get("recall_query"):
+    if card.get("recall_query") and _valid_recall_query(card["recall_query"]):
         return card["recall_query"]
     prompt = recall_query_prompt(card)
     cfg = PASS_CONFIG.get("pass3c_recall_query", PASS_CONFIG.get("pass3c", {}))
@@ -250,7 +279,7 @@ async def _recall_query_via_llm(card: Dict, client, video_id: str,
         logger.warning(f"[{video_id}] 3c recall_query LLM failed: {exc}")
         return _recall_query_for(card, chunk_idx)
     rq = parse_recall_query_response(raw or "", fallback_time_range=fallback_tr)
-    if not rq.get("query"):
+    if not _valid_recall_query(rq):
         return _recall_query_for(card, chunk_idx)
     card["recall_query"] = rq      # cache for re-use within trajectory
     return rq
@@ -262,6 +291,7 @@ def _recall_result_for(
     noise_kind: str,
     *,
     current_chunk: Optional[int] = None,
+    recall_query: Optional[Dict] = None,
 ) -> Dict:
     """Build a recall_result matching the old pass3c noise vocabulary.
 
@@ -292,19 +322,65 @@ def _recall_result_for(
             "returned_chunks": [],
             "time": "",
         }
-    chunks = sorted(grounding)
+    chunks: List[int] = []
+    text_content = ""
+    if _valid_recall_query(recall_query or {}):
+        archive = []
+        for t in rollout.get("thinks", []):
+            try:
+                ci = int(t.get("chunk_idx", t.get("chunk", -1)))
+            except (TypeError, ValueError):
+                continue
+            if ci < 0:
+                continue
+            if current_chunk is not None and ci > int(current_chunk):
+                continue
+            text = str(t.get("think", t.get("text", "")) or "").strip()
+            if not text:
+                continue
+            archive.append({
+                "chunk": ci,
+                "time": f"{int(ci * AGENT_CHUNK_SEC)}-"
+                        f"{int((ci + 1) * AGENT_CHUNK_SEC)}",
+                "text": text,
+            })
+        retrieved = bm25_retrieve(
+            recall_query or {},
+            archive,
+            max_results=RECALL_RETURN_CHUNKS,
+        )
+        chunks = select_recall_chunks(retrieved.get("returned_chunks") or [])
+        text_content = retrieved.get("text_content", "")
+
+    # Fallback preserves answerable recall samples when the teacher query text
+    # does not lexically match the pass2 memory even though gold support exists.
+    if not chunks:
+        chunks = sorted(int(c) for c in grounding)
+
     if noise_kind == "noisy":
         # Inject a distractor chunk near grounding
         max_c = max(0, int(rollout.get("num_chunks", 1)) - 1)
-        chunks = chunks + [min(chunks[-1] + 5, max_c)]
-    tr_start = min(chunks) * AGENT_CHUNK_SEC
-    tr_end = (max(chunks) + 1) * AGENT_CHUNK_SEC
+        distractor = min(chunks[-1] + 5, max_c)
+        if len(chunks) >= RECALL_RETURN_CHUNKS:
+            chunks = chunks[:max(0, RECALL_RETURN_CHUNKS - 1)] + [distractor]
+        else:
+            chunks = chunks + [distractor]
+    chunks = select_recall_chunks(chunks)
+    if not chunks:
+        return {
+            "source": "failure",
+            "text_content": "No matching results found.",
+            "returned_chunks": [],
+            "time": "",
+        }
+    tr_text = recall_time_string_for_chunks(chunks)
     return {
         "source": "historical_frames",
-        "text_content": (f"Recalled {len(chunks)} frames from "
-                         f"t={int(tr_start)}-{int(tr_end)}s."),
+        "text_content": text_content or (
+            f"Recalled {len(chunks) * FRAMES_PER_CHUNK} frames from t={tr_text}s."
+        ),
         "returned_chunks": chunks,
-        "time": f"{int(tr_start)}-{int(tr_end)}",
+        "time": tr_text,
     }
 
 
@@ -392,10 +468,18 @@ def _compress_sample(
     if isinstance(tr, list) and len(tr) == 2:
         summary_arg = {"time_range": [int(tr[0]), int(tr[1])],
                        "text": summary.get("text", "")}
+        compress_think = (
+            f"Memory is over budget, so I should compress older observations "
+            f"from t={int(tr[0])}-{int(tr[1])} into a concise summary."
+        )
     else:
         summary_arg = {"time_range": [], "text": summary.get("text", "")}
+        compress_think = (
+            "Memory is over budget, so I should compress older observations "
+            "into a concise summary."
+        )
     output_text = build_assistant_content_v12(
-        think=think, kind="compress", compress_summary=summary_arg,
+        think=compress_think, kind="compress", compress_summary=summary_arg,
     )
     return {
         "chunk_idx": chunk_idx,
@@ -711,9 +795,21 @@ async def generate_trajectory_samples(
             # Wait-state recall must not use the card's grounding_frames:
             # those point to the future answer chunk and would leak timing.
             rq = _recall_wait_query_for(card or {}, c)
+            if not _valid_recall_query(rq):
+                # At the first chunk there is no past interval to search.
+                # Training a recall tool call with time_range="" teaches an
+                # invalid API call; the correct behavior is to stay silent and
+                # keep the query open for a later chunk.
+                raw.append(_silent_sample(
+                    c, _think_for_chunk(rollout, c), queries_state, traj_id,
+                    card_id=card_id or "", sequence_type=sequence_type,
+                    user_input=user_input, base_role="recall_wait_no_history",
+                ))
+                continue
             rr = _recall_result_for(card or {}, rollout,
                                      ds.recall_result_kind or "not_yet",
-                                     current_chunk=c)
+                                     current_chunk=c,
+                                     recall_query=rq)
             raw.append(_recall_silent_multiturn_sample(
                 c, _think_for_chunk(rollout, c), queries_state,
                 rq, rr, traj_id, card_id or "", sequence_type,
@@ -747,8 +843,16 @@ async def generate_trajectory_samples(
             else:
                 resp = _response_text_for(card or {}, ds.response_text)
                 rq = _recall_query_for(card or {}, c)
+            if not _valid_recall_query(rq):
+                raise ValueError(
+                    f"[{video_id}] invalid recall query for card={card_id!r} "
+                    f"chunk={c}: {rq!r}. recall+response requires a non-empty "
+                    "query and a past time_range like '0-12'."
+                )
             rr = _recall_result_for(card or {}, rollout,
-                                     ds.recall_result_kind or "oracle")
+                                     ds.recall_result_kind or "oracle",
+                                     current_chunk=c,
+                                     recall_query=rq)
             raw.append(_recall_response_sample(
                 c, _think_for_chunk(rollout, c), resp, queries_state,
                 rq, rr, traj_id, card_id, sequence_type, user_input=user_input,

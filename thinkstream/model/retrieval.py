@@ -36,7 +36,13 @@ import torch
 
 logger = logging.getLogger(__name__)
 
-from thinkstream.data.agent_protocol import AGENT_CHUNK_SEC, FRAMES_PER_CHUNK  # noqa: F401
+from thinkstream.data.agent_protocol import (  # noqa: F401
+    AGENT_CHUNK_SEC,
+    FRAMES_PER_CHUNK,
+    RECALL_RETURN_CHUNKS,
+    recall_time_string_for_chunks,
+    select_recall_chunks,
+)
 
 
 # ─── Protocol ────────────────────────────────────────────────────────────────
@@ -62,7 +68,7 @@ def _empty_recall() -> Dict:
 class BM25Retriever:
     """Stateless BM25 retriever — forwards to agent_loop.bm25_retrieve."""
 
-    def __init__(self, max_results: int = 4):
+    def __init__(self, max_results: int = RECALL_RETURN_CHUNKS):
         self.max_results = max_results
 
     def index_chunk(self, chunk_idx, video_path, think_text):
@@ -96,7 +102,7 @@ class HybridRetriever:
         encode_text_fn: Callable,
         *,
         alpha: float = 0.5,
-        max_results: int = 4,
+        max_results: int = RECALL_RETURN_CHUNKS,
         device: str = "cuda",
     ):
         if not 0.0 <= alpha <= 1.0:
@@ -196,11 +202,14 @@ class HybridRetriever:
             return _empty_recall()
 
         top = [archive[i] for i in order]
-        chunks = sorted(item["chunk"] for item in top)
+        chunks = select_recall_chunks(
+            [item["chunk"] for item in top],
+            max_chunks=self.max_results,
+        )
         text_parts = [f'[{item["time"]}] {item["text"]}' for item in top]
         return {
             "source": "historical_frames",
-            "time": f"{int(chunks[0] * AGENT_CHUNK_SEC)}-{int((chunks[-1] + 1) * AGENT_CHUNK_SEC)}",
+            "time": recall_time_string_for_chunks(chunks),
             "text_content": "\n".join(text_parts),
             "returned_chunks": chunks,
             "_score_breakdown": {
@@ -316,7 +325,7 @@ def make_retriever(
     *,
     siglip_path: str = "google/siglip-base-patch16-224",
     alpha: float = 0.5,
-    max_results: int = 4,
+    max_results: int = RECALL_RETURN_CHUNKS,
     device: str = "cuda",
     agent_model=None,
     agent_processor=None,
@@ -354,7 +363,7 @@ def make_retriever(
 class _CallableRetriever:
     """Wrap a plain (query, archive) -> dict callable as a Retriever."""
 
-    def __init__(self, fn: Callable, max_results: int = 4):
+    def __init__(self, fn: Callable, max_results: int = RECALL_RETURN_CHUNKS):
         self.fn = fn
         self.max_results = max_results
 
@@ -362,7 +371,16 @@ class _CallableRetriever:
         pass
 
     def __call__(self, query, archive):
-        return self.fn(query, archive)
+        out = self.fn(query, archive)
+        if isinstance(out, dict):
+            chunks = select_recall_chunks(
+                out.get("returned_chunks") or [],
+                max_chunks=self.max_results,
+            )
+            out["returned_chunks"] = chunks
+            if chunks and not out.get("time"):
+                out["time"] = recall_time_string_for_chunks(chunks)
+        return out
 
 
 def coerce_retriever(arg) -> Retriever:

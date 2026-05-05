@@ -71,6 +71,29 @@ def _parse_time_range_from_memory_line(item) -> Tuple[int, int]:
     return -1, -1
 
 
+_RECALL_TIME_RANGE_RE = re.compile(
+    r"^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$"
+)
+
+
+def _valid_recall_time_range(value) -> bool:
+    if not isinstance(value, str):
+        return False
+    m = _RECALL_TIME_RANGE_RE.fullmatch(value)
+    if not m:
+        return False
+    return float(m.group(2)) > float(m.group(1))
+
+
+def _valid_compress_time_range(value) -> bool:
+    return (
+        isinstance(value, list)
+        and len(value) == 2
+        and all(isinstance(v, (int, float)) for v in value)
+        and float(value[1]) > float(value[0])
+    )
+
+
 def _memory_item_text(item) -> str:
     if isinstance(item, str):
         return item
@@ -402,9 +425,15 @@ def _verify_format_v12(sample: Dict) -> Tuple[bool, str]:
                 if name == "recall":
                     if "query" not in args or "time_range" not in args:
                         return False, "v12_recall_args_missing_fields"
+                    if not str(args.get("query") or "").strip():
+                        return False, "v12_recall_empty_query"
+                    if not _valid_recall_time_range(args.get("time_range")):
+                        return False, "v12_recall_bad_time_range"
                 elif name == "compress":
                     if "time_range" not in args or "text" not in args:
                         return False, "v12_compress_args_missing_fields"
+                    if not _valid_compress_time_range(args.get("time_range")):
+                        return False, "v12_compress_bad_time_range"
                     if not args.get("text"):
                         return False, "v12_compress_empty_summary"
 

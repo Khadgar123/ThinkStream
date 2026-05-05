@@ -85,6 +85,8 @@ class VideoTrajectoryState:
     # Memory state — what the model has learned about the video so far
     compressed_summaries: List[Dict] = field(default_factory=list)
     recent_thinks: List[Dict] = field(default_factory=list)
+    # System-side recall index: raw per-chunk thinks are never compressed.
+    think_archive: List[Dict] = field(default_factory=list)
     # Question/answer tracking
     pending_queries: List[Dict] = field(default_factory=list)  # {q, ask_chunk}
     answered_queries: List[Dict] = field(default_factory=list) # {q, a, ask, resp_chunk}

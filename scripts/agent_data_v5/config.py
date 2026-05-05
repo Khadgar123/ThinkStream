@@ -220,7 +220,8 @@ SUMMARY_TOKENS_MIN = 100            # summary 最短
 # while still keeping memory cost bounded (5 segments × 280 = 1400 tok max).
 SUMMARY_TOKENS_MAX = 280
 COMPRESSION_RATIO_MIN = 2.5        # 最小压缩比
-RECALL_RETURN_FRAMES = 4           # recall returns 4 frames (2s at 2fps)
+RECALL_RETURN_CHUNKS = 4           # recall returns top-4 memory chunks
+RECALL_RETURN_FRAMES = RECALL_RETURN_CHUNKS * FRAMES_PER_CHUNK
 MAX_COMPRESSED_SEGMENTS = 5        # 最多保留 5 段压缩
 
 # Per-video candidate limits (controls data volume + API cost)

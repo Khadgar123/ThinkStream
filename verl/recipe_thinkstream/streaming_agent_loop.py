@@ -124,6 +124,13 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 from uuid import uuid4
 
+from thinkstream.data.agent_protocol import (
+    RECALL_RETURN_CHUNKS,
+    build_recalled_frames_metadata,
+    recall_time_string_for_chunks,
+    select_recall_chunks,
+)
+
 logger = logging.getLogger(__file__)
 logger.setLevel(os.getenv("VERL_LOGGING_LEVEL", "WARN"))
 
@@ -286,57 +293,41 @@ def _build_visual_window(
 
 
 # ---------------------------------------------------------------------------
-# Recall retriever — keyword overlap over compressed_summaries + recent_thinks.
+# Recall retriever — BM25 over the raw per-chunk think archive.
 # ---------------------------------------------------------------------------
 def _retrieve_from_memory(
-    state_compressed: List[Dict[str, Any]],
-    state_recent: List[Dict[str, Any]],
+    state_think_archive: List[Dict[str, Any]],
     query_text: str,
     time_range: Optional[Tuple[float, float]] = None,
-    top_k: int = 3,
+    top_k: int = RECALL_RETURN_CHUNKS,
+    chunk_sec: float = 1.0,
 ) -> Dict[str, Any]:
     """Return a recall_result dict (source/time/text) for inline JSON
     serialisation as <recall_result>...</recall_result> on the NEXT chunk's
     user message. (True intra-chunk multi-turn recall — assistant tool_call
     → user/tool recall_result+frames → assistant answer — is deferred.)
     """
-    qtext = (query_text or "").lower()
-    keywords = [w for w in re.findall(r"[a-z0-9]+", qtext) if len(w) >= 3]
-    if not keywords:
-        return {"source": "memory", "time": "", "text": ""}
-    candidates: List[Tuple[float, str, str]] = []
-    for entry in state_compressed or []:
-        text = entry.get("text", "") or ""
+    if not (query_text or "").strip():
+        return {"source": "memory", "time": "", "text": "", "returned_chunks": []}
+    archive: List[Dict[str, Any]] = []
+    for entry in state_think_archive or []:
+        text = entry.get("text", entry.get("think", "")) or ""
         if not text:
             continue
-        if time_range is not None:
-            tr = entry.get("time_range") or []
-            if len(tr) >= 2:
-                lo, hi = float(tr[0]), float(tr[1])
-                qlo, qhi = float(time_range[0]), float(time_range[1])
-                if hi < qlo or lo > qhi:
-                    continue
-        score = sum(1 for kw in keywords if kw in text.lower())
-        if score == 0:
+        try:
+            chunk = int(entry.get("chunk", entry.get("chunk_idx", -1)))
+        except (TypeError, ValueError):
             continue
-        tr_str = ""
-        if entry.get("time_range"):
-            tr_str = f"{entry['time_range'][0]}-{entry['time_range'][1]}s"
-        candidates.append((score, tr_str, text))
-    for entry in state_recent or []:
-        text = entry.get("text", "") or ""
-        if not text:
+        if chunk < 0:
             continue
-        chunk = entry.get("chunk", -1)
-        if time_range is not None and chunk >= 0:
-            qlo, qhi = float(time_range[0]), float(time_range[1])
-            if not (qlo <= float(chunk) <= qhi):
-                continue
-        score = sum(1 for kw in keywords if kw in text.lower())
-        if score == 0:
-            continue
-        candidates.append((score, f"chunk {chunk}", text))
-    if not candidates:
+        archive.append({
+            "chunk": chunk,
+            "time": entry.get("time") or (
+                f"{int(chunk * chunk_sec)}-{int((chunk + 1) * chunk_sec)}"
+            ),
+            "text": text,
+        })
+    if not archive:
         tr_text = ""
         if time_range is not None:
             tr_text = f"{int(time_range[0])}-{int(time_range[1])}"
@@ -344,13 +335,29 @@ def _retrieve_from_memory(
             "source": "memory",
             "time": tr_text,
             "text": "No relevant past observation in the requested time range.",
+            "returned_chunks": [],
         }
-    candidates.sort(key=lambda x: x[0], reverse=True)
-    top = candidates[:top_k]
+    from thinkstream.model.agent_loop import bm25_retrieve
+    query = {"query": query_text}
+    if time_range is not None:
+        query["time_range"] = [float(time_range[0]), float(time_range[1])]
+    result = bm25_retrieve(query, archive, max_results=top_k)
+    returned_chunks = select_recall_chunks(result.get("returned_chunks") or [])
+    if not returned_chunks:
+        tr_text = ""
+        if time_range is not None:
+            tr_text = f"{int(time_range[0])}-{int(time_range[1])}"
+        return {
+            "source": "memory",
+            "time": tr_text,
+            "text": "No relevant past observation in the requested time range.",
+            "returned_chunks": [],
+        }
     return {
         "source": "memory",
-        "time": "; ".join(t for _, t, _ in top if t),
-        "text": " | ".join(t for _, _, t in top),
+        "time": recall_time_string_for_chunks(returned_chunks),
+        "text": result.get("text_content", ""),
+        "returned_chunks": returned_chunks,
     }
 
 
@@ -759,39 +766,38 @@ def _register_streaming_agent_loop():
             # ── Text retrieval (existing path) ──────────────────────────
             try:
                 text_result = _retrieve_from_memory(
-                    state.compressed_summaries or [],
-                    state.recent_thinks or [],
+                    getattr(state, "think_archive", []) or [],
                     query_text=query,
                     time_range=tr_tuple,
+                    chunk_sec=self.chunk_sec,
                 )
             except Exception as e:
                 logger.warning("recall retrieval failed: %s", e)
                 text_result = {"source": "memory", "time": "", "text": "(retrieval error)"}
 
-            # ── Historical frame extraction (NEW in D1) ─────────────────
-            # Mirrors pass3c_samples._recall_result_for + pass5_messages
-            # rendering. Pulls frame_paths in [tr_start_chunk, tr_end_chunk]
-            # via the existing _chunk_frame_paths helper. Empty list when
-            # frames_root is unset (text-only RL) or chunk frames missing.
+            # ── Historical frame extraction (D1) ───────────────────────
+            # Text retrieval chooses candidate chunks first, then we cap to
+            # top-K and render only those chunks. Do not expand the model's
+            # requested time_range into an unbounded frame interval.
+            selected_chunks = select_recall_chunks(
+                text_result.get("returned_chunks") or []
+            )
             recalled_frame_paths: List[str] = []
-            tr_start_chunk = -1
-            tr_end_chunk = -1
-            if tr_tuple and self.frames_root and video_path:
-                try:
-                    tr_start_chunk = int(tr_tuple[0] / float(self.chunk_sec))
-                    tr_end_chunk = int(tr_tuple[1] / float(self.chunk_sec))
-                except (TypeError, ValueError, ZeroDivisionError):
-                    tr_start_chunk = tr_end_chunk = -1
-                if tr_start_chunk >= 0 and tr_end_chunk >= tr_start_chunk:
-                    for ci in range(tr_start_chunk, tr_end_chunk + 1):
-                        cf = _chunk_frame_paths(
-                            video_path, self.frames_root, ci,
-                            self.frames_per_chunk,
-                        )
-                        if cf:
-                            recalled_frame_paths.extend(cf)
+            frame_chunks: List[int] = []
+            if selected_chunks and self.frames_root and video_path:
+                for ci in selected_chunks:
+                    cf = _chunk_frame_paths(
+                        video_path, self.frames_root, ci,
+                        self.frames_per_chunk,
+                    )
+                    if cf:
+                        frame_chunks.append(ci)
+                        recalled_frame_paths.extend(cf)
 
-            success = bool(recalled_frame_paths) or bool(text_result.get("text"))
+            time_text = recall_time_string_for_chunks(selected_chunks) or (
+                text_result.get("time", "") or ""
+            )
+            success = bool(selected_chunks) or bool(text_result.get("text"))
             recall_result = {
                 "source": "historical_frames" if recalled_frame_paths else (
                     text_result.get("source", "memory") if success else "failure"
@@ -803,20 +809,15 @@ def _register_streaming_agent_loop():
                                 if success else "No matching results found.",
                 "text": text_result.get("text", "")
                         if success else "No matching results found.",
-                "returned_chunks": list(range(tr_start_chunk, tr_end_chunk + 1))
-                                   if recalled_frame_paths else [],
-                "time": (f"{tr_start_chunk}-{tr_end_chunk}"
-                         if tr_start_chunk >= 0 else
-                         (text_result.get("time", "") or "")),
+                "returned_chunks": selected_chunks,
+                "time": time_text,
             }
-            recalled_frames = None
-            if recalled_frame_paths:
-                recalled_frames = {
-                    "time_range": [tr_start_chunk, tr_end_chunk],
-                    "source": "historical_frames",
-                    "n_frames": len(recalled_frame_paths),
-                    "frame_paths": recalled_frame_paths,
-                }
+            recalled_frames = build_recalled_frames_metadata(
+                frame_chunks,
+                recalled_frame_paths,
+                chunk_sec=self.chunk_sec,
+                frames_per_chunk=self.frames_per_chunk,
+            ) if recalled_frame_paths else None
             return {
                 "recall_result": recall_result,
                 "recalled_frames": recalled_frames,
@@ -868,7 +869,7 @@ def _register_streaming_agent_loop():
                     frame_protocol=self.frame_protocol,
                     fps=float(self.frames_per_chunk) / float(self.chunk_sec),
                     start_frame_index=int(tr_start) * self.frames_per_chunk,
-                    total_num_frames=int(tr_end + 1) * self.frames_per_chunk,
+                    total_num_frames=int(tr_end) * self.frames_per_chunk,
                     context_label="recalled frame",
                     min_pixels=_RTKW["min_pixels"],
                     max_pixels=_RTKW["max_pixels"],
@@ -1466,9 +1467,9 @@ def _register_streaming_agent_loop():
                     # Append think to recent_thinks for next turn's memory.
                     think_text = parsed.get("think") or ""
                     if think_text and kind in ("answer", "recall", "unknown"):
-                        state.recent_thinks.append({
-                            "chunk": chunk_idx, "text": think_text,
-                        })
+                        item = {"chunk": chunk_idx, "text": think_text}
+                        state.recent_thinks.append(item)
+                        state.think_archive.append(dict(item))
                 # NOTE: recall handling moved into the inner ready-loop
                 # above (chunk-internal multi-turn). The legacy "deliver
                 # recall_result on the next chunk" path is exercised only

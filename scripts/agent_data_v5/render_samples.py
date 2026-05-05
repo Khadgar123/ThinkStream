@@ -27,7 +27,11 @@ from .config import (
     FRAMES_PER_CHUNK,
     compute_visual_window_start,
 )
-from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12
+from thinkstream.data.agent_protocol import (
+    SYSTEM_PROMPT_V12,
+    build_recalled_frames_metadata,
+    select_recall_chunks,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -198,24 +202,20 @@ def _build_recalled_frames(
     """
     if not recall_result or recall_result.get("source") != "historical_frames":
         return None
-    chunks = recall_result.get("returned_chunks") or []
+    chunks = select_recall_chunks(recall_result.get("returned_chunks") or [])
     if not chunks:
         return None
-    t_start = min(chunks) * AGENT_CHUNK_SEC
-    t_end = (max(chunks) + 1) * AGENT_CHUNK_SEC
-    rf = {
-        "time_range": [int(t_start), int(t_end)],
-        "n_frames": len(chunks) * FRAMES_PER_CHUNK,
-        "source": "historical_frames",
-    }
+    paths = []
     if all_frame_paths:
         from .pass1a_evidence import get_chunk_frame_paths
-        paths = []
         for c in chunks:
             paths.extend(get_chunk_frame_paths(all_frame_paths, c))
-        if paths:
-            rf["frame_paths"] = paths
-    return rf
+    return build_recalled_frames_metadata(
+        chunks,
+        paths,
+        chunk_sec=AGENT_CHUNK_SEC,
+        frames_per_chunk=FRAMES_PER_CHUNK,
+    )
 
 
 def render_sample(
