@@ -547,6 +547,7 @@ class WeightedSFTTrainer(Trainer):
     def _reset_train_metrics(self):
         self._train_metrics = {
             "loss_sum":   defaultdict(float),
+            "loss_value_n": defaultdict(int),
             "loss_n":     defaultdict(int),
             "weight_sum": defaultdict(float),
         }
@@ -571,6 +572,8 @@ class WeightedSFTTrainer(Trainer):
             if psl is not None and i < len(psl):
                 self._train_metrics["loss_sum"][stype] += psl[i]
                 self._train_metrics["loss_sum"]["_all"] += psl[i]
+                self._train_metrics["loss_value_n"][stype] += 1
+                self._train_metrics["loss_value_n"]["_all"] += 1
             self._train_metrics["loss_n"][stype] += 1
             self._train_metrics["loss_n"]["_all"] += 1
             w = sw[i] if sw is not None and i < len(sw) else 1.0
@@ -590,9 +593,11 @@ class WeightedSFTTrainer(Trainer):
             if n == 0:
                 continue
             suffix = "" if stype == "_all" else f"_{stype}"
-            out[f"train/loss_by_class{suffix}"] = (
-                self._train_metrics["loss_sum"][stype] / n
-            )
+            loss_n = self._train_metrics["loss_value_n"].get(stype, 0)
+            if loss_n:
+                out[f"train/loss_by_class{suffix}"] = (
+                    self._train_metrics["loss_sum"][stype] / loss_n
+                )
             out[f"train/sw_mean{suffix}"] = (
                 self._train_metrics["weight_sum"][stype] / n
             )

@@ -43,6 +43,17 @@
 #   FRAME_PROTOCOL / THINKSTREAM_FRAME_PROTOCOL
 #               - ts_image | video_meta. Must match the rendered SFT
 #                 messages and later RL/eval protocol.
+#   INCLUDE_FAILED_VERIFICATION
+#               - True keeps verifier-failed samples instead of dropping them.
+#   MAX_SAMPLE_TOKENS
+#               - Overlong filter threshold. Set 0 to disable token filtering.
+#   THINKSTREAM_ENV
+#               - Conda/venv path for SFT. Defaults to the local
+#                 envs/thinkstream env when present, so bare shell launches do
+#                 not accidentally use /root/miniconda3.
+#   TORCHRUN_BIN
+#               - Explicit torchrun path override.
+#   DRY_RUN     - Set to 1 to print resolved config without launching.
 #
 # Step budget:
 #   effective_batch = BSZ × NPROC × GRAD_ACCUM.
@@ -60,11 +71,34 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 DEEPSPEED="${SCRIPT_DIR}/zero3.json"
 ENTRY="${PROJECT_DIR}/thinkstream/sft/train.py"
+PARENT_DIR="$(dirname "${PROJECT_DIR}")"
+if [[ -x "${PARENT_DIR}/envs/thinkstream/bin/torchrun" ]]; then
+    DEFAULT_ENV="${PARENT_DIR}/envs/thinkstream"
+else
+    DEFAULT_ENV="${PROJECT_DIR}/envs/thinkstream"
+fi
+THINKSTREAM_ENV="${THINKSTREAM_ENV:-${DEFAULT_ENV}}"
+if [[ -z "${TORCHRUN_BIN:-}" ]]; then
+    if [[ -x "${THINKSTREAM_ENV}/bin/torchrun" ]]; then
+        TORCHRUN_BIN="${THINKSTREAM_ENV}/bin/torchrun"
+    else
+        TORCHRUN_BIN="$(command -v torchrun)"
+    fi
+fi
+if [[ -z "${PYTHON_BIN:-}" ]]; then
+    if [[ -x "${THINKSTREAM_ENV}/bin/python" ]]; then
+        PYTHON_BIN="${THINKSTREAM_ENV}/bin/python"
+    else
+        PYTHON_BIN="$(command -v python)"
+    fi
+fi
 AGENT_DATA_ROOT="${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-${PROJECT_DIR}/data/agent_v5}}"
 if [[ "${AGENT_DATA_ROOT}" == */final ]]; then
     AGENT_DATA_ROOT="$(dirname "${AGENT_DATA_ROOT}")"
 fi
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
+INCLUDE_FAILED_VERIFICATION="${INCLUDE_FAILED_VERIFICATION:-False}"
+MAX_SAMPLE_TOKENS="${MAX_SAMPLE_TOKENS:-12000}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 if [[ -z "${THINKSTREAM_FINAL_DIR:-}" ]]; then
     if [[ -d "${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}" ]]; then
@@ -157,16 +191,25 @@ echo "Eval:     ${eval_datasets:-none}"
 echo "Data:     ${AGENT_DATA_ROOT}"
 echo "Final:    ${THINKSTREAM_FINAL_DIR}"
 echo "Protocol: ${FRAME_PROTOCOL}"
+echo "Include failed verification: ${INCLUDE_FAILED_VERIFICATION}"
+echo "Max sample tokens: ${MAX_SAMPLE_TOKENS}"
 echo "LR:       ${lr}"
 echo "Epochs:   ${epochs}"
 echo "Output:   ${output_dir}"
 echo "GPUs:     ${NPROC}"
 echo "Batch:    ${BSZ} × ${GRAD_ACCUM} accum"
+echo "Python:   ${PYTHON_BIN}"
+echo "Torchrun: ${TORCHRUN_BIN}"
 echo "=============================="
+
+if [[ "${DRY_RUN:-0}" == "1" ]]; then
+    echo "DRY_RUN=1: resolved configuration only; not launching torchrun."
+    exit 0
+fi
 
 TOKENIZERS_PARALLELISM=false \
 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
-torchrun --nproc_per_node=${NPROC} \
+"${TORCHRUN_BIN}" --nproc_per_node=${NPROC} \
     ${ENTRY} \
     --deepspeed ${DEEPSPEED} \
     --model_name_or_path "${llm}" \
@@ -187,7 +230,8 @@ torchrun --nproc_per_node=${NPROC} \
     --logging_steps 10 \
     --gradient_checkpointing True \
     --model_max_length 16384 \
-    --max_sample_tokens 12000 \
+    --max_sample_tokens ${MAX_SAMPLE_TOKENS} \
+    --include_failed_verification ${INCLUDE_FAILED_VERIFICATION} \
     --torch_empty_cache_steps 1 \
     --dataloader_num_workers 4 \
     --video_min_pixels 130000 \
