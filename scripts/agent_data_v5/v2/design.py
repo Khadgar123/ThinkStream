@@ -27,9 +27,10 @@ from ..stable_hash import stable_mod
 
 VISUAL_WINDOW_CHUNKS = 16        # frames still in visual prompt
 RECENT_THINKS_HORIZON = 60       # ~4000 tok / 70 tok-per-think — pre-compress horizon
-RECALL_OK_RATE = 0.90            # pure-oracle recall demo
+RECALL_OK_RATE = 0.95            # pure-oracle recall demo
 RECALL_NOISY_RATE = 0.05         # oracle ⊕ distractor frames
-RECALL_FAILURE_RATE = 0.05       # empty result → wait for next grounding chunk
+RECALL_FAILURE_RATE = 0.0        # main data never creates no-answer questions
+RECALL_WAIT_RATE = 1.0           # forward questions get one recall→wait demo
 
 # ── ask placement: STRATIFIED tier ranges (3 difficulty bands per profile) ──
 # Each profile picks one band per placement; multi-placement profiles
@@ -167,8 +168,10 @@ class Placement:
     # Per-chunk gold actions inside this placement's window
     # (chunk -> (kind, value or "")):
     chunk_actions: Dict[int, Tuple[GoldKind, str]] = field(default_factory=dict)
-    # For recall_demo: which emit chunks have recall inserted, and which
-    # noise type (oracle/noisy/failure):
+    # Chunks where the assistant should call recall before the final action.
+    # recall_demo response chunks use oracle/noisy historical frames.
+    # silent_then_response may use not_yet on an early silent chunk; the
+    # question remains open and must be answered at its later response chunk.
     recall_at: Dict[int, str] = field(default_factory=dict)
 
 
@@ -569,25 +572,39 @@ def select_trajectory(
 
 
 def assign_recall_noise(placements: List[Placement], rng: random.Random) -> None:
-    """For each recall_demo emit chunk, draw oracle/noisy/failure label.
+    """Assign recall demonstrations without creating no-answer questions.
 
-    Mutates placement.recall_at in place. Rates are GLOBAL constants
-    (RECALL_OK_RATE / RECALL_NOISY_RATE / RECALL_FAILURE_RATE) — they do
-    NOT depend on rollout state.
+    Mutates placement.recall_at in place.
+
+    - recall_demo: recall at the response chunk with oracle/noisy evidence.
+    - silent_then_response: recall at the ask chunk with a not_yet result,
+      then keep the query open until the later response chunk.
+
+    Every selected question still has a grounded answer in the same
+    trajectory. If failure-mode data is needed later, it should live in a
+    separate diagnostic dataset, not in SFT/RL/eval training trajectories.
     """
     for p in placements:
-        if p.mechanism != "recall_demo":
-            continue
-        for c, (kind, _) in p.chunk_actions.items():
-            if kind != "response":
-                continue
-            r = rng.random()
-            if r < RECALL_OK_RATE:
-                p.recall_at[c] = "oracle"
-            elif r < RECALL_OK_RATE + RECALL_NOISY_RATE:
-                p.recall_at[c] = "noisy"
-            else:
-                p.recall_at[c] = "failure"
+        if p.mechanism == "recall_demo":
+            for c, (kind, _) in p.chunk_actions.items():
+                if kind != "response":
+                    continue
+                r = rng.random()
+                if r < RECALL_OK_RATE:
+                    p.recall_at[c] = "oracle"
+                else:
+                    p.recall_at[c] = "noisy"
+        elif p.mechanism == "silent_then_response":
+            response_chunks = [
+                int(c) for c, (kind, _) in p.chunk_actions.items()
+                if kind == "response"
+            ]
+            if (
+                response_chunks
+                and min(response_chunks) > p.ask_chunk
+                and rng.random() < RECALL_WAIT_RATE
+            ):
+                p.recall_at[p.ask_chunk] = "not_yet"
 
 
 # ---------------------------------------------------------------------------
@@ -598,14 +615,14 @@ def assign_recall_noise(placements: List[Placement], rng: random.Random) -> None
 @dataclass
 class Sample:
     chunk_idx: int
-    sample_kind: str               # silent | response | recall+response | recall+silent
+    sample_kind: str               # silent | response | recall+response
     placement_id: str
     card_id: str
     ask_chunk: int
     mechanism: PlacementMechanism
     response_text: str = ""        # empty for silent
     recall_query: Optional[Dict] = None
-    recall_result_kind: Optional[str] = None  # oracle/noisy/failure
+    recall_result_kind: Optional[str] = None  # oracle/noisy
     extra: Dict = field(default_factory=dict)
 
 
@@ -619,6 +636,18 @@ def render_placement(
     for c in sorted(placement.chunk_actions.keys()):
         kind, value = placement.chunk_actions[c]
         if kind == "silent":
+            if placement.recall_at.get(c) == "not_yet":
+                samples.append(Sample(
+                    chunk_idx=c,
+                    sample_kind="recall+silent",
+                    placement_id=pid,
+                    card_id=card.card_id,
+                    ask_chunk=placement.ask_chunk,
+                    mechanism=placement.mechanism,
+                    recall_query=card.recall_query,
+                    recall_result_kind="not_yet",
+                ))
+                continue
             samples.append(Sample(
                 chunk_idx=c,
                 sample_kind="silent",
@@ -632,31 +661,21 @@ def render_placement(
         if placement.mechanism == "recall_demo" and c in placement.recall_at:
             rkind = placement.recall_at[c]
             if rkind == "failure":
-                # silent at this chunk; the next emit (if any) will retry,
-                # but we still emit a recall+silent sample for THIS chunk
-                # to teach "recall returned nothing → don't fabricate"
-                samples.append(Sample(
-                    chunk_idx=c,
-                    sample_kind="recall+silent",
-                    placement_id=pid,
-                    card_id=card.card_id,
-                    ask_chunk=placement.ask_chunk,
-                    mechanism=placement.mechanism,
-                    recall_query=card.recall_query,
-                    recall_result_kind=rkind,
-                ))
-            else:
-                samples.append(Sample(
-                    chunk_idx=c,
-                    sample_kind="recall+response",
-                    placement_id=pid,
-                    card_id=card.card_id,
-                    ask_chunk=placement.ask_chunk,
-                    mechanism=placement.mechanism,
-                    response_text=value,
-                    recall_query=card.recall_query,
-                    recall_result_kind=rkind,
-                ))
+                raise ValueError(
+                    f"recall failure is disabled in production trajectories: "
+                    f"card={card.card_id} chunk={c}"
+                )
+            samples.append(Sample(
+                chunk_idx=c,
+                sample_kind="recall+response",
+                placement_id=pid,
+                card_id=card.card_id,
+                ask_chunk=placement.ask_chunk,
+                mechanism=placement.mechanism,
+                response_text=value,
+                recall_query=card.recall_query,
+                recall_result_kind=rkind,
+            ))
         else:
             samples.append(Sample(
                 chunk_idx=c,

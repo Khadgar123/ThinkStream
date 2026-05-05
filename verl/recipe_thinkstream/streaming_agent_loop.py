@@ -337,7 +337,14 @@ def _retrieve_from_memory(
             continue
         candidates.append((score, f"chunk {chunk}", text))
     if not candidates:
-        return {"source": "memory", "time": "", "text": "(no relevant past observation)"}
+        tr_text = ""
+        if time_range is not None:
+            tr_text = f"{int(time_range[0])}-{int(time_range[1])}"
+        return {
+            "source": "memory",
+            "time": tr_text,
+            "text": "No relevant past observation in the requested time range.",
+        }
     candidates.sort(key=lambda x: x[0], reverse=True)
     top = candidates[:top_k]
     return {
@@ -977,6 +984,9 @@ def _register_streaming_agent_loop():
             # to kind=="answer" (or any explicit <answer>...</answer>).
             per_q_answer_chunk: List[int] = [-1] * len(multi_q_list)
             per_q_answer_text: List[str] = [""] * len(multi_q_list)
+            per_q_answers: List[List[Dict[str, Any]]] = [
+                [] for _ in multi_q_list
+            ]
             # Stack of question indices waiting to be assigned to the next
             # assistant turn (for chunks where multiple Qs fire — Q1's
             # spec says this won't happen now, but keep the queue for
@@ -984,6 +994,29 @@ def _register_streaming_agent_loop():
             pending_q_indices: List[int] = []
             query_log: List[Dict[str, Any]] = []
             query_log_idx_by_q: Dict[int, int] = {}
+
+            def _question_complete(q_idx: int) -> bool:
+                """Return True when this pending question has enough answers.
+
+                Empty <answer></answer> is a per-chunk silent action, not a
+                terminal event. A question is removed from the pending queue
+                only after a non-empty answer; multi-emit cards need one
+                non-empty answer per expected answer chunk.
+                """
+                if q_idx < 0 or q_idx >= len(multi_q_list):
+                    return True
+                q_obj = multi_q_list[q_idx]
+                ans_ch = q_obj.get("answer_chunks") or []
+                if hasattr(ans_ch, "tolist"):
+                    ans_ch = ans_ch.tolist()
+                expected: List[int] = []
+                for x in ans_ch:
+                    try:
+                        expected.append(int(x))
+                    except (TypeError, ValueError):
+                        continue
+                expected_n = max(1, len(expected))
+                return len(per_q_answers[q_idx]) >= expected_n
 
             # ── Initial prompt: [system + user(question)]. Cached on vLLM
             # side; never re-prefilled across chunks.
@@ -1344,7 +1377,7 @@ def _register_streaming_agent_loop():
                 if inner_aborted and num_assistant_turns == 0:
                     break
 
-                # ── Multi-Q: assign this turn's <answer> (if any) to a
+                # ── Multi-Q: assign this turn's NON-EMPTY <answer> to a
                 # pending question.
                 #
                 # IMPORTANT — what pass3 SFT data actually looks like:
@@ -1375,6 +1408,7 @@ def _register_streaming_agent_loop():
                     )
                     if answer_str is not None:
                         answer_str = str(answer_str).strip()
+                    if answer_str:
 
                         chosen_pos = None
                         # 1. answer_chunks window match
@@ -1398,15 +1432,22 @@ def _register_streaming_agent_loop():
                         # 3. FIFO is the implicit floor when 2 falls through
                         # (single pending Q → both LIFO/FIFO pick it).
 
-                        q_idx = pending_q_indices.pop(chosen_pos)
-                        per_q_answer_chunk[q_idx] = chunk_idx
-                        per_q_answer_text[q_idx] = answer_str
+                        q_idx = pending_q_indices[chosen_pos]
+                        per_q_answers[q_idx].append({
+                            "chunk": int(chunk_idx),
+                            "text": answer_str,
+                        })
+                        if per_q_answer_chunk[q_idx] < 0:
+                            per_q_answer_chunk[q_idx] = chunk_idx
+                            per_q_answer_text[q_idx] = answer_str
                         qlog_i = query_log_idx_by_q.get(q_idx)
                         if qlog_i is not None and 0 <= qlog_i < len(query_log):
                             query_log[qlog_i].setdefault("answers", []).append({
                                 "text": answer_str,
                                 "time": chunk_idx * self.chunk_sec,
                             })
+                        if _question_complete(q_idx):
+                            pending_q_indices.pop(chosen_pos)
 
                 # default_v12_update_state advances chunk_idx by +1 on
                 # EVERY turn — including compress. For inter-chunk
@@ -1471,6 +1512,7 @@ def _register_streaming_agent_loop():
                 "ts_chunk_video_indices": chunk_video_indices,
                 "ts_per_q_answer_chunk": list(per_q_answer_chunk),
                 "ts_per_q_answer_text": list(per_q_answer_text),
+                "ts_per_q_answers": per_q_answers,
                 "ts_n_questions": float(len(multi_q_list)),
             }
 

@@ -276,8 +276,8 @@ def _verify_card_layers(card: Dict, ev_by_chunk: Dict[int, Dict]) -> str:
         return "schema_question_too_short"
     af = card.get("answer_form", "")
     emits = card.get("gold_emits") or []
-    if not emits and not card.get("canonical_answer"):
-        return "schema_no_gold"
+    if not emits:
+        return "schema_no_gold_emits"
 
     if af == "multiple_choice":
         opts = card.get("options") or []

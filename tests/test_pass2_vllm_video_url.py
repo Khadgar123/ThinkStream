@@ -258,12 +258,12 @@ def test_pass2_cache_bump_invalidates_old_video_http_rollouts():
     assert STAGE_VERSIONS["1a"] == "v12.25"
     assert STAGE_VERSIONS["1b"] == "v12.25"
     assert STAGE_VERSIONS["2"] == "v12.25"
-    # Downstream stages must not reuse cached samples after pass1 native
-    # think and pass2 pass1-think rollouts changed the SFT targets.
-    assert STAGE_VERSIONS["3b"] == "v12.25"
-    assert STAGE_VERSIONS["3c"] == "v12.25"
-    assert STAGE_VERSIONS["4"] == "v12.25"
-    assert STAGE_VERSIONS["5"] == "v12.26"
+    # Downstream stages must not reuse cached samples after pass3 changed
+    # recall_silent into a non-terminal not_yet wait state.
+    assert STAGE_VERSIONS["3b"] == "v12.28"
+    assert STAGE_VERSIONS["3c"] == "v12.28"
+    assert STAGE_VERSIONS["4"] == "v12.28"
+    assert STAGE_VERSIONS["5"] == "v12.28"
 
 
 def test_pass2_uses_pass1_observation_note_without_observation_call():

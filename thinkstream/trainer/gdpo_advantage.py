@@ -73,7 +73,9 @@ import torch
 #       above-mean advantage; others get below-mean → policy learns)
 #   2. silent_quality + timing — streaming-specific signals (no industry
 #      analog); these are NOT chunk-level credit assignment, they're
-#      additional outcome dimensions ("when to talk", not just "what to say")
+#      additional outcome dimensions ("when to talk", not just "what to say").
+#      In the verl recipe scorer, positive auxiliary rewards are gated by
+#      answer correctness so wrong answers cannot be rescued by timing/format.
 #
 V12_REWARD_DICT_KEYS: tuple = (
     "outcome",          # 0/1 per-question correctness; dominant signal

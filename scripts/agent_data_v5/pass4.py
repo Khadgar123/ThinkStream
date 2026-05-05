@@ -233,6 +233,18 @@ def _build_trajectory_record(
             if isinstance(e, dict) and e.get("chunk") is not None
         })
         missing_answer_chunks = sorted(set(expected_answer_chunks) - set(answer_chunks))
+        if not answer_chunks:
+            raise ValueError(
+                f"[{video_id}/{trajectory_id}] card {cid} has no answer "
+                "chunk. Production trajectories must not contain no-answer "
+                "questions; regenerate pass3b/pass3c with recall failures disabled."
+            )
+        if missing_answer_chunks:
+            raise ValueError(
+                f"[{video_id}/{trajectory_id}] card {cid} is missing expected "
+                f"answer chunks {missing_answer_chunks}; expected="
+                f"{expected_answer_chunks}, observed={answer_chunks}."
+            )
         if canonical_ask < 0 and answer_chunks:
             # Fallback for legacy trajectories without ask_chunk metadata
             canonical_ask = answer_chunks[0]
@@ -320,9 +332,11 @@ def _build_trajectory_record(
         ci = int(s.get("chunk_idx", 0))
         st = s.get("sample_type", "silent")
         if st == "recall" and s.get("action") == "silent":
-            # Shape-B recall failure: assistant should call recall, then keep
-            # the final <answer> empty. Reward/metrics must not treat this as
-            # a missed response.
+            # Shape-B recall_silent is a non-terminal wait state: the model
+            # calls recall, sees that the answer is not historically available
+            # yet, emits empty <answer>, and keeps the query open. The
+            # answer-required guard above ensures this card still has a later
+            # response chunk in the same trajectory.
             st = "recall_silent"
         prev = gold_action_per_chunk.get(ci)
         if prev is None or action_priority.get(st, 99) < action_priority.get(prev, 99):

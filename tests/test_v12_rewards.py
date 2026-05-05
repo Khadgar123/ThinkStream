@@ -425,6 +425,96 @@ def test_per_chunk_silent_quality_perfect_silence():
     print(f"✓ per_chunk_silent_quality_v124 perfect = {res['silent_quality']}")
 
 
+def test_recall_silent_requires_recall_check():
+    from thinkstream.trainer.v12_rewards import compute_per_chunk_silent_quality_v12 as f
+
+    recall_ok = f(
+        [{"chunk_idx": 5, "kind": "recall", "answer_text": None}],
+        {"5": "recall_silent"},
+    )
+    skipped_recall = f(
+        [{"chunk_idx": 5, "kind": "answer", "answer_text": ""}],
+        {"5": "recall_silent"},
+    )
+    hallucinated = f(
+        [{"chunk_idx": 5, "kind": "answer", "answer_text": "red cup"}],
+        {"5": "recall_silent"},
+    )
+
+    assert recall_ok["silent_quality"] == 0.3
+    assert skipped_recall["silent_quality"] == 0.0
+    assert hallucinated["silent_quality"] == -0.6
+
+
+def test_recipe_reward_gates_positive_auxiliary_on_correct_answer():
+    from verl.recipe_thinkstream.thinkstream import _combine_reward_parts
+
+    weights = {
+        "outcome": 1.0,
+        "timing": 0.3,
+        "format": 0.1,
+        "spam": -0.2,
+        "silent_quality": 0.2,
+    }
+    parts = {
+        "outcome": 0.0,
+        "timing": 1.0,
+        "format": 1.0,
+        "spam": 0.0,
+        "silent_quality": 0.3,
+    }
+
+    score, gate = _combine_reward_parts(weights, parts)
+    assert gate == 0.0
+    assert score == 0.0
+
+
+def test_recipe_reward_keeps_negative_auxiliary_when_answer_wrong():
+    from verl.recipe_thinkstream.thinkstream import _combine_reward_parts
+
+    weights = {
+        "outcome": 1.0,
+        "timing": 0.3,
+        "format": 0.1,
+        "spam": -0.2,
+        "silent_quality": 0.2,
+    }
+    parts = {
+        "outcome": 0.0,
+        "timing": -1.0,
+        "format": 1.0,
+        "spam": 2.0,
+        "silent_quality": -0.6,
+    }
+
+    score, gate = _combine_reward_parts(weights, parts)
+    assert gate == 0.0
+    assert abs(score - (-0.82)) < 1e-6
+
+
+def test_recipe_reward_allows_auxiliary_when_answer_correct():
+    from verl.recipe_thinkstream.thinkstream import _combine_reward_parts
+
+    weights = {
+        "outcome": 1.0,
+        "timing": 0.3,
+        "format": 0.1,
+        "spam": -0.2,
+        "silent_quality": 0.2,
+    }
+    parts = {
+        "outcome": 1.0,
+        "timing": 1.0,
+        "format": 1.0,
+        "spam": 0.0,
+        "silent_quality": 0.3,
+    }
+
+    score, gate = _combine_reward_parts(weights, parts)
+    assert gate == 1.0
+    assert abs(score - 1.46) < 1e-6
+
+
 def test_silent_quality_v12_complements_outcome():
     """Verify silent_quality fills the reward gap that outcome alone misses.
 
@@ -473,6 +563,10 @@ if __name__ == "__main__":
     test_trajectory_outcome_v124_single_response_unchanged()
     test_per_chunk_silent_quality_v124()
     test_per_chunk_silent_quality_perfect_silence()
+    test_recall_silent_requires_recall_check()
+    test_recipe_reward_gates_positive_auxiliary_on_correct_answer()
+    test_recipe_reward_keeps_negative_auxiliary_when_answer_wrong()
+    test_recipe_reward_allows_auxiliary_when_answer_correct()
     test_silent_quality_v12_complements_outcome()
     test_v12_advantage_aggregation()
     print("\n✅ all v12.0 reward smoke tests passed")

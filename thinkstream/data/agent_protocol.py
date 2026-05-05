@@ -790,7 +790,10 @@ SYSTEM_PROMPT_V12 = (
     "- recall: search past observations by keywords + time range. Use when the answer is "
     "NOT in any visible source but you believe it was observed earlier. "
     "You may call recall AT MOST ONCE per question. After receiving "
-    "<recall_result>, emit <answer> directly — do not call recall again.\n"
+    "<recall_result>, emit <answer> directly — do not call recall again. "
+    "If recall reports no relevant past observation and the current frames "
+    "still do not contain the answer, emit <answer></answer> and keep the "
+    "query pending for a future chunk.\n"
     "- compress: summarize a chunk range. Called ONLY when the system injects "
     "<compress_trigger/> into your input as a memory-pressure signal. "
     "You must derive the time range to compress yourself from <memory> "
@@ -865,7 +868,9 @@ TOOLS_SCHEMA = [
             "description": (
                 "Search past video observations by keywords and time range. "
                 "Returns matched historical thinks. Use when the answer is "
-                "not in any visible source but was observed earlier."
+                "not in any visible source but was observed earlier, or once "
+                "for a pending future question to verify that the answer has "
+                "not appeared in the past yet."
             ),
             "parameters": {
                 "type": "object",

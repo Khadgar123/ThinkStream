@@ -40,6 +40,13 @@ STAGE_VERSIONS: Dict[str, str] = {
     # v12.11 audit-5 P1 #5 (2026-05-01): bumps below align with the v12.11
     # data-construction logic changes. Without these, an existing cluster
     # cache stamped v12.5 would silently reuse stale outputs:
+    #   v12.28 (2026-05-05): recall_silent is restored only as a non-terminal
+    #        wait state: a forward question may call recall, receive not_yet,
+    #        keep the query open, and answer at a later grounded chunk.
+    #   v12.27 (2026-05-05): pass3 requires every card/placement/question
+    #        to have grounded answer emits. Production recall demos now sample
+    #        only oracle/noisy retrieval results; recall-failure/no-answer
+    #        trajectories are rejected instead of entering SFT/RL/eval.
     #   v12.26 (2026-05-05): pass5/render + SFT/RL/eval support late-bound
     #        AB visual carriers for the same pre-extracted frames:
     #        timestamped image list (`ts_image`) and native Qwen video block
@@ -77,11 +84,11 @@ STAGE_VERSIONS: Dict[str, str] = {
     "1a": "v12.25",
     "1b": "v12.25",
     "2":  "v12.25",
-    "3a": "v12.25",
-    "3b": "v12.25",
-    "3c": "v12.25",
-    "4":  "v12.25",  # canonical key — verification
-    "5":  "v12.26",  # pass5_messages render version
+    "3a": "v12.27",
+    "3b": "v12.28",
+    "3c": "v12.28",
+    "4":  "v12.28",  # canonical key — verification
+    "5":  "v12.28",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

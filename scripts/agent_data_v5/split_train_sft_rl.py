@@ -7,10 +7,10 @@ but not the *_sft / *_rl variants) to deterministically regenerate:
     data/agent_v5/final/train_rl.jsonl
     data/agent_v5/final/split_manifest.json
 
-The split is by video_id (atomic), seed=42, RL = 20% of train videos.
-The 5 `recall_silent` outliers are dropped from the SFT pool to keep the
-ClassBalancedDistributedSampler weight ratio bounded (was 107x with
-those samples → 9.5x without).
+The split is by video_id (atomic), seed=42, RL = 50% of train videos.
+Production pass3 may emit non-terminal `recall_silent` wait states, but every
+question still has a later grounded answer; this script keeps all sample types
+and should not be used as a filter.
 
 This produces byte-identical files to what `pipeline.py` writes at the
 end of a full run, given the same train.jsonl input. It does NOT
@@ -34,12 +34,9 @@ DEFAULT_FINAL_DIR = (
     Path(__file__).resolve().parents[2] / "data" / "agent_v5" / "final"
 )
 DEFAULT_SEED = 42
-# v12.11 audit-4 P1 #3 fix (2026-05-01): align defaults with the main
-# pipeline (pipeline.py emit_split). Previously this script defaulted to
-# RL=20% and dropped recall_silent — both inconsistent with v12 in-pipeline
-# logic which uses 50/50 video split and keeps recall_silent (it's a
-# legitimate v12 trajectory state). Running this offline split would
-# silently overwrite the pipeline's output with a different distribution.
+# v12.28: align defaults with the main pipeline. Non-terminal recall_silent
+# wait states are valid generated samples; keep all sample types instead of
+# using this split step as a repair/filter.
 DEFAULT_RL_FRAC = 0.50
 DROP_SAMPLE_TYPES: set = set()  # keep all sample types (matches pipeline.py)
 

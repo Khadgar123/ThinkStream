@@ -455,13 +455,18 @@ def print_report(agg: Dict, n_videos: int) -> None:
         bar = "█" * int(pct / 2)
         print(f"    {k:25s} {v:5d}  {pct:5.1f}%  {bar}")
     print()
-    print("  Recall noise (within recall_demo placements):")
+    print("  Recall scheduling:")
     if mech["recall_noise_distribution"]:
         for k, v in mech["recall_noise_distribution"].items():
             pct = mech["recall_noise_pct"].get(k, 0)
-            print(f"    {k:10s} {v:5d}  {pct:5.1f}%  (target: oracle 90 / noisy 5 / failure 5)")
+            hint = (
+                "recall_demo hit" if k == "oracle" else
+                "recall_demo noisy hit" if k == "noisy" else
+                "recall+silent wait state"
+            )
+            print(f"    {k:10s} {v:5d}  {pct:5.1f}%  ({hint}; no terminal failure)")
     else:
-        print("    (no recall_demo placements → no noise samples)")
+        print("    (no recall placements → no scheduling samples)")
     print()
     print("  Gap distributions (chunks):")
     print(f"    silent_then_response lead time: {mech['silent_then_response_lead_chunks']}")

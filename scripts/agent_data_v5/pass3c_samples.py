@@ -185,6 +185,12 @@ async def _response_text_via_llm(card: Dict, value: str, client, video_id: str,
     return text or _response_text_for(card, value)
 
 
+def _query_keywords(question: str) -> str:
+    return " ".join(
+        w.lower() for w in str(question or "").split() if len(w) > 3
+    )[:80]
+
+
 def _recall_query_for(card: Dict, ask_chunk: int) -> Dict:
     """Build recall_query (synchronous fast path).
 
@@ -200,8 +206,24 @@ def _recall_query_for(card: Dict, ask_chunk: int) -> Dict:
     else:
         time_range = ""
     q = card.get("question", "")
-    keywords = " ".join(w.lower() for w in q.split() if len(w) > 3)[:80]
+    keywords = _query_keywords(q)
     return {"query": keywords, "time_range": time_range}
+
+
+def _recall_wait_query_for(card: Dict, chunk_idx: int) -> Dict:
+    """Recall query for forward wait-state samples.
+
+    This deliberately ignores card.recall_query / grounding_frames because
+    those point to the future answer evidence. At a real streaming timestep
+    the student cannot know that future range. The query searches only the
+    already elapsed history up to the current chunk; an empty result teaches
+    "keep waiting", not "answer from future".
+    """
+    end_s = max(0, int(chunk_idx * AGENT_CHUNK_SEC))
+    return {
+        "query": _query_keywords(card.get("question", "")),
+        "time_range": f"0-{end_s}" if end_s > 0 else "",
+    }
 
 
 async def _recall_query_via_llm(card: Dict, client, video_id: str,
@@ -234,12 +256,35 @@ async def _recall_query_via_llm(card: Dict, client, video_id: str,
     return rq
 
 
-def _recall_result_for(card: Dict, rollout: Dict, noise_kind: str) -> Dict:
+def _recall_result_for(
+    card: Dict,
+    rollout: Dict,
+    noise_kind: str,
+    *,
+    current_chunk: Optional[int] = None,
+) -> Dict:
     """Build a recall_result matching the old pass3c noise vocabulary.
 
-    noise_kind ∈ {oracle, noisy, failure} (set by design.assign_recall_noise).
+    noise_kind ∈ {oracle, noisy, not_yet, failure}.
+    Production data uses oracle/noisy/not_yet; failure is legacy diagnostic.
     """
     grounding = card.get("grounding_frames", [])
+    if noise_kind == "not_yet":
+        end_s = (
+            max(0, int(current_chunk * AGENT_CHUNK_SEC))
+            if current_chunk is not None else 0
+        )
+        return {
+            # Match runtime retriever no-hit shape: source=memory with a
+            # no-match text result. The training target decides to wait
+            # because the query is still open, not because of a magic source.
+            "source": "memory",
+            "text_content": (
+                "No relevant past observation in the requested time range."
+            ),
+            "returned_chunks": [],
+            "time": f"0-{end_s}" if end_s > 0 else "",
+        }
     if noise_kind == "failure" or not grounding:
         return {
             "source": "failure",
@@ -284,8 +329,17 @@ def _silent_sample(
     sequence_type: str = "", base_role: str = "active_silent",
     sample_subtype: str = "silent", user_input: str = "",
 ) -> Dict:
-    """Plain silent sample (silent / patrol / recall_silent)."""
-    sample_type = "recall_silent" if sample_subtype == "recall+silent" else "silent"
+    """Plain silent sample (silent / patrol).
+
+    recall_silent uses _recall_silent_multiturn_sample so the model sees the
+    recall tool call and the no-match result before staying silent.
+    """
+    if sample_subtype == "recall+silent":
+        raise ValueError(
+            "recall+silent is disabled in production trajectories; every "
+            "question must have a grounded answer."
+        )
+    sample_type = "silent"
     output_text = build_assistant_content_v12(
         think=think, kind="answer", answer_text="",
     )
@@ -434,29 +488,25 @@ def _recall_silent_multiturn_sample(
     trajectory_id: str, card_id: str, sequence_type: str,
     user_input: str = "",
 ) -> Dict:
-    """Multi-turn recall sample with FAILURE result → empty answer (v12.13).
+    """Recall followed by an empty answer while the query remains open.
 
-    Teaches the model: when recall returns no useful content (source=failure),
-    DO NOT fabricate an answer — emit empty <answer></answer> (silent).
+    Production use is the forward/waiting case: after a question is asked,
+    recall may show that the answer has not appeared in history yet. The
+    model should keep <answer></answer> empty for this chunk, leave the query
+    pending, and answer at a later response chunk.
 
     SFT rendering (pass5 shape B variant):
       assistant → tool_call(recall_query)        ← turn1: model attempts recall
-      tool      → recall_result(source=failure)  ← system event: nothing found
-      assistant → think + empty <answer>          ← turn2: model stays silent
-
-    Without this sample shape, design.py:534 emits "recall+silent" intent
-    but pass3c renders it as a plain silent (no tool_call, no failure
-    recall_result). The model never sees the failure→silent pattern, so
-    at inference it may either (a) skip recall entirely, or (b) fabricate
-    an answer when recall fails.
+      tool      → recall_result(source=not_yet)   ← system event: no past evidence
+      assistant → think + empty <answer>          ← turn2: wait, query stays open
     """
     turn1 = build_assistant_content_v12(
         think=think, kind="recall", recall_query=recall_query,
     )
     turn2_think = (
-        "The recall result did not return matching historical evidence for "
-        "this pending question. Without a grounded visual match, I should not "
-        "guess; the correct action is to keep the answer empty."
+        "The recall result shows that the needed evidence has not appeared "
+        "in the video history yet. I should keep this question pending and "
+        "leave the answer empty until the relevant future moment is visible."
     )
     turn2 = build_assistant_content_v12(
         think=turn2_think, kind="answer", answer_text="",  # ← silent
@@ -476,8 +526,32 @@ def _recall_silent_multiturn_sample(
         "user_input": user_input,
         "recall_result": recall_result,
         "base_role": "recall_silent",
-        "_recall_failure": True,    # diagnostic flag for pass3e/audit
     }
+
+
+def _append_query_answer(
+    queries_state: List[Dict],
+    queries_idx_by_card: Dict[str, int],
+    card_id: str,
+    *,
+    chunk_idx: int,
+    text: str,
+    status: str,
+) -> None:
+    """Update query lifecycle after rendering an answer sample.
+
+    The current sample is rendered before this mutation, so it still sees the
+    query as pending. Subsequent samples see the new answer state and cannot
+    confuse this question with the next placement's pending query.
+    """
+    if card_id not in queries_idx_by_card:
+        return
+    q = queries_state[queries_idx_by_card[card_id]]
+    q.setdefault("answers", []).append({
+        "text": text,
+        "time": chunk_idx * AGENT_CHUNK_SEC,
+    })
+    q["status"] = status
 
 
 # ---------------------------------------------------------------------------
@@ -634,22 +708,19 @@ async def generate_trajectory_samples(
                 sequence_type=sequence_type, user_input=user_input,
             ))
         elif ds.sample_kind == "recall+silent":
-            # v12.13 fix (P0-4): emit a real two-turn shape B sample with
-            # tool_call(recall_query) → tool(recall_result, source=failure)
-            # → empty <answer>. Was emitting plain silent without any
-            # recall machinery, hiding the "failure → silent" supervision
-            # signal from the model entirely.
-            if client is not None:
-                rq = await _recall_query_via_llm(
-                    card or {}, client, video_id, c)
-            else:
-                rq = _recall_query_for(card or {}, c)
-            rr = _recall_result_for(card or {}, rollout, "failure")
+            # Wait-state recall must not use the card's grounding_frames:
+            # those point to the future answer chunk and would leak timing.
+            rq = _recall_wait_query_for(card or {}, c)
+            rr = _recall_result_for(card or {}, rollout,
+                                     ds.recall_result_kind or "not_yet",
+                                     current_chunk=c)
             raw.append(_recall_silent_multiturn_sample(
                 c, _think_for_chunk(rollout, c), queries_state,
                 rq, rr, traj_id, card_id or "", sequence_type,
                 user_input=user_input,
             ))
+            # Do not append an answer or close the query. recall+silent is a
+            # wait state; a later response/recall+response sample must answer.
         elif ds.sample_kind == "response":
             if client is not None:
                 resp = await _response_text_via_llm(
@@ -660,12 +731,14 @@ async def generate_trajectory_samples(
                 c, _think_for_chunk(rollout, c), resp, queries_state,
                 traj_id, card_id, sequence_type, user_input=user_input,
             ))
-            if card_id in queries_idx_by_card:
-                queries_state[queries_idx_by_card[card_id]]["answers"].append({
-                    "text": resp, "time": c * AGENT_CHUNK_SEC,
-                })
-                if c >= open_until_by_card.get(card_id, c):
-                    queries_state[queries_idx_by_card[card_id]]["status"] = "answered"
+            status = (
+                "answered" if c >= open_until_by_card.get(card_id, c)
+                else "open"
+            )
+            _append_query_answer(
+                queries_state, queries_idx_by_card, card_id,
+                chunk_idx=c, text=resp, status=status,
+            )
         elif ds.sample_kind == "recall+response":
             if client is not None:
                 resp = await _response_text_via_llm(
@@ -680,12 +753,14 @@ async def generate_trajectory_samples(
                 c, _think_for_chunk(rollout, c), resp, queries_state,
                 rq, rr, traj_id, card_id, sequence_type, user_input=user_input,
             ))
-            if card_id in queries_idx_by_card:
-                queries_state[queries_idx_by_card[card_id]]["answers"].append({
-                    "text": resp, "time": c * AGENT_CHUNK_SEC,
-                })
-                if c >= open_until_by_card.get(card_id, c):
-                    queries_state[queries_idx_by_card[card_id]]["status"] = "answered"
+            status = (
+                "answered" if c >= open_until_by_card.get(card_id, c)
+                else "open"
+            )
+            _append_query_answer(
+                queries_state, queries_idx_by_card, card_id,
+                chunk_idx=c, text=resp, status=status,
+            )
 
     # v12.12 fix (P0-1): stamp every card-bearing sample with its REAL
     # ask_chunk from placement (not the answer chunk). pass4 currently

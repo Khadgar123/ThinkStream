@@ -445,6 +445,45 @@ def _safe_list(v: Any) -> list:
     return []
 
 
+def _outcome_gate(parts: Dict[str, float]) -> float:
+    """Gate positive shaping rewards on answer correctness.
+
+    Timing/format/silent/action rewards are useful only after the model can
+    answer correctly. Without this gate, a wrong-but-timely answer can receive
+    positive reward and compete with the outcome signal.
+    """
+    try:
+        threshold = float(
+            os.environ.get("THINKSTREAM_OUTCOME_GATE_THRESHOLD", "1.0")
+        )
+    except ValueError:
+        threshold = 1.0
+    return 1.0 if float(parts.get("outcome", 0.0)) >= threshold else 0.0
+
+
+def _combine_reward_parts(
+    weights: Dict[str, float],
+    parts: Dict[str, float],
+) -> tuple[float, float]:
+    """Combine reward components with correctness-gated positive auxiliaries.
+
+    Negative penalties always apply. Positive non-outcome rewards apply only
+    when outcome crosses the gate threshold.
+    """
+    gate = _outcome_gate(parts)
+    outcome_total = float(weights.get("outcome", 0.0) * parts.get("outcome", 0.0))
+    aux_total = 0.0
+    for key, value in parts.items():
+        if key == "outcome":
+            continue
+        weighted = float(weights.get(key, 0.0) * value)
+        if weighted > 0:
+            aux_total += gate * weighted
+        else:
+            aux_total += weighted
+    return outcome_total + aux_total, gate
+
+
 def _score_one_question(
     rewards: Dict[str, Any],
     *,
@@ -468,14 +507,24 @@ def _score_one_question(
     ask_chunks = _safe_list(q.get("ask_chunks"))
     if not ask_chunks and ask_chunk >= 0:
         ask_chunks = [ask_chunk]
-    ask_chunks_int = [int(x) for x in ask_chunks if isinstance(x, (int, float))]
+    ask_chunks_int: List[int] = []
+    for x in ask_chunks:
+        try:
+            ask_chunks_int.append(int(x))
+        except (TypeError, ValueError):
+            continue
     # answer_chunks is the FULL answerable window (silent_then_response: ask=5,
     # answer=25 → window must include 25 or model gets penalised for late).
     # Audit P1.3: visible_window had to bracket ask_chunks AND answer_chunks,
     # otherwise pass4-style cards with (ask=20, answer=55) get scored as
     # late even when model answers correctly at 55.
     answer_chunks = _safe_list(q.get("answer_chunks"))
-    answer_chunks_int = [int(x) for x in answer_chunks if isinstance(x, (int, float))]
+    answer_chunks_int: List[int] = []
+    for x in answer_chunks:
+        try:
+            answer_chunks_int.append(int(x))
+        except (TypeError, ValueError):
+            continue
     window_marks = ask_chunks_int + answer_chunks_int
     visible_start = min(window_marks) if window_marks else None
     visible_end = max(window_marks) if window_marks else None
@@ -553,6 +602,131 @@ def _score_one_question(
     }
 
 
+def _score_one_question_events(
+    rewards: Dict[str, Any],
+    *,
+    q: Dict[str, Any],
+    answer_events: List[Dict[str, Any]],
+) -> Dict[str, float]:
+    """Score a question from all attributed non-empty answer events.
+
+    This is needed for multi-emit questions (F5/PN1/F7). Empty answers are
+    not passed in: they are ordinary silent chunks and must not close or
+    satisfy a pending question.
+    """
+    if not answer_events:
+        return _score_one_question(
+            rewards, q=q, model_answer="", answered_chunk=-1,
+        )
+
+    events: List[Dict[str, Any]] = []
+    for e in answer_events:
+        if hasattr(e, "tolist"):
+            e = e.tolist()
+        if not isinstance(e, dict):
+            continue
+        text = str(e.get("text", "")).strip()
+        if not text:
+            continue
+        try:
+            chunk = int(e.get("chunk", -1))
+        except (TypeError, ValueError):
+            chunk = -1
+        events.append({"chunk": chunk, "text": text})
+    events.sort(key=lambda x: int(x.get("chunk", -1)))
+    if not events:
+        return _score_one_question(
+            rewards, q=q, model_answer="", answered_chunk=-1,
+        )
+
+    answer_chunks = _safe_list(q.get("answer_chunks"))
+    answer_chunks_int: List[int] = []
+    for x in answer_chunks:
+        try:
+            answer_chunks_int.append(int(x))
+        except (TypeError, ValueError):
+            continue
+    answer_chunks_int = sorted(answer_chunks_int)
+    per_emit = _safe_list(q.get("per_emit_answers"))
+    is_multi = len(answer_chunks_int) > 1 or len(per_emit) > 1
+    if not is_multi:
+        first = events[0]
+        return _score_one_question(
+            rewards,
+            q=q,
+            model_answer=str(first.get("text", "")),
+            answered_chunk=int(first.get("chunk", -1)),
+        )
+
+    options = _safe_list(q.get("options"))
+    correct_option = q.get("correct_option", "")
+    gold_default = q.get("gold_answer", "") or ""
+    answer_form = q.get("answer_form", "") or ""
+    chunk_gold = {
+        int(e["chunk"]): str(e.get("value", gold_default))
+        for e in per_emit
+        if isinstance(e, dict) and e.get("chunk") is not None
+    }
+    target_chunks = sorted(chunk_gold.keys() or answer_chunks_int)
+    if not target_chunks:
+        first = events[0]
+        return _score_one_question(
+            rewards,
+            q=q,
+            model_answer=str(first.get("text", "")),
+            answered_chunk=int(first.get("chunk", -1)),
+        )
+
+    slack = 2
+    used_event_idx: set[int] = set()
+    outcome_scores: List[float] = []
+    timing_scores: List[float] = []
+    silent_scores: List[float] = []
+    for i, emit_chunk in enumerate(target_chunks):
+        lo = emit_chunk - slack
+        hi = emit_chunk + slack
+        if i + 1 < len(target_chunks):
+            hi = min(hi, target_chunks[i + 1] - 1)
+        found_idx = None
+        for ei, ev in enumerate(events):
+            if ei in used_event_idx:
+                continue
+            ev_chunk = int(ev.get("chunk", -1))
+            if lo <= ev_chunk <= hi:
+                found_idx = ei
+                break
+        if found_idx is None:
+            outcome_scores.append(0.0)
+            timing_scores.append(float(rewards["timing"](None, emit_chunk, hi)))
+            silent_scores.append(float(rewards["silent_quality"](
+                None, "response", gold_default,
+            )))
+            continue
+        used_event_idx.add(found_idx)
+        ev = events[found_idx]
+        model_answer = str(ev.get("text", ""))
+        ev_chunk = int(ev.get("chunk", -1))
+        gold_for_emit = chunk_gold.get(emit_chunk, gold_default)
+        outcome_scores.append(float(_score_outcome_by_form(
+            model_answer,
+            options=options,
+            correct_option=correct_option,
+            gold_answer=gold_for_emit,
+            answer_form=answer_form,
+        )))
+        timing_scores.append(float(rewards["timing"](ev_chunk, emit_chunk, hi)))
+        silent_scores.append(float(rewards["silent_quality"](
+            model_answer, "response", gold_for_emit,
+        )))
+
+    return {
+        "outcome": sum(outcome_scores) / len(outcome_scores),
+        "timing": sum(timing_scores) / len(timing_scores),
+        "silent_quality": sum(silent_scores) / len(silent_scores),
+        "answered": 1.0 if used_event_idx else 0.0,
+    }
+
+
 def _compute_score_multi_q(
     rewards: Dict[str, Any],
     weights: Dict[str, float],
@@ -570,8 +744,10 @@ def _compute_score_multi_q(
     # Per-Q answer attribution from the agent loop's extra_fields.
     per_q_chunk_raw = _safe_list(extra.get("ts_per_q_answer_chunk"))
     per_q_text_raw = _safe_list(extra.get("ts_per_q_answer_text"))
+    per_q_answers_raw = _safe_list(extra.get("ts_per_q_answers"))
     per_q_chunk = list(per_q_chunk_raw) + [-1] * (n_q - len(per_q_chunk_raw))
     per_q_text = list(per_q_text_raw) + [""] * (n_q - len(per_q_text_raw))
+    per_q_answers = list(per_q_answers_raw) + [[]] * (n_q - len(per_q_answers_raw))
 
     # Per-Q scoring.
     per_q_outcome: List[float] = []
@@ -579,12 +755,20 @@ def _compute_score_multi_q(
     per_q_silent: List[float] = []
     n_answered = 0
     for q_idx, q in enumerate(questions):
-        sub = _score_one_question(
-            rewards,
-            q=q,
-            model_answer=str(per_q_text[q_idx] or ""),
-            answered_chunk=int(per_q_chunk[q_idx]),
-        )
+        answer_events = per_q_answers[q_idx]
+        if hasattr(answer_events, "tolist"):
+            answer_events = answer_events.tolist()
+        if isinstance(answer_events, (list, tuple)) and answer_events:
+            sub = _score_one_question_events(
+                rewards, q=q, answer_events=list(answer_events),
+            )
+        else:
+            sub = _score_one_question(
+                rewards,
+                q=q,
+                model_answer=str(per_q_text[q_idx] or ""),
+                answered_chunk=int(per_q_chunk[q_idx]),
+            )
         per_q_outcome.append(sub["outcome"])
         per_q_timing.append(sub["timing"])
         per_q_silent.append(sub["silent_quality"])
@@ -618,11 +802,12 @@ def _compute_score_multi_q(
         "spam": spam,
         "silent_quality": avg_silent,
     }
-    total = float(sum(weights.get(k, 0.0) * v for k, v in parts.items()))
+    total, gate = _combine_reward_parts(weights, parts)
 
     return {
         "score": total,
         **{k: float(v) for k, v in parts.items()},
+        "outcome_gate": float(gate),
         "n_questions": float(n_q),
         "n_answered": float(n_answered),
         "per_q_outcome_min": float(min(per_q_outcome)),
@@ -788,7 +973,7 @@ def compute_score(
         return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
                 "format": 0.0, "spam": 0.0, "silent_quality": 0.0}
 
-    total = float(sum(weights.get(k, 0.0) * v for k, v in parts.items()))
+    total, gate = _combine_reward_parts(weights, parts)
 
     # ── Per-chunk action reward (P1.5).
     # The streaming agent loop drops `ts_chunk_kinds` (a list[str] of
@@ -806,6 +991,7 @@ def compute_score(
     # mapping from turn-index → video chunk_idx, instead of enumerate.
     chunk_vidx = extra.get("ts_chunk_video_indices") or []
     per_chunk_action: List[float] = []
+    recall_seen_for_chunk: set[int] = set()
     if chunk_kinds and gold_action_per_chunk:
         for turn_i, kind in enumerate(chunk_kinds):
             video_chunk_idx = (
@@ -836,7 +1022,18 @@ def compute_score(
             # Symmetric per-chunk shaping. Match → +0.1, mismatch → -0.05.
             # Calibrated so that 360 chunks of all-correct contributes at
             # most +36 to the total reward — comparable scale to outcome*1.0.
-            if model_action == gold_action:
+            if gold_action == "recall_silent":
+                if model_action == "recall":
+                    recall_seen_for_chunk.add(video_chunk_idx)
+                    per_chunk_action.append(0.1)
+                elif (
+                    model_action == "silent"
+                    and video_chunk_idx in recall_seen_for_chunk
+                ):
+                    per_chunk_action.append(0.1)
+                else:
+                    per_chunk_action.append(-0.05)
+            elif model_action == gold_action:
                 per_chunk_action.append(0.1)
             else:
                 per_chunk_action.append(-0.05)
@@ -844,9 +1041,12 @@ def compute_score(
         # plain GRPO (no token-level broadcast) still benefits.
         if per_chunk_action:
             state_avg = sum(per_chunk_action) / len(per_chunk_action)
-            # GDPO mix (P1.4): α=0.7 outcome + (1-α)=0.3 state.
+            # GDPO mix (P1.4): α=0.7 correctness-gated scalar +
+            # (1-α)=0.3 state. Positive state shaping is also gated by
+            # outcome; negative state penalties always apply.
             alpha = float(extra.get("gdpo_alpha", 0.7))
-            total = alpha * total + (1.0 - alpha) * state_avg
+            gated_state = state_avg if state_avg <= 0 else gate * state_avg
+            total = alpha * total + (1.0 - alpha) * gated_state
             parts["per_chunk_action_avg"] = state_avg
 
     # NaiveRewardManager places ONE scalar at the trajectory's last
@@ -854,7 +1054,11 @@ def compute_score(
     # has already been folded into `total` via the GDPO α-mix above —
     # we don't return a separate per-chunk vector because there's no
     # per-token broadcast hook in the new framework.
-    return {"score": total, **{k: float(v) for k, v in parts.items()}}
+    return {
+        "score": total,
+        **{k: float(v) for k, v in parts.items()},
+        "outcome_gate": float(gate),
+    }
 
 
 if __name__ == "__main__":

@@ -77,7 +77,7 @@ def test_no_empty_trajectory():
         print(f"  PASS {fname}: no empty trajectories")
 
 
-def test_recall_failure_is_recall_silent_not_answer_chunk():
+def test_recall_failure_is_rejected_not_emitted():
     from scripts.agent_data_v5.pass4 import _build_trajectory_record
 
     samples = [
@@ -98,9 +98,44 @@ def test_recall_failure_is_recall_silent_not_answer_chunk():
         }
     ]
 
+    with pytest.raises(ValueError, match="no answer chunk"):
+        _build_trajectory_record("vid", "t0", samples)
+
+
+def test_recall_silent_wait_state_requires_later_answer():
+    from scripts.agent_data_v5.pass4 import _build_trajectory_record
+
+    meta = {
+        "gold_answer": "red cup",
+        "canonical_answer": "red cup",
+        "answer_form": "short_exact",
+        "family": "E2",
+        "ask_chunk": 5,
+        "question": "What object will appear next?",
+    }
+    samples = [
+        {
+            "chunk_idx": 5,
+            "sample_type": "recall",
+            "action": "silent",
+            "trajectory_id": "t0",
+            "card_id": "c1",
+            "metadata": meta,
+        },
+        {
+            "chunk_idx": 7,
+            "sample_type": "response",
+            "action": "response",
+            "trajectory_id": "t0",
+            "card_id": "c1",
+            "metadata": meta,
+        },
+    ]
+
     rec = _build_trajectory_record("vid", "t0", samples)
     assert rec["gold_action_per_chunk"]["5"] == "recall_silent"
-    assert rec["questions"][0]["answer_chunks"] == []
+    assert rec["gold_action_per_chunk"]["7"] == "response"
+    assert rec["questions"][0]["answer_chunks"] == [7]
 
 
 def test_metadata_consistency_v124():

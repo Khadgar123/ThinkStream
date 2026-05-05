@@ -230,11 +230,10 @@ def test_v12_recall_silent_merge():
     r = pass3c._recall_silent_multiturn_sample(
         5, "x", [],
         {"query": "q", "time_range": "1-5"},
-        {"source": "failure", "text_content": "no results"},
+        {"source": "memory", "text_content": "no relevant past observation"},
         "t1", "c1", "recall",
     )
     assert r["sample_type"] == "recall"
-    assert r["_recall_failure"] is True
     assert r["action"] == "silent"
     assert "<answer></answer>" in r["v12_assistant_turn_2"]
 

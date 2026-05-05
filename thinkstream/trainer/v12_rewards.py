@@ -395,6 +395,9 @@ def compute_per_chunk_silent_quality_v12(
     For each chunk in the rollout:
       gold says "silent" / model emits empty answer  → +0.3 (correct silence)
       gold says "silent" / model emits answer        → -0.6 (HALLUCINATION)
+      gold says "recall_silent" / model recalls      → +0.3 (correct wait check)
+      gold says "recall_silent" / model empty-answer →  0.0 (waited but skipped recall)
+      gold says "recall_silent" / model answers      → -0.6 (HALLUCINATION)
       gold says "response"/"recall_response" / model emits answer → 0.0
         (correctness handled by trajectory_outcome reward)
       gold says "response"/"recall_response" / model is silent     → -0.6 (MISSED)
@@ -427,11 +430,21 @@ def compute_per_chunk_silent_quality_v12(
         ans = out.get("answer_text") or ""
         has_answer = (kind == "answer") and bool(ans.strip())
 
-        if gold_action == "silent" or gold_action == "recall_silent":
+        if gold_action == "silent":
             n_scored += 1
             if not has_answer:
                 score_sum += 0.3
                 n_correct += 1
+            else:
+                score_sum += -0.6
+                n_hallucinate += 1
+        elif gold_action == "recall_silent":
+            n_scored += 1
+            if kind == "recall":
+                score_sum += 0.3
+                n_correct += 1
+            elif not has_answer:
+                score_sum += 0.0
             else:
                 score_sum += -0.6
                 n_hallucinate += 1
