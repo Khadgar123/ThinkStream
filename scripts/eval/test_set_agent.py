@@ -52,7 +52,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 import torch
-from transformers import AutoProcessor, AutoTokenizer
+from transformers import AutoTokenizer
 
 from thinkstream.model.agent_loop import (
     StreamingAgentLoop,
@@ -71,6 +71,7 @@ from scripts.eval.ovo.eval_full import (
     extract_letter, extract_int, is_yes, is_no,
     reset_visual_index,
 )
+from scripts.eval.processor_loader import load_processor_for_checkpoint
 
 
 GOLD_RE = re.compile(
@@ -493,7 +494,7 @@ def main():
         args.ckpt, dtype=torch.bfloat16 if not args.no_bf16 else None,
         attn_implementation="flash_attention_2",
     ).cuda().eval()
-    processor = AutoProcessor.from_pretrained(args.ckpt)
+    processor = load_processor_for_checkpoint(args.ckpt)
     processor = update_processor_pixels(processor, DataArguments())
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
         processor.video_processor.do_sample_frames = False

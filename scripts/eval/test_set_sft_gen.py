@@ -29,7 +29,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 import torch
-from transformers import AutoProcessor, AutoTokenizer
+from transformers import AutoTokenizer
 
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
@@ -41,6 +41,7 @@ from scripts.agent_data_v5.pass5_messages import (
 )
 from thinkstream.data.agent_protocol import normalize_frame_protocol
 from thinkstream.trainer.outcome_match import score_outcome_by_form
+from scripts.eval.processor_loader import load_processor_for_checkpoint
 
 GOLD_RE = re.compile(
     r"<(?P<tag>answer|response)>(?P<answer>.*?)</(?P=tag)>", re.DOTALL
@@ -207,7 +208,7 @@ def main():
     model = model.cuda()
     model.eval()
 
-    processor = AutoProcessor.from_pretrained(args.ckpt)
+    processor = load_processor_for_checkpoint(args.ckpt)
     data_args = DataArguments(dataset_use="", model_type=model_type, max_sample_tokens=12000)
     processor = update_processor_pixels(processor, data_args)
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):

@@ -32,7 +32,6 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 import torch
-from transformers import AutoProcessor
 
 from thinkstream.sft.data_processor import (
     _resolve_video_paths,
@@ -46,6 +45,7 @@ from thinkstream.data.agent_protocol import (
     normalize_frame_protocol,
     parse_agent_output_v12,
 )
+from scripts.eval.processor_loader import load_processor_for_checkpoint
 
 
 def collect_video_metadata(messages):
@@ -131,7 +131,7 @@ def main():
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
 
     model = load_model(args.ckpt, bf16=not args.no_bf16)
-    processor = AutoProcessor.from_pretrained(args.ckpt)
+    processor = load_processor_for_checkpoint(args.ckpt)
     # Special tokens are usually saved with the SFT ckpt, but harmless to
     # ensure registration so missing ones don't blow up tokenization.
     # Mirror SFT pixel/fps config so visual features match training distribution.

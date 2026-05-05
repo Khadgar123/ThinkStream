@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
 import torch
-from transformers import AutoProcessor, AutoTokenizer
+from transformers import AutoTokenizer
 
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
@@ -40,6 +40,7 @@ from thinkstream.sft.data_processor import (
     update_processor_pixels,
 )
 from thinkstream.model.agent_loop import make_generate_fn
+from scripts.eval.processor_loader import load_processor_for_checkpoint
 
 
 def make_loop(model, processor, model_type):
@@ -199,7 +200,7 @@ def main():
     model = Cls.from_pretrained(args.ckpt, **model_kwargs)
     model = model.cuda()
     model.eval()
-    processor = AutoProcessor.from_pretrained(args.ckpt)
+    processor = load_processor_for_checkpoint(args.ckpt)
     processor = update_processor_pixels(processor, DataArguments())
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
         processor.video_processor.do_sample_frames = False

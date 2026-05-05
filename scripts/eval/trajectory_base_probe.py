@@ -35,7 +35,6 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import torch
-from transformers import AutoProcessor
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -50,6 +49,7 @@ from thinkstream.data.agent_protocol import (  # noqa: E402
 from thinkstream.sft.argument import DataArguments  # noqa: E402
 from thinkstream.sft.data_processor import update_processor_pixels  # noqa: E402
 from thinkstream.trainer.outcome_match import score_outcome_by_form  # noqa: E402
+from scripts.eval.processor_loader import load_processor_for_checkpoint  # noqa: E402
 
 
 THINK_RE = re.compile(r"<think>(.*?)</think>", re.DOTALL)
@@ -503,7 +503,7 @@ def main() -> int:
         dtype=torch.bfloat16 if not args.no_bf16 else None,
         attn_implementation="flash_attention_2",
     ).cuda().eval()
-    processor = AutoProcessor.from_pretrained(args.ckpt)
+    processor = load_processor_for_checkpoint(args.ckpt)
     processor = update_processor_pixels(processor, DataArguments())
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
         processor.video_processor.do_sample_frames = False
