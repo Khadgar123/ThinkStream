@@ -75,14 +75,12 @@ class DataArguments:
         },
     )
     include_failed_verification: bool = field(
-        default=False,
+        default=True,
         metadata={
-            "help": "v12.12 (P0-5): include samples with verification.passed=False. "
-            "Default is False — pass3e tags every sample with verifier verdict "
-            "but pipeline.py keeps them in the trajectory for RL/eval continuity; "
-            "SFT must drop them to avoid learning from gold outputs that failed "
-            "entity-consistency / format / summary-cap checks. Flip to True only "
-            "when intentionally studying failure modes."
+            "help": "v12.32: include samples with verification.passed=False. "
+            "Default is True because pass3e tags failures instead of dropping "
+            "rows, and dropping rows here would break streaming trajectory "
+            "continuity. Set False only for diagnostic strict-clean SFT runs."
         },
     )
     class_loss_target_ratios: Optional[str] = field(

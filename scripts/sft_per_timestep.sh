@@ -105,6 +105,7 @@ fi
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
 INCLUDE_FAILED_VERIFICATION="${INCLUDE_FAILED_VERIFICATION:-False}"
 MAX_SAMPLE_TOKENS="${MAX_SAMPLE_TOKENS:-12000}"
+TORCH_EMPTY_CACHE_STEPS="${TORCH_EMPTY_CACHE_STEPS:-0}"
 CLASS_LOSS_TARGET_RATIOS="${CLASS_LOSS_TARGET_RATIOS:-}"
 CLASS_LOSS_ALPHA="${CLASS_LOSS_ALPHA:-1.0}"
 CLASS_LOSS_MAX_WEIGHT="${CLASS_LOSS_MAX_WEIGHT:-8.0}"
@@ -170,6 +171,9 @@ case $PHASE in
         fi
         extra_args="${extra_args} --class_loss_alpha ${CLASS_LOSS_ALPHA}"
         extra_args="${extra_args} --class_loss_max_weight ${CLASS_LOSS_MAX_WEIGHT}"
+        if [[ "${TORCH_EMPTY_CACHE_STEPS}" =~ ^[1-9][0-9]*$ ]]; then
+            extra_args="${extra_args} --torch_empty_cache_steps ${TORCH_EMPTY_CACHE_STEPS}"
+        fi
         ;;
     mixed|1|2|C1)
         # v12.6: legacy PHASEs (mixed, 1, 2, C1) are gated. They pointed at
@@ -207,6 +211,7 @@ echo "Final:    ${THINKSTREAM_FINAL_DIR}"
 echo "Protocol: ${FRAME_PROTOCOL}"
 echo "Include failed verification: ${INCLUDE_FAILED_VERIFICATION}"
 echo "Max sample tokens: ${MAX_SAMPLE_TOKENS}"
+echo "Torch empty cache steps: ${TORCH_EMPTY_CACHE_STEPS}"
 echo "Class loss target ratios: ${CLASS_LOSS_TARGET_RATIOS:-none}"
 echo "Class loss alpha: ${CLASS_LOSS_ALPHA}"
 echo "LR:       ${lr}"
@@ -248,7 +253,6 @@ PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
     --model_max_length 16384 \
     --max_sample_tokens ${MAX_SAMPLE_TOKENS} \
     --include_failed_verification ${INCLUDE_FAILED_VERIFICATION} \
-    --torch_empty_cache_steps 1 \
     --dataloader_num_workers 4 \
     --video_min_pixels 130000 \
     --video_max_pixels 220000 \

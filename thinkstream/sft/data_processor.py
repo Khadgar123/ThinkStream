@@ -903,15 +903,11 @@ class PerTimestepDataset(Dataset):
                 f"convert via:  python -m scripts.agent_data_v5.pass5_messages"
             )
 
-        # v12.12 fix (P0-5): drop verification-failed samples by default.
-        # pipeline.py:884 retains them in the trajectory ("no drops —
-        # preserves trajectory continuity") so RL/eval can replay the
-        # full chunk timeline; SFT however should NOT learn from samples
-        # whose gold output failed verifier checks (entity inconsistency,
-        # OOD format, summary lossy beyond cap, etc.). Override via
-        # --include_failed_verification when you really want to study the
-        # failure modes.
-        include_failed = getattr(data_args, "include_failed_verification", False)
+        # v12.32: keep verification-failed rows by default. pass3e tags
+        # failures instead of dropping them, and SFT must preserve the same
+        # streaming timeline unless the caller explicitly requests a strict
+        # clean diagnostic run.
+        include_failed = getattr(data_args, "include_failed_verification", True)
         if not include_failed:
             before = len(all_samples)
             all_samples = [
@@ -922,7 +918,7 @@ class PerTimestepDataset(Dataset):
             if failed_dropped > 0:
                 rank0_print(
                     f"  Dropped {failed_dropped} verification-failed samples "
-                    f"(set --include_failed_verification to keep them)."
+                    f"(include_failed_verification=True keeps them)."
                 )
 
         # Estimate num_tokens for every sample (used for length-based filtering
