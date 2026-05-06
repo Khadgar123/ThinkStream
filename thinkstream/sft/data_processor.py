@@ -125,6 +125,29 @@ def _estimate_sample_tokens(sample: Dict) -> int:
     return text_tokens + visual_tokens
 
 
+def _sample_has_visual(sample: Dict) -> bool:
+    """Whether this row will execute the vision path in model.forward."""
+    if "messages" in sample:
+        for msg in sample.get("messages") or []:
+            content = msg.get("content")
+            parts = content if isinstance(content, list) else []
+            for item in parts:
+                if not isinstance(item, dict):
+                    continue
+                if item.get("type") in ("image", "video"):
+                    return True
+                if item.get("image") or item.get("image_url") or item.get("video"):
+                    return True
+        return False
+
+    inp = sample.get("input", {}) or {}
+    vw = inp.get("visual_window") or {}
+    if int(vw.get("frames", 0) or 0) > 0:
+        return True
+    rf = inp.get("recalled_frames") or {}
+    return int(rf.get("n_frames", 0) or 0) > 0
+
+
 def _parse_ratio_spec(spec: Optional[str]) -> Dict[str, float]:
     if not spec:
         return {}
@@ -226,7 +249,10 @@ def update_processor_pixels(processor, data_args):
 # Import shared protocol for memory formatting.
 # The canonical format_memory_block lives in agent_protocol to guarantee
 # train/inference identity. This wrapper handles the pipeline JSON structure.
-from thinkstream.data.agent_protocol import format_memory_block as _shared_format_memory
+from thinkstream.data.agent_protocol import (
+    format_memory_block as _shared_format_memory,
+    format_user_input_block,
+)
 
 
 def _format_memory_block(memory: Dict) -> str:
@@ -236,36 +262,17 @@ def _format_memory_block(memory: Dict) -> str:
 
 def _resolve_frame_paths(paths: List[str], base_path: Path) -> List[str]:
     """Resolve frame paths after a batch directory is copied to a new root."""
-    roots = [base_path]
+    roots = []
     for value in (os.environ.get("THINKSTREAM_DATA_ROOT"), os.environ.get("AGENT_DATA_DIR")):
         if value:
             root = Path(value)
             if root not in roots:
                 roots.append(root)
+    if base_path not in roots:
+        roots.append(base_path)
     out: List[str] = []
     for raw in paths:
         p = Path(str(raw))
-        if not p.is_absolute():
-            direct = base_path / p
-            if direct.exists():
-                out.append(str(direct))
-                continue
-            parts = p.parts
-            if "frames" in parts:
-                idx = parts.index("frames")
-                for root in roots:
-                    candidate = root / "frames" / Path(*parts[idx + 1:])
-                    if candidate.exists():
-                        out.append(str(candidate))
-                        break
-                else:
-                    out.append(str(direct))
-                continue
-            out.append(str(direct))
-            continue
-        if p.exists():
-            out.append(str(p))
-            continue
         parts = p.parts
         if "frames" in parts:
             idx = parts.index("frames")
@@ -275,7 +282,17 @@ def _resolve_frame_paths(paths: List[str], base_path: Path) -> List[str]:
                     out.append(str(candidate))
                     break
             else:
-                out.append(str(p))
+                out.append(str(p if p.is_absolute() else base_path / p))
+            continue
+        if not p.is_absolute():
+            direct = base_path / p
+            if direct.exists():
+                out.append(str(direct))
+                continue
+            out.append(str(direct))
+            continue
+        if p.exists():
+            out.append(str(p))
             continue
         out.append(str(p))
     return out
@@ -314,10 +331,9 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
        result→think→answer) per docs/v12.0_protocol_migration_design.md §1.
 
     C. Inter-chunk compress (v12_inter_chunk=True):
-       NO visual_window in user content (compression fires between visual
-       timesteps). Messages = [system, user (memory + compress_trigger),
-       assistant (tool_call compress)]. Reuses the same architecture but
-       without the chunk's frames / recalled_frames sections.
+       The user_input compress trigger is rendered before memory, and the
+       prompt still carries the visual sliding window so the multimodal
+       forward path matches ordinary streaming turns.
 
     Differences from v11 (build_per_timestep_messages):
     - SYSTEM_PROMPT_V12 (concise; <tools> block rendered by chat_template
@@ -366,14 +382,29 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         video_path = str(base_path / video_path)
     require_pre = bool(sample.get("_require_pre_extracted_frames", True))
 
-    # ── User content (v12.12 reorder: stable text first, vision after) ──
+    # ── User content ───────────────────────────────────────────────────
     user_content = []
 
-    # Memory FIRST — stable monotonic prefix for vLLM prefix-caching.
+    if inp.get("user_input"):
+        # Canonical user_input wrapper. For archived compress rows that still
+        # store a bare <compress_trigger/>, this expands the body into the
+        # explicit memory-compaction instruction used at runtime.
+        user_input_block = format_user_input_block(
+            inp["user_input"],
+            inter_chunk=inter_chunk,
+        )
+        user_content.append({
+            "type": "text",
+            "text": user_input_block.lstrip("\n"),
+        })
+
+    # Memory follows the fresh user event so questions/triggers are visible
+    # before long historical text.
     memory_text = _format_memory_block(inp["memory"])
     user_content.append({
         "type": "text",
-        "text": f"<memory>\n{memory_text}\n</memory>",
+        "text": f"\n<memory>\n{memory_text}\n</memory>" if user_content
+        else f"<memory>\n{memory_text}\n</memory>",
     })
 
     # Queries — second-stable prefix (also monotonic).
@@ -384,105 +415,101 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         if queries_text:
             user_content.append({"type": "text", "text": f"\n{queries_text}"})
 
-    # Visual window + frames (cache-miss boundary).
-    if not inter_chunk:
-        # Visual window only present for visual timesteps (NOT inter-chunk
-        # compress turns, where compression is a system event between two
-        # visual chunks and consumes no new frames).
-        vw = inp["visual_window"]
-        current_start = chunk_idx * chunk_sec
-        current_end = current_start + chunk_sec
-        vw_header = json.dumps({
-            "start": vw["video_start"],
-            "end": vw["video_end"],
-            "frames": vw["frames"],
-            "current_time": [current_start, current_end],
-        })
-        user_content.append({
-            "type": "text",
-            "text": f"\n<visual_window>{vw_header}</visual_window>",
-        })
+    # Visual window + frames.
+    vw = inp["visual_window"]
+    current_start = chunk_idx * chunk_sec
+    current_end = current_start + chunk_sec
+    vw_header = json.dumps({
+        "start": vw["video_start"],
+        "end": vw["video_end"],
+        "frames": vw["frames"],
+        "current_time": [current_start, current_end],
+    })
+    user_content.append({
+        "type": "text",
+        "text": f"\n<visual_window>{vw_header}</visual_window>",
+    })
 
-        # v12.5 fallback: pass4 flat files may omit frame_paths — infer from
-        # video_id + frames count using the pre-extracted frame directory.
-        if "frame_paths" not in vw and "frames" in vw:
-            vid = sample.get("video_id", "")
-            if vid:
-                try:
-                    from scripts.agent_data_v5.config import (
-                        DATA_ROOT as _DATA_ROOT,
-                        PROJECT_ROOT as _PROJECT_ROOT,
-                        VISUAL_WINDOW_CHUNKS as _VWC,
-                        compute_visual_window_start as _cvws,
-                    )
-                    _frame_dir_path = _DATA_ROOT / "frames" / vid
-                    try:
-                        frame_dir = str(_frame_dir_path.relative_to(_PROJECT_ROOT))
-                    except ValueError:
-                        frame_dir = str(_frame_dir_path)
-                except ImportError:
-                    data_root = (
-                        os.environ.get("THINKSTREAM_DATA_ROOT")
-                        or os.environ.get("AGENT_DATA_DIR")
-                    )
-                    if data_root:
-                        root_path = Path(data_root)
-                        frame_dir = str(
-                            root_path.parent / "frames" / vid
-                            if root_path.name == "final"
-                            else root_path / "frames" / vid
-                        )
-                    else:
-                        frame_dir = f"data/agent_v5/frames/{vid}"
-                    _VWC = 16
-                    _cvws = lambda ck, visual_window_chunks=16: max(
-                        0, int(ck) - int(visual_window_chunks) + 1
-                    )
-                window_start = _cvws(chunk_idx, _VWC)
-                paths: List[str] = []
-                for ci in range(window_start, chunk_idx + 1):
-                    for fi in range(FRAMES_PER_CHUNK):
-                        fnum = ci * FRAMES_PER_CHUNK + fi + 1
-                        paths.append(f"{frame_dir}/frame_{fnum:06d}.jpg")
-                vw["frame_paths"] = paths
-
-        if "frame_paths" in vw:
-            paths = _resolve_frame_paths(vw["frame_paths"], base_path)
+    # v12.5 fallback: pass4 flat files may omit frame_paths — infer from
+    # video_id + frames count using the pre-extracted frame directory.
+    if "frame_paths" not in vw and "frames" in vw:
+        vid = sample.get("video_id", "")
+        if vid:
             try:
                 from scripts.agent_data_v5.config import (
-                    RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                    DATA_ROOT as _DATA_ROOT,
+                    PROJECT_ROOT as _PROJECT_ROOT,
+                    VISUAL_WINDOW_CHUNKS as _VWC,
+                    compute_visual_window_start as _cvws,
                 )
+                _frame_dir_path = _DATA_ROOT / "frames" / vid
+                try:
+                    frame_dir = str(_frame_dir_path.relative_to(_PROJECT_ROOT))
+                except ValueError:
+                    frame_dir = str(_frame_dir_path)
             except ImportError:
-                _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-            start_frame = int(round(float(vw["video_start"]) / chunk_sec)) * FRAMES_PER_CHUNK
-            total_frames = int(round(float(vw["video_end"]) / chunk_sec)) * FRAMES_PER_CHUNK
-            append_visual_frames(
-                user_content,
-                paths,
-                frame_protocol=frame_protocol,
-                fps=float(FRAMES_PER_CHUNK / chunk_sec),
-                start_frame_index=start_frame,
-                total_num_frames=total_frames,
-                latest_start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
-                min_pixels=_RTKW["min_pixels"],
-                max_pixels=_RTKW["max_pixels"],
-            )
-        elif "frame_indices" in vw and video_path:
-            if require_pre:
-                raise ValueError(
-                    f"Sample {sample.get('sample_id', '?')}: visual_window has no "
-                    f"frame_paths. Pre-extract frames or set "
-                    f"--require_pre_extracted_frames False."
+                data_root = (
+                    os.environ.get("THINKSTREAM_DATA_ROOT")
+                    or os.environ.get("AGENT_DATA_DIR")
                 )
-            user_content.append({
-                "type": "video", "video": video_path,
-                "video_start": vw["video_start"], "video_end": vw["video_end"],
-            })
-        else:
-            raise ValueError(
-                f"Sample {sample.get('sample_id', '?')}: visual_window has neither "
-                f"frame_paths nor frame_indices."
+                if data_root:
+                    root_path = Path(data_root)
+                    frame_dir = str(
+                        root_path.parent / "frames" / vid
+                        if root_path.name == "final"
+                        else root_path / "frames" / vid
+                    )
+                else:
+                    frame_dir = f"data/agent_v5/frames/{vid}"
+                _VWC = 16
+                _cvws = lambda ck, visual_window_chunks=16: max(
+                    0, int(ck) - int(visual_window_chunks) + 1
+                )
+            window_start = _cvws(chunk_idx, _VWC)
+            paths: List[str] = []
+            for ci in range(window_start, chunk_idx + 1):
+                for fi in range(FRAMES_PER_CHUNK):
+                    fnum = ci * FRAMES_PER_CHUNK + fi + 1
+                    paths.append(f"{frame_dir}/frame_{fnum:06d}.jpg")
+            vw["frame_paths"] = paths
+
+    if "frame_paths" in vw:
+        paths = _resolve_frame_paths(vw["frame_paths"], base_path)
+        try:
+            from scripts.agent_data_v5.config import (
+                RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
             )
+        except ImportError:
+            _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+        start_frame = int(round(float(vw["video_start"]) / chunk_sec)) * FRAMES_PER_CHUNK
+        total_frames = int(round(float(vw["video_end"]) / chunk_sec)) * FRAMES_PER_CHUNK
+        append_visual_frames(
+            user_content,
+            paths,
+            frame_protocol=frame_protocol,
+            fps=float(FRAMES_PER_CHUNK / chunk_sec),
+            start_frame_index=start_frame,
+            total_num_frames=total_frames,
+            latest_start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
+            min_pixels=_RTKW["min_pixels"],
+            max_pixels=_RTKW["max_pixels"],
+        )
+    elif "frame_indices" in vw and video_path:
+        if require_pre:
+            raise ValueError(
+                f"Sample {sample.get('sample_id', '?')}: visual_window has no "
+                f"frame_paths. Pre-extract frames or set "
+                f"--require_pre_extracted_frames False."
+            )
+        user_content.append({
+            "type": "video", "video": video_path,
+            "video_start": vw["video_start"], "video_end": vw["video_end"],
+        })
+    else:
+        raise ValueError(
+            f"Sample {sample.get('sample_id', '?')}: visual_window has neither "
+            f"frame_paths nor frame_indices."
+        )
 
     # Recalled frames stay in the FIRST user message ONLY for non-multi-turn
     # recall samples (legacy single-turn recall_response). For multi-turn
@@ -539,15 +566,6 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         user_content.append({
             "type": "text",
             "text": f"\n<recall_result>{rr_json}</recall_result>",
-        })
-
-    if inp.get("user_input"):
-        # compress_trigger pre-injected by pass3c v12 (sample.input.user_input
-        # contains "<compress_trigger range='a-b'/>" prefix).
-        user_content.append({
-            "type": "text",
-            "text": (f"\n<user_input>{inp['user_input']}</user_input>"
-                     if not inter_chunk else f"\n{inp['user_input']}"),
         })
 
     messages.append({"role": "user", "content": user_content})
@@ -928,6 +946,7 @@ class PerTimestepDataset(Dataset):
         for s in all_samples:
             if "num_tokens" not in s:
                 s["num_tokens"] = _estimate_sample_tokens(s)
+            s["_has_visual"] = _sample_has_visual(s)
 
         # Filter overlong samples (P0-4: no silent truncation in collator)
         max_tokens = getattr(data_args, "max_sample_tokens", None)
@@ -988,7 +1007,15 @@ class PerTimestepDataset(Dataset):
 
     @property
     def modality_lengths(self):
-        return [s["num_tokens"] for s in self.samples]
+        # Positive = visual row, negative = text-only row.
+        # WeightedSFTTrainer's modality-grouped sampler uses the sign to
+        # keep ZeRO3 ranks on the same module path. New compress rows carry
+        # visual_window, but legacy/generated diagnostic rows may still be
+        # text-only.
+        return [
+            s["num_tokens"] if s.get("_has_visual", True) else -s["num_tokens"]
+            for s in self.samples
+        ]
 
     def __getitem__(self, i) -> Dict[str, torch.Tensor]:
         # Try sample i, then walk forward up to MAX_LOOKAHEAD if it keeps

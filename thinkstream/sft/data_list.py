@@ -142,6 +142,10 @@ DATASET_REGISTRY = {
         "annotation_path": _agent_path("val_messages.jsonl"),
         "data_path": "./",
     },
+    "stream_agent_val_balanced": {
+        "annotation_path": _agent_path("val_messages_balanced.jsonl"),
+        "data_path": "./",
+    },
     "stream_agent_test": {
         "annotation_path": _agent_path("test_messages.jsonl"),
         "data_path": "./",

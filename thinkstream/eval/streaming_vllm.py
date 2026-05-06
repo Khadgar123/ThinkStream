@@ -232,18 +232,13 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     else:
         user_input = ""
 
-    # v12.6: compress system trigger between visual chunks → drop
-    # <visual_window> + frames so the prompt matches pass5 shape C and
-    # HF agent_loop runtime exactly. Without this flag the vLLM eval
-    # path renders compress with full visual context, diverging from
-    # SFT distribution and producing wrong action probabilities.
+    # Memory-compaction turns keep visual_window for multimodal-path parity,
+    # while inter_chunk=True still suppresses query/recalled-answer context and
+    # expands the compress trigger instructions.
     is_inter_chunk = bool(compress_trigger and not user_question)
 
-    frame_paths = (
-        None if is_inter_chunk
-        else _resolve_frame_paths(
-            runner.video_path, chunk_idx, runner.frames_root, runner.video_root,
-        )
+    frame_paths = _resolve_frame_paths(
+        runner.video_path, chunk_idx, runner.frames_root, runner.video_root,
     )
 
     return build_single_step_messages(

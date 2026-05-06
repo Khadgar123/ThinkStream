@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import time
 from copy import deepcopy
@@ -160,6 +161,32 @@ def _content_text(messages: List[Dict[str, Any]]) -> str:
     return "\n".join(parts)
 
 
+_USER_INPUT_RE = re.compile(r"<user_input>(.*?)</user_input>", re.DOTALL)
+
+
+def _prompt_has_compress_trigger(messages: List[Dict[str, Any]]) -> bool:
+    """True only when the actual user input carries a compress trigger.
+
+    The system prompt documents the literal string ``<compress_trigger/>``.
+    Scanning all message text therefore marks every normal visual step as a
+    compress prompt.  DAgger needs the runtime event, which is rendered under
+    the user turn's ``<user_input>...</user_input>`` block.
+    """
+    for msg in messages:
+        if msg.get("role") != "user":
+            continue
+        content = msg.get("content")
+        items = content if isinstance(content, list) else [{"type": "text", "text": content}]
+        for item in items:
+            if not isinstance(item, dict) or item.get("type") != "text":
+                continue
+            text = str(item.get("text", ""))
+            for match in _USER_INPUT_RE.finditer(text):
+                if has_compress_trigger(match.group(1)):
+                    return True
+    return False
+
+
 def _target_allowed(
     sample: Dict[str, Any],
     onpolicy_prompt: List[Dict[str, Any]],
@@ -175,7 +202,7 @@ def _target_allowed(
         if not bool(verification.get("passed", True)):
             return False, "verification_failed"
 
-    prompt_has_compress = has_compress_trigger(_content_text(onpolicy_prompt))
+    prompt_has_compress = _prompt_has_compress_trigger(onpolicy_prompt)
     if sample_type == "compress" and not prompt_has_compress:
         return False, "compress_target_without_trigger"
     if sample_type != "compress" and prompt_has_compress:
@@ -205,6 +232,59 @@ def _build_dagger_messages(
     return deepcopy(onpolicy_prompt) + deepcopy(gold_messages[2:])
 
 
+def _emit_dagger_row(
+    *,
+    sample: Dict[str, Any],
+    onpolicy_prompt: List[Dict[str, Any]],
+    result: Dict[str, Any],
+    fout,
+    stats: Dict[str, Any],
+    ckpt: str,
+    data_dir: Path,
+    frame_protocol: str,
+    include_failed_targets: bool,
+    sample_types: set[str],
+) -> bool:
+    ok, reason = _target_allowed(
+        sample,
+        onpolicy_prompt,
+        sample_types=sample_types,
+        include_failed_targets=include_failed_targets,
+    )
+    if not ok:
+        stats["skipped"][reason] = stats["skipped"].get(reason, 0) + 1
+        return False
+    try:
+        messages = _build_dagger_messages(
+            sample,
+            onpolicy_prompt,
+            base_path=ROOT,
+            data_dir=data_dir,
+            frame_protocol=frame_protocol,
+        )
+    except Exception as exc:
+        reason = f"render_error:{type(exc).__name__}"
+        stats["skipped"][reason] = stats["skipped"].get(reason, 0) + 1
+        return False
+
+    row = _emit_row(sample, messages, frame_protocol=frame_protocol)
+    prompt_is_compress = _prompt_has_compress_trigger(onpolicy_prompt)
+    row["dagger"] = {
+        "policy_ckpt": ckpt,
+        "rollout_action": result.get("action", ""),
+        "rollout_final_action": result.get("final_action", ""),
+        "rollout_format_ok": bool(result.get("format_ok", True)),
+        "rollout_inter_chunk_compress_prompt": bool(prompt_is_compress),
+        "memory_token_count": result.get("memory_token_count"),
+        "prompt_text_token_count": result.get("prompt_text_token_count"),
+    }
+    fout.write(json.dumps(row, ensure_ascii=False) + "\n")
+    stats["rows"] += 1
+    st = row.get("sample_type", "")
+    stats["by_type"][st] = stats["by_type"].get(st, 0) + 1
+    return True
+
+
 def build_dagger(
     *,
     ckpt: str,
@@ -226,6 +306,8 @@ def build_dagger(
     num_shards: int,
     shard_index: int,
     no_bf16: bool,
+    max_compress_turns_per_chunk: int,
+    log_every_steps: int,
 ) -> Dict[str, Any]:
     from scripts.eval.eval_profiles import apply_profile, describe_profile
 
@@ -290,17 +372,19 @@ def build_dagger(
         "skipped": {},
         "by_type": {},
         "step_errors": 0,
+        "policy_compress_turns": 0,
+        "visual_retries_after_compress": 0,
     }
 
     out.parent.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
     with out.open("w") as fout:
         for traj_i, traj in enumerate(_iter_trajectory_rows(trajectories)):
+            if max_trajectories and stats["trajectories_used"] >= max_trajectories:
+                break
             stats["trajectories_seen"] += 1
             if num_shards > 1 and (traj_i % num_shards) != shard_index:
                 continue
-            if max_trajectories and stats["trajectories_used"] >= max_trajectories:
-                break
 
             samples = _propagate_sample_fields(traj)
             if not samples:
@@ -315,73 +399,133 @@ def build_dagger(
             stats["trajectories_used"] += 1
 
             for chunk_idx, chunk_samples in _group_by_chunk(samples).items():
-                control = _choose_control_sample(chunk_samples)
+                compress_samples = [
+                    s for s in chunk_samples
+                    if str(s.get("sample_type", "")) == "compress"
+                ]
+                visual_samples = [
+                    s for s in chunk_samples
+                    if str(s.get("sample_type", "")) != "compress"
+                ]
+                control = _choose_control_sample(visual_samples or chunk_samples)
                 q = _new_question(control)
                 q_meta = _question_meta(control) if q else None
-                try:
-                    result = loop.step(
-                        chunk_idx=chunk_idx,
-                        video_path=video_path,
-                        user_question=q,
-                        user_question_meta=q_meta,
-                    )
-                    onpolicy_prompt = deepcopy(loop._last_step_messages)
-                    if not onpolicy_prompt:
-                        raise RuntimeError("StreamingAgentLoop did not capture step prompt")
-                except Exception as exc:
-                    stats["step_errors"] += 1
-                    stats["skipped"]["step_error"] = stats["skipped"].get("step_error", 0) + len(chunk_samples)
-                    if stats["step_errors"] <= 5:
-                        print(f"[warn] step failed traj={traj_i} chunk={chunk_idx}: {type(exc).__name__}: {exc}")
-                    continue
 
-                stats["steps"] += 1
-                for sample in chunk_samples:
-                    ok, reason = _target_allowed(
-                        sample,
-                        onpolicy_prompt,
-                        sample_types=sample_types,
-                        include_failed_targets=include_failed_targets,
-                    )
-                    if not ok:
-                        stats["skipped"][reason] = stats["skipped"].get(reason, 0) + 1
-                        continue
+                compress_turns = 0
+                while True:
                     try:
-                        messages = _build_dagger_messages(
-                            sample,
-                            onpolicy_prompt,
-                            base_path=ROOT,
+                        # Gold compress rows are inter-chunk memory-management
+                        # events, so do not inject the visual question on a
+                        # compress-only chunk. For visual chunks, keep the
+                        # normal question routing.
+                        result = loop.step(
+                            chunk_idx=chunk_idx,
+                            video_path=video_path,
+                            user_question=q if visual_samples else None,
+                            user_question_meta=q_meta if visual_samples else None,
+                        )
+                        onpolicy_prompt = deepcopy(loop._last_step_messages)
+                        if not onpolicy_prompt:
+                            raise RuntimeError("StreamingAgentLoop did not capture step prompt")
+                    except Exception as exc:
+                        stats["step_errors"] += 1
+                        stats["skipped"]["step_error"] = stats["skipped"].get("step_error", 0) + len(chunk_samples)
+                        if stats["step_errors"] <= 5:
+                            print(
+                                f"[warn] step failed traj={traj_i} chunk={chunk_idx}: "
+                                f"{type(exc).__name__}: {exc}",
+                                flush=True,
+                            )
+                        break
+
+                    stats["steps"] += 1
+                    prompt_is_compress = _prompt_has_compress_trigger(onpolicy_prompt)
+
+                    if prompt_is_compress:
+                        stats["policy_compress_turns"] += 1
+                        for sample in compress_samples:
+                            _emit_dagger_row(
+                                sample=sample,
+                                onpolicy_prompt=onpolicy_prompt,
+                                result=result,
+                                fout=fout,
+                                stats=stats,
+                                ckpt=ckpt,
+                                data_dir=data_dir,
+                                frame_protocol=frame_protocol,
+                                include_failed_targets=include_failed_targets,
+                                sample_types=sample_types,
+                            )
+                            if max_rows and stats["rows"] >= max_rows:
+                                break
+                        if max_rows and stats["rows"] >= max_rows:
+                            break
+
+                        # Critical DAgger alignment with verl/eval rollout:
+                        # a system compress turn is between video chunks. If
+                        # the policy actually compressed memory, retry the
+                        # same chunk and train the visual target on the
+                        # post-compress prompt. Do not train visual targets on
+                        # the compress prompt.
+                        if visual_samples:
+                            if result.get("action") == "compress":
+                                compress_turns += 1
+                                if compress_turns <= max_compress_turns_per_chunk:
+                                    stats["visual_retries_after_compress"] += 1
+                                    continue
+                                stats["skipped"]["too_many_policy_compress_turns"] = (
+                                    stats["skipped"].get("too_many_policy_compress_turns", 0)
+                                    + len(visual_samples)
+                                )
+                            else:
+                                stats["skipped"]["policy_failed_compress_before_visual"] = (
+                                    stats["skipped"].get("policy_failed_compress_before_visual", 0)
+                                    + len(visual_samples)
+                                )
+                        break
+
+                    for sample in visual_samples:
+                        _emit_dagger_row(
+                            sample=sample,
+                            onpolicy_prompt=onpolicy_prompt,
+                            result=result,
+                            fout=fout,
+                            stats=stats,
+                            ckpt=ckpt,
                             data_dir=data_dir,
                             frame_protocol=frame_protocol,
+                            include_failed_targets=include_failed_targets,
+                            sample_types=sample_types,
                         )
-                    except Exception as exc:
-                        reason = f"render_error:{type(exc).__name__}"
-                        stats["skipped"][reason] = stats["skipped"].get(reason, 0) + 1
-                        continue
+                        if max_rows and stats["rows"] >= max_rows:
+                            break
+                    if compress_samples:
+                        stats["skipped"]["compress_target_without_trigger"] = (
+                            stats["skipped"].get("compress_target_without_trigger", 0)
+                            + len(compress_samples)
+                        )
+                    break
 
-                    row = _emit_row(sample, messages, frame_protocol=frame_protocol)
-                    row["dagger"] = {
-                        "policy_ckpt": ckpt,
-                        "rollout_action": result.get("action", ""),
-                        "rollout_final_action": result.get("final_action", ""),
-                        "rollout_format_ok": bool(result.get("format_ok", True)),
-                        "memory_token_count": result.get("memory_token_count"),
-                        "prompt_text_token_count": result.get("prompt_text_token_count"),
-                    }
-                    fout.write(json.dumps(row, ensure_ascii=False) + "\n")
-                    stats["rows"] += 1
-                    st = row.get("sample_type", "")
-                    stats["by_type"][st] = stats["by_type"].get(st, 0) + 1
-                    if max_rows and stats["rows"] >= max_rows:
-                        break
                 if max_rows and stats["rows"] >= max_rows:
                     break
+
+                if log_every_steps and stats["steps"] % log_every_steps == 0:
+                    rate = stats["steps"] / max(time.time() - t0, 1e-6)
+                    print(
+                        f"[steps={stats['steps']}] rows={stats['rows']} "
+                        f"traj_used={stats['trajectories_used']} "
+                        f"compress_turns={stats['policy_compress_turns']} "
+                        f"rate={rate:.3f} step/s skipped={stats['skipped']}",
+                        flush=True,
+                    )
+                    fout.flush()
 
             if stats["trajectories_used"] % 5 == 0:
                 rate = stats["steps"] / max(time.time() - t0, 1e-6)
                 print(
                     f"[{stats['trajectories_used']} traj] rows={stats['rows']} "
-                    f"steps={stats['steps']} rate={rate:.3f} step/s"
+                    f"steps={stats['steps']} rate={rate:.3f} step/s",
+                    flush=True,
                 )
             if max_rows and stats["rows"] >= max_rows:
                 break
@@ -423,6 +567,18 @@ def main() -> None:
     p.add_argument("--num-shards", type=int, default=1)
     p.add_argument("--shard-index", type=int, default=0)
     p.add_argument("--no-bf16", action="store_true")
+    p.add_argument(
+        "--max-compress-turns-per-chunk",
+        type=int,
+        default=2,
+        help="Retry the same visual chunk after at most this many policy compress turns.",
+    )
+    p.add_argument(
+        "--log-every-steps",
+        type=int,
+        default=20,
+        help="Print DAgger rollout progress every N policy steps (0 disables).",
+    )
     args = p.parse_args()
 
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
@@ -450,6 +606,8 @@ def main() -> None:
         num_shards=args.num_shards,
         shard_index=args.shard_index,
         no_bf16=args.no_bf16,
+        max_compress_turns_per_chunk=args.max_compress_turns_per_chunk,
+        log_every_steps=args.log_every_steps,
     )
     print(json.dumps(stats, ensure_ascii=False, indent=2))
 

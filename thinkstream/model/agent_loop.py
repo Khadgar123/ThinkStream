@@ -205,16 +205,53 @@ class MemoryState:
         compress memory drops by COMPRESS_REMOVE_TOKENS — aligns with
         pass2 hysteresis instead of always cutting exactly 4 thinks.
         """
-        if compressed_chunks is not None:
-            chunk_set = set(compressed_chunks)
+        tr = summary.get("time_range") or []
+        tr_start = tr_end = None
+        if isinstance(tr, list) and len(tr) == 2:
+            try:
+                tr_start, tr_end = int(tr[0]), int(tr[1])
+            except (TypeError, ValueError):
+                tr_start = tr_end = None
+
+        source_chunks = set()
+        replaced_merge_levels = []
+        if tr_start is not None and tr_end is not None:
+            kept_segments = []
+            for seg in self.compressed_segments:
+                s_tr = seg.get("time_range") or []
+                try:
+                    s_start, s_end = [int(x) for x in s_tr[:2]]
+                except (TypeError, ValueError):
+                    s_start, s_end = (None, None)
+                covered = s_start is not None and tr_start <= s_start and s_end <= tr_end
+                if covered:
+                    replaced_merge_levels.append(int(seg.get("merge_level", 0) or 0))
+                    source_chunks.update(int(c) for c in seg.get("source_chunks", []) or [])
+                    if not seg.get("source_chunks"):
+                        source_chunks.update(range(s_start, s_end))
+                else:
+                    kept_segments.append(seg)
+            self.compressed_segments = kept_segments
+
+        chunk_set = set(int(c) for c in (compressed_chunks or []))
+        if tr_start is not None and tr_end is not None:
+            for t in self.recent_thinks:
+                chunk_start = int(t["chunk"] * AGENT_CHUNK_SEC)
+                chunk_end = int(chunk_start + AGENT_CHUNK_SEC)
+                if tr_start <= chunk_start and chunk_end <= tr_end:
+                    chunk_set.add(int(t["chunk"]))
+
+        if chunk_set:
+            source_chunks.update(chunk_set)
             self.recent_thinks = [
-                t for t in self.recent_thinks if t["chunk"] not in chunk_set
+                t for t in self.recent_thinks if int(t["chunk"]) not in chunk_set
             ]
         else:
             n = select_compress_range_by_tokens(
                 self.recent_thinks,
                 token_count_fn=self._token_count,
             )
+            source_chunks.update(int(t["chunk"]) for t in self.recent_thinks[:n])
             self.recent_thinks = self.recent_thinks[n:] if n > 0 else self.recent_thinks
         if self._tokenizer and isinstance(summary.get("text"), str):
             ids = self._tokenizer.encode(summary["text"], add_special_tokens=False)
@@ -222,10 +259,13 @@ class MemoryState:
                 summary = dict(summary)
                 summary["text"] = self._tokenizer.decode(ids[:SUMMARY_TOKENS_MAX])
                 summary["_truncated"] = True
-        # Summaries are prompt memory only. Compression trigger/range
-        # selection operate on raw recent thinks, while recall uses the raw
-        # retrieval archive. Runtime removes covered recent thinks and appends
-        # this summary without re-merging old summaries here.
+        summary = dict(summary)
+        if source_chunks:
+            summary["source_chunks"] = sorted(source_chunks)
+        if "merge_level" not in summary:
+            summary["merge_level"] = (
+                max(replaced_merge_levels) + 1 if replaced_merge_levels else 1
+            )
         self.compressed_segments.append(summary)
 
     # --- Queries tracking (matches SFT <queries> zone) ---
@@ -305,8 +345,8 @@ def build_single_step_messages(
     by the chat_template — callers must pass ``tools=TOOLS_SCHEMA`` when
     invoking ``processor.apply_chat_template``.
 
-    inter_chunk=True drops <visual_window> + frames so the prompt matches
-    pass5 shape C (compress system trigger between visual chunks).
+    inter_chunk=True marks a memory-compaction turn. It suppresses query /
+    recalled-answer context, but still carries the visual sliding window.
     """
     memory_text = format_memory_block(snapshot)
     user_content = build_user_content(
@@ -433,7 +473,6 @@ def bm25_retrieve(
         bm25 = BM25Okapi(tokenized)
         scores = bm25.get_scores(query_text.lower().split())
         top_indices = sorted(range(len(scores)), key=lambda i: -scores[i])[:max_results]
-        top_indices = [i for i in top_indices if scores[i] > 0]
     except ImportError:
         # Fallback: keyword overlap scoring
         query_words = set(query_text.lower().split())
@@ -441,8 +480,7 @@ def bm25_retrieve(
         for i, text in enumerate(texts):
             text_words = set(text.lower().split())
             overlap = len(query_words & text_words)
-            if overlap > 0:
-                scored.append((overlap, i))
+            scored.append((overlap, i))
         scored.sort(key=lambda x: -x[0])
         top_indices = [i for _, i in scored[:max_results]]
 
@@ -847,15 +885,11 @@ class StreamingAgentLoop:
             user_input = user_question
 
         # 4. Build single-step messages (matching training format).
-        # v12.6: when compress_trigger is the user_input AND no user
-        # question fires in the same step, mark inter_chunk=True so the
-        # prompt drops <visual_window> + frames — matches pass5 shape C
-        # (system event between visual chunks, not a visual decision).
+        # When compress_trigger is the user_input AND no user question fires
+        # in the same step, mark inter_chunk=True so the prompt uses the
+        # memory-compaction instructions while still carrying visual_window.
         is_inter_chunk = bool(compress_trigger and not user_question)
-        frame_paths = (
-            None if is_inter_chunk
-            else self._get_frame_paths(video_path, chunk_idx)
-        )
+        frame_paths = self._get_frame_paths(video_path, chunk_idx)
         messages = build_single_step_messages(
             snapshot,
             chunk_idx,
@@ -1109,8 +1143,8 @@ class StreamingAgentLoop:
             parsed["recall_returned_chunks"] = []
 
         # ── v9.4.2 extra telemetry (4 metrics) ──
-        # 1. prompt_text_token_count: text-only zones (system + memory + queries
-        #    + recall + user_input). Visual frames excluded — they're a fixed
+        # 1. prompt_text_token_count: text-only zones (system + user_input +
+        #    memory + queries + recall). Visual frames excluded — they're a fixed
         #    cost the eval can compute as 24 × ~196 = ~4700. Sum the two gives
         #    a per-step "how close are we to model_max_length" signal.
         prompt_text_tokens = 0

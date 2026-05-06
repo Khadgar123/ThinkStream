@@ -474,6 +474,12 @@ def main():
         choices=["ts_image", "video_meta"],
         help="Visual carrier for pre-extracted frames in the streaming agent.",
     )
+    p.add_argument("--query-policy", default=os.environ.get(
+        "THINKSTREAM_QUERY_HISTORY_POLICY", "recent_k"),
+                   choices=["recent_k", "single_active", "replace_on_new", "multi_pending"],
+                   help="Which query records are rendered in <queries>.")
+    p.add_argument("--queries-history-cap", type=int, default=None,
+                   help="Override query history cap after applying profile.")
     p.add_argument("--out", default=None)
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
@@ -483,7 +489,13 @@ def main():
     # are used so the module-level caps reflect the requested profile.
     from scripts.eval.eval_profiles import apply_profile, describe_profile
     profile_cfg = apply_profile(args.profile)
+    from thinkstream.data import agent_protocol
+    agent_protocol.QUERY_HISTORY_POLICY = args.query_policy
+    if args.queries_history_cap is not None:
+        agent_protocol.QUERIES_HISTORY_CAP = int(args.queries_history_cap)
     print(describe_profile(args.profile))
+    print(f"query_history: policy={agent_protocol.QUERY_HISTORY_POLICY}, "
+          f"cap={agent_protocol.QUERIES_HISTORY_CAP}")
     if args.max_new_tokens == 128 and args.profile == "32k":
         # User accepted profile default; honour the profile's max_new_tokens
         args.max_new_tokens = profile_cfg["max_new_tokens_default"]

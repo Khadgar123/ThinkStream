@@ -46,6 +46,93 @@ except ImportError:
         return max(0, int(chunk_idx) - int(visual_window_chunks) + 1)
 
 
+COMPRESS_TRIGGER_TAG = "<compress_trigger/>"
+_COMPRESS_TRIGGER_RE = re.compile(r"<compress_trigger\b")
+
+
+def _contains_compress_trigger(user_text: str) -> bool:
+    return bool(_COMPRESS_TRIGGER_RE.search(user_text or ""))
+
+
+def build_compress_trigger_user_input() -> str:
+    """Canonical system-injected user input for inter-chunk compression.
+
+    The bare tag is kept first for robust detection by legacy code. The
+    remaining text makes the turn unambiguously a memory-management event
+    rather than another visual observation / QA step.
+    """
+    return (
+        f"{COMPRESS_TRIGGER_TAG}\n"
+        "<memory_compaction>\n"
+        "System event: memory compaction turn between video chunks.\n"
+        "Rules:\n"
+        "- Do not answer any user question.\n"
+        "- Do not call recall.\n"
+        "- Do not answer from the visual window on this turn.\n"
+        "- Output exactly one compress tool call after a short memory-management think.\n"
+        "- Choose an older contiguous time range from <memory> and summarize it "
+        "so the summary can replace those text memory records.\n"
+        "- The visual window may also be present to preserve the streaming context, "
+        "but this turn is still for memory compaction rather than QA.\n"
+        "Required output shape: <think>...</think><tool_call>{\"name\":\"compress\","
+        "\"arguments\":{\"time_range\":[start_sec,end_sec],\"text\":\"...\"}}</tool_call>\n"
+        "</memory_compaction>"
+    )
+
+
+def normalize_user_input_for_turn(user_input: str, *, inter_chunk: bool = False) -> str:
+    """Render legacy bare compress triggers as explicit compaction events."""
+    text = str(user_input or "")
+    if inter_chunk and _contains_compress_trigger(text):
+        return build_compress_trigger_user_input()
+    return text
+
+
+def format_user_input_block(user_input: str, *, inter_chunk: bool = False) -> str:
+    """Canonical tagged user_input block used by SFT/RL/eval/runtime."""
+    text = normalize_user_input_for_turn(user_input, inter_chunk=inter_chunk)
+    if not text:
+        return ""
+    return f"\n<user_input>{text}</user_input>"
+
+
+# User-input placement. Keep the current external event/question first so it
+# cannot be buried behind a long memory block.
+USER_INPUT_POSITION = "front"
+
+
+def normalize_user_input_position(position: Optional[str] = None) -> str:
+    value = (
+        position
+        or os.environ.get("THINKSTREAM_USER_INPUT_POSITION")
+        or USER_INPUT_POSITION
+    )
+    value = str(value or "").strip().lower().replace("-", "_")
+    aliases = {
+        "first": "front",
+        "prepend": "front",
+        "head": "front",
+        "last": "tail",
+        "append": "tail",
+        "end": "tail",
+        "compress_first": "compress_front",
+        "inter_chunk_front": "compress_front",
+    }
+    value = aliases.get(value, value)
+    if value not in {"tail", "front", "compress_front"}:
+        return USER_INPUT_POSITION
+    return value
+
+
+def user_input_should_prepend(
+    *,
+    inter_chunk: bool = False,
+    user_input_position: Optional[str] = None,
+) -> bool:
+    position = normalize_user_input_position(user_input_position)
+    return position == "front" or (position == "compress_front" and inter_chunk)
+
+
 def select_recall_chunks(
     chunks: Optional[Sequence[Any]],
     max_chunks: Optional[int] = None,
@@ -471,12 +558,15 @@ def format_memory_block(memory: Dict) -> str:
     return "\n".join(parts)
 
 
-# Eval-side caps. Aligned to SFT distribution upper bounds:
-#   - QUERIES_HISTORY_CAP=8 ≥ MAX_QUESTIONS_PER_TRAJECTORY=6 (no trim in dist)
+# Eval-side caps. Aligned to the current independent-question distribution:
+#   - QUERY_HISTORY_POLICY=recent_k keeps old query text from dominating memory.
+#   - QUERIES_HISTORY_CAP=3 keeps the current/newest questions visible while
+#     limiting unrelated history. OVO eval overrides this to single_active.
 #   - RECALL_TEXT_MAX_CHARS=1600 ≈ 4 × THINK_TOKENS.max(100 tok × ~4 char)
 # Both are upper-bound guards; SFT samples never hit them.
 # The "32k" eval profile (scripts/eval/eval_profiles.py) loosens further.
-QUERIES_HISTORY_CAP = 8
+QUERY_HISTORY_POLICY = "recent_k"
+QUERIES_HISTORY_CAP = 3
 RECALL_TEXT_MAX_CHARS = 1600
 
 
@@ -513,19 +603,120 @@ def answer_format_instruction(
     return ""
 
 
-def format_queries_block(queries: List[Dict]) -> str:
+def _env_int(name: str, default: int) -> int:
+    raw = os.environ.get(name)
+    if raw is None:
+        return int(default)
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return int(default)
+
+
+def _normalize_query_history_policy(policy: Optional[str] = None) -> str:
+    value = (
+        policy
+        or os.environ.get("THINKSTREAM_QUERY_HISTORY_POLICY")
+        or QUERY_HISTORY_POLICY
+    )
+    value = str(value or "").strip().lower().replace("-", "_")
+    aliases = {
+        "all_pending": "multi_pending",
+        "pending": "multi_pending",
+        "current": "single_active",
+        "active": "single_active",
+        "latest": "single_active",
+        "replace": "replace_on_new",
+        "last_k": "recent_k",
+        "recent": "recent_k",
+    }
+    value = aliases.get(value, value)
+    if value not in {"multi_pending", "recent_k", "single_active", "replace_on_new"}:
+        return QUERY_HISTORY_POLICY
+    return value
+
+
+def _query_time_key(q: Dict) -> float:
+    value = q.get("ask_time", q.get("time", q.get("response_time", "")))
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        m = re.search(r"-?\d+(?:\.\d+)?", str(value))
+        if m:
+            try:
+                return float(m.group(0))
+            except ValueError:
+                return 0.0
+    return 0.0
+
+
+def _select_queries_for_prompt(
+    queries: List[Dict],
+    *,
+    policy: Optional[str] = None,
+    cap: Optional[int] = None,
+) -> List[Dict]:
+    """Select the query records that are visible in the prompt."""
+    if not queries:
+        return []
+
+    def _query_is_open(q: Dict) -> bool:
+        status = str(q.get("status", "")).strip().lower()
+        if status in {"open", "pending", "active"}:
+            return True
+        if status in {"answered", "closed", "done", "replaced"}:
+            return False
+        return not q.get("answers")
+
+    mode = _normalize_query_history_policy(policy)
+    limit = int(cap if cap is not None else _env_int(
+        "THINKSTREAM_QUERIES_HISTORY_CAP",
+        QUERIES_HISTORY_CAP,
+    ))
+    limit = max(1, limit)
+    indexed = list(enumerate(queries))
+
+    if mode in {"single_active", "replace_on_new"}:
+        # If several pending questions exist, the newest question is the active
+        # task. If none are pending, keep the newest answered question only for
+        # post-answer continuity/debugging.
+        open_items = [(i, q) for i, q in indexed if _query_is_open(q)]
+        pool = open_items or indexed
+        latest = max(pool, key=lambda x: (_query_time_key(x[1]), x[0]))
+        return [latest[1]]
+
+    if mode == "recent_k":
+        selected = sorted(
+            indexed,
+            key=lambda x: (_query_time_key(x[1]), x[0]),
+        )[-limit:]
+        selected.sort(key=lambda x: x[0])
+        return [q for _, q in selected]
+
+    # Backward-compatible behavior: keep all pending questions, then fit the
+    # most recent answered questions into the remaining cap.
+    pending = [q for q in queries if _query_is_open(q)]
+    answered = [q for q in queries if not _query_is_open(q)]
+    keep_n_answered = max(0, limit - len(pending))
+    return answered[-keep_n_answered:] + pending if keep_n_answered else pending
+
+
+def format_queries_block(
+    queries: List[Dict],
+    *,
+    policy: Optional[str] = None,
+    cap: Optional[int] = None,
+) -> str:
     """Format the queries zone as a chronological event stream.
 
     Q and A events interleave on a timeline. All questions are shown
     (including unanswered/pending ones) so the model knows what it's
     tracking. Unanswered questions appear as Q without a following A.
 
-    v9.4.2 (context-overflow fix): cap to the most recent
-    QUERIES_HISTORY_CAP entries (default 8 = matches SFT max trajectory
-    queries with slack). Eval-side override: see eval_profiles.py.
-    We keep PENDING queries (unanswered) regardless of age — those are
-    the only ones the model must still attend to — and trim ANSWERED
-    queries to keep the most recent ones up to the cap.
+    Query-history policy is shared by pass5/SFT/RL/eval/runtime:
+    - recent_k (default): render only the most recent cap query records.
+    - single_active / replace_on_new: render only the newest open query.
+    - multi_pending: legacy behavior; keep all pending and recent answered.
 
     Example output:
       <queries>
@@ -543,20 +734,11 @@ def format_queries_block(queries: List[Dict]) -> str:
         status = str(q.get("status", "")).strip().lower()
         if status in {"open", "pending", "active"}:
             return True
-        if status in {"answered", "closed", "done"}:
+        if status in {"answered", "closed", "done", "replaced"}:
             return False
         return not q.get("answers")
 
-    # Split: open queries (always kept) vs closed/answered (cap to recent).
-    # A multi-answer question can already have answers and still be open.
-    pending = [q for q in queries if _query_is_open(q)]
-    answered = [q for q in queries if not _query_is_open(q)]
-    # Keep all pending + last (cap - len(pending)) answered. If pending
-    # alone exceeds cap, that's a signal of agent malfunction; keep them
-    # all anyway — answered subset trims to 0.
-    keep_n_answered = max(0, QUERIES_HISTORY_CAP - len(pending))
-    queries = answered[-keep_n_answered:] + pending if keep_n_answered \
-        else pending
+    queries = _select_queries_for_prompt(queries, policy=policy, cap=cap)
 
     # Build chronological event list: (time, "Q"/"A"/"O"/"F", text)
     # "O" = Options (rendered for pending MC queries; v12.13 P0-3 fix).
@@ -610,8 +792,14 @@ def format_queries_block(queries: List[Dict]) -> str:
 
     # Sort by time (stable sort preserves Q-before-O-before-A at same timestamp)
     _kind_order = {"Q": 0, "O": 1, "F": 2, "P": 3, "A": 4}
-    events.sort(key=lambda e: (float(e[0]) if e[0] != "" else 0,
-                                _kind_order.get(e[1], 3)))
+    def _event_time_key(value: Any) -> float:
+        try:
+            return float(value) if value != "" else 0.0
+        except (TypeError, ValueError):
+            m = re.search(r"-?\d+(?:\.\d+)?", str(value))
+            return float(m.group(0)) if m else 0.0
+
+    events.sort(key=lambda e: (_event_time_key(e[0]), _kind_order.get(e[1], 3)))
 
     lines = []
     for t, kind, text in events:
@@ -649,21 +837,16 @@ def build_user_content(
 ) -> List[Dict]:
     """Build the user content list for a single-step message.
 
-    Ordering (v12.12, 2026-05-01 — supersedes v3.0 zone order):
-    <memory> → <queries> (visual turns only) → <visual_window> + frames →
-    <recalled_frames> + frames → <recall_result> → <user_input>
+    Ordering:
+    <user_input> → <memory> → <queries> (visual turns only) →
+    <visual_window> + frames → <recalled_frames> + frames → <recall_result>
 
     Why this order: memory and queries are monotonically appended across
     chunks of one trajectory (modulo periodic compression rewrites), so
-    placing them FIRST makes the largest stable token prefix. With
-    `--enable-prefix-caching` on the vLLM serving side, the prefix
-    [system + memory_at_t-1 + queries_at_t-1] is byte-identical to the
-    head of [system + memory_at_t + queries_at_t] up through chunk t-1's
-    last appended token → cache hits ~25-40% of the per-chunk prefill
-    instead of the ~5% (system only) that the old vision-first layout
-    achieved. Visual window changes every chunk (sliding) so it's the
-    cache-miss boundary; placing it AFTER the stable text means the miss
-    starts later in the sequence, not at the front.
+    they still stay before the visual window. The fresh user event is placed
+    before memory so questions and memory-compaction triggers are not buried
+    behind long historical text. Visual window changes every chunk, so it
+    remains after the stable text zones.
 
     Pre-extracted frames are rendered by the late-bound frame protocol:
     ``ts_image`` (frame-tag text + image items) or ``video_meta`` (one Qwen
@@ -683,27 +866,37 @@ def build_user_content(
                      range as a legacy fallback.
         frame_protocol: "ts_image" or "video_meta"; defaults to
                         THINKSTREAM_FRAME_PROTOCOL or "ts_image".
-        inter_chunk: v12.6 — when True (compress system trigger fires
-                     between two visual chunks), DROP <visual_window> and
-                     the visual frame block. Matches pass5 inter_chunk
-                     shape C (compress sample has memory + trigger only,
-                     no visual context). Compression is a system event
-                     between visual timesteps; treating it as a visual
-                     decision creates train/infer divergence.
+        inter_chunk: Memory-compaction turn. Queries/recalled frames are
+                     suppressed, but the current visual sliding window is still
+                     rendered so train/eval/RL all execute the same multimodal
+                     path.
     """
     chunk_sec = AGENT_CHUNK_SEC
     user_content = []
+    user_input_block = format_user_input_block(
+        user_input,
+        inter_chunk=inter_chunk,
+    ) if user_input else ""
+    prepend_user_input = bool(user_input_block) and user_input_should_prepend(
+        inter_chunk=inter_chunk,
+    )
 
-    # ── Memory block (FIRST — stable monotonic prefix, v12.12) ──
-    # No leading "\n": memory is the first block in user content.
+    if prepend_user_input:
+        user_content.append({
+            "type": "text",
+            "text": user_input_block.lstrip("\n"),
+        })
+
+    # ── Memory block ──
     user_content.append({
         "type": "text",
-        "text": f"<memory>\n{memory_text}\n</memory>",
+        "text": f"\n<memory>\n{memory_text}\n</memory>" if user_content
+        else f"<memory>\n{memory_text}\n</memory>",
     })
 
     # ── Queries (past Q&A, also monotonic; second-stable prefix) ──
-    # Inter-chunk compression is a system memory-pressure event. SFT/pass5
-    # train it as memory + bare trigger only, so omit queries here too.
+    # Inter-chunk compression is a system memory-pressure event, so omit
+    # queries to prevent the model from answering instead of compacting memory.
     if queries and not inter_chunk:
         queries_text = format_queries_block(queries)
         if queries_text:
@@ -712,11 +905,7 @@ def build_user_content(
                 "text": f"\n{queries_text}",
             })
 
-    # ── Visual window + protocol-selected frame carrier (cache-miss boundary) ──
-    # v12.6: inter_chunk compress turns SKIP this block entirely (matches
-    # pass5 shape C). Compression is a system event between visual chunks
-    # and consumes no new frames; including a visual_window here would
-    # diverge from the SFT distribution.
+    # ── Visual window + protocol-selected frame carrier ──
     window_start = compute_visual_window_start(chunk_idx, VISUAL_WINDOW_CHUNKS)
     video_start = window_start * chunk_sec
     video_end = (chunk_idx + 1) * chunk_sec
@@ -724,40 +913,39 @@ def build_user_content(
     current_end = current_start + chunk_sec
     n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
 
-    if not inter_chunk:
-        vw_header = json.dumps({
-            "start": video_start,
-            "end": video_end,
-            "frames": n_frames,
-            "current_time": [current_start, current_end],
-        })
-        user_content.append({
-            "type": "text",
-            "text": f"\n<visual_window>{vw_header}</visual_window>",
-        })
+    vw_header = json.dumps({
+        "start": video_start,
+        "end": video_end,
+        "frames": n_frames,
+        "current_time": [current_start, current_end],
+    })
+    user_content.append({
+        "type": "text",
+        "text": f"\n<visual_window>{vw_header}</visual_window>",
+    })
 
-        if frame_paths:
-            append_visual_frames(
-                user_content,
-                frame_paths,
-                frame_protocol=frame_protocol,
-                fps=float(FRAMES_PER_CHUNK / chunk_sec),
-                start_frame_index=window_start * FRAMES_PER_CHUNK,
-                total_num_frames=(chunk_idx + 1) * FRAMES_PER_CHUNK,
-                latest_start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
-                min_pixels=min_pixels,
-                max_pixels=max_pixels,
-            )
-        else:
-            user_content.append({
-                "type": "video",
-                "video": video_path,
-                "video_start": video_start,
-                "video_end": video_end,
-                "nframes": n_frames,
-                "min_pixels": min_pixels,
-                "max_pixels": max_pixels,
-            })
+    if frame_paths:
+        append_visual_frames(
+            user_content,
+            frame_paths,
+            frame_protocol=frame_protocol,
+            fps=float(FRAMES_PER_CHUNK / chunk_sec),
+            start_frame_index=window_start * FRAMES_PER_CHUNK,
+            total_num_frames=(chunk_idx + 1) * FRAMES_PER_CHUNK,
+            latest_start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
+            min_pixels=min_pixels,
+            max_pixels=max_pixels,
+        )
+    else:
+        user_content.append({
+            "type": "video",
+            "video": video_path,
+            "video_start": video_start,
+            "video_end": video_end,
+            "nframes": n_frames,
+            "min_pixels": min_pixels,
+            "max_pixels": max_pixels,
+        })
     # ── Recalled frames (recall_response only) ──
     if recalled_frames:
         rf_header = json.dumps({
@@ -815,11 +1003,10 @@ def build_user_content(
             "text": f"\n<recall_result>{rr_json}</recall_result>",
         })
 
-    # ── User input (LAST — every step varies) ──
-    if user_input:
+    if user_input_block and not prepend_user_input:
         user_content.append({
             "type": "text",
-            "text": f"\n<user_input>{user_input}</user_input>",
+            "text": user_input_block,
         })
 
     return user_content
@@ -881,14 +1068,16 @@ SYSTEM_PROMPT_V12 = (
     "If recall reports no relevant past observation and the current frames "
     "still do not contain the answer, emit <answer></answer> and keep the "
     "query pending for a future chunk.\n"
-    "- compress: summarize a chunk range. Called ONLY when the system injects "
-    "<compress_trigger/> into your input as a memory-pressure signal. "
-    "You must derive the time range to compress yourself from <memory> "
-    "contents (oldest contiguous chunks that can be safely condensed). "
-    "Retain entity names, visual attributes, OCR, state changes.\n\n"
+    "- compress: memory compaction tool. Called ONLY on a memory compaction "
+    "turn, identified by <compress_trigger/> in <user_input>. On that turn, "
+    "a visual window may still be present for streaming-format consistency, "
+    "but do not answer any question and do not call recall. You must emit a "
+    "compress tool_call, deriving the time range yourself from <memory> "
+    "contents (older contiguous records that can be safely condensed). "
+    "Retain entity names, visual attributes, OCR, and state changes.\n\n"
     "Output format (every turn must follow this exactly):\n"
-    "  <think>40-80 tokens describing the current chunk, except on "
-    "compress turns where it describes the memory-management decision</think>\n"
+    "  <think>40-80 tokens describing the current chunk on visual turns; "
+    "on memory compaction turns, describe only the compression decision</think>\n"
     "  Then ONE of:\n"
     "    <tool_call>{\"name\":\"recall\",\"arguments\":{...}}</tool_call>\n"
     "    <tool_call>{\"name\":\"compress\",\"arguments\":{...}}</tool_call>\n"
@@ -897,10 +1086,10 @@ SYSTEM_PROMPT_V12 = (
     "Answer rules: if a pending query includes an 'Answer format:' line, "
     "the text inside <answer> must follow that line exactly. For MC questions, "
     "do not add explanation when the requested format is one letter only.\n\n"
-    "Think rules: on visual turns, describe ONLY observable visual facts in "
-    "the current chunk. On compress turns, do not invent a visual observation; "
-    "state that memory is over budget and which older time range should be "
-    "compressed. "
+    "Think rules: on ordinary visual turns, describe ONLY observable visual "
+    "facts in the current chunk. On memory compaction turns, state that memory "
+    "is over budget and which older time range should be compressed; do not "
+    "turn the visual window into an answer. "
     "Evidence priority: (1) current frame-tagged images determine the current think; "
     "(2) tagged memory records are history and entity naming only; (3) if current frames "
     "conflict with memory, ignore memory for the current visual description. "
@@ -990,10 +1179,12 @@ TOOLS_SCHEMA = [
         "function": {
             "name": "compress",
             "description": (
-                "Summarize a chunk range when the system signals memory pressure "
-                "via <compress_trigger/>. You decide which range from <memory> to "
-                "compress. Output a concise summary retaining all entities, "
-                "attributes, and state changes."
+                "Memory compaction tool. Use only when the system injects "
+                "<compress_trigger/> as an inter-chunk memory-management event. "
+                "Do not answer questions or call recall on that turn. Decide "
+                "which older contiguous range from <memory> to compress and "
+                "output a concise summary retaining all entities, attributes, "
+                "OCR, and state changes."
             ),
             "parameters": {
                 "type": "object",
@@ -1149,7 +1340,7 @@ def has_compress_trigger(user_text: str) -> bool:
     Used by training/eval to verify trigger→tool_call binding, and by the
     rollout controller to know whether the assistant must emit compress.
     """
-    return bool(re.search(r'<compress_trigger\b', user_text or ""))
+    return _contains_compress_trigger(user_text)
 
 
 def extract_compress_trigger_range(user_text: str) -> Optional[List[int]]:

@@ -87,6 +87,10 @@ def train(attn_implementation="flash_attention_2"):
     os.makedirs(training_args.output_dir, exist_ok=True)
 
     # ── Load model (auto-detect: Qwen2.5-VL or Qwen3-VL) ──
+    attn_implementation = os.environ.get(
+        "THINKSTREAM_ATTN_IMPLEMENTATION",
+        attn_implementation,
+    )
     name_lower = model_args.model_name_or_path.lower()
     model_basename = Path(model_args.model_name_or_path.rstrip("/")).name.lower()
 
@@ -122,6 +126,7 @@ def train(attn_implementation="flash_attention_2"):
 
     rank0_print(f"Model: {model_args.model_name_or_path} ({model.__class__.__name__})")
     rank0_print(f"Model type: {data_args.model_type}")
+    rank0_print(f"Attention: {attn_implementation}")
 
     # ── Processor ──
     # v12: Qwen3-VL official tool protocol. Agent tags stay as plain text

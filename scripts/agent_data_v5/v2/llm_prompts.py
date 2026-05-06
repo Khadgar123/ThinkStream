@@ -25,37 +25,69 @@ from typing import Dict, List
 # live narration, tool recall, compression, and silence timing.
 FAMILY_TAXONOMY = {
     "N1":  {"family_name": "appearance_recall", "category": "Memory & Tracking",
-            "skill": "verify which entity actually appeared", "ours_unique": False},
+            "skill": "verify which entity actually appeared", "evidence_window": "past",
+            "operation": "entity recall", "ovo_task": "ATR/HLD", "ours_unique": False},
     "P1":  {"family_name": "attribute_memory", "category": "Memory & Tracking",
-            "skill": "recall an entity color/material/state", "ours_unique": False},
+            "skill": "recall an entity color/material/state", "evidence_window": "past",
+            "operation": "attribute recall", "ovo_task": "ATR", "ours_unique": False},
+    "HLD1": {"family_name": "unanswerable_memory", "category": "Memory & Tracking",
+             "skill": "abstain when the requested visual fact is not evidenced",
+             "evidence_window": "past", "operation": "abstention",
+             "ovo_task": "HLD", "ours_unique": False},
     "CR1": {"family_name": "cause_effect", "category": "Causal & Intent Reasoning",
-            "skill": "explain a visible cause-effect relation", "ours_unique": False},
+            "skill": "explain a visible cause-effect relation", "evidence_window": "past",
+            "operation": "cause-effect", "ovo_task": "CRR/ASI", "ours_unique": False},
     "CR2": {"family_name": "temporal_order", "category": "Temporal Understanding",
-            "skill": "recover the order of observed events", "ours_unique": False},
+            "skill": "recover the order of observed events", "evidence_window": "past",
+            "operation": "event ordering", "ovo_task": "EPM", "ours_unique": False},
     "CR4": {"family_name": "cross_event_reasoning", "category": "Causal & Intent Reasoning",
-            "skill": "combine multiple observations across time", "ours_unique": False},
+            "skill": "combine multiple observations across time", "evidence_window": "cross_time",
+            "operation": "multi-evidence reasoning", "ovo_task": "CRR/ASI", "ours_unique": False},
     "CR5": {"family_name": "delayed_clue_resolution", "category": "Memory & Tracking",
-            "skill": "hold an ambiguous clue until later evidence resolves it", "ours_unique": True},
+            "skill": "hold an ambiguous clue until later evidence resolves it",
+            "evidence_window": "cross_time", "operation": "delayed resolution",
+            "ovo_task": "EPM/CRR", "ours_unique": True},
     "M1":  {"family_name": "video_summary", "category": "Global Understanding",
-            "skill": "summarize the whole video trajectory", "ours_unique": False},
+            "skill": "summarize the whole video trajectory", "evidence_window": "global",
+            "operation": "summary", "ovo_task": "global", "ours_unique": False},
     "E2":  {"family_name": "next_event", "category": "Temporal Understanding",
-            "skill": "wait for and identify the next observable event", "ours_unique": False},
+            "skill": "wait for and identify the next observable event", "evidence_window": "future",
+            "operation": "next-event detection", "ovo_task": "EPM", "ours_unique": False},
     "F6":  {"family_name": "future_state", "category": "Temporal Understanding",
-            "skill": "predict the next state from current evidence", "ours_unique": False},
-    "F7":  {"family_name": "step_status", "category": "Progress Monitoring",
-            "skill": "answer whether a step has happened by now", "ours_unique": False},
+            "skill": "predict the next state from current evidence", "evidence_window": "future",
+            "operation": "future state", "ovo_task": "FPD", "ours_unique": False},
+    "F7":  {"family_name": "step_status", "category": "Temporal Understanding",
+            "skill": "answer whether a step has happened by now", "evidence_window": "streaming",
+            "operation": "status flip", "ovo_task": "SSR", "ours_unique": False},
     "CR3": {"family_name": "intent_now", "category": "Causal & Intent Reasoning",
-            "skill": "infer the current actor intent", "ours_unique": False},
+            "skill": "infer the current actor intent", "evidence_window": "current",
+            "operation": "intent inference", "ovo_task": "ASI", "ours_unique": False},
     "CR7": {"family_name": "object_persistence", "category": "Memory & Tracking",
-            "skill": "track an object after occlusion or motion", "ours_unique": False},
+            "skill": "track an object after occlusion or motion", "evidence_window": "current_to_past",
+            "operation": "object tracking", "ovo_task": "OJR/STU", "ours_unique": False},
     "R1":  {"family_name": "visible_reasoning", "category": "Current Perception",
-            "skill": "reason over the currently visible scene", "ours_unique": False},
+            "skill": "reason over the currently visible scene", "evidence_window": "current",
+            "operation": "scene reasoning", "ovo_task": "OJR/STU", "ours_unique": False},
+    "ACR1": {"family_name": "current_action_recognition", "category": "Current Perception",
+             "skill": "recognize the action currently happening", "evidence_window": "current",
+             "operation": "action recognition", "ovo_task": "ACR", "ours_unique": False},
+    "STU1": {"family_name": "spatial_temporal_understanding", "category": "Current Perception",
+             "skill": "identify current spatial relation, count, or direction",
+             "evidence_window": "current", "operation": "spatial/count/direction",
+             "ovo_task": "STU", "ours_unique": False},
+    "OJR1": {"family_name": "object_relation_judgment", "category": "Current Perception",
+             "skill": "judge the relation or state of visible objects",
+             "evidence_window": "current", "operation": "object relation",
+             "ovo_task": "OJR", "ours_unique": False},
     "F5":  {"family_name": "action_count", "category": "Streaming Agent Actions",
-            "skill": "emit cumulative counts for repeated actions", "ours_unique": True},
+            "skill": "emit cumulative counts for repeated actions", "evidence_window": "streaming",
+            "operation": "cumulative counting", "ovo_task": "REC", "ours_unique": True},
     "C1":  {"family_name": "text_readout", "category": "Current Perception",
-            "skill": "read exact visible text", "ours_unique": False},
+            "skill": "read exact visible text", "evidence_window": "current",
+            "operation": "OCR", "ovo_task": "OCR", "ours_unique": False},
     "PN1": {"family_name": "live_narration", "category": "Streaming Agent Actions",
-            "skill": "proactively describe sparse state changes", "ours_unique": True},
+            "skill": "proactively describe sparse state changes", "evidence_window": "streaming",
+            "operation": "live narration", "ovo_task": "streaming_agent", "ours_unique": True},
 }
 
 
@@ -77,6 +109,9 @@ FAMILY_RULES = {
     "P1":  {"answer_form": "multiple_choice", "profile": "backward",
             "intent": "Attribute memory: color/material/state of an entity",
             **family_taxonomy("P1")},
+    "HLD1": {"answer_form": "multiple_choice", "profile": "backward",
+             "intent": "Unanswerable visual fact: answer Unable to answer when the fact is not evidenced",
+             **family_taxonomy("HLD1")},
     "CR1": {"answer_form": "multiple_choice", "profile": "backward",
             "intent": "Cause-effect: why did X happen given visible cause",
             **family_taxonomy("CR1")},
@@ -112,11 +147,20 @@ FAMILY_RULES = {
     "R1":  {"answer_form": "multiple_choice", "profile": "realtime",
             "intent": "Visible reasoning: reason about the current scene",
             **family_taxonomy("R1")},
+    "ACR1": {"answer_form": "multiple_choice", "profile": "realtime",
+             "intent": "Current action recognition: identify what is happening now",
+             **family_taxonomy("ACR1")},
+    "STU1": {"answer_form": "multiple_choice", "profile": "realtime",
+             "intent": "Current spatial/count/direction understanding",
+             **family_taxonomy("STU1")},
+    "OJR1": {"answer_form": "multiple_choice", "profile": "realtime",
+             "intent": "Current object relation judgment",
+             **family_taxonomy("OJR1")},
     "F5":  {"answer_form": "number", "profile": "realtime",
             "intent": "Action count: repeated action counting (multi_emit, cumulative)",
             **family_taxonomy("F5")},
-    "C1":  {"answer_form": "short_exact", "profile": "realtime",
-            "intent": "Text readout: exact text visible on screen",
+    "C1":  {"answer_form": "multiple_choice", "profile": "realtime",
+            "intent": "Text readout: exact visible OCR text as a multiple-choice question",
             **family_taxonomy("C1")},
     # multi_emit
     "PN1": {"answer_form": "descriptive", "profile": "realtime",
@@ -126,6 +170,54 @@ FAMILY_RULES = {
 
 QUESTION_TYPE_BY_FAMILY = {f: ("multi_emit" if f in ("F5", "F7", "PN1") else "single_emit")
                            for f in FAMILY_RULES}
+
+
+FAMILY_EXTRA_RULES = {
+    "HLD1": """
+- HLD1 is an explicit negative/unanswerable card.
+- Generate OVO-HLD-style negatives, not one repeated template. Prefer a mix of:
+  (1) location/where: "Where did I put ...?", "Where was ...?";
+  (2) placement/object: "What did I put in/on ...?";
+  (3) state yes/no: "Did I leave/close/open ...?";
+  (4) count: "How many ...?";
+  (5) color/attribute: "What color/material was ...?";
+  (6) before-memory: "Where was ... before I picked/used it?"
+- The requested target fact MUST be unsupported by ALL provided evidence above,
+  not merely absent from the chosen grounding_frames. If any evidence chunk
+  states or strongly implies the answer, do not make that card.
+- This is not a future/waiting card: the fact should remain unanswerable from
+  the provided video evidence, rather than becoming answerable later.
+- The correct option text MUST be exactly "Unable to answer"; canonical_answer
+  MUST be exactly "Unable to answer"; gold_emits[0].value MUST be the correct
+  letter for the Unable option.
+- Use exactly four MC options. Put "Unable to answer" in a varied A/B/C/D slot.
+- For state yes/no HLD, still output four options, e.g. Yes, No, Unable to
+  answer, and one plausible concrete state phrase.
+- The other three options should be scene-plausible concrete answers, but all
+  unsupported by the provided evidence. They may look like real OVO distractors
+  (locations, objects, colors, counts, yes/no states), but must not be correct.
+- Do NOT ask about a visible fact from grounding_frames.
+- Do NOT include a non-Unable option if that exact option text appears in the
+  grounding evidence.
+- Avoid leaking the answer inside the question, e.g. do not ask "What color was
+  the red umbrella"; ask about a neutral object/fact instead.
+- If you cannot construct a safe unanswerable card, output an empty JSON list.""",
+    "F7": """
+- F7 must be OVO SSR-style multi-time status.
+- gold_emits MUST contain at least one "No" before the change chunk and at least one "Yes" at/after it.
+- Values must be monotonic over time: No ... No, then Yes ... Yes; never Yes before No.
+- grounding_frames should include the change chunk that makes the status become Yes.""",
+    "C1": """
+- C1 is OVO-style MC OCR, not short_exact.
+- The correct option must be exact visible OCR text from the grounding chunk.
+- Distractors should be other visible text snippets or plausible OCR-like snippets.""",
+    "ACR1": """
+- ACR1 asks what action is currently visible. Do not ask about intent, cause, or future outcome.""",
+    "STU1": """
+- STU1 asks a current spatial relation, count, direction, or location question. Do not require past memory.""",
+    "OJR1": """
+- OJR1 asks the relation/state between visible objects. Do not ask broad scene reasoning.""",
+}
 
 
 # ---------------------------------------------------------------------------
@@ -179,12 +271,14 @@ def card_generation_prompt(
     if qtype == "multi_emit":
         emits_doc = ('"gold_emits": [{"chunk": int, "value": str}, ...],   '
                      '# multi_emit: ONE entry per occurrence/event chunk; '
-                     '"value" is cumulative count for F5 or "event@N" for PN1')
+                     '"value" is cumulative count for F5, Yes/No status for F7, '
+                     'or "event@N" for PN1')
     else:
         emits_doc = ('"gold_emits": [{"chunk": int, "value": str}],         '
                      '# single_emit: exactly 1 entry; chunk = when answer is determinable')
+    family_extra = FAMILY_EXTRA_RULES.get(family, "").strip()
 
-    return f"""You are a teacher generating ONE training card from a video's per-chunk evidence.
+    return f"""You are a teacher generating training card(s) from a video's per-chunk evidence.
 
 Family: {family}  ({rule["intent"]})
 Category: {rule["category"]} / {rule["family_name"]}
@@ -207,11 +301,14 @@ Produce {target_n} card(s) as a JSON list. Each card schema:
 Rules:
 - question must NOT contain or paraphrase the answer.
 - grounding_frames must reference chunks present in the evidence above.
-- For MC: distractors must be PLAUSIBLE (drawn from other observed entities/actions in the video), not random.
+- For MC: distractors must be PLAUSIBLE, not random. For non-HLD families,
+  prefer distractors drawn from other observed entities/actions in the video.
+  For HLD1, distractors should be scene-plausible but unsupported.
 - For binary: canonical_answer ∈ {{"Yes", "No"}}.
 - For number: canonical_answer is a digit string.
 - For short_exact: canonical_answer is ≤ 4 words.
 - For descriptive: canonical_answer is 1-3 sentences grounded in evidence.
+{family_extra}
 
 Output ONLY a JSON list, no commentary:"""
 

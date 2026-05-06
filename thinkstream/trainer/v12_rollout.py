@@ -289,9 +289,10 @@ def default_v12_update_state(
         # summary count (matches pass2_rollout.MemoryState design).
         tr = args.get("time_range") or []
         replaced_merge_levels = []
+        source_chunks = set()
         if isinstance(tr, list) and len(tr) == 2:
             try:
-                tr_start, tr_end = sorted(tr)[:2]
+                tr_start, tr_end = [int(x) for x in sorted(tr)[:2]]
             except (TypeError, ValueError):
                 tr_start, tr_end = (0, 0)
             # Find summaries whose time_range is fully inside the trigger range
@@ -300,9 +301,17 @@ def default_v12_update_state(
             kept_summaries = []
             for s in new_state.compressed_summaries:
                 s_tr = s.get("time_range") or []
-                if (isinstance(s_tr, list) and len(s_tr) == 2
-                        and tr_start <= s_tr[0] and s_tr[1] <= tr_end):
+                try:
+                    s_start, s_end = [int(x) for x in s_tr[:2]]
+                except (TypeError, ValueError):
+                    s_start, s_end = (None, None)
+                if (s_start is not None
+                        and tr_start <= s_start and s_end <= tr_end):
                     replaced_merge_levels.append(int(s.get("merge_level", 0)))
+                    if s.get("source_chunks"):
+                        source_chunks.update(int(c) for c in s.get("source_chunks", []))
+                    else:
+                        source_chunks.update(range(s_start, s_end))
                 else:
                     kept_summaries.append(s)
             new_state.compressed_summaries = kept_summaries
@@ -313,15 +322,25 @@ def default_v12_update_state(
             "text": args.get("text", ""),
             "from_chunk": chunk_idx,
             "merge_level": new_merge_level,    # v12.12: SOFT penalty signal
+            "source_chunks": sorted(source_chunks),
         })
         # Drop the oldest recent_thinks that fall in the compressed range
         if tr:
             try:
-                tr_start, tr_end = sorted(tr)[:2]
+                tr_start, tr_end = [int(x) for x in sorted(tr)[:2]]
+                kept_recent = []
+                for t in new_state.recent_thinks:
+                    c = int(t.get("chunk", -1))
+                    c_start = c
+                    c_end = c + 1
+                    if tr_start <= c_start and c_end <= tr_end:
+                        source_chunks.add(c)
+                    else:
+                        kept_recent.append(t)
                 new_state.recent_thinks = [
-                    t for t in new_state.recent_thinks
-                    if not (tr_start <= t.get("chunk", -1) <= tr_end)
+                    t for t in kept_recent
                 ]
+                new_state.compressed_summaries[-1]["source_chunks"] = sorted(source_chunks)
             except (TypeError, ValueError):
                 pass
 

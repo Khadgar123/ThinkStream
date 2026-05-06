@@ -193,10 +193,7 @@ class HybridRetriever:
 
         # 3. Combine
         scores = self.alpha * bm25_norm + (1.0 - self.alpha) * vis_norm
-        order = sorted(
-            (i for i in range(len(scores)) if scores[i] > 0),
-            key=lambda i: -scores[i],
-        )[: self.max_results]
+        order = sorted(range(len(scores)), key=lambda i: -scores[i])[: self.max_results]
 
         if not order:
             return _empty_recall()

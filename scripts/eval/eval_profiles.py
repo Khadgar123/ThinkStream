@@ -27,7 +27,7 @@ Per-profile token-budget breakdown (worst-case at the most-loaded chunk):
                       |              |              | peak after a 100-tok think
                       |              |              | before next-step compress.
                       |              |              | SFT-baked.
-    queries           |  8 × ~50=400 | 24 × ~50=1200| EVAL-SIDE: capped in
+    queries           |  3 × ~50=150 |  3 × ~50=150 | EVAL-SIDE: capped in
                       |              |              | format_queries_block.
     recall_result     |  ~400        |  ~750        | EVAL-SIDE: char cap.
     user_input        |   ~50        |   ~50        |
@@ -65,8 +65,8 @@ When to use which profile:
   * 16k (default): SFT-aligned. Use unless you observe overflow truncation
     in eval logs after the v9.4.2 pixel/queries/recall fixes. Closest to
     training distribution.
-  * 32k: when long videos (>500 chunks) or very chatty trajectories
-    push the cumulative non-visual zones past the 16k headroom. Requires
+  * 32k: when long videos (>500 chunks) push the cumulative non-visual
+    zones past the 16k headroom. Requires
     Qwen3-VL with at least 32k native context (most variants OK; check
     config.json `max_position_embeddings` and `rope_scaling`). Slightly
     more OOD than 16k since we're feeding longer position ids than SFT
@@ -87,7 +87,8 @@ EVAL_PROFILES: Dict[str, Dict] = {
         # v12.5: 128 → 256 (longer answers possible under 4000-tok memory)
         "max_new_tokens_default": 256,
         # agent_protocol caps (aligned to SFT distribution upper bounds)
-        "queries_history_cap": 8,
+        "query_history_policy": "recent_k",
+        "queries_history_cap": 3,
         "recall_text_max_chars": 1600,
         # For the comparison report
         "subtotal_tokens_estimate": 8454,
@@ -96,7 +97,8 @@ EVAL_PROFILES: Dict[str, Dict] = {
     "32k": {
         "model_max_length": 32768,
         "max_new_tokens_default": 512,
-        "queries_history_cap": 24,
+        "query_history_policy": "recent_k",
+        "queries_history_cap": 3,
         "recall_text_max_chars": 3000,
         "subtotal_tokens_estimate": 9860,
         "headroom_tokens_estimate": 22908,
@@ -119,6 +121,10 @@ def apply_profile(name: str) -> Dict:
     # Late import to avoid circular issues if eval scripts probe profiles
     # before importing agent_protocol.
     from thinkstream.data import agent_protocol
+    agent_protocol.QUERY_HISTORY_POLICY = cfg.get(
+        "query_history_policy",
+        agent_protocol.QUERY_HISTORY_POLICY,
+    )
     agent_protocol.QUERIES_HISTORY_CAP = cfg["queries_history_cap"]
     agent_protocol.RECALL_TEXT_MAX_CHARS = cfg["recall_text_max_chars"]
     return cfg
@@ -128,6 +134,7 @@ def describe_profile(name: str) -> str:
     """Human-readable single-line description for logging at startup."""
     cfg = EVAL_PROFILES[name]
     return (f"profile={name}: max_len={cfg['model_max_length']}, "
+            f"query_policy={cfg.get('query_history_policy', 'recent_k')}, "
             f"queries_cap={cfg['queries_history_cap']}, "
             f"recall_chars={cfg['recall_text_max_chars']}, "
             f"max_new_tokens={cfg['max_new_tokens_default']} | "

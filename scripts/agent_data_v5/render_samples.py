@@ -136,10 +136,15 @@ def _build_memory_from_snapshot(snapshot: Dict) -> Dict:
 
     # Compressed segments from snapshot
     for seg in snapshot.get("compressed_segments", []):
-        memory["compressed_segments"].append({
+        out_seg = {
             "time_range": seg["time_range"],
             "text": seg["text"],
-        })
+        }
+        if seg.get("source_chunks"):
+            out_seg["source_chunks"] = sorted(int(c) for c in seg.get("source_chunks", []))
+        if "merge_level" in seg:
+            out_seg["merge_level"] = int(seg.get("merge_level", 0) or 0)
+        memory["compressed_segments"].append(out_seg)
 
     # Recent thinks from snapshot
     for item in snapshot.get("recent_thinks", []):
@@ -197,8 +202,8 @@ def _build_recalled_frames(
     text-only. Without this, SFT trains on the recall_result text alone
     and inference's frame injection becomes OOD.
 
-    Returns None for failure / distractor / empty results — those
-    samples carry only <recall_result> text.
+    Returns None only for invalid/empty results. Both recall_response and
+    recall_silent should carry frames when retrieval returns historical chunks.
     """
     if not recall_result or recall_result.get("source") != "historical_frames":
         return None
@@ -276,7 +281,13 @@ def render_sample(
     if sample.get("action") == "compress":
         for event in rollout.get("compression_events", []):
             if event.get("trigger_chunk") == chunk_idx:
-                cr = event.get("compressed_thinks_chunks", [])
+                summary = event.get("summary") or {}
+                cr = (
+                    summary.get("source_chunks")
+                    or event.get("compressed_source_chunks")
+                    or event.get("compressed_thinks_chunks")
+                    or []
+                )
                 if cr:
                     gold_compress_chunks = sorted(int(c) for c in cr)
                 break
@@ -315,6 +326,8 @@ def render_sample(
     sft_answer = m.group(1).strip() if m else ""
     gold_answer = _semantic_gold_answer(card, sft_answer)
     correct_letter, correct_answer_text = _mc_correct_letter_text(card)
+    if card.get("answer_form") == "multiple_choice" and correct_answer_text:
+        canonical = correct_answer_text
 
     metadata = {
         "gold_action": sample.get("action", "silent"),
@@ -338,7 +351,8 @@ def render_sample(
         "skill": card.get("skill", ""),
         "ours_unique": bool(card.get("ours_unique", False)),
         "availability": sample.get("sequence_type", ""),
-        "support_chunks": card.get("support_chunks", []),
+        "support_chunks": list(card.get("support_chunks")
+                               or card.get("grounding_frames") or []),
         # Gold compressed-chunks (for compress samples) — empty list for
         # non-compress samples. Used by streaming-eval / RL to score
         # the model's <summary> time_range vs teacher's policy choice.
@@ -400,6 +414,14 @@ def render_sample(
     # Propagate base_role for trajectory-aware loss weighting
     if "base_role" in sample:
         rendered["base_role"] = sample["base_role"]
+
+    # Keep recall tool results at the row top-level as well as inside
+    # input. RL/eval utilities may consume rendered flat/trajectory rows
+    # directly, while pass5 consumes input.* to inject the actual media.
+    if recall_result is not None:
+        rendered["recall_result"] = recall_result
+    if rf is not None:
+        rendered["recalled_frames"] = rf
 
     # Propagate v12-specific multi-turn fields so pass4 can render them.
     for v12_key in ("v12_assistant_turn_1", "v12_assistant_turn_2", "v12_inter_chunk"):

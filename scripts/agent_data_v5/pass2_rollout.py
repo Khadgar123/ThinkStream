@@ -240,14 +240,11 @@ class MemoryState:
         if not selected_indices:
             return
 
-        # Collect source_chunks from all replaced items
+        # Collect source chunks from all replaced items. Older caches did not
+        # persist source_chunks on summaries, so fall back to their time_range.
         source_chunks = []
         for idx in sorted(selected_indices):
-            item = self.timeline[idx]
-            if item.get("type") == "think":
-                source_chunks.append(item["chunk"])
-            elif item.get("type") == "summary":
-                source_chunks.extend(item.get("source_chunks", []))
+            source_chunks.extend(_item_source_chunks(self.timeline[idx]))
 
         # Compute merge_level (max of replaced items + 1)
         max_level = 0
@@ -268,7 +265,7 @@ class MemoryState:
                         "type": "summary",
                         "time_range": summary["time_range"],
                         "text": summary["text"],
-                        "source_chunks": sorted(source_chunks),
+                        "source_chunks": sorted(set(source_chunks)),
                         "merge_level": max_level + 1,
                     })
                     inserted = True
@@ -693,6 +690,73 @@ def _evidence_by_chunk(evidence: Optional[List[Dict]]) -> Dict[int, Dict]:
     return {cap.get("chunk_idx", i): cap for i, cap in enumerate(evidence)}
 
 
+def _item_token_count(item: Dict) -> int:
+    text = item.get("text", "")
+    tokenizer = get_tokenizer()
+    if tokenizer:
+        return len(tokenizer.encode(text, add_special_tokens=False))
+    return max(len(text) // 4, 1)
+
+
+def _item_time_bounds(item: Dict) -> Tuple[int, int]:
+    if item.get("type") == "think":
+        chunk = int(item.get("chunk", 0))
+        return (
+            int(chunk * AGENT_CHUNK_SEC),
+            int(chunk * AGENT_CHUNK_SEC + AGENT_CHUNK_SEC),
+        )
+    tr = item.get("time_range") or []
+    if isinstance(tr, list) and len(tr) == 2:
+        return int(tr[0]), int(tr[1])
+    return 0, 0
+
+
+def _chunks_from_time_range(time_range: List[int]) -> List[int]:
+    if not (isinstance(time_range, list) and len(time_range) == 2):
+        return []
+    try:
+        start_s, end_s = float(time_range[0]), float(time_range[1])
+    except (TypeError, ValueError):
+        return []
+    if end_s <= start_s:
+        return []
+    start_chunk = int(start_s / float(AGENT_CHUNK_SEC))
+    # time_range end is exclusive; subtract a tiny epsilon before flooring.
+    end_chunk = int((end_s - 1e-6) / float(AGENT_CHUNK_SEC))
+    return list(range(start_chunk, end_chunk + 1))
+
+
+def _item_source_chunks(item: Dict) -> List[int]:
+    if item.get("type") == "think":
+        try:
+            return [int(item["chunk"])]
+        except (KeyError, TypeError, ValueError):
+            return []
+    chunks = []
+    for c in item.get("source_chunks") or []:
+        try:
+            chunks.append(int(c))
+        except (TypeError, ValueError):
+            continue
+    if chunks:
+        return sorted(set(chunks))
+    return _chunks_from_time_range(item.get("time_range") or [])
+
+
+def _range_source_chunks(items: List[Dict]) -> List[int]:
+    chunks: List[int] = []
+    for item in items:
+        chunks.extend(_item_source_chunks(item))
+    return sorted(set(chunks))
+
+
+def _range_time_bounds(items: List[Dict]) -> Tuple[int, int]:
+    bounds = [_item_time_bounds(item) for item in items]
+    starts = [b[0] for b in bounds]
+    ends = [b[1] for b in bounds]
+    return (min(starts), max(ends)) if bounds else (0, 0)
+
+
 # Compression scoring weights (configurable, sum ≈ 1.0)
 COMPRESS_W_CONTENT  = 0.30  # content importance → avoid compressing
 COMPRESS_W_MERGE    = 0.20  # re-compression penalty → avoid
@@ -732,6 +796,9 @@ def score_range_for_compression(
     start_idx: int,
     timeline_len: int,
     evidence: Optional[List[Dict]] = None,
+    *,
+    range_tokens: Optional[int] = None,
+    total_timeline_tokens: Optional[int] = None,
 ) -> float:
     """Score a candidate range for compression. LOWER = better to compress.
 
@@ -766,16 +833,12 @@ def score_range_for_compression(
     else:
         recency = 0.5
 
-    # --- token_ratio [0, 1]: fraction of total timeline tokens ---
-    tokenizer = get_tokenizer()
-    if tokenizer:
-        range_tokens = sum(len(tokenizer.encode(item.get("text", ""), add_special_tokens=False)) for item in items)
-    else:
-        range_tokens = sum(len(item.get("text", "")) // 4 for item in items)
-    # Estimate total timeline tokens (avoid recomputing full timeline)
-    avg_item_tokens = max(range_tokens / max(n, 1), 1)
-    est_total = avg_item_tokens * timeline_len
-    token_ratio = range_tokens / max(est_total, 1)
+    # --- token_ratio [0, 1]: true fraction of visible-memory tokens ---
+    if range_tokens is None:
+        range_tokens = sum(_item_token_count(item) for item in items)
+    if total_timeline_tokens is None:
+        total_timeline_tokens = range_tokens
+    token_ratio = min(1.0, range_tokens / max(total_timeline_tokens, 1))
 
     # --- Weighted combination ---
     score = (
@@ -792,32 +855,53 @@ def choose_optimal_compress_range(
     timeline: List[Dict],
     evidence: Optional[List[Dict]] = None,
 ) -> Tuple[List[int], Dict]:
-    """Choose the best contiguous recent-think range to compress.
+    """Choose the best contiguous visible-memory range to compress.
 
-    Summaries are prompt memory only. They are not part of trigger timing,
-    recall retrieval, or compression range selection; runtime/eval/RL remove
-    raw recent thinks and append the new summary.
+    Trigger timing still depends only on raw recent_thinks, but range selection
+    runs over the unified visible timeline so older summaries can be
+    re-compressed together with adjacent raw thinks. This matches the original
+    v12.12 policy: summaries receive a soft merge_level penalty, not a hard
+    exclusion.
 
     Returns: (selected_indices in timeline, policy_meta)
     """
-    think_positions = [
-        i for i, item in enumerate(timeline) if item.get("type") == "think"
-    ]
-    n = len(think_positions)
+    n = len(timeline)
     best_indices = None
     best_score = float("inf")
+    token_counts = [_item_token_count(item) for item in timeline]
+    token_prefix = [0]
+    for count in token_counts:
+        token_prefix.append(token_prefix[-1] + count)
+    total_tokens = token_prefix[-1]
 
-    # Enumerate contiguous ranges in recent raw-think order.
+    # Enumerate contiguous ranges in visible-memory order. A valid range must
+    # contain some raw thinks; compressing only summaries compounds loss without
+    # reducing recent_thinks pressure.
     for size in range(COMPRESS_RANGE_MIN, min(COMPRESS_RANGE_MAX + 1, n + 1)):
         for start in range(0, n - size + 1):
-            candidate_indices = think_positions[start:start + size]
+            candidate_indices = list(range(start, start + size))
             candidate_items = [timeline[i] for i in candidate_indices]
-            score = score_range_for_compression(candidate_items, start, n, evidence)
+            n_thinks = sum(
+                1 for item in candidate_items if item.get("type") == "think"
+            )
+            if n_thinks < 2:
+                continue
+            score = score_range_for_compression(
+                candidate_items,
+                start,
+                n,
+                evidence,
+                range_tokens=token_prefix[start + size] - token_prefix[start],
+                total_timeline_tokens=total_tokens,
+            )
             if score < best_score:
                 best_score = score
                 best_indices = candidate_indices
 
     if best_indices is None:
+        think_positions = [
+            i for i, item in enumerate(timeline) if item.get("type") == "think"
+        ]
         if len(think_positions) >= COMPRESS_RANGE_MIN:
             best_indices = think_positions[:COMPRESS_RANGE_MIN]
         else:
@@ -828,9 +912,12 @@ def choose_optimal_compress_range(
         "range_indices": best_indices,
         "range_size": len(best_indices) if best_indices else 0,
         "timeline_size": len(timeline),
-        "recent_thinks_size": n,
+        "recent_thinks_size": sum(1 for item in timeline if item.get("type") == "think"),
         "n_thinks_in_range": sum(1 for i in (best_indices or []) if timeline[i].get("type") == "think"),
         "n_summaries_in_range": sum(1 for i in (best_indices or []) if timeline[i].get("type") == "summary"),
+        "source_chunks_in_range": _range_source_chunks(
+            [timeline[i] for i in (best_indices or [])]
+        ),
     }
     return best_indices, meta
 
@@ -877,14 +964,11 @@ def build_compress_request(
 ) -> Optional[Dict]:
     """Build compression request from pre-action timeline.
 
-    v12.12 (2026-05-01): compress is text-only. Student emits compress in
-    inter-chunk shape C (agent_loop.py:812-816, pass5_messages.py:104+178)
-    with NO visual_window and NO frames. Teacher must match that exact
-    distribution — passing overlap frames here used to make teacher
-    "verify entity details from video" but produced summaries the student
-    cannot reproduce at inference (it has only memory text). The
-    `frame_paths` arg is kept for backward compat with callers; it is
-    no longer consumed.
+    Compression summaries are generated from text memory, not from fresh
+    video frames. Student/runtime prompts may still carry a visual sliding
+    window for multimodal-path parity, but the summary target must remain a
+    replacement for historical text memory. The `frame_paths` arg is kept for
+    backward compatibility with callers and is no longer consumed here.
     """
     selected_indices, policy_meta = choose_optimal_compress_range(
         pre_action_timeline, evidence
@@ -900,23 +984,18 @@ def build_compress_request(
         obs_lines.append(MemoryState._format_timeline_item_as_memory_tag(item))
     obs_text = "\n".join(obs_lines)
 
-    # Compute time range from selected raw thinks. Summaries are no longer
-    # eligible for compression ranges.
-    all_times = []
-    for item in to_compress:
-        if item.get("type") == "think":
-            all_times.append(item["chunk"] * AGENT_CHUNK_SEC)
-            all_times.append(item["chunk"] * AGENT_CHUNK_SEC + AGENT_CHUNK_SEC)
-        elif item.get("type") == "summary":
-            all_times.extend(item["time_range"])
-    first_time = min(all_times) if all_times else 0
-    last_time = max(all_times) if all_times else 0
+    first_time, last_time = _range_time_bounds(to_compress)
 
-    target_length = estimate_summary_length(
-        [item for item in to_compress if item.get("type") == "think"], evidence
+    target_length = estimate_summary_length(to_compress, evidence)
+
+    raw_think_chunks = [
+        int(item["chunk"]) for item in to_compress if item.get("type") == "think"
+    ]
+    compress_chunks = _range_source_chunks(to_compress)
+    merge_level = (
+        max((int(item.get("merge_level", 0)) for item in to_compress), default=0)
+        + 1
     )
-
-    compress_chunks = [item["chunk"] for item in to_compress if item.get("type") == "think"]
 
     prompt = COMPRESS_PROMPT.format(
         observations_text=obs_text,
@@ -934,6 +1013,8 @@ def build_compress_request(
             "time_range": [int(first_time), int(last_time)],
             "selected_indices": selected_indices,
             "chunks": compress_chunks,
+            "raw_think_chunks": raw_think_chunks,
+            "merge_level": merge_level,
             "teacher_policy": policy_meta,
             "overlap_chunks": [],
             "has_visual_context": False,
@@ -987,9 +1068,13 @@ def _is_valid_compress_text(text: object) -> bool:
 
 def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
     """Parse compression summary output."""
+    source_chunks = sorted(int(c) for c in (meta.get("chunks") or []))
+    merge_level = int(meta.get("merge_level", 1) or 1)
     default = {
         "time_range": meta["time_range"],
         "text": _fallback_compress_text(meta),
+        "source_chunks": source_chunks,
+        "merge_level": merge_level,
         "parse_success": False,
     }
 
@@ -1007,6 +1092,8 @@ def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
         return {
             "time_range": meta["time_range"],
             "text": text.strip(),
+            "source_chunks": source_chunks,
+            "merge_level": merge_level,
             "parse_success": True,
         }
     except (json.JSONDecodeError, ValueError):
@@ -1028,6 +1115,8 @@ def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
                             return {
                                 "time_range": meta["time_range"],
                                 "text": text.strip(),
+                                "source_chunks": source_chunks,
+                                "merge_level": merge_level,
                                 "parse_success": True,
                             }
                         except (json.JSONDecodeError, ValueError):
@@ -1201,8 +1290,8 @@ async def run_pass2_single_video(
             safe_comp_max = _safe_max_tokens_for_pass2(
                 comp_request, comp_request["max_tokens"],
             )
-            # compress request is text-only (v12.12 P0 dropped overlap frames),
-            # mm_processor_kwargs unused but harmless if passed.
+            # compress teacher request is text-memory only; mm_processor_kwargs
+            # is unused but harmless if passed.
             comp_raw = await client._call_one(
                 messages=comp_request["messages"],
                 max_tokens=safe_comp_max,
@@ -1229,6 +1318,7 @@ async def run_pass2_single_video(
                 "summary": summary,
                 "selected_indices": selected_indices,
                 "compressed_thinks_chunks": comp_request["_meta"].get("chunks", []),
+                "compressed_raw_think_chunks": comp_request["_meta"].get("raw_think_chunks", []),
                 "teacher_policy": comp_request["_meta"].get("teacher_policy", {}),
                 "hysteresis_ok": hysteresis_ok,
                 "post_compress_tokens": post_compress_tokens,

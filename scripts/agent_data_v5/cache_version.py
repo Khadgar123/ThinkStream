@@ -40,6 +40,70 @@ STAGE_VERSIONS: Dict[str, str] = {
     # v12.11 audit-5 P1 #5 (2026-05-01): bumps below align with the v12.11
     # data-construction logic changes. Without these, an existing cluster
     # cache stamped v12.5 would silently reuse stale outputs:
+    #   v12.40 (2026-05-06): all non-HLD multiple-choice cards now place the
+    #        correct option into a stable A/B/C/D slot and sort distractors by
+    #        stable hash before validation/rendering. This removes LLM/heuristic
+    #        answer-letter bias for C1/N1/P1/CR*/R1/ACR/STU/OJR while preserving
+    #        the correct answer text.
+    #   v12.39 (2026-05-06): HLD1 normalizes the Unable-to-answer option into
+    #        a stable A/B/C/D slot by card_id before validation/rendering. This
+    #        removes LLM letter-position bias while preserving diverse LLM
+    #        question wording and concrete distractors.
+    #   v12.38 (2026-05-06): HLD1 returns to LLM generation with a stricter
+    #        OVO-HLD prompt that asks for diverse unanswerable location,
+    #        placement/object, state, count, color/attribute, and before-memory
+    #        MC negatives. The deterministic HLD factory is now only a fallback
+    #        after schema/evidence verification, so pass3a+downstream caches
+    #        must be rebuilt to pick up the new question distribution.
+    #   v12.37 (2026-05-06): pass3a rejects HLD1 cards when any concrete
+    #        non-Unable option is already supported by the grounding evidence,
+    #        asks for up to two C1/OCR cards per video, and raises F7/SSR
+    #        adoption/selection while lowering HLD selection pressure. This
+    #        requires regenerating cards and downstream placements/samples.
+    #   v12.36 (2026-05-06): pass3b no longer injects recall+silent wait
+    #        turns for silent_then_response/event_watch questions, because
+    #        their answer support is in the future and recall cannot be the
+    #        minimal action. pass3e also relaxes compression summary verifier
+    #        heuristics so concise compress tool supervision is not rejected
+    #        for style words, time indices, or short policy-think text.
+    #   v12.35 (2026-05-06): pass2 visible-memory rollout now recompresses
+    #        over the unified timeline, persists source_chunks/merge_level,
+    #        and pass3e accepts not_yet recall waits that return historical
+    #        frames. This changes rollout, compression SFT, recall rendering,
+    #        verification, and final pass5 artifacts, so stages 2-5 must
+    #        rerun from the existing pass1 evidence.
+    #   v12.34 (2026-05-06): pass3c repairs malformed/stale recall-response
+    #        query/result payloads into legal historical recall samples using
+    #        grounding_frames/support_chunks/gold emits. Unrecoverable recall
+    #        samples now raise instead of silently becoming plain SFT responses.
+    #   v12.33 (2026-05-06): pass3b treats direct answers as valid only while
+    #        support remains inside the visual window. Backward/memory mid-band
+    #        questions now use recall instead of answering directly from recent
+    #        thinks, aligning recall-response with historical visual evidence.
+    #   v12.32 (2026-05-06): pass3b validates placement timing after answer
+    #        chunk normalization. Recall placements require support to be in
+    #        the past and outside the visual window; direct/forward placements
+    #        must respect their ask/support/response ordering.
+    #   v12.31 (2026-05-06): MC canonical_answer is normalized to the exact
+    #        correct option text, and single_emit answer chunks are normalized
+    #        to the latest grounding frame so recall-response support is
+    #        guaranteed to be historical when recall fires.
+    #   v12.30 (2026-05-06): pass3c recall tool calls are hard-bounded to
+    #        past evidence only. LLM recall_query outputs are rejected if
+    #        their time_range ends after the current chunk, and noisy recall
+    #        distractors cannot be sampled from future chunks. Rendered
+    #        metadata now falls back from support_chunks to grounding_frames,
+    #        and pass3e verifies recall_result time/returned_chunks directly.
+    #        Legacy filter_samples is now a tag-only compatibility alias so
+    #        no verification path drops rows and creates trajectory gaps.
+    #        Invalid recall-response queries/results were guarded, and
+    #        malformed compression ranges are rebuilt from compressed_thinks_chunks.
+    #   v12.29 (2026-05-06): pass3 card taxonomy is rebalanced around
+    #        benchmark-compatible families: HLD1 unanswerable MC negatives,
+    #        F7 SSR-style No->Yes multi-time status, ACR/STU/OJR direct MC
+    #        families, and C1 MC OCR. pass3a now rejects malformed family
+    #        outputs and falls back per family; pass3b boosts rare SSR/HLD/OCR
+    #        selection.
     #   v12.28 (2026-05-05): recall_silent is restored only as a non-terminal
     #        wait state: a forward question may call recall, receive not_yet,
     #        keep the query open, and answer at a later grounded chunk.
@@ -83,12 +147,12 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        from SFT target, and verifier/rebalance updates.
     "1a": "v12.25",
     "1b": "v12.25",
-    "2":  "v12.25",
-    "3a": "v12.27",
-    "3b": "v12.28",
-    "3c": "v12.28",
-    "4":  "v12.28",  # canonical key — verification
-    "5":  "v12.28",  # pass5_messages render version
+    "2":  "v12.35",
+    "3a": "v12.40",
+    "3b": "v12.40",
+    "3c": "v12.40",
+    "4":  "v12.40",  # canonical key — verification
+    "5":  "v12.40",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

@@ -11,12 +11,21 @@ Removed from Qwen3-VL official finetune:
 - replace_qwen2_vl_attention_class (only for data_flatten mode)
 """
 
+import json
+import os
+import time
+
 import torch
 import torch.distributed as dist
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 from transformers import Trainer
+from transformers.trainer_pt_utils import (
+    LengthGroupedSampler,
+    get_length_grouped_indices,
+)
+from torch.utils.data import Sampler
 from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
     Qwen2_5_VisionTransformerPretrainedModel,
     Qwen2_5_VLModel,
@@ -33,6 +42,87 @@ from transformers.models.qwen3_vl_moe.modeling_qwen3_vl_moe import (
 )
 
 IGNORE_INDEX = -100
+
+
+def _split_to_even_chunks(
+    indices: List[int],
+    chunk_size: int,
+    *,
+    pad_pool: List[int],
+    seed: int,
+) -> List[List[int]]:
+    chunks = [indices[i:i + chunk_size] for i in range(0, len(indices), chunk_size)]
+    if chunks and len(chunks[-1]) < chunk_size and pad_pool:
+        generator = torch.Generator()
+        generator.manual_seed(seed)
+        need = chunk_size - len(chunks[-1])
+        fill = torch.randint(0, len(pad_pool), (need,), generator=generator).tolist()
+        chunks[-1] = chunks[-1] + [pad_pool[i] for i in fill]
+    return chunks
+
+
+def _modality_grouped_indices(
+    modality_lengths: List[int],
+    batch_size: int,
+    seed: int = 20260506,
+) -> List[int]:
+    """Group visual and text-only rows into separate global batches.
+
+    ZeRO3 can hang when different ranks execute different module paths in the
+    same collective window. Older datasets may contain text-only inter-chunk
+    rows while normal rows execute the vision path. Keeping a global batch
+    single-modality makes all ranks agree on whether vision/merger parameters
+    are touched.
+    """
+    visual = [i for i, l in enumerate(modality_lengths) if l >= 0]
+    text = [i for i, l in enumerate(modality_lengths) if l < 0]
+
+    def _ordered(pool: List[int], salt: int) -> List[int]:
+        if not pool:
+            return []
+        lengths = [abs(int(modality_lengths[i])) for i in pool]
+        generator = torch.Generator()
+        generator.manual_seed(seed + salt)
+        local_order = get_length_grouped_indices(
+            lengths, batch_size, generator=generator,
+        )
+        return [pool[i] for i in local_order]
+
+    chunks = (
+        _split_to_even_chunks(
+            _ordered(visual, 17), batch_size,
+            pad_pool=visual, seed=seed + 101,
+        )
+        + _split_to_even_chunks(
+            _ordered(text, 31), batch_size,
+            pad_pool=text, seed=seed + 151,
+        )
+    )
+    if not chunks:
+        return []
+
+    # Shuffle batch order while preserving single-modality composition inside
+    # each chunk. Use torch RNG so Trainer/Accelerate seeding still controls it.
+    generator = torch.Generator()
+    generator.manual_seed(seed + 47)
+    perm = torch.randperm(len(chunks), generator=generator).tolist()
+    return [idx for p in perm for idx in chunks[p]]
+
+
+class ModalityGroupedSampler(Sampler):
+    def __init__(self, batch_size: int, modality_lengths: List[int], seed: int = 20260506):
+        self.batch_size = int(batch_size)
+        self.modality_lengths = list(modality_lengths)
+        self.seed = int(seed)
+        self._indices = _modality_grouped_indices(
+            self.modality_lengths, self.batch_size, seed=self.seed,
+        )
+
+    def __len__(self):
+        return len(self._indices)
+
+    def __iter__(self):
+        return iter(self._indices)
 
 
 def expected_v12_kind_for_eval(
@@ -78,6 +168,66 @@ class WeightedSFTTrainer(Trainer):
         self._reset_eval_accumulator()
         self._reset_train_metrics()
 
+    def _get_train_sampler(self, train_dataset=None):
+        if train_dataset is None:
+            train_dataset = self.train_dataset
+        if train_dataset is None:
+            return None
+
+        if (
+            os.environ.get("THINKSTREAM_GROUP_BY_MODALITY", "1") == "1"
+            and hasattr(train_dataset, "modality_lengths")
+        ):
+            world_size = max(1, int(getattr(self.args, "world_size", 1) or 1))
+            per_rank_bsz = int(getattr(self.args, "per_device_train_batch_size", 1) or 1)
+            grad_accum = int(getattr(self.args, "gradient_accumulation_steps", 1) or 1)
+            # Group by the full data-parallel window. Accelerate/Trainer
+            # shards this global order across ranks; if the group is only a
+            # per-rank batch, different ranks can still see different
+            # modalities at the same optimizer step.
+            batch_size = per_rank_bsz * world_size * grad_accum
+            seed = int(os.environ.get("THINKSTREAM_SFT_SAMPLER_SEED", "20260506"))
+            return ModalityGroupedSampler(
+                batch_size, train_dataset.modality_lengths, seed=seed,
+            )
+
+        if self.args.group_by_length and hasattr(train_dataset, "lengths"):
+            batch_size = self.args.train_batch_size * self.args.gradient_accumulation_steps
+            return LengthGroupedSampler(batch_size, lengths=train_dataset.lengths)
+
+        return super()._get_train_sampler(train_dataset)
+
+    def _get_eval_sampler(self, eval_dataset):
+        """Keep eval global batches single-modality under ZeRO3.
+
+        Training already groups rows by whether they execute the vision path.
+        Eval must do the same; otherwise one rank can all-gather vision
+        parameters while another rank never touches the vision tower, which
+        trips NCCL/ZeRO3 collectives.
+        """
+        if eval_dataset is None:
+            return None
+
+        group_eval = os.environ.get(
+            "THINKSTREAM_GROUP_EVAL_BY_MODALITY",
+            os.environ.get("THINKSTREAM_GROUP_BY_MODALITY", "1"),
+        )
+        if group_eval == "1" and hasattr(eval_dataset, "modality_lengths"):
+            world_size = max(1, int(getattr(self.args, "world_size", 1) or 1))
+            per_rank_bsz = int(getattr(self.args, "per_device_eval_batch_size", 1) or 1)
+            # Eval has no gradient accumulation window. Group by the full
+            # data-parallel batch that Accelerate later shards across ranks.
+            batch_size = per_rank_bsz * world_size
+            seed = int(os.environ.get(
+                "THINKSTREAM_SFT_EVAL_SAMPLER_SEED",
+                os.environ.get("THINKSTREAM_SFT_SAMPLER_SEED", "20260506"),
+            ))
+            return ModalityGroupedSampler(
+                batch_size, eval_dataset.modality_lengths, seed=seed + 1009,
+            )
+
+        return super()._get_eval_sampler(eval_dataset)
+
     def _init_audit_writers(self):
         """Open <audit_dir>/sft_step.jsonl + sft_sample.jsonl. Rank-0 only."""
         audit_dir = resolve_audit_dir(
@@ -101,7 +251,37 @@ class WeightedSFTTrainer(Trainer):
         # Keep input_ids handy for argmax-vs-gold accumulation during eval
         eval_input_ids = inputs["input_ids"] if not self.model.training else None
 
+        debug_payload = None
+        debug_enabled = (
+            self.model.training
+            and os.environ.get("THINKSTREAM_SFT_DEBUG_TIMING", "0") == "1"
+        )
+        if debug_enabled:
+            debug_payload = self._debug_forward_payload(inputs, sample_meta)
+            self._write_debug_event("before_forward", debug_payload)
+            if (
+                os.environ.get("THINKSTREAM_SFT_DEBUG_SYNC", "0") == "1"
+                and torch.cuda.is_available()
+            ):
+                self._write_debug_event("before_pre_forward_sync", debug_payload)
+                torch.cuda.synchronize()
+                self._write_debug_event("after_pre_forward_sync", debug_payload)
+            t_forward = time.time()
+
         outputs = model(**inputs)
+
+        if debug_enabled:
+            assert debug_payload is not None
+            debug_payload["forward_sec"] = round(time.time() - t_forward, 4)
+            self._write_debug_event("after_forward", debug_payload)
+            if (
+                os.environ.get("THINKSTREAM_SFT_DEBUG_SYNC", "0") == "1"
+                and torch.cuda.is_available()
+            ):
+                self._write_debug_event("before_post_forward_sync", debug_payload)
+                torch.cuda.synchronize()
+                self._write_debug_event("after_post_forward_sync", debug_payload)
+
         loss = outputs.loss
         per_sample_loss_for_audit = None
 
@@ -170,6 +350,39 @@ class WeightedSFTTrainer(Trainer):
                 _logging.getLogger(__name__).debug("audit log skipped: %s", e)
 
         return (loss, outputs) if return_outputs else loss
+
+    def _debug_forward_payload(self, inputs, sample_meta):
+        rank = dist.get_rank() if dist.is_available() and dist.is_initialized() else 0
+
+        def _shape(name):
+            x = inputs.get(name)
+            return list(x.shape) if torch.is_tensor(x) else None
+
+        return {
+            "rank": int(rank),
+            "global_step": int(getattr(self.state, "global_step", -1)),
+            "audit_step_next": None if self._audit_step is None else int(self._audit_step + 1),
+            "input_ids_shape": _shape("input_ids"),
+            "labels_shape": _shape("labels"),
+            "pixel_values_videos_shape": _shape("pixel_values_videos"),
+            "video_grid_thw_shape": _shape("video_grid_thw"),
+            "pixel_values_shape": _shape("pixel_values"),
+            "image_grid_thw_shape": _shape("image_grid_thw"),
+            "sample_meta": sample_meta or [],
+        }
+
+    def _write_debug_event(self, event, payload):
+        try:
+            rank = payload.get("rank", 0)
+            out_dir = Path(self.args.output_dir) / "audit"
+            out_dir.mkdir(parents=True, exist_ok=True)
+            row = dict(payload)
+            row["event"] = event
+            row["ts"] = time.time()
+            with (out_dir / f"sft_debug_rank{rank}.jsonl").open("a", encoding="utf-8") as f:
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
+        except Exception:
+            pass
 
     def _per_sample_ce_loss(self, logits, labels, token_loss_weight=None):
         """Mean assistant-token CE per sample.

@@ -30,7 +30,6 @@ RECENT_THINKS_HORIZON = 60       # ~4000 tok / 70 tok-per-think — pre-compress
 RECALL_OK_RATE = 0.95            # pure-oracle recall demo
 RECALL_NOISY_RATE = 0.05         # oracle ⊕ distractor frames
 RECALL_FAILURE_RATE = 0.0        # main data never creates no-answer questions
-RECALL_WAIT_RATE = 1.0           # forward questions get one recall→wait demo
 
 # ── ask placement: STRATIFIED tier ranges (3 difficulty bands per profile) ──
 # Each profile picks one band per placement; multi-placement profiles
@@ -52,9 +51,6 @@ SE_RECALL_NEAR   = (VISUAL_WINDOW_CHUNKS + 1, VISUAL_WINDOW_CHUNKS + 24)        
 SE_RECALL_MID    = (VISUAL_WINDOW_CHUNKS + 25, VISUAL_WINDOW_CHUNKS + RECENT_THINKS_HORIZON)  # ~41-76, in recent_thinks
 SE_RECALL_DEEP   = (VISUAL_WINDOW_CHUNKS + RECENT_THINKS_HORIZON + 1, 999)        # 77+, fully compressed
 #
-# Backward mid-band direct/recall mix
-BACKWARD_MID_RECALL_PROB = 0.6      # 60% recall, 40% direct in mid band
-
 # multi_emit ask runway before first emit
 ME_LEAD_RANGE = (2, 8)
 MAX_MULTI_EMIT_ACTIVE_SPAN = 16
@@ -87,11 +83,12 @@ PLACEMENT_PROFILE = {
     # backward (memory / recall)
     "CR1": "backward", "CR2": "backward", "CR4": "backward",
     "CR5": "backward", "N1":  "backward", "P1":  "backward",
-    "M1":  "backward",
+    "HLD1": "backward", "M1":  "backward",
     # forward (anticipation / wait)
     "E2":  "forward",  "F6":  "forward",
     # realtime (immediate)
     "CR3": "realtime", "CR7": "realtime", "R1":  "realtime",
+    "ACR1": "realtime", "STU1": "realtime", "OJR1": "realtime",
     "F5":  "realtime", "C1":  "realtime",
     "PN1": "realtime",
     # v12.13 (P1-7): F7 moved forward → realtime. New F7 is OVO SSR-style
@@ -103,6 +100,21 @@ PLACEMENT_PROFILE = {
 # Lower → fewer videos carry narration/counting → multi_emit % drops.
 MULTI_EMIT_ADOPT_RATE = 0.5
 
+# F7/SSR should be present, but not every video should carry a progress-status
+# card. Batch3 landed below OVO SSR scale, so use a higher adoption rate and
+# let selection/overlap constraints decide whether the card fits each video.
+F7_ADOPT_RATE = 0.6
+
+# Rare benchmark-aligned families can lose greedy selection because their
+# active span is longer (F7) or because recall slots are already saturated
+# (HLD1). Boosting selection, not generation volume, keeps the card pool
+# balanced while making selected trajectories carry the intended coverage.
+FAMILY_SELECTION_BOOST = {
+    "F7": 6.0,     # target SSR-like status rows at roughly OVO scale
+    "HLD1": -1.0,  # explicit negatives are valuable, but should not dominate
+    "C1": 2.0,     # MC OCR should survive selection
+}
+
 # ── data-level information-density tuning ───────────────────────────
 # Patrol = silent samples for chunks NOT covered by any active placement.
 # These teach trivial "no active question → silent". Keeping 100% of them
@@ -112,11 +124,6 @@ MULTI_EMIT_ADOPT_RATE = 0.5
 # Net keep ≈ PATROL_KEEP_RATE_AVG.
 PATROL_KEEP_RATE_RICH = 0.50     # chunk has state_change / new entity
 PATROL_KEEP_RATE_EMPTY = 0.20    # chunk is purely background / static
-
-# Forward families (E2/F6/F7) generate 2 placements with different leads
-# to give the model variety in wait-time training. Doubles hard-silent
-# (silent_then_response) sample count.
-FORWARD_DOUBLE_PLACEMENT = True
 
 # Question type literal
 QuestionType = Literal["single_emit", "multi_emit"]
@@ -170,8 +177,9 @@ class Placement:
     chunk_actions: Dict[int, Tuple[GoldKind, str]] = field(default_factory=dict)
     # Chunks where the assistant should call recall before the final action.
     # recall_demo response chunks use oracle/noisy historical frames.
-    # silent_then_response may use not_yet on an early silent chunk; the
-    # question remains open and must be answered at its later response chunk.
+    # recall_demo response chunks use oracle/noisy historical frames. Forward
+    # silent_then_response waits are plain silent turns; answer support is in
+    # the future, so a recall call cannot be the minimal action.
     recall_at: Dict[int, str] = field(default_factory=dict)
 
 
@@ -236,36 +244,6 @@ def gold_window_for_card(card: Card, ask_chunk: int, num_chunks: int) -> Dict[in
 # ---------------------------------------------------------------------------
 # Placement — model-agnostic; pure function of (card, num_chunks, rng)
 # ---------------------------------------------------------------------------
-
-
-def _gap_for_emit(emit_chunk: int, grounding_frames: List[int]) -> int:
-    """Distance from this emit's most recent grounding frame to the emit chunk.
-
-    For single_emit: emit.chunk == max(grounding) typically, gap >= 0.
-    For multi_emit (counting/narration): each emit IS the grounding at that
-    chunk → gap = 0.
-    """
-    relevant = [g for g in grounding_frames if g <= emit_chunk]
-    if not relevant:
-        return 0
-    return emit_chunk - max(relevant)
-
-
-def _classify_mechanism(card: Card, ask_chunk: int) -> PlacementMechanism:
-    """Decide trajectory mechanism deterministically from ask & grounding."""
-    if card.question_type == "multi_emit":
-        return "multi_emit"
-    # single_emit
-    emit = card.gold_emits[0].chunk
-    if ask_chunk < emit:
-        return "silent_then_response"
-    # ask >= emit
-    gap = ask_chunk - emit
-    if gap <= VISUAL_WINDOW_CHUNKS:
-        return "direct"
-    if gap <= VISUAL_WINDOW_CHUNKS + RECENT_THINKS_HORIZON:
-        return "direct"  # mixed at render time (see render_placement); 50% will swap to recall
-    return "recall_demo"
 
 
 def _make_placement(card: Card, ask: int, num_chunks: int, mech: PlacementMechanism) -> Placement:
@@ -356,11 +334,12 @@ def place_single_emit(card: Card, num_chunks: int, rng: random.Random) -> List[P
     if ask_near is not None:
         placements.append(_make_placement(card, ask_near, num_chunks, "recall_demo"))
 
-    # MID (in recent_thinks): mixed direct/recall by BACKWARD_MID_RECALL_PROB
+    # MID (in recent_thinks but outside the visual window): recall. Even if
+    # a text summary may still be in the prompt, the fine-grained visual
+    # support is historical and should exercise the retrieval path.
     ask_mid = _ask_from_band(emit, SE_RECALL_MID, num_chunks, rng, sign=+1)
     if ask_mid is not None:
-        mech_mid = "recall_demo" if rng.random() < BACKWARD_MID_RECALL_PROB else "direct"
-        placements.append(_make_placement(card, ask_mid, num_chunks, mech_mid))
+        placements.append(_make_placement(card, ask_mid, num_chunks, "recall_demo"))
 
     # DEEP (compressed): always recall_demo
     ask_deep = _ask_from_band(emit, SE_RECALL_DEEP, num_chunks, rng, sign=+1)
@@ -378,6 +357,22 @@ def place_single_emit(card: Card, num_chunks: int, rng: random.Random) -> List[P
 def _select_multi_emit_subset(card: Card) -> List[GoldEmit]:
     """Pick a compact local subset for one active multi-answer episode."""
     emits = sorted(card.gold_emits, key=lambda e: e.chunk)
+    if card.family == "F7":
+        first_yes_idx = next(
+            (i for i, e in enumerate(emits)
+             if str(e.value).strip().lower() == "yes"),
+            None,
+        )
+        if first_yes_idx is not None and first_yes_idx > 0:
+            start = max(0, first_yes_idx - 2)
+            end = min(len(emits), start + MAX_MULTI_EMIT_RESPONSES)
+            if end <= first_yes_idx:
+                end = min(len(emits), first_yes_idx + 1)
+            subset = emits[start:end]
+            vals = {str(e.value).strip().lower() for e in subset}
+            if {"no", "yes"}.issubset(vals):
+                return subset
+
     if len(emits) <= MAX_MULTI_EMIT_RESPONSES:
         if emits[-1].chunk - emits[0].chunk <= MAX_MULTI_EMIT_ACTIVE_SPAN:
             return emits
@@ -435,6 +430,64 @@ def place_card(card: Card, num_chunks: int, rng: random.Random) -> List[Placemen
     if card.question_type == "single_emit":
         return place_single_emit(card, num_chunks, rng)
     return place_multi_emit(card, num_chunks, rng)
+
+
+def placement_timing_verdict(card: Card, placement: Placement) -> Tuple[bool, str]:
+    """Validate ask/answer timing against support availability.
+
+    This is intentionally stricter than schema validation: pass3a decides
+    what evidence supports the answer; pass3b must ensure the question is
+    asked only at a time when the chosen mechanism is causally valid.
+    """
+    if not card.gold_emits:
+        return False, "no_gold_emits"
+    if not placement.chunk_actions:
+        return False, "no_chunk_actions"
+
+    response_chunks = [
+        int(c) for c, (kind, _value) in placement.chunk_actions.items()
+        if kind == "response"
+    ]
+    if not response_chunks:
+        return False, "no_response_chunk"
+
+    if card.question_type == "multi_emit":
+        first_emit = min(int(e.chunk) for e in card.gold_emits)
+        if placement.ask_chunk > first_emit:
+            return False, "multi_ask_after_first_emit"
+        return True, "pass"
+
+    emit = int(card.gold_emits[0].chunk)
+    support = [int(g) for g in (card.grounding_frames or [emit])]
+    max_support = max(support)
+    first_response = min(response_chunks)
+    if emit < max_support:
+        return False, "emit_before_latest_support"
+    if first_response < max_support:
+        return False, "response_before_latest_support"
+
+    if placement.mechanism == "silent_then_response":
+        if placement.ask_chunk >= emit:
+            return False, "forward_ask_not_before_emit"
+        return True, "pass"
+
+    if placement.mechanism == "recall_demo":
+        if placement.ask_chunk <= max_support:
+            return False, "recall_ask_before_support"
+        if placement.ask_chunk - max_support <= VISUAL_WINDOW_CHUNKS:
+            return False, "recall_support_still_visual"
+        if first_response != placement.ask_chunk:
+            return False, "recall_response_not_at_ask"
+        return True, "pass"
+
+    if placement.mechanism == "direct":
+        if placement.ask_chunk < max_support:
+            return False, "direct_ask_before_support"
+        if placement.ask_chunk - max_support > VISUAL_WINDOW_CHUNKS:
+            return False, "direct_gap_requires_recall"
+        return True, "pass"
+
+    return True, "pass"
 
 
 # ---------------------------------------------------------------------------
@@ -524,6 +577,7 @@ def select_trajectory(
         # tasks, but they reduce the number of independent Q/A episodes
         # in a trajectory. Penalize them rather than banning them.
         s -= min(_placement_span_len(p) / 24.0, 2.0)
+        s += FAMILY_SELECTION_BOOST.get(card.family, 0.0)
         return s
 
     def take_best(predicate) -> bool:
@@ -577,8 +631,9 @@ def assign_recall_noise(placements: List[Placement], rng: random.Random) -> None
     Mutates placement.recall_at in place.
 
     - recall_demo: recall at the response chunk with oracle/noisy evidence.
-    - silent_then_response: recall at the ask chunk with a not_yet result,
-      then keep the query open until the later response chunk.
+    - silent_then_response: no recall injection. The answer support is still
+      in the future, so the correct supervision is to keep the query open with
+      a silent turn until the later response chunk.
 
     Every selected question still has a grounded answer in the same
     trajectory. If failure-mode data is needed later, it should live in a
@@ -595,16 +650,7 @@ def assign_recall_noise(placements: List[Placement], rng: random.Random) -> None
                 else:
                     p.recall_at[c] = "noisy"
         elif p.mechanism == "silent_then_response":
-            response_chunks = [
-                int(c) for c, (kind, _) in p.chunk_actions.items()
-                if kind == "response"
-            ]
-            if (
-                response_chunks
-                and min(response_chunks) > p.ask_chunk
-                and rng.random() < RECALL_WAIT_RATE
-            ):
-                p.recall_at[p.ask_chunk] = "not_yet"
+            continue
 
 
 # ---------------------------------------------------------------------------

@@ -1366,10 +1366,12 @@ async def run_pipeline(
     # expands into several response rows and is capped by design.
     total_with_family = sum(global_families.values()) or 1
     for fam, floor_pct in [
-        ("N1", 1.0), ("P1", 1.0), ("CR1", 1.0), ("CR2", 1.0),
-        ("CR3", 0.8), ("CR4", 1.0), ("CR5", 1.0), ("CR7", 0.8),
-        ("E2", 1.0), ("F6", 1.0), ("F7", 0.5), ("R1", 0.8),
-        ("C1", 0.5), ("F5", 0.3), ("PN1", 0.3), ("M1", 0.8),
+        ("N1", 1.0), ("P1", 1.0), ("HLD1", 0.8),
+        ("CR1", 1.0), ("CR2", 1.0), ("CR3", 0.8), ("CR4", 1.0),
+        ("CR5", 1.0), ("CR7", 0.8), ("E2", 1.0), ("F6", 0.5),
+        ("F7", 0.5), ("R1", 0.8), ("ACR1", 0.8), ("STU1", 0.5),
+        ("OJR1", 0.5), ("C1", 0.5), ("F5", 0.3), ("PN1", 0.3),
+        ("M1", 0.5),
     ]:
         fam_count = global_families.get(fam, 0)
         fam_pct = fam_count / total_with_family * 100

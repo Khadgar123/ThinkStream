@@ -28,6 +28,7 @@ from .v2.design import (
     adaptive_q_count,
     assign_recall_noise,
     place_card,
+    placement_timing_verdict,
     select_trajectory,
 )
 
@@ -82,8 +83,19 @@ async def compute_all_placements(
     cards_obj = [dict_to_card(c) for c in cards]
 
     all_placements: List[Placement] = []
+    rejected: Dict[str, int] = {}
     for card in cards_obj:
-        all_placements.extend(place_card(card, num_chunks, rng))
+        for p in place_card(card, num_chunks, rng):
+            ok, reason = placement_timing_verdict(card, p)
+            if ok:
+                all_placements.append(p)
+            else:
+                rejected[reason] = rejected.get(reason, 0) + 1
+    if rejected:
+        logger.info(
+            f"[{video_id}] 3b placement timing rejected: "
+            f"{dict(sorted(rejected.items(), key=lambda x: -x[1]))}"
+        )
     return [_placement_to_dict(p) for p in all_placements]
 
 
@@ -112,9 +124,27 @@ def plan_trajectories(
         placements_by_card.setdefault(p.card_id, []).append(p)
 
     cards_obj = [dict_to_card(c) for c in cards_map.values()]
+    cards_by_id = {c.card_id: c for c in cards_obj}
+    filtered_by_card: Dict[str, List[Placement]] = {}
+    rejected: Dict[str, int] = {}
+    for cid, plcs in placements_by_card.items():
+        card = cards_by_id.get(cid)
+        if not card:
+            continue
+        for p in plcs:
+            ok, reason = placement_timing_verdict(card, p)
+            if ok:
+                filtered_by_card.setdefault(cid, []).append(p)
+            else:
+                rejected[reason] = rejected.get(reason, 0) + 1
+    if rejected:
+        logger.info(
+            "3b selected-placement input timing rejected: "
+            f"{dict(sorted(rejected.items(), key=lambda x: -x[1]))}"
+        )
     target_q = adaptive_q_count(num_chunks)
     selected = select_trajectory(
-        cards_obj, placements_by_card, num_chunks, rng, max_q=target_q,
+        cards_obj, filtered_by_card, num_chunks, rng, max_q=target_q,
     )
     assign_recall_noise(selected, rng)
 

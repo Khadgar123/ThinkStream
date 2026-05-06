@@ -30,7 +30,8 @@
 #   BSZ         - Per-device batch size (default: 8)
 #   GRAD_ACCUM  - Gradient accumulation steps (default: 1)
 #   EVAL_STEPS  - Eval frequency in optimizer steps (PHASE=sft, default 50)
-#   EVAL_N      - Subsample size for in-loop eval (PHASE=sft, default 300)
+#   EVAL_N      - Subsample size for in-loop eval (PHASE=sft, default 300).
+#                 Set 0 to evaluate the full eval dataset.
 #   EVAL_BSZ    - Per-device eval batch size (PHASE=sft, default = BSZ)
 #   MAX_STEPS   - Optional optimizer-step cap for very large batches
 #   SAVE_LIMIT  - Max retained checkpoints (PHASE=sft, default 0 = no rolling
@@ -53,6 +54,10 @@
 #                 Uses weighted loss instead of physically duplicating rows.
 #   CLASS_LOSS_ALPHA / CLASS_LOSS_MAX_WEIGHT
 #               - Reweighting strength and clamp.
+#   GROUP_BY_MODALITY
+#               - 1 by default. Keeps text-only compress rows and visual rows
+#                 in separate global batches to avoid ZeRO3 ranks taking
+#                 different vision-module paths.
 #   THINKSTREAM_ENV
 #               - Conda/venv path for SFT. Defaults to the local
 #                 envs/thinkstream env when present, so bare shell launches do
@@ -109,6 +114,8 @@ TORCH_EMPTY_CACHE_STEPS="${TORCH_EMPTY_CACHE_STEPS:-0}"
 CLASS_LOSS_TARGET_RATIOS="${CLASS_LOSS_TARGET_RATIOS:-}"
 CLASS_LOSS_ALPHA="${CLASS_LOSS_ALPHA:-1.0}"
 CLASS_LOSS_MAX_WEIGHT="${CLASS_LOSS_MAX_WEIGHT:-8.0}"
+GROUP_BY_MODALITY="${GROUP_BY_MODALITY:-1}"
+export THINKSTREAM_GROUP_BY_MODALITY="${GROUP_BY_MODALITY}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 if [[ -z "${THINKSTREAM_FINAL_DIR:-}" ]]; then
     if [[ -d "${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}" ]]; then
@@ -139,6 +146,7 @@ case $PHASE in
         llm=${LLM:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
         datasets=${DATASETS:-stream_agent_sft}
         eval_datasets=${EVAL_DATASETS:-stream_agent_val}
+        eval_n=${EVAL_N:-300}
         # v12.x: keep the default exposure conservative; exact steps scale
         # with the current batch size. Override with EPOCHS=N or MAX_STEPS=N.
         lr=${LR:-2e-5}; epochs=${EPOCHS:-2}
@@ -147,8 +155,7 @@ case $PHASE in
         # ckpt to roll back to. load_best_model_at_end keeps the lowest
         # eval_loss ckpt even if it falls outside the rolling window.
         # Save/eval cadence is step-based for the production phase.
-        extra_args="--eval_dataset_use stream_agent_val \
-            --eval_max_samples ${EVAL_N:-300} \
+        extra_args="--eval_dataset_use ${eval_datasets} \
             --eval_strategy steps \
             --eval_steps ${EVAL_STEPS:-50} \
             --per_device_eval_batch_size ${EVAL_BSZ:-${BSZ}} \
@@ -158,6 +165,9 @@ case $PHASE in
             --load_best_model_at_end True \
             --metric_for_best_model eval_loss \
             --greater_is_better False"
+        if [[ "${eval_n}" != "0" ]]; then
+            extra_args="${extra_args} --eval_max_samples ${eval_n}"
+        fi
         # v12.6: --protocol_version flag removed from DataArguments (v12 is
         # now the only supported protocol — see thinkstream/sft/argument.py).
         if [ -n "${RESUME_FROM_CHECKPOINT:-}" ]; then
@@ -214,6 +224,7 @@ echo "Max sample tokens: ${MAX_SAMPLE_TOKENS}"
 echo "Torch empty cache steps: ${TORCH_EMPTY_CACHE_STEPS}"
 echo "Class loss target ratios: ${CLASS_LOSS_TARGET_RATIOS:-none}"
 echo "Class loss alpha: ${CLASS_LOSS_ALPHA}"
+echo "Group by modality: ${GROUP_BY_MODALITY}"
 echo "LR:       ${lr}"
 echo "Epochs:   ${epochs}"
 echo "Output:   ${output_dir}"

@@ -12,10 +12,10 @@ from __future__ import annotations
 
 import hashlib
 import random
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
 from ..stable_hash import stable_mod, stable_seed
-from .design import Card, GoldEmit, MULTI_EMIT_ADOPT_RATE
+from .design import Card, F7_ADOPT_RATE, GoldEmit, MULTI_EMIT_ADOPT_RATE
 
 
 # Family taxonomy aligned with OVOBench (MC-dominant) + 3-bucket profile.
@@ -24,19 +24,20 @@ from .design import Card, GoldEmit, MULTI_EMIT_ADOPT_RATE
 # without wasting LLM budget on cards that get dropped.
 #
 # Bucket allocation (matches PLACEMENT_PROFILE in design.py):
-#   backward (recall-heavy):  N1 1, P1 1, CR1 1, CR2 1, CR4 1, CR5 1 = 6 cards
-#   forward  (silent-then-respond): E2 1, F6 1, F7 1               = 3 cards
-#   realtime (immediate):     CR3 1, CR7 1, R1 1, F5 1, C1 1, PN1 1 = 6 cards
-#   summary  (backward, descriptive): M1 1                          = 1 card
+#   backward (recall-heavy):  N1, P1, HLD1, CR1, CR2, CR4, CR5, M1
+#   forward  (silent-then-respond): E2, F6
+#   realtime (immediate):     CR3, CR7, R1, ACR1, STU1, OJR1, C1
+#   streaming multi_emit:     F5, F7, PN1
 #   ────────────────────────────────────────────────────────────────
-#   total                                                            16 cards
+#   total target                                                     20 cards
 FAMILY_BUDGET = {
     # backward MC
-    "N1":  1, "P1":  1, "CR1": 1, "CR2": 1, "CR4": 1, "CR5": 1,
+    "N1":  1, "P1":  1, "HLD1": 1, "CR1": 1, "CR2": 1, "CR4": 1, "CR5": 1,
     # forward MC + binary
     "E2":  1, "F6":  1, "F7":  1,
     # realtime MC + number + short_exact
-    "CR3": 1, "CR7": 1, "R1":  1, "F5":  1, "C1":  1,
+    "CR3": 1, "CR7": 1, "R1":  1, "ACR1": 1, "STU1": 1, "OJR1": 1,
+    "F5":  1, "C1":  2,
     # multi_emit (PN1 50% adopt; F5 already realtime above)
     "PN1": 1,
     # backward descriptive
@@ -44,7 +45,7 @@ FAMILY_BUDGET = {
 }
 
 MC_FAMILIES = {"N1", "P1", "CR1", "CR2", "CR3", "CR4", "CR5", "CR7",
-               "E2", "F6", "R1"}
+               "E2", "F6", "R1", "ACR1", "STU1", "OJR1"}
 
 
 def _hash_id(*parts) -> str:
@@ -103,6 +104,26 @@ def _ocr_chunks(evidence: List[Dict]) -> List[Tuple[int, str]]:
             if text and text.strip():
                 out.append((cap.get("chunk_idx", 0), text.strip()))
     return out
+
+
+def _evidence_blob(evidence: List[Dict]) -> str:
+    parts: List[str] = []
+    for cap in evidence:
+        for e in (cap.get("visible_entities") or []):
+            parts.append(str(e.get("desc", "")))
+            parts.append(str(e.get("id", "")))
+        for f in (cap.get("atomic_facts") or []):
+            if isinstance(f, dict):
+                parts.append(str(f.get("fact", "")))
+        for _c, text in _ocr_chunks([cap]):
+            parts.append(text)
+        if cap.get("think"):
+            parts.append(str(cap.get("think", "")))
+    return " ".join(parts).lower()
+
+
+def _cap_blob(cap: Dict) -> str:
+    return _evidence_blob([cap])
 
 
 # ---------------------------------------------------------------------------
@@ -263,6 +284,8 @@ def gen_f7_status_flip(evidence: List[Dict], video_id: str) -> List[Card]:
     cards = []
     K = 4    # window radius around change chunk
     for c, text in scs[:FAMILY_BUDGET["F7"]]:
+        if c < 1:
+            continue
         lo = max(0, c - K)
         hi = min(n_chunks - 1, c + K)
         if hi - lo < 4:    # need ≥ 5 chunks for multi_emit to be meaningful
@@ -272,6 +295,9 @@ def gen_f7_status_flip(evidence: List[Dict], video_id: str) -> List[Card]:
         for ci in range(lo, hi + 1):
             value = "No" if ci < c else "Yes"
             emits.append(GoldEmit(chunk=ci, value=value))
+        values = {e.value for e in emits}
+        if not {"No", "Yes"}.issubset(values):
+            continue
         cards.append(Card(
             card_id=f"{video_id}_F7_{_hash_id(video_id, c, text)}",
             family="F7",
@@ -284,91 +310,139 @@ def gen_f7_status_flip(evidence: List[Dict], video_id: str) -> List[Card]:
     return cards
 
 
-def gen_single_answer_factoid(evidence: List[Dict], video_id: str, family: str, budget: int) -> List[Card]:
-    """Single_emit cards from atomic_facts. Emit chunks SPREAD across video.
+def gen_hld_unanswerable(evidence: List[Dict], video_id: str) -> List[Card]:
+    """HLD1 cards: explicit "Unable to answer" MC negatives.
 
-    Production 397B picks question-worthy moments throughout the video; we
-    mimic that by quantile-stratified sampling instead of always taking
-    the earliest qualifying chunk.
+    These are answerable only by abstaining. The requested object is chosen
+    from a conservative pool and filtered against the evidence text so the
+    generator does not accidentally ask about something that was observed.
     """
-    candidates = []
-    for cap in evidence:
-        facts = [f for f in (cap.get("atomic_facts") or [])
-                 if isinstance(f, dict) and f.get("confidence", 0) >= 0.7]
-        if not facts:
-            continue
-        candidates.append((cap.get("chunk_idx", 0), facts[0]))
-    if not candidates:
+    if not evidence:
         return []
-    # Stratified pick: divide chunks into `budget` quantile bins, pick one per bin.
-    candidates.sort(key=lambda x: x[0])
-    n = len(candidates)
-    bins: List[Tuple[int, Dict]] = []
-    for i in range(budget):
-        idx = (i * n) // budget + (n // (budget * 2))
-        idx = min(idx, n - 1)
-        if not bins or bins[-1][0] != candidates[idx][0]:
-            bins.append(candidates[idx])
-    cards = []
-    for c, f in bins[:budget]:
-        ans = _canonical_short(f.get("fact", ""), max_words=6)
-        if not ans:
-            continue
-        emits = [GoldEmit(chunk=c, value=ans)]
-        cards.append(Card(
-            card_id=f"{video_id}_{family}_{_hash_id(video_id, family, c)}",
-            family=family,
-            question=f"[{family}] question about chunk {c}?",
-            answer_form="short_exact",
-            question_type="single_emit",
-            gold_emits=emits,
-            grounding_frames=[c],
-        ))
-    return cards
-
-
-def gen_compositional(evidence: List[Dict], video_id: str, family: str, budget: int) -> List[Card]:
-    """CR4-style: pair two non-adjacent fact chunks; emit at max(grounding)."""
-    fact_chunks = []
-    for cap in evidence:
-        if [f for f in (cap.get("atomic_facts") or [])
-            if isinstance(f, dict) and f.get("confidence", 0) >= 0.7]:
-            fact_chunks.append(cap.get("chunk_idx", 0))
-    cards = []
-    for i in range(len(fact_chunks) - 1):
-        a, b = fact_chunks[i], fact_chunks[i + 1]
-        if b - a < 6:  # need spread
-            continue
-        emits = [GoldEmit(chunk=b, value="A then B")]
-        cards.append(Card(
-            card_id=f"{video_id}_{family}_{_hash_id(video_id, family, a, b)}",
-            family=family,
-            question=f"[{family}] composite about chunks {a} and {b}?",
-            answer_form="descriptive",
-            question_type="single_emit",
-            gold_emits=emits,
-            grounding_frames=[a, b],
-        ))
-        if len(cards) >= budget:
+    blob = _evidence_blob(evidence)
+    # Use neutral object names. Asking "what color was the red umbrella" leaks
+    # a color through the question itself; HLD1 must be unanswerable because the
+    # subject is absent, not because the annotation ignored visible evidence.
+    absent_pool = [
+        ("umbrella", ["umbrella"]),
+        ("backpack", ["backpack"]),
+        ("delivery truck", ["delivery", "truck"]),
+        ("exit sign", ["exit", "sign"]),
+        ("laptop", ["laptop"]),
+        ("safety helmet", ["safety", "helmet"]),
+        ("suitcase", ["suitcase"]),
+        ("cardboard package", ["cardboard", "package"]),
+        ("bicycle basket", ["bicycle", "basket"]),
+        ("parking meter", ["parking", "meter"]),
+        ("mailbox", ["mailbox"]),
+        ("fire extinguisher", ["extinguisher"]),
+        ("shopping cart", ["shopping", "cart"]),
+        ("tripod", ["tripod"]),
+        ("remote control", ["remote", "control"]),
+        ("coffee mug", ["coffee", "mug"]),
+        ("tennis racket", ["tennis", "racket"]),
+        ("guitar case", ["guitar", "case"]),
+        ("traffic cone", ["traffic", "cone"]),
+        ("water bottle", ["water", "bottle"]),
+    ]
+    absent = ""
+    for candidate, tokens in absent_pool:
+        if all(t not in blob for t in tokens):
+            absent = candidate
             break
-    return cards
+    if not absent:
+        return []
+
+    option_pool = [
+        "Blue", "Red", "Green", "Yellow", "Black", "White", "Orange",
+        "Purple", "Pink", "Brown", "Gray", "Silver", "Gold", "Turquoise",
+        "Magenta", "Cyan", "Violet", "Maroon", "Beige", "Ivory",
+        "Navy", "Teal", "Lavender",
+    ]
+    # Prefer options absent from the whole video evidence. With the larger pool
+    # this normally succeeds; if not, fall back to support-local absence below.
+    options = [o for o in option_pool if o.lower() not in blob][:3]
+    if len(options) < 3:
+        options = option_pool[:3]
+
+    chunks = [
+        int(cap.get("chunk_idx", 0)) for cap in evidence
+        if (
+            cap.get("visible_entities") or cap.get("atomic_facts") or cap.get("ocr")
+        )
+        and not any(o.lower() in _cap_blob(cap) for o in options)
+    ]
+    if not chunks:
+        chunks = [
+            int(cap.get("chunk_idx", 0)) for cap in evidence
+            if (cap.get("visible_entities") or cap.get("atomic_facts") or cap.get("ocr"))
+        ]
+    if not chunks:
+        chunks = [int(evidence[-1].get("chunk_idx", 0))]
+    chunks = sorted(set(chunks))
+    if len(chunks) > 6:
+        step = max(1, len(chunks) // 6)
+        grounding = chunks[::step][:6]
+    else:
+        grounding = chunks
+    emit_chunk = max(grounding)
+
+    correct_pos = ["A", "B", "C", "D"][stable_mod(video_id, "HLD1", modulo=4)]
+    options.insert(ord(correct_pos) - ord("A"), "Unable to answer")
+    opts_with_letter = [f"{chr(65+j)}) {o}" for j, o in enumerate(options)]
+    return [Card(
+        card_id=f"{video_id}_HLD1_{_hash_id(video_id, absent)}",
+        family="HLD1",
+        question=f"What color was the {absent} in the video?",
+        answer_form="multiple_choice",
+        question_type="single_emit",
+        gold_emits=[GoldEmit(chunk=emit_chunk, value=correct_pos)],
+        grounding_frames=grounding,
+        options=opts_with_letter,
+        correct_option=correct_pos,
+    )]
 
 
 def gen_ocr(evidence: List[Dict], video_id: str) -> List[Card]:
-    """C1 cards: questions about OCR text."""
+    """C1 cards: OVO-style MC questions about visible OCR text."""
     ocr = _ocr_chunks(evidence)
     cards = []
-    for c, text in ocr[:FAMILY_BUDGET["C1"]]:
+    if not ocr:
+        return []
+    pool = []
+    for _c, text in ocr:
+        val = _canonical_short(text, max_words=4)
+        if val and val not in pool:
+            pool.append(val)
+    generic = ["OPEN", "MENU", "EXIT", "START", "SALE", "STOP", "INFO"]
+    for g in generic:
+        if g.lower() not in {p.lower() for p in pool}:
+            pool.append(g)
+    for i, (c, text) in enumerate(ocr[:FAMILY_BUDGET["C1"]]):
         ans = _canonical_short(text, max_words=4)
-        emits = [GoldEmit(chunk=c, value=ans)]
+        if not ans:
+            continue
+        candidates_d = [p for p in pool if p.strip().lower() != ans.strip().lower()]
+        if len(candidates_d) < 3:
+            continue
+        chunk_rng = random.Random(_hash_id(video_id, "C1", c, text))
+        distractors = chunk_rng.sample(candidates_d, 3)
+        correct_pos = ["A", "B", "C", "D"][(i + stable_mod(video_id, "C1", modulo=4)) % 4]
+        options = list(distractors)
+        options.insert(ord(correct_pos) - ord("A"), ans)
+        options = options[:4]
+        opts_with_letter = [f"{chr(65+j)}) {o}" for j, o in enumerate(options)]
+        emits = [GoldEmit(chunk=c, value=correct_pos)]
         cards.append(Card(
             card_id=f"{video_id}_C1_{_hash_id(video_id, c, text)}",
             family="C1",
-            question=f"What text appears at chunk {c}?",
-            answer_form="short_exact",
+            question=f"Which text is visible at chunk {c}?",
+            answer_form="multiple_choice",
             question_type="single_emit",
             gold_emits=emits,
             grounding_frames=[c],
+            options=opts_with_letter,
+            correct_option=correct_pos,
         ))
     return cards
 
@@ -435,7 +509,9 @@ def gen_mc_card(
     family_offset = stable_mod(video_id, family, modulo=4)
     cards = []
     for i, (c, ents, facts) in enumerate(bins):
-        if ents:
+        if family in {"ACR1", "STU1", "OJR1", "R1", "CR1", "CR3", "CR4"} and facts:
+            correct_text = _canonical_short(facts[0].get("fact", ""), 6)
+        elif ents:
             correct_text = ents[0].get("desc", "entity")[:40]
         else:
             correct_text = _canonical_short(facts[0].get("fact", ""), 6)
@@ -471,10 +547,26 @@ def gen_mc_card(
         options = options[:4]
         opts_with_letter = [f"{chr(65+j)}) {o}" for j, o in enumerate(options)]
         emits = [GoldEmit(chunk=c, value=correct_pos)]
+        question_by_family = {
+            "N1": f"Which entity is visible around chunk {c}?",
+            "P1": f"Which visual attribute or state is shown around chunk {c}?",
+            "CR1": f"Which visible fact best explains what is happening around chunk {c}?",
+            "CR2": f"Which event is observed around chunk {c}?",
+            "CR3": f"What is the actor most likely doing around chunk {c}?",
+            "CR4": f"Which observation helps connect the events around chunk {c}?",
+            "CR5": f"Which clue is visible around chunk {c}?",
+            "CR7": f"Which tracked object or location is visible around chunk {c}?",
+            "E2": f"Which event becomes visible around chunk {c}?",
+            "F6": f"Which state is visible around chunk {c}?",
+            "R1": f"Which statement is true of the current scene around chunk {c}?",
+            "ACR1": f"What action is visible around chunk {c}?",
+            "STU1": f"Which spatial, count, or direction statement is visible around chunk {c}?",
+            "OJR1": f"Which object relation is visible around chunk {c}?",
+        }
         cards.append(Card(
             card_id=f"{video_id}_{family}_{_hash_id(video_id, family, c)}",
             family=family,
-            question=f"[{family}] MC question about chunk {c}?",
+            question=question_by_family.get(family, f"What is visible around chunk {c}?"),
             answer_form="multiple_choice",
             question_type="single_emit",
             gold_emits=emits,
@@ -528,8 +620,10 @@ def generate_cards(evidence: List[Dict], video_id: str, seed: int = 42) -> List[
     for fam in sorted(MC_FAMILIES):
         cards += gen_mc_card(evidence, video_id, fam, FAMILY_BUDGET[fam], rng)
     # Type-specific (always-emit) families
-    cards += gen_f7_status_flip(evidence, video_id)      # binary (forward profile)
-    cards += gen_ocr(evidence, video_id)                 # short_exact (realtime)
+    cards += gen_hld_unanswerable(evidence, video_id)    # MC Unable-to-answer
+    if stable_mod(video_id, "F7_ADOPT", modulo=100) < int(F7_ADOPT_RATE * 100):
+        cards += gen_f7_status_flip(evidence, video_id)  # binary SSR status flip
+    cards += gen_ocr(evidence, video_id)                 # MC OCR (realtime)
     cards += gen_m1_summary(evidence, video_id)          # descriptive (backward)
     # Multi_emit / narration — adopt only in MULTI_EMIT_ADOPT_RATE of videos
     # to bring multi_emit % of placements into target ~5% range.
