@@ -281,6 +281,15 @@ def test_spam_penalizes_excess_tools():
     print(f"  PASS one_each ({one_each:.3f}) > spammy ({spammy:.3f})")
 
 
+def test_format_requires_think_block():
+    """A bare answer terminal is parseable but not protocol-format-correct."""
+    assert compute_format_reward_v12(["<answer>answer</answer>"]) == 0.0
+    assert compute_format_reward_v12([
+        "<think>seen</think><answer>answer</answer>"
+    ]) == 1.0
+    print("  PASS format requires think block")
+
+
 def main():
     tests = [
         test_reward_keys_minimal,
@@ -291,6 +300,7 @@ def main():
         test_wrong_answer_on_time_beats_silent_missed,
         test_early_hallucination_is_worst,
         test_spam_penalizes_excess_tools,
+        test_format_requires_think_block,
     ]
     failures = []
     for t in tests:

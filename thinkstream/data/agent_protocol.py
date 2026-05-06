@@ -1386,16 +1386,37 @@ def parse_agent_output_v12(output_text: str) -> Dict:
         "format_error": None,
     }
 
-    think_match = re.search(r'<think>(.*?)</think>', output_text, re.DOTALL)
-    if think_match:
-        result["think"] = think_match.group(1).strip()
+    think_matches = re.findall(r'<think>(.*?)</think>', output_text, re.DOTALL)
+    if len(think_matches) == 1:
+        result["think"] = think_matches[0].strip()
+        if not result["think"]:
+            result["format_error"] = "empty <think> block"
+    else:
+        result["format_error"] = (
+            "missing <think> block" if not think_matches
+            else "multiple <think> blocks"
+        )
 
-    answer_match = re.search(r'<answer>(.*?)</answer>', output_text, re.DOTALL)
-    tool_match = re.search(r'<tool_call>(.*?)</tool_call>', output_text, re.DOTALL)
+    answer_matches = re.findall(r'<answer>(.*?)</answer>', output_text, re.DOTALL)
+    tool_matches = re.findall(r'<tool_call>(.*?)</tool_call>', output_text, re.DOTALL)
+    answer_match = (
+        re.search(r'<answer>(.*?)</answer>', output_text, re.DOTALL)
+        if answer_matches else None
+    )
+    tool_match = (
+        re.search(r'<tool_call>(.*?)</tool_call>', output_text, re.DOTALL)
+        if tool_matches else None
+    )
 
     # Both present → format error (must be one or the other, not both)
     if answer_match and tool_match:
         result["format_error"] = "both <answer> and <tool_call> present"
+        return result
+    if len(answer_matches) > 1:
+        result["format_error"] = "multiple <answer> blocks"
+        return result
+    if len(tool_matches) > 1:
+        result["format_error"] = "multiple <tool_call> blocks"
         return result
 
     if answer_match:

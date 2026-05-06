@@ -99,7 +99,8 @@ class DaggerRunner:
             return
         response_time = chunk_idx * AGENT_CHUNK_SEC
         for q in reversed(self.memory.queries):
-            if not q.get("answers"):
+            status = str(q.get("status", "")).strip().lower()
+            if status in {"open", "pending", "active"} or not q.get("answers"):
                 self.memory.answer_query(q["question"], answer_text, response_time)
                 break
 
@@ -120,7 +121,12 @@ def _trajectory_question_maps(traj: Dict[str, Any], samples: List[Dict[str, Any]
                 "answer_form": q.get("answer_form", ""),
                 "answer_style": q.get("answer_style", ""),
                 "answer_instruction": q.get("answer_instruction", ""),
+                "answer_chunks": list(q.get("answer_chunks") or []),
+                "per_emit_answers": list(q.get("per_emit_answers") or []),
             }
+            ans_chunks = [int(x) for x in q.get("answer_chunks") or []]
+            if ans_chunks:
+                meta["open_until"] = max(ans_chunks) * AGENT_CHUNK_SEC
             for c in q.get("ask_chunks") or []:
                 ci = int(c)
                 q_at[ci] = text

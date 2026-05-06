@@ -590,23 +590,43 @@ def _register_streaming_agent_loop():
             same visual_window + memory shape as SFT/pass5; only query and
             recall-answer context are suppressed.
 
-            v12.13 (2026-05-02): mirrors SFT layout in
+            Mirrors the shared SFT/runtime layout in
             thinkstream/data/agent_protocol.py:213-214 build_user_content
             EXACTLY:
-              <memory> → (active_query + response_history) →
+              <user_input> → <memory> → (active_query + response_history) →
               <visual_window> + protocol visual frames → <recall_result> →
-              <user_input>
+              ...
 
-            Memory FIRST (per SFT) — train/RL distribution alignment is
-            the hard constraint; whatever marginal prefix-cache benefit
-            visual-first would give is dwarfed by SFT-RL drift if the
-            two diverge. Per-frame ViT re-encoding cost is handled by
-            vLLM's mm_processor_cache (engine_kwargs.vllm.mm_processor_cache_gb
-            in run_thinkstream_grpo.sh), NOT by prefix-cache restructuring.
+            Distribution alignment is the hard constraint. Per-frame ViT
+            re-encoding cost is handled by vLLM's mm_processor_cache
+            (engine_kwargs.vllm.mm_processor_cache_gb in run_thinkstream_grpo.sh),
+            not by rearranging the text blocks.
             """
             content: List[Dict[str, Any]] = []
 
-            # ── Memory block (FIRST — matches SFT build_user_content) ──
+            # User input — either the question (when it fires) or the bare
+            # compress_trigger system event. This comes before memory to match
+            # SFT/pass5/build_user_content.
+            if compress_trigger_range is not None:
+                user_input_block = format_user_input_block(
+                    "<compress_trigger/>",
+                    inter_chunk=True,
+                )
+            else:
+                user_input_text = self._format_user_input(
+                    chunk_idx, question, ask_chunks, triggered_questions,
+                )
+                user_input_block = format_user_input_block(
+                    user_input_text,
+                    inter_chunk=False,
+                )
+            if user_input_block:
+                content.append({
+                    "type": "text",
+                    "text": user_input_block.lstrip("\n"),
+                })
+
+            # ── Memory block ──
             # P0.5 fix (post-review 2026-05-01): format_memory_block reads
             # the dict under "compressed_segments" or legacy "compressed".
             # We were passing "compressed_summaries" → memory after compress
@@ -623,7 +643,8 @@ def _register_streaming_agent_loop():
                 mem_text = ""
             content.append({
                 "type": "text",
-                "text": f"<memory>\n{mem_text}\n</memory>",
+                "text": f"\n<memory>\n{mem_text}\n</memory>" if content
+                else f"<memory>\n{mem_text}\n</memory>",
             })
 
             # ── Active query block — same renderer as SFT/pass5. Data carries
@@ -697,37 +718,6 @@ def _register_streaming_agent_loop():
                     "type": "text",
                     "text": f"\n<recall_result>{rr_json}</recall_result>",
                 })
-
-            # User input — either the question (when it fires) or the
-            # compress_trigger system event. LAST so the monotonic prefix
-            # above stays cache-friendly.
-            #
-            # v12.12 (2026-05-02): trigger is bare `<compress_trigger/>` —
-            # NO range attribute (matches pass3c_samples._compress_sample SFT
-            # input format). The model derives the time_range from <memory>
-            # and emits it inside the assistant tool_call. The local variable
-            # `compress_trigger_range` is still computed by
-            # `_check_compress_trigger` so OOD-safety / telemetry code can
-            # consult it, but it is NOT exposed to the model in the prompt.
-            # When v12.13 RL goes fully model-driven this whole branch is
-            # removed (no trigger at all).
-            if compress_trigger_range is not None:
-                content.append({
-                    "type": "text",
-                    "text": format_user_input_block(
-                        "<compress_trigger/>",
-                        inter_chunk=True,
-                    ),
-                })
-            else:
-                user_input_text = self._format_user_input(
-                    chunk_idx, question, ask_chunks, triggered_questions,
-                )
-                if user_input_text:
-                    content.append({
-                        "type": "text",
-                        "text": f"\n<user_input>{user_input_text}</user_input>",
-                    })
 
             return content
 
@@ -1512,6 +1502,19 @@ def _register_streaming_agent_loop():
                         item = {"chunk": chunk_idx, "text": think_text}
                         state.recent_thinks.append(item)
                         state.think_archive.append(dict(item))
+                    if multi_q_list:
+                        all_questions_complete = all(
+                            _question_complete(qi)
+                            for qi in range(len(multi_q_list))
+                        )
+                        if not all_questions_complete:
+                            # default_v12_update_state is single-question
+                            # oriented and marks any non-empty answer as done.
+                            # Multi-Q and multi-emit trajectories must keep
+                            # streaming until every question has enough answers
+                            # or the fixed rollout horizon is reached.
+                            state.is_active = True
+                            state.is_done = False
                 # NOTE: recall handling moved into the inner ready-loop
                 # above (chunk-internal multi-turn). The legacy "deliver
                 # recall_result on the next chunk" path is exercised only

@@ -38,6 +38,7 @@ sys.path.insert(0, str(ROOT))
 import torch
 from transformers import AutoTokenizer
 
+from scripts.agent_data_v5.config import AGENT_CHUNK_SEC
 from scripts.agent_data_v5.pass5_messages import build_messages, _emit_row
 from scripts.eval.ovo.eval_full import detect_model_class, reset_visual_index
 from scripts.eval.processor_loader import load_processor_for_checkpoint
@@ -129,6 +130,20 @@ def _new_question(sample: Dict[str, Any]) -> Optional[str]:
 
 def _question_meta(sample: Dict[str, Any]) -> Dict[str, Any]:
     meta = sample.get("metadata") or {}
+    answer_chunks = (
+        sample.get("answer_chunks")
+        or sample.get("expected_answer_chunks")
+        or meta.get("answer_chunks")
+        or meta.get("expected_answer_chunks")
+        or []
+    )
+    per_emit_answers = sample.get("per_emit_answers") or meta.get("per_emit_answers") or []
+    open_until = sample.get("open_until") or meta.get("open_until")
+    if open_until is None and answer_chunks:
+        try:
+            open_until = max(int(x) for x in answer_chunks) * AGENT_CHUNK_SEC
+        except (TypeError, ValueError):
+            open_until = None
     return {
         "options": sample.get("options") or meta.get("options") or [],
         "answer_form": sample.get("answer_form") or meta.get("answer_form") or "",
@@ -138,6 +153,9 @@ def _question_meta(sample: Dict[str, Any]) -> Dict[str, Any]:
             or meta.get("answer_instruction")
             or ""
         ),
+        "answer_chunks": list(answer_chunks),
+        "per_emit_answers": list(per_emit_answers),
+        "open_until": open_until,
     }
 
 
