@@ -100,11 +100,15 @@ def check_protocol(a: Audit):
     a.check("VISUAL_WINDOW_CHUNKS == 16",            ap.VISUAL_WINDOW_CHUNKS == 16)
     a.check("FRAMES_PER_CHUNK == 2",                  ap.FRAMES_PER_CHUNK == 2)
 
-    # SYSTEM_PROMPT_V12
+    # SYSTEM_PROMPT_V12 is the ordinary streaming prompt; compression has a
+    # separate system prompt selected via system_prompt_for_frame_protocol.
     sp = ap.SYSTEM_PROMPT_V12
+    cp = ap.system_prompt_for_frame_protocol(inter_chunk=True)
     a.check("SYSTEM_PROMPT mentions '1-second video chunks'",
             "1-second video chunks" in sp)
     a.check("SYSTEM_PROMPT mentions '16s window'", "16s window" in sp)
+    a.check("COMPRESS prompt is separated",
+            "Directly compress memory now" in cp and "Do not call recall" in cp)
     a.check("SYSTEM_PROMPT does NOT mention '2-second'", "2-second" not in sp)
     a.check("SYSTEM_PROMPT does NOT mention '24s'", "24s window" not in sp)
     mem_text = ap.format_memory_block({
@@ -190,9 +194,9 @@ def check_data_pipeline(a: Audit):
     # pass5 messages converter
     from scripts.agent_data_v5 import pass5_messages
     src = inspect.getsource(pass5_messages)
-    a.check("pass5_messages imports SYSTEM_PROMPT_V12 from agent_protocol",
+    a.check("pass5_messages uses protocol system prompt selector",
             "from thinkstream.data.agent_protocol import" in src and
-            "SYSTEM_PROMPT_V12" in src)
+            "system_prompt_for_frame_protocol" in src)
     a.check("pass5_messages reads chunk_sec from config",
             "AGENT_CHUNK_SEC" in src)
 
@@ -325,8 +329,8 @@ def check_rl_verl(a: Audit):
                 'path: "recipe_thinkstream/thinkstream.py"' in txt)
     if loop.exists():
         txt = loop.read_text()
-        a.check("verl rollout appends timestamped images",
-                "append_timestamped_image_list" in txt)
+        a.check("verl rollout appends protocol visual frames",
+                "append_visual_frames" in txt)
     if run.exists():
         txt = run.read_text()
         a.check("verl launcher resolves THINKSTREAM_DATA_ROOT",
@@ -414,11 +418,14 @@ def check_prompt_identity(a: Audit):
     for p, accept_indirect in paths_using_sysprompt:
         if p.exists():
             txt = p.read_text()
-            direct = "SYSTEM_PROMPT_V12" in txt
+            direct = (
+                "SYSTEM_PROMPT_V12" in txt
+                or "system_prompt_for_frame_protocol" in txt
+            )
             indirect = accept_indirect and any(m in txt for m in indirect_markers)
             ok = direct or indirect
             a.check(
-                f"{p.relative_to(ROOT)} uses SYSTEM_PROMPT_V12 "
+                f"{p.relative_to(ROOT)} uses protocol system prompt "
                 f"({'direct' if direct else 'indirect'})",
                 ok,
             )

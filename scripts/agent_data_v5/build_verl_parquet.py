@@ -272,9 +272,9 @@ def _iter_rows_multi_q(
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": (
                     "You are a streaming-video agent. You will receive video "
-                    "frames in chunks and questions at specific time points. "
-                    "Maintain a memory of what you observe and answer each "
-                    "question when it is asked."
+                    "frames in chunks and question events at specific time "
+                    "points. Maintain a memory of what you observe and track "
+                    "the currently active question state."
                 )},
             ]
 

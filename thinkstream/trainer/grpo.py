@@ -575,7 +575,14 @@ def rollout(
                 q_meta = {
                     "options": list(q.get("options") or []),
                     "answer_form": q.get("answer_form", ""),
+                    "answer_style": q.get("answer_style", ""),
+                    "answer_instruction": q.get("answer_instruction", ""),
+                    "answer_chunks": list(q.get("answer_chunks") or []),
+                    "per_emit_answers": list(q.get("per_emit_answers") or []),
                 }
+                q_answer_chunks = [int(x) for x in q.get("answer_chunks") or []]
+                if q_answer_chunks:
+                    q_meta["open_until"] = max(q_answer_chunks) * AGENT_CHUNK_SEC_RUNTIME
                 for ac in q.get("ask_chunks") or []:
                     _question_at_chunk[int(ac)] = q_text
                     _question_meta_at_chunk[int(ac)] = q_meta
@@ -1643,7 +1650,7 @@ def _extract_questions_at_chunks(raw_sample) -> Dict[int, str]:
     # Schema A: trajectory
     if (isinstance(raw_sample.get("questions"), list)
             and isinstance(raw_sample.get("gold_action_per_chunk"), dict)):
-        # v12.13: question text only — options live in <queries> block.
+        # v12.13: question text only — options live in the active-query block.
         # Avoids ~30-tok duplication at ask_chunk where queries_state +
         # user_input would both show A-D options.
         for q in raw_sample["questions"]:
@@ -1736,7 +1743,7 @@ def _build_rollout_messages_single_chunk(
         step_msgs = sm
 
     if step_msgs is None:
-        # Fallback: legacy reconstruction. Will drop <memory>/<queries>
+        # Fallback: legacy reconstruction. Will drop <memory>/<active_query>
         # context — train/infer logprobs will diverge. Same warning as the
         # multi-chunk builder.
         logger.warning(
@@ -1871,9 +1878,12 @@ def _build_rollout_messages(
         for cr_idx, cr in enumerate(chunk_results):
             step_msgs = _captured_for_gen(cr, gen_idx)
             # Skip the system head from each step's captured prompt
-            # (already at messages[0]); append everything else.
+            # (already at messages[0]); preserve any later turn-local system
+            # messages such as the compression-only prompt.
+            skipped_head_system = False
             for m in step_msgs:
-                if m.get("role") == "system":
+                if m.get("role") == "system" and not skipped_head_system:
+                    skipped_head_system = True
                     continue
                 messages.append(m)
             # Append assistant generation from the rollout
@@ -1888,7 +1898,7 @@ def _build_rollout_messages(
             )
     else:
         # Fallback: legacy video+question reconstruction. WARNING: this
-        # drops <memory>/<visual_window>/<queries>, breaking train/infer
+        # drops <memory>/<visual_window>/<active_query>, breaking train/infer
         # logprob parity. Used only when step_messages is missing.
         logger.warning(
             "_build_rollout_messages: chunk_results missing step_messages; "

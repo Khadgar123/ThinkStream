@@ -57,27 +57,11 @@ def _contains_compress_trigger(user_text: str) -> bool:
 def build_compress_trigger_user_input() -> str:
     """Canonical system-injected user input for inter-chunk compression.
 
-    The bare tag is kept first for robust detection by legacy code. The
-    remaining text makes the turn unambiguously a memory-management event
-    rather than another visual observation / QA step.
+    The compression instructions live in the compression system prompt. The
+    user-side payload stays as a minimal legacy event marker so SFT/RL/eval
+    can detect compression turns without mixing policy rules into user input.
     """
-    return (
-        f"{COMPRESS_TRIGGER_TAG}\n"
-        "<memory_compaction>\n"
-        "System event: memory compaction turn between video chunks.\n"
-        "Rules:\n"
-        "- Do not answer any user question.\n"
-        "- Do not call recall.\n"
-        "- Do not answer from the visual window on this turn.\n"
-        "- Output exactly one compress tool call after a short memory-management think.\n"
-        "- Choose an older contiguous time range from <memory> and summarize it "
-        "so the summary can replace those text memory records.\n"
-        "- The visual window may also be present to preserve the streaming context, "
-        "but this turn is still for memory compaction rather than QA.\n"
-        "Required output shape: <think>...</think><tool_call>{\"name\":\"compress\","
-        "\"arguments\":{\"time_range\":[start_sec,end_sec],\"text\":\"...\"}}</tool_call>\n"
-        "</memory_compaction>"
-    )
+    return COMPRESS_TRIGGER_TAG
 
 
 def normalize_user_input_for_turn(user_input: str, *, inter_chunk: bool = False) -> str:
@@ -559,14 +543,16 @@ def format_memory_block(memory: Dict) -> str:
 
 
 # Eval-side caps. Aligned to the current independent-question distribution:
-#   - QUERY_HISTORY_POLICY=recent_k keeps old query text from dominating memory.
-#   - QUERIES_HISTORY_CAP=3 keeps the current/newest questions visible while
-#     limiting unrelated history. OVO eval overrides this to single_active.
+#   - QUERY_HISTORY_POLICY now selects only live query records. Answered/closed
+#     questions are intentionally not rendered in later turns; the model only
+#     sees the current active question plus answer history for that same query.
+#   - QUERIES_HISTORY_CAP is a defensive bound for unexpected concurrent open
+#     queries. Production pass3 enforces one active question at a time.
 #   - RECALL_TEXT_MAX_CHARS=1600 ≈ 4 × THINK_TOKENS.max(100 tok × ~4 char)
-# Both are upper-bound guards; SFT samples never hit them.
+# These are upper-bound guards; SFT samples normally have a single active query.
 # The "32k" eval profile (scripts/eval/eval_profiles.py) loosens further.
 QUERY_HISTORY_POLICY = "recent_k"
-QUERIES_HISTORY_CAP = 3
+QUERIES_HISTORY_CAP = 8
 RECALL_TEXT_MAX_CHARS = 1600
 
 
@@ -650,23 +636,69 @@ def _query_time_key(q: Dict) -> float:
     return 0.0
 
 
+_OPEN_QUERY_STATUSES = {"open", "pending", "active"}
+_CLOSED_QUERY_STATUSES = {"answered", "closed", "done", "replaced"}
+
+
+def _query_expected_answer_count(q: Dict) -> int:
+    """Expected non-empty answers for the query lifecycle."""
+    answer_chunks = q.get("answer_chunks") or []
+    if hasattr(answer_chunks, "tolist"):
+        answer_chunks = answer_chunks.tolist()
+    per_emit = q.get("per_emit_answers") or []
+    if hasattr(per_emit, "tolist"):
+        per_emit = per_emit.tolist()
+    try:
+        n_chunks = len(answer_chunks)
+    except TypeError:
+        n_chunks = 0
+    try:
+        n_emit = len(per_emit)
+    except TypeError:
+        n_emit = 0
+    return max(1, n_chunks, n_emit)
+
+
+def _query_is_open(q: Dict) -> bool:
+    """Return whether a query should be rendered as the active question."""
+    status = str(q.get("status", "")).strip().lower()
+    if status in _OPEN_QUERY_STATUSES:
+        return True
+    if status in _CLOSED_QUERY_STATUSES:
+        return False
+    answers = q.get("answers") or []
+    if not answers:
+        return True
+    return len(answers) < _query_expected_answer_count(q)
+
+
+def _format_query_time_prefix(value: Any) -> str:
+    if value in (None, ""):
+        return ""
+    try:
+        num = float(value)
+    except (TypeError, ValueError):
+        m = re.search(r"-?\d+(?:\.\d+)?", str(value))
+        if not m:
+            return ""
+        try:
+            num = float(m.group(0))
+        except ValueError:
+            return ""
+    if num.is_integer():
+        return f"[{int(num)}s]"
+    return f"[{num:g}s]"
+
+
 def _select_queries_for_prompt(
     queries: List[Dict],
     *,
     policy: Optional[str] = None,
     cap: Optional[int] = None,
 ) -> List[Dict]:
-    """Select the query records that are visible in the prompt."""
+    """Select live query records visible in the prompt."""
     if not queries:
         return []
-
-    def _query_is_open(q: Dict) -> bool:
-        status = str(q.get("status", "")).strip().lower()
-        if status in {"open", "pending", "active"}:
-            return True
-        if status in {"answered", "closed", "done", "replaced"}:
-            return False
-        return not q.get("answers")
 
     mode = _normalize_query_history_policy(policy)
     limit = int(cap if cap is not None else _env_int(
@@ -675,30 +707,27 @@ def _select_queries_for_prompt(
     ))
     limit = max(1, limit)
     indexed = list(enumerate(queries))
+    open_items = [(i, q) for i, q in indexed if _query_is_open(q)]
+    if not open_items:
+        return []
 
     if mode in {"single_active", "replace_on_new"}:
-        # If several pending questions exist, the newest question is the active
-        # task. If none are pending, keep the newest answered question only for
-        # post-answer continuity/debugging.
-        open_items = [(i, q) for i, q in indexed if _query_is_open(q)]
-        pool = open_items or indexed
-        latest = max(pool, key=lambda x: (_query_time_key(x[1]), x[0]))
+        # If several open questions somehow exist, the newest question is the
+        # active task. Closed questions are not rendered after their answer.
+        latest = max(open_items, key=lambda x: (_query_time_key(x[1]), x[0]))
         return [latest[1]]
 
     if mode == "recent_k":
         selected = sorted(
-            indexed,
+            open_items,
             key=lambda x: (_query_time_key(x[1]), x[0]),
         )[-limit:]
         selected.sort(key=lambda x: x[0])
         return [q for _, q in selected]
 
-    # Backward-compatible behavior: keep all pending questions, then fit the
-    # most recent answered questions into the remaining cap.
-    pending = [q for q in queries if _query_is_open(q)]
-    answered = [q for q in queries if not _query_is_open(q)]
-    keep_n_answered = max(0, limit - len(pending))
-    return answered[-keep_n_answered:] + pending if keep_n_answered else pending
+    # Backward-compatible multi-pending mode, but still no answered history.
+    selected = sorted(open_items, key=lambda x: (_query_time_key(x[1]), x[0]))
+    return [q for _, q in selected[-limit:]]
 
 
 def format_queries_block(
@@ -707,113 +736,74 @@ def format_queries_block(
     policy: Optional[str] = None,
     cap: Optional[int] = None,
 ) -> str:
-    """Format the queries zone as a chronological event stream.
+    """Format the active question and its answer history.
 
-    Q and A events interleave on a timeline. All questions are shown
-    (including unanswered/pending ones) so the model knows what it's
-    tracking. Unanswered questions appear as Q without a following A.
+    The prompt has two separate query zones:
+    - <active_query>: the currently live question, including options and answer
+      format derived from question type.
+    - <response_history>: non-empty answers already emitted for that same active
+      query. Answers from closed/older questions are not shown.
 
-    Query-history policy is shared by pass5/SFT/RL/eval/runtime:
-    - recent_k (default): render only the most recent cap query records.
-    - single_active / replace_on_new: render only the newest open query.
-    - multi_pending: legacy behavior; keep all pending and recent answered.
+    If no query is open, this returns an empty string so the next timestep after
+    a final answer cannot see stale historical Q&A.
 
     Example output:
-      <queries>
-      [10s] Q: Tell me when plating starts
+      <active_query>
       [20s] Q: What color is the apron?
-      [20s] A: Red
-      [50s] Q: How many tomatoes?
-      [52s] A: 3
-      </queries>
+      [20s] Answer format: a concise exact phrase, no explanation.
+      </active_query>
+      <response_history>
+      </response_history>
     """
     if not queries:
         return ""
 
-    def _query_is_open(q: Dict) -> bool:
-        status = str(q.get("status", "")).strip().lower()
-        if status in {"open", "pending", "active"}:
-            return True
-        if status in {"answered", "closed", "done", "replaced"}:
-            return False
-        return not q.get("answers")
-
     queries = _select_queries_for_prompt(queries, policy=policy, cap=cap)
-
-    # Build chronological event list: (time, "Q"/"A"/"O"/"F", text)
-    # "O" = Options (rendered for pending MC queries; v12.13 P0-3 fix).
-    # "F" = answer Format instruction for the pending query.
-    events = []
-    for q in queries:
-        answers = q.get("answers", [])
-        question = q.get("question", "")
-        ask_t = q.get("ask_time", "")
-
-        # Question event — always shown (even if unanswered/pending)
-        events.append((ask_t, "Q", question))
-
-        # v12.13 fix (P0-3): for pending MC queries, render the options
-        # right after the Q line so the model sees A-D choices when the
-        # response chunk fires LATER than the ask (forward / silent_then
-        # _response). Without this, pending MC queries reduce to "pick a
-        # letter without seeing options".
-        is_open = _query_is_open(q)
-        if (is_open
-                and q.get("answer_form") == "multiple_choice"
-                and q.get("options")):
-            opts = " ".join(q["options"])    # e.g., "A) red B) blue C) ..."
-            events.append((ask_t, "O", opts))
-        if is_open:
-            instruction = (q.get("answer_instruction") or "").strip()
-            if not instruction:
-                instruction = answer_format_instruction(
-                    q.get("answer_form", ""),
-                    answer_style=q.get("answer_style", ""),
-                    options=q.get("options") or [],
-                )
-            if instruction:
-                events.append((ask_t, "F", instruction))
-        if is_open and answers:
-            events.append((
-                ask_t,
-                "P",
-                "Still open: continue tracking this question for later matching events.",
-            ))
-
-        # Answer event(s) — each carries its own timestamp
-        for ans in answers:
-            if isinstance(ans, dict):
-                events.append((ans.get("time", ask_t), "A", ans.get("text", "")))
-            else:
-                events.append((q.get("response_time", ask_t), "A", str(ans)))
-
-    if not events:
+    if not queries:
         return ""
 
-    # Sort by time (stable sort preserves Q-before-O-before-A at same timestamp)
-    _kind_order = {"Q": 0, "O": 1, "F": 2, "P": 3, "A": 4}
-    def _event_time_key(value: Any) -> float:
-        try:
-            return float(value) if value != "" else 0.0
-        except (TypeError, ValueError):
-            m = re.search(r"-?\d+(?:\.\d+)?", str(value))
-            return float(m.group(0)) if m else 0.0
+    # Production pass3 enforces one active question. If a legacy/eval path passes
+    # multiple open queries, render the newest one so answer/silent has one target.
+    q = max(
+        enumerate(queries),
+        key=lambda x: (_query_time_key(x[1]), x[0]),
+    )[1]
+    ask_t = q.get("ask_time", "")
+    prefix = _format_query_time_prefix(ask_t)
+    question = str(q.get("question", ""))
 
-    events.sort(key=lambda e: (_event_time_key(e[0]), _kind_order.get(e[1], 3)))
+    active_lines = [f"{prefix} Q: {question}" if prefix else f"Q: {question}"]
+    if q.get("answer_form") == "multiple_choice" and q.get("options"):
+        opts = " ".join(str(opt) for opt in q.get("options") or [])
+        active_lines.append(
+            f"{prefix} Options: {opts}" if prefix else f"Options: {opts}"
+        )
+    instruction = (q.get("answer_instruction") or "").strip()
+    if not instruction:
+        instruction = answer_format_instruction(
+            q.get("answer_form", ""),
+            answer_style=q.get("answer_style", ""),
+            options=q.get("options") or [],
+        )
+    if instruction:
+        active_lines.append(f"{prefix} {instruction}" if prefix else instruction)
 
-    lines = []
-    for t, kind, text in events:
-        prefix = f"[{int(t)}s]" if t != "" else ""
-        if kind == "O":
-            lines.append(f"{prefix} Options: {text}")
-        elif kind == "F":
-            lines.append(f"{prefix} {text}")
-        elif kind == "P":
-            lines.append(f"{prefix} {text}")
+    answers = []
+    for ans in q.get("answers", []) or []:
+        if isinstance(ans, dict):
+            answers.append((ans.get("time", ask_t), str(ans.get("text", ""))))
         else:
-            lines.append(f"{prefix} {kind}: {text}")
+            answers.append((q.get("response_time", ask_t), str(ans)))
+    answers.sort(key=lambda x: _query_time_key({"time": x[0]}))
+    response_lines = []
+    for t, text in answers:
+        aprefix = _format_query_time_prefix(t)
+        response_lines.append(f"{aprefix} A: {text}" if aprefix else f"A: {text}")
 
-    return "<queries>\n" + "\n".join(lines) + "\n</queries>"
+    active_block = "<active_query>\n" + "\n".join(active_lines) + "\n</active_query>"
+    response_body = "\n".join(response_lines)
+    response_block = f"<response_history>\n{response_body}\n</response_history>"
+    return active_block + "\n" + response_block
 
 
 def build_user_content(
@@ -838,14 +828,13 @@ def build_user_content(
     """Build the user content list for a single-step message.
 
     Ordering:
-    <user_input> → <memory> → <queries> (visual turns only) →
+    <user_input> → <memory> → <active_query>/<response_history> (visual turns only) →
     <visual_window> + frames → <recalled_frames> + frames → <recall_result>
 
-    Why this order: memory and queries are monotonically appended across
-    chunks of one trajectory (modulo periodic compression rewrites), so
-    they still stay before the visual window. The fresh user event is placed
-    before memory so questions and memory-compaction triggers are not buried
-    behind long historical text. Visual window changes every chunk, so it
+    Why this order: memory and the active-query state stay before the visual
+    window, while old closed Q&A is intentionally omitted. The fresh user event
+    is placed before memory so questions and memory-compaction triggers are not
+    buried behind long historical text. Visual window changes every chunk, so it
     remains after the stable text zones.
 
     Pre-extracted frames are rendered by the late-bound frame protocol:
@@ -857,7 +846,9 @@ def build_user_content(
         memory_text: Pre-formatted memory block from format_memory_block().
         chunk_idx: Current chunk index.
         video_path: Path to video file.
-        user_input: Question, compress_trigger, "Continue...", or empty.
+        user_input: Question, bare compress_trigger marker, "Continue...", or
+                    empty. Compression rules come from the compression system
+                    prompt, not from this field.
         recalled_frames: Optional recalled frame info for recall_response.
         recall_result: Optional recall result for recall_response.
         min_pixels, max_pixels: Resolution limits.
@@ -894,7 +885,7 @@ def build_user_content(
         else f"<memory>\n{memory_text}\n</memory>",
     })
 
-    # ── Queries (past Q&A, also monotonic; second-stable prefix) ──
+    # ── Active query + response history for that same query ──
     # Inter-chunk compression is a system memory-pressure event, so omit
     # queries to prevent the model from answering instead of compacting memory.
     if queries and not inter_chunk:
@@ -1018,11 +1009,11 @@ def build_user_content(
 # Architecture:
 #   answer (terminal)   = <answer>text</answer> or <answer></answer> (silent)
 #   tool (recall)       = <tool_call>{"name":"recall","arguments":{...}}</tool_call>
-#   system event (compress) = system injects <compress_trigger/> into user role
-#                             (boolean signal only — NO range, v12.12); the
-#                             assistant emits a compress tool_call carrying its
-#                             OWN derived time_range + summary text
-# Tools registered via system <tools> block (auto-rendered by chat_template
+#   compress turn       = compression-only system prompt + optional legacy
+#                         <compress_trigger/> marker (boolean signal only; NO
+#                         range). The assistant emits a compress tool_call
+#                         carrying its OWN derived time_range + summary text.
+    # Tools registered via system <tools> block (auto-rendered by chat_template
 # when tools=tools is passed to apply_chat_template).
 
 _FRAME_TAG_LINE_RE = re.compile(
@@ -1050,91 +1041,190 @@ def strip_frame_metadata_tags(text: str) -> str:
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
     return cleaned.strip()
 
-SYSTEM_PROMPT_V12 = (
-    "You are a streaming video agent. You observe 1-second video chunks and maintain memory.\n\n"
-    "Each turn you receive: frame-tagged visual frames (recent 16s window) + tagged memory state. "
-    "Every image is preceded by a structural tag like <frame ts=\"12.5\" role=\"latest chunk\" />; "
-    "use these frame tags together with <visual_window>.current_time to identify "
-    "the current chunk. Frame tags are routing metadata only: never copy or "
-    "paraphrase any <frame .../> tag, timestamp marker, role marker, or metadata "
-    "line in your output. "
-    "You may either (a) call a tool, (b) emit a final answer, or (c) emit an empty "
-    "answer if no response is warranted.\n\n"
-    "Tools:\n"
-    "- recall: search past observations by keywords + time range. Use when the answer is "
-    "NOT in any visible source but you believe it was observed earlier. "
-    "You may call recall AT MOST ONCE per question. After receiving "
-    "<recall_result>, emit <answer> directly — do not call recall again. "
-    "If recall reports no relevant past observation and the current frames "
-    "still do not contain the answer, emit <answer></answer> and keep the "
-    "query pending for a future chunk.\n"
-    "- compress: memory compaction tool. Called ONLY on a memory compaction "
-    "turn, identified by <compress_trigger/> in <user_input>. On that turn, "
-    "a visual window may still be present for streaming-format consistency, "
-    "but do not answer any question and do not call recall. You must emit a "
-    "compress tool_call, deriving the time range yourself from <memory> "
-    "contents (older contiguous records that can be safely condensed). "
-    "Retain entity names, visual attributes, OCR, and state changes.\n\n"
-    "Output format (every turn must follow this exactly):\n"
-    "  <think>40-80 tokens describing the current chunk on visual turns; "
-    "on memory compaction turns, describe only the compression decision</think>\n"
-    "  Then ONE of:\n"
-    "    <tool_call>{\"name\":\"recall\",\"arguments\":{...}}</tool_call>\n"
-    "    <tool_call>{\"name\":\"compress\",\"arguments\":{...}}</tool_call>\n"
-    "    <answer>response text</answer>\n"
-    "    <answer></answer>   (silent — no question to answer right now)\n\n"
-    "Answer rules: if a pending query includes an 'Answer format:' line, "
-    "the text inside <answer> must follow that line exactly. For MC questions, "
-    "do not add explanation when the requested format is one letter only.\n\n"
-    "Think rules: on ordinary visual turns, describe ONLY observable visual "
-    "facts in the current chunk. On memory compaction turns, state that memory "
-    "is over budget and which older time range should be compressed; do not "
-    "turn the visual window into an answer. "
-    "Evidence priority: (1) current frame-tagged images determine the current think; "
-    "(2) tagged memory records are history and entity naming only; (3) if current frames "
-    "conflict with memory, ignore memory for the current visual description. "
-    "Do not use memory as evidence that a past object/action is still visible. "
-    "Use continuation phrases such as 'continues', 'remains', or 'unchanged' "
-    "only when the current frames visibly show the same object/action; "
-    "otherwise name the new object/action directly. No meta-reasoning, no "
-    "sound/smell/emotion, no speculation."
+_FRAME_CARRIER_TS_PROMPT = (
+    "Each turn you receive: frame-tagged visual frames (recent 16s window) + "
+    "tagged memory state. Every image is preceded by a structural tag like "
+    "<frame ts=\"12.5\" role=\"latest chunk\" />; use these frame tags together "
+    "with <visual_window>.current_time to identify the current chunk. Frame "
+    "tags are routing metadata only: never copy or paraphrase any <frame .../> "
+    "tag, timestamp marker, role marker, or metadata line in your output. "
 )
 
+_FRAME_CARRIER_VIDEO_META_PROMPT = (
+    "Each turn you receive: a pre-sampled video block (recent 16s window) + "
+    "tagged memory state. The video block uses Qwen video_metadata (fps, "
+    "frames_indices, total_num_frames) to carry frame timestamps; use those "
+    "timestamps together with <visual_window>.current_time to identify the "
+    "current chunk. Temporal metadata is routing metadata only: never copy or "
+    "paraphrase timestamp markers, frame indices, role markers, or metadata "
+    "lines in your output. "
+)
+
+SYSTEM_PROMPT_V12_STREAMING = (
+    "You are a streaming video agent. You observe 1-second video chunks and "
+    "maintain memory. Use this prompt for ordinary streaming-video turns; "
+    "memory compaction uses a separate turn-local system prompt.\n\n"
+    f"{_FRAME_CARRIER_TS_PROMPT}"
+    "The user payload may also include <user_input> for a new question/event, "
+    "<active_query> for the one currently live question with its answer-format "
+    "instruction, <response_history> for answers already emitted for that same "
+    "active_query only, <recalled_frames> for historical visual evidence returned "
+    "by recall, and <recall_result> for historical text evidence returned by "
+    "recall. Closed questions and their old answers are not shown.\n\n"
+    "Ordinary streaming turns have exactly three terminal forms:\n"
+    "1. Recall tool: a recall <tool_call>. This is a tool request, not an "
+    "answer. After a <recall_result> is returned for a question, do not call "
+    "recall again for that same question.\n"
+    "2. Answer response: a non-empty <answer>response text</answer>. If "
+    "<active_query> is present, the response text belongs to that active_query "
+    "and must follow its answer-format instruction.\n"
+    "3. Silent answer: an empty <answer></answer>. It carries no response text "
+    "and does not add anything to <response_history>.\n\n"
+    "Do not emit the compress tool when this ordinary streaming prompt is the "
+    "active turn policy. Compression uses a separate system prompt.\n\n"
+    "Required output grammar for ordinary streaming turns:\n"
+    "- Every assistant message must be exactly one <think> block followed by "
+    "exactly one terminal block. Do not write any text outside these tags.\n"
+    "- Think block format:\n"
+    "  <think>40-80 tokens describing only observable facts in the current "
+    "chunk and the selected terminal form: recall tool vs answer response vs "
+    "silent answer</think>\n"
+    "- Recall tool format:\n"
+    "  <tool_call>{\"name\":\"recall\",\"arguments\":{\"query\":\"3-5 keywords\",\"time_range\":\"start-end\"}}</tool_call>\n"
+    "  The JSON must use double quotes. query must contain search keywords, "
+    "not the answer value. time_range is seconds as a string like \"20-60\".\n"
+    "- Answer response format:\n"
+    "  <answer>response text</answer>\n"
+    "  If <active_query> includes an 'Answer format:' line, response text must "
+    "follow it exactly. For MC letter-only questions, output only A, B, "
+    "C, or D with no explanation.\n"
+    "- Silent answer format:\n"
+    "  <answer></answer>\n"
+    "  The silent answer must be empty; do not put words, spaces, or rationale "
+    "inside it.\n"
+    "- Compression is not an allowed terminal block under this prompt. Never "
+    "emit <tool_call>{\"name\":\"compress\",...}</tool_call> here.\n\n"
+    "Think rules: describe ONLY observable visual facts in the current chunk "
+    "and the minimal action decision. Evidence priority: (1) current "
+    "frame-tagged images determine the current think; (2) recalled frames and "
+    "recall_result are historical evidence only; (3) tagged memory records "
+    "are history and entity naming only; (4) if current frames conflict with "
+    "memory, ignore memory for the current visual description. Do not use "
+    "memory as evidence that a past object/action is still visible. Use "
+    "continuation phrases such as 'continues', 'remains', or 'unchanged' only "
+    "when the current frames visibly show the same object/action; otherwise "
+    "name the new object/action directly. No meta-reasoning, no sound/smell/"
+    "emotion, no speculation."
+)
+
+SYSTEM_PROMPT_V12_COMPRESS = (
+    "You are the memory-compaction controller for a streaming video agent. "
+    "Directly compress memory now. This is not an ordinary QA, recall, answer, "
+    "or silent turn.\n\n"
+    f"{_FRAME_CARRIER_TS_PROMPT}"
+    "The user payload may include <user_input><compress_trigger/></user_input> "
+    "as a legacy event marker. The marker is not an instruction source; this "
+    "system prompt is the instruction. The same text memory and visual window "
+    "format is used as ordinary streaming turns so compression sees the same "
+    "streaming context.\n\n"
+    "Required compression behavior:\n"
+    "- Do not answer any user question.\n"
+    "- Do not emit a silent answer.\n"
+    "- Do not call recall.\n"
+    "- Emit exactly one compress tool_call after a short compression think.\n"
+    "- Choose an older contiguous time range from <memory> and summarize it so "
+    "the summary can replace those text memory records.\n"
+    "- The current visual window may be present for format consistency, but "
+    "the compression target must come from <memory>, not from a fresh QA over "
+    "the current frames.\n"
+    "- Retain entity names, visual attributes, OCR text, spatial relations, "
+    "and state changes. Do not invent facts or drop details needed for future "
+    "questions.\n\n"
+    "Required output grammar for compression turns:\n"
+    "- Every assistant message must be exactly one <think> block followed by "
+    "exactly one compress <tool_call>. Do not write any text outside these "
+    "tags.\n"
+    "- Think block format:\n"
+    "  <think>20-60 tokens stating that memory is over budget and which older "
+    "contiguous time range should be compressed</think>\n"
+    "- Compress tool format:\n"
+    "  <tool_call>{\"name\":\"compress\",\"arguments\":{\"time_range\":[start_sec,end_sec],\"text\":\"summary text\"}}</tool_call>\n"
+    "  The JSON must use double quotes. time_range must be a two-integer array "
+    "[start_sec,end_sec] with seconds from the selected older <memory> range. "
+    "text must be the replacement summary for that range.\n"
+    "- Do not emit <answer>...</answer>, <answer></answer>, or a recall "
+    "tool_call on compression turns."
+)
+
+# Backward-compat: old imports refer to the ordinary streaming prompt.
+SYSTEM_PROMPT_V12 = SYSTEM_PROMPT_V12_STREAMING
+
 SYSTEM_PROMPT_V12_VIDEO_META = (
-    SYSTEM_PROMPT_V12
-    .replace(
-        "Each turn you receive: frame-tagged visual frames (recent 16s window) + tagged memory state. "
-        "Every image is preceded by a structural tag like <frame ts=\"12.5\" role=\"latest chunk\" />; "
-        "use these frame tags together with <visual_window>.current_time to identify "
-        "the current chunk. Frame tags are routing metadata only: never copy or "
-        "paraphrase any <frame .../> tag, timestamp marker, role marker, or metadata "
-        "line in your output. ",
-        "Each turn you receive: a pre-sampled video block (recent 16s window) + tagged memory state. "
-        "The video block uses Qwen video_metadata (fps, frames_indices, total_num_frames) "
-        "to carry frame timestamps; use those timestamps together with "
-        "<visual_window>.current_time to identify the current chunk. Temporal metadata "
-        "is routing metadata only: never copy or paraphrase timestamp markers, frame "
-        "indices, role markers, or metadata lines in your output. ",
-    )
+    SYSTEM_PROMPT_V12_STREAMING
+    .replace(_FRAME_CARRIER_TS_PROMPT, _FRAME_CARRIER_VIDEO_META_PROMPT)
     .replace(
         "Evidence priority: (1) current frame-tagged images determine the current think; ",
         "Evidence priority: (1) current visual frames determine the current think; ",
     )
 )
 
+SYSTEM_PROMPT_V12_COMPRESS_VIDEO_META = (
+    SYSTEM_PROMPT_V12_COMPRESS
+    .replace(_FRAME_CARRIER_TS_PROMPT, _FRAME_CARRIER_VIDEO_META_PROMPT)
+)
 
-def system_prompt_for_frame_protocol(frame_protocol: Optional[str] = None) -> str:
+
+def normalize_system_prompt_kind(
+    prompt_kind: Optional[str] = None,
+    *,
+    inter_chunk: bool = False,
+) -> str:
+    """Return ``streaming`` or ``compress`` for the current turn."""
+    if inter_chunk:
+        return "compress"
+    value = str(prompt_kind or "streaming").strip().lower().replace("-", "_")
+    aliases = {
+        "normal": "streaming",
+        "ordinary": "streaming",
+        "visual": "streaming",
+        "video": "streaming",
+        "memory_compaction": "compress",
+        "compaction": "compress",
+        "compression": "compress",
+        "compress_prompt": "compress",
+        "system_prompt_compress": "compress",
+        "inter_chunk": "compress",
+    }
+    value = aliases.get(value, value)
+    if value not in {"streaming", "compress"}:
+        return "streaming"
+    return value
+
+
+def system_prompt_for_frame_protocol(
+    frame_protocol: Optional[str] = None,
+    *,
+    prompt_kind: Optional[str] = None,
+    inter_chunk: bool = False,
+) -> str:
     """Return the protocol-aligned system prompt.
 
-    Prompt semantics stay aligned across AB variants: same tools, memory rules,
-    output format, and evidence priority. Only the sentence describing the
-    visual carrier differs, because one protocol exposes text frame tags and
-    the other relies on Qwen video metadata.
+    Prompt semantics stay aligned across AB variants. Ordinary streaming turns
+    use the prompt that allows recall / answer response / silent answer.
+    Memory-compaction turns use the compression-only prompt. Within either
+    prompt kind, only the sentence describing the visual carrier differs,
+    because one protocol exposes text frame tags and the other relies on Qwen
+    video metadata.
     """
     protocol = normalize_frame_protocol(frame_protocol)
+    kind = normalize_system_prompt_kind(prompt_kind, inter_chunk=inter_chunk)
     if protocol == FRAME_PROTOCOL_VIDEO_META:
+        if kind == "compress":
+            return SYSTEM_PROMPT_V12_COMPRESS_VIDEO_META
         return SYSTEM_PROMPT_V12_VIDEO_META
-    return SYSTEM_PROMPT_V12
+    if kind == "compress":
+        return SYSTEM_PROMPT_V12_COMPRESS
+    return SYSTEM_PROMPT_V12_STREAMING
 
 
 # Tool JSON schemas — passed as `tools=TOOLS_SCHEMA` to apply_chat_template.
@@ -1146,11 +1236,12 @@ TOOLS_SCHEMA = [
         "function": {
             "name": "recall",
             "description": (
-                "Search past video observations by keywords and time range. "
-                "Returns matched historical thinks. Use when the answer is "
-                "not in any visible source but was observed earlier, or once "
-                "for a pending future question to verify that the answer has "
-                "not appeared in the past yet."
+                "Ordinary streaming-turn tool. Search past video observations "
+                "by keywords and time range. Returns matched historical "
+                "thinks. Use when the answer is not in any visible source but "
+                "was observed earlier, or once for a pending future question "
+                "to verify that the answer has not appeared in the past yet. "
+                "This is not a final answer."
             ),
             "parameters": {
                 "type": "object",
@@ -1179,12 +1270,12 @@ TOOLS_SCHEMA = [
         "function": {
             "name": "compress",
             "description": (
-                "Memory compaction tool. Use only when the system injects "
-                "<compress_trigger/> as an inter-chunk memory-management event. "
-                "Do not answer questions or call recall on that turn. Decide "
-                "which older contiguous range from <memory> to compress and "
-                "output a concise summary retaining all entities, attributes, "
-                "OCR, and state changes."
+                "Compression-turn tool. Use only under the compression system "
+                "prompt or its legacy <compress_trigger/> event marker. Do "
+                "not answer questions, emit a silent answer, or call recall on "
+                "that turn. Decide which older contiguous range from <memory> "
+                "to compress and output a concise summary retaining all "
+                "entities, attributes, OCR, and state changes."
             ),
             "parameters": {
                 "type": "object",

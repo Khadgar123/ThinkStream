@@ -155,7 +155,7 @@ class MemoryState:
     ``recent_thinks`` are derived views used for compatibility with downstream
     renderers and runtime state.
 
-    Queries managed in separate <queries> zone, independent of memory.
+    Queries managed in separate active-query/response-history zones, independent of memory.
     """
 
     def __init__(self):

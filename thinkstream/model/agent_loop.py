@@ -268,7 +268,7 @@ class MemoryState:
             )
         self.compressed_segments.append(summary)
 
-    # --- Queries tracking (matches SFT <queries> zone) ---
+    # --- Queries tracking (matches SFT active_query/response_history zones) ---
     # The legacy add_pending / resolve_pending pair was removed in v11.1
     # — training data had pending_questions empty across all 12,405
     # samples, so the field was reverse-OOD at inference. "Pending" is
@@ -281,17 +281,23 @@ class MemoryState:
                    options: Optional[List[str]] = None,
                    answer_form: Optional[str] = None,
                    answer_style: Optional[str] = None,
-                   answer_instruction: Optional[str] = None):
+                   answer_instruction: Optional[str] = None,
+                   answer_chunks: Optional[List[int]] = None,
+                   per_emit_answers: Optional[List[Dict]] = None,
+                   open_until: Optional[float] = None):
         """Register a question (pending until answered).
 
         v12.13 fix (P0-1): accept options + answer_form so format_queries_block
         can render "Options: A) ... B) ..." for pending MC queries at
         inference / RL rollout time. v12.25 also stores answer_style /
         answer_instruction so SFT, RL, and eval see the same MC answer
-        protocol hint.
+        protocol hint. v12.43 carries answer_chunks/per_emit_answers so
+        multi-emit questions remain active until their final expected response.
         """
         if not hasattr(self, "_queries"):
             self._queries = []
+        expected_chunks = list(answer_chunks or [])
+        expected_emits = list(per_emit_answers or [])
         self._queries.append({
             "question": question,
             "ask_time": ask_time,
@@ -299,16 +305,39 @@ class MemoryState:
             "answer_form": answer_form or "",
             "answer_style": answer_style or "",
             "answer_instruction": answer_instruction or "",
+            "answer_chunks": expected_chunks,
+            "per_emit_answers": expected_emits,
+            "open_until": open_until if open_until is not None else ask_time,
+            "status": "open",
             "answers": [],
         })
 
-    def answer_query(self, question: str, answer: str, response_time: float):
+    def answer_query(
+        self,
+        question: str,
+        answer: str,
+        response_time: float,
+        *,
+        status: Optional[str] = None,
+    ):
         """Record an answer for a pending query."""
         if not hasattr(self, "_queries"):
             return
         for q in reversed(self._queries):
             if q["question"] == question:
                 q["answers"].append({"text": answer, "time": response_time})
+                if status is not None:
+                    q["status"] = status
+                else:
+                    expected = max(
+                        1,
+                        len(q.get("answer_chunks") or []),
+                        len(q.get("per_emit_answers") or []),
+                    )
+                    q["status"] = (
+                        "answered" if len(q.get("answers") or []) >= expected
+                        else "open"
+                    )
                 return
 
     @property
@@ -369,7 +398,10 @@ def build_single_step_messages(
             "role": "system",
             "content": [{
                 "type": "text",
-                "text": system_prompt_for_frame_protocol(frame_protocol),
+                "text": system_prompt_for_frame_protocol(
+                    frame_protocol,
+                    inter_chunk=inter_chunk,
+                ),
             }],
         },
         {"role": "user", "content": user_content},
@@ -788,7 +820,8 @@ class StreamingAgentLoop:
             return
         response_time = chunk_idx * AGENT_CHUNK_SEC
         for q in reversed(self.memory.queries):
-            if not q.get("answers"):
+            status = str(q.get("status", "")).strip().lower()
+            if status in {"open", "pending", "active"} or not q.get("answers"):
                 self.memory.answer_query(q["question"], answer_text, response_time)
                 return
 
@@ -807,14 +840,14 @@ class StreamingAgentLoop:
 
         v12.13 fix (P0-1): user_question_meta carries options + answer_form
         for MC queries so MemoryState.add_query stores them; subsequent
-        chunks render Options in <queries> block via format_queries_block.
+        chunks render Options in the active-query block via format_queries_block.
         """
         # 1. Snapshot BEFORE this step
         snapshot = self.memory.snapshot(chunk_idx)
 
         # 1b. Register the new question (if any) into the queries log so
-        # it appears in the <queries> block this step. Training data has
-        # the question present in <queries> at the chunk it arrives —
+        # it appears in the active-query block this step. Training data has
+        # the question present in query state at the chunk it arrives —
         # 7,828/12,405 v9.2 samples (63%) carry populated queries — so
         # not registering it would leave the model in an OOD distribution
         # for any chunk after the first question. Idempotent: same
@@ -833,6 +866,9 @@ class StreamingAgentLoop:
                     answer_form=meta.get("answer_form"),
                     answer_style=meta.get("answer_style"),
                     answer_instruction=meta.get("answer_instruction"),
+                    answer_chunks=meta.get("answer_chunks"),
+                    per_emit_answers=meta.get("per_emit_answers"),
+                    open_until=meta.get("open_until"),
                 )
 
         # 2. Check compression trigger (system-triggered, not model-triggered).
@@ -887,7 +923,7 @@ class StreamingAgentLoop:
         # 4. Build single-step messages (matching training format).
         # When compress_trigger is the user_input AND no user question fires
         # in the same step, mark inter_chunk=True so the prompt uses the
-        # memory-compaction instructions while still carrying visual_window.
+        # compression-only system prompt while still carrying visual_window.
         is_inter_chunk = bool(compress_trigger and not user_question)
         frame_paths = self._get_frame_paths(video_path, chunk_idx)
         messages = build_single_step_messages(
@@ -906,7 +942,7 @@ class StreamingAgentLoop:
         # reconstruction can replay the same prompt — see
         # thinkstream/trainer/grpo.py:_build_rollout_messages. Without this
         # the loss path conditions logprobs on a stripped-down context (no
-        # <memory>, <visual_window>, <queries>) and gradient direction drifts.
+            # <memory>, <visual_window>, active-query state) and gradient direction drifts.
         self._last_step_messages = messages
 
         # 5. Generate
@@ -1110,14 +1146,16 @@ class StreamingAgentLoop:
                     parsed["final_payload"] = recall_parsed["payload"]
                 # If the recall second pass emitted a response, log the
                 # answer against the most recent unanswered query so the
-                # next chunk's <queries> block carries it forward.
+                # next chunk's response_history carries it forward if the
+                # query is still active.
                 if recall_parsed["action"] == "response":
                     answer_text = recall_parsed["payload"].get("response", "")
                     self._record_answer(answer_text, chunk_idx)
 
         elif parsed["action"] == "response":
             # Log the answer in the queries log so it shows up in the
-            # next chunk's <queries> block. We attribute it to the most
+            # next chunk's response_history if the query remains active. We
+            # attribute it to the most
             # recent unanswered query, which matches how training data
             # was generated (pass3c emits Q/A pairs in arrival order)
             # and how an unanswered query implicitly represents pending

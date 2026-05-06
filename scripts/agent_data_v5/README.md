@@ -48,7 +48,7 @@ Both rendered variants keep the same sample schema, memory, queries,
 visual_window, answers, options, and split assignment. The prompt semantics are
 also aligned; only the system-prompt sentence describing the visual carrier and
 the media content item differ. `format_queries_block()` renders an explicit
-`Answer format:` line for pending questions, so SFT/RL/eval all tell the model
+`Answer format:` line for the active question, so SFT/RL/eval all tell the model
 whether to answer with a single MC letter, letter+text, text-only, number,
 binary answer, short exact phrase, or descriptive text.
 

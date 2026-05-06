@@ -380,5 +380,6 @@ def test_open_multi_answer_query_stays_open_after_first_answer():
         }
     ])
 
-    assert "Still open" in text
+    assert "<active_query>" in text
+    assert "<response_history>" in text
     assert "[12s] A: first event" in text

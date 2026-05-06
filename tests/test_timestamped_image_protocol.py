@@ -156,6 +156,51 @@ def test_pass5_sft_messages_can_render_video_meta_protocol():
     assert video["video_metadata"]["do_sample_frames"] is False
 
 
+def test_pass5_compress_messages_use_compress_system_prompt():
+    sample = {
+        "sample_id": "c0",
+        "video_id": "vid0",
+        "video_path": "videos/vid0.mp4",
+        "sample_type": "compress",
+        "v12_inter_chunk": True,
+        "chunk_idx": 3,
+        "input": {
+            "user_input": "<compress_trigger/>",
+            "memory": {"compressed_segments": [], "recent_thinks": []},
+            "queries": [{
+                "question": "What color is it?",
+                "ask_time": 2,
+                "answers": [],
+            }],
+            "visual_window": {
+                "video_start": 0,
+                "video_end": 4,
+                "frames": 2,
+                "frame_paths": [
+                    "data/agent_v5/frames/vid0/frame_000007.jpg",
+                    "data/agent_v5/frames/vid0/frame_000008.jpg",
+                ],
+            },
+        },
+        "output": (
+            "<think>compress old memory</think>"
+            "<tool_call>{\"name\":\"compress\",\"arguments\":{\"time_range\":[0,2],\"text\":\"setup\"}}</tool_call>"
+        ),
+    }
+    messages = build_messages(sample, Path("/repo"))
+    system_text = messages[0]["content"][0]["text"]
+    user_text = "\n".join(
+        item.get("text", "") for item in messages[1]["content"]
+        if item.get("type") == "text"
+    )
+    assert "Directly compress memory now" in system_text
+    assert "<queries>" not in user_text
+    assert "<active_query>" not in user_text
+    assert "<visual_window>" in user_text
+    assert "<user_input><compress_trigger/></user_input>" in user_text
+    assert "<memory_compaction>" not in user_text
+
+
 def test_pass5_relocates_moved_absolute_frame_paths(tmp_path):
     frame_dir = tmp_path / "frames" / "vid0"
     frame_dir.mkdir(parents=True)
@@ -235,10 +280,28 @@ def test_runtime_prompt_and_parser_use_frame_tags():
 def test_protocol_prompts_and_query_answer_format_are_explicit():
     ts_prompt = system_prompt_for_frame_protocol("ts_image")
     vm_prompt = system_prompt_for_frame_protocol("video_meta")
+    compress_prompt = system_prompt_for_frame_protocol("ts_image", inter_chunk=True)
     assert "frame-tagged visual frames" in ts_prompt
     assert "pre-sampled video block" in vm_prompt
-    assert "Answer rules:" in ts_prompt
-    assert "Answer rules:" in vm_prompt
+    assert "Answer response format" in ts_prompt
+    assert "Answer response format" in vm_prompt
+    assert "exactly three terminal forms" in ts_prompt
+    assert "Recall tool:" in ts_prompt
+    assert "Answer response:" in ts_prompt
+    assert "Silent answer:" in ts_prompt
+    assert "<active_query>" in ts_prompt
+    assert "<response_history>" in ts_prompt
+    assert "Required output grammar for ordinary streaming turns:" in ts_prompt
+    assert "{\"name\":\"recall\",\"arguments\":{\"query\"" in ts_prompt
+    assert "<answer>response text</answer>" in ts_prompt
+    assert "The silent answer must be empty" in ts_prompt
+    assert "Never emit <tool_call>{\"name\":\"compress\"" in ts_prompt
+    assert "Directly compress memory now" in compress_prompt
+    assert "Do not call recall" in compress_prompt
+    assert "Required output grammar for compression turns:" in compress_prompt
+    assert "<tool_call>{\"name\":\"compress\"" in compress_prompt
+    assert "time_range must be a two-integer array" in compress_prompt
+    assert "Do not emit <answer>...</answer>" in compress_prompt
 
     assert answer_format_instruction("number") == (
         "Answer format: a number only, no explanation."
@@ -250,6 +313,7 @@ def test_protocol_prompts_and_query_answer_format_are_explicit():
         "answers": [],
     }]
     rendered = format_queries_block(queries)
+    assert "<active_query>" in rendered
     assert "[3s] Answer format: a number only, no explanation." in rendered
 
 
@@ -303,8 +367,10 @@ def test_inter_chunk_compress_omits_queries_like_sft_messages():
     )
     joined = "\n".join(item.get("text", "") for item in content if item.get("type") == "text")
     assert "<queries>" not in joined
-    assert "<visual_window>" not in joined
+    assert "<active_query>" not in joined
+    assert "<visual_window>" in joined
     assert "<compress_trigger/>" in joined
+    assert "<memory_compaction>" not in joined
 
 
 def test_query_renderer_keeps_mc_answer_instruction():
@@ -318,5 +384,18 @@ def test_query_renderer_keeps_mc_answer_instruction():
         "answer_instruction": "Answer format: one letter only (A, B, C, or D).",
         "answers": [],
     }])
+    assert "<active_query>" in text
+    assert "<response_history>" in text
     assert "Options: A) brush B) spoon C) cup D) book" in text
     assert "Answer format: one letter only" in text
+
+
+def test_query_renderer_hides_closed_history_after_answer():
+    from thinkstream.data.agent_protocol import format_queries_block
+    text = format_queries_block([{
+        "question": "Which object appears?",
+        "ask_time": 3,
+        "status": "answered",
+        "answers": [{"time": 4, "text": "A"}],
+    }])
+    assert text == ""

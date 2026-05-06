@@ -198,7 +198,7 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     # behavior (runner.query at runner.ask_chunk) when the map is empty.
     # v12.13 fix (P0-1): runner.question_meta_at_chunk carries options +
     # answer_form for the question at each ask_chunk. MemoryState.add_query
-    # stores them so format_queries_block renders MC Options for pending
+    # stores them so format_queries_block renders MC Options for active
     # queries. Falls back to {} for legacy runners without the field.
     q_at_chunk = getattr(runner, "question_at_chunk", None) or {}
     q_meta_at_chunk = getattr(runner, "question_meta_at_chunk", None) or {}
@@ -220,6 +220,9 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
                 answer_form=meta.get("answer_form"),
                 answer_style=meta.get("answer_style"),
                 answer_instruction=meta.get("answer_instruction"),
+                answer_chunks=meta.get("answer_chunks"),
+                per_emit_answers=meta.get("per_emit_answers"),
+                open_until=meta.get("open_until"),
             )
 
     compress_trigger = _maybe_compress_trigger(runner.memory, chunk_idx)
@@ -283,9 +286,10 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> str:
         answer_text = parsed["payload"].get("response", "")
         if answer_text:
             response_time = chunk_idx * AGENT_CHUNK_SEC
-            # Attach to most-recent unanswered query (mirrors _record_answer).
+            # Attach to most-recent active query (mirrors _record_answer).
             for q in reversed(runner.memory.queries):
-                if not q.get("answers"):
+                status = str(q.get("status", "")).strip().lower()
+                if status in {"open", "pending", "active"} or not q.get("answers"):
                     runner.memory.answer_query(q["question"], answer_text, response_time)
                     break
             runner.answer_text = answer_text
@@ -647,14 +651,14 @@ class _RolloutRunner:
     def _record_answer_to_memory(self, answer_text: str, chunk_idx: int) -> None:
         """Mirror agent_loop.StreamingAgentLoop._record_answer.
 
-        Attach the recall second-pass answer to the most-recent unanswered
-        query so the next chunk's <queries> block carries it forward.
+        Attach the recall second-pass answer to the most-recent active query.
         """
         if not answer_text:
             return
         response_time = chunk_idx * AGENT_CHUNK_SEC
         for q in reversed(self.memory.queries):
-            if not q.get("answers"):
+            status = str(q.get("status", "")).strip().lower()
+            if status in {"open", "pending", "active"} or not q.get("answers"):
                 self.memory.answer_query(q["question"], answer_text, response_time)
                 break
 
@@ -706,7 +710,7 @@ def _extract_question_at_chunk_map(raw_sample: Dict) -> Dict[int, str]:
     # Schema A: trajectory (v12.5+)
     if (isinstance(raw_sample.get("questions"), list)
             and isinstance(raw_sample.get("gold_action_per_chunk"), dict)):
-        # v12.13: options live ONLY in <queries> via format_queries_block.
+        # v12.13: options live ONLY in active-query state via format_queries_block.
         # user_input/question_at_chunk carries the bare question text.
         for q in raw_sample["questions"]:
             q_text = q.get("question") or q.get("gold_answer", "")
@@ -758,7 +762,8 @@ def _apply_rollout_output(
         if answer_text:
             response_time = chunk_idx * AGENT_CHUNK_SEC
             for q in reversed(runner.memory.queries):
-                if not q.get("answers"):
+                status = str(q.get("status", "")).strip().lower()
+                if status in {"open", "pending", "active"} or not q.get("answers"):
                     runner.memory.answer_query(q["question"], answer_text, response_time)
                     break
 
@@ -853,7 +858,7 @@ def streaming_vllm_rollout(
         # response window.
         q_at_chunk = _extract_question_at_chunk_map(raw_sample)
         # v12.13 fix (P0-1): build per-chunk meta map alongside question text
-        # so MC options propagate to runtime queries.
+        # so MC options and lifecycle metadata propagate to runtime queries.
         q_meta_at_chunk: Dict[int, Dict] = {}
         # v12.13 fix (P0-3): track answer_chunks so rollout cap covers
         # forward / silent_then_response cards (lead 18-32 chunks).
@@ -866,7 +871,12 @@ def streaming_vllm_rollout(
                     "answer_form": q.get("answer_form", ""),
                     "answer_style": q.get("answer_style", ""),
                     "answer_instruction": q.get("answer_instruction", ""),
+                    "answer_chunks": list(q.get("answer_chunks") or []),
+                    "per_emit_answers": list(q.get("per_emit_answers") or []),
                 }
+                ans_chunks = [int(x) for x in q.get("answer_chunks") or []]
+                if ans_chunks:
+                    meta["open_until"] = max(ans_chunks) * AGENT_CHUNK_SEC
                 for ac in q.get("ask_chunks") or []:
                     q_meta_at_chunk[int(ac)] = meta
                 for ac in q.get("answer_chunks") or []:

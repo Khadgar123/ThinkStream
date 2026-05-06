@@ -137,7 +137,7 @@ def extract_question(sample):
 
 
 def extract_question_meta(sample):
-    """Structured answer-format hint passed into the runtime <queries> block."""
+    """Structured answer-format hint passed into the runtime active-query block."""
     meta = sample.get("metadata") or {}
     return {
         "options": sample.get("options") or meta.get("options") or [],
@@ -477,7 +477,7 @@ def main():
     p.add_argument("--query-policy", default=os.environ.get(
         "THINKSTREAM_QUERY_HISTORY_POLICY", "recent_k"),
                    choices=["recent_k", "single_active", "replace_on_new", "multi_pending"],
-                   help="Which query records are rendered in <queries>.")
+                   help="Which live query records may be rendered in active_query.")
     p.add_argument("--queries-history-cap", type=int, default=None,
                    help="Override query history cap after applying profile.")
     p.add_argument("--out", default=None)

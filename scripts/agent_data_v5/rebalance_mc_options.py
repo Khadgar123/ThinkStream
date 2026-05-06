@@ -45,7 +45,7 @@ OPTION_RE = re.compile(r"^\s*([A-D])[\).]\s*(.*)\s*$", re.DOTALL)
 ANSWER_RE = re.compile(r"<answer>(.*?)</answer>", re.DOTALL)
 QUERY_BLOCK_RE = re.compile(
     r"(?P<qline>\[[^\]\n]+s\]\s+Q:\s+(?P<question>.*?)\n)"
-    r"(?P<oline>\[[^\]\n]+s\]\s+Options:\s+)(?P<options>.*?)(?=\n\[|\n</queries>|$)",
+    r"(?P<oline>\[[^\]\n]+s\]\s+Options:\s+)(?P<options>.*?)(?=\n\[|\n</active_query>|\n</queries>|$)",
     re.DOTALL,
 )
 

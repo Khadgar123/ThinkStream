@@ -585,13 +585,13 @@ PASS_CONFIG = {
 }
 
 # ---------------------------------------------------------------------------
-# 7. System prompt (4-action protocol)
+# 7. System prompt (streaming/compress protocol)
 # ---------------------------------------------------------------------------
 
 # NOTE: legacy v8/v11 SYSTEM_PROMPT / SYSTEM_PROMPT_POST_RECALL /
-# SYSTEM_PROMPT_COMPRESS were removed when the codebase consolidated on
-# the v12 Qwen tool protocol. See thinkstream/data/agent_protocol.py:
-# SYSTEM_PROMPT_V12 + TOOLS_SCHEMA for the current single source of truth.
+# SYSTEM_PROMPT_COMPRESS names were removed when the codebase consolidated on
+# the v12 Qwen tool protocol. See thinkstream/data/agent_protocol.py for the
+# ordinary streaming prompt, the compression-only prompt, and TOOLS_SCHEMA.
 
 # Special tokens required by SFT init_processor (see sft_engineering.md §6.2)
 # Approach B: exact-match tags, attributes as JSON inside tags.
@@ -615,7 +615,8 @@ SPECIAL_TOKENS_PER_TIMESTEP = [
     "<visual_window>", "</visual_window>",      # visual window header
     "<recalled_frames>", "</recalled_frames>",  # recalled frames header
     "<user_input>", "</user_input>",            # wraps user input text
-    "<queries>", "</queries>",                  # past Q&A zone
+    "<active_query>", "</active_query>",        # currently live question
+    "<response_history>", "</response_history>",# answers for active_query only
     # Output payload (assistant)
     "<summary>", "</summary>",                  # compress-action summary payload
     # User input trigger

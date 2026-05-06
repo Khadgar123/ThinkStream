@@ -40,6 +40,19 @@ STAGE_VERSIONS: Dict[str, str] = {
     # v12.11 audit-5 P1 #5 (2026-05-01): bumps below align with the v12.11
     # data-construction logic changes. Without these, an existing cluster
     # cache stamped v12.5 would silently reuse stale outputs:
+    #   v12.43 (2026-05-06): prompt rendering splits old <queries> into
+    #        <active_query> plus <response_history>. Only the live query is
+    #        rendered; closed historical Q&A disappears after the final answer.
+    #        Regenerate all *_messages.jsonl and RL parquets that freeze prompts.
+    #   v12.42 (2026-05-06): system prompts spell out exact ordinary answer,
+    #        silent answer, recall tool JSON, and compression tool JSON
+    #        grammars. Regenerate all *_messages.jsonl and RL parquets that
+    #        freeze prompts.
+    #   v12.41 (2026-05-06): pass5/rendered messages use separate ordinary
+    #        streaming and compression-only system prompts. Compression turns
+    #        keep only a bare <compress_trigger/> in user_input while the
+    #        compression rules move to the system prompt. Regenerate all
+    #        *_messages.jsonl and RL parquets that freeze prompts.
     #   v12.40 (2026-05-06): all non-HLD multiple-choice cards now place the
     #        correct option into a stable A/B/C/D slot and sort distractors by
     #        stable hash before validation/rendering. This removes LLM/heuristic
@@ -152,7 +165,7 @@ STAGE_VERSIONS: Dict[str, str] = {
     "3b": "v12.40",
     "3c": "v12.40",
     "4":  "v12.40",  # canonical key — verification
-    "5":  "v12.40",  # pass5_messages render version
+    "5":  "v12.43",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

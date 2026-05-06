@@ -372,7 +372,10 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
             "role": "system",
             "content": [{
                 "type": "text",
-                "text": system_prompt_for_frame_protocol(frame_protocol),
+                "text": system_prompt_for_frame_protocol(
+                    frame_protocol,
+                    inter_chunk=inter_chunk,
+                ),
             }],
         }
     ]
@@ -387,8 +390,8 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
 
     if inp.get("user_input"):
         # Canonical user_input wrapper. For archived compress rows that still
-        # store a bare <compress_trigger/>, this expands the body into the
-        # explicit memory-compaction instruction used at runtime.
+        # store a bare <compress_trigger/>, this keeps the wrapper minimal;
+        # compression rules are supplied by the compression system prompt.
         user_input_block = format_user_input_block(
             inp["user_input"],
             inter_chunk=inter_chunk,
@@ -407,7 +410,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         else f"<memory>\n{memory_text}\n</memory>",
     })
 
-    # Queries — second-stable prefix (also monotonic).
+    # Active query plus response history for that same query.
     queries = inp.get("queries", [])
     if queries and not inter_chunk:
         from thinkstream.data.agent_protocol import format_queries_block

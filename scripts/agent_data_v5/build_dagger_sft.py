@@ -167,10 +167,9 @@ _USER_INPUT_RE = re.compile(r"<user_input>(.*?)</user_input>", re.DOTALL)
 def _prompt_has_compress_trigger(messages: List[Dict[str, Any]]) -> bool:
     """True only when the actual user input carries a compress trigger.
 
-    The system prompt documents the literal string ``<compress_trigger/>``.
-    Scanning all message text therefore marks every normal visual step as a
-    compress prompt.  DAgger needs the runtime event, which is rendered under
-    the user turn's ``<user_input>...</user_input>`` block.
+    Compression may also appear in turn-local system/tool text. DAgger needs
+    the runtime event, which is rendered under the user turn's
+    ``<user_input>...</user_input>`` block.
     """
     for msg in messages:
         if msg.get("role") != "user":

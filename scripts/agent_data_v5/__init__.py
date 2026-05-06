@@ -17,6 +17,6 @@ Main data-construction stages:
 Architecture:
   - Per-timestep samples plus trajectory rows for RL/eval
   - v12 Qwen tool protocol with answer / recall / compress actions
-  - Queries zone for persistent question tracking
+  - Active-query and response-history zones for question lifecycle tracking
   - Mechanisms: direct / recall_demo / silent_then_response / multi_emit
 """

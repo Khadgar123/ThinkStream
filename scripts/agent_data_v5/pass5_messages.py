@@ -262,7 +262,10 @@ def build_messages(
             "role": "system",
             "content": [{
                 "type": "text",
-                "text": system_prompt_for_frame_protocol(frame_protocol),
+                "text": system_prompt_for_frame_protocol(
+                    frame_protocol,
+                    inter_chunk=inter_chunk,
+                ),
             }],
         }
     ]
@@ -294,7 +297,7 @@ def build_messages(
         else f"<memory>\n{memory_text}\n</memory>",
     })
 
-    # ── Queries block (past Q&A history; second-stable prefix) ──────────
+    # ── Active query + response history for that same query ─────────────
     queries = inp.get("queries", [])
     if queries and not inter_chunk:
         qt = format_queries_block(queries)

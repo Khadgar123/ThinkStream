@@ -18,11 +18,11 @@
 #       <|im_start|>user\n{question}\n<|im_end|>                ← common prefix
 #       <|im_start|>user\n
 #         <memory>...</memory>
-#         <queries>...</queries>           (when ask_chunks fired)
+#         <active_query>...</active_query> plus <response_history>...</response_history>
+#                                             (while a query is live)
 #         <visual_window>{header}</visual_window>               ← turn-specific
 #         {frame-tag text + image items for chunks[max(0,N-15)..N]}
-#         <user_input>...</user_input>     (the question text)
-#         OR <compress_trigger/>   (compress turn — system-injected, v12.12 no range)
+#         <user_input>...</user_input>     (question text or bare compress trigger)
 #       <|im_end|>
 #       <|im_start|>assistant\n
 #     ]
@@ -63,11 +63,11 @@
 #     prompt_chunk_t = [
 #       system + user_q                        ← stable across chunks
 #       <memory>                               ← monotonic append; SFT-first
-#       (queries)                              ← optional
+#       (active_query + response_history)      ← optional while a query is live
 #       <visual_window header>                 ← {start, end, frames, current_time}
 #       frame-tag text + image items          ← sliding window (or expanding opt-in)
 #       <recall_result> (optional)             ← chunk-specific
-#       <user_input> or <compress_trigger/>    ← chunk-specific, last
+#       <user_input>                           ← question or bare compress trigger
 #     ]
 #
 # WINDOW MODE (THINKSTREAM_VISUAL_WINDOW_MODE):
@@ -91,8 +91,9 @@
 #      Qwen video block with explicit video_metadata. Both carry real time.
 #   3. Frame timestamps/metadata use frame_idx / fps, where
 #      frame_idx = window_start*FPC + i.
-#   4. Compress turn uses bare <compress_trigger/> (v12.12: no range,
-#      no visual_window). Model derives time_range from memory.
+#   4. Compress turn uses a compression-only system prompt plus bare
+#      <compress_trigger/> (v12.12: no range). It still carries memory and
+#      visual_window so SFT/RL/eval use one multimodal payload shape.
 #   5. Recall result rendering as <recall_result>{...}</recall_result>
 #      JSON dict (source/time/text).
 #
@@ -418,6 +419,8 @@ def _register_streaming_agent_loop():
         parse_agent_output_v12,
         format_memory_block,
         format_queries_block,
+        format_user_input_block,
+        system_prompt_for_frame_protocol,
     )
     from thinkstream.trainer.v12_rollout import (  # type: ignore
         VideoTrajectoryState,
@@ -581,14 +584,18 @@ def _register_streaming_agent_loop():
             compress_trigger_range: Optional[Tuple[int, int]],
             inter_chunk: bool,
         ) -> List[Dict[str, Any]]:
-            """Build the user content list for chunk N. inter_chunk=True
-            (compress turn) skips the visual_window — matches SFT shape C.
+            """Build the user content list for chunk N.
+
+            inter_chunk=True marks a compression turn. It still carries the
+            same visual_window + memory shape as SFT/pass5; only query and
+            recall-answer context are suppressed.
 
             v12.13 (2026-05-02): mirrors SFT layout in
             thinkstream/data/agent_protocol.py:213-214 build_user_content
             EXACTLY:
-              <memory> → (queries) → <visual_window> + protocol visual frames →
-              <recall_result> → <user_input> or <compress_trigger/>
+              <memory> → (active_query + response_history) →
+              <visual_window> + protocol visual frames → <recall_result> →
+              <user_input>
 
             Memory FIRST (per SFT) — train/RL distribution alignment is
             the hard constraint; whatever marginal prefix-cache benefit
@@ -619,7 +626,7 @@ def _register_streaming_agent_loop():
                 "text": f"<memory>\n{mem_text}\n</memory>",
             })
 
-            # ── Queries block — same renderer as SFT/pass5. Data carries
+            # ── Active query block — same renderer as SFT/pass5. Data carries
             # structured question/options/answer_style fields; prompt text is
             # rendered here so eval adapters can reuse the same interface.
             try:
@@ -638,46 +645,45 @@ def _register_streaming_agent_loop():
             # `start`, `end`, `frames`, `current_time` are all required —
             # SFT trained the model on this exact JSON shape, removing
             # any field would diverge train/RL distribution.
-            if not inter_chunk:
-                vw_header = json.dumps({
-                    "start": window_start_chunk * self.chunk_sec,
-                    "end": (window_end_chunk + 1) * self.chunk_sec,
-                    "frames": len(window_paths),
-                    "current_time": [
-                        chunk_idx * self.chunk_sec,
-                        (chunk_idx + 1) * self.chunk_sec,
-                    ],
-                })
-                content.append({
-                    "type": "text",
-                    "text": f"\n<visual_window>{vw_header}</visual_window>",
-                })
-                if window_paths:
-                    # v12.22: runtime resize bounds are attached to each image.
-                    # v12.13: identical kwargs
-                    # across chunks → vLLM mm_processor_cache key is stable
-                    # (frame_path, min_pixels, max_pixels) so PIL+ViT
-                    # preprocessing is cached when the same frame recurs in
-                    # consecutive sliding windows. This is the ONLY visual-
-                    # token reuse mechanism we rely on; do not rearrange the
-                    # surrounding content blocks for prefix-cache purposes.
-                    try:
-                        from scripts.agent_data_v5.config import (
-                            RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
-                        )
-                    except ImportError:
-                        _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-                    append_visual_frames(
-                        content,
-                        window_paths,
-                        frame_protocol=self.frame_protocol,
-                        fps=float(self.frames_per_chunk) / float(self.chunk_sec),
-                        start_frame_index=window_start_chunk * self.frames_per_chunk,
-                        total_num_frames=(chunk_idx + 1) * self.frames_per_chunk,
-                        latest_start_frame_index=chunk_idx * self.frames_per_chunk,
-                        min_pixels=_RTKW["min_pixels"],
-                        max_pixels=_RTKW["max_pixels"],
+            vw_header = json.dumps({
+                "start": window_start_chunk * self.chunk_sec,
+                "end": (window_end_chunk + 1) * self.chunk_sec,
+                "frames": len(window_paths),
+                "current_time": [
+                    chunk_idx * self.chunk_sec,
+                    (chunk_idx + 1) * self.chunk_sec,
+                ],
+            })
+            content.append({
+                "type": "text",
+                "text": f"\n<visual_window>{vw_header}</visual_window>",
+            })
+            if window_paths:
+                # v12.22: runtime resize bounds are attached to each image.
+                # v12.13: identical kwargs
+                # across chunks → vLLM mm_processor_cache key is stable
+                # (frame_path, min_pixels, max_pixels) so PIL+ViT
+                # preprocessing is cached when the same frame recurs in
+                # consecutive sliding windows. This is the ONLY visual-
+                # token reuse mechanism we rely on; do not rearrange the
+                # surrounding content blocks for prefix-cache purposes.
+                try:
+                    from scripts.agent_data_v5.config import (
+                        RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                     )
+                except ImportError:
+                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+                append_visual_frames(
+                    content,
+                    window_paths,
+                    frame_protocol=self.frame_protocol,
+                    fps=float(self.frames_per_chunk) / float(self.chunk_sec),
+                    start_frame_index=window_start_chunk * self.frames_per_chunk,
+                    total_num_frames=(chunk_idx + 1) * self.frames_per_chunk,
+                    latest_start_frame_index=chunk_idx * self.frames_per_chunk,
+                    min_pixels=_RTKW["min_pixels"],
+                    max_pixels=_RTKW["max_pixels"],
+                )
 
             # Recall result (single-turn legacy form — SFT shape A inline).
             # True shape-B intra-chunk multi-turn is a deferred follow-up.
@@ -708,7 +714,10 @@ def _register_streaming_agent_loop():
             if compress_trigger_range is not None:
                 content.append({
                     "type": "text",
-                    "text": "\n<compress_trigger/>",
+                    "text": format_user_input_block(
+                        "<compress_trigger/>",
+                        inter_chunk=True,
+                    ),
                 })
             else:
                 user_input_text = self._format_user_input(
@@ -1105,15 +1114,17 @@ def _register_streaming_agent_loop():
                     break
 
                 # ── Decide turn type: compress trigger fires BETWEEN
-                # chunks (inter_chunk=True, no visual_window).
+                # chunks. The compress turn still receives the same memory +
+                # visual-window payload shape; only the system prompt and
+                # allowed action differ.
                 compress_range = self._check_compress_trigger(state)
                 inter_chunk = compress_range is not None
 
-                # ── Sliding visual window (skipped for compress turns).
+                # ── Sliding visual window.
                 window_paths: List[str] = []
                 window_start_chunk = chunk_idx
                 window_end_chunk = chunk_idx
-                if not inter_chunk and self.frames_root and video_path:
+                if self.frames_root and video_path:
                     window_paths, window_start_chunk, window_end_chunk = (
                         _build_visual_window(
                             video_path, self.frames_root, chunk_idx,
@@ -1123,7 +1134,7 @@ def _register_streaming_agent_loop():
                             mode=self.visual_window_mode,
                         )
                     )
-                visual_injected = bool(window_paths) and not inter_chunk
+                visual_injected = bool(window_paths)
 
                 # ── Multi-Q: which questions fire at this chunk?
                 triggered_qs_for_chunk: List[Dict[str, Any]] = []
@@ -1135,13 +1146,29 @@ def _register_streaming_agent_loop():
                         triggered_q_indices_for_chunk.append(q_idx)
                         if q_idx not in query_log_idx_by_q:
                             query_log_idx_by_q[q_idx] = len(query_log)
+                            ans_chunks_raw = q_obj.get("answer_chunks") or []
+                            if hasattr(ans_chunks_raw, "tolist"):
+                                ans_chunks_raw = ans_chunks_raw.tolist()
+                            ans_chunks_int: List[int] = []
+                            for x in ans_chunks_raw:
+                                try:
+                                    ans_chunks_int.append(int(x))
+                                except (TypeError, ValueError):
+                                    continue
                             query_log.append({
                                 "question": q_obj.get("question", ""),
                                 "options": list(q_obj.get("options") or []),
                                 "answer_form": q_obj.get("answer_form", ""),
                                 "answer_style": q_obj.get("answer_style", ""),
                                 "answer_instruction": q_obj.get("answer_instruction", ""),
+                                "answer_chunks": ans_chunks_int,
+                                "per_emit_answers": list(q_obj.get("per_emit_answers") or []),
                                 "ask_time": chunk_idx * self.chunk_sec,
+                                "open_until": (
+                                    max(ans_chunks_int) * self.chunk_sec
+                                    if ans_chunks_int else chunk_idx * self.chunk_sec
+                                ),
+                                "status": "open",
                                 "answers": [],
                             })
                     # Push triggered Qs into the pending queue so the
@@ -1167,9 +1194,21 @@ def _register_streaming_agent_loop():
                 )
                 recall_result_for_next = None
 
-                chunk_messages = list(initial_messages) + [
-                    {"role": "user", "content": user_content},
-                ]
+                chunk_messages = list(initial_messages)
+                if inter_chunk:
+                    # Preserve the stable raw_prompt prefix for vLLM prefix
+                    # slicing, then add a turn-local system message that
+                    # carries the compression-only policy. The old user-side
+                    # memory-compaction rules are gone; <user_input> contains
+                    # only the bare legacy trigger marker.
+                    chunk_messages.append({
+                        "role": "system",
+                        "content": system_prompt_for_frame_protocol(
+                            self.frame_protocol,
+                            inter_chunk=True,
+                        ),
+                    })
+                chunk_messages.append({"role": "user", "content": user_content})
 
                 # ── chunk-internal ready-loop (v12.13 D1):
                 #
@@ -1310,10 +1349,10 @@ def _register_streaming_agent_loop():
                         accumulated_images.extend(chunk_images)
                         accumulated_videos.extend(chunk_videos)
                         n_chunks_with_frames += 1
-                    elif inter_chunk:
-                        n_chunks_compress_inter += 1
-                    else:
+                    elif not inter_chunk:
                         n_chunks_text_only += 1
+                    if inter_chunk:
+                        n_chunks_compress_inter += 1
                     visual_injected = False  # only count once per chunk
 
                     num_assistant_turns += 1
@@ -1447,6 +1486,9 @@ def _register_streaming_agent_loop():
                                 "text": answer_str,
                                 "time": chunk_idx * self.chunk_sec,
                             })
+                            query_log[qlog_i]["status"] = (
+                                "answered" if _question_complete(q_idx) else "open"
+                            )
                         if _question_complete(q_idx):
                             pending_q_indices.pop(chosen_pos)
 

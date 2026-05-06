@@ -31,6 +31,7 @@ from thinkstream.data.agent_protocol import (
     SYSTEM_PROMPT_V12,
     build_recalled_frames_metadata,
     select_recall_chunks,
+    system_prompt_for_frame_protocol,
 )
 
 logger = logging.getLogger(__name__)
@@ -81,14 +82,15 @@ def _accepted_answers(card: Dict, gold_answer: str) -> List[str]:
     return [x for x in out if x and not (x.lower() in seen or seen.add(x.lower()))]
 
 
-def _get_system_prompt(prompt_type: str) -> str:
-    """Return the v12 system prompt regardless of sample prompt_type.
+def _get_system_prompt(prompt_type: str, *, inter_chunk: bool = False) -> str:
+    """Return the protocol system prompt for this sample type.
 
-    The post-recall and compress turns share the same system prompt under
-    the v12 protocol; the protocol behaviour is differentiated by the
-    user-side ``<compress_trigger/>`` injection and the ``<tools>`` schema
-    rendered by ``processor.apply_chat_template``.
+    Ordinary streaming samples use the recall/answer/silent prompt. Compress
+    samples use the compression-only prompt; the user input carries only the
+    bare legacy trigger marker.
     """
+    if inter_chunk or str(prompt_type or "").lower() in {"compress", "system_prompt_compress"}:
+        return system_prompt_for_frame_protocol(prompt_kind="compress")
     return SYSTEM_PROMPT_V12
 
 
@@ -163,13 +165,13 @@ def _build_queries_input(queries_state: List[Dict]) -> List[Dict]:
 
     v12.12 fix (P0-4): preserve `ask_time` so format_queries_block
     (agent_protocol.py:148) can render Q events at the correct chunk time.
-    Without ask_time, all queries collapse to t=0 in the rendered <queries>
-    block — train/infer divergence (runtime has real timestamps).
+    Without ask_time, the active query collapses to t=0 in the rendered query
+    state block — train/infer divergence (runtime has real timestamps).
 
     v12.13 fix (P0-3): also preserve `options` + `answer_form` so MC pending
-    queries can render their choices in the <queries> block. forward
+    queries can render their choices in the active-query block. forward
     response chunks fire AFTER ask (no fresh user_input), so the model
-    only sees the pending Q in <queries> — without options it cannot
+    only sees the active Q in query state — without options it cannot
     choose A-D meaningfully.
     """
     result = []
@@ -261,7 +263,10 @@ def render_sample(
     # Build input structure
     recall_result = sample.get("recall_result")
     inp = {
-        "system": _get_system_prompt(prompt_type),
+        "system": _get_system_prompt(
+            prompt_type,
+            inter_chunk=sample.get("action") == "compress",
+        ),
         "visual_window": _build_visual_window(chunk_idx, num_chunks, video_path),
         "memory": _build_memory_from_snapshot(snapshot),
         "queries": _build_queries_input(sample.get("queries", [])),

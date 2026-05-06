@@ -731,7 +731,7 @@ def main():
     p.add_argument("--query-policy", default=os.environ.get(
         "THINKSTREAM_QUERY_HISTORY_POLICY", "single_active"),
                    choices=["recent_k", "single_active", "replace_on_new", "multi_pending"],
-                   help="Which query records are rendered in <queries>. "
+                   help="Which live query records may be rendered in active_query. "
                         "OVO tasks are independent, so default keeps only the active query.")
     p.add_argument("--queries-history-cap", type=int, default=None,
                    help="Override query history cap after applying profile.")

@@ -528,7 +528,7 @@ def _compress_sample(
     This is the SFT supervision signal that teaches the model to output a
     compression tool_call when the system signals memory pressure.
 
-      user_input = <compress_trigger/> + explicit memory-compaction rules
+      user_input = <compress_trigger/> (legacy event marker only)
       output     = <think>...</think><tool_call>{compress with gold summary
                                                   INCLUDING time_range}</tool_call>
       action     = "compress"
@@ -816,9 +816,9 @@ async def generate_trajectory_samples(
                 card = cards_map.get(p.card_id) or {}
                 queries_idx_by_card[p.card_id] = len(queries_state)
                 # v12.13 fix (P0-3): include options + answer_form so
-                # format_queries_block can render MC choices for pending
+                # format_queries_block can render MC choices for active
                 # queries (forward responses fire AFTER ask, with no fresh
-                # user_input — model sees only the queries block).
+                # user_input — model sees only the active-query block).
                 queries_state.append({
                     "card_id": p.card_id,
                     "question": card.get("question", ""),
@@ -849,11 +849,11 @@ async def generate_trajectory_samples(
         sequence_type = _mech_to_sequence_type(ds.mechanism) if card_id else ""
         # user_input fires only at the ask_chunk for that card.
         #
-        # v12.13 (2026-05-02): MC options live ONLY in <queries> block via
+        # v12.13 (2026-05-02): MC options live ONLY in the query-state block via
         # format_queries_block (queries_state carries options + answer_form;
-        # pending MC queries render an "Options: A) ... B) ..." line).
+        # active MC queries render an "Options: A) ... B) ..." line).
         # Putting options ALSO in user_input was duplicating ~30 tokens
-        # per ask (model saw the same A-D list twice — once in <queries>
+        # per ask (model saw the same A-D list twice — once in query state
         # and once in <user_input>). user_input now carries just the
         # question text, parity with non-MC asks.
         user_input = ""

@@ -80,10 +80,12 @@ def test_v12_assistant_content_roundtrip():
 
 def test_compress_trigger():
     from thinkstream.data.agent_protocol import (
+        build_compress_trigger_user_input,
         has_compress_trigger,
         extract_compress_trigger_range,
     )
 
+    assert build_compress_trigger_user_input() == "<compress_trigger/>"
     assert has_compress_trigger("<compress_trigger range='4-12'/>") is True
     assert has_compress_trigger("<compress_trigger/>") is True
     assert has_compress_trigger("nothing here") is False

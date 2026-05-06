@@ -138,7 +138,7 @@ class ChunkLevelRolloutLoop:
         generate_fn(messages, n) -> list of n strings (G rollouts of one chunk).
             For real training, wraps vLLM.generate. For tests, returns canned strings.
         build_messages_fn(state, video_meta) -> messages list for chat_template.
-            For v12, this includes <visual_window>, <memory>, <queries>,
+            For v12, this includes <visual_window>, <memory>, active-query state,
             optional <compress_trigger>, and the user_input for any pending Q.
         update_state_fn(state, response_text, chunk_idx) -> updated state.
             Parses the response (parse_agent_output_v12), updates memory based
