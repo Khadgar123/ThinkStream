@@ -515,6 +515,101 @@ def test_recipe_reward_allows_auxiliary_when_answer_correct():
     assert abs(score - 1.46) < 1e-6
 
 
+def test_recipe_reward_scales_auxiliary_on_partial_outcome():
+    from verl.recipe_thinkstream.thinkstream import _combine_reward_parts
+
+    weights = {
+        "outcome": 1.0,
+        "timing": 0.3,
+        "format": 0.1,
+        "spam": -0.2,
+        "silent_quality": 0.2,
+    }
+    parts = {
+        "outcome": 0.5,
+        "timing": 1.0,
+        "format": 1.0,
+        "spam": 0.0,
+        "silent_quality": 0.3,
+    }
+
+    score, gate = _combine_reward_parts(weights, parts)
+    assert gate == 0.5
+    # 0.5 outcome + 0.5 * (0.3 timing + 0.1 format + 0.06 silent)
+    assert abs(score - 0.73) < 1e-6
+
+
+def test_recipe_multi_q_reward_gates_each_question_independently():
+    from verl.recipe_thinkstream.thinkstream import _compute_score_multi_q
+    from thinkstream.trainer.v12_rewards import (
+        compute_timing_reward_v12,
+        compute_silent_quality_v12,
+    )
+
+    weights = {
+        "outcome": 1.0,
+        "timing": 0.3,
+        "format": 0.1,
+        "spam": -0.2,
+        "silent_quality": 0.2,
+    }
+    rewards = {
+        "outcome": lambda *a, **k: 0.0,
+        "timing": compute_timing_reward_v12,
+        "format": lambda chunks: 1.0,
+        "spam": lambda **kwargs: 0.0,
+        "silent_quality": compute_silent_quality_v12,
+    }
+    questions = [
+        {
+            "gold_answer": "red",
+            "answer_form": "short_exact",
+            "ask_chunk": 5,
+            "ask_chunks": [5],
+            "answer_chunks": [5],
+        },
+        {
+            "gold_answer": "yes",
+            "answer_form": "binary",
+            "ask_chunk": 12,
+            "ask_chunks": [12],
+            "answer_chunks": [12],
+        },
+        {
+            "gold_answer": "3",
+            "answer_form": "number",
+            "ask_chunk": 20,
+            "ask_chunks": [20],
+            "answer_chunks": [20],
+        },
+    ]
+    extra = {
+        "ts_per_q_answer_chunk": [5, 12, -1],
+        "ts_per_q_answer_text": ["red", "no", ""],
+        "ts_per_q_answers": [[], [], []],
+    }
+
+    res = _compute_score_multi_q(
+        rewards,
+        weights,
+        questions,
+        extra,
+        "<think>ok</think><answer>red</answer>",
+    )
+
+    assert abs(res["outcome"] - (1 / 3)) < 1e-6, res
+    # Raw timing remains the mean over questions: Q1=1, Q2=1, Q3=-0.5.
+    assert abs(res["timing"] - 0.5) < 1e-6, res
+    assert abs(res["outcome_gate"] - (1 / 3)) < 1e-6, res
+    # Score:
+    # Q1: 1 outcome + 0.3 timing = 1.3
+    # Q2: wrong but timely, positive timing is gated to 0
+    # Q3: missed answer, timing -0.15 and silent_quality -0.12 always apply
+    # Mean question score = (1.3 + 0 - 0.27) / 3, plus format 0.1 * 1/3.
+    expected = ((1.3 + 0.0 - 0.27) / 3.0) + (0.1 / 3.0)
+    assert abs(res["score"] - expected) < 1e-6, res
+
+
 def test_silent_quality_v12_complements_outcome():
     """Verify silent_quality fills the reward gap that outcome alone misses.
 
@@ -552,8 +647,6 @@ if __name__ == "__main__":
     test_timing_v12()
     test_format_v12()
     test_spam_v12()
-    test_compress_quality_v12()
-    test_recall_quality_v12()
     test_silent_quality_v12()
     test_trajectory_outcome_v124_single_question()
     test_trajectory_outcome_v124_multi_question_mixed()
@@ -567,6 +660,8 @@ if __name__ == "__main__":
     test_recipe_reward_gates_positive_auxiliary_on_correct_answer()
     test_recipe_reward_keeps_negative_auxiliary_when_answer_wrong()
     test_recipe_reward_allows_auxiliary_when_answer_correct()
+    test_recipe_reward_scales_auxiliary_on_partial_outcome()
+    test_recipe_multi_q_reward_gates_each_question_independently()
     test_silent_quality_v12_complements_outcome()
     test_v12_advantage_aggregation()
     print("\n✅ all v12.0 reward smoke tests passed")

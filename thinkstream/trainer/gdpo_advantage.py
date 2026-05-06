@@ -74,8 +74,10 @@ import torch
 #   2. silent_quality + timing — streaming-specific signals (no industry
 #      analog); these are NOT chunk-level credit assignment, they're
 #      additional outcome dimensions ("when to talk", not just "what to say").
-#      In the verl recipe scorer, positive auxiliary rewards are gated by
-#      answer correctness so wrong answers cannot be rescued by timing/format.
+#      In the verl recipe scorer, positive auxiliary rewards are scaled by
+#      per-question answer correctness so wrong answers cannot be rescued by
+#      timing/format, while partially correct multi-question rollouts still
+#      receive partial auxiliary signal.
 #
 V12_REWARD_DICT_KEYS: tuple = (
     "outcome",          # 0/1 per-question correctness; dominant signal

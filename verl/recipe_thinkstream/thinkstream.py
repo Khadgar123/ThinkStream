@@ -446,29 +446,43 @@ def _safe_list(v: Any) -> list:
 
 
 def _outcome_gate(parts: Dict[str, float]) -> float:
-    """Gate positive shaping rewards on answer correctness.
+    """Scale positive shaping rewards by answer correctness.
 
-    Timing/format/silent/action rewards are useful only after the model can
-    answer correctly. Without this gate, a wrong-but-timely answer can receive
-    positive reward and compete with the outcome signal.
+    Timing/format/silent/action positives should not rescue a wrong answer,
+    but a partially correct multi-question rollout still needs learning
+    signal. Default gate is therefore the clipped outcome in [0, 1], not the
+    old all-or-nothing ``outcome >= 1`` threshold. Set
+    THINKSTREAM_OUTCOME_GATE_MODE=hard to recover the legacy gate.
     """
     try:
-        threshold = float(
-            os.environ.get("THINKSTREAM_OUTCOME_GATE_THRESHOLD", "1.0")
-        )
-    except ValueError:
-        threshold = 1.0
-    return 1.0 if float(parts.get("outcome", 0.0)) >= threshold else 0.0
+        outcome = float(parts.get("outcome", 0.0))
+    except (TypeError, ValueError):
+        outcome = 0.0
+    if outcome != outcome:  # NaN guard.
+        outcome = 0.0
+    outcome = max(0.0, min(1.0, outcome))
+
+    mode = os.environ.get("THINKSTREAM_OUTCOME_GATE_MODE", "soft").strip().lower()
+    if mode in {"hard", "threshold", "legacy"}:
+        try:
+            threshold = float(
+                os.environ.get("THINKSTREAM_OUTCOME_GATE_THRESHOLD", "1.0")
+            )
+        except ValueError:
+            threshold = 1.0
+        return 1.0 if outcome >= threshold else 0.0
+    return outcome
 
 
 def _combine_reward_parts(
     weights: Dict[str, float],
     parts: Dict[str, float],
 ) -> tuple[float, float]:
-    """Combine reward components with correctness-gated positive auxiliaries.
+    """Combine reward components with correctness-scaled positive auxiliaries.
 
-    Negative penalties always apply. Positive non-outcome rewards apply only
-    when outcome crosses the gate threshold.
+    Negative penalties always apply. Positive non-outcome rewards are scaled
+    by the outcome gate so partial correctness receives partial auxiliary
+    credit while wrong answers receive none.
     """
     gate = _outcome_gate(parts)
     outcome_total = float(weights.get("outcome", 0.0) * parts.get("outcome", 0.0))
@@ -482,6 +496,42 @@ def _combine_reward_parts(
         else:
             aux_total += weighted
     return outcome_total + aux_total, gate
+
+
+def _combine_multi_q_reward_parts(
+    weights: Dict[str, float],
+    per_question_parts: List[Dict[str, float]],
+    trajectory_parts: Dict[str, float],
+) -> tuple[float, float, List[float]]:
+    """Combine multi-question rewards at question granularity.
+
+    ``per_question_parts`` contains outcome/timing/silent_quality for each
+    question. Each question gates its own positive auxiliary rewards, then the
+    question scores are averaged. Trajectory-level components such as format
+    and spam are applied once: positive trajectory auxiliaries are scaled by
+    the mean per-question gate, while negative penalties always apply.
+    """
+    if not per_question_parts:
+        total, gate = _combine_reward_parts(weights, trajectory_parts)
+        return total, gate, []
+
+    per_question_scores: List[float] = []
+    per_question_gates: List[float] = []
+    for q_parts in per_question_parts:
+        q_score, q_gate = _combine_reward_parts(weights, q_parts)
+        per_question_scores.append(q_score)
+        per_question_gates.append(q_gate)
+
+    total = sum(per_question_scores) / len(per_question_scores)
+    gate = sum(per_question_gates) / len(per_question_gates)
+
+    for key, value in trajectory_parts.items():
+        weighted = float(weights.get(key, 0.0) * value)
+        if weighted > 0:
+            total += gate * weighted
+        else:
+            total += weighted
+    return total, gate, per_question_scores
 
 
 def _score_one_question(
@@ -753,6 +803,7 @@ def _compute_score_multi_q(
     per_q_outcome: List[float] = []
     per_q_timing: List[float] = []
     per_q_silent: List[float] = []
+    per_q_parts: List[Dict[str, float]] = []
     n_answered = 0
     for q_idx, q in enumerate(questions):
         answer_events = per_q_answers[q_idx]
@@ -772,6 +823,11 @@ def _compute_score_multi_q(
         per_q_outcome.append(sub["outcome"])
         per_q_timing.append(sub["timing"])
         per_q_silent.append(sub["silent_quality"])
+        per_q_parts.append({
+            "outcome": float(sub["outcome"]),
+            "timing": float(sub["timing"]),
+            "silent_quality": float(sub["silent_quality"]),
+        })
         if sub["answered"] > 0:
             n_answered += 1
 
@@ -802,7 +858,11 @@ def _compute_score_multi_q(
         "spam": spam,
         "silent_quality": avg_silent,
     }
-    total, gate = _combine_reward_parts(weights, parts)
+    total, gate, per_q_scores = _combine_multi_q_reward_parts(
+        weights,
+        per_q_parts,
+        {"format": fmt, "spam": spam},
+    )
 
     return {
         "score": total,
@@ -812,6 +872,8 @@ def _compute_score_multi_q(
         "n_answered": float(n_answered),
         "per_q_outcome_min": float(min(per_q_outcome)),
         "per_q_outcome_max": float(max(per_q_outcome)),
+        "per_q_reward_min": float(min(per_q_scores)) if per_q_scores else 0.0,
+        "per_q_reward_max": float(max(per_q_scores)) if per_q_scores else 0.0,
     }
 
 

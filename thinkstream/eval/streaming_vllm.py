@@ -728,6 +728,7 @@ def _extract_question_at_chunk_map(raw_sample: Dict) -> Dict[int, str]:
 def _apply_rollout_output(
     runner: _RolloutRunner, output_text: str, tokenizer, *,
     compress_budget: int,
+    step_messages: Optional[List[Dict]] = None,
 ) -> None:
     """Per-chunk state advance + chunk_results append.
 
@@ -767,7 +768,7 @@ def _apply_rollout_output(
                     runner.memory.answer_query(q["question"], answer_text, response_time)
                     break
 
-    runner.chunk_results.append({
+    entry = {
         "chunk_idx": chunk_idx,
         "action": action,
         "think": parsed.get("think", ""),
@@ -783,7 +784,9 @@ def _apply_rollout_output(
         "recall_returned_chunks": [],
         "window_start": chunk_idx * int(AGENT_CHUNK_SEC),
         "window_end": (chunk_idx + 1) * int(AGENT_CHUNK_SEC),
-    })
+        "step_messages": deepcopy(step_messages) if step_messages is not None else None,
+    }
+    runner.chunk_results.append(entry)
 
 
 def streaming_vllm_rollout(
@@ -979,7 +982,13 @@ def streaming_vllm_rollout(
         for r, out, msgs in zip(live_active, outputs, messages_list):
             try:
                 text = out.outputs[0].text
-                _apply_rollout_output(r, text, tokenizer, compress_budget=compress_budget)
+                _apply_rollout_output(
+                    r,
+                    text,
+                    tokenizer,
+                    compress_budget=compress_budget,
+                    step_messages=msgs,
+                )
             except Exception as e:
                 r.error = f"apply:{e}"
                 r.done = True
@@ -1022,7 +1031,7 @@ def streaming_vllm_rollout(
         # recall branch (lines 868-908) to maintain SFT/runtime parity.
         if recall_runners:
             recall_msgs_batch: List[List[Dict]] = []
-            recall_meta: List[Tuple[_RolloutRunner, Dict, Optional[Dict]]] = []
+            recall_meta: List[Tuple[_RolloutRunner, Dict, Optional[Dict], List[Dict]]] = []
             for r, first_msgs, first_text in recall_runners:
                 try:
                     parsed = _parse_agent_output(first_text)
@@ -1105,7 +1114,7 @@ def streaming_vllm_rollout(
                     rc_msgs.append({"role": "user", "content": tool_user_content})
 
                     recall_msgs_batch.append(rc_msgs)
-                    recall_meta.append((r, recall_result, recalled_frames))
+                    recall_meta.append((r, recall_result, recalled_frames, rc_msgs))
                 except Exception as e:
                     r.error = f"recall_prep:{e}"
                     r.current_chunk += 1
@@ -1120,20 +1129,22 @@ def streaming_vllm_rollout(
                     ]
                     rc_outputs = llm.generate(rc_inputs, sampling_params=sampling_params)
                 except Exception as e:
-                    for r, _, _ in recall_meta:
+                    for r, _, _, _ in recall_meta:
                         r.error = f"recall_gen:{e}"
                         r.current_chunk += 1
                         if r.current_chunk >= r.max_chunks:
                             r.done = True
                 else:
-                    for (r, recall_result, recalled_frames), rc_out in zip(
+                    for (r, recall_result, recalled_frames, rc_msgs), rc_out in zip(
                         recall_meta, rc_outputs
                     ):
+                        rc_action = ""
                         try:
                             rc_text = rc_out.outputs[0].text
                             rc_parsed = _parse_agent_output(rc_text)
+                            rc_action = rc_parsed.get("action") or "unknown"
                             # Update memory with the final-answer turn
-                            if rc_parsed.get("action") == "response":
+                            if rc_action == "response":
                                 ans = rc_parsed.get("payload", {}).get("response", "")
                                 if ans:
                                     r._record_answer_to_memory(ans, r.current_chunk)
@@ -1165,6 +1176,7 @@ def streaming_vllm_rollout(
                             entry["action"] = rc_parsed.get("action") or "unknown"
                             entry["think"] = rc_parsed.get("think", entry.get("think", ""))
                             entry["payload"] = rc_parsed.get("payload", {})
+                            entry["step_messages"] = deepcopy(rc_msgs)
                             # v12.11 P0.6 fix (2026-05-01): generated_tokens
                             # MUST be ONLY the second-pass tokens. The
                             # previous concat (first + second) caused the
@@ -1187,7 +1199,7 @@ def streaming_vllm_rollout(
                         r.current_chunk += 1
                         if r.current_chunk >= r.max_chunks:
                             r.done = True
-                        elif rc_parsed.get("action") == "response" and chunk_idx >= r.ask_chunk:
+                        elif rc_action == "response" and chunk_idx >= r.ask_chunk:
                             r.done = True
 
     # ── Group runners back: per-sample list of G trajectories ──
