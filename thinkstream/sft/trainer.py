@@ -216,7 +216,7 @@ class WeightedSFTTrainer(Trainer):
             "loss": float(loss.detach().item()) if torch.is_tensor(loss) else float(loss),
         }
         if per_sample_loss is not None:
-            psl = per_sample_loss.float().cpu()
+            psl = per_sample_loss.detach().float().cpu()
             step_record["per_sample_loss"] = {
                 "mean": float(psl.mean()),
                 "min": float(psl.min()),
