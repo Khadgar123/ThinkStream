@@ -179,24 +179,39 @@ class WeightedSFTTrainer(Trainer):
         """
         shift_logits = logits[..., :-1, :].contiguous()
         shift_labels = labels[..., 1:].contiguous()
-        vocab = shift_logits.size(-1)
-        loss_fct = torch.nn.CrossEntropyLoss(
+        valid = shift_labels.ne(IGNORE_INDEX)
+        if not valid.any():
+            return torch.zeros(
+                labels.size(0),
+                device=logits.device,
+                dtype=logits.dtype,
+            )
+
+        valid_index = valid.nonzero(as_tuple=False)
+        sample_index = valid_index[:, 0]
+        flat_logits = shift_logits[valid]
+        flat_labels = shift_labels[valid]
+        flat_loss = torch.nn.functional.cross_entropy(
+            flat_logits,
+            flat_labels,
             reduction="none",
-            ignore_index=IGNORE_INDEX,
         )
-        token_loss = loss_fct(
-            shift_logits.view(-1, vocab),
-            shift_labels.view(-1),
-        ).view_as(shift_labels)
-        valid = shift_labels.ne(IGNORE_INDEX).float()
         if token_loss_weight is not None:
             tw = token_loss_weight[..., 1:].to(
-                device=token_loss.device,
-                dtype=token_loss.dtype,
+                device=flat_loss.device,
+                dtype=flat_loss.dtype,
             )
-            valid = valid * tw
-        denom = valid.sum(dim=-1).clamp_min(1.0)
-        return (token_loss * valid).sum(dim=-1) / denom
+            flat_weight = tw[valid]
+            flat_loss = flat_loss * flat_weight
+        else:
+            flat_weight = torch.ones_like(flat_loss)
+
+        batch = labels.size(0)
+        loss_sum = torch.zeros(batch, device=flat_loss.device, dtype=flat_loss.dtype)
+        denom = torch.zeros(batch, device=flat_loss.device, dtype=flat_loss.dtype)
+        loss_sum = loss_sum.scatter_add(0, sample_index, flat_loss)
+        denom = denom.scatter_add(0, sample_index, flat_weight)
+        return loss_sum / denom.clamp_min(1.0)
 
     def _write_sft_audit(
         self, *, loss, per_sample_loss, sample_weights, token_loss_weight,
