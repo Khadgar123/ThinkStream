@@ -85,6 +85,30 @@ class DataArguments:
             "when intentionally studying failure modes."
         },
     )
+    class_loss_target_ratios: Optional[str] = field(
+        default=None,
+        metadata={
+            "help": "Optional comma-separated sample_type target distribution, "
+            "e.g. 'silent=0.35,response=0.25,recall=0.25,compress=0.15'. "
+            "When set, rows remain unique and per-sample weights are assigned "
+            "as w=(target/observed)^alpha normalized to mean 1."
+        },
+    )
+    class_loss_alpha: float = field(
+        default=1.0,
+        metadata={
+            "help": "Strength for class_loss_target_ratios. 1.0 fully matches "
+            "the target effective distribution; 0.5 is a softer correction; "
+            "0 disables class weighting."
+        },
+    )
+    class_loss_max_weight: float = field(
+        default=8.0,
+        metadata={
+            "help": "Clamp per-class sample weights to this maximum before "
+            "renormalizing. Set <=0 to disable clamping."
+        },
+    )
     require_pre_extracted_frames: bool = field(
         default=True,
         metadata={

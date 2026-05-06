@@ -69,9 +69,7 @@ def expected_v12_kind_for_eval(
 class WeightedSFTTrainer(Trainer):
     """HF Trainer subclass with audit logging + per-class eval metrics.
 
-    Vanilla CE on assistant tokens (DeepEyesV2 / Qwen-VL official convention).
-    No per-class loss reweighting, no class-balanced sampler — uniform on
-    the trajectory's natural sample distribution.
+    Assistant-span CE with optional per-sample class reweighting.
     """
 
     def __init__(self, *args, **kwargs):
@@ -96,11 +94,8 @@ class WeightedSFTTrainer(Trainer):
         return 0
 
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
-        # Vanilla CE on assistant tokens (DeepEyesV2 / Qwen-VL official
-        # convention). No per-class re-weighting; data is balanced enough
-        # that uniform weight + standard sampler is sufficient.
-        sample_weights = inputs.pop("sample_weights", None)  # ignored (always 1.0)
-        token_loss_weight = inputs.pop("token_loss_weight", None)  # ignored (uniform)
+        sample_weights = inputs.pop("sample_weights", None)
+        token_loss_weight = inputs.pop("token_loss_weight", None)
         sample_meta = inputs.pop("sample_meta", None)
         eval_meta = inputs.pop("eval_meta", None)
         # Keep input_ids handy for argmax-vs-gold accumulation during eval
@@ -109,6 +104,22 @@ class WeightedSFTTrainer(Trainer):
         outputs = model(**inputs)
         loss = outputs.loss
         per_sample_loss_for_audit = None
+
+        if self.model.training and inputs.get("labels") is not None:
+            per_sample_loss_for_audit = self._per_sample_ce_loss(
+                outputs.logits,
+                inputs["labels"],
+                token_loss_weight=token_loss_weight,
+            )
+            if sample_weights is not None and sample_weights.numel() > 0:
+                weights = sample_weights.to(
+                    device=per_sample_loss_for_audit.device,
+                    dtype=per_sample_loss_for_audit.dtype,
+                ).view(-1)
+                if weights.numel() == per_sample_loss_for_audit.numel():
+                    loss = (
+                        per_sample_loss_for_audit * weights
+                    ).sum() / weights.sum().clamp_min(1e-6)
 
         # ── Eval-time accuracy accumulation (teacher-forced argmax) ──
         # Done before audit because audit guard requires model.training=True
@@ -159,6 +170,33 @@ class WeightedSFTTrainer(Trainer):
                 _logging.getLogger(__name__).debug("audit log skipped: %s", e)
 
         return (loss, outputs) if return_outputs else loss
+
+    def _per_sample_ce_loss(self, logits, labels, token_loss_weight=None):
+        """Mean assistant-token CE per sample.
+
+        Class weights are applied after this average so long assistant
+        responses do not dominate merely because they have more tokens.
+        """
+        shift_logits = logits[..., :-1, :].contiguous()
+        shift_labels = labels[..., 1:].contiguous()
+        vocab = shift_logits.size(-1)
+        loss_fct = torch.nn.CrossEntropyLoss(
+            reduction="none",
+            ignore_index=IGNORE_INDEX,
+        )
+        token_loss = loss_fct(
+            shift_logits.view(-1, vocab),
+            shift_labels.view(-1),
+        ).view_as(shift_labels)
+        valid = shift_labels.ne(IGNORE_INDEX).float()
+        if token_loss_weight is not None:
+            tw = token_loss_weight[..., 1:].to(
+                device=token_loss.device,
+                dtype=token_loss.dtype,
+            )
+            valid = valid * tw
+        denom = valid.sum(dim=-1).clamp_min(1.0)
+        return (token_loss * valid).sum(dim=-1) / denom
 
     def _write_sft_audit(
         self, *, loss, per_sample_loss, sample_weights, token_loss_weight,

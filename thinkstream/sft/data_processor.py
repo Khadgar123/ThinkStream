@@ -18,6 +18,7 @@ import os
 import random
 import logging
 import time
+from collections import Counter
 from dataclasses import dataclass
 from typing import Dict, Optional, Sequence, List, Any
 from pathlib import Path
@@ -122,6 +123,63 @@ def _estimate_sample_tokens(sample: Dict) -> int:
         n_frames += rf.get("n_frames", 0)
     visual_tokens = n_frames * _VIS_TOK_PER_FRAME
     return text_tokens + visual_tokens
+
+
+def _parse_ratio_spec(spec: Optional[str]) -> Dict[str, float]:
+    if not spec:
+        return {}
+    ratios: Dict[str, float] = {}
+    for part in spec.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        if "=" not in part:
+            raise ValueError(f"Invalid class_loss_target_ratios item: {part!r}")
+        key, value = part.split("=", 1)
+        ratios[key.strip()] = float(value)
+    total = sum(ratios.values())
+    if total <= 0:
+        raise ValueError("class_loss_target_ratios must sum to a positive value")
+    return {k: v / total for k, v in ratios.items()}
+
+
+def _assign_class_loss_weights(samples: List[Dict], data_args) -> None:
+    """Assign normalized class weights after filtering, without resampling."""
+    ratios = _parse_ratio_spec(getattr(data_args, "class_loss_target_ratios", None))
+    alpha = float(getattr(data_args, "class_loss_alpha", 1.0) or 0.0)
+    if not ratios or alpha <= 0 or not samples:
+        for s in samples:
+            s["_sample_weight"] = 1.0
+        return
+
+    counts = Counter(s.get("sample_type", "?") for s in samples)
+    total = sum(counts.values())
+    weights: Dict[str, float] = {}
+    max_weight = float(getattr(data_args, "class_loss_max_weight", 8.0) or 0.0)
+    for stype, n in counts.items():
+        observed = n / total
+        target = ratios.get(stype, observed)
+        w = (target / observed) ** alpha if observed > 0 else 1.0
+        if max_weight > 0:
+            w = min(w, max_weight)
+        weights[stype] = w
+
+    mean_w = sum((counts[k] / total) * weights[k] for k in counts)
+    if mean_w <= 0:
+        mean_w = 1.0
+    for k in list(weights):
+        weights[k] /= mean_w
+    for s in samples:
+        s["_sample_weight"] = float(weights.get(s.get("sample_type", "?"), 1.0))
+
+    rank0_print(
+        "Class loss weights:",
+        {k: round(weights[k], 4) for k in sorted(weights)},
+        "observed:",
+        {k: round(counts[k] / total, 4) for k in sorted(counts)},
+        "target:",
+        {k: round(ratios.get(k, counts[k] / total), 4) for k in sorted(counts)},
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -915,6 +973,8 @@ class PerTimestepDataset(Dataset):
             all_samples = rng.sample(all_samples, max_samples)
             rank0_print(f"  Subsampled eval set to {max_samples}")
 
+        _assign_class_loss_weights(all_samples, data_args)
+
         rank0_print(f"Total samples: {len(all_samples)}")
 
         processor = update_processor_pixels(processor, data_args)
@@ -1018,6 +1078,10 @@ class PerTimestepDataset(Dataset):
             "sequence_type": sample.get("sequence_type"),
             "base_role": sample.get("base_role"),
         }
+        data_dict["sample_weights"] = torch.tensor(
+            float(sample.get("_sample_weight", 1.0)),
+            dtype=torch.float32,
+        )
 
         return data_dict
 
@@ -1098,6 +1162,13 @@ class PerTimestepDataCollator:
         }
         if token_loss_weight is not None:
             batch["token_loss_weight"] = token_loss_weight
+
+        sample_weights = [
+            inst["sample_weights"].reshape(()) for inst in instances
+            if "sample_weights" in inst
+        ]
+        if len(sample_weights) == len(instances):
+            batch["sample_weights"] = torch.stack(sample_weights).float()
 
         # Concatenate vision tensors
         videos = [inst["pixel_values_videos"] for inst in instances

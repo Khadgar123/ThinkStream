@@ -47,6 +47,12 @@
 #               - True keeps verifier-failed samples instead of dropping them.
 #   MAX_SAMPLE_TOKENS
 #               - Overlong filter threshold. Set 0 to disable token filtering.
+#   CLASS_LOSS_TARGET_RATIOS
+#               - Optional sample_type target ratios, e.g.
+#                 silent=0.35,response=0.25,recall=0.25,compress=0.15.
+#                 Uses weighted loss instead of physically duplicating rows.
+#   CLASS_LOSS_ALPHA / CLASS_LOSS_MAX_WEIGHT
+#               - Reweighting strength and clamp.
 #   THINKSTREAM_ENV
 #               - Conda/venv path for SFT. Defaults to the local
 #                 envs/thinkstream env when present, so bare shell launches do
@@ -99,6 +105,9 @@ fi
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
 INCLUDE_FAILED_VERIFICATION="${INCLUDE_FAILED_VERIFICATION:-False}"
 MAX_SAMPLE_TOKENS="${MAX_SAMPLE_TOKENS:-12000}"
+CLASS_LOSS_TARGET_RATIOS="${CLASS_LOSS_TARGET_RATIOS:-}"
+CLASS_LOSS_ALPHA="${CLASS_LOSS_ALPHA:-1.0}"
+CLASS_LOSS_MAX_WEIGHT="${CLASS_LOSS_MAX_WEIGHT:-8.0}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 if [[ -z "${THINKSTREAM_FINAL_DIR:-}" ]]; then
     if [[ -d "${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}" ]]; then
@@ -156,6 +165,11 @@ case $PHASE in
         if [ -n "${MAX_STEPS:-}" ]; then
             extra_args="${extra_args} --max_steps ${MAX_STEPS}"
         fi
+        if [ -n "${CLASS_LOSS_TARGET_RATIOS}" ]; then
+            extra_args="${extra_args} --class_loss_target_ratios ${CLASS_LOSS_TARGET_RATIOS}"
+        fi
+        extra_args="${extra_args} --class_loss_alpha ${CLASS_LOSS_ALPHA}"
+        extra_args="${extra_args} --class_loss_max_weight ${CLASS_LOSS_MAX_WEIGHT}"
         ;;
     mixed|1|2|C1)
         # v12.6: legacy PHASEs (mixed, 1, 2, C1) are gated. They pointed at
@@ -193,6 +207,8 @@ echo "Final:    ${THINKSTREAM_FINAL_DIR}"
 echo "Protocol: ${FRAME_PROTOCOL}"
 echo "Include failed verification: ${INCLUDE_FAILED_VERIFICATION}"
 echo "Max sample tokens: ${MAX_SAMPLE_TOKENS}"
+echo "Class loss target ratios: ${CLASS_LOSS_TARGET_RATIOS:-none}"
+echo "Class loss alpha: ${CLASS_LOSS_ALPHA}"
 echo "LR:       ${lr}"
 echo "Epochs:   ${epochs}"
 echo "Output:   ${output_dir}"
