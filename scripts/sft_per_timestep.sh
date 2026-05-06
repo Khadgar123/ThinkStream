@@ -45,9 +45,12 @@
 #               - ts_image | video_meta. Must match the rendered SFT
 #                 messages and later RL/eval protocol.
 #   INCLUDE_FAILED_VERIFICATION
-#               - True keeps verifier-failed samples instead of dropping them.
+#               - True keeps verifier-failed samples instead of dropping them
+#                 (default). Set False only for strict clean diagnostics.
 #   MAX_SAMPLE_TOKENS
-#               - Overlong filter threshold. Set 0 to disable token filtering.
+#               - Overlong filter threshold. Default 16384 matches
+#                 model_max_length, so batch3 keeps the full rendered SFT set.
+#                 Set 0 to disable token filtering entirely.
 #   CLASS_LOSS_TARGET_RATIOS
 #               - Optional sample_type target ratios, e.g.
 #                 silent=0.35,response=0.25,recall=0.25,compress=0.15.
@@ -110,8 +113,8 @@ if [[ "${AGENT_DATA_ROOT}" == */final ]]; then
     AGENT_DATA_ROOT="$(dirname "${AGENT_DATA_ROOT}")"
 fi
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
-INCLUDE_FAILED_VERIFICATION="${INCLUDE_FAILED_VERIFICATION:-False}"
-MAX_SAMPLE_TOKENS="${MAX_SAMPLE_TOKENS:-12000}"
+INCLUDE_FAILED_VERIFICATION="${INCLUDE_FAILED_VERIFICATION:-True}"
+MAX_SAMPLE_TOKENS="${MAX_SAMPLE_TOKENS:-16384}"
 TORCH_EMPTY_CACHE_STEPS="${TORCH_EMPTY_CACHE_STEPS:-0}"
 CLASS_LOSS_TARGET_RATIOS="${CLASS_LOSS_TARGET_RATIOS:-}"
 CLASS_LOSS_ALPHA="${CLASS_LOSS_ALPHA:-1.0}"
