@@ -26,10 +26,11 @@ RL with high confidence that exploration mass exists for each rare action.
 import argparse
 import json
 import logging
-import re
 from collections import Counter
 from pathlib import Path
 from typing import Dict, List
+
+from thinkstream.data.agent_protocol import parse_agent_output_v12
 
 logger = logging.getLogger(__name__)
 
@@ -46,38 +47,29 @@ DEFAULT_GATES = {
 def classify_emission(output_text: str) -> Dict:
     """Classify a single free-gen output into emission categories.
 
-    Mirrors thinkstream.data.agent_protocol.parse_agent_output_v12 logic but
-    inline to avoid coupling eval script to runtime module changes.
+    Uses the canonical protocol parser so gate metrics and RL format rewards
+    agree on strict recall/compress tool schema.
     """
-    has_think = bool(re.search(r"<think>.*?</think>", output_text, re.DOTALL))
-    answer_match = re.search(r"<answer>(.*?)</answer>", output_text, re.DOTALL)
-    tool_match = re.search(r"<tool_call>(.*?)</tool_call>", output_text, re.DOTALL)
+    parsed = parse_agent_output_v12(output_text or "")
+    if parsed.get("format_error"):
+        return {"category": "format_error", "reason": parsed["format_error"]}
 
-    if answer_match and tool_match:
-        return {"category": "format_error", "reason": "both answer and tool_call"}
-    if not answer_match and not tool_match:
-        return {"category": "format_error", "reason": "no terminal"}
-
-    if answer_match:
-        text = answer_match.group(1).strip()
+    kind = parsed.get("kind")
+    has_think = bool(parsed.get("think"))
+    if kind == "answer":
+        text = parsed.get("answer_text") or ""
         return {
             "category": "answer_silent" if not text else "answer_response",
             "has_think": has_think,
             "text": text,
         }
-
-    # tool_call branch
-    try:
-        tool_obj = json.loads(tool_match.group(1).strip())
-    except (json.JSONDecodeError, ValueError) as e:
-        return {"category": "format_error", "reason": f"json: {e}"}
-
-    name = tool_obj.get("name", "")
-    if name == "recall":
-        return {"category": "tool_recall", "has_think": has_think, "args": tool_obj.get("arguments", {})}
-    if name == "compress":
-        return {"category": "tool_compress", "has_think": has_think, "args": tool_obj.get("arguments", {})}
-    return {"category": "format_error", "reason": f"unknown tool: {name!r}"}
+    tool_obj = parsed.get("tool_call") or {}
+    args = tool_obj.get("arguments", {})
+    if kind == "recall":
+        return {"category": "tool_recall", "has_think": has_think, "args": args}
+    if kind == "compress":
+        return {"category": "tool_compress", "has_think": has_think, "args": args}
+    return {"category": "format_error", "reason": "unknown parsed kind"}
 
 
 def aggregate_gate_metrics(

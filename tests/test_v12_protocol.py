@@ -75,6 +75,24 @@ def test_v12_assistant_content_roundtrip():
     )
     assert "unknown tool" in p["format_error"]
 
+    # format error: recall schema
+    p = parse_agent_output_v12(
+        '<think>x</think><tool_call>{"name":"recall","arguments":{"query":"red apron"}}</tool_call>'
+    )
+    assert p["kind"] == "unknown"
+    assert "recall time_range" in p["format_error"]
+
+    # format error: compress schema
+    p = parse_agent_output_v12(
+        '<think>x</think><tool_call>{"name":"compress","arguments":{"time_range":"4-12","text":"summary"}}</tool_call>'
+    )
+    assert p["kind"] == "unknown"
+    assert "compress time_range" in p["format_error"]
+
+    # format error: extra text outside required skeleton
+    p = parse_agent_output_v12("<think>x</think><answer>red</answer>\nextra")
+    assert "text outside" in p["format_error"]
+
     print("✓ v12_assistant_content_roundtrip")
 
 

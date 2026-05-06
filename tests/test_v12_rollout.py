@@ -230,7 +230,7 @@ def test_default_v12_update_state_recall_call():
     s = _make_state()
     response = (
         '<think>need more context</think>'
-        '<tool_call>{"name": "recall", "arguments": {"query": "earlier scene"}}</tool_call>'
+        '<tool_call>{"name": "recall", "arguments": {"query": "earlier scene", "time_range": "0-2"}}</tool_call>'
     )
     out = default_v12_update_state(s, response, chunk_idx=1)
     assert out.is_active is True

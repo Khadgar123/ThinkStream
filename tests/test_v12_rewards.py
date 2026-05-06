@@ -98,6 +98,17 @@ def test_format_v12():
     # Bad JSON
     assert f(["<think>x</think><tool_call>not json</tool_call>"]) == 0.0
 
+    # Bad tool schemas
+    assert f([
+        '<think>x</think><tool_call>{"name":"recall","arguments":{"query":"q"}}</tool_call>'
+    ]) == 0.0
+    assert f([
+        '<think>x</think><tool_call>{"name":"compress","arguments":{"time_range":"1-5","text":"s"}}</tool_call>'
+    ]) == 0.0
+
+    # Extra text outside the protocol skeleton is not valid format.
+    assert f(["<think>x</think><answer>red</answer>\nextra"]) == 0.0
+
     # Empty
     assert f([]) == 0.0
 

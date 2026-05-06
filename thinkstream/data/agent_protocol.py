@@ -1363,6 +1363,46 @@ def build_assistant_content_v12(
     return "".join(parts)
 
 
+_RECALL_TOOL_TIME_RANGE_RE = re.compile(
+    r"^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$"
+)
+
+
+def _validate_recall_tool_args(args: Any) -> Optional[str]:
+    if not isinstance(args, dict):
+        return "recall arguments must be an object"
+    query = args.get("query")
+    if not isinstance(query, str) or not query.strip():
+        return "recall query must be a non-empty string"
+    time_range = args.get("time_range")
+    if not isinstance(time_range, str):
+        return "recall time_range must be a start-end string"
+    m = _RECALL_TOOL_TIME_RANGE_RE.fullmatch(time_range)
+    if not m:
+        return "recall time_range must match start-end"
+    if float(m.group(2)) <= float(m.group(1)):
+        return "recall time_range end must be greater than start"
+    return None
+
+
+def _validate_compress_tool_args(args: Any) -> Optional[str]:
+    if not isinstance(args, dict):
+        return "compress arguments must be an object"
+    time_range = args.get("time_range")
+    if (
+        not isinstance(time_range, list)
+        or len(time_range) != 2
+        or not all(isinstance(v, (int, float)) for v in time_range)
+    ):
+        return "compress time_range must be a two-number array"
+    if float(time_range[1]) <= float(time_range[0]):
+        return "compress time_range end must be greater than start"
+    text = args.get("text")
+    if not isinstance(text, str) or not text.strip():
+        return "compress text must be a non-empty string"
+    return None
+
+
 def parse_agent_output_v12(output_text: str) -> Dict:
     """Parse v12.0 agent output (think + tool_call|answer).
 
@@ -1386,9 +1426,9 @@ def parse_agent_output_v12(output_text: str) -> Dict:
         "format_error": None,
     }
 
-    think_matches = re.findall(r'<think>(.*?)</think>', output_text, re.DOTALL)
+    think_matches = list(re.finditer(r'<think>(.*?)</think>', output_text, re.DOTALL))
     if len(think_matches) == 1:
-        result["think"] = think_matches[0].strip()
+        result["think"] = think_matches[0].group(1).strip()
         if not result["think"]:
             result["format_error"] = "empty <think> block"
     else:
@@ -1397,14 +1437,14 @@ def parse_agent_output_v12(output_text: str) -> Dict:
             else "multiple <think> blocks"
         )
 
-    answer_matches = re.findall(r'<answer>(.*?)</answer>', output_text, re.DOTALL)
-    tool_matches = re.findall(r'<tool_call>(.*?)</tool_call>', output_text, re.DOTALL)
+    answer_matches = list(re.finditer(r'<answer>(.*?)</answer>', output_text, re.DOTALL))
+    tool_matches = list(re.finditer(r'<tool_call>(.*?)</tool_call>', output_text, re.DOTALL))
     answer_match = (
-        re.search(r'<answer>(.*?)</answer>', output_text, re.DOTALL)
+        answer_matches[0]
         if answer_matches else None
     )
     tool_match = (
-        re.search(r'<tool_call>(.*?)</tool_call>', output_text, re.DOTALL)
+        tool_matches[0]
         if tool_matches else None
     )
 
@@ -1419,6 +1459,27 @@ def parse_agent_output_v12(output_text: str) -> Dict:
         result["format_error"] = "multiple <tool_call> blocks"
         return result
 
+    if (
+        result["format_error"] is None
+        and len(think_matches) == 1
+        and ((answer_match is None) ^ (tool_match is None))
+    ):
+        terminal_match = answer_match or tool_match
+        assert terminal_match is not None
+        think_match = think_matches[0]
+        if think_match.start() > terminal_match.start():
+            result["format_error"] = "terminal block appears before <think>"
+        else:
+            outside = (
+                output_text[:think_match.start()]
+                + output_text[think_match.end():terminal_match.start()]
+                + output_text[terminal_match.end():]
+            )
+            if outside.strip():
+                result["format_error"] = (
+                    "text outside required <think> plus terminal blocks"
+                )
+
     if answer_match:
         result["kind"] = "answer"
         result["answer_text"] = answer_match.group(1).strip()
@@ -1431,15 +1492,28 @@ def parse_agent_output_v12(output_text: str) -> Dict:
             result["format_error"] = f"tool_call JSON parse error: {e}"
             return result
 
+        if not isinstance(tool_obj, dict):
+            result["format_error"] = "tool_call JSON must be an object"
+            return result
+
+        result["tool_call"] = tool_obj
         name = tool_obj.get("name", "")
+        args = tool_obj.get("arguments")
         if name == "recall":
+            schema_error = _validate_recall_tool_args(args)
+            if schema_error:
+                result["format_error"] = schema_error
+                return result
             result["kind"] = "recall"
         elif name == "compress":
+            schema_error = _validate_compress_tool_args(args)
+            if schema_error:
+                result["format_error"] = schema_error
+                return result
             result["kind"] = "compress"
         else:
             result["format_error"] = f"unknown tool name: {name!r}"
             return result
-        result["tool_call"] = tool_obj
         return result
 
     result["format_error"] = "neither <answer> nor <tool_call> emitted"
