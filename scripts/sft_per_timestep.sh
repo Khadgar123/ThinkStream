@@ -27,8 +27,8 @@
 #   PHASE       - sft (recommended) | mixed | 1 | 2 | C1
 #   LLM         - Model path (default: Qwen/Qwen3-VL-8B)
 #   NPROC       - GPUs per node (default: 8)
-#   BSZ         - Per-device batch size (default: 8)
-#   GRAD_ACCUM  - Gradient accumulation steps (default: 1)
+#   BSZ         - Per-device batch size (default: 4)
+#   GRAD_ACCUM  - Gradient accumulation steps (default: 2)
 #   EVAL_STEPS  - Eval frequency in optimizer steps (PHASE=sft, default 50)
 #   EVAL_N      - Subsample size for in-loop eval (PHASE=sft, default 300).
 #                 Set 0 to evaluate the full eval dataset.
@@ -69,14 +69,16 @@
 # Step budget:
 #   effective_batch = BSZ × NPROC × GRAD_ACCUM.
 #   PHASE=sft default keeps exposure moderate for the v12 messages corpus:
-#   2 epochs at effective_batch=64. Set MAX_STEPS to cap very large batches.
+#   2 epochs at effective_batch=64. BSZ=4 avoids the video_meta CE-logits OOM
+#   seen with 32-frame prompts on 8×96GB H20 while preserving the old global
+#   batch through GRAD_ACCUM=2. Set MAX_STEPS to cap very large batches.
 
 set -euo pipefail
 
 PHASE=${PHASE:-sft}
 NPROC=${NPROC:-8}
-BSZ=${BSZ:-8}
-GRAD_ACCUM=${GRAD_ACCUM:-1}
+BSZ=${BSZ:-4}
+GRAD_ACCUM=${GRAD_ACCUM:-2}
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
