@@ -34,6 +34,7 @@ from .design import (
     Card,
     Placement,
     Sample,
+    SIMPLE_MEMORY_FAMILIES,
     adaptive_q_count,
     assign_recall_noise,
     is_response_kind,
@@ -206,6 +207,7 @@ def aggregate(results: List[Dict]) -> Dict:
     selected_family_count: Counter = Counter()
     selected_by_mech_family: Counter = Counter()
     difficulty_count: Counter = Counter()
+    recall_quality_count: Counter = Counter()
     placements_per_video: List[int] = []
     recall_noise: Counter = Counter()
     silent_then_response_lead: List[int] = []
@@ -259,6 +261,20 @@ def aggregate(results: List[Dict]) -> Dict:
             ok, reason = placement_timing_verdict(card, p)
             if not ok:
                 timing_violations[reason] += 1
+            if p.mechanism == "recall_demo":
+                recall_quality_count["total"] += 1
+                if card.family == "HLD1":
+                    recall_quality_count["unanswerable_family"] += 1
+                if card.family in SIMPLE_MEMORY_FAMILIES:
+                    recall_quality_count["simple_family"] += 1
+                if not p.recall_at:
+                    recall_quality_count["missing_recall_schedule"] += 1
+                if getattr(p, "difficulty_mode", "") == "recall_deep":
+                    recall_quality_count["deep"] += 1
+                elif getattr(p, "difficulty_mode", "") == "recall_mid":
+                    recall_quality_count["mid"] += 1
+                elif getattr(p, "difficulty_mode", "") == "recall_near":
+                    recall_quality_count["near"] += 1
             response_chunks = sorted(
                 int(c) for c, (kind, _value) in p.chunk_actions.items()
                 if kind == "response"
@@ -326,6 +342,22 @@ def aggregate(results: List[Dict]) -> Dict:
         },
         "timing_violations": dict(timing_violations.most_common()),
         "ask_answer_violations": dict(ask_answer_violations.most_common()),
+    }
+    total_selected = sum(mech_count.values())
+    recall_total = recall_quality_count.get("total", 0)
+    out["recall_quality"] = {
+        "recall_questions": recall_total,
+        "total_questions": total_selected,
+        "recall_question_pct": round(recall_total / max(total_selected, 1) * 100, 1),
+        "non_recall_question_pct": round((total_selected - recall_total) / max(total_selected, 1) * 100, 1),
+        "unanswerable_family_recall": recall_quality_count.get("unanswerable_family", 0),
+        "simple_family_recall": recall_quality_count.get("simple_family", 0),
+        "missing_recall_schedule": recall_quality_count.get("missing_recall_schedule", 0),
+        "by_depth": {
+            "near": recall_quality_count.get("near", 0),
+            "mid": recall_quality_count.get("mid", 0),
+            "deep": recall_quality_count.get("deep", 0),
+        },
     }
 
     # ── 4. Per-video AND per-trajectory silent rate ──────────────────────
@@ -399,6 +431,38 @@ def aggregate(results: List[Dict]) -> Dict:
     }
 
     return out
+
+
+def assert_quality(
+    agg: Dict,
+    *,
+    min_recall_question_pct: float = 35.0,
+    max_recall_question_pct: float = 93.0,
+) -> List[str]:
+    """Return simulation quality failures for pass3 placement/render logic."""
+    failures: List[str] = []
+    mech = agg.get("mechanism", {})
+    recall = agg.get("recall_quality", {})
+    if (mech.get("overlap_violations") or {}).get("n", 0):
+        failures.append("overlapping question chunks")
+    if mech.get("timing_violations"):
+        failures.append(f"timing violations: {mech.get('timing_violations')}")
+    if mech.get("ask_answer_violations"):
+        failures.append(f"ask/answer violations: {mech.get('ask_answer_violations')}")
+    if recall.get("unanswerable_family_recall", 0):
+        failures.append("HLD/unanswerable selected as recall_demo")
+    if recall.get("missing_recall_schedule", 0):
+        failures.append("recall_demo placement without recall_at schedule")
+    pct = float(recall.get("recall_question_pct", 0.0))
+    if pct < min_recall_question_pct:
+        failures.append(
+            f"recall question ratio too low: {pct:.1f}% < {min_recall_question_pct:.1f}%"
+        )
+    if pct > max_recall_question_pct:
+        failures.append(
+            f"recall question ratio too high: {pct:.1f}% > {max_recall_question_pct:.1f}%"
+        )
+    return failures
 
 
 def _stats(xs: List[int]) -> Dict:
@@ -557,6 +621,15 @@ def print_report(agg: Dict, n_videos: int) -> None:
         pct = mech["by_selected_family_pct"].get(fam, 0)
         print(f"    {fam:5s} {n:5d}  {pct:5.1f}%")
     print()
+    rq = agg.get("recall_quality", {})
+    print("  Recall quality:")
+    print(f"    recall questions:       {rq.get('recall_questions', 0)} / "
+          f"{rq.get('total_questions', 0)} ({rq.get('recall_question_pct', 0.0)}%)")
+    print(f"    non-recall questions:   {rq.get('non_recall_question_pct', 0.0)}%")
+    print(f"    unanswerable recall:    {rq.get('unanswerable_family_recall', 0)}")
+    print(f"    missing recall_at:      {rq.get('missing_recall_schedule', 0)}")
+    print(f"    recall depth:           {rq.get('by_depth', {})}")
+    print()
     print("  Placement integrity:")
     print(f"    overlap violations:    {mech['overlap_violations']['n']}")
     print(f"    timing violations:     {mech['timing_violations']}")
@@ -617,6 +690,10 @@ def main():
                     help="Limit videos for quick test. 0 = all.")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--save-json", type=Path, default=None)
+    ap.add_argument("--assert-quality", action="store_true",
+                    help="Exit nonzero if pass3 simulation violates recall/action integrity gates.")
+    ap.add_argument("--min-recall-question-pct", type=float, default=35.0)
+    ap.add_argument("--max-recall-question-pct", type=float, default=93.0)
     args = ap.parse_args()
 
     evidence_files = sorted(args.evidence_dir.glob("*.json"))
@@ -666,6 +743,18 @@ def main():
     print(f"Aggregating {len(results)} videos…", file=sys.stderr)
     agg = aggregate(results)
     print_report(agg, n_videos=len(results))
+    if args.assert_quality:
+        failures = assert_quality(
+            agg,
+            min_recall_question_pct=args.min_recall_question_pct,
+            max_recall_question_pct=args.max_recall_question_pct,
+        )
+        if failures:
+            print("\nQUALITY ASSERTION FAILED:", file=sys.stderr)
+            for f in failures:
+                print(f"  - {f}", file=sys.stderr)
+            sys.exit(2)
+        print("\nQuality assertions passed.", file=sys.stderr)
 
     if args.save_json:
         # Strip dataclasses for serialization

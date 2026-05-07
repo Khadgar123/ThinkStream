@@ -9,6 +9,10 @@ rollout state machine mirrors thinkstream.eval.streaming_vllm:
 * live trajectories are batched into one vLLM generate call;
 * system compress is an inter-chunk turn and does not consume the video chunk;
 * recall is a same-chunk two-turn tool call.
+
+Use --correction-only for the stage-2 SFT dataset. It emits only states where
+the policy made a targetable mistake such as repeated think, missed compress,
+missed recall, missed response, wrong response, or early answer.
 """
 
 from __future__ import annotations
@@ -29,6 +33,7 @@ sys.path.insert(0, str(ROOT))
 from transformers import AutoTokenizer
 
 from scripts.agent_data_v5.build_dagger_sft import (
+    DEFAULT_DAGGER_CORRECTION_REASONS,
     _content_text,
     _default_batch_root,
     _emit_dagger_row,
@@ -38,6 +43,7 @@ from scripts.agent_data_v5.build_dagger_sft import (
     _prompt_has_compress_trigger,
     _propagate_sample_fields,
     _question_meta,
+    _parse_reason_set,
     _resolve_path,
     _resolve_video_path,
 )
@@ -244,6 +250,8 @@ def _emit_entries(
     frame_protocol: str,
     include_failed_targets: bool,
     sample_types: set[str],
+    correction_only: bool,
+    correction_reasons: set[str],
 ) -> None:
     for key, sample in entries:
         wrote = _emit_dagger_row(
@@ -257,6 +265,8 @@ def _emit_entries(
             frame_protocol=frame_protocol,
             include_failed_targets=include_failed_targets,
             sample_types=sample_types,
+            correction_only=correction_only,
+            correction_reasons=correction_reasons,
         )
         if wrote:
             runner.emitted.add(key)
@@ -357,6 +367,8 @@ def build_dagger_vllm(
     frame_protocol: str,
     sample_types: set[str],
     include_failed_targets: bool,
+    correction_only: bool,
+    correction_reasons: set[str],
     max_trajectories: int,
     max_rows: int,
     num_shards: int,
@@ -436,11 +448,13 @@ def build_dagger_vllm(
         "steps": 0,
         "rows": 0,
         "by_type": {},
-            "step_errors": 0,
-            "policy_compress_turns": 0,
-            "visual_retries_after_compress": 0,
-            "recall_step2_blocked": 0,
-        }
+        "by_correction_reason": {},
+        "by_selected_correction_reason": {},
+        "step_errors": 0,
+        "policy_compress_turns": 0,
+        "visual_retries_after_compress": 0,
+        "recall_step2_blocked": 0,
+    }
 
     out.parent.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
@@ -578,6 +592,8 @@ def build_dagger_vllm(
                         frame_protocol=frame_protocol,
                         include_failed_targets=include_failed_targets,
                         sample_types=sample_types,
+                        correction_only=correction_only,
+                        correction_reasons=correction_reasons,
                     )
                     if visual_entries or not compress_entries:
                         if result.get("action") == "compress":
@@ -609,6 +625,8 @@ def build_dagger_vllm(
                         frame_protocol=frame_protocol,
                         include_failed_targets=include_failed_targets,
                         sample_types=sample_types,
+                        correction_only=correction_only,
+                        correction_reasons=correction_reasons,
                     )
                     if compress_entries:
                         stats["skipped"]["compress_target_without_trigger"] = (
@@ -651,6 +669,16 @@ def main() -> None:
     p.add_argument("--frame-protocol", default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta"))
     p.add_argument("--sample-types", default="silent,response,recall,compress")
     p.add_argument("--include-failed-targets", action="store_true")
+    p.add_argument(
+        "--correction-only",
+        action="store_true",
+        help="Emit only rows whose rollout matches selected correction reasons.",
+    )
+    p.add_argument(
+        "--correction-reasons",
+        default=",".join(sorted(DEFAULT_DAGGER_CORRECTION_REASONS)),
+        help="Comma-separated correction reasons; 'default' or 'all' are accepted.",
+    )
     p.add_argument("--max-trajectories", type=int, default=0)
     p.add_argument("--max-rows", type=int, default=0)
     p.add_argument("--num-shards", type=int, default=1)
@@ -668,6 +696,7 @@ def main() -> None:
     args = p.parse_args()
 
     sample_types = {x.strip() for x in args.sample_types.split(",") if x.strip()}
+    correction_reasons = _parse_reason_set(args.correction_reasons)
     if args.shard_index < 0 or args.shard_index >= args.num_shards:
         raise ValueError("--shard-index must be in [0, --num-shards)")
 
@@ -681,6 +710,8 @@ def main() -> None:
         frame_protocol=normalize_frame_protocol(args.frame_protocol),
         sample_types=sample_types,
         include_failed_targets=args.include_failed_targets,
+        correction_only=args.correction_only,
+        correction_reasons=correction_reasons,
         max_trajectories=args.max_trajectories,
         max_rows=args.max_rows,
         num_shards=args.num_shards,
