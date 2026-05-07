@@ -191,11 +191,107 @@ def test_emit_row_correction_only_selects_targeted_errors():
         dagger_mod._emit_row = old_emit
 
 
+def test_dagger_missed_recall_emits_first_turn_only():
+    old_build = dagger_mod._build_dagger_recall_query_messages
+    old_emit = dagger_mod._emit_row
+    try:
+        dagger_mod._build_dagger_recall_query_messages = lambda *a, **k: [
+            {"role": "system", "content": "agent"},
+            {"role": "user", "content": "prompt"},
+            {"role": "assistant", "content": "gold recall"},
+        ]
+        dagger_mod._emit_row = lambda sample, messages, frame_protocol: {
+            "sample_type": sample["sample_type"],
+            "sample_id": "sid",
+            "metadata": {},
+            "messages": messages,
+        }
+        stats = {"rows": 0, "skipped": {}, "by_type": {}}
+        out = StringIO()
+        wrote = dagger_mod._emit_dagger_row(
+            sample=_answer_sample("recall", answer="red apron", chunk_idx=10),
+            onpolicy_prompt=_prompt(memory="only a vague kitchen scene"),
+            result={"action": "silent", "payload": {}, "think": "not enough information"},
+            fout=out,
+            stats=stats,
+            ckpt="ckpt",
+            data_dir=Path("."),
+            frame_protocol="video_meta",
+            include_failed_targets=False,
+            sample_types={"recall"},
+            correction_only=True,
+            correction_reasons={"missed_recall"},
+        )
+        assert wrote is True
+        rows = [json.loads(line) for line in out.getvalue().splitlines()]
+        assert len(rows) == 1
+        assert rows[0]["sft_subtype"] == "dagger_recall_query"
+        assert rows[0]["tool_schema_mode"] == "streaming"
+        assert rows[0]["loss_assistant_turns"] == "all"
+    finally:
+        dagger_mod._build_dagger_recall_query_messages = old_build
+        dagger_mod._emit_row = old_emit
+
+
+def test_dagger_recall_answer_emits_no_tools_last_span_row():
+    old_build = dagger_mod._build_dagger_recall_response_messages
+    old_emit = dagger_mod._emit_row
+    try:
+        dagger_mod._build_dagger_recall_response_messages = lambda *a, **k: [
+            {"role": "system", "content": "agent"},
+            {"role": "user", "content": "prompt"},
+            {"role": "assistant", "content": "student recall"},
+            {"role": "user", "content": "recall result"},
+            {"role": "assistant", "content": "gold answer"},
+        ]
+        dagger_mod._emit_row = lambda sample, messages, frame_protocol: {
+            "sample_type": sample["sample_type"],
+            "sample_id": "sid",
+            "metadata": {},
+            "messages": messages,
+        }
+        stats = {"rows": 0, "skipped": {}, "by_type": {}}
+        out = StringIO()
+        wrote = dagger_mod._emit_dagger_row(
+            sample=_answer_sample("recall", answer="red apron", chunk_idx=10),
+            onpolicy_prompt=_prompt(memory="only a vague kitchen scene"),
+            result={
+                "action": "recall",
+                "final_action": "silent",
+                "payload": {"query": {"query": "apron", "time_range": "0-8"}},
+                "final_payload": {},
+                "think": "I need the earlier visual detail",
+                "recall_messages": [{"role": "system", "content": "agent"}],
+                "recall_result": {"returned_chunks": [10]},
+            },
+            fout=out,
+            stats=stats,
+            ckpt="ckpt",
+            data_dir=Path("."),
+            frame_protocol="video_meta",
+            include_failed_targets=False,
+            sample_types={"recall"},
+            correction_only=True,
+            correction_reasons={"missed_response"},
+        )
+        assert wrote is True
+        rows = [json.loads(line) for line in out.getvalue().splitlines()]
+        assert len(rows) == 1
+        assert rows[0]["sft_subtype"] == "dagger_recall_answer"
+        assert rows[0]["tool_schema_mode"] == "recall_response"
+        assert rows[0]["loss_assistant_turns"] == "last"
+    finally:
+        dagger_mod._build_dagger_recall_response_messages = old_build
+        dagger_mod._emit_row = old_emit
+
+
 def main() -> None:
     test_missed_compress_and_bad_range()
     test_missed_recall_checks_student_prompt_answer_visibility()
     test_early_answer_and_repeated_think()
     test_emit_row_correction_only_selects_targeted_errors()
+    test_dagger_missed_recall_emits_first_turn_only()
+    test_dagger_recall_answer_emits_no_tools_last_span_row()
     print("PASS test_dagger_corrections")
 
 

@@ -541,16 +541,30 @@ class WeightedSFTTrainer(Trainer):
                 # data_processor.py:eval_meta now exposes "ans_spans" (list
                 # of (start, end) tuples). Fall back to single-span tuple
                 # for backward compat with older cached eval batches.
-                ans_spans = meta.get("ans_spans")
-                if not ans_spans:
+                all_ans_spans = meta.get("ans_spans")
+                if not all_ans_spans:
                     ans_start = meta.get("ans_start")
                     ans_end = meta.get("ans_end")
-                    ans_spans = (
+                    all_ans_spans = (
                         [(ans_start, ans_end)]
                         if ans_start is not None and ans_end is not None
                         else []
                     )
-                for turn_idx, (ans_start, ans_end) in enumerate(ans_spans):
+                metric_spans = meta.get("loss_ans_spans") or all_ans_spans
+                turn_indices = meta.get("loss_assistant_turn_indices")
+                if not turn_indices:
+                    turn_indices = list(range(len(metric_spans)))
+                n_turns = int(
+                    meta.get("n_assistant_turns")
+                    or len(all_ans_spans)
+                    or len(metric_spans)
+                )
+                for local_idx, (ans_start, ans_end) in enumerate(metric_spans):
+                    turn_idx = (
+                        int(turn_indices[local_idx])
+                        if local_idx < len(turn_indices)
+                        else local_idx
+                    )
                     if ans_start is None or ans_end is None:
                         continue
                     s = max(1, int(ans_start))   # logits[p-1] predicts pos p
@@ -579,7 +593,7 @@ class WeightedSFTTrainer(Trainer):
                     self._accumulate_v12_behavioral(
                         preds, input_ids, b, s, e, stype,
                         turn_idx=turn_idx,
-                        n_turns=len(ans_spans),
+                        n_turns=n_turns,
                         action=meta.get("action") or meta.get("gold_action", ""),
                     )
 

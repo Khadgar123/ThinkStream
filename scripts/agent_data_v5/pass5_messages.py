@@ -37,8 +37,9 @@ import json
 import logging
 import os
 import re
+from copy import deepcopy
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List, Optional
 
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
@@ -589,6 +590,90 @@ def _emit_row(sample: Dict, messages: List[Dict], *, frame_protocol: str) -> Dic
     }
 
 
+def _with_sft_turn_policy(
+    row: Dict[str, Any],
+    *,
+    tool_schema_mode: str,
+    loss_assistant_turns: str = "all",
+    sft_subtype: str = "",
+    sample_id_suffix: str = "",
+) -> Dict[str, Any]:
+    """Attach row-local tool schema + label-mask policy metadata."""
+    row["tool_schema_mode"] = tool_schema_mode
+    row["loss_assistant_turns"] = loss_assistant_turns
+    if sft_subtype:
+        row["sft_subtype"] = sft_subtype
+        meta = dict(row.get("metadata") or {})
+        meta["sft_subtype"] = sft_subtype
+        meta["loss_assistant_turns"] = loss_assistant_turns
+        row["metadata"] = meta
+    if sample_id_suffix:
+        sid = str(row.get("sample_id") or "")
+        if sid:
+            row["sample_id"] = f"{sid}:{sample_id_suffix}"
+    return row
+
+
+def _is_recall_multiturn_messages(sample: Dict, messages: List[Dict]) -> bool:
+    return (
+        sample.get("sample_type") == "recall"
+        and "v12_assistant_turn_1" in sample
+        and "v12_assistant_turn_2" in sample
+        and len(messages) >= 5
+        and messages[2].get("role") == "assistant"
+        and messages[3].get("role") == "user"
+        and messages[4].get("role") == "assistant"
+    )
+
+
+def build_sft_rows(
+    sample: Dict,
+    messages: List[Dict],
+    *,
+    frame_protocol: str,
+) -> List[Dict]:
+    """Return one or more runtime-aligned SFT rows for a rendered sample.
+
+    Qwen's chat template renders tools at the conversation level for a single
+    apply_chat_template call. A multi-turn recall row therefore cannot train
+    both the recall tool call and the post-recall answer in one sample without
+    leaking recall tools into the second assistant turn. Split it:
+      - recall_query: first assistant turn only, recall schema available;
+      - recall_answer: full prefix including recall_result, no tool schema,
+        loss only on the final assistant turn.
+    """
+    if _is_recall_multiturn_messages(sample, messages):
+        first_messages = deepcopy(messages[:3])
+        first_row = _emit_row(sample, first_messages, frame_protocol=frame_protocol)
+        _with_sft_turn_policy(
+            first_row,
+            tool_schema_mode="streaming",
+            loss_assistant_turns="all",
+            sft_subtype="recall_query",
+            sample_id_suffix="recall_query",
+        )
+
+        second_messages = deepcopy(messages)
+        second_row = _emit_row(sample, second_messages, frame_protocol=frame_protocol)
+        _with_sft_turn_policy(
+            second_row,
+            tool_schema_mode="recall_response",
+            loss_assistant_turns="last",
+            sft_subtype="recall_answer",
+            sample_id_suffix="recall_answer",
+        )
+        return [first_row, second_row]
+
+    row = _emit_row(sample, deepcopy(messages), frame_protocol=frame_protocol)
+    _with_sft_turn_policy(
+        row,
+        tool_schema_mode="compress" if sample.get("v12_inter_chunk") else "streaming",
+        loss_assistant_turns="all",
+        sft_subtype=str(sample.get("sample_type") or ""),
+    )
+    return [row]
+
+
 def _sample_rank(sample: Dict, idx: int) -> str:
     key = "|".join([
         str(sample.get("video_id", "")),
@@ -787,10 +872,12 @@ def convert(
                     logger.warning(f"[{src.name}] sample {sid} skipped: {exc}")
                 continue
 
-            row = _emit_row(sample, messages, frame_protocol=frame_protocol)
-            out.write(json.dumps(row, ensure_ascii=False) + "\n")
-            counts["ok"] += 1
-            by_type[row["sample_type"]] = by_type.get(row["sample_type"], 0) + 1
+            for row in build_sft_rows(sample, messages, frame_protocol=frame_protocol):
+                if limit and counts["ok"] >= limit:
+                    break
+                out.write(json.dumps(row, ensure_ascii=False) + "\n")
+                counts["ok"] += 1
+                by_type[row["sample_type"]] = by_type.get(row["sample_type"], 0) + 1
 
     counts["by_type"] = by_type
     if balance_stats:

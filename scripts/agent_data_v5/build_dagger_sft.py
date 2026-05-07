@@ -39,7 +39,11 @@ import torch
 from transformers import AutoTokenizer
 
 from scripts.agent_data_v5.config import AGENT_CHUNK_SEC
-from scripts.agent_data_v5.pass5_messages import build_messages, _emit_row
+from scripts.agent_data_v5.pass5_messages import (
+    build_messages,
+    _emit_row,
+    _with_sft_turn_policy,
+)
 from scripts.eval.ovo.eval_full import detect_model_class, reset_visual_index
 from scripts.eval.processor_loader import load_processor_for_checkpoint
 from thinkstream.data.agent_protocol import (
@@ -439,6 +443,12 @@ def _classify_dagger_corrections(
                 reasons.append("recall_answer_visible_in_policy_prompt")
             else:
                 reasons.append("missed_recall")
+        elif result.get("recall_step2_blocked"):
+            reasons.append("format_error")
+        elif policy_action == "silent" and gold_answer:
+            reasons.append("missed_response")
+        elif policy_action not in {"response", "silent"} and gold_answer:
+            reasons.append("missed_response")
         if policy_action == "response" and gold_answer and policy_answer:
             if not (
                 policy_answer.lower() == gold_answer.lower()
@@ -492,6 +502,123 @@ def _build_dagger_messages(
     return deepcopy(onpolicy_prompt) + deepcopy(gold_messages[2:])
 
 
+def _build_dagger_recall_query_messages(
+    sample: Dict[str, Any],
+    onpolicy_prompt: List[Dict[str, Any]],
+    *,
+    base_path: Path,
+    data_dir: Path,
+    frame_protocol: str,
+) -> List[Dict[str, Any]]:
+    gold_messages = build_messages(
+        sample,
+        base_path,
+        data_dir=data_dir,
+        frame_protocol=frame_protocol,
+    )
+    if len(gold_messages) < 3:
+        raise ValueError("gold recall messages missing first assistant target")
+    if len(onpolicy_prompt) != 2:
+        raise ValueError(f"expected single-step on-policy prompt, got {len(onpolicy_prompt)}")
+    return deepcopy(onpolicy_prompt) + [deepcopy(gold_messages[2])]
+
+
+def _recall_returned_chunks(result: Dict[str, Any]) -> List[int]:
+    rr = result.get("recall_result") or {}
+    raw = rr.get("returned_chunks") or rr.get("chunks") or []
+    out: List[int] = []
+    for x in raw:
+        try:
+            out.append(int(x))
+        except (TypeError, ValueError):
+            continue
+    return sorted(set(out))
+
+
+def _policy_recall_supports_gold(
+    sample: Dict[str, Any],
+    result: Dict[str, Any],
+    recall_messages: List[Dict[str, Any]],
+) -> bool:
+    gold_answer = _gold_answer(sample)
+    if not gold_answer:
+        return True
+    answer_chunks = set(_answer_chunks(sample))
+    returned_chunks = set(_recall_returned_chunks(result))
+    if answer_chunks and returned_chunks:
+        return bool(answer_chunks & returned_chunks)
+    return _answer_visible_in_prompt(gold_answer, recall_messages)
+
+
+def _build_dagger_recall_response_messages(
+    sample: Dict[str, Any],
+    result: Dict[str, Any],
+    *,
+    base_path: Path,
+    data_dir: Path,
+    frame_protocol: str,
+) -> Optional[List[Dict[str, Any]]]:
+    recall_messages = result.get("recall_messages")
+    if not isinstance(recall_messages, list) or len(recall_messages) < 4:
+        return None
+    if not _policy_recall_supports_gold(sample, result, recall_messages):
+        return None
+    gold_messages = build_messages(
+        sample,
+        base_path,
+        data_dir=data_dir,
+        frame_protocol=frame_protocol,
+    )
+    if len(gold_messages) < 5:
+        raise ValueError("gold recall messages missing final assistant target")
+    return deepcopy(recall_messages) + [deepcopy(gold_messages[-1])]
+
+
+def _attach_dagger_metadata(
+    row: Dict[str, Any],
+    *,
+    ckpt: str,
+    result: Dict[str, Any],
+    prompt_is_compress: bool,
+    correction_only: bool,
+    reasons: List[str],
+    selected_reasons: List[str],
+    correction_detail: Dict[str, Any],
+    dagger_subtype: str,
+) -> None:
+    row["dagger"] = {
+        "policy_ckpt": ckpt,
+        "rollout_action": result.get("action", ""),
+        "rollout_final_action": result.get("final_action", ""),
+        "rollout_format_ok": bool(result.get("format_ok", True)),
+        "rollout_action_space_error": result.get("action_space_error", ""),
+        "rollout_inter_chunk_compress_prompt": bool(prompt_is_compress),
+        "memory_token_count": result.get("memory_token_count"),
+        "prompt_text_token_count": result.get("prompt_text_token_count"),
+        "correction_only": bool(correction_only),
+        "correction_reasons": reasons,
+        "selected_correction_reasons": selected_reasons,
+        "correction_detail": correction_detail,
+        "dagger_subtype": dagger_subtype,
+    }
+
+
+def _write_dagger_row(
+    row: Dict[str, Any],
+    *,
+    fout,
+    stats: Dict[str, Any],
+    selected_reasons: List[str],
+) -> None:
+    fout.write(json.dumps(row, ensure_ascii=False) + "\n")
+    stats["rows"] += 1
+    st = row.get("sample_type", "")
+    stats["by_type"][st] = stats["by_type"].get(st, 0) + 1
+    for r in selected_reasons:
+        bucket = stats.setdefault("by_selected_correction_reason", {})
+        bucket[r] = bucket.get(r, 0) + 1
+
+
 def _emit_dagger_row(
     *,
     sample: Dict[str, Any],
@@ -535,7 +662,101 @@ def _emit_dagger_row(
             stats["skipped"][key] = stats["skipped"].get(key, 0) + 1
         return False
 
+    prompt_is_compress = _prompt_has_compress_trigger(onpolicy_prompt)
+    rows_written = 0
+
     try:
+        if sample.get("sample_type") == "recall":
+            first_action = str(result.get("action") or "")
+            first_reasons = {"missed_recall", "repeated_or_stale_think"}
+            first_needs = (
+                not correction_only
+                or bool(set(selected_reasons) & first_reasons)
+                or first_action in {"unknown", "invalid"}
+                or bool(result.get("action_space_error"))
+            )
+            second_needs = (
+                (not correction_only or bool(set(selected_reasons) & {"missed_response", "wrong_response"}))
+                and first_action == "recall"
+            ) or bool(result.get("recall_step2_blocked"))
+
+            if first_needs:
+                messages = _build_dagger_recall_query_messages(
+                    sample,
+                    onpolicy_prompt,
+                    base_path=ROOT,
+                    data_dir=data_dir,
+                    frame_protocol=frame_protocol,
+                )
+                row = _emit_row(sample, messages, frame_protocol=frame_protocol)
+                _with_sft_turn_policy(
+                    row,
+                    tool_schema_mode="streaming",
+                    loss_assistant_turns="all",
+                    sft_subtype="dagger_recall_query",
+                    sample_id_suffix="dagger_recall_query",
+                )
+                _attach_dagger_metadata(
+                    row,
+                    ckpt=ckpt,
+                    result=result,
+                    prompt_is_compress=prompt_is_compress,
+                    correction_only=correction_only,
+                    reasons=reasons,
+                    selected_reasons=selected_reasons,
+                    correction_detail=correction_detail,
+                    dagger_subtype="recall_query",
+                )
+                _write_dagger_row(
+                    row, fout=fout, stats=stats, selected_reasons=selected_reasons,
+                )
+                rows_written += 1
+
+            if second_needs:
+                messages = _build_dagger_recall_response_messages(
+                    sample,
+                    result,
+                    base_path=ROOT,
+                    data_dir=data_dir,
+                    frame_protocol=frame_protocol,
+                )
+                if messages is None:
+                    stats["skipped"]["recall_response_unsupported_policy_recall"] = (
+                        stats["skipped"].get("recall_response_unsupported_policy_recall", 0) + 1
+                    )
+                else:
+                    row = _emit_row(sample, messages, frame_protocol=frame_protocol)
+                    _with_sft_turn_policy(
+                        row,
+                        tool_schema_mode="recall_response",
+                        loss_assistant_turns="last",
+                        sft_subtype="dagger_recall_answer",
+                        sample_id_suffix="dagger_recall_answer",
+                    )
+                    _attach_dagger_metadata(
+                        row,
+                        ckpt=ckpt,
+                        result=result,
+                        prompt_is_compress=prompt_is_compress,
+                        correction_only=correction_only,
+                        reasons=reasons,
+                        selected_reasons=selected_reasons,
+                        correction_detail=correction_detail,
+                        dagger_subtype="recall_answer",
+                    )
+                    _write_dagger_row(
+                        row, fout=fout, stats=stats, selected_reasons=selected_reasons,
+                    )
+                    rows_written += 1
+
+            if rows_written:
+                return True
+            if correction_only:
+                stats["skipped"]["no_emittable_recall_correction"] = (
+                    stats["skipped"].get("no_emittable_recall_correction", 0) + 1
+                )
+                return False
+
         messages = _build_dagger_messages(
             sample,
             onpolicy_prompt,
@@ -549,28 +770,24 @@ def _emit_dagger_row(
         return False
 
     row = _emit_row(sample, messages, frame_protocol=frame_protocol)
-    prompt_is_compress = _prompt_has_compress_trigger(onpolicy_prompt)
-    row["dagger"] = {
-        "policy_ckpt": ckpt,
-        "rollout_action": result.get("action", ""),
-        "rollout_final_action": result.get("final_action", ""),
-        "rollout_format_ok": bool(result.get("format_ok", True)),
-        "rollout_action_space_error": result.get("action_space_error", ""),
-        "rollout_inter_chunk_compress_prompt": bool(prompt_is_compress),
-        "memory_token_count": result.get("memory_token_count"),
-        "prompt_text_token_count": result.get("prompt_text_token_count"),
-        "correction_only": bool(correction_only),
-        "correction_reasons": reasons,
-        "selected_correction_reasons": selected_reasons,
-        "correction_detail": correction_detail,
-    }
-    fout.write(json.dumps(row, ensure_ascii=False) + "\n")
-    stats["rows"] += 1
-    st = row.get("sample_type", "")
-    stats["by_type"][st] = stats["by_type"].get(st, 0) + 1
-    for r in selected_reasons:
-        bucket = stats.setdefault("by_selected_correction_reason", {})
-        bucket[r] = bucket.get(r, 0) + 1
+    _with_sft_turn_policy(
+        row,
+        tool_schema_mode="compress" if sample.get("v12_inter_chunk") else "streaming",
+        loss_assistant_turns="all",
+        sft_subtype=str(sample.get("sample_type") or ""),
+    )
+    _attach_dagger_metadata(
+        row,
+        ckpt=ckpt,
+        result=result,
+        prompt_is_compress=prompt_is_compress,
+        correction_only=correction_only,
+        reasons=reasons,
+        selected_reasons=selected_reasons,
+        correction_detail=correction_detail,
+        dagger_subtype=str(sample.get("sample_type") or ""),
+    )
+    _write_dagger_row(row, fout=fout, stats=stats, selected_reasons=selected_reasons)
     return True
 
 

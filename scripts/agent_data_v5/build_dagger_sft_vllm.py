@@ -537,6 +537,8 @@ def build_dagger_vllm(
                         r.error = f"recall_prepare:{type(exc).__name__}:{exc}"
                         continue
                     if recall_messages:
+                        result["recall_messages"] = deepcopy(recall_messages)
+                        result["recall_result"] = recall_result
                         recall_active.append((r, result, recall_messages, recall_result))
                 if recall_active:
                     try:

@@ -726,6 +726,50 @@ def _resolve_chat_template_ids(tokenizer) -> tuple:
 
 
 
+def _select_loss_assistant_spans(
+    assistant_spans: List[tuple],
+    loss_spec,
+) -> tuple[List[tuple], List[int]]:
+    """Select assistant spans that should contribute loss for one row."""
+    if loss_spec is None:
+        loss_spec = "all"
+    if isinstance(loss_spec, str):
+        spec = loss_spec.strip().lower()
+        if spec in ("", "all"):
+            return list(assistant_spans), list(range(len(assistant_spans)))
+        if spec == "last":
+            return [assistant_spans[-1]], [len(assistant_spans) - 1]
+        if spec == "first":
+            return [assistant_spans[0]], [0]
+        if spec.isdigit() or (spec.startswith("-") and spec[1:].isdigit()):
+            loss_spec = [int(spec)]
+        else:
+            raise ValueError(f"unknown loss_assistant_turns={loss_spec!r}")
+    elif isinstance(loss_spec, int):
+        loss_spec = [loss_spec]
+
+    if isinstance(loss_spec, (list, tuple)):
+        out: List[tuple] = []
+        indices: List[int] = []
+        n = len(assistant_spans)
+        for raw_idx in loss_spec:
+            idx = int(raw_idx)
+            if idx < 0:
+                idx += n
+            if idx < 0 or idx >= n:
+                raise ValueError(
+                    f"loss assistant turn index {raw_idx!r} out of range for {n} turns"
+                )
+            if idx not in indices:
+                indices.append(idx)
+                out.append(assistant_spans[idx])
+        if not out:
+            raise ValueError("loss_assistant_turns selected no assistant spans")
+        return out, indices
+
+    raise ValueError(f"unsupported loss_assistant_turns={loss_spec!r}")
+
+
 def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     """Tokenize a single SFT sample (messages format) and mask labels.
 
@@ -815,10 +859,11 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
                 pos = ans_end
         pos += 1
 
-    # v12 allows 1 (silent/response/compress) or 2 (multi-turn recall)
-    # assistant turns per sample. Every assistant turn contributes loss=1
-    # (DeepEyesV2 multiturn_sft_dataset.py:170 pattern: gen-prompt prefix
-    # masked, message body trained).
+    # v12 allows 1 (silent/response/compress/recall_query) or 2
+    # (recall_answer full prefix) assistant turns per row. Rows can opt into
+    # a narrower label mask through loss_assistant_turns, e.g. pass5
+    # recall_answer rows use "last" so the previous recall tool_call is
+    # context, not a second target under a no-tools schema.
     if len(assistant_spans) not in {1, 2}:
         sid = sample.get("sample_id") or sample.get("trajectory_id") or "?"
         raise ValueError(
@@ -827,8 +872,14 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
             f"silent/response/compress; 2 turns for recall multi-turn."
         )
 
-    # Unmask all assistant turns (each can have its own [start, end] range).
-    for ans_start, ans_end in assistant_spans:
+    loss_spec = sample.get("loss_assistant_turns")
+    if loss_spec is None:
+        loss_spec = sample.get("loss_assistant_indices")
+    loss_spans, loss_turn_indices = _select_loss_assistant_spans(
+        assistant_spans, loss_spec,
+    )
+
+    for ans_start, ans_end in loss_spans:
         labels[0, ans_start: ans_end + 2] = input_ids[0, ans_start: ans_end + 2]
 
     full_result["labels"] = labels
@@ -847,7 +898,11 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
         "ans_start": ans_start,           # legacy: first span only
         "ans_end": ans_end,
         "ans_spans": list(assistant_spans),  # v12.11: all spans (1 or 2 turns)
+        "loss_ans_spans": list(loss_spans),
+        "loss_assistant_turn_indices": list(loss_turn_indices),
+        "loss_assistant_turns": sample.get("loss_assistant_turns", "all"),
         "n_assistant_turns": len(assistant_spans),
+        "sft_subtype": sample.get("sft_subtype", ""),
     }
     return full_result
 
