@@ -17,6 +17,7 @@ import json
 import logging
 import random
 import re
+import unicodedata
 from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -59,6 +60,7 @@ RECALL_MEMORY_OVERLAP_HARDEN_THRESHOLD = 0.50
 RECALL_MEMORY_OVERLAP_ACCEPT_THRESHOLD = 0.35
 RECALL_SUPPORT_OVERLAP_MIN = 0.40
 RECALL_HARDEN_MAX_ATTEMPTS = 3
+RECALL_HARDEN_CANDIDATES_PER_ATTEMPT = 3
 RECALL_HARDEN_EVIDENCE_LINES = 56
 
 
@@ -76,7 +78,7 @@ def _think_for_chunk(rollout: Dict, chunk_idx: int) -> str:
 
 
 _OPTION_LABEL_RE = re.compile(r"^\s*[A-D][\).]\s*")
-_TOKEN_RE = re.compile(r"[a-z0-9]+")
+_TOKEN_RE = re.compile(r"[^\W_]+", re.UNICODE)
 MC_ANSWER_STYLES = ("letter_only", "letter_plus_text", "text_only")
 _STOPWORDS = {
     "the", "a", "an", "and", "or", "to", "of", "in", "on", "at", "for",
@@ -96,6 +98,11 @@ def _norm_text(text: str) -> str:
     return re.sub(r"\s+", " ", str(text or "").lower()).strip()
 
 
+def _compact_text(text: str) -> str:
+    text = unicodedata.normalize("NFKC", str(text or "")).lower()
+    return "".join(ch for ch in text if ch.isalnum())
+
+
 def _tokens(text: str) -> List[str]:
     return [
         t for t in _TOKEN_RE.findall(_norm_text(text))
@@ -112,7 +119,12 @@ def _token_overlap(answer: str, text: str) -> float:
 
 def _text_contains_answer(answer: str, text: str) -> bool:
     answer_n = _norm_text(answer)
-    return bool(answer_n and len(answer_n) >= 3 and answer_n in _norm_text(text))
+    text_n = _norm_text(text)
+    if answer_n and len(answer_n) >= 3 and answer_n in text_n:
+        return True
+    answer_c = _compact_text(answer)
+    text_c = _compact_text(text)
+    return bool(answer_c and len(answer_c) >= 2 and answer_c in text_c)
 
 
 def _answer_visible_in_text(answer: str, text: str, *, threshold: float) -> bool:
@@ -122,6 +134,16 @@ def _answer_visible_in_text(answer: str, text: str, *, threshold: float) -> bool
         _text_contains_answer(answer, text)
         or _token_overlap(answer, text) >= float(threshold)
     )
+
+
+def _memory_overlap_score(text: str, memory_text: str) -> float:
+    toks = set(_tokens(text))
+    if not toks:
+        return 0.0
+    mem = set(_tokens(memory_text))
+    if not mem:
+        return 0.0
+    return len(toks & mem) / max(len(toks), 1)
 
 
 def _chunk_idx(cap: Dict, fallback: int = -1) -> int:
@@ -186,6 +208,17 @@ def _memory_from_snapshot(snapshot: Dict) -> Dict:
 
 def _memory_text_for_chunk(rollout: Dict, chunk_idx: int) -> str:
     return format_memory_block(_memory_from_snapshot(_snapshot_for_chunk(rollout, chunk_idx)))
+
+
+def _current_context_text_for_chunk(
+    rollout: Dict,
+    chunk_idx: int,
+    *,
+    memory_text: str = "",
+) -> str:
+    """Text visible before a recall tool call at the answer chunk."""
+    parts = [memory_text, _think_for_chunk(rollout, chunk_idx)]
+    return "\n".join(p for p in parts if str(p or "").strip())
 
 
 def _card_answer_text(card: Dict) -> str:
@@ -481,10 +514,10 @@ async def _recall_query_via_llm(card: Dict, client, video_id: str,
     return rq
 
 
-def _parse_json_object(raw: str) -> Dict:
-    """Parse one JSON object, accepting a single-element list wrapper."""
+def _parse_json_candidates(raw: str) -> List[Dict]:
+    """Parse one or more JSON object candidates from an LLM response."""
     if not raw:
-        return {}
+        return []
     text = str(raw).strip()
     if text.startswith("```"):
         text = text.replace("```json", "```", 1)
@@ -504,9 +537,21 @@ def _parse_json_object(raw: str) -> Dict:
         except (json.JSONDecodeError, ValueError, TypeError):
             continue
         if isinstance(parsed, dict):
-            return parsed
-        if isinstance(parsed, list) and parsed and isinstance(parsed[0], dict):
-            return parsed[0]
+            for key in ("candidates", "cards", "items"):
+                wrapped = parsed.get(key)
+                if isinstance(wrapped, list):
+                    return [x for x in wrapped if isinstance(x, dict)]
+            return [parsed]
+        if isinstance(parsed, list):
+            return [x for x in parsed if isinstance(x, dict)]
+    return []
+
+
+def _parse_json_object(raw: str) -> Dict:
+    """Parse one JSON object, accepting a single-element list wrapper."""
+    candidates = _parse_json_candidates(raw)
+    if candidates:
+        return candidates[0]
     return {}
 
 
@@ -515,6 +560,7 @@ def _history_evidence_lines(
     card: Dict,
     current_chunk: int,
     *,
+    memory_text: str = "",
     max_lines: int = RECALL_HARDEN_EVIDENCE_LINES,
 ) -> str:
     """Rich historical evidence pool for replacement recall-card generation.
@@ -542,6 +588,9 @@ def _history_evidence_lines(
         if cap.get("spatial"):
             score += 2
         score += min(len(text) // 160, 4)
+        if memory_text:
+            novelty = 1.0 - _memory_overlap_score(text, memory_text)
+            score += int(max(0.0, novelty) * 24)
         scored.append((score, ci, text))
     scored = sorted(scored, key=lambda x: (-x[0], x[1]))[:max_lines]
     return "\n".join(
@@ -573,8 +622,9 @@ The trajectory slot is fixed and MUST NOT change:
 - question_type: single_emit
 - ask/answer chunk: c{int(current_chunk)}
 
-The current model-visible memory at c{int(current_chunk)} is below. The new
-question must NOT be answerable from this memory:
+The current model-visible context at c{int(current_chunk)} is below, including
+memory summaries and the current visual observation. The new question must NOT
+be answerable from this context:
 <current_memory>
 {memory_text[:7000]}
 </current_memory>
@@ -590,6 +640,8 @@ Generate a replacement card for the same slot.
 Rules:
 - Keep the same family and answer_form. Do not change the ask/answer chunk.
 - The answer must be present in historical_evidence but absent from current_memory.
+- Prefer an answer with at least one specific content word that is not present
+  in current_memory. Avoid generic answers that a strong text memory could infer.
 - Prefer fine visual details, OCR text, object relations, before/after order,
   or cross-event details that compression summaries usually omit.
 - Do not ask a question whose answer is "Unable to answer".
@@ -597,15 +649,19 @@ Rules:
 - grounding_frames must be the minimal historical chunk indices needed to
   verify the answer; every index must appear in historical_evidence and be
   before c{int(current_chunk)}.
-- recall_query.query must contain search keywords only, not the answer value.
+- recall_query.query must contain search keywords only, not the answer value
+  or any correct-option text. Use neutral anchors from the question/event.
 
-Output ONLY one JSON object:
-{{
-  "question": "...",
-  "canonical_answer": "...",{options_doc}
-  "grounding_frames": [int, ...],
-  "recall_query": {{"query": "3-6 keywords", "time_range": "start-end"}}
-}}"""
+Output ONLY a JSON array of {RECALL_HARDEN_CANDIDATES_PER_ATTEMPT} distinct
+candidate objects, best candidate first:
+[
+  {{
+    "question": "...",
+    "canonical_answer": "...",{options_doc}
+    "grounding_frames": [int, ...],
+    "recall_query": {{"query": "3-6 keywords", "time_range": "start-end"}}
+  }}
+]"""
 
 
 def _candidate_to_recall_card(
@@ -633,6 +689,15 @@ def _candidate_to_recall_card(
     if not grounding:
         return {}
 
+    def default_recall_query() -> Dict:
+        return {
+            "query": _query_keywords(question),
+            "time_range": (
+                f"{min(grounding) * AGENT_CHUNK_SEC}-"
+                f"{(max(grounding) + 1) * AGENT_CHUNK_SEC}"
+            ),
+        }
+
     out = deepcopy(original)
     out["question"] = question
     out["family"] = family
@@ -658,6 +723,7 @@ def _candidate_to_recall_card(
         out["correct_option"] = correct
         out["canonical_answer"] = correct_text
         emit_value = correct
+        answer_text = correct_text
     else:
         answer = str(candidate.get("canonical_answer") or "").strip()
         if not answer:
@@ -670,19 +736,17 @@ def _candidate_to_recall_card(
         out["options"] = None
         out["correct_option"] = None
         emit_value = answer
+        answer_text = answer
 
     out["gold_emits"] = [{"chunk": max(grounding), "value": emit_value}]
     rq = candidate.get("recall_query") or {}
     if not isinstance(rq, dict):
         rq = {}
-    if not _valid_recall_query(rq):
-        rq = {
-            "query": _query_keywords(question),
-            "time_range": (
-                f"{min(grounding) * AGENT_CHUNK_SEC}-"
-                f"{(max(grounding) + 1) * AGENT_CHUNK_SEC}"
-            ),
-        }
+    if (
+        not _valid_recall_query(rq)
+        or _answer_visible_in_text(answer_text, str(rq.get("query", "")), threshold=0.50)
+    ):
+        rq = default_recall_query()
     out["recall_query"] = rq
     out["recall_hardened"] = True
     out["recall_hardened_from_card_id"] = original.get("card_id", "")
@@ -789,27 +853,52 @@ async def _harden_one_recall_slot(
         return card, False, "no_response_chunk"
     current_chunk = max(response_chunks)
     memory_text = _memory_text_for_chunk(rollout, current_chunk)
-    if not _needs_recall_hardening(card, memory_text):
+    current_context_text = _current_context_text_for_chunk(
+        rollout,
+        current_chunk,
+        memory_text=memory_text,
+    )
+    ok, reason = _validate_hardened_recall_card(
+        card,
+        current_chunk=current_chunk,
+        memory_text=current_context_text,
+        evidence_by_chunk=evidence_by_chunk,
+    )
+    if ok:
         return card, False, "already_hard"
+
+    if reason in {"bad_recall_query_time", "recall_query_leaks_answer"}:
+        repaired = deepcopy(card)
+        repaired["recall_query"] = _recall_query_for(repaired, current_chunk)
+        ok, repaired_reason = _validate_hardened_recall_card(
+            repaired,
+            current_chunk=current_chunk,
+            memory_text=current_context_text,
+            evidence_by_chunk=evidence_by_chunk,
+        )
+        if ok:
+            return repaired, True, "hardened"
+        reason = repaired_reason
+
     if client is None:
-        return card, False, "needs_hardening_but_no_client"
+        return card, False, f"{reason}:no_client"
 
     answer_form = str(card.get("answer_form") or "")
     if answer_form not in {"multiple_choice", "descriptive", "number", "binary", "short_exact"}:
         return card, False, f"unsupported_answer_form:{answer_form}"
     evidence_lines = _history_evidence_lines(
-        evidence_by_chunk, card, current_chunk,
+        evidence_by_chunk, card, current_chunk, memory_text=current_context_text,
     )
     if not evidence_lines:
         return card, False, "no_historical_evidence_pool"
 
     cfg = PASS_CONFIG.get("pass3c_recall_hardening", PASS_CONFIG.get("pass3c", {}))
-    previous_error = ""
+    previous_error = reason
     for attempt in range(RECALL_HARDEN_MAX_ATTEMPTS):
         prompt = _recall_hardening_prompt(
             card,
             current_chunk=current_chunk,
-            memory_text=memory_text,
+            memory_text=current_context_text,
             evidence_lines=evidence_lines,
             answer_form=answer_form,
             previous_error=previous_error,
@@ -829,20 +918,25 @@ async def _harden_one_recall_slot(
             previous_error = f"llm_call_failed:{exc}"
             logger.warning("[%s] recall hardening LLM failed: %s", video_id, exc)
             continue
-        candidate = _candidate_to_recall_card(
-            _parse_json_object(raw or ""),
-            card,
-            current_chunk=current_chunk,
-        )
-        ok, reason = _validate_hardened_recall_card(
-            candidate,
-            current_chunk=current_chunk,
-            memory_text=memory_text,
-            evidence_by_chunk=evidence_by_chunk,
-        ) if candidate else (False, "parse_or_schema_failed")
-        if ok:
-            return candidate, True, "hardened"
-        previous_error = reason
+        reasons: List[str] = []
+        for parsed in _parse_json_candidates(raw or ""):
+            candidate = _candidate_to_recall_card(
+                parsed,
+                card,
+                current_chunk=current_chunk,
+            )
+            ok, reason = _validate_hardened_recall_card(
+                candidate,
+                current_chunk=current_chunk,
+                memory_text=current_context_text,
+                evidence_by_chunk=evidence_by_chunk,
+            ) if candidate else (False, "parse_or_schema_failed")
+            if ok:
+                return candidate, True, "hardened"
+            reasons.append(reason)
+        previous_error = "; ".join(reasons[:RECALL_HARDEN_CANDIDATES_PER_ATTEMPT])
+        if not previous_error:
+            previous_error = "parse_or_schema_failed"
     return card, False, previous_error or "hardening_failed"
 
 
@@ -928,8 +1022,14 @@ async def _harden_selected_recall_slots(
         ]
         still_easy = False
         if response_chunks:
+            memory_text = _memory_text_for_chunk(rollout, max(response_chunks))
+            current_context_text = _current_context_text_for_chunk(
+                rollout,
+                max(response_chunks),
+                memory_text=memory_text,
+            )
             still_easy = _needs_recall_hardening(
-                card, _memory_text_for_chunk(rollout, max(response_chunks))
+                card, current_context_text,
             )
         if still_easy:
             _downgrade_recall_to_memory_direct(

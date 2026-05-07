@@ -96,6 +96,24 @@ def _target_for_style(style: str, options: List[str], correct_option: str) -> st
     return None
 
 
+def _patch_per_emit_answers(obj: Dict[str, Any], target: str | None) -> bool:
+    """Keep chunk-level MC gold answers aligned after option relabeling."""
+    if not target:
+        return False
+    emits = obj.get("per_emit_answers")
+    if not isinstance(emits, list):
+        return False
+    changed = False
+    for emit in emits:
+        if not isinstance(emit, dict):
+            continue
+        current = str(emit.get("value") or "").strip()
+        if current and current != target:
+            emit["value"] = target
+            changed = True
+    return changed
+
+
 def _patch_answer_payload(text: str, target: str | None) -> Tuple[str, bool]:
     if not target or not isinstance(text, str) or "<answer>" not in text:
         return text, False
@@ -220,6 +238,12 @@ def _patch_question(mapping: Dict[Tuple[str, str, str], Dict[str, Any]], video_i
             obj["gold_answer"] = correct_text
         obj["correct_answer_text"] = correct_text
         obj["accepted_answers"] = _accepted_answers(hit["options"], hit["correct_option"])
+    target = _target_for_style(
+        obj.get("answer_style", ""),
+        hit["options"],
+        hit["correct_option"],
+    )
+    _patch_per_emit_answers(obj, target)
     return True
 
 

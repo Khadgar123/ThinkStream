@@ -79,6 +79,19 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        recall_query rows with recall tools and recall_answer rows with
     #        no tools plus last-assistant-only loss, matching runtime
     #        post-recall turns and DAgger correction outputs.
+    #   v12.52 (2026-05-07): MC option rebalancing also rewrites
+    #        per_emit_answers values in flat metadata and trajectory questions,
+    #        keeping chunk-level RL/DAgger gold answers aligned with the
+    #        rebalanced correct_option/options and rendered <answer>.
+    #   v12.53 (2026-05-07): pass3c recall hardening asks for multiple
+    #        memory-novel replacement candidates per selected recall slot,
+    #        ranks historical evidence by current-memory novelty, and repairs
+    #        answer-leaking recall queries before falling back to memory_direct.
+    #   v12.54 (2026-05-07): pass3c validates every selected recall slot,
+    #        including already-hard cached cards, against memory plus the
+    #        current visual think before the recall tool call. This blocks
+    #        recall samples whose answer is already visible in the current
+    #        frame/context and catches short/non-ASCII answer leaks.
     #   v12.48 (2026-05-07): pass3b reserves one non-recall HLD/abstention
     #        slot when available, so HLD keeps a reasonable family share
     #        without being counted as successful recall supervision.
@@ -196,9 +209,9 @@ STAGE_VERSIONS: Dict[str, str] = {
     "2":  "v12.35",
     "3a": "v12.44",
     "3b": "v12.49",
-    "3c": "v12.49",
+    "3c": "v12.54",
     "4":  "v12.49",  # canonical key — verification
-    "5":  "v12.51",  # pass5_messages render version
+    "5":  "v12.52",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any
