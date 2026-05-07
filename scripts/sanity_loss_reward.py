@@ -71,10 +71,17 @@ def check_sft_loss_mask():
     assert msgs[2]["role"] == "assistant"
     print("  ✓ message structure: system → user → assistant (compress shape C)")
 
-    # Check 2: assistant content matches teacher output
+    # Check 2: assistant content preserves the teacher action payload. pass5
+    # may normalize too-short compress think text to the canonical policy
+    # rationale, so compare parsed tool payload instead of raw string equality.
     assistant_text = msgs[2]["content"][0]["text"]
-    assert assistant_text == sample["output"], "assistant content must equal teacher output"
-    print(f"  ✓ assistant content = teacher output ({len(assistant_text)} chars)")
+    from thinkstream.data.agent_protocol import parse_agent_output_v12
+    parsed = parse_agent_output_v12(assistant_text)
+    summary = ((parsed.get("tool_call") or {}).get("arguments") or {})
+    assert parsed.get("kind") == "compress", "assistant content must be compress"
+    assert summary.get("time_range") == [0, 5], "compress range must match teacher"
+    assert summary.get("text") == "compressed", "compress text must match teacher"
+    print(f"  ✓ assistant content preserves teacher compress payload ({len(assistant_text)} chars)")
 
     # Check 3: user content carries memory + trigger, no visual_window
     user_text_blocks = [c["text"] for c in msgs[1]["content"] if c.get("type") == "text"]

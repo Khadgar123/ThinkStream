@@ -64,9 +64,40 @@ def test_select_loss_assistant_spans_supports_last_only():
     assert indices == [0, 1]
 
 
+def test_rl_compress_turn_is_text_only_in_source():
+    root = Path(__file__).resolve().parents[1]
+    src = (root / "verl/recipe_thinkstream/streaming_agent_loop.py").read_text()
+    build_start = src.index("def _build_chunk_user_content(")
+    visual_start = src.index("# ── Visual window header", build_start)
+    inter_chunk_return = src.index("if inter_chunk:\n                return content", build_start)
+    assert inter_chunk_return < visual_start
+
+
+def test_sft_generation_eval_uses_turn_local_tools_and_keeps_recall_prefix():
+    root = Path(__file__).resolve().parents[1]
+    action_src = (root / "scripts/eval/sft_action_acc.py").read_text()
+    answer_src = (root / "scripts/eval/test_set_sft_gen.py").read_text()
+    assert "tools_for_turn(_tool_mode_for_prompt(s, msgs))" in action_src
+    assert "tools_for_turn(_tool_mode_for_prompt(s, messages))" in answer_src
+    assert 'm["role"] != "assistant"' not in answer_src
+
+
+def test_grpo_loss_replay_uses_turn_local_tool_kind():
+    root = Path(__file__).resolve().parents[1]
+    processor_src = (root / "thinkstream/data/stream_data_processor.py").read_text()
+    grpo_src = (root / "thinkstream/trainer/grpo.py").read_text()
+    assert "tool_turn_kind: Optional[str] = None" in processor_src
+    assert "if tool_turn_kind is not None:" in processor_src
+    assert "_infer_tool_turn_kind_for_loss_messages(messages)" in grpo_src
+    assert "return \"recall_response\"" in grpo_src
+
+
 def main() -> None:
     test_pass5_recall_rows_split_tool_schema_and_loss_policy()
     test_select_loss_assistant_spans_supports_last_only()
+    test_rl_compress_turn_is_text_only_in_source()
+    test_sft_generation_eval_uses_turn_local_tools_and_keeps_recall_prefix()
+    test_grpo_loss_replay_uses_turn_local_tool_kind()
     print("PASS test_pass5_recall_split")
 
 

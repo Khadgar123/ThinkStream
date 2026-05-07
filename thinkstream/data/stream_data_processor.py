@@ -797,6 +797,7 @@ def process_messages_to_model_inputs(
     add_generation_prompt: bool = False,
     preloaded_frames: Optional[Tuple[List, dict, Optional[List]]] = None,
     tools: Optional[List[Dict[str, Any]]] = None,
+    tool_turn_kind: Optional[str] = None,
 ) -> Dict:
     """
     Common function: takes pre-built chat messages + video metadata, loads video
@@ -855,9 +856,13 @@ def process_messages_to_model_inputs(
         )
 
     # 2. Tokenise. Default to streaming-turn tools for legacy callers; newer
-    # rollout paths pass turn-local tools explicitly.
+    # rollout paths pass turn-local tools explicitly. tool_turn_kind is used
+    # when the intended turn has no tools (recall_response): tools=None alone
+    # is ambiguous with the legacy default.
     from thinkstream.data.agent_protocol import tools_for_turn
-    if tools is None:
+    if tool_turn_kind is not None:
+        tools = tools_for_turn(tool_turn_kind)
+    elif tools is None:
         tools = tools_for_turn("streaming")
     template_kwargs = dict(
         tokenize=False,

@@ -44,6 +44,7 @@ from scripts.agent_data_v5.pass5_messages import (
 from thinkstream.data.agent_protocol import (
     normalize_frame_protocol,
     parse_agent_output_v12,
+    tools_for_turn,
 )
 from scripts.eval.processor_loader import load_processor_for_checkpoint
 
@@ -61,6 +62,32 @@ def collect_video_metadata(messages):
                     meta = {k: v for k, v in meta.items() if k != "do_sample_frames"}
                     metas.append(meta)
     return metas
+
+
+def _messages_text(messages):
+    parts = []
+    for msg in messages or []:
+        content = msg.get("content")
+        if isinstance(content, list):
+            for item in content:
+                if isinstance(item, dict):
+                    parts.append(str(item.get("text") or ""))
+                elif isinstance(item, str):
+                    parts.append(item)
+        elif isinstance(content, str):
+            parts.append(content)
+    return "\n".join(parts)
+
+
+def _tool_mode_for_prompt(sample, messages):
+    mode = sample.get("tool_schema_mode")
+    if mode:
+        return str(mode)
+    if sample.get("v12_inter_chunk"):
+        return "compress"
+    if any(m.get("role") == "assistant" for m in messages) and "<recall_result>" in _messages_text(messages):
+        return "recall_response"
+    return "streaming"
 
 
 def parse_output(text: str) -> dict:
@@ -172,6 +199,9 @@ def main():
             video_metadata = collect_video_metadata(msgs)
             if video_metadata:
                 template_kwargs["video_metadata"] = video_metadata
+            tools = tools_for_turn(_tool_mode_for_prompt(s, msgs))
+            if tools is not None:
+                template_kwargs["tools"] = tools
             inputs = processor.apply_chat_template(msgs, **template_kwargs)
             inputs = {k: v.to(model.device) if hasattr(v, "to") else v for k, v in inputs.items()}
 

@@ -1697,6 +1697,39 @@ def _extract_questions_at_chunks(raw_sample) -> Dict[int, str]:
     return out
 
 
+def _messages_text(messages: List[Dict[str, Any]]) -> str:
+    parts: List[str] = []
+    for msg in messages or []:
+        content = msg.get("content")
+        if isinstance(content, list):
+            for item in content:
+                if isinstance(item, dict):
+                    parts.append(str(item.get("text") or ""))
+                elif isinstance(item, str):
+                    parts.append(item)
+        elif isinstance(content, str):
+            parts.append(content)
+    return "\n".join(parts)
+
+
+def _infer_tool_turn_kind_for_loss_messages(messages: List[Dict[str, Any]]) -> str:
+    """Infer the turn-local action space for a replayed rollout loss row."""
+    prompt_messages = (
+        messages[:-1]
+        if messages and messages[-1].get("role") == "assistant"
+        else messages
+    )
+    text = _messages_text(prompt_messages)
+    if (
+        any(m.get("role") == "assistant" for m in prompt_messages)
+        and "<recall_result>" in text
+    ):
+        return "recall_response"
+    if "<compress_trigger/>" in text:
+        return "compress"
+    return "streaming"
+
+
 def _build_rollout_messages_single_chunk(
     raw_sample, chunk_result, gen_idx, tokenizer, frames_per_chunk,
 ):
@@ -2046,6 +2079,7 @@ def build_grpo_inputs(
             model_type=model_type,
             add_generation_prompt=False,
             preloaded_frames=preloaded_for_call,
+            tool_turn_kind=_infer_tool_turn_kind_for_loss_messages(messages),
         )
         result["position_ids"] = compute_position_ids(result, processor, model_type)
 

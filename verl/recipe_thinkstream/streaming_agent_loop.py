@@ -587,16 +587,16 @@ def _register_streaming_agent_loop():
         ) -> List[Dict[str, Any]]:
             """Build the user content list for chunk N.
 
-            inter_chunk=True marks a compression turn. It still carries the
-            same visual_window + memory shape as SFT/pass5; only query and
-            recall-answer context are suppressed.
+            inter_chunk=True marks a compression turn. It is text-only:
+            user_input carries the bare compress trigger and memory carries
+            the compression target. Queries, recall-answer context, visual
+            window, and frame carriers are suppressed to match pass5/runtime.
 
             Mirrors the shared SFT/runtime layout in
             thinkstream/data/agent_protocol.py:213-214 build_user_content
             EXACTLY:
               <user_input> → <memory> → (active_query + response_history) →
-              <visual_window> + protocol visual frames → <recall_result> →
-              ...
+              <visual_window> + protocol visual frames → <recall_result> → ...
 
             Distribution alignment is the hard constraint. Per-frame ViT
             re-encoding cost is handled by vLLM's mm_processor_cache
@@ -660,6 +660,9 @@ def _register_streaming_agent_loop():
                     "type": "text",
                     "text": f"\n{queries_text}",
                 })
+
+            if inter_chunk:
+                return content
 
             # ── Visual window header + protocol-selected frame carrier
             # (after memory, matches SFT). Header layout copies
@@ -1127,7 +1130,7 @@ def _register_streaming_agent_loop():
                             mode=self.visual_window_mode,
                         )
                     )
-                visual_injected = bool(window_paths)
+                visual_injected = bool(window_paths) and not inter_chunk
 
                 # ── Multi-Q: which questions fire at this chunk?
                 triggered_qs_for_chunk: List[Dict[str, Any]] = []

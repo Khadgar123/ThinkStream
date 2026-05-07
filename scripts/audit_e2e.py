@@ -118,12 +118,13 @@ def check_protocol(a: Audit):
     a.check("memory renders tagged records",
             "<compressed>{" in mem_text and "<memory_think>{" in mem_text)
 
-    # Tool schema
-    tools = ap.TOOLS_SCHEMA
-    a.check("TOOLS_SCHEMA has 2 tools",                len(tools) == 2)
-    tool_names = sorted(t["function"]["name"] for t in tools)
-    a.check("TOOLS_SCHEMA has [compress, recall]",
-            tool_names == ["compress", "recall"])
+    # Turn-local tool schemas
+    a.check("streaming tools expose recall only",
+            [t["function"]["name"] for t in ap.tools_for_turn("streaming")] == ["recall"])
+    a.check("compress tools expose compress only",
+            [t["function"]["name"] for t in ap.tools_for_turn("compress")] == ["compress"])
+    a.check("recall_response has no tools",
+            ap.tools_for_turn("recall_response") is None)
 
     # Output construction
     msg = ap.build_assistant_content_v12(
@@ -254,8 +255,8 @@ def check_sft(a: Audit):
                 "missing 'messages' key" in src)
         a.check("data_processor reads chunk_sec from config",
                 "from scripts.agent_data_v5.config import AGENT_CHUNK_SEC" in src)
-        a.check("data_processor passes tools=TOOLS_SCHEMA",
-                "tools=TOOLS_SCHEMA" in src)
+        a.check("data_processor passes turn-local tools",
+                "tools_for_turn" in src and "tool_schema_mode" in src)
         a.check("v11 register_special_tokens removed",
                 "register_special_tokens" not in src)
         a.check("v11 SPAN_WEIGHTS removed",
@@ -430,7 +431,7 @@ def check_prompt_identity(a: Audit):
                 ok,
             )
 
-    # Same TOOLS_SCHEMA
+    # Same turn-local tool helper
     paths_using_tools = [
         ROOT / "thinkstream/sft/data_processor.py",
         ROOT / "thinkstream/eval/streaming_vllm.py",
@@ -440,8 +441,8 @@ def check_prompt_identity(a: Audit):
     for p in paths_using_tools:
         if p.exists():
             txt = p.read_text()
-            ok = "TOOLS_SCHEMA" in txt
-            a.check(f"{p.relative_to(ROOT)} uses TOOLS_SCHEMA", ok)
+            ok = "tools_for_turn" in txt
+            a.check(f"{p.relative_to(ROOT)} uses tools_for_turn", ok)
 
 
 # ===========================================================================

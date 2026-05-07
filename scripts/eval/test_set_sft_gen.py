@@ -39,7 +39,7 @@ from thinkstream.sft.data_processor import (
 from scripts.agent_data_v5.pass5_messages import (
     build_messages as build_per_timestep_messages,
 )
-from thinkstream.data.agent_protocol import normalize_frame_protocol
+from thinkstream.data.agent_protocol import normalize_frame_protocol, tools_for_turn
 from thinkstream.trainer.outcome_match import score_outcome_by_form
 from scripts.eval.processor_loader import load_processor_for_checkpoint
 
@@ -66,6 +66,32 @@ def collect_video_metadata(messages):
                         if k != "do_sample_frames"
                     })
     return metas
+
+
+def _messages_text(messages):
+    parts = []
+    for msg in messages or []:
+        content = msg.get("content")
+        if isinstance(content, list):
+            for item in content:
+                if isinstance(item, dict):
+                    parts.append(str(item.get("text") or ""))
+                elif isinstance(item, str):
+                    parts.append(item)
+        elif isinstance(content, str):
+            parts.append(content)
+    return "\n".join(parts)
+
+
+def _tool_mode_for_prompt(sample, messages):
+    mode = sample.get("tool_schema_mode")
+    if mode:
+        return str(mode)
+    if sample.get("v12_inter_chunk"):
+        return "compress"
+    if any(m.get("role") == "assistant" for m in messages) and "<recall_result>" in _messages_text(messages):
+        return "recall_response"
+    return "streaming"
 
 
 def detect_model_class(ckpt: str):
@@ -272,8 +298,10 @@ def main():
                     s, root_path, frame_protocol=frame_protocol
                 )
             )
-            # Remove assistant turn; keep system + user timestamped frames.
-            messages = [m for m in messages if m["role"] != "assistant"]
+            # Drop only the target assistant. For recall_answer rows the
+            # previous assistant recall tool_call is part of the runtime prompt.
+            if messages and messages[-1].get("role") == "assistant":
+                messages = messages[:-1]
 
             template_kwargs = dict(
                 tokenize=True,
@@ -285,6 +313,9 @@ def main():
             video_metadata = collect_video_metadata(messages)
             if video_metadata:
                 template_kwargs["video_metadata"] = video_metadata
+            tools = tools_for_turn(_tool_mode_for_prompt(s, messages))
+            if tools is not None:
+                template_kwargs["tools"] = tools
             inputs = processor.apply_chat_template(messages, **template_kwargs)
             inputs = {
                 k: v.to(model.device) if hasattr(v, "to") else v
