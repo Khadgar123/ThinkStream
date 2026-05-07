@@ -237,9 +237,9 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     else:
         user_input = ""
 
-    # Memory-compaction turns keep visual_window for multimodal-path parity,
-    # while inter_chunk=True still suppresses query/recalled-answer context and
-    # expands the compress trigger instructions.
+    # Memory-compaction turns are text-only inter-chunk actions: suppress
+    # visual_window, query/recalled-answer context, and expose compress-only
+    # instructions/tools.
     is_inter_chunk = bool(compress_trigger and not user_question)
     runner._last_turn_kind = "compress" if is_inter_chunk else "streaming"
 

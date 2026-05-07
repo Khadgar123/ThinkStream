@@ -196,9 +196,20 @@ def test_pass5_compress_messages_use_compress_system_prompt():
     assert "Directly compress memory now" in system_text
     assert "<queries>" not in user_text
     assert "<active_query>" not in user_text
-    assert "<visual_window>" in user_text
+    assert "<visual_window>" not in user_text
+    assert not any(item.get("type") in {"image", "video"} for item in messages[1]["content"])
     assert "<user_input><compress_trigger/></user_input>" in user_text
     assert "<memory_compaction>" not in user_text
+
+    no_visual = dict(sample)
+    no_visual["input"] = dict(sample["input"])
+    no_visual["input"].pop("visual_window")
+    messages = build_messages(no_visual, Path("/repo"))
+    user_text = "\n".join(
+        item.get("text", "") for item in messages[1]["content"]
+        if item.get("type") == "text"
+    )
+    assert "<visual_window>" not in user_text
 
 
 def test_pass5_relocates_moved_absolute_frame_paths(tmp_path):
@@ -348,7 +359,7 @@ def test_memory_recent_thinks_are_tagged_json_records():
     assert '"text": "A red bowl appears on the counter."' in text
 
 
-def test_inter_chunk_compress_omits_queries_like_sft_messages():
+def test_inter_chunk_compress_omits_visual_and_queries_like_sft_messages():
     content = build_user_content(
         memory_text='<memory_think>{"time":"0-1","text":"setup"}</memory_think>',
         chunk_idx=5,
@@ -368,7 +379,8 @@ def test_inter_chunk_compress_omits_queries_like_sft_messages():
     joined = "\n".join(item.get("text", "") for item in content if item.get("type") == "text")
     assert "<queries>" not in joined
     assert "<active_query>" not in joined
-    assert "<visual_window>" in joined
+    assert "<visual_window>" not in joined
+    assert not any(item.get("type") in {"image", "video"} for item in content)
     assert "<compress_trigger/>" in joined
     assert "<memory_compaction>" not in joined
 

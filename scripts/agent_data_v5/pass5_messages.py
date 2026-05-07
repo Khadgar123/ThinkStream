@@ -3,15 +3,15 @@
 Reads pass4 outputs and emits one row per sample in the multi-turn messages
 format used by LLaMA-Factory / DeepEyesV2 / VST. Each row is a stand-alone
 training sample matching fresh-KV-per-chunk inference: every sample's
-user.content carries the full state (user_input + memory + queries +
-visual_window + recalled_frames) so the model trains under the exact same input
-distribution it sees at inference.
+user.content carries the full state for ordinary visual turns (user_input +
+memory + queries + visual_window + recalled_frames) so the model trains under
+the exact same input distribution it sees at inference.
 
 Three sample shapes preserved (canonical pass/SFT/RL/eval timestamped-image protocol):
   A. Single-turn       (silent / response / lonely recall / inter-chunk compress)
   B. Multi-turn recall (recall_query → tool turn → final answer, within one chunk)
   C. Inter-chunk compress (system inserts <compress_trigger> before memory,
-     still carries the visual sliding window for multimodal-path parity)
+     with no visual_window/images/videos because compression is between chunks)
 
 Self-contained: imports only stdlib + thinkstream.data.agent_protocol (which
 itself is stdlib-only). No transformers required.
@@ -305,27 +305,48 @@ def build_messages(
             user_content.append({"type": "text", "text": f"\n{qt}"})
 
     # ── Visual window + frames ──────────────────────────────────────────
-    vw = inp["visual_window"]
-    current_start = chunk_idx * chunk_sec
-    current_end = current_start + chunk_sec
-    vw_header = json.dumps({
-        "start": vw["video_start"],
-        "end": vw["video_end"],
-        "frames": vw["frames"],
-        "current_time": [current_start, current_end],
-    })
-    user_content.append({
-        "type": "text",
-        "text": f"\n<visual_window>{vw_header}</visual_window>",
-    })
+    # Inter-chunk compression is a text-memory action and does not consume a
+    # visual timestep, so omit visual_window/images/videos on compress turns.
+    if not inter_chunk:
+        vw = inp["visual_window"]
+        current_start = chunk_idx * chunk_sec
+        current_end = current_start + chunk_sec
+        vw_header = json.dumps({
+            "start": vw["video_start"],
+            "end": vw["video_end"],
+            "frames": vw["frames"],
+            "current_time": [current_start, current_end],
+        })
+        user_content.append({
+            "type": "text",
+            "text": f"\n<visual_window>{vw_header}</visual_window>",
+        })
 
-    # Pass4 flat files may omit frame_paths — infer from video_id +
-    # chunk_idx offset (NOT just frame_000001..n which would bind every
-    # late chunk to video-start frames). Mirrors pass1a get_chunk_frame_paths
-    # (chunk_idx × FRAMES_PER_CHUNK) so frame numbers track real video time.
-    if "frame_paths" not in vw and "frames" in vw:
-        vid = sample.get("video_id", "")
-        if vid:
+        # Pass4 flat files may omit frame_paths — infer from video_id +
+        # chunk_idx offset (NOT just frame_000001..n which would bind every
+        # late chunk to video-start frames). Mirrors pass1a get_chunk_frame_paths
+        # (chunk_idx × FRAMES_PER_CHUNK) so frame numbers track real video time.
+        if "frame_paths" not in vw and "frames" in vw:
+            vid = sample.get("video_id", "")
+            if vid:
+                from thinkstream.data.agent_protocol import (
+                    FRAMES_PER_CHUNK as _FPC,
+                    VISUAL_WINDOW_CHUNKS as _VWC,
+                )
+                from scripts.agent_data_v5.config import (
+                    compute_visual_window_start as _cvws,
+                )
+                window_start = _cvws(chunk_idx, _VWC)
+                paths: List[str] = []
+                for ci in range(window_start, chunk_idx + 1):
+                    for fi in range(_FPC):
+                        fnum = ci * _FPC + fi + 1
+                        paths.append(
+                            f"{frame_rel_prefix}/{vid}/frame_{fnum:06d}.jpg"
+                        )
+                vw["frame_paths"] = paths
+
+        if "frame_paths" in vw:
             from thinkstream.data.agent_protocol import (
                 FRAMES_PER_CHUNK as _FPC,
                 VISUAL_WINDOW_CHUNKS as _VWC,
@@ -334,51 +355,33 @@ def build_messages(
                 compute_visual_window_start as _cvws,
             )
             window_start = _cvws(chunk_idx, _VWC)
-            paths: List[str] = []
-            for ci in range(window_start, chunk_idx + 1):
-                for fi in range(_FPC):
-                    fnum = ci * _FPC + fi + 1
-                    paths.append(
-                        f"{frame_rel_prefix}/{vid}/frame_{fnum:06d}.jpg"
-                    )
-            vw["frame_paths"] = paths
-
-    if "frame_paths" in vw:
-        from thinkstream.data.agent_protocol import (
-            FRAMES_PER_CHUNK as _FPC,
-            VISUAL_WINDOW_CHUNKS as _VWC,
-        )
-        from scripts.agent_data_v5.config import (
-            compute_visual_window_start as _cvws,
-        )
-        window_start = _cvws(chunk_idx, _VWC)
-        try:
-            from scripts.agent_data_v5.config import (
-                RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+            try:
+                from scripts.agent_data_v5.config import (
+                    RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                )
+            except ImportError:
+                _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+            append_visual_frames(
+                user_content,
+                _resolve_paths(vw["frame_paths"], base_path, data_dir),
+                frame_protocol=frame_protocol,
+                fps=float(_FPC / chunk_sec),
+                start_frame_index=window_start * _FPC,
+                total_num_frames=(chunk_idx + 1) * _FPC,
+                latest_start_frame_index=chunk_idx * _FPC,
+                min_pixels=_RTKW["min_pixels"],
+                max_pixels=_RTKW["max_pixels"],
             )
-        except ImportError:
-            _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-        append_visual_frames(
-            user_content,
-            _resolve_paths(vw["frame_paths"], base_path, data_dir),
-            frame_protocol=frame_protocol,
-            fps=float(_FPC / chunk_sec),
-            start_frame_index=window_start * _FPC,
-            total_num_frames=(chunk_idx + 1) * _FPC,
-            latest_start_frame_index=chunk_idx * _FPC,
-            min_pixels=_RTKW["min_pixels"],
-            max_pixels=_RTKW["max_pixels"],
-        )
-    elif "frame_indices" in vw and video_path:
-        user_content.append({
-            "type": "video", "video": video_path,
-            "video_start": vw["video_start"], "video_end": vw["video_end"],
-        })
-    else:
-        raise ValueError(
-            f"Sample {sample.get('sample_id', '?')}: visual_window has neither "
-            f"frame_paths nor frame_indices."
-        )
+        elif "frame_indices" in vw and video_path:
+            user_content.append({
+                "type": "video", "video": video_path,
+                "video_start": vw["video_start"], "video_end": vw["video_end"],
+            })
+        else:
+            raise ValueError(
+                f"Sample {sample.get('sample_id', '?')}: visual_window has neither "
+                f"frame_paths nor frame_indices."
+            )
 
     # ── Recalled frames (legacy single-turn recall) ────────────────────
     if (

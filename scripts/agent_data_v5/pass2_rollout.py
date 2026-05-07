@@ -965,10 +965,9 @@ def build_compress_request(
     """Build compression request from pre-action timeline.
 
     Compression summaries are generated from text memory, not from fresh
-    video frames. Student/runtime prompts may still carry a visual sliding
-    window for multimodal-path parity, but the summary target must remain a
-    replacement for historical text memory. The `frame_paths` arg is kept for
-    backward compatibility with callers and is no longer consumed here.
+    video frames. Student/runtime compression prompts are also text-only. The
+    `frame_paths` arg is kept for backward compatibility with callers and is
+    no longer consumed here.
     """
     selected_indices, policy_meta = choose_optimal_compress_range(
         pre_action_timeline, evidence

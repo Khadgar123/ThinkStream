@@ -71,6 +71,10 @@ STAGE_VERSIONS: Dict[str, str] = {
     #   v12.49 (2026-05-07): pass3b reserves non-recall HLD/abstention slots
     #        with deterministic sampling, keeping HLD near the previous
     #        reasonable family share without counting it as recall.
+    #   v12.50 (2026-05-07): pass5/render and runtime prompt builders make
+    #        inter-chunk compression text-only: no visual_window, images,
+    #        videos, active query, or recalled-frame context. Regenerate all
+    #        *_messages.jsonl and RL parquets that freeze prompts.
     #   v12.48 (2026-05-07): pass3b reserves one non-recall HLD/abstention
     #        slot when available, so HLD keeps a reasonable family share
     #        without being counted as successful recall supervision.
@@ -190,7 +194,7 @@ STAGE_VERSIONS: Dict[str, str] = {
     "3b": "v12.49",
     "3c": "v12.49",
     "4":  "v12.49",  # canonical key — verification
-    "5":  "v12.49",  # pass5_messages render version
+    "5":  "v12.50",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

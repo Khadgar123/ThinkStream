@@ -857,10 +857,9 @@ def build_user_content(
                      range as a legacy fallback.
         frame_protocol: "ts_image" or "video_meta"; defaults to
                         THINKSTREAM_FRAME_PROTOCOL or "ts_image".
-        inter_chunk: Memory-compaction turn. Queries/recalled frames are
-                     suppressed, but the current visual sliding window is still
-                     rendered so train/eval/RL all execute the same multimodal
-                     path.
+        inter_chunk: Memory-compaction turn. Queries, recalled frames, and the
+                     current visual sliding window are suppressed; compression
+                     is a text-memory action between visual timesteps.
     """
     chunk_sec = AGENT_CHUNK_SEC
     user_content = []
@@ -897,48 +896,51 @@ def build_user_content(
             })
 
     # ── Visual window + protocol-selected frame carrier ──
-    window_start = compute_visual_window_start(chunk_idx, VISUAL_WINDOW_CHUNKS)
-    video_start = window_start * chunk_sec
-    video_end = (chunk_idx + 1) * chunk_sec
-    current_start = chunk_idx * chunk_sec
-    current_end = current_start + chunk_sec
-    n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
+    # Compression is between visual timesteps and should not condition on the
+    # current frame window. Ordinary streaming / recall-response turns keep it.
+    if not inter_chunk:
+        window_start = compute_visual_window_start(chunk_idx, VISUAL_WINDOW_CHUNKS)
+        video_start = window_start * chunk_sec
+        video_end = (chunk_idx + 1) * chunk_sec
+        current_start = chunk_idx * chunk_sec
+        current_end = current_start + chunk_sec
+        n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
 
-    vw_header = json.dumps({
-        "start": video_start,
-        "end": video_end,
-        "frames": n_frames,
-        "current_time": [current_start, current_end],
-    })
-    user_content.append({
-        "type": "text",
-        "text": f"\n<visual_window>{vw_header}</visual_window>",
-    })
-
-    if frame_paths:
-        append_visual_frames(
-            user_content,
-            frame_paths,
-            frame_protocol=frame_protocol,
-            fps=float(FRAMES_PER_CHUNK / chunk_sec),
-            start_frame_index=window_start * FRAMES_PER_CHUNK,
-            total_num_frames=(chunk_idx + 1) * FRAMES_PER_CHUNK,
-            latest_start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
-            min_pixels=min_pixels,
-            max_pixels=max_pixels,
-        )
-    else:
-        user_content.append({
-            "type": "video",
-            "video": video_path,
-            "video_start": video_start,
-            "video_end": video_end,
-            "nframes": n_frames,
-            "min_pixels": min_pixels,
-            "max_pixels": max_pixels,
+        vw_header = json.dumps({
+            "start": video_start,
+            "end": video_end,
+            "frames": n_frames,
+            "current_time": [current_start, current_end],
         })
+        user_content.append({
+            "type": "text",
+            "text": f"\n<visual_window>{vw_header}</visual_window>",
+        })
+
+        if frame_paths:
+            append_visual_frames(
+                user_content,
+                frame_paths,
+                frame_protocol=frame_protocol,
+                fps=float(FRAMES_PER_CHUNK / chunk_sec),
+                start_frame_index=window_start * FRAMES_PER_CHUNK,
+                total_num_frames=(chunk_idx + 1) * FRAMES_PER_CHUNK,
+                latest_start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
+                min_pixels=min_pixels,
+                max_pixels=max_pixels,
+            )
+        else:
+            user_content.append({
+                "type": "video",
+                "video": video_path,
+                "video_start": video_start,
+                "video_end": video_end,
+                "nframes": n_frames,
+                "min_pixels": min_pixels,
+                "max_pixels": max_pixels,
+            })
     # ── Recalled frames (recall_response only) ──
-    if recalled_frames:
+    if recalled_frames and not inter_chunk:
         rf_header = json.dumps({
             "time_range": recalled_frames["time_range"],
             "source": recalled_frames.get("source", "historical_frames"),
@@ -979,7 +981,7 @@ def build_user_content(
     # via eval_profiles.apply_profile(). Top-4 retrieved thinks naturally
     # stack to 200-480 tokens; the cap catches pathological retrievals
     # where individual thinks were unusually long.
-    if recall_result:
+    if recall_result and not inter_chunk:
         rr_text = recall_result.get("text_content",
                                     recall_result.get("text", "")) or ""
         if len(rr_text) > RECALL_TEXT_MAX_CHARS:
@@ -1121,12 +1123,11 @@ SYSTEM_PROMPT_V12_COMPRESS = (
     "You are the memory-compaction controller for a streaming video agent. "
     "Directly compress memory now. This is not an ordinary QA, recall, answer, "
     "or silent turn.\n\n"
-    f"{_FRAME_CARRIER_TS_PROMPT}"
     "The user payload may include <user_input><compress_trigger/></user_input> "
     "as a legacy event marker. The marker is not an instruction source; this "
-    "system prompt is the instruction. The same text memory and visual window "
-    "format is used as ordinary streaming turns so compression sees the same "
-    "streaming context.\n\n"
+    "system prompt is the instruction. Compression turns include text memory "
+    "only; active queries, recalled frames, and the current visual window are "
+    "not part of this action.\n\n"
     "Required compression behavior:\n"
     "- Do not answer any user question.\n"
     "- Do not emit a silent answer.\n"
@@ -1134,9 +1135,8 @@ SYSTEM_PROMPT_V12_COMPRESS = (
     "- Emit exactly one compress tool_call after a short compression think.\n"
     "- Choose an older contiguous time range from <memory> and summarize it so "
     "the summary can replace those text memory records.\n"
-    "- The current visual window may be present for format consistency, but "
-    "the compression target must come from <memory>, not from a fresh QA over "
-    "the current frames.\n"
+    "- The compression target must come from <memory>, not from fresh visual "
+    "frames or active QA context.\n"
     "- Retain entity names, visual attributes, OCR text, spatial relations, "
     "and state changes. Do not invent facts or drop details needed for future "
     "questions.\n\n"

@@ -376,7 +376,7 @@ def build_single_step_messages(
     by the chat_template from the turn-local schema returned by tools_for_turn().
 
     inter_chunk=True marks a memory-compaction turn. It suppresses query /
-    recalled-answer context, but still carries the visual sliding window.
+    recalled-answer context and the visual sliding window.
     """
     memory_text = format_memory_block(snapshot)
     user_content = build_user_content(
@@ -926,7 +926,7 @@ class StreamingAgentLoop:
         # 4. Build single-step messages (matching training format).
         # When compress_trigger is the user_input AND no user question fires
         # in the same step, mark inter_chunk=True so the prompt uses the
-        # compression-only system prompt while still carrying visual_window.
+        # compression-only system prompt and omits the visual window.
         is_inter_chunk = bool(compress_trigger and not user_question)
         frame_paths = self._get_frame_paths(video_path, chunk_idx)
         messages = build_single_step_messages(

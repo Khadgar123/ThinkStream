@@ -332,8 +332,8 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
 
     C. Inter-chunk compress (v12_inter_chunk=True):
        The user_input compress trigger is rendered before memory, and the
-       prompt still carries the visual sliding window so the multimodal
-       forward path matches ordinary streaming turns.
+       prompt omits visual_window/images/videos because compression is a
+       text-memory action between visual timesteps.
 
     Differences from v11 (build_per_timestep_messages):
     - SYSTEM_PROMPT_V12 (concise; <tools> block rendered by chat_template
