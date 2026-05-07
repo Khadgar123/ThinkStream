@@ -492,13 +492,11 @@ def rollout(
     def _generate_fn(messages, processor, max_new_tokens=256, **kwargs):
         """Wrap model generation for StreamingAgentLoop.
 
-        v12.6 fix: pass tools=TOOLS_SCHEMA so chat_template auto-renders the
-        <tools> block in system prompt — same behavior as SFT data_processor
-        (data_processor.py:574). Without tools=, the rollout policy receives
-        a different system context than what SFT trained on, breaking
-        train/infer parity for tool-call decisions.
+        v12.15: pass the turn-local tool schema. Streaming turns expose recall
+        only, compression turns expose compress only, and recall-result answer
+        turns pass no tools.
         """
-        from thinkstream.data.agent_protocol import TOOLS_SCHEMA
+        from thinkstream.data.agent_protocol import tools_for_turn
         video_metadata = []
         has_video_meta = True
         for msg in messages:
@@ -515,9 +513,14 @@ def rollout(
                         has_video_meta = False
         template_kwargs = dict(
             tokenize=True, return_dict=True, return_tensors="pt",
-            add_generation_prompt=True, tools=TOOLS_SCHEMA,
+            add_generation_prompt=True,
             do_sample_frames=False,
         )
+        tools = kwargs.get("tools")
+        if tools is None and "tool_turn_kind" in kwargs:
+            tools = tools_for_turn(kwargs.get("tool_turn_kind"))
+        if tools is not None:
+            template_kwargs["tools"] = tools
         if video_metadata and has_video_meta:
             template_kwargs["video_metadata"] = video_metadata
         inputs = processor.apply_chat_template(messages, **template_kwargs)

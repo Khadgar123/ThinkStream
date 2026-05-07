@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from ..stable_hash import stable_seed
+from ..pass3a_cards import dict_to_card
 from .cards import generate_cards
 from .design import (
     AGENT_CHUNK_SEC,
@@ -38,6 +39,8 @@ from .design import (
     is_response_kind,
     is_silent_kind,
     place_card,
+    placement_timing_verdict,
+    refine_placements_with_evidence,
     render_video_samples,
     select_trajectory,
 )
@@ -50,6 +53,13 @@ from .design import (
 
 def load_evidence(path: Path) -> List[Dict]:
     return json.loads(path.read_text())
+
+
+def load_cards(path: Path) -> List[Card]:
+    raw = json.loads(path.read_text())
+    if not isinstance(raw, list):
+        raise ValueError("card cache must be a JSON list")
+    return [dict_to_card(c) for c in raw]
 
 
 def num_chunks_from(evidence: List[Dict], rollout_path: Path = None) -> int:
@@ -90,17 +100,24 @@ def simulate_one_video(
     num_chunks: int,
     seed: int = 42,
     compression_event_chunks: Optional[List[int]] = None,
+    cards_override: Optional[List[Card]] = None,
 ) -> Dict:
     """Run v2 pipeline for one video. Returns aggregated metrics + raw samples."""
     rng = random.Random(stable_seed(seed, video_id, modulo=1_000_000))
 
-    cards = generate_cards(evidence, video_id, seed=seed)
+    cards = cards_override if cards_override is not None else generate_cards(evidence, video_id, seed=seed)
 
     # Generate ALL candidate placements (multiple tiers per card)
     placements_by_card: Dict[str, List[Placement]] = {}
     all_placements: List[Placement] = []
     for card in cards:
-        plcs = place_card(card, num_chunks, rng)
+        plcs = refine_placements_with_evidence(
+            card, place_card(card, num_chunks, rng), evidence
+        )
+        plcs = [
+            p for p in plcs
+            if placement_timing_verdict(card, p)[0]
+        ]
         placements_by_card[card.card_id] = plcs
         all_placements.extend(plcs)
 
@@ -186,18 +203,39 @@ def aggregate(results: List[Dict]) -> Dict:
 
     # ── 3. Trajectory mechanism distribution ─────────────────────────────
     mech_count: Counter = Counter()
+    selected_family_count: Counter = Counter()
+    selected_by_mech_family: Counter = Counter()
+    difficulty_count: Counter = Counter()
     placements_per_video: List[int] = []
     recall_noise: Counter = Counter()
     silent_then_response_lead: List[int] = []
     direct_gap: List[int] = []
+    memory_direct_gap: List[int] = []
     recall_demo_gap: List[int] = []
+    overlap_violations: List[Dict] = []
+    timing_violations: Counter = Counter()
+    ask_answer_violations: Counter = Counter()
     # NEW: trajectory shape — questions per traj, q-interval, traj count
     questions_per_traj: List[int] = []
     q_intervals_chunks: List[float] = []
     q_intervals_seconds: List[float] = []
     for r in results:
         plcs = r["placements"]
+        card_by_id = {c.card_id: c for c in r["cards"]}
         placements_per_video.append(len(plcs))
+        used_chunks: Dict[int, str] = {}
+        for p in plcs:
+            for c in p.chunk_actions:
+                owner = f"{p.card_id}@{p.ask_chunk}"
+                if int(c) in used_chunks:
+                    overlap_violations.append({
+                        "video_id": r["video_id"],
+                        "chunk": int(c),
+                        "a": used_chunks[int(c)],
+                        "b": owner,
+                    })
+                else:
+                    used_chunks[int(c)] = owner
         # trajectory shape (1 traj per video by design)
         n_q = len(plcs)
         questions_per_traj.append(n_q)
@@ -209,12 +247,33 @@ def aggregate(results: List[Dict]) -> Dict:
             q_intervals_seconds.append(mean_diff_c * AGENT_CHUNK_SEC)
         for p in plcs:
             mech_count[p.mechanism] += 1
+            difficulty_count[getattr(p, "difficulty_mode", "") or "_blank"] += 1
             for noise in p.recall_at.values():
                 recall_noise[noise] += 1
             # gap stats — find this card's emit chunk
-            card = next((c for c in r["cards"] if c.card_id == p.card_id), None)
+            card = card_by_id.get(p.card_id)
             if not card or not card.gold_emits:
                 continue
+            selected_family_count[card.family] += 1
+            selected_by_mech_family[(p.mechanism, card.family)] += 1
+            ok, reason = placement_timing_verdict(card, p)
+            if not ok:
+                timing_violations[reason] += 1
+            response_chunks = sorted(
+                int(c) for c, (kind, _value) in p.chunk_actions.items()
+                if kind == "response"
+            )
+            if response_chunks:
+                first_response = response_chunks[0]
+                if p.mechanism in {"direct", "memory_direct", "recall_demo"}:
+                    if first_response != p.ask_chunk:
+                        ask_answer_violations[f"{p.mechanism}_answer_not_at_ask"] += 1
+                elif p.mechanism == "silent_then_response":
+                    if not (p.ask_chunk < first_response):
+                        ask_answer_violations["forward_answer_not_after_ask"] += 1
+                elif p.mechanism == "multi_emit":
+                    if p.ask_chunk > first_response:
+                        ask_answer_violations["multi_emit_ask_after_first_answer"] += 1
             if card.question_type == "single_emit":
                 emit = card.gold_emits[0].chunk
                 gap = p.ask_chunk - emit
@@ -222,6 +281,8 @@ def aggregate(results: List[Dict]) -> Dict:
                     silent_then_response_lead.append(-gap)  # positive lead
                 elif p.mechanism == "direct":
                     direct_gap.append(gap)
+                elif p.mechanism == "memory_direct":
+                    memory_direct_gap.append(gap)
                 elif p.mechanism == "recall_demo":
                     recall_demo_gap.append(gap)
     out["trajectory_shape"] = {
@@ -245,9 +306,26 @@ def aggregate(results: List[Dict]) -> Dict:
             k: round(v / max(sum(recall_noise.values()), 1) * 100, 1)
             for k, v in recall_noise.items()
         } if recall_noise else {},
+        "by_selected_family": dict(selected_family_count.most_common()),
+        "by_selected_family_pct": {
+            k: round(v / max(sum(selected_family_count.values()), 1) * 100, 1)
+            for k, v in selected_family_count.items()
+        },
+        "by_mechanism_family": {
+            f"{mech}:{fam}": n
+            for (mech, fam), n in selected_by_mech_family.most_common()
+        },
+        "by_difficulty_mode": dict(difficulty_count.most_common()),
         "silent_then_response_lead_chunks": _stats(silent_then_response_lead),
         "direct_gap_chunks": _stats(direct_gap),
+        "memory_direct_gap_chunks": _stats(memory_direct_gap),
         "recall_demo_gap_chunks": _stats(recall_demo_gap),
+        "overlap_violations": {
+            "n": len(overlap_violations),
+            "examples": overlap_violations[:10],
+        },
+        "timing_violations": dict(timing_violations.most_common()),
+        "ask_answer_violations": dict(ask_answer_violations.most_common()),
     }
 
     # ── 4. Per-video AND per-trajectory silent rate ──────────────────────
@@ -471,7 +549,18 @@ def print_report(agg: Dict, n_videos: int) -> None:
     print("  Gap distributions (chunks):")
     print(f"    silent_then_response lead time: {mech['silent_then_response_lead_chunks']}")
     print(f"    direct gap (ask − emit):        {mech['direct_gap_chunks']}")
+    print(f"    memory_direct gap (ask − emit): {mech['memory_direct_gap_chunks']}")
     print(f"    recall_demo gap (ask − emit):   {mech['recall_demo_gap_chunks']}")
+    print()
+    print("  Selected family distribution:")
+    for fam, n in mech["by_selected_family"].items():
+        pct = mech["by_selected_family_pct"].get(fam, 0)
+        print(f"    {fam:5s} {n:5d}  {pct:5.1f}%")
+    print()
+    print("  Placement integrity:")
+    print(f"    overlap violations:    {mech['overlap_violations']['n']}")
+    print(f"    timing violations:     {mech['timing_violations']}")
+    print(f"    ask/answer violations: {mech['ask_answer_violations']}")
 
     # 4. Silent rate
     sr = agg["silent_rate"]
@@ -522,6 +611,8 @@ def main():
     ap.add_argument("--evidence-dir", required=True, type=Path)
     ap.add_argument("--rollout-dir", type=Path, default=None,
                     help="Optional. Used only for num_chunks lookup.")
+    ap.add_argument("--cards-dir", type=Path, default=None,
+                    help="Optional pass3a task_cards cache. If set, simulate pass3b+ using existing cards.")
     ap.add_argument("--limit", type=int, default=0,
                     help="Limit videos for quick test. 0 = all.")
     ap.add_argument("--seed", type=int, default=42)
@@ -550,11 +641,23 @@ def main():
         if n_chunks == 0:
             continue
         compress_chunks = compression_event_chunks_from(rollout_path) if rollout_path else []
+        cards_override = None
+        if args.cards_dir:
+            cards_path = args.cards_dir / f"{video_id}.json"
+            if not cards_path.exists():
+                print(f"  skip {video_id}: missing cards {cards_path}", file=sys.stderr)
+                continue
+            try:
+                cards_override = load_cards(cards_path)
+            except Exception as e:
+                print(f"  skip {video_id}: cards load error {e}", file=sys.stderr)
+                continue
         try:
             r = simulate_one_video(
                 video_id, evidence, n_chunks,
                 seed=args.seed,
                 compression_event_chunks=compress_chunks,
+                cards_override=cards_override,
             )
             results.append(r)
         except Exception as e:

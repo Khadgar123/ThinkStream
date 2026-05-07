@@ -21,9 +21,9 @@ from typing import Dict, List, Iterator, Optional
 from torch.utils.data import Dataset
 
 from thinkstream.data.agent_protocol import (
-    TOOLS_SCHEMA,
     normalize_frame_protocol,
     system_prompt_for_frame_protocol,
+    tools_for_turn,
 )
 from thinkstream.trainer.v12_rollout import VideoTrajectoryState
 
@@ -136,7 +136,7 @@ class ThinkStreamRLDataset(Dataset):
                 "trajectory_id": traj.get("trajectory_id", ""),
                 "n_chunks_total": traj.get("stats", {}).get("n_chunks_covered", 0),
                 "seed_state": seed_state,
-                "tools": TOOLS_SCHEMA,
+                "tools": tools_for_turn("streaming"),
                 "frame_protocol": self.frame_protocol,
             },
         }

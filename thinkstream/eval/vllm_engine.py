@@ -88,10 +88,10 @@ def prepare_vllm_input(
 
     Returns: {"prompt": str, "multi_modal_data": {...}, "mm_processor_kwargs": {...}}
 
-    tools: optional v12 tool schema (TOOLS_SCHEMA). When provided, the
+    tools: optional v12 turn-local tool schema. When provided, the
     chat template renders <tools>...</tools> in the system prompt so the
-    model can emit <tool_call>{...}</tool_call>. Required for v12 protocol;
-    leave None for v11 (legacy <action> format).
+    model can emit <tool_call>{...}</tool_call>. Pass None for v12 turns
+    whose action space has no tools, such as recall-result answer turns.
     """
     from qwen_vl_utils import process_vision_info
 

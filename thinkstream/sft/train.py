@@ -93,8 +93,22 @@ def train(attn_implementation="flash_attention_2"):
     )
     name_lower = model_args.model_name_or_path.lower()
     model_basename = Path(model_args.model_name_or_path.rstrip("/")).name.lower()
+    model_config = transformers.AutoConfig.from_pretrained(
+        model_args.model_name_or_path,
+        cache_dir=training_args.cache_dir,
+        trust_remote_code=True,
+    )
+    config_model_type = str(getattr(model_config, "model_type", "") or "").lower()
+    config_arches = [
+        str(a).lower() for a in (getattr(model_config, "architectures", None) or [])
+    ]
+    config_text = " ".join([config_model_type, *config_arches])
 
-    if "qwen3" in name_lower and "a" in model_basename:
+    if (
+        "qwen3vlmoe" in config_text
+        or "qwen3_vl_moe" in config_text
+        or ("qwen3" in name_lower and "a" in model_basename)
+    ):
         model = Qwen3VLMoeForConditionalGeneration.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
@@ -102,7 +116,11 @@ def train(attn_implementation="flash_attention_2"):
             dtype=(torch.bfloat16 if training_args.bf16 else None),
         )
         data_args.model_type = "qwen3vl"
-    elif "qwen3" in name_lower:
+    elif (
+        "qwen3vlforconditionalgeneration" in config_text
+        or "qwen3_vl" in config_text
+        or "qwen3" in name_lower
+    ):
         model = Qwen3VLForConditionalGeneration.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
@@ -110,7 +128,11 @@ def train(attn_implementation="flash_attention_2"):
             dtype=(torch.bfloat16 if training_args.bf16 else None),
         )
         data_args.model_type = "qwen3vl"
-    elif "qwen2.5" in name_lower:
+    elif (
+        "qwen2_5_vl" in config_text
+        or "qwen2.5" in name_lower
+        or "qwen2_5" in name_lower
+    ):
         model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
@@ -140,7 +162,18 @@ def train(attn_implementation="flash_attention_2"):
             f"got model_type={data_args.model_type!r}. Qwen2.5-VL's chat "
             f"template has no tools support."
         )
-    processor = AutoProcessor.from_pretrained(model_args.model_name_or_path)
+    processor_path = (
+        os.environ.get("THINKSTREAM_PROCESSOR_PATH")
+        or os.environ.get("PROCESSOR_MODEL")
+        or model_args.model_name_or_path
+    )
+    processor = AutoProcessor.from_pretrained(
+        processor_path,
+        cache_dir=training_args.cache_dir,
+        trust_remote_code=True,
+    )
+    if processor_path != model_args.model_name_or_path:
+        rank0_print(f"Processor: {processor_path}")
     rank0_print("[v12.0] no special tokens added (official Qwen tool protocol)")
 
     model.config.use_cache = False
@@ -158,7 +191,7 @@ def train(attn_implementation="flash_attention_2"):
 
     # ── Tokenizer (separate from processor, needed by Trainer for saving) ──
     tokenizer = AutoTokenizer.from_pretrained(
-        model_args.model_name_or_path,
+        processor_path,
         cache_dir=training_args.cache_dir,
         model_max_length=training_args.model_max_length,
         padding_side="right",

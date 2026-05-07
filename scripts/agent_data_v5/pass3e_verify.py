@@ -113,6 +113,15 @@ def _parse_time_range_from_memory_line(item) -> Tuple[int, int]:
 _RECALL_TIME_RANGE_RE = re.compile(
     r"^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$"
 )
+_AUDIT_TOKEN_RE = re.compile(r"[a-z0-9]+")
+_AUDIT_STOPWORDS = {
+    "the", "a", "an", "and", "or", "to", "of", "in", "on", "at", "for",
+    "with", "while", "what", "which", "who", "where", "when", "how", "is",
+    "are", "was", "were", "be", "been", "being", "by", "from", "as", "it",
+    "this", "that", "these", "those", "into", "onto", "there", "here", "his",
+    "her", "their", "its", "your", "only", "answer", "option", "text",
+    "letter", "video", "scene", "frame", "frames", "question",
+}
 
 
 def _valid_recall_time_range(value) -> bool:
@@ -122,6 +131,37 @@ def _valid_recall_time_range(value) -> bool:
     if not m:
         return False
     return float(m.group(2)) > float(m.group(1))
+
+
+def _audit_tokens(text: str) -> set:
+    return {
+        t for t in _AUDIT_TOKEN_RE.findall(str(text or "").lower())
+        if len(t) >= 3 and t not in _AUDIT_STOPWORDS
+    }
+
+
+def _audit_overlap(answer: str, text: str) -> float:
+    ans = _audit_tokens(answer)
+    if not ans:
+        return 0.0
+    return len(ans & _audit_tokens(text)) / max(len(ans), 1)
+
+
+def _audit_memory_text(memory: Dict) -> str:
+    if not isinstance(memory, dict):
+        return str(memory or "")
+    parts = []
+    for seg in memory.get("compressed_segments", memory.get("compressed", [])) or []:
+        if isinstance(seg, dict):
+            parts.append(str(seg.get("text", "")))
+        else:
+            parts.append(str(seg))
+    for item in memory.get("recent_thinks", memory.get("recent_observations", [])) or []:
+        if isinstance(item, dict):
+            parts.append(str(item.get("text", item.get("obs", ""))))
+        else:
+            parts.append(str(item))
+    return "\n".join(parts)
 
 
 def _valid_compress_time_range(value) -> bool:
@@ -1264,6 +1304,31 @@ def verify_metadata_complete(sample: Dict) -> Tuple[bool, str]:
     return True, "pass"
 
 
+def verify_recall_memory_necessity(sample: Dict) -> Tuple[bool, str]:
+    """Recall-response should not ask for facts already explicit in memory."""
+    if not (sample.get("sample_type") == "recall" and sample.get("action") == "response"):
+        return True, "pass"
+    metadata = sample.get("metadata", {}) or {}
+    answer = (
+        metadata.get("correct_answer_text")
+        or metadata.get("canonical_answer")
+        or metadata.get("gold_answer")
+        or ""
+    )
+    answer = str(answer).strip()
+    if not answer or answer.lower() == "unable to answer":
+        return True, "pass"
+    memory_text = _audit_memory_text((sample.get("input") or {}).get("memory", {}))
+    answer_n = re.sub(r"\s+", " ", answer.lower()).strip()
+    memory_n = re.sub(r"\s+", " ", memory_text.lower()).strip()
+    if answer_n and len(answer_n) >= 3 and answer_n in memory_n:
+        return False, "recall_answer_verbatim_in_memory"
+    overlap = _audit_overlap(answer, memory_text)
+    if overlap >= 0.50:
+        return False, f"recall_answer_memory_overlap:{overlap:.2f}"
+    return True, "pass"
+
+
 # ---------------------------------------------------------------------------
 # Difficulty Labeling
 # ---------------------------------------------------------------------------
@@ -1334,6 +1399,7 @@ def verify_sample(sample: Dict, evidence: Optional[List[Dict]] = None) -> Dict:
         ("base_sample_consistency", verify_base_sample_consistency),
         ("recall_evidence_reachable", verify_recall_evidence_reachable),
         ("metadata_complete", verify_metadata_complete),
+        ("recall_memory_necessity", verify_recall_memory_necessity),
     ]:
         passed, reason = func(sample)
         checks[name] = {"passed": passed, "reason": reason}

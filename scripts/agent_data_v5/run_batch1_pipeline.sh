@@ -77,9 +77,10 @@ if model not in models:
     )
 PY
 
-exec python -m scripts.agent_data_v5.pipeline run \
-  --api_base "${API_BASE}" \
-  --model "${MODEL}" \
-  --videos_jsonl "${VIDEOS_JSONL}" \
-  --num_videos "${NUM_VIDEOS}" \
-  "$@"
+args=(
+  --api_base "${API_BASE}"
+  --model "${MODEL}"
+  --videos_jsonl "${VIDEOS_JSONL}"
+  --num_videos "${NUM_VIDEOS}"
+)
+exec python -m scripts.agent_data_v5.pipeline run "${args[@]}" "$@"

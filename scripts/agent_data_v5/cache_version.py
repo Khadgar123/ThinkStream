@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import Dict
 
 from .config import (
+    DATA_ROOT,
     EVIDENCE_1A_DIR,
     EVIDENCE_1B_DIR,
     ROLLOUT_DIR,
@@ -53,6 +54,30 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        keep only a bare <compress_trigger/> in user_input while the
     #        compression rules move to the system prompt. Regenerate all
     #        *_messages.jsonl and RL parquets that freeze prompts.
+    #   v12.44 (2026-05-07): pass3 redesign updates card generation,
+    #        placement/sample construction, and verification-facing metadata.
+    #        Regenerate pass3a and all downstream artifacts from existing
+    #        pass1/pass2 caches.
+    #   v12.45 (2026-05-07): pass3c hardens selected recall slots against the
+    #        exact pass2 memory snapshot seen at the answer chunk. Easy recall
+    #        cards are replaced in-place with support-grounded questions whose
+    #        answers are absent from current memory, while preserving ask/answer
+    #        chunks, family, mechanism, and trajectory counts. Regenerate 3c
+    #        and downstream render/verification outputs from existing 3a/3b.
+    #   v12.46 (2026-05-07): pass3c no longer drops a whole trajectory when an
+    #        easy recall slot cannot be hardened. It preserves the fixed
+    #        ask/answer chunks and downgrades that slot to memory_direct, while
+    #        pipeline fails fast on any remaining 3c trajectory/sample loss.
+    #   v12.49 (2026-05-07): pass3b reserves non-recall HLD/abstention slots
+    #        with deterministic sampling, keeping HLD near the previous
+    #        reasonable family share without counting it as recall.
+    #   v12.48 (2026-05-07): pass3b reserves one non-recall HLD/abstention
+    #        slot when available, so HLD keeps a reasonable family share
+    #        without being counted as successful recall supervision.
+    #   v12.47 (2026-05-07): HLD1 / Unable-to-answer cards are excluded from
+    #        successful recall_demo supervision. pass3b turns their historical
+    #        variants into memory_direct before trajectory selection, and
+    #        pass3c applies the same downgrade for stale 3b caches.
     #   v12.40 (2026-05-06): all non-HLD multiple-choice cards now place the
     #        correct option into a stable A/B/C/D slot and sort distractors by
     #        stable hash before validation/rendering. This removes LLM/heuristic
@@ -161,11 +186,11 @@ STAGE_VERSIONS: Dict[str, str] = {
     "1a": "v12.25",
     "1b": "v12.25",
     "2":  "v12.35",
-    "3a": "v12.40",
-    "3b": "v12.40",
-    "3c": "v12.40",
-    "4":  "v12.40",  # canonical key — verification
-    "5":  "v12.43",  # pass5_messages render version
+    "3a": "v12.44",
+    "3b": "v12.49",
+    "3c": "v12.49",
+    "4":  "v12.49",  # canonical key — verification
+    "5":  "v12.49",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any
@@ -230,16 +255,27 @@ def stage_version_ok(stage: str) -> bool:
 def invalidate_stage_and_downstream(stage: str) -> None:
     """Delete cache files for `stage` and all stages after it.
 
-    Used by --force_rerun_from. Removes only data files (json/jsonl),
-    keeps directory structure.
+    Used by --force_rerun_from. Removes generated data files while keeping
+    directory structure. Stage 5 also owns rendered protocol variants, which
+    live outside FINAL_DIR.
     """
     if stage not in PIPELINE_ORDER:
         raise ValueError(f"unknown stage: {stage}")
     start = PIPELINE_ORDER.index(stage)
+
+    def _clear_generated_files(d: Path) -> None:
+        if not d.exists():
+            return
+        for f in d.iterdir():
+            if not f.is_file():
+                continue
+            if f.suffix in (".json", ".jsonl", ".parquet") or f.name == "_version":
+                f.unlink()
+
     for s in PIPELINE_ORDER[start:]:
         d = STAGE_DIRS[s]
-        if not d.exists():
-            continue
-        for f in d.iterdir():
-            if f.suffix in (".json", ".jsonl") or f.name == "_version":
-                f.unlink()
+        _clear_generated_files(d)
+
+    if "5" in PIPELINE_ORDER[start:]:
+        _clear_generated_files(DATA_ROOT / "rendered" / "ts_image")
+        _clear_generated_files(DATA_ROOT / "rendered" / "video_meta")

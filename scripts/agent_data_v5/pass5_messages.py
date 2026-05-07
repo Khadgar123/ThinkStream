@@ -563,6 +563,7 @@ def _emit_row(sample: Dict, messages: List[Dict], *, frame_protocol: str) -> Dic
     # but keeps all samples in the trajectory; the consumer (SFT loader)
     # is responsible for the actual drop policy.
     verification = sample.get("verification") or {}
+    tool_schema_mode = "compress" if sample.get("v12_inter_chunk") else "streaming"
     return {
         "trajectory_id": sample.get("trajectory_id", ""),
         "video_id": sample.get("video_id", ""),
@@ -571,6 +572,7 @@ def _emit_row(sample: Dict, messages: List[Dict], *, frame_protocol: str) -> Dic
         "sample_id": sample.get("sample_id", ""),
         "frame_protocol": frame_protocol,
         "v12_inter_chunk": bool(sample.get("v12_inter_chunk", False)),
+        "tool_schema_mode": tool_schema_mode,
         "messages": messages,
         "videos": None,
         "verification": {
@@ -606,6 +608,7 @@ def _is_active_silent(sample: Dict) -> bool:
         "multi_response",
         "recall_success",
         "immediate_response",
+        "memory_response",
     }
 
 

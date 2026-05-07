@@ -102,7 +102,9 @@ def family_taxonomy(family: str) -> Dict:
 
 
 FAMILY_RULES = {
-    # backward MC (recall_demo dominant)
+    # Family ids define the question/reasoning skill. Availability difficulty
+    # (current/direct, memory_direct, recall, future/wait) is assigned later by
+    # pass3b placement, so no family should be interpreted as recall-only.
     "N1":  {"answer_form": "multiple_choice", "profile": "backward",
             "intent": "Appearance recall: which entity actually appeared in the video",
             **family_taxonomy("N1")},
@@ -300,7 +302,15 @@ Produce {target_n} card(s) as a JSON list. Each card schema:
 
 Rules:
 - question must NOT contain or paraphrase the answer.
+- question must be a natural user-facing question. Do NOT mention internal
+  chunk indices, frame numbers, timestamps, "c12", "chunk 12", or evidence
+  row ids. Use visual/event references instead.
 - grounding_frames must reference chunks present in the evidence above.
+- Treat the family as a reasoning type, not an availability bucket. The same
+  card may later be placed as current/direct, memory_direct, or recall.
+- Prefer questions whose evidence remains meaningful under harder placement:
+  fine visual details, before/after state, event order, causal clue, OCR,
+  object relation, or multi-chunk support when the family permits it.
 - For MC: distractors must be PLAUSIBLE, not random. For non-HLD families,
   prefer distractors drawn from other observed entities/actions in the video.
   For HLD1, distractors should be scene-plausible but unsupported.
@@ -348,7 +358,7 @@ Output the response text ONLY, no quotes or prefix:"""
 
 
 def recall_query_prompt(card: Dict) -> str:
-    """Generate retrieval keywords for recall demo (backward profile cards)."""
+    """Generate retrieval keywords for any historical visual-recall card."""
     grounding = card.get("grounding_frames") or []
     if grounding:
         from ..config import AGENT_CHUNK_SEC

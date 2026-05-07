@@ -137,6 +137,33 @@ def test_tools_schema_shape():
     print("✓ TOOLS_SCHEMA shape")
 
 
+def test_turn_local_tools_and_action_space():
+    from thinkstream.data.agent_protocol import (
+        action_space_error_for_turn,
+        allowed_actions_for_turn,
+        tools_for_turn,
+    )
+
+    assert [t["function"]["name"] for t in tools_for_turn("streaming")] == ["recall"]
+    assert [t["function"]["name"] for t in tools_for_turn("compress")] == ["compress"]
+    assert tools_for_turn("recall_response") is None
+
+    assert allowed_actions_for_turn("streaming") == {
+        "answer", "recall", "response", "silent",
+    }
+    assert allowed_actions_for_turn("compress") == {"compress"}
+    assert allowed_actions_for_turn("recall_response") == {
+        "answer", "response", "silent",
+    }
+
+    assert action_space_error_for_turn("compress", "streaming")
+    assert action_space_error_for_turn("recall", "compress")
+    assert action_space_error_for_turn("recall", "recall_response")
+    assert action_space_error_for_turn("silent", "recall_response") == ""
+
+    print("✓ turn-local tools/action space")
+
+
 def test_pass3c_v12_emission():
     """Current pass3c builders emit v12 sample outputs."""
     from scripts.agent_data_v5 import pass3c_samples
@@ -579,6 +606,7 @@ if __name__ == "__main__":
     test_v12_assistant_content_roundtrip()
     test_compress_trigger()
     test_tools_schema_shape()
+    test_turn_local_tools_and_action_space()
     test_pass3c_v12_emission()
     test_freegen_gate_classifier()
     test_v12_recall_multiturn_merge()

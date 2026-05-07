@@ -306,14 +306,18 @@ def render_sample(
     #   - silent-only samples (no card_id) legitimately have empty metadata.
     card_id = sample.get("card_id", "")
     if card_id:
-        if not cards_map or card_id not in cards_map:
+        hardened_card = sample.get("hardened_card")
+        if isinstance(hardened_card, dict) and hardened_card.get("card_id") == card_id:
+            card = hardened_card
+        elif not cards_map or card_id not in cards_map:
             raise KeyError(
                 f"[{video_id}] sample chunk={chunk_idx} references card_id="
                 f"{card_id!r} but it is missing from cards_map "
                 f"(cards_map size={len(cards_map or {})}). Render before Pass4 "
                 f"requires fully-populated cards_map."
             )
-        card = cards_map[card_id]
+        else:
+            card = cards_map[card_id]
     else:
         card = {}
     # Separate the two answer layers:

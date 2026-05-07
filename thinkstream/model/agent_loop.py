@@ -31,6 +31,8 @@ from thinkstream.data.agent_protocol import (
     recall_time_string_for_chunks,
     select_recall_chunks,
     system_prompt_for_frame_protocol,
+    action_space_error_for_turn,
+    tools_for_turn,
 )
 
 
@@ -371,8 +373,7 @@ def build_single_step_messages(
 
     Delegates text formatting to shared agent_protocol.build_user_content.
     Uses the protocol-aligned system prompt. The ``<tools>`` block is rendered
-    by the chat_template — callers must pass ``tools=TOOLS_SCHEMA`` when
-    invoking ``processor.apply_chat_template``.
+    by the chat_template from the turn-local schema returned by tools_for_turn().
 
     inter_chunk=True marks a memory-compaction turn. It suppresses query /
     recalled-answer context, but still carries the visual sliding window.
@@ -578,12 +579,10 @@ def make_generate_fn(
         **kwargs,
     ) -> str:
         # 1. Apply chat template + process vision (tokenize=True handles images/videos)
-        # v12.6 fix: pass tools=TOOLS_SCHEMA so chat_template auto-renders the
-        # <tools> block in the system prompt — same convention as SFT
-        # data_processor and vLLM eval. Without it, the HF generation path
-        # sees a different system context than the model was trained on,
-        # making tool-call tokens drift OOD.
-        from thinkstream.data.agent_protocol import TOOLS_SCHEMA
+        # v12.15: pass the turn-local tool schema. Streaming turns expose
+        # recall only, compression turns expose compress only, and recall-result
+        # answer turns pass no tools.
+        from thinkstream.data.agent_protocol import tools_for_turn
         # v12.6: collect per-video metadata for correct timestamp rendering
         video_metadata = []
         has_video_meta = True
@@ -608,9 +607,13 @@ def make_generate_fn(
             return_dict=True,
             return_tensors="pt",
             add_generation_prompt=True,
-            tools=TOOLS_SCHEMA,
             do_sample_frames=False,
         )
+        tools = kwargs.get("tools")
+        if tools is None and "tool_turn_kind" in kwargs:
+            tools = tools_for_turn(kwargs.get("tool_turn_kind"))
+        if tools is not None:
+            template_kwargs["tools"] = tools
         if video_metadata and has_video_meta:
             template_kwargs["video_metadata"] = video_metadata
         inputs = processor.apply_chat_template(messages, **template_kwargs)
@@ -946,15 +949,26 @@ class StreamingAgentLoop:
         self._last_step_messages = messages
 
         # 5. Generate
+        tool_turn_kind = "compress" if is_inter_chunk else "streaming"
         output_text = self.generate_fn(
             messages=messages,
             processor=self.processor,
             max_new_tokens=self.max_new_tokens,
+            tool_turn_kind=tool_turn_kind,
+            tools=tools_for_turn(tool_turn_kind),
             **generate_kwargs,
         )
 
         # 6. Parse output
         parsed = _parse_agent_output(output_text)
+        action_error = action_space_error_for_turn(
+            parsed.get("action", ""),
+            tool_turn_kind,
+        )
+        if action_error:
+            parsed["action_space_error"] = action_error
+            parsed["invalid_action"] = parsed.get("action", "")
+            parsed["action"] = "invalid"
 
         if os.environ.get("AGENT_DEBUG"):
             print(f"[AGENT_DEBUG] chunk={chunk_idx} user_input={user_input!r}")
@@ -1104,6 +1118,8 @@ class StreamingAgentLoop:
                 # Second generate (allow_recall=False to prevent infinite loop)
                 recall_gen_kwargs = dict(generate_kwargs)
                 recall_gen_kwargs["allow_recall"] = False
+                recall_gen_kwargs["tool_turn_kind"] = "recall_response"
+                recall_gen_kwargs["tools"] = tools_for_turn("recall_response")
                 recall_output_text = self.generate_fn(
                     messages=recall_messages,
                     processor=self.processor,
@@ -1112,6 +1128,10 @@ class StreamingAgentLoop:
                 )
 
                 recall_parsed = _parse_agent_output(recall_output_text)
+                recall_action_error = action_space_error_for_turn(
+                    recall_parsed.get("action", ""),
+                    "recall_response",
+                )
                 # recall_response has NO think (observation was already
                 # emitted in sample1 for this same chunk_idx).
 
@@ -1125,9 +1145,10 @@ class StreamingAgentLoop:
                 # DeepEyesV2 vl_agent.py recall_budget=1 contract; SFT shape B
                 # already trains "answer after recall_result" but a guard is
                 # cheap insurance against OOD drift / low-quality retrieval.
-                if recall_parsed["action"] in ("recall", "compress"):
+                if recall_action_error or recall_parsed["action"] in ("recall", "compress"):
                     parsed["recall_step2_blocked"] = {
                         "action": recall_parsed["action"],
+                        "action_space_error": recall_action_error,
                         "raw_output": recall_output_text,
                     }
                     recall_parsed = {
@@ -1221,7 +1242,11 @@ class StreamingAgentLoop:
         #    Action-specific payload presence is also required for non-silent.
         VALID_ACTIONS = {"silent", "response", "recall", "compress"}
         action = parsed.get("action") or ""
-        format_ok = bool(parsed.get("think")) and action in VALID_ACTIONS
+        format_ok = (
+            bool(parsed.get("think"))
+            and action in VALID_ACTIONS
+            and not parsed.get("action_space_error")
+        )
         if format_ok:
             payload = parsed.get("payload") or {}
             if action == "response":

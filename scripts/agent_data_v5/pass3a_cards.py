@@ -38,6 +38,10 @@ logger = logging.getLogger(__name__)
 
 _OPTION_LABEL_RE = re.compile(r"^\s*[A-D][\).]\s*")
 _TEXT_TOKEN_RE = re.compile(r"[a-z0-9]+")
+_INTERNAL_TIME_REF_RE = re.compile(
+    r"(?i)(?:\bchunks?\s*c?\d+\b|\bc\d+\b|\bframes?\s*\d+\b|"
+    r"\bt\s*=\s*\d+|\baround\s+chunk\b|\bat\s+chunk\b)"
+)
 
 
 PASS3A_TARGETS_BY_FAMILY = {
@@ -463,6 +467,8 @@ def _verify_card_layers(card: Dict, ev_by_chunk: Dict[int, Dict]) -> str:
     q = (card.get("question") or "").strip()
     if len(q) < 8:
         return "schema_question_too_short"
+    if _INTERNAL_TIME_REF_RE.search(q):
+        return "schema_question_internal_time_ref"
     family = str(card.get("family") or "")
     af = card.get("answer_form", "")
     emits = card.get("gold_emits") or []

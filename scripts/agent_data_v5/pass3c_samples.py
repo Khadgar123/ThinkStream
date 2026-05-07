@@ -25,12 +25,19 @@ from thinkstream.data.agent_protocol import (
     RECALL_RETURN_CHUNKS,
     build_assistant_content_v12,
     build_compress_trigger_user_input,
+    format_memory_block,
     recall_time_string_for_chunks,
     select_recall_chunks,
 )
 from thinkstream.model.agent_loop import bm25_retrieve
 
-from .config import AGENT_CHUNK_SEC, FRAMES_PER_CHUNK, PASS_CONFIG, SAMPLES_3C_DIR
+from .config import (
+    AGENT_CHUNK_SEC,
+    FRAMES_PER_CHUNK,
+    PASS_CONFIG,
+    SAMPLES_3C_DIR,
+    compute_visual_window_start,
+)
 from .pass3a_cards import dict_to_card
 from .pass3b_placement import _dict_to_placement
 from .stable_hash import stable_mod
@@ -39,12 +46,20 @@ from .v2.design import (
     render_video_samples as _design_render,
 )
 from .v2.llm_prompts import (
+    family_taxonomy,
     parse_recall_query_response,
     recall_query_prompt,
     response_generation_prompt,
 )
 
 logger = logging.getLogger(__name__)
+
+
+RECALL_MEMORY_OVERLAP_HARDEN_THRESHOLD = 0.50
+RECALL_MEMORY_OVERLAP_ACCEPT_THRESHOLD = 0.35
+RECALL_SUPPORT_OVERLAP_MIN = 0.40
+RECALL_HARDEN_MAX_ATTEMPTS = 3
+RECALL_HARDEN_EVIDENCE_LINES = 56
 
 
 # ---------------------------------------------------------------------------
@@ -61,11 +76,132 @@ def _think_for_chunk(rollout: Dict, chunk_idx: int) -> str:
 
 
 _OPTION_LABEL_RE = re.compile(r"^\s*[A-D][\).]\s*")
+_TOKEN_RE = re.compile(r"[a-z0-9]+")
 MC_ANSWER_STYLES = ("letter_only", "letter_plus_text", "text_only")
+_STOPWORDS = {
+    "the", "a", "an", "and", "or", "to", "of", "in", "on", "at", "for",
+    "with", "while", "what", "which", "who", "where", "when", "how", "is",
+    "are", "was", "were", "be", "been", "being", "by", "from", "as", "it",
+    "this", "that", "these", "those", "into", "onto", "there", "here", "his",
+    "her", "their", "its", "your", "only", "answer", "option", "text",
+    "letter", "video", "scene", "frame", "frames", "question",
+}
 
 
 def _strip_option_label(text: str) -> str:
     return _OPTION_LABEL_RE.sub("", str(text or "")).strip()
+
+
+def _norm_text(text: str) -> str:
+    return re.sub(r"\s+", " ", str(text or "").lower()).strip()
+
+
+def _tokens(text: str) -> List[str]:
+    return [
+        t for t in _TOKEN_RE.findall(_norm_text(text))
+        if len(t) >= 3 and t not in _STOPWORDS
+    ]
+
+
+def _token_overlap(answer: str, text: str) -> float:
+    ans = set(_tokens(answer))
+    if not ans:
+        return 0.0
+    return len(ans & set(_tokens(text))) / max(len(ans), 1)
+
+
+def _text_contains_answer(answer: str, text: str) -> bool:
+    answer_n = _norm_text(answer)
+    return bool(answer_n and len(answer_n) >= 3 and answer_n in _norm_text(text))
+
+
+def _answer_visible_in_text(answer: str, text: str, *, threshold: float) -> bool:
+    if not str(answer or "").strip():
+        return False
+    return (
+        _text_contains_answer(answer, text)
+        or _token_overlap(answer, text) >= float(threshold)
+    )
+
+
+def _chunk_idx(cap: Dict, fallback: int = -1) -> int:
+    try:
+        return int(cap.get("chunk_idx", fallback))
+    except (TypeError, ValueError):
+        return fallback
+
+
+def _evidence_text(cap: Dict) -> str:
+    parts: List[str] = []
+    for ent in cap.get("visible_entities") or []:
+        if isinstance(ent, dict):
+            parts.extend([
+                str(ent.get("id", "")),
+                str(ent.get("desc", "")),
+                str(ent.get("action", "")),
+            ])
+        else:
+            parts.append(str(ent))
+    for fact in cap.get("atomic_facts") or []:
+        parts.append(str(fact.get("fact", "")) if isinstance(fact, dict) else str(fact))
+    for ocr in cap.get("ocr") or []:
+        parts.append(str(ocr.get("text", "")) if isinstance(ocr, dict) else str(ocr))
+    for sc in cap.get("state_changes") or []:
+        parts.append(
+            str(sc.get("text", sc.get("change", ""))) if isinstance(sc, dict)
+            else str(sc)
+        )
+    if cap.get("spatial"):
+        parts.append(str(cap.get("spatial")))
+    if cap.get("think"):
+        parts.append(str(cap.get("think")))
+    return " ".join(p for p in parts if p).strip()
+
+
+def _snapshot_for_chunk(rollout: Dict, chunk_idx: int) -> Dict:
+    snapshots = rollout.get("snapshots") or {}
+    return snapshots.get(chunk_idx) or snapshots.get(str(chunk_idx)) or {}
+
+
+def _memory_from_snapshot(snapshot: Dict) -> Dict:
+    memory = {"compressed_segments": [], "recent_thinks": []}
+    for seg in snapshot.get("compressed_segments") or []:
+        if not isinstance(seg, dict):
+            continue
+        if "time_range" in seg and "text" in seg:
+            memory["compressed_segments"].append({
+                "time_range": seg.get("time_range"),
+                "text": str(seg.get("text", "")),
+            })
+    for item in snapshot.get("recent_thinks") or []:
+        if isinstance(item, dict):
+            memory["recent_thinks"].append({
+                "time": str(item.get("time", "")),
+                "text": str(item.get("text", item.get("obs", ""))),
+            })
+        elif isinstance(item, str):
+            memory["recent_thinks"].append(item)
+    return memory
+
+
+def _memory_text_for_chunk(rollout: Dict, chunk_idx: int) -> str:
+    return format_memory_block(_memory_from_snapshot(_snapshot_for_chunk(rollout, chunk_idx)))
+
+
+def _card_answer_text(card: Dict) -> str:
+    if card.get("answer_form") == "multiple_choice":
+        _letter, text = _mc_correct_letter_text(card)
+        if text:
+            return text
+    return str(card.get("canonical_answer") or "").strip()
+
+
+def _support_evidence_text(evidence_by_chunk: Dict[int, Dict], chunks: List[int]) -> str:
+    return "\n".join(
+        f"[{c}-{c + 1}] {_evidence_text(evidence_by_chunk.get(int(c), {}))}"
+        for c in sorted(set(int(x) for x in chunks))
+        if _evidence_text(evidence_by_chunk.get(int(c), {}))
+    )
 
 
 def _mc_correct_letter_text(card: Dict, fallback: str = "") -> tuple[str, str]:
@@ -345,6 +481,475 @@ async def _recall_query_via_llm(card: Dict, client, video_id: str,
     return rq
 
 
+def _parse_json_object(raw: str) -> Dict:
+    """Parse one JSON object, accepting a single-element list wrapper."""
+    if not raw:
+        return {}
+    text = str(raw).strip()
+    if text.startswith("```"):
+        text = text.replace("```json", "```", 1)
+        parts = text.split("```")
+        if len(parts) >= 3:
+            text = parts[1].strip()
+    candidates = []
+    obj_start, obj_end = text.find("{"), text.rfind("}")
+    if obj_start >= 0 and obj_end > obj_start:
+        candidates.append(text[obj_start:obj_end + 1])
+    list_start, list_end = text.find("["), text.rfind("]")
+    if list_start >= 0 and list_end > list_start:
+        candidates.append(text[list_start:list_end + 1])
+    for blob in candidates:
+        try:
+            parsed = json.loads(blob)
+        except (json.JSONDecodeError, ValueError, TypeError):
+            continue
+        if isinstance(parsed, dict):
+            return parsed
+        if isinstance(parsed, list) and parsed and isinstance(parsed[0], dict):
+            return parsed[0]
+    return {}
+
+
+def _history_evidence_lines(
+    evidence_by_chunk: Dict[int, Dict],
+    card: Dict,
+    current_chunk: int,
+    *,
+    max_lines: int = RECALL_HARDEN_EVIDENCE_LINES,
+) -> str:
+    """Rich historical evidence pool for replacement recall-card generation.
+
+    The pool is restricted to chunks that are outside the current visual
+    window. The selected recall slot keeps its ask/response chunk fixed; this
+    only gives the teacher grounded historical material from which it may build
+    a harder question.
+    """
+    visual_start = compute_visual_window_start(int(current_chunk))
+    original_support = set(_support_chunks_before(card, int(current_chunk)))
+    scored = []
+    for ci, cap in evidence_by_chunk.items():
+        if ci < 0 or ci >= visual_start:
+            continue
+        text = _evidence_text(cap)
+        if not text:
+            continue
+        score = 0
+        if ci in original_support:
+            score += 100
+        score += 6 * len(cap.get("ocr") or [])
+        score += 3 * len(cap.get("atomic_facts") or [])
+        score += 3 * len(cap.get("state_changes") or [])
+        if cap.get("spatial"):
+            score += 2
+        score += min(len(text) // 160, 4)
+        scored.append((score, ci, text))
+    scored = sorted(scored, key=lambda x: (-x[0], x[1]))[:max_lines]
+    return "\n".join(
+        f"[c{ci} | t={ci * AGENT_CHUNK_SEC}-{(ci + 1) * AGENT_CHUNK_SEC}] {text[:700]}"
+        for _score, ci, text in sorted(scored, key=lambda x: x[1])
+    )
+
+
+def _recall_hardening_prompt(
+    card: Dict,
+    *,
+    current_chunk: int,
+    memory_text: str,
+    evidence_lines: str,
+    answer_form: str,
+    previous_error: str = "",
+) -> str:
+    options_doc = ""
+    if answer_form == "multiple_choice":
+        options_doc = """
+  "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
+  "correct_option": "A" | "B" | "C" | "D","""
+    prev = f"\nPrevious rejected candidate reason: {previous_error}\n" if previous_error else ""
+    return f"""You are repairing ONE selected recall training slot.
+
+The trajectory slot is fixed and MUST NOT change:
+- family: {card.get('family', '')} / {card.get('family_name', '')}
+- answer_form: {answer_form}
+- question_type: single_emit
+- ask/answer chunk: c{int(current_chunk)}
+
+The current model-visible memory at c{int(current_chunk)} is below. The new
+question must NOT be answerable from this memory:
+<current_memory>
+{memory_text[:7000]}
+</current_memory>
+
+Historical evidence outside the current visual window is below. The new
+question and answer MUST be fully verifiable from this evidence:
+<historical_evidence>
+{evidence_lines[:11000]}
+</historical_evidence>
+{prev}
+Generate a replacement card for the same slot.
+
+Rules:
+- Keep the same family and answer_form. Do not change the ask/answer chunk.
+- The answer must be present in historical_evidence but absent from current_memory.
+- Prefer fine visual details, OCR text, object relations, before/after order,
+  or cross-event details that compression summaries usually omit.
+- Do not ask a question whose answer is "Unable to answer".
+- The question must not contain or paraphrase the answer.
+- grounding_frames must be the minimal historical chunk indices needed to
+  verify the answer; every index must appear in historical_evidence and be
+  before c{int(current_chunk)}.
+- recall_query.query must contain search keywords only, not the answer value.
+
+Output ONLY one JSON object:
+{{
+  "question": "...",
+  "canonical_answer": "...",{options_doc}
+  "grounding_frames": [int, ...],
+  "recall_query": {{"query": "3-6 keywords", "time_range": "start-end"}}
+}}"""
+
+
+def _candidate_to_recall_card(
+    candidate: Dict,
+    original: Dict,
+    *,
+    current_chunk: int,
+) -> Dict:
+    answer_form = str(original.get("answer_form") or "").strip()
+    family = str(original.get("family") or "").strip()
+    if not isinstance(candidate, dict) or not family or not answer_form:
+        return {}
+    question = str(candidate.get("question") or "").strip()
+    if len(question) < 8:
+        return {}
+    grounding = []
+    for raw in candidate.get("grounding_frames") or []:
+        try:
+            c = int(raw)
+        except (TypeError, ValueError):
+            continue
+        if c < int(current_chunk):
+            grounding.append(c)
+    grounding = sorted(set(grounding))
+    if not grounding:
+        return {}
+
+    out = deepcopy(original)
+    out["question"] = question
+    out["family"] = family
+    out["answer_form"] = answer_form
+    out["question_type"] = "single_emit"
+    out["grounding_frames"] = grounding
+    out["support_chunks"] = grounding
+    out.update(family_taxonomy(family))
+
+    if answer_form == "multiple_choice":
+        options = list(candidate.get("options") or [])
+        correct = str(candidate.get("correct_option") or "").strip().upper()
+        if len(options) != 4 or correct not in {"A", "B", "C", "D"}:
+            return {}
+        relabelled = [
+            f"{chr(65 + i)}) {_strip_option_label(str(opt)).strip()}"
+            for i, opt in enumerate(options)
+        ]
+        correct_text = _strip_option_label(relabelled[ord(correct) - ord("A")]).strip()
+        if not correct_text:
+            return {}
+        out["options"] = relabelled
+        out["correct_option"] = correct
+        out["canonical_answer"] = correct_text
+        emit_value = correct
+    else:
+        answer = str(candidate.get("canonical_answer") or "").strip()
+        if not answer:
+            return {}
+        if answer_form == "binary" and answer not in {"Yes", "No"}:
+            return {}
+        if answer_form == "number" and not re.fullmatch(r"\d+", answer):
+            return {}
+        out["canonical_answer"] = answer
+        out["options"] = None
+        out["correct_option"] = None
+        emit_value = answer
+
+    out["gold_emits"] = [{"chunk": max(grounding), "value": emit_value}]
+    rq = candidate.get("recall_query") or {}
+    if not isinstance(rq, dict):
+        rq = {}
+    if not _valid_recall_query(rq):
+        rq = {
+            "query": _query_keywords(question),
+            "time_range": (
+                f"{min(grounding) * AGENT_CHUNK_SEC}-"
+                f"{(max(grounding) + 1) * AGENT_CHUNK_SEC}"
+            ),
+        }
+    out["recall_query"] = rq
+    out["recall_hardened"] = True
+    out["recall_hardened_from_card_id"] = original.get("card_id", "")
+    return out
+
+
+def _validate_hardened_recall_card(
+    card: Dict,
+    *,
+    current_chunk: int,
+    memory_text: str,
+    evidence_by_chunk: Dict[int, Dict],
+) -> tuple[bool, str]:
+    answer = _card_answer_text(card)
+    if not answer or answer.strip().lower() == "unable to answer":
+        return False, "empty_or_unanswerable_answer"
+    question = str(card.get("question") or "")
+    if _answer_visible_in_text(answer, question, threshold=0.50):
+        return False, "question_leaks_answer"
+    if _answer_visible_in_text(
+        answer, memory_text,
+        threshold=RECALL_MEMORY_OVERLAP_ACCEPT_THRESHOLD,
+    ):
+        return False, "answer_still_visible_in_memory"
+
+    visual_start = compute_visual_window_start(int(current_chunk))
+    grounding = _support_chunks_before(card, int(current_chunk))
+    if not grounding:
+        return False, "no_past_grounding"
+    not_historical = [c for c in grounding if c >= visual_start]
+    if not_historical:
+        return False, f"grounding_inside_visual_window:{not_historical[:5]}"
+    missing = [c for c in grounding if c not in evidence_by_chunk]
+    if missing:
+        return False, f"grounding_missing_evidence:{missing[:5]}"
+    support_text = _support_evidence_text(evidence_by_chunk, grounding)
+    if not support_text:
+        return False, "empty_support_text"
+    if not (
+        _text_contains_answer(answer, support_text)
+        or _token_overlap(answer, support_text) >= RECALL_SUPPORT_OVERLAP_MIN
+    ):
+        return False, "answer_not_supported_by_evidence_text"
+
+    rq = card.get("recall_query") or {}
+    if not _recall_query_available(rq, int(current_chunk)):
+        return False, "bad_recall_query_time"
+    if _answer_visible_in_text(answer, str(rq.get("query", "")), threshold=0.50):
+        return False, "recall_query_leaks_answer"
+    return True, "pass"
+
+
+def _needs_recall_hardening(card: Dict, memory_text: str) -> bool:
+    answer = _card_answer_text(card)
+    if not answer or answer.strip().lower() == "unable to answer":
+        return False
+    return _answer_visible_in_text(
+        answer, memory_text,
+        threshold=RECALL_MEMORY_OVERLAP_HARDEN_THRESHOLD,
+    )
+
+
+def _is_unanswerable_card(card: Dict) -> bool:
+    if card.get("family") == "HLD1":
+        return True
+    return _card_answer_text(card).strip().lower() == "unable to answer"
+
+
+def _set_placement_response_value(placement: Placement, value: str) -> None:
+    for c, (kind, _old) in list(placement.chunk_actions.items()):
+        if kind == "response":
+            placement.chunk_actions[c] = ("response", str(value))
+
+
+def _downgrade_recall_to_memory_direct(
+    placement: Placement,
+    card: Dict,
+    *,
+    reason: str,
+) -> None:
+    """Keep an easy historical slot answerable without emitting false recall."""
+    placement.mechanism = "memory_direct"
+    placement.difficulty_mode = "memory_direct_hardening_fallback"
+    placement.recall_need = f"hardening_failed:{reason}"[:160]
+    placement.recall_at.clear()
+    card["recall_hardening_fallback"] = "memory_direct"
+    card["recall_hardening_fallback_reason"] = str(reason)
+
+
+async def _harden_one_recall_slot(
+    *,
+    card: Dict,
+    placement: Placement,
+    rollout: Dict,
+    evidence_by_chunk: Dict[int, Dict],
+    client,
+    video_id: str,
+) -> tuple[Dict, bool, str]:
+    response_chunks = [
+        int(c) for c, (kind, _value) in placement.chunk_actions.items()
+        if kind == "response"
+    ]
+    if not response_chunks:
+        return card, False, "no_response_chunk"
+    current_chunk = max(response_chunks)
+    memory_text = _memory_text_for_chunk(rollout, current_chunk)
+    if not _needs_recall_hardening(card, memory_text):
+        return card, False, "already_hard"
+    if client is None:
+        return card, False, "needs_hardening_but_no_client"
+
+    answer_form = str(card.get("answer_form") or "")
+    if answer_form not in {"multiple_choice", "descriptive", "number", "binary", "short_exact"}:
+        return card, False, f"unsupported_answer_form:{answer_form}"
+    evidence_lines = _history_evidence_lines(
+        evidence_by_chunk, card, current_chunk,
+    )
+    if not evidence_lines:
+        return card, False, "no_historical_evidence_pool"
+
+    cfg = PASS_CONFIG.get("pass3c_recall_hardening", PASS_CONFIG.get("pass3c", {}))
+    previous_error = ""
+    for attempt in range(RECALL_HARDEN_MAX_ATTEMPTS):
+        prompt = _recall_hardening_prompt(
+            card,
+            current_chunk=current_chunk,
+            memory_text=memory_text,
+            evidence_lines=evidence_lines,
+            answer_form=answer_form,
+            previous_error=previous_error,
+        )
+        try:
+            raw = await client._call_one(
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=int(cfg.get("max_tokens", 4096)),
+                temperature=float(cfg.get("temperature", 0.4)),
+                request_id=(
+                    f"{video_id}_3c_recall_harden_"
+                    f"{card.get('card_id','?')}_{current_chunk}_{attempt}"
+                ),
+                enable_thinking=cfg.get("thinking", False),
+            )
+        except Exception as exc:
+            previous_error = f"llm_call_failed:{exc}"
+            logger.warning("[%s] recall hardening LLM failed: %s", video_id, exc)
+            continue
+        candidate = _candidate_to_recall_card(
+            _parse_json_object(raw or ""),
+            card,
+            current_chunk=current_chunk,
+        )
+        ok, reason = _validate_hardened_recall_card(
+            candidate,
+            current_chunk=current_chunk,
+            memory_text=memory_text,
+            evidence_by_chunk=evidence_by_chunk,
+        ) if candidate else (False, "parse_or_schema_failed")
+        if ok:
+            return candidate, True, "hardened"
+        previous_error = reason
+    return card, False, previous_error or "hardening_failed"
+
+
+async def _harden_selected_recall_slots(
+    *,
+    placements: List[Placement],
+    cards_map: Dict[str, Dict],
+    rollout: Dict,
+    evidence: List[Dict],
+    client,
+    video_id: str,
+) -> Dict[str, int]:
+    """Replace easy selected recall cards without changing trajectory timing.
+
+    This function mutates ``cards_map`` and response values inside selected
+    recall placements. It never changes ask_chunk, response chunk keys, or
+    trajectory length. If a memory-answerable recall slot cannot be hardened
+    into a true recall task, it is downgraded to memory_direct so the sample
+    remains correct without emitting a false tool call.
+    """
+    evidence_by_chunk = {
+        _chunk_idx(cap): cap for cap in evidence
+        if isinstance(cap, dict) and _chunk_idx(cap) >= 0
+    }
+    stats = {
+        "recall_slots": 0,
+        "already_hard": 0,
+        "hardened": 0,
+        "unanswerable_memory_direct": 0,
+        "downgraded_memory_direct": 0,
+        "failed": 0,
+    }
+    for placement in placements:
+        if placement.mechanism != "recall_demo":
+            continue
+        card = cards_map.get(placement.card_id)
+        if not card:
+            continue
+        stats["recall_slots"] += 1
+        if _is_unanswerable_card(card):
+            _downgrade_recall_to_memory_direct(
+                placement,
+                card,
+                reason="unanswerable_no_recall",
+            )
+            stats["unanswerable_memory_direct"] += 1
+            continue
+        before_ask = int(placement.ask_chunk)
+        before_chunks = sorted(int(c) for c in placement.chunk_actions.keys())
+        new_card, changed, reason = await _harden_one_recall_slot(
+            card=card,
+            placement=placement,
+            rollout=rollout,
+            evidence_by_chunk=evidence_by_chunk,
+            client=client,
+            video_id=video_id,
+        )
+        after_chunks = sorted(int(c) for c in placement.chunk_actions.keys())
+        if int(placement.ask_chunk) != before_ask or after_chunks != before_chunks:
+            raise RuntimeError(
+                f"[{video_id}] recall hardening changed trajectory timing for "
+                f"card={placement.card_id}: ask {before_ask}->{placement.ask_chunk}, "
+                f"chunks {before_chunks}->{after_chunks}"
+            )
+        if changed:
+            cards_map[placement.card_id].clear()
+            cards_map[placement.card_id].update(new_card)
+            answer_value = (
+                str(new_card.get("correct_option"))
+                if new_card.get("answer_form") == "multiple_choice"
+                else str(new_card.get("canonical_answer") or "")
+            )
+            _set_placement_response_value(placement, answer_value)
+            stats["hardened"] += 1
+            continue
+        if reason == "already_hard":
+            stats["already_hard"] += 1
+            continue
+        stats["failed"] += 1
+        response_chunks = [
+            int(c) for c, (kind, _value) in placement.chunk_actions.items()
+            if kind == "response"
+        ]
+        still_easy = False
+        if response_chunks:
+            still_easy = _needs_recall_hardening(
+                card, _memory_text_for_chunk(rollout, max(response_chunks))
+            )
+        if still_easy:
+            _downgrade_recall_to_memory_direct(
+                placement,
+                card,
+                reason=reason,
+            )
+            stats["downgraded_memory_direct"] += 1
+            logger.warning(
+                "[%s] recall hardening fallback: card=%s downgraded to "
+                "memory_direct (%s)",
+                video_id,
+                placement.card_id,
+                reason,
+            )
+    if stats["recall_slots"]:
+        logger.info("[%s] recall hardening stats: %s", video_id, stats)
+    return stats
+
+
 def _recall_result_for(
     card: Dict,
     rollout: Dict,
@@ -379,6 +984,16 @@ def _recall_result_for(
                 "text": text,
             })
         return archive
+
+    def _archive_text_for_chunks(archive: List[Dict], chunks: List[int]) -> str:
+        by_chunk = {int(item.get("chunk", -1)): item for item in archive}
+        lines = []
+        for c in chunks:
+            item = by_chunk.get(int(c))
+            if not item:
+                continue
+            lines.append(f"[{item.get('time', '')}] {item.get('text', '')}")
+        return "\n".join(lines)
 
     if current_chunk is None:
         grounding = _support_chunks(card)
@@ -438,6 +1053,13 @@ def _recall_result_for(
     # does not lexically match the pass2 memory even though gold support exists.
     if not chunks:
         chunks = sorted(int(c) for c in grounding)
+        text_content = _archive_text_for_chunks(_archive_before_now(), chunks)
+    elif grounding and not any(int(c) in set(int(g) for g in grounding) for c in chunks):
+        # For SFT, a successful recall turn must return the answer support,
+        # not merely any lexical neighbor. BM25 can retrieve a distractor when
+        # the query is underspecified, so snap back to the grounded chunks.
+        chunks = sorted(int(c) for c in grounding)
+        text_content = _archive_text_for_chunks(_archive_before_now(), chunks)
 
     if noise_kind == "noisy":
         # Inject a distractor chunk near grounding
@@ -473,6 +1095,7 @@ def _mech_to_sequence_type(mech: str) -> str:
     return {
         "silent_then_response": "event_watch",
         "direct": "immediate_response",
+        "memory_direct": "memory_response",
         "recall_demo": "recall_success",
         "multi_emit": "multi_response",
     }.get(mech, "immediate_response")
@@ -761,6 +1384,10 @@ async def generate_trajectory_samples(
     placements = [_dict_to_placement(p) for p in placements_dicts]
     traj_id = trajectory.get("trajectory_id", f"{video_id}_traj0")
     num_chunks = int(rollout.get("num_chunks", 0))
+    # pass3 pipeline renders trajectories from the same video concurrently and
+    # passes the video-level card map to each task. Recall hardening may replace
+    # a selected card for this trajectory, so keep all card mutations local.
+    cards_map = {cid: deepcopy(card) for cid, card in cards_map.items()}
 
     compress_chunks = [int(e.get("trigger_chunk", -1))
                        for e in rollout.get("compression_events", [])
@@ -779,6 +1406,15 @@ async def generate_trajectory_samples(
             style = _mc_answer_style_for_card(card, video_id)
             card["answer_style"] = style
             card["answer_instruction"] = _mc_answer_instruction(style)
+
+    await _harden_selected_recall_slots(
+        placements=placements,
+        cards_map=cards_map,
+        rollout=rollout,
+        evidence=evidence,
+        client=client,
+        video_id=video_id,
+    )
 
     cards_obj = [dict_to_card(c) for c in cards_map.values()]
     placements_by_card: Dict[str, List[Placement]] = {}
@@ -1001,6 +1637,13 @@ async def generate_trajectory_samples(
                 for c, (kind, value) in sorted(placement.chunk_actions.items())
                 if kind == "response"
             ]
+        if card.get("recall_hardened"):
+            s["hardened_card"] = deepcopy(card)
+        if card.get("recall_hardening_fallback"):
+            s["hardening_fallback"] = {
+                "mode": card.get("recall_hardening_fallback"),
+                "reason": card.get("recall_hardening_fallback_reason", ""),
+            }
 
     return raw
 

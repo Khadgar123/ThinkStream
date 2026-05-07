@@ -413,7 +413,7 @@ def _register_streaming_agent_loop():
     from verl.workers.rollout.replica import TokenOutput  # type: ignore
 
     from thinkstream.data.agent_protocol import (  # type: ignore
-        TOOLS_SCHEMA,
+        action_space_error_for_turn,
         append_visual_frames,
         normalize_frame_protocol,
         parse_agent_output_v12,
@@ -421,6 +421,7 @@ def _register_streaming_agent_loop():
         format_queries_block,
         format_user_input_block,
         system_prompt_for_frame_protocol,
+        tools_for_turn,
     )
     from thinkstream.trainer.v12_rollout import (  # type: ignore
         VideoTrajectoryState,
@@ -1038,7 +1039,7 @@ def _register_streaming_agent_loop():
                     None,
                     lambda: self.tokenizer.apply_chat_template(
                         initial_messages,
-                        tools=TOOLS_SCHEMA,
+                        tools=tools_for_turn("streaming"),
                         add_generation_prompt=False,
                         tokenize=True,
                         **self.apply_chat_template_kwargs,
@@ -1052,7 +1053,7 @@ def _register_streaming_agent_loop():
                 # recover the no-prefix length by tokenizing the prefix
                 # marker itself.
                 with_prefix = await self.apply_chat_template(
-                    initial_messages, tools=TOOLS_SCHEMA,
+                    initial_messages, tools=tools_for_turn("streaming"),
                     images=initial_images if initial_images else None,
                     videos=initial_videos if initial_videos else None,
                 )
@@ -1064,6 +1065,8 @@ def _register_streaming_agent_loop():
             any_logprobs_returned = False
             chunk_asst_spans: List[Tuple[int, int]] = []
             chunk_kinds: List[str] = []
+            chunk_turn_kinds: List[str] = []
+            chunk_action_space_errors: List[str] = []
             chunk_asst_texts: List[str] = []
             # P1.7 fix (post-review 2026-05-01): chunk_kinds/spans/texts
             # are appended on EVERY assistant turn including inter-chunk
@@ -1230,9 +1233,15 @@ def _register_streaming_agent_loop():
                     chunk_images = chunk_extra_mm.get("images") or []
                     chunk_videos = chunk_extra_mm.get("videos") or []
 
+                    turn_kind = (
+                        "recall_response"
+                        if recall_rounds_this_chunk > 0
+                        else ("compress" if inter_chunk else "streaming")
+                    )
+                    turn_tools = tools_for_turn(turn_kind)
                     chunk_prompt_ids = await self.apply_chat_template(
                         chunk_messages,
-                        tools=TOOLS_SCHEMA,
+                        tools=turn_tools,
                         images=(initial_images + chunk_images) if chunk_images else (
                             initial_images if initial_images else None
                         ),
@@ -1353,7 +1362,14 @@ def _register_streaming_agent_loop():
                     )
                     parsed = parse_agent_output_v12(response_text)
                     kind = parsed.get("kind", "unknown")
+                    action_error = action_space_error_for_turn(kind, turn_kind)
+                    if action_error:
+                        parsed["action_space_error"] = action_error
+                        parsed["invalid_kind"] = kind
+                        kind = "invalid"
                     chunk_kinds.append(kind)
+                    chunk_turn_kinds.append(turn_kind)
+                    chunk_action_space_errors.append(action_error)
                     chunk_asst_texts.append(response_text)
 
                     # ── Decide: stay in chunk for shape-B recall multi-
@@ -1490,9 +1506,10 @@ def _register_streaming_agent_loop():
                 # FINAL inner-loop turn (the chunk's terminating
                 # answer/silent/compress, after any in-chunk recall
                 # multi-turn rounds have completed).
+                invalid_action_space = bool(parsed.get("action_space_error"))
                 pre_chunk_idx = state.chunk_idx
                 state = default_v12_update_state(state, response_text, chunk_idx)
-                if inter_chunk:
+                if inter_chunk and not invalid_action_space:
                     # System event — don't consume a video chunk.
                     state.chunk_idx = pre_chunk_idx
                 else:
@@ -1526,7 +1543,7 @@ def _register_streaming_agent_loop():
                     break
 
                 # Advance video chunk pointer ONLY on non-compress turns.
-                if not inter_chunk:
+                if (not inter_chunk) or invalid_action_space:
                     chunk_idx += 1
                 # On compress turn we re-enter the loop at the same
                 # chunk_idx; default_v12_update_state cleared the
@@ -1554,6 +1571,8 @@ def _register_streaming_agent_loop():
                 "ts_final_answer": state.final_answer or "",
                 "ts_chunk_asst_spans": chunk_asst_spans,
                 "ts_chunk_kinds": chunk_kinds,
+                "ts_chunk_turn_kinds": chunk_turn_kinds,
+                "ts_chunk_action_space_errors": chunk_action_space_errors,
                 "ts_chunk_asst_texts": chunk_asst_texts,
                 "ts_chunk_video_indices": chunk_video_indices,
                 "ts_per_q_answer_chunk": list(per_q_answer_chunk),

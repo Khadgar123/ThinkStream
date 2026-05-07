@@ -567,6 +567,11 @@ PASS_CONFIG = {
         "temperature": 0.3,
         "thinking": False,
     },
+    "pass3c_recall_hardening": {
+        "max_tokens": 8192,
+        "temperature": 0.4,
+        "thinking": False,
+    },
     "pass3c_recall_think": {
         "max_tokens": 16384,
         "temperature": 0.3,
@@ -591,7 +596,7 @@ PASS_CONFIG = {
 # NOTE: legacy v8/v11 SYSTEM_PROMPT / SYSTEM_PROMPT_POST_RECALL /
 # SYSTEM_PROMPT_COMPRESS names were removed when the codebase consolidated on
 # the v12 Qwen tool protocol. See thinkstream/data/agent_protocol.py for the
-# ordinary streaming prompt, the compression-only prompt, and TOOLS_SCHEMA.
+# ordinary streaming prompt, the compression-only prompt, and turn-local tools.
 
 # Special tokens required by SFT init_processor (see sft_engineering.md §6.2)
 # Approach B: exact-match tags, attributes as JSON inside tags.

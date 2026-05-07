@@ -45,12 +45,12 @@ from scripts.eval.processor_loader import load_processor_for_checkpoint
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
-    TOOLS_SCHEMA,
     append_visual_frames,
     build_recalled_frames_metadata,
     has_compress_trigger,
     normalize_frame_protocol,
     select_recall_chunks,
+    tools_for_turn,
 )
 from thinkstream.model.agent_loop import (
     MemoryState,
@@ -469,7 +469,13 @@ def build_dagger_vllm(
 
             try:
                 vllm_inputs = [
-                    prepare_vllm_input(m, processor, tools=TOOLS_SCHEMA)
+                    prepare_vllm_input(
+                        m,
+                        processor,
+                        tools=tools_for_turn(
+                            "compress" if _prompt_has_compress_trigger(m) else "streaming"
+                        ),
+                    )
                     for _, m in active
                 ]
                 outputs = llm.generate(vllm_inputs, sampling_params=sampling_params)
@@ -521,7 +527,11 @@ def build_dagger_vllm(
                 if recall_active:
                     try:
                         rc_inputs = [
-                            prepare_vllm_input(m, processor, tools=TOOLS_SCHEMA)
+                            prepare_vllm_input(
+                                m,
+                                processor,
+                                tools=tools_for_turn("recall_response"),
+                            )
                             for _, _, m, _ in recall_active
                         ]
                         rc_outputs = llm.generate(rc_inputs, sampling_params=sampling_params)

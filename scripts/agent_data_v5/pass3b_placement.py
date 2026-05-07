@@ -1,9 +1,11 @@
 """Pass 3-B — Placement + Trajectory planning (v2 model-agnostic).
 
-Replaces classify_availability / _check_visibility_one / sequence_type
-machinery with profile-driven placement (backward / forward / realtime)
-that depends ONLY on (ask, support_chunks). See v2/design.py for the
-full rationale.
+Card family now represents the question/reasoning type, not a fixed
+availability profile. pass3b generates several availability candidates per
+single-emit card (current/direct, memory_direct, recall, and selected
+future/wait variants), applies a cheap evidence-based recall necessity
+refinement, then greedily selects one non-overlapping multi-question
+trajectory per video.
 
 Pipeline contract preserved:
   compute_all_placements(cards, rollout, evidence, client, video_id) -> List[Dict]
@@ -29,6 +31,7 @@ from .v2.design import (
     assign_recall_noise,
     place_card,
     placement_timing_verdict,
+    refine_placements_with_evidence,
     select_trajectory,
 )
 
@@ -45,6 +48,8 @@ def _placement_to_dict(p: Placement) -> Dict:
         "card_id": p.card_id,
         "ask_chunk": int(p.ask_chunk),
         "mechanism": p.mechanism,
+        "difficulty_mode": getattr(p, "difficulty_mode", ""),
+        "recall_need": getattr(p, "recall_need", ""),
         "chunk_actions": {str(k): list(v) for k, v in p.chunk_actions.items()},
         "recall_at": {str(k): v for k, v in p.recall_at.items()},
     }
@@ -55,6 +60,8 @@ def _dict_to_placement(d: Dict) -> Placement:
         card_id=d["card_id"],
         ask_chunk=int(d["ask_chunk"]),
         mechanism=d["mechanism"],
+        difficulty_mode=d.get("difficulty_mode", ""),
+        recall_need=d.get("recall_need", ""),
         chunk_actions={int(k): tuple(v) for k, v in d.get("chunk_actions", {}).items()},
         recall_at={int(k): v for k, v in d.get("recall_at", {}).items()},
     )
@@ -85,7 +92,10 @@ async def compute_all_placements(
     all_placements: List[Placement] = []
     rejected: Dict[str, int] = {}
     for card in cards_obj:
-        for p in place_card(card, num_chunks, rng):
+        plcs = refine_placements_with_evidence(
+            card, place_card(card, num_chunks, rng), evidence
+        )
+        for p in plcs:
             ok, reason = placement_timing_verdict(card, p)
             if ok:
                 all_placements.append(p)

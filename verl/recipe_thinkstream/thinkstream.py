@@ -863,6 +863,17 @@ def _compute_score_multi_q(
         per_q_parts,
         {"format": fmt, "spam": spam},
     )
+    action_space_errors = [
+        str(x) for x in _safe_list(extra.get("ts_chunk_action_space_errors"))
+        if str(x or "").strip()
+    ]
+    n_action_turns = max(1, len(_safe_list(extra.get("ts_chunk_kinds"))))
+    illegal_action_rate = len(action_space_errors) / n_action_turns
+    if illegal_action_rate:
+        total -= 0.2 * illegal_action_rate
+        parts["action_space"] = -illegal_action_rate
+    else:
+        parts["action_space"] = 0.0
 
     return {
         "score": total,
@@ -1110,6 +1121,18 @@ def compute_score(
             gated_state = state_avg if state_avg <= 0 else gate * state_avg
             total = alpha * total + (1.0 - alpha) * gated_state
             parts["per_chunk_action_avg"] = state_avg
+
+    action_space_errors = [
+        str(x) for x in _safe_list(extra.get("ts_chunk_action_space_errors"))
+        if str(x or "").strip()
+    ]
+    n_action_turns = max(1, len(_safe_list(extra.get("ts_chunk_kinds"))))
+    illegal_action_rate = len(action_space_errors) / n_action_turns
+    if illegal_action_rate:
+        total -= 0.2 * illegal_action_rate
+        parts["action_space"] = -illegal_action_rate
+    else:
+        parts["action_space"] = 0.0
 
     # NaiveRewardManager places ONE scalar at the trajectory's last
     # assistant token (verl 0.4 reward_loop framework). Per-chunk shaping

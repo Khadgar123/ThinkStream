@@ -5,17 +5,19 @@ Three concepts, three fields:
   gold_emits       — list of (chunk, value) pairs; defines gold function
   grounding_frames — necessary evidence frames; defines recall oracle
 
-All decisions (gold action, placement, trajectory mechanism) are pure
-functions of (ask_chunk, gold_emits, grounding_frames) — never of rollout
-state. Difficulty is the gap between ask and grounding, not what the
-question-blind rollout happened to remember.
+Card families describe the benchmark skill being asked; they are not tied to
+one availability bucket. A single family may produce current/direct,
+memory-direct, forward/wait, and historical-recall placements. Difficulty is
+primarily the gap between ask and grounding plus whether the first-turn prompt
+still contains enough clear evidence to answer without visual recall.
 """
 
 from __future__ import annotations
 
 import random
 from dataclasses import dataclass, field
-from typing import Dict, List, Literal, Optional, Tuple
+import re
+from typing import Dict, Iterable, List, Literal, Optional, Tuple
 
 from ..config import MAX_QUESTIONS_PER_TRAJECTORY as CONFIG_MAX_QUESTIONS_PER_TRAJECTORY
 from ..stable_hash import stable_mod
@@ -55,7 +57,19 @@ SE_RECALL_DEEP   = (VISUAL_WINDOW_CHUNKS + RECENT_THINKS_HORIZON + 1, 999)      
 ME_LEAD_RANGE = (2, 8)
 MAX_MULTI_EMIT_ACTIVE_SPAN = 16
 MAX_MULTI_EMIT_RESPONSES = 4
-RECALL_TARGET_FRACTION = 0.45
+RECALL_TARGET_FRACTION = 0.90
+
+# Families whose answers often require multi-frame temporal/causal reasoning
+# or fine visual verification. Exact text memory can still answer some of
+# these, but selection should preferentially keep their historical placements
+# as recall candidates rather than collapsing them to memory_direct.
+HARD_RECALL_FAMILIES = {
+    "CR1", "CR2", "CR4", "CR5", "M1",
+    "C1", "STU1", "OJR1", "CR7",
+}
+SIMPLE_MEMORY_FAMILIES = {
+    "N1", "P1", "R1", "CR3", "ACR1", "HLD1",
+}
 
 # Production trajectory caps (config.py is the source of truth for max cap)
 MAX_QUESTIONS_PER_TRAJECTORY = CONFIG_MAX_QUESTIONS_PER_TRAJECTORY
@@ -115,6 +129,10 @@ FAMILY_SELECTION_BOOST = {
     "C1": 2.0,     # MC OCR should survive selection
 }
 
+# Keep HLD / "Unable to answer" abstention negatives near the previous
+# reasonable family share, but do not force them into every feasible video.
+HLD_ABSTENTION_RESERVE_PERCENT = 84
+
 # ── data-level information-density tuning ───────────────────────────
 # Patrol = silent samples for chunks NOT covered by any active placement.
 # These teach trivial "no active question → silent". Keeping 100% of them
@@ -135,6 +153,7 @@ GoldKind = Literal["silent", "response"]
 PlacementMechanism = Literal[
     "silent_then_response",  # ask < emit (single_emit only)
     "direct",                # gap small, no recall
+    "memory_direct",         # historical support, text memory is enough
     "recall_demo",           # gap large, insert tool_call
     "multi_emit",            # multi-trigger (counting / narration)
 ]
@@ -172,6 +191,8 @@ class Placement:
     card_id: str
     ask_chunk: int
     mechanism: PlacementMechanism
+    difficulty_mode: str = ""
+    recall_need: str = ""
     # Per-chunk gold actions inside this placement's window
     # (chunk -> (kind, value or "")):
     chunk_actions: Dict[int, Tuple[GoldKind, str]] = field(default_factory=dict)
@@ -246,11 +267,21 @@ def gold_window_for_card(card: Card, ask_chunk: int, num_chunks: int) -> Dict[in
 # ---------------------------------------------------------------------------
 
 
-def _make_placement(card: Card, ask: int, num_chunks: int, mech: PlacementMechanism) -> Placement:
+def _make_placement(
+    card: Card,
+    ask: int,
+    num_chunks: int,
+    mech: PlacementMechanism,
+    *,
+    difficulty_mode: str = "",
+    recall_need: str = "",
+) -> Placement:
     return Placement(
         card_id=card.card_id,
         ask_chunk=ask,
         mechanism=mech,
+        difficulty_mode=difficulty_mode,
+        recall_need=recall_need,
         chunk_actions=gold_window_for_card(card, ask, num_chunks),
     )
 
@@ -287,71 +318,116 @@ def _ask_from_band(emit: int, band: Tuple[int, int], num_chunks: int,
         return emit - lead
 
 
-def place_single_emit(card: Card, num_chunks: int, rng: random.Random) -> List[Placement]:
-    """Profile-driven STRATIFIED placement.
+def _dedupe_placements(placements: List[Placement]) -> List[Placement]:
+    out: List[Placement] = []
+    seen: set = set()
+    for p in placements:
+        key = (p.card_id, p.ask_chunk, p.mechanism)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(p)
+    return out
 
-    forward   → 2 placements: 1 short-lead (4-10), 1 medium/long (10-32)
-    backward  → 2-3 placements: near recall + mid (direct or recall) + deep recall
-    realtime  → 1 placement: stratified 3-band fresh gap
+
+def place_single_emit(card: Card, num_chunks: int, rng: random.Random) -> List[Placement]:
+    """Generate availability variants for one single-emit card.
+
+    Family no longer decides whether a question is recall-only or direct-only.
+    The same question type can be placed at several ask times:
+      - direct/current: answer support is inside the visual window
+      - memory_direct: historical support is outside vision but recent text
+        memory should be enough for a plain response
+      - recall_demo: historical support is far/ambiguous enough to call recall
+      - silent_then_response: selected temporal families may also ask before
+        evidence appears, preserving wait/silent supervision
     """
     if not card.gold_emits:
         return []
-    profile = PLACEMENT_PROFILE.get(card.family, "realtime")
     emit = card.gold_emits[0].chunk
     placements: List[Placement] = []
 
-    if profile == "forward":
-        # Always try to emit 2 placements with different lead bands
-        # for difficulty variety (silent_then_response).
-        for band in (SE_LEAD_SHORT, SE_LEAD_LONG):
-            ask = _ask_from_band(emit, band, num_chunks, rng, sign=-1)
-            if ask is not None:
-                placements.append(_make_placement(
-                    card, ask, num_chunks, "silent_then_response"))
-        if not placements:
-            # video too short for any standard lead → fallback short
-            ask = _ask_from_band(emit, (4, 8), num_chunks, rng, sign=-1)
-            if ask is not None:
-                placements.append(_make_placement(
-                    card, ask, num_chunks, "silent_then_response"))
-        return placements
+    # Fresh/current direct placement for every family. This preserves the
+    # answer-without-tool side of each benchmark skill.
+    band_choice = (SE_FRESH_TRIVIAL, SE_FRESH_EASY, SE_FRESH_MEDIUM)[
+        stable_mod(card.card_id, "direct", modulo=3)
+    ]
+    ask = _ask_from_band(emit, band_choice, num_chunks, rng, sign=+1)
+    if ask is None:
+        ask = _ask_from_band(emit, SE_FRESH_TRIVIAL, num_chunks, rng, sign=+1)
+    if ask is not None:
+        placements.append(_make_placement(
+            card, ask, num_chunks, "direct",
+            difficulty_mode="current_direct",
+            recall_need="current_window",
+        ))
 
-    if profile == "realtime":
-        # Stratified fresh gap — sample one band (rotated by card id for spread)
-        band_choice = (SE_FRESH_TRIVIAL, SE_FRESH_EASY, SE_FRESH_MEDIUM)[
-            stable_mod(card.card_id, modulo=3)
-        ]
-        ask = _ask_from_band(emit, band_choice, num_chunks, rng, sign=+1)
-        if ask is None:
-            ask = _ask_from_band(emit, SE_FRESH_TRIVIAL, num_chunks, rng, sign=+1)
-        if ask is not None:
-            placements.append(_make_placement(card, ask, num_chunks, "direct"))
-        return placements
+    # Historical response from text memory: outside the visual window but not
+    # necessarily requiring visual recall. The verifier/selector can keep this
+    # as a response-side hard negative against over-calling recall.
+    ask_mem = _ask_from_band(emit, SE_RECALL_NEAR, num_chunks, rng, sign=+1)
+    if ask_mem is not None:
+        placements.append(_make_placement(
+            card, ask_mem, num_chunks, "memory_direct",
+            difficulty_mode="memory_direct",
+            recall_need="memory_text_enough",
+        ))
+        placements.append(_make_placement(
+            card, ask_mem, num_chunks, "recall_demo",
+            difficulty_mode="recall_near",
+            recall_need="fine_visual_verification",
+        ))
 
-    # ── backward profile: NEAR + MID + DEEP (3 difficulty bands) ─────
-    # NEAR (just out of visual): always recall_demo (model already lost direct)
-    ask_near = _ask_from_band(emit, SE_RECALL_NEAR, num_chunks, rng, sign=+1)
-    if ask_near is not None:
-        placements.append(_make_placement(card, ask_near, num_chunks, "recall_demo"))
-
-    # MID (in recent_thinks but outside the visual window): recall. Even if
-    # a text summary may still be in the prompt, the fine-grained visual
-    # support is historical and should exercise the retrieval path.
+    # Historical visual-recall variants for every single-emit family. This is
+    # what lets OCR/spatial/action/object-relation tasks appear as recall
+    # tasks when the support is no longer visually present.
     ask_mid = _ask_from_band(emit, SE_RECALL_MID, num_chunks, rng, sign=+1)
     if ask_mid is not None:
-        placements.append(_make_placement(card, ask_mid, num_chunks, "recall_demo"))
-
-    # DEEP (compressed): always recall_demo
+        placements.append(_make_placement(
+            card, ask_mid, num_chunks, "recall_demo",
+            difficulty_mode="recall_mid",
+            recall_need="historical_visual",
+        ))
     ask_deep = _ask_from_band(emit, SE_RECALL_DEEP, num_chunks, rng, sign=+1)
     if ask_deep is not None:
-        placements.append(_make_placement(card, ask_deep, num_chunks, "recall_demo"))
+        placements.append(_make_placement(
+            card, ask_deep, num_chunks, "recall_demo",
+            difficulty_mode="recall_deep",
+            recall_need="compressed_history",
+        ))
+
+    profile = PLACEMENT_PROFILE.get(card.family, "realtime")
+    if profile == "forward" or card.family in {"CR2", "CR5", "F6", "E2"}:
+        # Keep explicit wait/silent supervision for naturally temporal
+        # families without making every static attribute question a future
+        # prediction prompt.
+        for band in (SE_LEAD_SHORT, SE_LEAD_LONG):
+            ask_forward = _ask_from_band(emit, band, num_chunks, rng, sign=-1)
+            if ask_forward is not None:
+                placements.append(_make_placement(
+                    card, ask_forward, num_chunks, "silent_then_response",
+                    difficulty_mode="future_wait",
+                    recall_need="future_not_available",
+                ))
+        if not any(p.mechanism == "silent_then_response" for p in placements):
+            ask_forward = _ask_from_band(emit, (4, 8), num_chunks, rng, sign=-1)
+            if ask_forward is not None:
+                placements.append(_make_placement(
+                    card, ask_forward, num_chunks, "silent_then_response",
+                    difficulty_mode="future_wait",
+                    recall_need="future_not_available",
+                ))
 
     if not placements:
         # very short video — fallback to direct
         gap = _randint_safe(rng, 0, max(0, num_chunks - 1 - emit))
-        placements.append(_make_placement(card, emit + gap, num_chunks, "direct"))
+        placements.append(_make_placement(
+            card, emit + gap, num_chunks, "direct",
+            difficulty_mode="current_direct",
+            recall_need="fallback",
+        ))
 
-    return placements
+    return _dedupe_placements(placements)
 
 
 def _select_multi_emit_subset(card: Card) -> List[GoldEmit]:
@@ -432,6 +508,167 @@ def place_card(card: Card, num_chunks: int, rng: random.Random) -> List[Placemen
     return place_multi_emit(card, num_chunks, rng)
 
 
+_TOKEN_RE = re.compile(r"[a-z0-9]+")
+_STOPWORDS = {
+    "a", "an", "and", "are", "as", "at", "be", "best", "by", "chunk",
+    "did", "does", "for", "from", "has", "in", "is", "it", "of", "on",
+    "or", "the", "this", "to", "was", "what", "which", "with",
+}
+
+
+def _strip_mc_label(text: str) -> str:
+    return re.sub(r"^\s*[A-D][\).]\s*", "", str(text or "")).strip()
+
+
+def _card_answer_text(card: Card) -> str:
+    if card.answer_form == "multiple_choice" and card.options and card.correct_option:
+        idx = ord(str(card.correct_option).strip().upper()[:1] or "A") - ord("A")
+        if 0 <= idx < len(card.options):
+            return _strip_mc_label(card.options[idx])
+    if card.gold_emits:
+        return str(card.gold_emits[-1].value or "")
+    return ""
+
+
+def _tokens(text: str) -> List[str]:
+    toks = _TOKEN_RE.findall(str(text or "").lower())
+    return [t for t in toks if len(t) >= 3 and t not in _STOPWORDS]
+
+
+def _evidence_text_for_chunks(evidence_by_chunk: Dict[int, Dict], chunks: Iterable[int]) -> str:
+    parts: List[str] = []
+    for c in chunks:
+        cap = evidence_by_chunk.get(int(c)) or {}
+        parts.append(str(cap.get("think", "")))
+        for ent in cap.get("visible_entities") or []:
+            if isinstance(ent, dict):
+                parts.append(str(ent.get("desc", "")))
+                parts.append(str(ent.get("action", "")))
+            else:
+                parts.append(str(ent))
+        for fact in cap.get("atomic_facts") or []:
+            parts.append(str(fact.get("fact", "")) if isinstance(fact, dict) else str(fact))
+        for ocr in cap.get("ocr") or []:
+            parts.append(str(ocr.get("text", "")) if isinstance(ocr, dict) else str(ocr))
+        parts.append(str(cap.get("spatial", "")))
+    return " ".join(parts).lower()
+
+
+def _answer_terms_present(card: Card, text: str) -> bool:
+    answer = _card_answer_text(card)
+    answer_norm = " ".join(_tokens(answer))
+    if not answer_norm:
+        return False
+    text_l = str(text or "").lower()
+    answer_tokens = _tokens(answer)
+    if card.answer_form in {"short_exact", "number", "binary"}:
+        return answer_norm in " ".join(_tokens(text_l))
+    if card.answer_form == "multiple_choice":
+        # Need at least two meaningful option tokens unless the answer is an
+        # exact OCR-like string. This avoids relabeling on common words.
+        if len(answer_tokens) == 1:
+            return answer_tokens[0] in _tokens(text_l) and len(answer_tokens[0]) >= 4
+        hit = sum(1 for t in set(answer_tokens) if t in _tokens(text_l))
+        return hit >= min(2, len(set(answer_tokens)))
+    hit = sum(1 for t in set(answer_tokens) if t in _tokens(text_l))
+    return hit >= max(2, min(4, len(set(answer_tokens))))
+
+
+def _correct_option_text(card: Card) -> str:
+    correct = str(card.correct_option or "").strip().upper()
+    options = list(card.options or [])
+    if correct not in {"A", "B", "C", "D"} or len(options) != 4:
+        return ""
+    idx = ord(correct) - ord("A")
+    if idx < 0 or idx >= len(options):
+        return ""
+    return re.sub(r"^\s*[A-D][\).]\s*", "", str(options[idx])).strip()
+
+
+def _is_unanswerable_card(card: Card) -> bool:
+    if card.family == "HLD1":
+        return True
+    return _correct_option_text(card).strip().lower() == "unable to answer"
+
+
+def _support_span(card: Card) -> int:
+    support = [int(x) for x in (card.grounding_frames or [])]
+    if not support:
+        return 0
+    return max(support) - min(support) + 1
+
+
+def refine_placements_with_evidence(
+    card: Card,
+    placements: List[Placement],
+    evidence: Optional[List[Dict]] = None,
+) -> List[Placement]:
+    """Low-cost first-turn availability refinement.
+
+    This is deliberately heuristic and local. It prevents obvious bad recall
+    labels when the answer is already visible in the current window or when a
+    simple factual answer is explicitly present in recent text memory, while
+    preserving recall candidates for temporal/causal/fine-grained families.
+    The expensive semantic judge can be added later as an optional parallel
+    pass over these already-filtered candidates.
+    """
+    if not evidence or card.question_type != "single_emit":
+        return _dedupe_placements(placements)
+
+    evidence_by_chunk = {
+        int(cap.get("chunk_idx", -1)): cap
+        for cap in evidence
+        if cap.get("chunk_idx") is not None
+    }
+    refined: List[Placement] = []
+    for p in placements:
+        if p.mechanism != "recall_demo":
+            refined.append(p)
+            continue
+
+        if _is_unanswerable_card(card):
+            # HLD/abstention cards teach "answer Unable to answer" from the
+            # visible memory/query state. They are not successful historical
+            # recall demonstrations and must not count toward recall density.
+            p.mechanism = "memory_direct"
+            p.difficulty_mode = "unanswerable_memory_direct"
+            p.recall_need = "unanswerable_no_recall"
+            refined.append(p)
+            continue
+
+        current_lo = max(0, int(p.ask_chunk) - VISUAL_WINDOW_CHUNKS + 1)
+        current_text = _evidence_text_for_chunks(
+            evidence_by_chunk, range(current_lo, int(p.ask_chunk) + 1)
+        )
+        if _answer_terms_present(card, current_text):
+            p.mechanism = "memory_direct"
+            p.difficulty_mode = "current_or_memory_direct"
+            p.recall_need = "current_window_answerable"
+            refined.append(p)
+            continue
+
+        memory_hi = max(0, int(p.ask_chunk) - VISUAL_WINDOW_CHUNKS)
+        memory_text = _evidence_text_for_chunks(evidence_by_chunk, range(0, memory_hi))
+        simple_memory_case = (
+            card.family in SIMPLE_MEMORY_FAMILIES
+            and _support_span(card) <= 4
+            and _answer_terms_present(card, memory_text)
+        )
+        if simple_memory_case:
+            p.mechanism = "memory_direct"
+            p.difficulty_mode = "memory_direct"
+            p.recall_need = "memory_text_exact"
+            refined.append(p)
+            continue
+
+        # Keep as recall. Hard families and multi-support questions are the
+        # main source of temporal/order/causal/fine-grained recall difficulty.
+        if card.family in HARD_RECALL_FAMILIES or _support_span(card) > 4:
+            p.recall_need = p.recall_need or "hard_historical_visual"
+        refined.append(p)
+    return _dedupe_placements(refined)
+
+
 def placement_timing_verdict(card: Card, placement: Placement) -> Tuple[bool, str]:
     """Validate ask/answer timing against support availability.
 
@@ -452,7 +689,10 @@ def placement_timing_verdict(card: Card, placement: Placement) -> Tuple[bool, st
         return False, "no_response_chunk"
 
     if card.question_type == "multi_emit":
-        first_emit = min(int(e.chunk) for e in card.gold_emits)
+        # Multi-emit placements may intentionally select a compact local
+        # subset from a longer card. Validate against the selected placement's
+        # first response chunk, not the card's global first emit.
+        first_emit = min(response_chunks)
         if placement.ask_chunk > first_emit:
             return False, "multi_ask_after_first_emit"
         return True, "pass"
@@ -478,6 +718,15 @@ def placement_timing_verdict(card: Card, placement: Placement) -> Tuple[bool, st
             return False, "recall_support_still_visual"
         if first_response != placement.ask_chunk:
             return False, "recall_response_not_at_ask"
+        return True, "pass"
+
+    if placement.mechanism == "memory_direct":
+        if placement.ask_chunk <= max_support:
+            return False, "memory_ask_before_support"
+        if placement.ask_chunk - max_support <= VISUAL_WINDOW_CHUNKS:
+            return False, "memory_support_still_visual"
+        if first_response != placement.ask_chunk:
+            return False, "memory_response_not_at_ask"
         return True, "pass"
 
     if placement.mechanism == "direct":
@@ -530,6 +779,7 @@ def select_trajectory(
 
     Strict constraints:
       - at most ONE placement per card_id
+      - at most ONE placement per family per trajectory
       - no overlapping placement chunks. This enforces a single active
         question at a time; multi-answer supervision is allowed only inside
         one multi_emit question, never as competing questions on the same
@@ -557,6 +807,8 @@ def select_trajectory(
     def feasible(p: Placement, card: Card) -> bool:
         if card.card_id in seen_cards:
             return False
+        if card.family in seen_families:
+            return False
         return not (_placement_chunks(p) & used_chunks)
 
     def score(p: Placement, card: Card) -> float:
@@ -568,6 +820,17 @@ def select_trajectory(
         if card.answer_form not in seen_aforms:
             s += 1.0
         s += 1.0  # base for new card
+        if p.mechanism == "recall_demo":
+            if p.difficulty_mode == "recall_deep":
+                s += 0.8
+            elif p.difficulty_mode == "recall_mid":
+                s += 0.4
+            elif p.difficulty_mode == "recall_near":
+                s += 0.2
+        elif p.mechanism == "memory_direct":
+            # Useful hard negatives against overusing recall, but do not let
+            # them crowd out true recall slots.
+            s += 0.15
         if used_ask:
             min_dist = min(abs(p.ask_chunk - x) for x in used_ask)
             s += min(min_dist / 10.0, 1.5)
@@ -602,16 +865,36 @@ def select_trajectory(
         used_ask.append(p.ask_chunk)
         return True
 
+    unanswerable_reserve_key = min(
+        (
+            card.card_id
+            for p, card in pool
+            if p.mechanism != "recall_demo" and _is_unanswerable_card(card)
+        ),
+        default="",
+    )
+    reserve_unanswerable = bool(unanswerable_reserve_key) and (
+        stable_mod(unanswerable_reserve_key, "abstention_reserve", modulo=100)
+        < HLD_ABSTENTION_RESERVE_PERCENT
+    )
+
     # Recall is sparse in row count (one tool-turn row per recall question).
     # Select a floor before filling realtime/current questions so SFT/RL see
     # enough tool-use supervision without allowing overlapping pending queries.
-    target_recall = min(max_q, _recall_floor(max_q))
+    # HLD / "Unable to answer" cards are abstention negatives, not recall
+    # success cases, so reserve one non-recall slot when such a card is
+    # available.
+    recall_capacity = max_q - 1 if reserve_unanswerable and max_q > 1 else max_q
+    target_recall = min(recall_capacity, _recall_floor(max_q))
     while (
         len(selected) < max_q
         and sum(1 for p in selected if p.mechanism == "recall_demo") < target_recall
         and take_best(lambda p, _card: p.mechanism == "recall_demo")
     ):
         pass
+
+    if reserve_unanswerable and len(selected) < max_q:
+        take_best(lambda p, card: p.mechanism != "recall_demo" and _is_unanswerable_card(card))
 
     while len(selected) < max_q and pool:
         if not take_best(lambda _p, _card: True):

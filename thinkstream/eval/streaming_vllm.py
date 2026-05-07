@@ -36,12 +36,13 @@ sys.path.insert(0, str(_EVAL_DIR))
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
-    TOOLS_SCHEMA,
     VISUAL_WINDOW_CHUNKS,
+    action_space_error_for_turn,
     append_visual_frames,
     build_recalled_frames_metadata,
     normalize_frame_protocol,
     select_recall_chunks,
+    tools_for_turn,
 )
 from thinkstream.model.agent_loop import (
     COMPRESS_RANGE_MIN,
@@ -78,6 +79,7 @@ class _SampleRunner:
     answer_text: Optional[str] = None
     pred_idx: Optional[int] = None
     error: Optional[str] = None
+    _last_turn_kind: str = "streaming"
     # last_compress_trigger: True when system injected a trigger this step
     # so caller can skip user_question on the same step.
     _last_trigger: bool = False
@@ -239,6 +241,7 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     # while inter_chunk=True still suppresses query/recalled-answer context and
     # expands the compress trigger instructions.
     is_inter_chunk = bool(compress_trigger and not user_question)
+    runner._last_turn_kind = "compress" if is_inter_chunk else "streaming"
 
     frame_paths = _resolve_frame_paths(
         runner.video_path, chunk_idx, runner.frames_root, runner.video_root,
@@ -268,6 +271,14 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> str:
     chunk_idx = runner.current_chunk
 
     action = parsed.get("action") or "unknown"
+    action_error = action_space_error_for_turn(
+        action,
+        getattr(runner, "_last_turn_kind", "streaming"),
+    )
+    if action_error:
+        parsed["action_space_error"] = action_error
+        parsed["invalid_action"] = action
+        action = "invalid"
     runner._last_action = action
     if parsed.get("think") and action != "compress":
         runner.memory.add_think(chunk_idx, parsed["think"])
@@ -430,9 +441,6 @@ def streaming_predict_mcq_vllm(
         os.path.join(debug_dir, "streaming_eval_vllm.log"), rank=0
     )
 
-    # Always pass TOOLS_SCHEMA so <tools>...</tools> renders in the system
-    # prompt and the model can emit <tool_call>{...}</tool_call>.
-    tools_for_template = TOOLS_SCHEMA
     dbg = DebugLogger(
         os.path.join(debug_dir, "streaming_debug_vllm.jsonl"),
         enabled=debug, rank=0,
@@ -495,7 +503,12 @@ def streaming_predict_mcq_vllm(
         # Phase B: build vLLM inputs
         try:
             vllm_inputs = [
-                prepare_vllm_input(m, processor, tools=tools_for_template) for _, m in active_pairs
+                prepare_vllm_input(
+                    m,
+                    processor,
+                    tools=tools_for_turn(getattr(r, "_last_turn_kind", "streaming")),
+                )
+                for r, m in active_pairs
             ]
         except Exception as e:
             log.error(f"vLLM input prep failed at chunk {chunk_idx}: {e}", exc_info=True)
@@ -634,6 +647,7 @@ class _RolloutRunner:
     current_chunk: int = 0
     done: bool = False
     error: Optional[str] = None
+    _last_turn_kind: str = "streaming"
     _last_trigger: bool = False
     # Per-chunk results, shape matches grpo.py:736-758 contract.
     chunk_results: List[Dict] = field(default_factory=list)
@@ -745,6 +759,14 @@ def _apply_rollout_output(
     parsed = _parse_agent_output(output_text)
 
     action = parsed.get("action") or "unknown"
+    action_error = action_space_error_for_turn(
+        action,
+        getattr(runner, "_last_turn_kind", "streaming"),
+    )
+    if action_error:
+        parsed["action_space_error"] = action_error
+        parsed["invalid_action"] = action
+        action = "invalid"
     if parsed.get("think") and action != "compress":
         runner.memory.add_think(chunk_idx, parsed["think"])
     if action == "compress":
@@ -774,6 +796,8 @@ def _apply_rollout_output(
         "think": parsed.get("think", ""),
         "payload": parsed.get("payload", {}),
         "raw_output": output_text,
+        "action_space_error": parsed.get("action_space_error", ""),
+        "invalid_action": parsed.get("invalid_action", ""),
         "generated_tokens": tokenizer.encode(output_text, add_special_tokens=False),
         "memory_token_count": runner.memory.count_recent_tokens(),
         "compress_budget": compress_budget,
@@ -962,13 +986,15 @@ def streaming_vllm_rollout(
         if not live_active:
             continue
 
-        # Phase B: vLLM input + batch generate.
-        # Always pass tools=TOOLS_SCHEMA so the <tools> block renders and
-        # the model can emit <tool_call>.
+        # Phase B: vLLM input + batch generate with turn-local tools.
         try:
             vllm_inputs = [
-                prepare_vllm_input(m, processor, tools=TOOLS_SCHEMA)
-                for m in messages_list
+                prepare_vllm_input(
+                    m,
+                    processor,
+                    tools=tools_for_turn(getattr(r, "_last_turn_kind", "streaming")),
+                )
+                for r, m in zip(live_active, messages_list)
             ]
         except Exception as e:
             for r in live_active:
@@ -1124,7 +1150,11 @@ def streaming_vllm_rollout(
             if recall_msgs_batch:
                 try:
                     rc_inputs = [
-                        prepare_vllm_input(m, processor, tools=TOOLS_SCHEMA)
+                        prepare_vllm_input(
+                            m,
+                            processor,
+                            tools=tools_for_turn("recall_response"),
+                        )
                         for m in recall_msgs_batch
                     ]
                     rc_outputs = llm.generate(rc_inputs, sampling_params=sampling_params)
@@ -1143,6 +1173,14 @@ def streaming_vllm_rollout(
                             rc_text = rc_out.outputs[0].text
                             rc_parsed = _parse_agent_output(rc_text)
                             rc_action = rc_parsed.get("action") or "unknown"
+                            rc_action_error = action_space_error_for_turn(
+                                rc_action,
+                                "recall_response",
+                            )
+                            if rc_action_error:
+                                rc_parsed["action_space_error"] = rc_action_error
+                                rc_parsed["invalid_action"] = rc_action
+                                rc_action = "invalid"
                             # Update memory with the final-answer turn
                             if rc_action == "response":
                                 ans = rc_parsed.get("payload", {}).get("response", "")
@@ -1173,10 +1211,12 @@ def streaming_vllm_rollout(
                             entry["_recall_first_payload"] = entry.get("payload", {})
                             entry["_recall_first_tokens"] = first_pass_tokens
                             entry["raw_output"] = rc_text
-                            entry["action"] = rc_parsed.get("action") or "unknown"
+                            entry["action"] = rc_action
                             entry["think"] = rc_parsed.get("think", entry.get("think", ""))
                             entry["payload"] = rc_parsed.get("payload", {})
                             entry["step_messages"] = deepcopy(rc_msgs)
+                            entry["action_space_error"] = rc_parsed.get("action_space_error", "")
+                            entry["invalid_action"] = rc_parsed.get("invalid_action", "")
                             # v12.11 P0.6 fix (2026-05-01): generated_tokens
                             # MUST be ONLY the second-pass tokens. The
                             # previous concat (first + second) caused the

@@ -796,6 +796,7 @@ def process_messages_to_model_inputs(
     model_type: str,
     add_generation_prompt: bool = False,
     preloaded_frames: Optional[Tuple[List, dict, Optional[List]]] = None,
+    tools: Optional[List[Dict[str, Any]]] = None,
 ) -> Dict:
     """
     Common function: takes pre-built chat messages + video metadata, loads video
@@ -853,20 +854,18 @@ def process_messages_to_model_inputs(
             model_type=model_type,
         )
 
-    # 2. Tokenise
-    # v12.11 (2026-05-01): pass tools=TOOLS_SCHEMA so the rendered prompt
-    # includes the <tools>...</tools> block (auto-rendered by Qwen3-VL chat
-    # template). Sampling-side prompts ALL include this block — SFT
-    # data_processor.py:526 + agent_loop.py:502 + grpo.py:501 all pass tools=.
-    # Omitting it here meant GRPO loss-time prompts were ~400 tokens shorter
-    # at the system head, causing logprob drift between sampling and loss.
-    from thinkstream.data.agent_protocol import TOOLS_SCHEMA
-    text = processor.apply_chat_template(
-        messages,
+    # 2. Tokenise. Default to streaming-turn tools for legacy callers; newer
+    # rollout paths pass turn-local tools explicitly.
+    from thinkstream.data.agent_protocol import tools_for_turn
+    if tools is None:
+        tools = tools_for_turn("streaming")
+    template_kwargs = dict(
         tokenize=False,
         add_generation_prompt=add_generation_prompt,
-        tools=TOOLS_SCHEMA,
     )
+    if tools is not None:
+        template_kwargs["tools"] = tools
+    text = processor.apply_chat_template(messages, **template_kwargs)
     processor_call_kwargs = dict(
         text=text,
         images=None,

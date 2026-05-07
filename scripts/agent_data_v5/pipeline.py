@@ -235,18 +235,18 @@ def assign_phase(sample: Dict) -> str:
     if sample_type == "compress":
         return "C1"  # diagnostic label: compress-trained samples
 
-    if sample_type in ("recall_query", "recall_response", "recall_silent"):
+    if sample_type in ("recall", "recall_query", "recall_response", "recall_silent"):
         return "2"  # diagnostic label: recall-trained samples
 
     if sample_type == "silent":
-        if sequence_type in ("event_watch", "multi_response"):
+        if sequence_type in ("event_watch", "multi_response", "memory_response"):
             return "2"  # query-aware silent
         return "1"  # basic silent
 
     if sample_type == "response":
         if sequence_type in ("recall_fail_then_found",):
             return "2"  # recovery after recall fail
-        if sequence_type in ("event_watch", "multi_response"):
+        if sequence_type in ("event_watch", "multi_response", "memory_response"):
             return "2"  # query-triggered response
         return "1"  # basic response
 
@@ -1096,11 +1096,20 @@ async def run_pipeline(
             traj_results = await asyncio.gather(*traj_tasks, return_exceptions=True)
 
             vid_samples = []
+            traj_errors = []
             for result in traj_results:
                 if isinstance(result, Exception):
                     logger.error(f"  [{vid}] 3-C trajectory failed: {result}")
+                    traj_errors.append(result)
                     continue
                 vid_samples.extend(result)
+            if traj_errors:
+                preview = "; ".join(str(e) for e in traj_errors[:3])
+                suffix = "..." if len(traj_errors) > 3 else ""
+                raise RuntimeError(
+                    f"[{vid}] PASS 3-C failed for {len(traj_errors)}/"
+                    f"{len(trajectories)} trajectories: {preview}{suffix}"
+                )
 
             for s in vid_samples:
                 s["video_id"] = vid
@@ -1117,6 +1126,24 @@ async def run_pipeline(
             all_samples.extend(vid_samples)
 
         _require_nonempty("PASS 3-C samples", all_samples)
+        sample_vids = {
+            str(s.get("video_id") or "")
+            for s in all_samples
+            if s.get("video_id")
+        }
+        missing_sample_vids = [
+            str(v.get("video_id"))
+            for v in uncached_3c
+            if str(v.get("video_id")) not in sample_vids
+        ]
+        if missing_sample_vids:
+            preview = ", ".join(missing_sample_vids[:10])
+            suffix = "..." if len(missing_sample_vids) > 10 else ""
+            raise RuntimeError(
+                "PASS 3-C generated no samples for "
+                f"{len(missing_sample_vids)}/{len(uncached_3c)} selected videos: "
+                f"{preview}{suffix}"
+            )
         tracker_3c.summary()
         from .cache_version import write_stage_version
         write_stage_version("3c")
@@ -1261,7 +1288,7 @@ async def run_pipeline(
             buckets: "OrderedDict[tuple, list]" = OrderedDict()
             # Action priority for tie-breaking when buckets are equally
             # full: keep the high-information actions over silent.
-            action_prio = {"response": 0, "recall_query": 1,
+            action_prio = {"response": 0, "recall": 1, "recall_query": 1,
                            "recall_response": 1, "compress": 2,
                            "silent": 3, "recall_silent": 3}
             for s in vid_samples:

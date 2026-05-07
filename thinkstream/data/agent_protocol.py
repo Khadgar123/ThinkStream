@@ -1227,83 +1227,201 @@ def system_prompt_for_frame_protocol(
     return SYSTEM_PROMPT_V12_STREAMING
 
 
-# Tool JSON schemas — passed as `tools=TOOLS_SCHEMA` to apply_chat_template.
-# Format follows OpenAI function-calling spec, recognized by Qwen2.5-VL's
+# Tool JSON schemas — passed as `tools=...` to apply_chat_template.
+# Format follows OpenAI function-calling spec, recognized by Qwen2.5/3-VL's
 # chat template which auto-renders <tools>...</tools> in the system prompt.
-TOOLS_SCHEMA = [
-    {
-        "type": "function",
-        "function": {
-            "name": "recall",
-            "description": (
-                "Ordinary streaming-turn tool. Search past video observations "
-                "by keywords and time range. Returns matched historical "
-                "thinks. Use when the answer is not in any visible source but "
-                "was observed earlier, or once for a pending future question "
-                "to verify that the answer has not appeared in the past yet. "
-                "This is not a final answer."
-            ),
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": (
-                            "3-5 discriminative keywords (entity names + attributes). "
-                            "No answer values. Example: 'red apron chef pot'."
-                        ),
-                    },
-                    "time_range": {
-                        "type": "string",
-                        "description": (
-                            "Time range in seconds, format 'start-end'. "
-                            "Example: '20-60'. Constrains search to this window."
-                        ),
-                    },
+#
+# Keep the per-tool dictionaries separate so callers can expose the action
+# space that is valid for the current turn instead of always showing both tools.
+RECALL_TOOL_SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "recall",
+        "description": (
+            "Ordinary streaming-turn tool. Search past video observations "
+            "by keywords and time range. Returns matched historical "
+            "thinks. Use when the answer is not in any visible source but "
+            "was observed earlier, or once for a pending future question "
+            "to verify that the answer has not appeared in the past yet. "
+            "This is not a final answer."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": (
+                        "3-5 discriminative keywords (entity names + attributes). "
+                        "No answer values. Example: 'red apron chef pot'."
+                    ),
                 },
-                "required": ["query", "time_range"],
+                "time_range": {
+                    "type": "string",
+                    "description": (
+                        "Time range in seconds, format 'start-end'. "
+                        "Example: '20-60'. Constrains search to this window."
+                    ),
+                },
             },
+            "required": ["query", "time_range"],
         },
     },
-    {
-        "type": "function",
-        "function": {
-            "name": "compress",
-            "description": (
-                "Compression-turn tool. Use only under the compression system "
-                "prompt or its legacy <compress_trigger/> event marker. Do "
-                "not answer questions, emit a silent answer, or call recall on "
-                "that turn. Decide which older contiguous range from <memory> "
-                "to compress and output a concise summary retaining all "
-                "entities, attributes, OCR, and state changes."
-            ),
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "time_range": {
-                        "type": "array",
-                        "items": {"type": "integer"},
-                        "minItems": 2,
-                        "maxItems": 2,
-                        "description": (
-                            "[start_sec, end_sec] of the range to summarize. "
-                            "You select this range from <memory> contents "
-                            "(oldest contiguous chunks under memory pressure)."
-                        ),
-                    },
-                    "text": {
-                        "type": "string",
-                        "description": (
-                            "The summary text. Retain entity names, visual "
-                            "attributes, OCR text, and state changes."
-                        ),
-                    },
+}
+
+COMPRESS_TOOL_SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "compress",
+        "description": (
+            "Compression-turn tool. Use only under the compression system "
+            "prompt or its legacy <compress_trigger/> event marker. Do "
+            "not answer questions, emit a silent answer, or call recall on "
+            "that turn. Decide which older contiguous range from <memory> "
+            "to compress and output a concise summary retaining all "
+            "entities, attributes, OCR, and state changes."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "time_range": {
+                    "type": "array",
+                    "items": {"type": "integer"},
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "description": (
+                        "[start_sec, end_sec] of the range to summarize. "
+                        "You select this range from <memory> contents "
+                        "(oldest contiguous chunks under memory pressure)."
+                    ),
                 },
-                "required": ["time_range", "text"],
+                "text": {
+                    "type": "string",
+                    "description": (
+                        "The summary text. Retain entity names, visual "
+                        "attributes, OCR text, and state changes."
+                    ),
+                },
             },
+            "required": ["time_range", "text"],
         },
     },
-]
+}
+
+# Back-compat name for old call sites. New code should use tools_for_turn().
+TOOLS_SCHEMA = [RECALL_TOOL_SCHEMA, COMPRESS_TOOL_SCHEMA]
+STREAMING_TOOLS_SCHEMA = [RECALL_TOOL_SCHEMA]
+COMPRESS_TOOLS_SCHEMA = [COMPRESS_TOOL_SCHEMA]
+
+
+def normalize_tool_turn_kind(
+    turn_kind: Optional[str] = None,
+    *,
+    inter_chunk: bool = False,
+    recall_response: bool = False,
+) -> str:
+    """Return streaming|compress|recall_response for tool/action gating."""
+    if recall_response:
+        return "recall_response"
+    if inter_chunk:
+        return "compress"
+    value = str(turn_kind or "streaming").strip().lower().replace("-", "_")
+    aliases = {
+        "ordinary": "streaming",
+        "normal": "streaming",
+        "visual": "streaming",
+        "video": "streaming",
+        "memory_compaction": "compress",
+        "compaction": "compress",
+        "compression": "compress",
+        "inter_chunk": "compress",
+        "recall_result": "recall_response",
+        "recall_answer": "recall_response",
+        "tool_result": "recall_response",
+        "answer_after_recall": "recall_response",
+        "none": "recall_response",
+        "no_tools": "recall_response",
+    }
+    value = aliases.get(value, value)
+    if value not in {"streaming", "compress", "recall_response"}:
+        return "streaming"
+    return value
+
+
+def tools_for_turn(
+    turn_kind: Optional[str] = None,
+    *,
+    inter_chunk: bool = False,
+    recall_response: bool = False,
+) -> Optional[List[Dict[str, Any]]]:
+    """Return the Qwen tool schema valid for one generation turn.
+
+    - streaming turns expose recall only;
+    - compression turns expose compress only;
+    - recall-result answer turns expose no tools.
+    """
+    kind = normalize_tool_turn_kind(
+        turn_kind,
+        inter_chunk=inter_chunk,
+        recall_response=recall_response,
+    )
+    if kind == "streaming":
+        return STREAMING_TOOLS_SCHEMA
+    if kind == "compress":
+        return COMPRESS_TOOLS_SCHEMA
+    return None
+
+
+def allowed_actions_for_turn(
+    turn_kind: Optional[str] = None,
+    *,
+    inter_chunk: bool = False,
+    recall_response: bool = False,
+) -> set[str]:
+    """Return canonical parsed actions allowed for this generation turn."""
+    kind = normalize_tool_turn_kind(
+        turn_kind,
+        inter_chunk=inter_chunk,
+        recall_response=recall_response,
+    )
+    if kind == "streaming":
+        return {"silent", "response", "recall", "answer"}
+    if kind == "compress":
+        return {"compress"}
+    return {"silent", "response", "answer"}
+
+
+def is_action_allowed_for_turn(
+    action: str,
+    turn_kind: Optional[str] = None,
+    *,
+    inter_chunk: bool = False,
+    recall_response: bool = False,
+) -> bool:
+    """Check one parsed action/kind against the turn-local action space."""
+    return str(action or "") in allowed_actions_for_turn(
+        turn_kind,
+        inter_chunk=inter_chunk,
+        recall_response=recall_response,
+    )
+
+
+def action_space_error_for_turn(
+    action: str,
+    turn_kind: Optional[str] = None,
+    *,
+    inter_chunk: bool = False,
+    recall_response: bool = False,
+) -> str:
+    """Return an error string when an action is illegal for the turn."""
+    kind = normalize_tool_turn_kind(
+        turn_kind,
+        inter_chunk=inter_chunk,
+        recall_response=recall_response,
+    )
+    if is_action_allowed_for_turn(action, kind):
+        return ""
+    allowed = ",".join(sorted(allowed_actions_for_turn(kind)))
+    return f"action_not_allowed:{action or 'unknown'}@{kind};allowed={allowed}"
 
 
 def build_assistant_content_v12(

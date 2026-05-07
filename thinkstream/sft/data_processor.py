@@ -736,8 +736,9 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     Qwen-VL official finetune (scan for <|im_start|>assistant ...
     <|im_end|>, that span gets loss).
 
-    Always passes ``tools=TOOLS_SCHEMA`` to apply_chat_template so the
-    system prompt auto-renders the ``<tools>`` block per Qwen3-VL spec.
+    Passes a turn-local tool schema to apply_chat_template: streaming rows get
+    recall only, compression rows get compress only, and rows explicitly marked
+    as recall-response/no-tools get no tool schema.
     """
     base_path = Path(sample.get("data_path", "."))
 
@@ -768,11 +769,17 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
                 else:
                     has_video_meta = False
 
-    from thinkstream.data.agent_protocol import TOOLS_SCHEMA
+    from thinkstream.data.agent_protocol import tools_for_turn
+    tool_mode = sample.get("tool_schema_mode")
+    if tool_mode is None:
+        tool_mode = "compress" if sample.get("v12_inter_chunk") else "streaming"
+    tools = tools_for_turn(str(tool_mode))
     template_kwargs = dict(
-        tokenize=True, return_dict=True, return_tensors="pt", tools=TOOLS_SCHEMA,
+        tokenize=True, return_dict=True, return_tensors="pt",
         do_sample_frames=False,  # frame_paths are already the exact frames to use
     )
+    if tools is not None:
+        template_kwargs["tools"] = tools
     if video_metadata and has_video_meta:
         template_kwargs["video_metadata"] = video_metadata
 
@@ -1042,8 +1049,8 @@ class PerTimestepDataset(Dataset):
     def _get_item(self, i) -> Dict[str, torch.Tensor]:
         sample = self.samples[i]
 
-        # Tokenize + vision + label mask. apply_chat_template always uses
-        # tools=TOOLS_SCHEMA (the v12 protocol).
+        # Tokenize + vision + label mask. apply_chat_template uses the
+        # turn-local tool schema carried by the sample.
         data_dict = preprocess_per_timestep(sample, self.processor)
 
         seq_len = data_dict["input_ids"][0].size(0)

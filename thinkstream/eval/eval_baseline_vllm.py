@@ -114,14 +114,12 @@ def offline_predict_mcq_vllm(
     log.info(f"vLLM offline eval: {len(dataset)} samples, {max_frames} frames")
     log.info(f"Options: {options}, protocol_version={protocol_version}")
 
-    # v12.0: pass tools=TOOLS_SCHEMA to chat_template so the system prompt
-    # auto-renders <tools>...</tools> and the model can emit
-    # <tool_call>{...}</tool_call>. Required for protocol_version='v12';
-    # leave None for v11 legacy <action>X</action> format.
+    # v12.15: offline eval is an ordinary streaming turn, so expose recall
+    # only. Leave None for v11 legacy <action>X</action> format.
     tools_for_template = None
     if protocol_version == "v12":
-        from thinkstream.data.agent_protocol import TOOLS_SCHEMA
-        tools_for_template = TOOLS_SCHEMA
+        from thinkstream.data.agent_protocol import tools_for_turn
+        tools_for_template = tools_for_turn("streaming")
 
     # ── Phase 1: build all vLLM requests (frame loading + prompt prep) ──
     requests: List[dict] = []
