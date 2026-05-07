@@ -978,7 +978,7 @@ class StreamingAgentLoop:
         # 7. Update memory state based on action. Compress turns are
         # memory-management tool calls, not video observations, so their
         # <think> is not inserted into recent_thinks / recall archive.
-        if parsed["think"] and parsed["action"] != "compress":
+        if parsed["think"] and parsed["action"] != "compress" and not is_inter_chunk:
             self.memory.add_think(chunk_idx, parsed["think"])
             # Stateful retrievers (e.g. HybridRetriever) hook here to
             # encode the chunk's frames into their visual index. BM25Retriever

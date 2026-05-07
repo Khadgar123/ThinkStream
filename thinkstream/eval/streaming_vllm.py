@@ -280,7 +280,11 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> str:
         parsed["invalid_action"] = action
         action = "invalid"
     runner._last_action = action
-    if parsed.get("think") and action != "compress":
+    if (
+        parsed.get("think")
+        and action != "compress"
+        and getattr(runner, "_last_turn_kind", "streaming") != "compress"
+    ):
         runner.memory.add_think(chunk_idx, parsed["think"])
     if action == "compress":
         summary = parsed["payload"].get("summary", {})
@@ -767,7 +771,11 @@ def _apply_rollout_output(
         parsed["action_space_error"] = action_error
         parsed["invalid_action"] = action
         action = "invalid"
-    if parsed.get("think") and action != "compress":
+    if (
+        parsed.get("think")
+        and action != "compress"
+        and getattr(runner, "_last_turn_kind", "streaming") != "compress"
+    ):
         runner.memory.add_think(chunk_idx, parsed["think"])
     if action == "compress":
         summary = parsed.get("payload", {}).get("summary", {})

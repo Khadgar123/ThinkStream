@@ -445,6 +445,101 @@ def _safe_list(v: Any) -> list:
     return []
 
 
+def _model_action_from_turn(kind: str, text: str) -> str:
+    if kind == "answer":
+        m = re.search(r"<answer>(.*?)</answer>", text or "", re.DOTALL)
+        ans = m.group(1).strip() if m else ""
+        return "silent" if not ans else "response"
+    if kind == "recall":
+        return "recall"
+    if kind == "compress":
+        return "compress"
+    return "unknown"
+
+
+def _per_chunk_action_avg(
+    extra: Dict[str, Any],
+    gold_action_per_chunk: Dict[str, str],
+) -> Optional[float]:
+    """Small action-shaping signal aligned to turn-local rollout metadata."""
+    chunk_kinds = _safe_list(extra.get("ts_chunk_kinds"))
+    if not chunk_kinds or not gold_action_per_chunk:
+        return None
+
+    chunk_texts = _safe_list(extra.get("ts_chunk_asst_texts"))
+    chunk_vidx = _safe_list(extra.get("ts_chunk_video_indices"))
+    chunk_events = _safe_list(extra.get("ts_chunk_event_indices"))
+    turn_kinds = _safe_list(extra.get("ts_chunk_turn_kinds"))
+    scores: List[float] = []
+    recall_seen_for_chunk: set[int] = set()
+    compress_seen_for_chunk: set[int] = set()
+
+    for turn_i, kind_raw in enumerate(chunk_kinds):
+        kind = str(kind_raw or "unknown")
+        turn_kind = (
+            str(turn_kinds[turn_i] or "")
+            if turn_i < len(turn_kinds)
+            else ""
+        )
+        if turn_kind == "recall_response":
+            # The recall-response assistant turn is conditioned on the prior
+            # tool result; answer correctness/timing scores it. The action
+            # decision to train here is the preceding recall tool_call.
+            continue
+
+        try:
+            video_chunk_idx = int(chunk_vidx[turn_i]) if turn_i < len(chunk_vidx) else turn_i
+        except (TypeError, ValueError):
+            video_chunk_idx = turn_i
+        if video_chunk_idx < 0 and turn_kind == "compress":
+            try:
+                video_chunk_idx = int(chunk_events[turn_i])
+            except (IndexError, TypeError, ValueError):
+                video_chunk_idx = -1
+        if video_chunk_idx < 0:
+            continue
+
+        gold_action = str(
+            (gold_action_per_chunk or {}).get(str(video_chunk_idx), "")
+        )
+        if not gold_action:
+            continue
+
+        text = chunk_texts[turn_i] if turn_i < len(chunk_texts) else ""
+        model_action = _model_action_from_turn(kind, str(text or ""))
+
+        if gold_action == "compress":
+            if turn_kind == "compress":
+                if model_action == "compress":
+                    compress_seen_for_chunk.add(video_chunk_idx)
+                    scores.append(0.1)
+                else:
+                    scores.append(-0.05)
+            elif video_chunk_idx not in compress_seen_for_chunk:
+                scores.append(-0.05)
+            continue
+
+        if gold_action in {"recall", "recall_silent"}:
+            if model_action == "recall":
+                recall_seen_for_chunk.add(video_chunk_idx)
+                scores.append(0.1)
+            elif (
+                gold_action == "recall_silent"
+                and model_action == "silent"
+                and video_chunk_idx in recall_seen_for_chunk
+            ):
+                scores.append(0.1)
+            elif video_chunk_idx not in recall_seen_for_chunk:
+                scores.append(-0.05)
+            continue
+
+        scores.append(0.1 if model_action == gold_action else -0.05)
+
+    if not scores:
+        return None
+    return sum(scores) / len(scores)
+
+
 def _outcome_gate(parts: Dict[str, float]) -> float:
     """Scale positive shaping rewards by answer correctness.
 
@@ -863,6 +958,18 @@ def _compute_score_multi_q(
         per_q_parts,
         {"format": fmt, "spam": spam},
     )
+    gold_action_per_chunk = extra.get("gold_action_per_chunk") or {}
+    if not gold_action_per_chunk and extra.get("video_id"):
+        traj = _load_traj_index().get(str(extra["video_id"]))
+        if traj:
+            gold_action_per_chunk = traj.get("gold_action_per_chunk", {}) or {}
+    action_avg = _per_chunk_action_avg(extra, gold_action_per_chunk)
+    if action_avg is not None:
+        alpha = float(extra.get("gdpo_alpha", 0.7))
+        gated_state = action_avg if action_avg <= 0 else gate * action_avg
+        total = alpha * total + (1.0 - alpha) * gated_state
+        parts["per_chunk_action_avg"] = float(action_avg)
+
     action_space_errors = [
         str(x) for x in _safe_list(extra.get("ts_chunk_action_space_errors"))
         if str(x or "").strip()
@@ -1048,79 +1155,12 @@ def compute_score(
 
     total, gate = _combine_reward_parts(weights, parts)
 
-    # ── Per-chunk action reward (P1.5).
-    # The streaming agent loop drops `ts_chunk_kinds` (a list[str] of
-    # parsed action kinds for each chunk) and `ts_chunk_asst_texts` into
-    # extra_fields → reward_manager surfaces them via extra_info. Compare
-    # each chunk's parsed kind against gold_action_per_chunk[chunk_idx]
-    # and emit a per-chunk shaping reward. This goes through to the
-    # reward_manager which broadcasts to that chunk's last assistant
-    # token position.
-    chunk_kinds = extra.get("ts_chunk_kinds") or []
-    chunk_texts = extra.get("ts_chunk_asst_texts") or []
-    # P1.7 fix (post-review): the agent loop's chunk_kinds includes
-    # inter-chunk compress turns that don't consume a video chunk_idx.
-    # Use ts_chunk_video_indices (-1 = compress) as the authoritative
-    # mapping from turn-index → video chunk_idx, instead of enumerate.
-    chunk_vidx = extra.get("ts_chunk_video_indices") or []
-    per_chunk_action: List[float] = []
-    recall_seen_for_chunk: set[int] = set()
-    if chunk_kinds and gold_action_per_chunk:
-        for turn_i, kind in enumerate(chunk_kinds):
-            video_chunk_idx = (
-                int(chunk_vidx[turn_i]) if turn_i < len(chunk_vidx) else turn_i
-            )
-            if video_chunk_idx < 0:
-                # Compress inter-turn — system event, no video gold.
-                per_chunk_action.append(0.0)
-                continue
-            gold_action = (gold_action_per_chunk or {}).get(str(video_chunk_idx), "")
-            if not gold_action:
-                per_chunk_action.append(0.0)
-                continue
-            # Map model output to canonical action label. (Use turn_i
-            # for chunk_texts indexing since chunk_texts is parallel to
-            # chunk_kinds, not to video_chunk_idx.)
-            if kind == "answer":
-                txt = chunk_texts[turn_i] if turn_i < len(chunk_texts) else ""
-                m = re.search(r"<answer>(.*?)</answer>", txt, re.DOTALL)
-                ans = m.group(1).strip() if m else ""
-                model_action = "silent" if not ans else "response"
-            elif kind == "recall":
-                model_action = "recall"
-            elif kind == "compress":
-                model_action = "compress"
-            else:
-                model_action = "unknown"
-            # Symmetric per-chunk shaping. Match → +0.1, mismatch → -0.05.
-            # Calibrated so that 360 chunks of all-correct contributes at
-            # most +36 to the total reward — comparable scale to outcome*1.0.
-            if gold_action == "recall_silent":
-                if model_action == "recall":
-                    recall_seen_for_chunk.add(video_chunk_idx)
-                    per_chunk_action.append(0.1)
-                elif (
-                    model_action == "silent"
-                    and video_chunk_idx in recall_seen_for_chunk
-                ):
-                    per_chunk_action.append(0.1)
-                else:
-                    per_chunk_action.append(-0.05)
-            elif model_action == gold_action:
-                per_chunk_action.append(0.1)
-            else:
-                per_chunk_action.append(-0.05)
-        # Average state reward folded into the trajectory-level scalar so
-        # plain GRPO (no token-level broadcast) still benefits.
-        if per_chunk_action:
-            state_avg = sum(per_chunk_action) / len(per_chunk_action)
-            # GDPO mix (P1.4): α=0.7 correctness-gated scalar +
-            # (1-α)=0.3 state. Positive state shaping is also gated by
-            # outcome; negative state penalties always apply.
-            alpha = float(extra.get("gdpo_alpha", 0.7))
-            gated_state = state_avg if state_avg <= 0 else gate * state_avg
-            total = alpha * total + (1.0 - alpha) * gated_state
-            parts["per_chunk_action_avg"] = state_avg
+    action_avg = _per_chunk_action_avg(extra, gold_action_per_chunk)
+    if action_avg is not None:
+        alpha = float(extra.get("gdpo_alpha", 0.7))
+        gated_state = action_avg if action_avg <= 0 else gate * action_avg
+        total = alpha * total + (1.0 - alpha) * gated_state
+        parts["per_chunk_action_avg"] = float(action_avg)
 
     action_space_errors = [
         str(x) for x in _safe_list(extra.get("ts_chunk_action_space_errors"))

@@ -23,9 +23,9 @@ export PHASE="${PHASE:-sft}"
 export FRAME_PROTOCOL="${FRAME_PROTOCOL:-video_meta}"
 export THINKSTREAM_DATA_ROOT="${THINKSTREAM_DATA_ROOT:-data/agent_v5/batch1}"
 
-# Default to the practical correction pass: keep gold prompts as the anchor and
-# mix in correction-only on-policy prompts. Override DATASETS for ablations.
-export DATASETS="${DATASETS:-stream_agent_sft%70,stream_agent_sft_dagger%30}"
+# The "%N" suffix is a file subsample rate, not a mixing weight. Keep all
+# correction rows by default and use a small clean-anchor subsample.
+export DATASETS="${DATASETS:-stream_agent_sft%20,stream_agent_sft_dagger}"
 export LR="${LR:-1e-5}"
 export EPOCHS="${EPOCHS:-1}"
 export RUN_NAME="${RUN_NAME:-agent-sft-dagger-${FRAME_PROTOCOL}}"

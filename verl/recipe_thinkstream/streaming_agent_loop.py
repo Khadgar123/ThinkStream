@@ -1081,6 +1081,11 @@ def _register_streaming_agent_loop():
             # turn here; compute_score uses this for `gold_action_per_chunk[
             # str(video_chunk_idx)]` lookup. -1 marks compress (system event).
             chunk_video_indices: List[int] = []
+            # Actual video cursor at the time of each assistant turn. For
+            # inter-chunk compression this is the chunk that will be retried
+            # after compression succeeds, so reward code can credit the
+            # compress decision against gold_action_per_chunk[chunk_idx].
+            chunk_event_indices: List[int] = []
 
             # multi_modal_data accumulator: one (tensor, metadata) per
             # Accumulators for multi-modal payloads. `ts_image` contributes
@@ -1347,6 +1352,7 @@ def _register_streaming_agent_loop():
                     chunk_asst_spans.append((asst_start, asst_end))
                     # -1 for compress (system inter-chunk turn).
                     chunk_video_indices.append(-1 if inter_chunk else chunk_idx)
+                    chunk_event_indices.append(chunk_idx)
 
                     if visual_injected:
                         accumulated_images.extend(chunk_images)
@@ -1506,36 +1512,46 @@ def _register_streaming_agent_loop():
                 # EVERY turn — including compress. For inter-chunk
                 # compress turns we DON'T want to skip ahead in the
                 # video timeline, so we revert state.chunk_idx after.
+                # If the output violated the turn-local action space, do
+                # not feed the raw text to default_v12_update_state: a
+                # compress-prompt <answer> must not terminate the rollout,
+                # and a streaming-prompt compress tool_call must not mutate
+                # memory.
                 # `kind` / `parsed` / `response_text` here are from the
                 # FINAL inner-loop turn (the chunk's terminating
                 # answer/silent/compress, after any in-chunk recall
                 # multi-turn rounds have completed).
                 invalid_action_space = bool(parsed.get("action_space_error"))
                 pre_chunk_idx = state.chunk_idx
-                state = default_v12_update_state(state, response_text, chunk_idx)
-                if inter_chunk and not invalid_action_space:
-                    # System event — don't consume a video chunk.
-                    state.chunk_idx = pre_chunk_idx
+                if invalid_action_space:
+                    # Treat illegal action-space outputs as semantic no-ops.
+                    # The local cursor advances below to keep rollout moving.
+                    state.chunk_idx = chunk_idx + 1
                 else:
-                    # Append think to recent_thinks for next turn's memory.
-                    think_text = parsed.get("think") or ""
-                    if think_text and kind in ("answer", "recall", "unknown"):
-                        item = {"chunk": chunk_idx, "text": think_text}
-                        state.recent_thinks.append(item)
-                        state.think_archive.append(dict(item))
-                    if multi_q_list:
-                        all_questions_complete = all(
-                            _question_complete(qi)
-                            for qi in range(len(multi_q_list))
-                        )
-                        if not all_questions_complete:
-                            # default_v12_update_state is single-question
-                            # oriented and marks any non-empty answer as done.
-                            # Multi-Q and multi-emit trajectories must keep
-                            # streaming until every question has enough answers
-                            # or the fixed rollout horizon is reached.
-                            state.is_active = True
-                            state.is_done = False
+                    state = default_v12_update_state(state, response_text, chunk_idx)
+                    if inter_chunk:
+                        # System event — don't consume a video chunk.
+                        state.chunk_idx = pre_chunk_idx
+                    else:
+                        # Append think to recent_thinks for next turn's memory.
+                        think_text = parsed.get("think") or ""
+                        if think_text and kind in ("answer", "recall", "unknown"):
+                            item = {"chunk": chunk_idx, "text": think_text}
+                            state.recent_thinks.append(item)
+                            state.think_archive.append(dict(item))
+                        if multi_q_list:
+                            all_questions_complete = all(
+                                _question_complete(qi)
+                                for qi in range(len(multi_q_list))
+                            )
+                            if not all_questions_complete:
+                                # default_v12_update_state is single-question
+                                # oriented and marks any non-empty answer as done.
+                                # Multi-Q and multi-emit trajectories must keep
+                                # streaming until every question has enough answers
+                                # or the fixed rollout horizon is reached.
+                                state.is_active = True
+                                state.is_done = False
                 # NOTE: recall handling moved into the inner ready-loop
                 # above (chunk-internal multi-turn). The legacy "deliver
                 # recall_result on the next chunk" path is exercised only
@@ -1579,6 +1595,7 @@ def _register_streaming_agent_loop():
                 "ts_chunk_action_space_errors": chunk_action_space_errors,
                 "ts_chunk_asst_texts": chunk_asst_texts,
                 "ts_chunk_video_indices": chunk_video_indices,
+                "ts_chunk_event_indices": chunk_event_indices,
                 "ts_per_q_answer_chunk": list(per_q_answer_chunk),
                 "ts_per_q_answer_text": list(per_q_answer_text),
                 "ts_per_q_answers": per_q_answers,
@@ -1637,6 +1654,10 @@ def _register_streaming_agent_loop():
                             "ts_action_chunk_idx": (
                                 chunk_video_indices[ai]
                                 if ai < len(chunk_video_indices) else -1
+                            ),
+                            "ts_action_event_chunk_idx": (
+                                chunk_event_indices[ai]
+                                if ai < len(chunk_event_indices) else -1
                             ),
                         }
                         outputs.append(AgentLoopOutput(

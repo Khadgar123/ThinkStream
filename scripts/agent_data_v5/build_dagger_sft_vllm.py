@@ -37,6 +37,7 @@ from scripts.agent_data_v5.build_dagger_sft import (
     _content_text,
     _default_batch_root,
     _emit_dagger_row,
+    _apply_oracle_compress_recovery,
     _group_by_chunk,
     _iter_trajectory_rows,
     _new_question,
@@ -56,6 +57,7 @@ from thinkstream.data.agent_protocol import (
     has_compress_trigger,
     normalize_frame_protocol,
     select_recall_chunks,
+    action_space_error_for_turn,
     tools_for_turn,
 )
 from thinkstream.model.agent_loop import (
@@ -381,6 +383,7 @@ def build_dagger_vllm(
     max_images_per_prompt: int,
     max_videos_per_prompt: int,
     max_compress_turns_per_chunk: int,
+    oracle_compress_recovery: bool,
     rollout_all_chunks: bool,
     log_every_steps: int,
 ) -> Dict[str, Any]:
@@ -514,7 +517,10 @@ def build_dagger_vllm(
                         compress_budget=RECENT_THINKS_TOKEN_BUDGET,
                     )
                     result = r.chunk_results[-1]
-                    result["format_ok"] = result.get("action") != "unknown"
+                    result["format_ok"] = (
+                        result.get("action") not in {"unknown", "invalid"}
+                        and not result.get("action_space_error")
+                    )
                     stats["steps"] += 1
                 except Exception as exc:
                     r.done = True
@@ -558,10 +564,15 @@ def build_dagger_vllm(
                         for (r, result, _, recall_result), rc_out in zip(recall_active, rc_outputs):
                             rc_text = rc_out.outputs[0].text
                             rc_parsed = _parse_agent_output(rc_text)
-                            if rc_parsed.get("action") in ("recall", "compress"):
+                            recall_action_error = action_space_error_for_turn(
+                                rc_parsed.get("action", ""),
+                                "recall_response",
+                            )
+                            if recall_action_error or rc_parsed.get("action") in ("recall", "compress"):
                                 stats["recall_step2_blocked"] += 1
                                 result["recall_step2_blocked"] = {
                                     "action": rc_parsed.get("action"),
+                                    "action_space_error": recall_action_error,
                                     "raw_output": rc_text,
                                 }
                                 rc_parsed = {
@@ -604,15 +615,46 @@ def build_dagger_vllm(
                             if n <= max_compress_turns_per_chunk:
                                 stats["visual_retries_after_compress"] += 1
                                 continue
+                            if (
+                                oracle_compress_recovery
+                                and compress_entries
+                                and _apply_oracle_compress_recovery(
+                                    r.memory,
+                                    [s for _, s in compress_entries],
+                                    stats,
+                                )
+                            ):
+                                stats["visual_retries_after_oracle_compress"] = (
+                                    stats.get("visual_retries_after_oracle_compress", 0) + 1
+                                )
+                                continue
                             stats["skipped"]["too_many_policy_compress_turns"] = (
                                 stats["skipped"].get("too_many_policy_compress_turns", 0)
                                 + len(visual_entries)
                             )
                         elif visual_entries:
+                            fail_action = str(result.get("action") or "unknown")
                             stats["skipped"]["policy_failed_compress_before_visual"] = (
                                 stats["skipped"].get("policy_failed_compress_before_visual", 0)
                                 + len(visual_entries)
                             )
+                            key = f"policy_failed_compress_before_visual:{fail_action}"
+                            stats["skipped"][key] = stats["skipped"].get(key, 0) + len(visual_entries)
+                            if oracle_compress_recovery and compress_entries:
+                                n = r.compress_retries.get(r.current_chunk, 0) + 1
+                                r.compress_retries[r.current_chunk] = n
+                                if (
+                                    n <= max_compress_turns_per_chunk
+                                    and _apply_oracle_compress_recovery(
+                                        r.memory,
+                                        [s for _, s in compress_entries],
+                                        stats,
+                                    )
+                                ):
+                                    stats["visual_retries_after_oracle_compress"] = (
+                                        stats.get("visual_retries_after_oracle_compress", 0) + 1
+                                    )
+                                    continue
                     r.current_chunk += 1
                 else:
                     _emit_entries(
@@ -693,6 +735,14 @@ def main() -> None:
     p.add_argument("--max-images-per-prompt", type=int, default=64)
     p.add_argument("--max-videos-per-prompt", type=int, default=2)
     p.add_argument("--max-compress-turns-per-chunk", type=int, default=2)
+    p.add_argument(
+        "--no-oracle-compress-recovery",
+        action="store_true",
+        help=(
+            "Disable DAgger recovery that applies the gold compress target "
+            "after a missed system-compress turn before retrying the same visual chunk."
+        ),
+    )
     p.add_argument("--target-chunks-only", action="store_true")
     p.add_argument("--log-every-steps", type=int, default=20)
     args = p.parse_args()
@@ -726,6 +776,7 @@ def main() -> None:
         max_images_per_prompt=args.max_images_per_prompt,
         max_videos_per_prompt=args.max_videos_per_prompt,
         max_compress_turns_per_chunk=args.max_compress_turns_per_chunk,
+        oracle_compress_recovery=not args.no_oracle_compress_recovery,
         rollout_all_chunks=not args.target_chunks_only,
         log_every_steps=args.log_every_steps,
     )

@@ -305,6 +305,48 @@ def _gold_compress_range(sample: Dict[str, Any]) -> Optional[List[int]]:
         return None
 
 
+def _gold_compress_summary(sample: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    output = str(sample.get("output") or sample.get("v12_assistant_turn_1") or "")
+    parsed = parse_agent_output_v12(output)
+    tc = parsed.get("tool_call") or {}
+    if tc.get("name") != "compress":
+        return None
+    args = tc.get("arguments") or {}
+    tr = args.get("time_range")
+    text = args.get("text")
+    if not isinstance(tr, list) or len(tr) != 2:
+        return None
+    if not isinstance(text, str) or not text.strip():
+        return None
+    try:
+        tr_norm = [int(tr[0]), int(tr[1])]
+    except (TypeError, ValueError):
+        return None
+    if tr_norm[1] <= tr_norm[0]:
+        return None
+    return {"time_range": tr_norm, "text": text.strip()}
+
+
+def _apply_oracle_compress_recovery(
+    memory: Any,
+    compress_samples: List[Dict[str, Any]],
+    stats: Dict[str, Any],
+) -> bool:
+    """Apply a gold compress target after policy missed system compression."""
+    for sample in compress_samples:
+        summary = _gold_compress_summary(sample)
+        if summary is None:
+            continue
+        memory.compress(summary)
+        stats["oracle_compress_recoveries"] = stats.get("oracle_compress_recoveries", 0) + 1
+        return True
+    stats["skipped"]["oracle_compress_recovery_missing_gold"] = (
+        stats["skipped"].get("oracle_compress_recovery_missing_gold", 0)
+        + max(1, len(compress_samples))
+    )
+    return False
+
+
 def _normalise_range(value: Any) -> Optional[List[int]]:
     if not isinstance(value, list) or len(value) != 2:
         return None
@@ -675,6 +717,11 @@ def _attach_dagger_metadata(
         "rollout_final_action": result.get("final_action", ""),
         "rollout_format_ok": bool(result.get("format_ok", True)),
         "rollout_action_space_error": result.get("action_space_error", ""),
+        "rollout_invalid_action": result.get("invalid_action", ""),
+        "rollout_think": str(result.get("think", ""))[:1000],
+        "rollout_payload": result.get("payload", {}),
+        "rollout_raw_output": str(result.get("raw_output", ""))[:2000],
+        "rollout_recall_step2_raw_output": str(result.get("recall_step2_raw_text", ""))[:2000],
         "rollout_inter_chunk_compress_prompt": bool(prompt_is_compress),
         "memory_token_count": result.get("memory_token_count"),
         "prompt_text_token_count": result.get("prompt_text_token_count"),
@@ -898,6 +945,7 @@ def build_dagger(
     shard_index: int,
     no_bf16: bool,
     max_compress_turns_per_chunk: int,
+    oracle_compress_recovery: bool,
     log_every_steps: int,
 ) -> Dict[str, Any]:
     from scripts.eval.eval_profiles import apply_profile, describe_profile
@@ -1068,15 +1116,43 @@ def build_dagger(
                                 if compress_turns <= max_compress_turns_per_chunk:
                                     stats["visual_retries_after_compress"] += 1
                                     continue
+                                if (
+                                    oracle_compress_recovery
+                                    and compress_samples
+                                    and _apply_oracle_compress_recovery(
+                                        loop.memory, compress_samples, stats,
+                                    )
+                                ):
+                                    stats["visual_retries_after_oracle_compress"] = (
+                                        stats.get("visual_retries_after_oracle_compress", 0) + 1
+                                    )
+                                    continue
                                 stats["skipped"]["too_many_policy_compress_turns"] = (
                                     stats["skipped"].get("too_many_policy_compress_turns", 0)
                                     + len(visual_samples)
                                 )
                             else:
+                                fail_action = str(result.get("action") or "unknown")
                                 stats["skipped"]["policy_failed_compress_before_visual"] = (
                                     stats["skipped"].get("policy_failed_compress_before_visual", 0)
                                     + len(visual_samples)
                                 )
+                                key = f"policy_failed_compress_before_visual:{fail_action}"
+                                stats["skipped"][key] = (
+                                    stats["skipped"].get(key, 0) + len(visual_samples)
+                                )
+                                if oracle_compress_recovery and compress_samples:
+                                    compress_turns += 1
+                                    if (
+                                        compress_turns <= max_compress_turns_per_chunk
+                                        and _apply_oracle_compress_recovery(
+                                            loop.memory, compress_samples, stats,
+                                        )
+                                    ):
+                                        stats["visual_retries_after_oracle_compress"] = (
+                                            stats.get("visual_retries_after_oracle_compress", 0) + 1
+                                        )
+                                        continue
                         break
 
                     for sample in visual_samples:
@@ -1188,6 +1264,14 @@ def main() -> None:
         help="Retry the same visual chunk after at most this many policy compress turns.",
     )
     p.add_argument(
+        "--no-oracle-compress-recovery",
+        action="store_true",
+        help=(
+            "Disable DAgger recovery that applies the gold compress target "
+            "after a missed system-compress turn before retrying the same visual chunk."
+        ),
+    )
+    p.add_argument(
         "--log-every-steps",
         type=int,
         default=20,
@@ -1224,6 +1308,7 @@ def main() -> None:
         shard_index=args.shard_index,
         no_bf16=args.no_bf16,
         max_compress_turns_per_chunk=args.max_compress_turns_per_chunk,
+        oracle_compress_recovery=not args.no_oracle_compress_recovery,
         log_every_steps=args.log_every_steps,
     )
     print(json.dumps(stats, ensure_ascii=False, indent=2))
