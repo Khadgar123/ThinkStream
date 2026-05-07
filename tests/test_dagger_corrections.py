@@ -36,6 +36,35 @@ def _prompt(user_input: str = "", memory: str = ""):
     ]
 
 
+def _prompt_with_query(user_input: str = "", memory: str = "", query: str = ""):
+    text = f"<memory>{memory}</memory>\n"
+    if query:
+        text += f"<active_query>\n{query}\n</active_query>\n"
+    text += f"<user_input>{user_input}</user_input>"
+    return [
+        {"role": "system", "content": "agent"},
+        {"role": "user", "content": [{"type": "text", "text": text}]},
+    ]
+
+
+def _prompt_with_visual_window(memory: str = "", *, start: int = 9, end: int = 11):
+    return [
+        {"role": "system", "content": "agent"},
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": (
+                        f"<memory>{memory}</memory>\n"
+                        f"<visual_window>{{\"start\":{start},\"end\":{end}}}</visual_window>"
+                    ),
+                }
+            ],
+        },
+    ]
+
+
 def _answer_sample(sample_type: str, answer: str = "red apron", *, chunk_idx: int = 5):
     return {
         "sample_type": sample_type,
@@ -96,6 +125,26 @@ def test_missed_recall_checks_student_prompt_answer_visibility():
     reasons, detail = _classify_dagger_corrections(
         sample,
         _prompt(memory="the cook wore a red apron before stirring the pot"),
+        {"action": "silent", "payload": {}, "think": "not enough information"},
+    )
+    assert "missed_recall" not in reasons
+    assert "recall_answer_visible_in_policy_prompt" in reasons
+    assert detail["recall_prompt_leak"] is True
+
+    reasons, _ = _classify_dagger_corrections(
+        sample,
+        _prompt_with_query(
+            memory="the earlier scene only shows a kitchen counter",
+            query="Question: What was the cook wearing?\nOptions: red apron; blue coat",
+        ),
+        {"action": "silent", "payload": {}, "think": "not enough information"},
+    )
+    assert "missed_recall" in reasons
+    assert "recall_answer_visible_in_policy_prompt" not in reasons
+
+    reasons, detail = _classify_dagger_corrections(
+        sample,
+        _prompt_with_visual_window(memory="the earlier scene only shows a kitchen counter"),
         {"action": "silent", "payload": {}, "think": "not enough information"},
     )
     assert "missed_recall" not in reasons

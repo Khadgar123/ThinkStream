@@ -986,11 +986,10 @@ class PerTimestepDataset(Dataset):
                 f"convert via:  python -m scripts.agent_data_v5.pass5_messages"
             )
 
-        # v12.32: keep verification-failed rows by default. pass3e tags
-        # failures instead of dropping them, and SFT must preserve the same
-        # streaming timeline unless the caller explicitly requests a strict
-        # clean diagnostic run.
-        include_failed = getattr(data_args, "include_failed_verification", True)
+        # Main cold-start SFT uses strict clean rows. Keep tagged verifier
+        # failures only when the caller explicitly opts into a
+        # robustness/continuity ablation.
+        include_failed = getattr(data_args, "include_failed_verification", False)
         if not include_failed:
             before = len(all_samples)
             all_samples = [

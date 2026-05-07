@@ -92,8 +92,9 @@
 #   3. Frame timestamps/metadata use frame_idx / fps, where
 #      frame_idx = window_start*FPC + i.
 #   4. Compress turn uses a compression-only system prompt plus bare
-#      <compress_trigger/> (v12.12: no range). It still carries memory and
-#      visual_window so SFT/RL/eval use one multimodal payload shape.
+#      <compress_trigger/> (v12.12: no range). It carries memory only:
+#      active_query, visual_window, and media carriers are suppressed so
+#      SFT/RL/eval share the same text-only compression payload.
 #   5. Recall result rendering as <recall_result>{...}</recall_result>
 #      JSON dict (source/time/text).
 #

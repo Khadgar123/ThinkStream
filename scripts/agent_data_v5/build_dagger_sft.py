@@ -331,20 +331,103 @@ def _token_overlap(a: str, b: str) -> float:
     return len(aa & set(_word_tokens(b))) / max(len(aa), 1)
 
 
-def _answer_visible_in_prompt(answer: str, messages: List[Dict[str, Any]]) -> bool:
+def _answer_visible_in_text(answer: str, text: str) -> bool:
     answer = str(answer or "").strip()
     if not answer:
         return False
-    text = _content_text(messages)
     if answer.lower() in text.lower() and len(answer) >= 3:
         return True
     return _token_overlap(answer, text) >= 0.65
 
 
-def _memory_text_from_prompt(messages: List[Dict[str, Any]]) -> str:
+def _tagged_text_from_prompt(messages: List[Dict[str, Any]], tag: str) -> str:
     text = _content_text(messages)
-    blocks = re.findall(r"<memory>(.*?)</memory>", text, flags=re.DOTALL)
+    blocks = re.findall(fr"<{tag}>(.*?)</{tag}>", text, flags=re.DOTALL)
     return "\n".join(blocks)
+
+
+def _evidence_text_from_prompt(messages: List[Dict[str, Any]]) -> str:
+    """Return text evidence only, excluding active_query/options/user_input.
+
+    For MC questions the correct option text is intentionally present in
+    <active_query>. That is not evidence that the student can answer without
+    recall, so DAgger's missed-recall filter must look only at memory and
+    returned recall evidence.
+    """
+    return "\n".join(
+        part for part in (
+            _tagged_text_from_prompt(messages, "memory"),
+            _tagged_text_from_prompt(messages, "recall_result"),
+            _tagged_text_from_prompt(messages, "recalled_frames"),
+        )
+        if part
+    )
+
+
+def _json_blocks_from_prompt(messages: List[Dict[str, Any]], tag: str) -> List[Dict[str, Any]]:
+    out: List[Dict[str, Any]] = []
+    for raw in re.findall(fr"<{tag}>(.*?)</{tag}>", _content_text(messages), flags=re.DOTALL):
+        try:
+            value = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(value, dict):
+            out.append(value)
+    return out
+
+
+def _intervals_overlap(a: Tuple[float, float], b: Tuple[float, float]) -> bool:
+    return a[0] < b[1] and b[0] < a[1]
+
+
+def _answer_visible_in_prompt_window(
+    sample: Dict[str, Any],
+    messages: List[Dict[str, Any]],
+) -> bool:
+    """Conservative check for whether answer frames are in visible evidence."""
+    answer_ranges = [
+        (chunk * AGENT_CHUNK_SEC, (chunk + 1) * AGENT_CHUNK_SEC)
+        for chunk in _answer_chunks(sample)
+    ]
+    if not answer_ranges:
+        return False
+
+    visible_ranges: List[Tuple[float, float]] = []
+    for block in _json_blocks_from_prompt(messages, "visual_window"):
+        try:
+            visible_ranges.append((float(block["start"]), float(block["end"])))
+        except (KeyError, TypeError, ValueError):
+            continue
+    for block in _json_blocks_from_prompt(messages, "recalled_frames"):
+        raw_range = block.get("time_range")
+        if not isinstance(raw_range, list) or len(raw_range) != 2:
+            continue
+        try:
+            visible_ranges.append((float(raw_range[0]), float(raw_range[1])))
+        except (TypeError, ValueError):
+            continue
+
+    return any(
+        _intervals_overlap(answer_range, visible_range)
+        for answer_range in answer_ranges
+        for visible_range in visible_ranges
+    )
+
+
+def _answer_visible_in_prompt(
+    answer: str,
+    messages: List[Dict[str, Any]],
+    sample: Optional[Dict[str, Any]] = None,
+) -> bool:
+    if _answer_visible_in_text(answer, _evidence_text_from_prompt(messages)):
+        return True
+    if sample is not None and _answer_visible_in_prompt_window(sample, messages):
+        return True
+    return False
+
+
+def _memory_text_from_prompt(messages: List[Dict[str, Any]]) -> str:
+    return _tagged_text_from_prompt(messages, "memory")
 
 
 def _has_ngram_repetition(tokens: List[str], n: int = 4, threshold: float = 0.22) -> bool:
@@ -439,7 +522,7 @@ def _classify_dagger_corrections(
     policy_answer = str(((result.get("final_payload") or result.get("payload") or {}).get("response")) or "").strip()
     if sample_type == "recall":
         if first_action != "recall":
-            if _answer_visible_in_prompt(gold_answer, onpolicy_prompt):
+            if _answer_visible_in_prompt(gold_answer, onpolicy_prompt, sample):
                 reasons.append("recall_answer_visible_in_policy_prompt")
             else:
                 reasons.append("missed_recall")
@@ -547,7 +630,7 @@ def _policy_recall_supports_gold(
     returned_chunks = set(_recall_returned_chunks(result))
     if answer_chunks and returned_chunks:
         return bool(answer_chunks & returned_chunks)
-    return _answer_visible_in_prompt(gold_answer, recall_messages)
+    return _answer_visible_in_prompt(gold_answer, recall_messages, sample)
 
 
 def _build_dagger_recall_response_messages(

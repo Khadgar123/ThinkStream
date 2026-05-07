@@ -75,12 +75,13 @@ class DataArguments:
         },
     )
     include_failed_verification: bool = field(
-        default=True,
+        default=False,
         metadata={
-            "help": "v12.32: include samples with verification.passed=False. "
-            "Default is True because pass3e tags failures instead of dropping "
-            "rows, and dropping rows here would break streaming trajectory "
-            "continuity. Set False only for diagnostic strict-clean SFT runs."
+            "help": "Include samples with verification.passed=False. "
+            "Default is False for the main cold-start SFT path so the model "
+            "learns from clean teacher-forced rows. Set True only for "
+            "robustness/continuity ablations that intentionally keep tagged "
+            "verification failures."
         },
     )
     class_loss_target_ratios: Optional[str] = field(
