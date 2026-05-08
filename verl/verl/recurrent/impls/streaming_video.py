@@ -448,10 +448,11 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
         mm_data_list: List[Optional[Dict]] = []
 
         chunk_idx = 0
+        actions_used = 0
         kwargs_base = self.sampling_params(gen_item.meta_info)
         kwargs_base["max_completion_tokens"] = self.config.max_chunk_response_length
 
-        while chunk_idx < n_chunks and self.step < self.config.max_actions_per_trajectory:
+        while chunk_idx < n_chunks and actions_used < self.config.max_actions_per_trajectory:
             with _timer("mt_mics", timing_raw):
                 compress_range = self._check_compress_trigger(recent_thinks)
                 inter_chunk = compress_range is not None
@@ -504,7 +505,7 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
                 conversation.append(msg(choice))
                 conversations.append(conversation)
                 mm_data_list.append(mm_payload)
-                self.step += 1
+                actions_used += 1
                 response_text = conversation[-1]["content"]
 
             # Parse turn1 to detect recall
@@ -518,7 +519,7 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
                 kind == "recall"
                 and not inter_chunk
                 and recall_round < self.config.max_recall_per_chunk
-                and self.step < self.config.max_actions_per_trajectory
+                and actions_used < self.config.max_actions_per_trajectory
             ):
                 with _timer("mt_mics", timing_raw):
                     args = (parsed.get("tool_call") or {}).get("arguments") or {}
@@ -544,7 +545,7 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
                     conversation.append(msg(choice))
                     conversations.append(conversation)
                     mm_data_list.append(tool_mm)
-                    self.step += 1
+                    actions_used += 1
                     recall_round += 1
                     response_text = conversation[-1]["content"]
                     parsed = parse_agent_output_v12(response_text)

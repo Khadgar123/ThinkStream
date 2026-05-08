@@ -65,13 +65,25 @@ class AsyncLLMGenerationManager:
             self.agent.start(gen_batch, timing_raw)
             gen_batch.batch["sample_index"] = torch.arange(len(gen_batch), dtype=torch.long)
         async def rollout_coro():
-            async def rollout(b):
+            async def rollout(sample_idx, b):
                 async_output = await self.agent.rollout(b)
                 with _timer("mt_output", async_output.timing_raw):
                     batch = self.tokenize_output(async_output)
                     async_output.batch = batch
+                    # Async agents roll out exactly one DataProtoItem per
+                    # coroutine. Some item-level TensorDict slices do not
+                    # reliably preserve the temporary sample_index key, so
+                    # bind all action rows from this coroutine to the
+                    # enumerate index here. Downstream recurrent GRPO assumes
+                    # one unique final per input trajectory.
+                    async_output.sample_index = torch.full(
+                        async_output.sample_index.shape,
+                        int(sample_idx),
+                        dtype=torch.long,
+                        device=async_output.sample_index.device,
+                    )
                 return async_output
-            return await asyncio.gather(*[rollout(b) for b in gen_batch])
+            return await asyncio.gather(*[rollout(i, b) for i, b in enumerate(gen_batch)])
         gen_output_list = run_coroutine_in_chat_scheduler_loop(self.async_server, rollout_coro())
         with _timer("mt_gather", timing_raw):
             gen_output = self.concat_output([o.batch for o in gen_output_list])

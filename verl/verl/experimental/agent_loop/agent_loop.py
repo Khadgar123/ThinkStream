@@ -1293,6 +1293,18 @@ class AgentLoopManager:
         )
         if self.stream_teacher_with_rollout:
             await self.teacher_model_manager.sleep()
+
+        # AgentLoopWorker only sees its local chunk, so recurrent/list-output
+        # sample_index values are local to that worker. Convert them back to
+        # row indices in the original repeated prompt batch before concat;
+        # otherwise final_mask rows from different workers collide and
+        # trajectory-level GRPO cannot extract one final per trajectory.
+        sample_offset = 0
+        for chunk, worker_output in zip(chunkes, outputs, strict=True):
+            if worker_output.batch is not None and "sample_index" in worker_output.batch:
+                worker_output.batch["sample_index"] = worker_output.batch["sample_index"] + sample_offset
+            sample_offset += len(chunk)
+
         output = DataProto.concat(outputs)
 
         # calculate performance metrics

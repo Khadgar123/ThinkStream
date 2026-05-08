@@ -62,6 +62,72 @@ def _open_jsonl(path: Path):
     return open(path, "rt", encoding="utf-8")
 
 
+def _safe_int(value: Any) -> int | None:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _extend_chunk_candidates_from_list(out: List[int], values: Any) -> None:
+    if not isinstance(values, list):
+        return
+    for value in values:
+        iv = _safe_int(value)
+        if iv is not None and iv >= 0:
+            out.append(iv)
+
+
+def _infer_n_chunks(traj: Dict[str, Any]) -> int:
+    """Infer trajectory length for RL rollout.
+
+    Older bank exports may omit ``stats.n_chunks_covered`` while still
+    carrying ``chunk_idx_max`` and full per-chunk gold/sample metadata. A zero
+    length makes verl fall back to the launcher MAX_TURNS cap, silently
+    truncating long videos, so recover from all available structured fields.
+    """
+    stats = traj.get("stats") or {}
+    direct = _safe_int(stats.get("n_chunks_covered"))
+    if direct and direct > 0:
+        return direct
+
+    candidates: List[int] = []
+    for key in ("chunk_idx_max", "max_chunk", "last_chunk"):
+        iv = _safe_int(stats.get(key))
+        if iv is not None and iv >= 0:
+            candidates.append(iv)
+
+    for key in (traj.get("gold_action_per_chunk") or {}).keys():
+        iv = _safe_int(key)
+        if iv is not None and iv >= 0:
+            candidates.append(iv)
+
+    for sample in traj.get("samples") or []:
+        if isinstance(sample, dict):
+            iv = _safe_int(sample.get("chunk_idx", sample.get("chunk")))
+            if iv is not None and iv >= 0:
+                candidates.append(iv)
+
+    for q in traj.get("questions") or []:
+        if not isinstance(q, dict):
+            continue
+        for key in (
+            "ask_chunks",
+            "answer_chunks",
+            "expected_answer_chunks",
+            "support_chunks",
+            "gold_compress_chunks",
+            "missing_answer_chunks",
+        ):
+            _extend_chunk_candidates_from_list(candidates, q.get(key))
+        for key in ("ask_chunk", "answer_chunk"):
+            iv = _safe_int(q.get(key))
+            if iv is not None and iv >= 0:
+                candidates.append(iv)
+
+    return (max(candidates) + 1) if candidates else 0
+
+
 def _iter_rows(
     jsonl_path: Path,
     max_questions_per_traj: int,
@@ -85,7 +151,7 @@ def _iter_rows(
             video_id = traj.get("video_id") or traj.get("trajectory_id") or ""
             video_path = traj.get("video_path", "")
             gold_action = traj.get("gold_action_per_chunk", {}) or {}
-            n_chunks = int((traj.get("stats") or {}).get("n_chunks_covered", 0))
+            n_chunks = _infer_n_chunks(traj)
             questions = (traj.get("questions") or [])[:max_questions_per_traj]
 
             if not questions:
@@ -240,7 +306,7 @@ def _iter_rows_multi_q(
             video_id = traj.get("video_id") or traj.get("trajectory_id") or ""
             video_path = traj.get("video_path", "")
             gold_action = traj.get("gold_action_per_chunk", {}) or {}
-            n_chunks = int((traj.get("stats") or {}).get("n_chunks_covered", 0))
+            n_chunks = _infer_n_chunks(traj)
             questions = (traj.get("questions") or [])[:max_questions_per_traj]
 
             if not questions:
