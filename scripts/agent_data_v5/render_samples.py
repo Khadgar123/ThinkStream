@@ -91,6 +91,8 @@ def _get_system_prompt(prompt_type: str, *, inter_chunk: bool = False) -> str:
     """
     if inter_chunk or str(prompt_type or "").lower() in {"compress", "system_prompt_compress"}:
         return system_prompt_for_frame_protocol(prompt_kind="compress")
+    if str(prompt_type or "").lower() in {"recall_response", "recall_answer", "post_recall"}:
+        return system_prompt_for_frame_protocol(prompt_kind="post_recall")
     return SYSTEM_PROMPT_V12
 
 

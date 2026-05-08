@@ -43,6 +43,7 @@ from scripts.agent_data_v5.pass5_messages import (
 )
 from thinkstream.data.agent_protocol import (
     normalize_frame_protocol,
+    normalize_render_layout,
     parse_agent_output_v12,
     tools_for_turn,
 )
@@ -153,9 +154,15 @@ def main():
         choices=["ts_image", "video_meta"],
         help="Used only when --val is a flat row file rendered on the fly.",
     )
+    p.add_argument(
+        "--render-layout",
+        default=None,
+        help="Used only when --val is a flat row file rendered on the fly.",
+    )
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
+    render_layout = normalize_render_layout(args.render_layout)
 
     model = load_model(args.ckpt, bf16=not args.no_bf16)
     processor = load_processor_for_checkpoint(args.ckpt)
@@ -185,7 +192,10 @@ def main():
                 msgs = _resolve_video_paths(s["messages"][:-1], base_path)
             else:
                 full = build_per_timestep_messages(
-                    s, base_path, frame_protocol=frame_protocol
+                    s,
+                    base_path,
+                    frame_protocol=frame_protocol,
+                    render_layout=render_layout,
                 )
                 msgs = full[:-1]
 

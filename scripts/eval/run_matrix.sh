@@ -44,7 +44,9 @@ if [[ "${DATA_ROOT}" == */final ]]; then
 fi
 FRAMES_ROOT="${FRAMES_ROOT:-${THINKSTREAM_FRAMES_ROOT:-${DATA_ROOT}/frames}}"
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
+THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
+export THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT}"
 
 # ── Models (override via env) ─────────────────────────────────────────────
 # For base eval — public Qwen3-VL checkpoints. Sized to study scaling.
@@ -119,7 +121,7 @@ run_base_one() {
 
 run_agent_one() {
     local ckpt="$1" retriever="$2" compress_mode="$3" bench="$4" scoring="$5" profile="$6"
-    local label="$(basename "$ckpt")_${bench}_${retriever}_${compress_mode}_${scoring}_${profile}_${FRAME_PROTOCOL}"
+    local label="$(basename "$ckpt")_${bench}_${retriever}_${compress_mode}_${scoring}_${profile}_${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}"
     log "AGENT ${label}"
     if [[ "$bench" == "test" ]]; then
         python scripts/eval/test_set_agent.py \
@@ -132,8 +134,9 @@ run_agent_one() {
             --scoring "$scoring" \
             --profile "$profile" \
             --frame-protocol "$FRAME_PROTOCOL" \
+            --render-layout "$THINKSTREAM_RENDER_LAYOUT" \
             --n "$N_TEST" \
-            --out "${ckpt}/eval/test_agent/${compress_mode}_${retriever}_${scoring}_${profile}_${FRAME_PROTOCOL}.json"
+            --out "${ckpt}/eval/test_agent/${compress_mode}_${retriever}_${scoring}_${profile}_${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}.json"
     else
         python scripts/eval/ovo/eval_full.py \
             --ckpt "$ckpt" \
@@ -146,7 +149,7 @@ run_agent_one() {
             --profile "$profile" \
             --frame-protocol "$FRAME_PROTOCOL" \
             --n_per_task "$N_PER_OVO_TASK" \
-            --out "${ckpt}/eval/ovo_agent/${compress_mode}_${retriever}_${scoring}_${profile}_${FRAME_PROTOCOL}.json"
+            --out "${ckpt}/eval/ovo_agent/${compress_mode}_${retriever}_${scoring}_${profile}_${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}.json"
     fi
 }
 

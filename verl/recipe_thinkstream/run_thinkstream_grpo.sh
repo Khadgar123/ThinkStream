@@ -31,13 +31,16 @@
 #   EPOCHS [1]
 #   MAX_PROMPT_LEN [16384]
 #   MAX_RESP_LEN [32768]    total stitched response buffer
-#   MAX_ACTION_TOKENS [4096]
-#                           per-action vLLM generation cap
+#   MAX_ACTION_TOKENS [256]
+#                           per-action streaming/recall vLLM generation cap
+#   MAX_COMPRESS_ACTION_TOKENS [512]
+#                           per-action compression vLLM generation cap
 #   MAX_TURNS [120]   (covers batch1 max=95 + headroom. Stitched ceiling
 #                       ~180; for 240+ chunks see
 #                       docs/v12.14_recurrent_design.md for the recurrent
 #                       path that lifts this to 600+ without OOM.)
 #   GPU_MEM_UTIL [0.55]
+#   MM_CACHE_GB [auto]       vLLM CPU mm processor cache GB
 #   THINKSTREAM_FRAME_PROTOCOL [ts_image]
 #   LIMIT_IMAGES [64]       vLLM limit_mm_per_prompt.image for timestamped frames
 #   LIMIT_VIDEOS [2]        vLLM limit_mm_per_prompt.video for video_meta blocks
@@ -45,6 +48,13 @@
 #   EXPERIMENT_NAME [grpo-v12.26-verl-$THINKSTREAM_FRAME_PROTOCOL]
 #   SAVE_DIR [./output/$EXPERIMENT_NAME]
 #   SAVE_FREQ [50] / TEST_FREQ [25]
+#   ROLLOUT_DATA_DIR [""]    optional full verl generation dump, one JSONL
+#                            file per step; can be large.
+#   THINKSTREAM_RL_ROLLOUT_AUDIT_PATH [$SAVE_DIR/audit/rl_rollout_samples.jsonl]
+#                            compact reward-time rollout audit sampler.
+#   THINKSTREAM_RL_ROLLOUT_AUDIT_PROB [0.01]
+#                            random sample rate; suspicious rows are always
+#                            logged until THINKSTREAM_RL_ROLLOUT_AUDIT_MAX.
 
 set -xeuo pipefail
 
@@ -60,6 +70,25 @@ VAL_PARQUET=${VAL_PARQUET:?"VAL_PARQUET= required"}
 THINKSTREAM_DATA_ROOT=${THINKSTREAM_DATA_ROOT:-${THINKSTREAM_HOME}/data/agent_v5}
 if [[ "${THINKSTREAM_DATA_ROOT}" == */final ]]; then
     THINKSTREAM_DATA_ROOT="$(dirname "${THINKSTREAM_DATA_ROOT}")"
+fi
+if [[ -z "${THINKSTREAM_ENV:-}" ]]; then
+    THINKSTREAM_PARENT="$(dirname "${THINKSTREAM_HOME}")"
+    if [[ -x "${THINKSTREAM_PARENT}/envs/thinkstream/bin/python" ]]; then
+        THINKSTREAM_ENV="${THINKSTREAM_PARENT}/envs/thinkstream"
+    elif [[ -x "${THINKSTREAM_HOME}/envs/thinkstream/bin/python" ]]; then
+        THINKSTREAM_ENV="${THINKSTREAM_HOME}/envs/thinkstream"
+    else
+        THINKSTREAM_ENV=""
+    fi
+fi
+if [[ -z "${PYTHON_BIN:-}" ]]; then
+    if [[ -n "${THINKSTREAM_ENV}" && -x "${THINKSTREAM_ENV}/bin/python" ]]; then
+        PYTHON_BIN="${THINKSTREAM_ENV}/bin/python"
+    elif command -v python3 >/dev/null 2>&1; then
+        PYTHON_BIN="$(command -v python3)"
+    else
+        PYTHON_BIN="$(command -v python)"
+    fi
 fi
 
 N_GPUS_PER_NODE=${N_GPUS_PER_NODE:-8}
@@ -94,7 +123,8 @@ MAX_PROMPT_LEN=${MAX_PROMPT_LEN:-16384}
 #     240-600s = 7%                  ← needs v12.14
 #     >=600s   = 3%                  ← needs v12.14
 MAX_RESP_LEN=${MAX_RESP_LEN:-32768}
-MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-4096}
+MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-256}
+MAX_COMPRESS_ACTION_TOKENS=${MAX_COMPRESS_ACTION_TOKENS:-512}
 # Default 120 chunks comfortably covers all of current batch1 (max=95) and
 # the lower tier of batch2's 120-240s videos. Bump to 180 for batch2
 # coverage; for 240+ chunks switch to v12.14 recurrent rollout.
@@ -104,16 +134,37 @@ LIMIT_IMAGES=${LIMIT_IMAGES:-64}
 LIMIT_VIDEOS=${LIMIT_VIDEOS:-2}
 # v12.13: vLLM mm_processor_cache_gb (CPU-side image preprocessor cache).
 # pass2's teacher run uses 512GB and gets 93.8% mm-cache hit on the same
-# streaming-video workload. RL is co-located with actor/ref FSDP shards
-# on the same nodes, so 64GB is a more conservative starting point.
-# Bump if you have free CPU RAM and see mm-cache evictions in vLLM logs.
-MM_CACHE_GB=${MM_CACHE_GB:-64}
+# streaming-video workload. Default auto-sizes from MemAvailable so 2TiB
+# H20 servers use 512GB while smaller/debug boxes stay conservative.
+auto_mm_cache_gb() {
+    local avail_kb avail_gb
+    avail_kb="$(awk '/MemAvailable:/ {print $2; exit}' /proc/meminfo 2>/dev/null || echo 0)"
+    avail_gb=$((avail_kb / 1024 / 1024))
+    if (( avail_gb >= 1536 )); then
+        echo 512
+    elif (( avail_gb >= 768 )); then
+        echo 256
+    elif (( avail_gb >= 384 )); then
+        echo 128
+    elif (( avail_gb >= 128 )); then
+        echo 64
+    else
+        echo 16
+    fi
+}
+MM_CACHE_GB="${MM_CACHE_GB:-${THINKSTREAM_MM_CACHE_GB:-${VLLM_MM_PROCESSOR_CACHE_GB:-}}}"
+if [[ -z "${MM_CACHE_GB}" ]]; then
+    MM_CACHE_GB="$(auto_mm_cache_gb)"
+fi
+export MM_CACHE_GB
+export THINKSTREAM_MM_CACHE_GB="${MM_CACHE_GB}"
 
 PROJECT_NAME=${PROJECT_NAME:-thinkstream-v12}
 EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v12.26-verl-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}
 SAVE_DIR=${SAVE_DIR:-./output/${EXPERIMENT_NAME}}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
+ROLLOUT_DATA_DIR=${ROLLOUT_DATA_DIR:-}
 PARAM_OFFLOAD=${PARAM_OFFLOAD:-true}
 OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
 ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-vllm}
@@ -123,6 +174,15 @@ MAX_STEPS=${MAX_STEPS:-}
 # reward function can import thinkstream.trainer.v12_rewards.
 export PYTHONPATH="${THINKSTREAM_HOME}:${PYTHONPATH:-}"
 export THINKSTREAM_TRAJ_INDEX_PATH="${THINKSTREAM_TRAJ_INDEX_PATH:-${THINKSTREAM_DATA_ROOT}/final/train_rl_trajectories.jsonl}"
+export THINKSTREAM_EXPERIMENT_NAME="${EXPERIMENT_NAME}"
+export THINKSTREAM_RL_ROLLOUT_AUDIT_PATH="${THINKSTREAM_RL_ROLLOUT_AUDIT_PATH:-${SAVE_DIR}/audit/rl_rollout_samples.jsonl}"
+export THINKSTREAM_RL_ROLLOUT_AUDIT_PROB="${THINKSTREAM_RL_ROLLOUT_AUDIT_PROB:-0.01}"
+export THINKSTREAM_RL_ROLLOUT_AUDIT_MAX="${THINKSTREAM_RL_ROLLOUT_AUDIT_MAX:-2000}"
+
+ROLLOUT_DATA_ARGS=()
+if [[ -n "${ROLLOUT_DATA_DIR}" ]]; then
+    ROLLOUT_DATA_ARGS=(trainer.rollout_data_dir="${ROLLOUT_DATA_DIR}")
+fi
 
 # v12.13: ThinkStream-specific multi_turn config (verl's MultiTurnConfig
 # rejects custom keys, so we pass them as env vars; streaming_agent_loop.py
@@ -133,6 +193,7 @@ export THINKSTREAM_FRAMES_PER_CHUNK="${THINKSTREAM_FRAMES_PER_CHUNK:-2}"
 export THINKSTREAM_VISUAL_WINDOW_CHUNKS="${THINKSTREAM_VISUAL_WINDOW_CHUNKS:-16}"
 export THINKSTREAM_RECALL_STUB="${THINKSTREAM_RECALL_STUB:-(no relevant past observation found)}"
 export THINKSTREAM_MAX_TOKENS_PER_ACTION="${THINKSTREAM_MAX_TOKENS_PER_ACTION:-${MAX_ACTION_TOKENS}}"
+export THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION="${THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION:-${MAX_COMPRESS_ACTION_TOKENS}}"
 
 # v12.13 (2026-05-02): visual-window mode for vLLM prefix cache.
 # ─────────────────────────────────────────────────────────────────
@@ -221,7 +282,7 @@ if [[ -n "${MAX_STEPS}" ]]; then
     TRAINING_STEPS_ARGS=(trainer.total_training_steps=${MAX_STEPS})
 fi
 
-PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
+PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     --config-path="$(pwd)/recipe_thinkstream/configs" \
     --config-name='thinkstream_grpo' \
     data.train_files="${TRAIN_PARQUET}" \
@@ -265,7 +326,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.free_cache_engine=True \
     actor_rollout_ref.rollout.enable_chunked_prefill=True \
     actor_rollout_ref.rollout.enable_prefix_caching=True \
-    +actor_rollout_ref.rollout.engine_kwargs.vllm.mm_processor_cache_gb=${MM_CACHE_GB:-64} \
+    +actor_rollout_ref.rollout.engine_kwargs.vllm.mm_processor_cache_gb=${MM_CACHE_GB} \
     actor_rollout_ref.rollout.response_length=${MAX_RESP_LEN} \
     actor_rollout_ref.rollout.prompt_length=${MAX_PROMPT_LEN} \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 \
@@ -286,6 +347,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     trainer.test_freq=${TEST_FREQ} \
     trainer.total_epochs=${EPOCHS} \
     "${TRAINING_STEPS_ARGS[@]}" \
+    "${ROLLOUT_DATA_ARGS[@]}" \
     trainer.project_name=${PROJECT_NAME} \
     trainer.experiment_name=${EXPERIMENT_NAME} \
     trainer.default_local_dir=${SAVE_DIR} 2>&1 | tee "${SAVE_DIR}/train.log"

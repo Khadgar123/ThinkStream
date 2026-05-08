@@ -59,6 +59,25 @@ REQUIRE_FRESH_MARKER="${REQUIRE_FRESH_MARKER:-1}"
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-video_meta}"
 BASE_MODEL="${BASE_MODEL:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}"
 PROCESSOR_MODEL="${PROCESSOR_MODEL:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}"
+PARENT_DIR="$(dirname "${PROJECT_DIR}")"
+if [[ -z "${THINKSTREAM_ENV:-}" ]]; then
+    if [[ -x "${PARENT_DIR}/envs/thinkstream/bin/python" ]]; then
+        THINKSTREAM_ENV="${PARENT_DIR}/envs/thinkstream"
+    elif [[ -x "${PROJECT_DIR}/envs/thinkstream/bin/python" ]]; then
+        THINKSTREAM_ENV="${PROJECT_DIR}/envs/thinkstream"
+    else
+        THINKSTREAM_ENV=""
+    fi
+fi
+if [[ -z "${PYTHON_BIN:-}" ]]; then
+    if [[ -n "${THINKSTREAM_ENV}" && -x "${THINKSTREAM_ENV}/bin/python" ]]; then
+        PYTHON_BIN="${THINKSTREAM_ENV}/bin/python"
+    elif command -v python3 >/dev/null 2>&1; then
+        PYTHON_BIN="$(command -v python3)"
+    else
+        PYTHON_BIN="$(command -v python)"
+    fi
+fi
 
 NPROC="${NPROC:-8}"
 BSZ="${BSZ:-4}"
@@ -70,7 +89,10 @@ EVAL_N="${EVAL_N:-300}"
 SAVE_LIMIT="${SAVE_LIMIT:-2}"
 MAX_SAMPLE_TOKENS="${MAX_SAMPLE_TOKENS:-16384}"
 INCLUDE_FAILED_VERIFICATION="${INCLUDE_FAILED_VERIFICATION:-False}"
-CLASS_LOSS_TARGET_RATIOS="${CLASS_LOSS_TARGET_RATIOS:-silent=0.35,response=0.25,recall=0.25,compress=0.15}"
+# Macro action balance: silent/response/recall/compress = 0.25 each.
+# Recall is split into tool-call and post-recall no-tools answer rows in pass5,
+# so the two recall subtypes share the 0.25 macro bucket.
+CLASS_LOSS_TARGET_RATIOS="${CLASS_LOSS_TARGET_RATIOS:-silent=0.25,response=0.25,recall=0.125,post_recall=0.125,compress=0.25}"
 CLASS_LOSS_ALPHA="${CLASS_LOSS_ALPHA:-1.0}"
 CLASS_LOSS_MAX_WEIGHT="${CLASS_LOSS_MAX_WEIGHT:-8.0}"
 GROUP_BY_MODALITY="${GROUP_BY_MODALITY:-1}"
@@ -164,7 +186,7 @@ wait_for_marker() {
 
 count_jsonl() {
     local path="$1"
-    python3 - "$path" <<'PY'
+    "${PYTHON_BIN}" - "$path" <<'PY'
 import sys
 from pathlib import Path
 p = Path(sys.argv[1])
@@ -204,7 +226,7 @@ validate_batch() {
 
 best_or_latest_ckpt() {
     local output_dir="$1"
-    python3 - "$output_dir" <<'PY'
+    "${PYTHON_BIN}" - "$output_dir" <<'PY'
 import json, re, sys
 from pathlib import Path
 out = Path(sys.argv[1])
@@ -294,6 +316,8 @@ run_rl_batch() {
         SAVE_FREQ="${RL_SAVE_FREQ}" \
         TEST_FREQ="${RL_TEST_FREQ}" \
         THINKSTREAM_OUTPUT_DIR="${output_dir}" \
+        THINKSTREAM_ENV="${THINKSTREAM_ENV}" \
+        PYTHON_BIN="${PYTHON_BIN}" \
         "${max_steps_env[@]}" \
         bash scripts/grpo_train_verl.sh
     log "RL done: batch=${batch}, output=${output_dir}"
@@ -304,6 +328,7 @@ log "batches: ${BATCHES}"
 log "frame protocol: ${FRAME_PROTOCOL}"
 log "base model: ${BASE_MODEL}"
 log "processor model: ${PROCESSOR_MODEL}"
+log "python: ${PYTHON_BIN}"
 log "run SFT=${RUN_SFT}, run RL=${RUN_RL}, RL batch=${RL_BATCH}"
 log "wait fresh data: ${WAIT_FOR_FRESH_DATA}, data ready marker: ${DATA_READY_MARKER:-<none>}"
 

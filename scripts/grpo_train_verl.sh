@@ -25,10 +25,14 @@
 #   GROUP_SIZE      — GRPO group size G (8) — enough variance for GRPO
 #   MAXLEN          — max prompt length (16384) — vLLM context cap
 #   MAX_NEW_TOKEN   — total stitched response buffer (32768)
-#   MAX_ACTION_TOKENS — per-action vLLM generation cap (4096)
+#   MAX_ACTION_TOKENS — per-action streaming/recall vLLM cap (256)
+#   MAX_COMPRESS_ACTION_TOKENS — per-action compression vLLM cap (512)
 #   MAX_CHUNKS      — max turns per video (120 by default; use recurrent for 240+)
 #   GPU_MEM_UTIL    — vLLM gpu_memory_utilization (0.55 — leave room for FSDP)
+#   MM_CACHE_GB     — vLLM CPU mm processor cache GB (auto: 512 on this box)
 #   FRAME_PROTOCOL  — ts_image | video_meta (default: ts_image). Must match SFT/eval.
+#   THINKSTREAM_RENDER_LAYOUT — standard | timeline_video | timeline_video_imagepad.
+#   IMAGE_MIN_PIXELS / IMAGE_MAX_PIXELS — optional runtime image resize bounds.
 #   LIMIT_IMAGES    — vLLM limit_mm_per_prompt.image for timestamped frames (64)
 #   LIMIT_VIDEOS    — vLLM limit_mm_per_prompt.video for video_meta blocks (2)
 #   TP_SIZE         — tensor_parallel_size for vLLM rollout (2 on 8-GPU node)
@@ -65,9 +69,30 @@ MAXLEN=${MAXLEN:-16384}
 # stitched response buffer across all chunks. It is NOT the per-action
 # generation cap; MAX_ACTION_TOKENS below controls each vLLM request.
 MAX_NEW_TOKEN=${MAX_NEW_TOKEN:-32768}
-MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-4096}
+MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-256}
+MAX_COMPRESS_ACTION_TOKENS=${MAX_COMPRESS_ACTION_TOKENS:-512}
 MAX_CHUNKS=${MAX_CHUNKS:-120}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
+auto_mm_cache_gb() {
+    local avail_kb avail_gb
+    avail_kb="$(awk '/MemAvailable:/ {print $2; exit}' /proc/meminfo 2>/dev/null || echo 0)"
+    avail_gb=$((avail_kb / 1024 / 1024))
+    if (( avail_gb >= 1536 )); then
+        echo 512
+    elif (( avail_gb >= 768 )); then
+        echo 256
+    elif (( avail_gb >= 384 )); then
+        echo 128
+    elif (( avail_gb >= 128 )); then
+        echo 64
+    else
+        echo 16
+    fi
+}
+MM_CACHE_GB="${MM_CACHE_GB:-${THINKSTREAM_MM_CACHE_GB:-${VLLM_MM_PROCESSOR_CACHE_GB:-}}}"
+if [[ -z "${MM_CACHE_GB}" ]]; then
+    MM_CACHE_GB="$(auto_mm_cache_gb)"
+fi
 LIMIT_IMAGES=${LIMIT_IMAGES:-64}
 LIMIT_VIDEOS=${LIMIT_VIDEOS:-2}
 TP_SIZE=${TP_SIZE:-2}
@@ -79,6 +104,9 @@ MAX_STEPS=${MAX_STEPS:-}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
+THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard}"
+IMAGE_MIN_PIXELS="${IMAGE_MIN_PIXELS:-${MIN_PIXELS:-}}"
+IMAGE_MAX_PIXELS="${IMAGE_MAX_PIXELS:-${MAX_PIXELS:-}}"
 RUN_NAME=${RUN_NAME:-grpo-v12.26-verl-${FRAME_PROTOCOL}}
 WANDB_PROJECT=${WANDB_PROJECT:-thinkstream-v12}
 PARAM_OFFLOAD=${PARAM_OFFLOAD:-true}
@@ -90,6 +118,25 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 VERL_DIR="${PROJECT_DIR}/verl"
 RECIPE_DIR="${VERL_DIR}/recipe_thinkstream/configs"
 RECIPE_NAME="thinkstream_grpo"
+PARENT_DIR="$(dirname "${PROJECT_DIR}")"
+if [[ -z "${THINKSTREAM_ENV:-}" ]]; then
+    if [[ -x "${PARENT_DIR}/envs/thinkstream/bin/python" ]]; then
+        THINKSTREAM_ENV="${PARENT_DIR}/envs/thinkstream"
+    elif [[ -x "${PROJECT_DIR}/envs/thinkstream/bin/python" ]]; then
+        THINKSTREAM_ENV="${PROJECT_DIR}/envs/thinkstream"
+    else
+        THINKSTREAM_ENV=""
+    fi
+fi
+if [[ -z "${PYTHON_BIN:-}" ]]; then
+    if [[ -n "${THINKSTREAM_ENV}" && -x "${THINKSTREAM_ENV}/bin/python" ]]; then
+        PYTHON_BIN="${THINKSTREAM_ENV}/bin/python"
+    elif command -v python3 >/dev/null 2>&1; then
+        PYTHON_BIN="$(command -v python3)"
+    else
+        PYTHON_BIN="$(command -v python)"
+    fi
+fi
 AGENT_DATA_ROOT="${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-${PROJECT_DIR}/data/agent_v5}}"
 if [[ "${AGENT_DATA_ROOT}" == */final ]]; then
     AGENT_DATA_ROOT="$(dirname "${AGENT_DATA_ROOT}")"
@@ -99,7 +146,11 @@ OUTPUT_DIR="${THINKSTREAM_OUTPUT_DIR:-${PROJECT_DIR}/output/${RUN_NAME}}"
 TRAIN_JSONL="${TRAIN_JSONL:-${AGENT_DATA_ROOT}/final/train_rl_trajectories.jsonl}"
 VAL_JSONL="${VAL_JSONL:-${AGENT_DATA_ROOT}/final/val_trajectories.jsonl}"
 MULTI_Q="${MULTI_Q:-1}"
-PARQUET_DIR="${PARQUET_DIR:-${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}}"
+if [[ "${THINKSTREAM_RENDER_LAYOUT}" == "standard" ]]; then
+    PARQUET_DIR="${PARQUET_DIR:-${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}}"
+else
+    PARQUET_DIR="${PARQUET_DIR:-${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}}"
+fi
 
 # verl's RLHFDataset reads parquet; auto-build from JSONL if user didn't
 # supply a parquet directly.
@@ -121,15 +172,17 @@ fi
 
 if [[ ! -f "${TRAIN_PARQUET}" ]]; then
     echo "Building train parquet from ${TRAIN_JSONL}…  (multi_q=${MULTI_Q})"
-    python3 "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
+    "${PYTHON_BIN}" "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
         --jsonl "${TRAIN_JSONL}" --out "${TRAIN_PARQUET}" \
-        --frame-protocol "${FRAME_PROTOCOL}" ${MULTI_Q_FLAG}
+        --frame-protocol "${FRAME_PROTOCOL}" \
+        --render-layout "${THINKSTREAM_RENDER_LAYOUT}" ${MULTI_Q_FLAG}
 fi
 if [[ ! -f "${VAL_PARQUET}" ]]; then
     echo "Building val parquet from ${VAL_JSONL}…  (multi_q=${MULTI_Q})"
-    python3 "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
+    "${PYTHON_BIN}" "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
         --jsonl "${VAL_JSONL}" --out "${VAL_PARQUET}" \
-        --frame-protocol "${FRAME_PROTOCOL}" ${MULTI_Q_FLAG}
+        --frame-protocol "${FRAME_PROTOCOL}" \
+        --render-layout "${THINKSTREAM_RENDER_LAYOUT}" ${MULTI_Q_FLAG}
 fi
 
 mkdir -p "${OUTPUT_DIR}"
@@ -139,8 +192,11 @@ echo "Checkpoint:        ${LLM}"
 echo "Vendored verl:     ${VERL_DIR}"
 echo "Recipe dir:        ${RECIPE_DIR}"
 echo "Recipe name:       ${RECIPE_NAME}"
+echo "Python:            ${PYTHON_BIN}"
 echo "Data root:         ${AGENT_DATA_ROOT}"
 echo "Frame protocol:    ${FRAME_PROTOCOL}"
+echo "Render layout:     ${THINKSTREAM_RENDER_LAYOUT}"
+echo "Image pixels:      ${IMAGE_MIN_PIXELS:-default} .. ${IMAGE_MAX_PIXELS:-default}"
 echo "Train parquet:     ${TRAIN_PARQUET}"
 echo "Val parquet:       ${VAL_PARQUET}"
 echo "Multi-Q rows:      ${MULTI_Q}"
@@ -153,7 +209,9 @@ echo "Max chunks:        ${MAX_CHUNKS}"
 echo "Max prompt len:    ${MAXLEN}"
 echo "Max new tokens:    ${MAX_NEW_TOKEN}"
 echo "Max action tokens: ${MAX_ACTION_TOKENS}"
+echo "Max compress toks: ${MAX_COMPRESS_ACTION_TOKENS}"
 echo "GPU mem util:      ${GPU_MEM_UTIL}"
+echo "MM cache GB:       ${MM_CACHE_GB}"
 echo "Image limit:       ${LIMIT_IMAGES}"
 echo "Video limit:       ${LIMIT_VIDEOS}"
 echo "LR:                ${LR}"
@@ -173,10 +231,14 @@ echo "================================="
 #   ${PROJECT_DIR}  — ThinkStream package, so reward fn can import
 #                     thinkstream.trainer.v12_rewards
 export PYTHONPATH="${VERL_DIR}:${PROJECT_DIR}:${PYTHONPATH:-}"
+export PYTHON_BIN
+export THINKSTREAM_ENV
 export VLLM_ALLREDUCE_USE_SYMM_MEM=0
 export TOKENIZERS_PARALLELISM=true
 export NCCL_DEBUG=WARN
 export VLLM_LOGGING_LEVEL=WARN
+export MM_CACHE_GB
+export THINKSTREAM_MM_CACHE_GB="${MM_CACHE_GB}"
 # Lets the recipe's compute_score read trajectory metadata (gold_action_per_chunk,
 # ask_chunks) when verl's parquet column flattening drops nested dicts.
 export THINKSTREAM_TRAJ_INDEX_PATH="${TRAIN_JSONL}"
@@ -186,9 +248,17 @@ export THINKSTREAM_TRAJ_INDEX_PATH="${TRAIN_JSONL}"
 FRAMES_ROOT="${FRAMES_ROOT:-${AGENT_DATA_ROOT}/frames}"
 export THINKSTREAM_FRAMES_ROOT="${FRAMES_ROOT}"
 export THINKSTREAM_MAX_TOKENS_PER_ACTION="${MAX_ACTION_TOKENS}"
+export THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION="${MAX_COMPRESS_ACTION_TOKENS}"
 
 export THINKSTREAM_HOME="${PROJECT_DIR}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
+export THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT}"
+if [[ -n "${IMAGE_MIN_PIXELS}" ]]; then
+    export IMAGE_MIN_PIXELS
+fi
+if [[ -n "${IMAGE_MAX_PIXELS}" ]]; then
+    export IMAGE_MAX_PIXELS
+fi
 export HF_MODEL_PATH="${LLM}"
 export TRAIN_PARQUET="${TRAIN_PARQUET}"
 export VAL_PARQUET="${VAL_PARQUET}"
@@ -205,6 +275,7 @@ export LIMIT_VIDEOS="${LIMIT_VIDEOS}"
 export MAX_PROMPT_LEN="${MAXLEN}"
 export MAX_RESP_LEN="${MAX_NEW_TOKEN}"
 export MAX_ACTION_TOKENS="${MAX_ACTION_TOKENS}"
+export MAX_COMPRESS_ACTION_TOKENS="${MAX_COMPRESS_ACTION_TOKENS}"
 export MAX_TURNS="${MAX_CHUNKS}"
 export PROJECT_NAME="${WANDB_PROJECT}"
 export EXPERIMENT_NAME="${RUN_NAME}"

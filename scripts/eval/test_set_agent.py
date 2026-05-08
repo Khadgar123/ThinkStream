@@ -60,7 +60,7 @@ from thinkstream.model.agent_loop import (
     AGENT_CHUNK_SEC,
 )
 from thinkstream.model.retrieval import make_retriever
-from thinkstream.data.agent_protocol import normalize_frame_protocol
+from thinkstream.data.agent_protocol import normalize_frame_protocol, normalize_render_layout
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
     update_processor_pixels,
@@ -288,6 +288,7 @@ def walk_and_score(sample, loop, video_path, ask_chunk,
     recall_events: List[Dict] = []
     n_premature_responses = 0
     n_late_responses = 0
+    premature_lead_chunks: List[int] = []
     support_set = set(support_chunks or [])
     # v9.4.2 extra telemetry
     prompt_text_tokens_per_step: List[int] = []
@@ -300,7 +301,8 @@ def walk_and_score(sample, loop, video_path, ask_chunk,
     compress_chunk_count: Dict[int, int] = {}   # chunk_idx → times rolled into a summary
     n_partial_compress = 0  # events where < COMPRESS_RANGE_MIN thinks were compressed
     n_step_errors = 0  # bounded step errors (e.g. video EOF in lenient mode)
-    for chunk_idx in range(max_chunk + 1):
+    chunk_idx = 0
+    while chunk_idx <= max_chunk:
         q = question if chunk_idx == ask_chunk else None
         try:
             result = loop.step(chunk_idx=chunk_idx, video_path=video_path,
@@ -376,6 +378,7 @@ def walk_and_score(sample, loop, video_path, ask_chunk,
             if final_action == "response":
                 if chunk_idx < ask_chunk:
                     n_premature_responses += 1
+                    premature_lead_chunks.append(ask_chunk - chunk_idx)
                 elif not response_text:
                     response_chunk = chunk_idx
                     response_text = final_payload.get("response", "")
@@ -386,6 +389,7 @@ def walk_and_score(sample, loop, video_path, ask_chunk,
             if chunk_idx < ask_chunk:
                 # Premature — ignore for accuracy, count for telemetry.
                 n_premature_responses += 1
+                premature_lead_chunks.append(ask_chunk - chunk_idx)
             elif not response_text:
                 response_chunk = chunk_idx
                 response_text = payload.get("response", "")
@@ -399,15 +403,36 @@ def walk_and_score(sample, loop, video_path, ask_chunk,
         # Early exit only after the question was asked AND we accepted a response
         if chunk_idx >= ask_chunk and response_text:
             break
+        if action == "compress" and ct and result.get("compress_succeeded"):
+            # Compression is an inter-chunk memory-management turn. It should
+            # not consume the current video chunk or drop a question that fired
+            # on this same chunk; retry the same chunk after memory is folded.
+            continue
+        chunk_idx += 1
 
+    if response_chunk is None:
+        timing_bucket = "no_response"
+    elif response_chunk == ask_chunk:
+        timing_bucket = "on_time"
+    elif response_chunk > ask_chunk:
+        timing_bucket = "late"
+    else:
+        timing_bucket = "early"
     n_steps = max(1, max_chunk + 1)  # at least one step in the loop
     return {
         "question": question,
         "ask_chunk": ask_chunk,
         "response_chunk": response_chunk,
         "response": response_text,
+        "response_timing_bucket": timing_bucket,
         "response_offset_chunks": (response_chunk - ask_chunk
                                    if response_chunk is not None else None),
+        "late_delay_chunks": (
+            response_chunk - ask_chunk
+            if response_chunk is not None and response_chunk > ask_chunk
+            else None
+        ),
+        "early_lead_chunks": premature_lead_chunks,
         "actions": actions,
         # Compress / recall telemetry
         "n_compress_events": len(compress_thinks_at_trigger),
@@ -474,6 +499,13 @@ def main():
         choices=["ts_image", "video_meta"],
         help="Visual carrier for pre-extracted frames in the streaming agent.",
     )
+    p.add_argument(
+        "--render-layout",
+        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard"),
+        help="Prompt layout: standard, timeline_video, or timeline_video_imagepad.",
+    )
+    p.add_argument("--min-pixels", type=int, default=int(os.environ.get("IMAGE_MIN_PIXELS", os.environ.get("MIN_PIXELS", "130000"))))
+    p.add_argument("--max-pixels", type=int, default=int(os.environ.get("IMAGE_MAX_PIXELS", os.environ.get("MAX_PIXELS", "220000"))))
     p.add_argument("--query-policy", default=os.environ.get(
         "THINKSTREAM_QUERY_HISTORY_POLICY", "recent_k"),
                    choices=["recent_k", "single_active", "replace_on_new", "multi_pending"],
@@ -484,6 +516,8 @@ def main():
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
+    render_layout = normalize_render_layout(args.render_layout)
+    os.environ["THINKSTREAM_RENDER_LAYOUT"] = render_layout
 
     # Apply eval profile FIRST — must run before agent_loop / agent_protocol
     # are used so the module-level caps reflect the requested profile.
@@ -507,7 +541,10 @@ def main():
         attn_implementation="flash_attention_2",
     ).cuda().eval()
     processor = load_processor_for_checkpoint(args.ckpt)
-    processor = update_processor_pixels(processor, DataArguments())
+    data_args = DataArguments()
+    data_args.min_pixels = int(args.min_pixels)
+    data_args.max_pixels = int(args.max_pixels)
+    processor = update_processor_pixels(processor, data_args)
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
         processor.video_processor.do_sample_frames = False
 
@@ -536,7 +573,7 @@ def main():
     loop = StreamingAgentLoop(
         generate_fn=make_generate_fn(model, processor, model_type=model_type),
         tokenizer=tokenizer, processor=processor, model_type=model_type,
-        min_pixels=130_000, max_pixels=220_000,    # v12.12: RUNTIME profile
+        min_pixels=int(args.min_pixels), max_pixels=int(args.max_pixels),
         max_new_tokens=args.max_new_tokens,
         retriever=retriever, compress_mode=args.compress_mode,
         frames_root=args.frames_root, video_root=args.video_root,
@@ -569,11 +606,24 @@ def main():
             "n": 0, "correct": 0,
             "n_recall": 0, "n_compress_events": 0,
             "n_premature": 0, "n_late": 0,
+            "n_response_on_time": 0,
+            "n_response_late_exact": 0,
+            "n_response_early": 0,
             "n_no_response": 0,
+            "response_event_gold_total": 0,
+            "response_event_matched_correct_on_time": 0,
+            "response_event_matched_correct_late": 0,
+            "response_event_matched_wrong_on_time": 0,
+            "response_event_matched_wrong_late": 0,
+            "response_event_missed": 0,
+            "response_event_false_positive_early": 0,
+            "response_event_false_positive_over": 0,
             # Lists for distribution stats (avg/p50/p95)
             "compress_thinks_at_trigger": [],
             "compress_chunks_per_event": [],
             "response_offset_chunks": [],
+            "late_delay_chunks": [],
+            "early_lead_chunks": [],
             "n_recall_with_support_known": 0,
             "n_recall_hit_support": 0,
             # v9.4.2 extras
@@ -627,11 +677,33 @@ def main():
                 bucket["n_compress_events"] += walk["n_compress_events"]
                 bucket["n_premature"] += walk["n_premature_responses"]
                 bucket["n_late"] += walk["n_late_responses"]
+                bucket["response_event_gold_total"] += 1
+                bucket["response_event_false_positive_early"] += walk["n_premature_responses"]
+                if walk["response_timing_bucket"] == "on_time":
+                    bucket["n_response_on_time"] += 1
+                    bucket[
+                        "response_event_matched_correct_on_time"
+                        if correct else
+                        "response_event_matched_wrong_on_time"
+                    ] += 1
+                elif walk["response_timing_bucket"] == "late":
+                    bucket["n_response_late_exact"] += 1
+                    bucket[
+                        "response_event_matched_correct_late"
+                        if correct else
+                        "response_event_matched_wrong_late"
+                    ] += 1
+                elif walk["response_timing_bucket"] == "early":
+                    bucket["n_response_early"] += 1
                 if walk["response_chunk"] is None:
                     bucket["n_no_response"] += 1
+                    bucket["response_event_missed"] += 1
                 else:
                     bucket["response_offset_chunks"].append(
                         walk["response_offset_chunks"])
+                if walk["late_delay_chunks"] is not None:
+                    bucket["late_delay_chunks"].append(walk["late_delay_chunks"])
+                bucket["early_lead_chunks"].extend(walk["early_lead_chunks"])
                 bucket["compress_thinks_at_trigger"].extend(
                     walk["compress_thinks_at_trigger"])
                 bucket["compress_chunks_per_event"].extend(
@@ -670,11 +742,22 @@ def main():
                 "response_chunk": walk["response_chunk"],
                 "response": walk["response"][:300],
                 "correct": correct,
+                "response_timing_bucket": walk["response_timing_bucket"],
                 "response_offset_chunks": walk["response_offset_chunks"],
+                "late_delay_chunks": walk["late_delay_chunks"],
+                "early_lead_chunks": walk["early_lead_chunks"],
                 "n_recall": walk["n_recall"],
                 "n_compress_events": walk["n_compress_events"],
                 "n_premature": walk["n_premature_responses"],
                 "n_late": walk["n_late_responses"],
+                "response_event": {
+                    "gold_total": 1,
+                    "matched_correct": int(bool(correct) and walk["response_chunk"] is not None),
+                    "matched_wrong": int((not correct) and walk["response_chunk"] is not None),
+                    "missed": int(walk["response_chunk"] is None),
+                    "false_positive_early": walk["n_premature_responses"],
+                    "false_positive_over": 0,
+                },
                 "compress_thinks_at_trigger": walk["compress_thinks_at_trigger"],
                 "recall_events": walk["recall_events"],
                 "actions": walk["actions"],
@@ -712,7 +795,7 @@ def main():
     header = (f"{'kind':<10}  {'n':>5}  {'acc':>6}  "
               f"{'cmp/s':>5}  {'cmp_thk':>7}  {'cmp_ok':>6}  "
               f"{'rec/s':>5}  {'rec_hit':>7}  "
-              f"{'off':>5}  {'late':>4}  {'pre':>3}  {'noresp':>6}")
+              f"{'off':>5}  {'on':>4}  {'late':>4}  {'pre':>3}  {'noresp':>6}")
     print(header); print("-" * len(header))
     for k in sorted(by.keys()):
         v = by[k]
@@ -729,8 +812,39 @@ def main():
         print(f"{k:<10}  {v['n']:>5}  {v['correct']/v['n']:>6.3f}  "
               f"{v['n_compress_events']/v['n']:>5.1f}  {cmp_thk:>7.1f}  {cmp_ok_str}  "
               f"{v['n_recall']/v['n']:>5.1f}  {rec_hit_str}  "
-              f"{off_avg:>5.1f}  {v['n_late']:>4d}  {v['n_premature']:>3d}  "
+              f"{off_avg:>5.1f}  {v['n_response_on_time']:>4d}  "
+              f"{v['n_response_late_exact']:>4d}  {v['n_premature']:>3d}  "
               f"{v['n_no_response']:>6d}")
+
+    print()
+    print("=" * 80)
+    print("RESPONSE EVENT OUTCOME")
+    print("=" * 80)
+    header_ev = (
+        f"{'kind':<10}  {'gold':>5}  {'out':>6}  {'wrong':>6}  "
+        f"{'miss':>5}  {'fp_e':>5}  {'fp_o':>5}  {'late_tp':>7}"
+    )
+    print(header_ev); print("-" * len(header_ev))
+    for k in sorted(by.keys()):
+        v = by[k]
+        gold_n = int(v.get("response_event_gold_total", 0) or 0)
+        if not gold_n:
+            continue
+        tp_on = int(v.get("response_event_matched_correct_on_time", 0) or 0)
+        tp_late = int(v.get("response_event_matched_correct_late", 0) or 0)
+        wrong = (
+            int(v.get("response_event_matched_wrong_on_time", 0) or 0)
+            + int(v.get("response_event_matched_wrong_late", 0) or 0)
+        )
+        outcome = (tp_on + tp_late) / max(gold_n, 1)
+        wrong_rate = wrong / max(gold_n, 1)
+        print(
+            f"{k:<10}  {gold_n:>5d}  {outcome:>6.3f}  {wrong_rate:>6.3f}  "
+            f"{int(v.get('response_event_missed', 0) or 0):>5d}  "
+            f"{int(v.get('response_event_false_positive_early', 0) or 0):>5d}  "
+            f"{int(v.get('response_event_false_positive_over', 0) or 0):>5d}  "
+            f"{tp_late:>7d}"
+        )
 
     # Block 2: prompt-token distribution, think-len, format violations
     print()
@@ -785,7 +899,8 @@ def main():
     print("  rec/s    = avg recall events per sample")
     print("  rec_hit  = recall hit rate (returned at least one gold support_chunk)")
     print("  off      = avg response_chunk - ask_chunk (0 = on-time)")
-    print("  late     = # responses at chunk > ask_chunk + 2")
+    print("  on       = # responses exactly at ask_chunk / expected answer chunk")
+    print("  late     = # accepted responses after ask_chunk")
     print("  pre      = # premature responses (chunk < ask_chunk; not in acc)")
     print("  noresp   = # samples with no response by max_chunk")
     print("  pt_*     = prompt TEXT-only token count per step (visual ~4700 not included);")

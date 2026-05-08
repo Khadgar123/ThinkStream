@@ -20,6 +20,7 @@ from pathlib import Path
 
 import torch
 import transformers
+from transformers.trainer_utils import PREFIX_CHECKPOINT_DIR
 from transformers import (
     AutoProcessor,
     AutoTokenizer,
@@ -54,6 +55,21 @@ def safe_save_model_for_hf_trainer(trainer: transformers.Trainer, output_dir: st
         cpu_state_dict = {key: value.cpu() for key, value in state_dict.items()}
         del state_dict
         trainer._save(output_dir, state_dict=cpu_state_dict)
+
+
+class ProcessorSaveCallback(transformers.TrainerCallback):
+    """Save Qwen VL processor assets into every Trainer checkpoint."""
+
+    def __init__(self, processor):
+        self.processor = processor
+
+    def on_save(self, args, state, control, **kwargs):
+        if not getattr(args, "should_save", True):
+            return control
+        checkpoint_dir = Path(args.output_dir) / f"{PREFIX_CHECKPOINT_DIR}-{state.global_step}"
+        if checkpoint_dir.is_dir():
+            self.processor.save_pretrained(checkpoint_dir)
+        return control
 
 
 def set_model(model_args, model):
@@ -241,6 +257,7 @@ def train(attn_implementation="flash_attention_2"):
         args=training_args,
         **data_module,
     )
+    trainer.add_callback(ProcessorSaveCallback(processor))
 
     if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):
         logging.info("Checkpoint found, resuming training")
@@ -253,7 +270,11 @@ def train(attn_implementation="flash_attention_2"):
     # ── Save ──
     model.config.use_cache = True
     safe_save_model_for_hf_trainer(trainer=trainer, output_dir=training_args.output_dir)
-    processor.save_pretrained(training_args.output_dir)
+    if trainer.is_world_process_zero():
+        processor.save_pretrained(training_args.output_dir)
+        for checkpoint_dir in Path(training_args.output_dir).glob(f"{PREFIX_CHECKPOINT_DIR}-*"):
+            if checkpoint_dir.is_dir():
+                processor.save_pretrained(checkpoint_dir)
     rank0_print(f"Model saved to {training_args.output_dir}")
 
 

@@ -47,11 +47,18 @@ from scripts.agent_data_v5.pass5_messages import (
 from scripts.eval.ovo.eval_full import detect_model_class, reset_visual_index
 from scripts.eval.processor_loader import load_processor_for_checkpoint
 from thinkstream.data.agent_protocol import (
+    diagnose_compress_output_v12,
     has_compress_trigger,
     normalize_frame_protocol,
+    normalize_render_layout,
     parse_agent_output_v12,
+    system_prompt_for_frame_protocol,
 )
-from thinkstream.model.agent_loop import StreamingAgentLoop, make_generate_fn
+from thinkstream.model.agent_loop import (
+    StreamingAgentLoop,
+    make_generate_fn,
+    recall_time_range_margin_chunks,
+)
 from thinkstream.model.retrieval import make_retriever
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import update_processor_pixels
@@ -237,11 +244,19 @@ DEFAULT_DAGGER_CORRECTION_REASONS = {
     "repeated_or_stale_think",
     "missed_compress",
     "bad_compress_json",
+    "bad_compress_range_schema",
     "bad_compress_range",
+    "empty_compress_summary",
     "missed_recall",
+    "bad_recall_query",
+    "recall_retrieval_empty",
+    "recall_retrieval_miss",
+    "recall_time_range_miss",
+    "over_recall",
     "missed_response",
     "wrong_response",
     "early_answer",
+    "late_response",
 }
 
 
@@ -347,6 +362,73 @@ def _apply_oracle_compress_recovery(
     return False
 
 
+def _compress_diag_from_result(result: Dict[str, Any]) -> Dict[str, Any]:
+    diag = result.get("compress_prefix_diagnostic")
+    if isinstance(diag, dict) and diag:
+        return diag
+    raw = (
+        result.get("raw_output")
+        or result.get("raw")
+        or result.get("output")
+        or result.get("raw_text")
+        or ""
+    )
+    diag = diagnose_compress_output_v12(str(raw))
+    result["compress_prefix_diagnostic"] = diag
+    return diag
+
+
+def _record_compress_diag_stats(
+    stats: Dict[str, Any],
+    result: Dict[str, Any],
+    *,
+    prefix: str,
+) -> None:
+    diag = _compress_diag_from_result(result)
+    bucket = stats.setdefault(prefix, {
+        "total": 0,
+        "prefix_level_sum": 0,
+        "tool_call_open": 0,
+        "front_prefix_ok": 0,
+        "text_started": 0,
+        "text_closed": 0,
+        "json_complete": 0,
+        "tool_call_closed": 0,
+        "likely_truncated": 0,
+        "missing_tool_close_after_complete_json": 0,
+        "by_label": {},
+    })
+    bucket["total"] += 1
+    bucket["prefix_level_sum"] += int(diag.get("prefix_level", 0) or 0)
+    for key in [
+        "tool_call_open",
+        "front_prefix_ok",
+        "text_started",
+        "text_closed",
+        "json_complete",
+        "tool_call_closed",
+        "likely_truncated",
+        "missing_tool_close_after_complete_json",
+    ]:
+        if diag.get(key):
+            bucket[key] += 1
+    label = str(diag.get("label") or "unknown")
+    bucket["by_label"][label] = bucket["by_label"].get(label, 0) + 1
+    total = max(int(bucket["total"]), 1)
+    bucket["prefix_level_mean"] = bucket["prefix_level_sum"] / total
+    for key in [
+        "tool_call_open",
+        "front_prefix_ok",
+        "text_started",
+        "text_closed",
+        "json_complete",
+        "tool_call_closed",
+        "likely_truncated",
+        "missing_tool_close_after_complete_json",
+    ]:
+        bucket[f"{key}_rate"] = bucket[key] / total
+
+
 def _normalise_range(value: Any) -> Optional[List[int]]:
     if not isinstance(value, list) or len(value) != 2:
         return None
@@ -373,6 +455,17 @@ def _token_overlap(a: str, b: str) -> float:
     return len(aa & set(_word_tokens(b))) / max(len(aa), 1)
 
 
+def _answer_matches(gold_answer: str, policy_answer: str) -> bool:
+    gold_answer = str(gold_answer or "").strip()
+    policy_answer = str(policy_answer or "").strip()
+    if not gold_answer or not policy_answer:
+        return False
+    return (
+        policy_answer.lower() == gold_answer.lower()
+        or _token_overlap(gold_answer, policy_answer) >= 0.65
+    )
+
+
 def _answer_visible_in_text(answer: str, text: str) -> bool:
     answer = str(answer or "").strip()
     if not answer:
@@ -386,6 +479,33 @@ def _tagged_text_from_prompt(messages: List[Dict[str, Any]], tag: str) -> str:
     text = _content_text(messages)
     blocks = re.findall(fr"<{tag}>(.*?)</{tag}>", text, flags=re.DOTALL)
     return "\n".join(blocks)
+
+
+def _query_diagnostics_from_prompt(messages: List[Dict[str, Any]]) -> Dict[str, Any]:
+    text = _content_text(messages)
+    active_blocks = re.findall(
+        r"<active_query>(.*?)</active_query>",
+        text,
+        flags=re.DOTALL,
+    )
+    response_blocks = re.findall(
+        r"<response_history>(.*?)</response_history>",
+        text,
+        flags=re.DOTALL,
+    )
+    answer_count = 0
+    for block in response_blocks:
+        answer_count += len(re.findall(r"(?m)^\s*(?:\[[^\]]+\]\s*)?A:\s*\S", block))
+    out: Dict[str, Any] = {
+        "active_query_in_prompt": bool(active_blocks),
+        "active_query_block_count": len(active_blocks),
+        "response_history_answer_count": answer_count,
+    }
+    if active_blocks:
+        m = re.search(r"(?m)^\s*(?:\[[^\]]+\]\s*)?Q:\s*(.+?)\s*$", active_blocks[-1])
+        if m:
+            out["active_query_text"] = m.group(1)[:240]
+    return out
 
 
 def _evidence_text_from_prompt(messages: List[Dict[str, Any]]) -> str:
@@ -481,23 +601,46 @@ def _has_ngram_repetition(tokens: List[str], n: int = 4, threshold: float = 0.22
     return 1.0 - (len(set(grams)) / len(grams)) >= threshold
 
 
-def _answer_chunks(sample: Dict[str, Any]) -> List[int]:
-    meta = sample.get("metadata") or {}
-    raw = (
-        sample.get("answer_chunks")
-        or sample.get("expected_answer_chunks")
-        or meta.get("answer_chunks")
-        or meta.get("expected_answer_chunks")
-        or []
-    )
+def _int_chunk_list(raw: Any) -> List[int]:
+    if raw is None:
+        return []
+    if isinstance(raw, (str, int, float)):
+        raw = [raw]
     out: List[int] = []
-    for x in raw:
+    try:
+        iterator = list(raw)
+    except TypeError:
+        return []
+    for x in iterator:
         try:
             out.append(int(x))
         except (TypeError, ValueError):
             continue
+    return sorted(set(out))
+
+
+def _sample_chunk_field(sample: Dict[str, Any], *keys: str) -> List[int]:
+    meta = sample.get("metadata") or {}
+    for key in keys:
+        vals = _int_chunk_list(sample.get(key))
+        if vals:
+            return vals
+    for key in keys:
+        vals = _int_chunk_list(meta.get(key))
+        if vals:
+            return vals
+    return []
+
+
+def _answer_chunks(sample: Dict[str, Any]) -> List[int]:
+    out = _sample_chunk_field(
+        sample,
+        "answer_chunks",
+        "expected_answer_chunks",
+    )
     if out:
-        return sorted(set(out))
+        return out
+    meta = sample.get("metadata") or {}
     per_emit = sample.get("per_emit_answers") or meta.get("per_emit_answers") or []
     for item in per_emit:
         if isinstance(item, dict) and item.get("chunk") is not None:
@@ -506,6 +649,123 @@ def _answer_chunks(sample: Dict[str, Any]) -> List[int]:
             except (TypeError, ValueError):
                 pass
     return sorted(set(out))
+
+
+def _support_chunks(sample: Dict[str, Any]) -> List[int]:
+    return _sample_chunk_field(
+        sample,
+        "support_chunks",
+        "grounding_frames",
+        "evidence_chunks",
+    )
+
+
+def _recall_target_chunks(sample: Dict[str, Any]) -> List[int]:
+    """Chunks that a recall result should cover for this sample.
+
+    Recall retrieves historical evidence, so support/grounding chunks are the
+    primary target. Answer chunks are only a fallback for legacy rows that do
+    not carry explicit support metadata.
+    """
+    return _support_chunks(sample) or _answer_chunks(sample)
+
+
+def _policy_recall_query(result: Dict[str, Any]) -> Dict[str, Any]:
+    query = ((result.get("payload") or {}).get("query") or {})
+    return query if isinstance(query, dict) else {}
+
+
+def _parse_recall_time_range(value: Any) -> Optional[Tuple[float, float]]:
+    if isinstance(value, (list, tuple)) and len(value) == 2:
+        try:
+            return float(value[0]), float(value[1])
+        except (TypeError, ValueError):
+            return None
+    if isinstance(value, str):
+        m = re.fullmatch(r"\s*(-?\d+(?:\.\d+)?)\s*-\s*(-?\d+(?:\.\d+)?)\s*", value)
+        if not m:
+            return None
+        try:
+            return float(m.group(1)), float(m.group(2))
+        except ValueError:
+            return None
+    return None
+
+
+def _chunks_for_recall_time_range(value: Any) -> List[int]:
+    parsed = _parse_recall_time_range(value)
+    if parsed is None:
+        return []
+    t0, t1 = parsed
+    if t0 > t1:
+        t0, t1 = t1, t0
+    if t1 <= t0:
+        return []
+    first = int(t0 // AGENT_CHUNK_SEC)
+    last = int((t1 - 1e-9) // AGENT_CHUNK_SEC)
+    if last < first:
+        last = first
+    return list(range(max(0, first), max(0, last) + 1))
+
+
+def _min_chunk_distance(xs: Iterable[int], ys: Iterable[int]) -> Optional[int]:
+    x_list = list(xs)
+    y_list = list(ys)
+    if not x_list or not y_list:
+        return None
+    return min(abs(int(x) - int(y)) for x in x_list for y in y_list)
+
+
+def _question_text(sample: Dict[str, Any]) -> str:
+    meta = sample.get("metadata") or {}
+    return str(sample.get("question") or meta.get("question") or "").strip()
+
+
+def _annotate_recall_diagnostics(
+    sample: Dict[str, Any],
+    result: Dict[str, Any],
+    detail: Dict[str, Any],
+) -> Tuple[set[int], set[int], set[int], Optional[int]]:
+    query = _policy_recall_query(result)
+    query_text = str(query.get("query") or "").strip()
+    query_range = query.get("time_range")
+    if query:
+        detail["recall_query_text"] = query_text
+        detail["recall_query_time_range"] = query_range
+        parsed_range = _parse_recall_time_range(query_range)
+        detail["recall_query_time_range_valid"] = parsed_range is not None
+        question = _question_text(sample)
+        if query_text and question:
+            detail["recall_query_question_overlap"] = round(
+                _token_overlap(query_text, question),
+                3,
+            )
+
+    support_chunks = set(_support_chunks(sample))
+    answer_chunks = set(_answer_chunks(sample))
+    target_chunks = set(_recall_target_chunks(sample))
+    returned_chunks = set(_recall_returned_chunks(result))
+    query_chunks = set(_chunks_for_recall_time_range(query_range))
+    distance = _min_chunk_distance(query_chunks, target_chunks)
+
+    if support_chunks:
+        detail["recall_support_chunks"] = sorted(support_chunks)
+    if answer_chunks:
+        detail["recall_answer_chunks"] = sorted(answer_chunks)
+    if target_chunks:
+        detail["recall_target_chunks"] = sorted(target_chunks)
+    if result.get("recall_result") is not None:
+        detail["recall_returned_chunks"] = sorted(returned_chunks)
+    if query_chunks:
+        detail["recall_query_chunks"] = sorted(query_chunks)
+        if target_chunks:
+            detail["recall_query_hits_target"] = bool(query_chunks & target_chunks)
+            if distance is not None:
+                detail["recall_query_distance_to_target_chunks"] = int(distance)
+                detail["recall_query_within_retrieval_margin"] = (
+                    int(distance) <= recall_time_range_margin_chunks()
+                )
+    return target_chunks, returned_chunks, query_chunks, distance
 
 
 def _classify_dagger_corrections(
@@ -546,19 +806,44 @@ def _classify_dagger_corrections(
             detail["policy_think_tokens"] = len(toks)
 
     if prompt_has_compress or sample_type == "compress":
+        compress_diag = _compress_diag_from_result(result)
+        detail["compress_prefix_diagnostic"] = compress_diag
+        runtime_error = str(result.get("compress_runtime_error") or "").strip()
+        if runtime_error:
+            detail["compress_runtime_error"] = runtime_error
         if first_action != "compress":
             reasons.append("missed_compress")
+            if compress_diag.get("front_prefix_ok") and compress_diag.get("likely_truncated"):
+                reasons.append("compress_good_prefix_truncated")
+            elif compress_diag.get("front_prefix_ok"):
+                reasons.append("compress_good_prefix_unparsed")
+            elif compress_diag.get("tool_call_open"):
+                reasons.append("compress_bad_prefix_after_tool_open")
         else:
             pred_range = _normalise_range(
                 ((result.get("payload") or {}).get("summary") or {}).get("time_range")
             )
+            summary_text = str(
+                (((result.get("payload") or {}).get("summary") or {}).get("text")) or ""
+            ).strip()
             gold_range = _gold_compress_range(sample)
             if pred_range is None:
-                reasons.append("bad_compress_json")
+                reasons.append("bad_compress_range_schema")
+                detail["policy_compress_range"] = (
+                    ((result.get("payload") or {}).get("summary") or {}).get("time_range")
+                )
+            elif not summary_text:
+                reasons.append("empty_compress_summary")
+                detail["policy_compress_range"] = pred_range
             elif gold_range and (pred_range[1] <= gold_range[0] or pred_range[0] >= gold_range[1]):
                 reasons.append("bad_compress_range")
                 detail["gold_compress_range"] = gold_range
                 detail["policy_compress_range"] = pred_range
+            elif runtime_error and runtime_error not in {"ok", "applied"}:
+                if runtime_error in {"range_no_recent_chunks", "range_too_small"}:
+                    reasons.append("bad_compress_range")
+                elif runtime_error in {"bad_range_schema", "empty_summary_text"}:
+                    reasons.append("bad_compress_range_schema")
 
     gold_answer = _gold_answer(sample)
     policy_answer = str(((result.get("final_payload") or result.get("payload") or {}).get("response")) or "").strip()
@@ -568,27 +853,51 @@ def _classify_dagger_corrections(
                 reasons.append("recall_answer_visible_in_policy_prompt")
             else:
                 reasons.append("missed_recall")
-        elif result.get("recall_step2_blocked"):
-            reasons.append("format_error")
-        elif policy_action == "silent" and gold_answer:
-            reasons.append("missed_response")
-        elif policy_action not in {"response", "silent"} and gold_answer:
-            reasons.append("missed_response")
+        else:
+            query = _policy_recall_query(result)
+            query_text = str(query.get("query") or "").strip()
+            if not query_text or result.get("recall_prepare_error_reason"):
+                reasons.append("bad_recall_query")
+                detail["recall_prepare_error_reason"] = result.get("recall_prepare_error_reason", "")
+            target_chunks, returned_chunks, query_chunks, _ = _annotate_recall_diagnostics(
+                sample,
+                result,
+                detail,
+            )
+            if target_chunks and query_chunks and not (target_chunks & query_chunks):
+                reasons.append("recall_time_range_miss")
+            if target_chunks and result.get("recall_result") is not None:
+                if not returned_chunks:
+                    reasons.append("recall_retrieval_empty")
+                elif not (target_chunks & returned_chunks):
+                    reasons.append("recall_retrieval_miss")
+            if result.get("recall_step2_blocked"):
+                reasons.append("format_error")
+            elif policy_action == "silent" and gold_answer:
+                reasons.append("missed_response")
+            elif policy_action not in {"response", "silent"} and gold_answer:
+                reasons.append("missed_response")
         if policy_action == "response" and gold_answer and policy_answer:
-            if not (
-                policy_answer.lower() == gold_answer.lower()
-                or _token_overlap(gold_answer, policy_answer) >= 0.65
-            ):
+            if not _answer_matches(gold_answer, policy_answer):
                 reasons.append("wrong_response")
+
+    if sample_type in {"silent", "response"} and first_action == "recall":
+        reasons.append("over_recall")
+        target_chunks, _, query_chunks, _ = _annotate_recall_diagnostics(
+            sample,
+            result,
+            detail,
+        )
+        if target_chunks and query_chunks and not (target_chunks & query_chunks):
+            reasons.append("recall_time_range_miss")
+        if result.get("recall_prepare_error_reason"):
+            detail["recall_prepare_error_reason"] = result.get("recall_prepare_error_reason", "")
 
     if sample_type == "response":
         if policy_action == "silent":
             reasons.append("missed_response")
         elif policy_action == "response" and gold_answer and policy_answer:
-            if not (
-                policy_answer.lower() == gold_answer.lower()
-                or _token_overlap(gold_answer, policy_answer) >= 0.65
-            ):
+            if not _answer_matches(gold_answer, policy_answer):
                 reasons.append("wrong_response")
 
     current_chunk = int(sample.get("chunk_idx", 0) or 0)
@@ -597,6 +906,15 @@ def _classify_dagger_corrections(
         if policy_action == "response":
             reasons.append("early_answer")
             detail["answer_chunks"] = chunks
+    if sample_type == "silent" and chunks and current_chunk > max(chunks):
+        if policy_action == "response":
+            reasons.append("late_response")
+            detail["answer_chunks"] = chunks
+            detail["late_by_chunks"] = current_chunk - max(chunks)
+            detail["late_by_sec"] = (current_chunk - max(chunks)) * AGENT_CHUNK_SEC
+
+    if "missed_response" in reasons:
+        detail.update(_query_diagnostics_from_prompt(onpolicy_prompt))
 
     # This is a data-construction warning, not a useful DAgger correction:
     # under the student's memory state recall is no longer minimal.
@@ -612,6 +930,7 @@ def _build_dagger_messages(
     base_path: Path,
     data_dir: Path,
     frame_protocol: str,
+    render_layout: str,
 ) -> List[Dict[str, Any]]:
     """Use model-memory prompt + gold assistant tail."""
     gold_messages = build_messages(
@@ -619,6 +938,7 @@ def _build_dagger_messages(
         base_path,
         data_dir=data_dir,
         frame_protocol=frame_protocol,
+        render_layout=render_layout,
     )
     if len(gold_messages) < 3:
         raise ValueError("gold messages missing assistant target")
@@ -634,12 +954,14 @@ def _build_dagger_recall_query_messages(
     base_path: Path,
     data_dir: Path,
     frame_protocol: str,
+    render_layout: str,
 ) -> List[Dict[str, Any]]:
     gold_messages = build_messages(
         sample,
         base_path,
         data_dir=data_dir,
         frame_protocol=frame_protocol,
+        render_layout=render_layout,
     )
     if len(gold_messages) < 3:
         raise ValueError("gold recall messages missing first assistant target")
@@ -668,11 +990,333 @@ def _policy_recall_supports_gold(
     gold_answer = _gold_answer(sample)
     if not gold_answer:
         return True
-    answer_chunks = set(_answer_chunks(sample))
+    answer_chunks = set(_recall_target_chunks(sample))
     returned_chunks = set(_recall_returned_chunks(result))
     if answer_chunks and returned_chunks:
         return bool(answer_chunks & returned_chunks)
     return _answer_visible_in_prompt(gold_answer, recall_messages, sample)
+
+
+def _bump(stats: Dict[str, Any], key: str, amount: int = 1) -> None:
+    stats[key] = stats.get(key, 0) + amount
+
+
+def _bump_bucket(stats: Dict[str, Any], bucket_key: str, item_key: str, amount: int = 1) -> None:
+    bucket = stats.setdefault(bucket_key, {})
+    bucket[item_key] = bucket.get(item_key, 0) + amount
+
+
+def _bump_nested_bucket(
+    stats: Dict[str, Any],
+    bucket_key: str,
+    item_key: str,
+    subkey: str,
+    amount: int = 1,
+) -> None:
+    bucket = stats.setdefault(bucket_key, {})
+    inner = bucket.setdefault(str(item_key or "unknown"), {})
+    inner[str(subkey or "unknown")] = inner.get(str(subkey or "unknown"), 0) + amount
+
+
+def _gold_first_action(sample: Dict[str, Any]) -> str:
+    sample_type = str(sample.get("sample_type") or "")
+    if sample_type in {"recall", "compress", "response", "silent"}:
+        return sample_type
+    parsed = parse_agent_output_v12(_gold_output_text(sample))
+    kind = str(parsed.get("kind") or "")
+    if kind == "answer":
+        return "response" if str(parsed.get("answer_text") or "").strip() else "silent"
+    return kind or sample_type or "unknown"
+
+
+def _gold_final_action(sample: Dict[str, Any]) -> str:
+    sample_type = str(sample.get("sample_type") or "")
+    if sample_type == "compress":
+        return "compress"
+    parsed = parse_agent_output_v12(_gold_output_text(sample))
+    kind = str(parsed.get("kind") or "")
+    if kind == "answer":
+        return "response" if str(parsed.get("answer_text") or "").strip() else "silent"
+    if kind in {"recall", "compress"}:
+        return kind
+    return _gold_first_action(sample)
+
+
+def _policy_answer(result: Dict[str, Any]) -> str:
+    payload = result.get("final_payload") or result.get("payload") or {}
+    if not isinstance(payload, dict):
+        return ""
+    return str(payload.get("response") or "").strip()
+
+
+def _record_action_eval_stats(
+    stats: Dict[str, Any],
+    *,
+    sample_type: str,
+    gold_first: str,
+    gold_final: str,
+    first_action: str,
+    final_action: str,
+    format_ok: bool,
+    parse_failed: bool,
+    reasons: set[str],
+    answer_eval: str,
+) -> str:
+    _bump(stats, "dagger_targets_seen")
+    _bump_bucket(stats, "dagger_targets_by_sample_type", sample_type or "unknown")
+    _bump_bucket(stats, "dagger_gold_first_action_targets", gold_first)
+    _bump_bucket(stats, "dagger_gold_final_action_targets", gold_final)
+    _bump_nested_bucket(stats, "dagger_policy_first_action_by_gold", gold_first, first_action)
+    _bump_nested_bucket(stats, "dagger_policy_final_action_by_gold", gold_final, final_action)
+    if first_action == gold_first:
+        _bump(stats, "dagger_first_action_correct")
+    else:
+        _bump(stats, "dagger_first_action_incorrect")
+    if final_action == gold_final:
+        _bump(stats, "dagger_final_action_correct")
+    else:
+        _bump(stats, "dagger_final_action_incorrect")
+    if format_ok:
+        _bump(stats, "dagger_format_ok_targets")
+    else:
+        _bump(stats, "dagger_format_bad_targets")
+
+    flags: List[str] = []
+    if parse_failed:
+        flags.append("parse_error")
+    if not format_ok and not parse_failed:
+        flags.append("format_error")
+    if "wrong_response" in reasons or answer_eval == "wrong":
+        flags.append("answer_error")
+    if reasons & {
+        "missed_response",
+        "missed_recall",
+        "missed_compress",
+        "over_recall",
+        "early_answer",
+        "late_response",
+    }:
+        flags.append("action_error")
+    if reasons & {
+        "bad_recall_query",
+        "recall_retrieval_empty",
+        "recall_retrieval_miss",
+        "recall_time_range_miss",
+    }:
+        flags.append("retrieval_error")
+    if reasons & {
+        "bad_compress_json",
+        "bad_compress_range_schema",
+        "bad_compress_range",
+        "empty_compress_summary",
+    }:
+        flags.append("compress_error")
+    if "repeated_or_stale_think" in reasons:
+        flags.append("think_error")
+    if not flags and reasons:
+        flags.append("other_error")
+    if not flags:
+        flags.append("correct")
+
+    for flag in sorted(set(flags)):
+        _bump_bucket(stats, "dagger_error_flags", flag)
+        _bump_nested_bucket(stats, "dagger_error_flags_by_sample_type", sample_type, flag)
+
+    priority = [
+        "parse_error",
+        "format_error",
+        "answer_error",
+        "action_error",
+        "retrieval_error",
+        "compress_error",
+        "think_error",
+        "other_error",
+        "correct",
+    ]
+    primary = next((flag for flag in priority if flag in flags), "other_error")
+    _bump_bucket(stats, "dagger_primary_error_type", primary)
+    _bump_nested_bucket(stats, "dagger_primary_error_type_by_sample_type", sample_type, primary)
+    return primary
+
+
+def _record_dagger_target_stats(
+    stats: Dict[str, Any],
+    sample: Dict[str, Any],
+    result: Dict[str, Any],
+    correction_detail: Dict[str, Any],
+    reasons: Optional[List[str]] = None,
+) -> None:
+    sample_type = str(sample.get("sample_type") or "")
+    first_action = str(result.get("action") or "unknown")
+    final_action = str(result.get("final_action") or result.get("action") or "unknown")
+    gold_first = _gold_first_action(sample)
+    gold_final = _gold_final_action(sample)
+    reason_set = set(reasons or [])
+    format_ok = bool(result.get("format_ok", True)) and not bool(result.get("action_space_error"))
+    parse_failed = bool(result.get("format_error")) or (
+        first_action == "unknown" and not bool(result.get("action_space_error"))
+    )
+    gold_answer = _gold_answer(sample)
+    policy_answer = _policy_answer(result)
+    answer_eval = "not_applicable"
+    if gold_answer:
+        _bump(stats, "dagger_answer_targets_seen")
+        _bump_bucket(stats, "dagger_answer_targets_by_sample_type", sample_type or "unknown")
+        if final_action != "response":
+            answer_eval = "missed"
+            _bump(stats, "dagger_answer_missed")
+        elif not policy_answer:
+            answer_eval = "empty"
+            _bump(stats, "dagger_answer_empty")
+        elif _answer_matches(gold_answer, policy_answer):
+            answer_eval = "correct"
+            _bump(stats, "dagger_answer_correct")
+        else:
+            answer_eval = "wrong"
+            _bump(stats, "dagger_answer_wrong")
+        _bump_bucket(stats, "dagger_answer_eval", answer_eval)
+        _bump_nested_bucket(stats, "dagger_answer_eval_by_sample_type", sample_type, answer_eval)
+
+    primary_error = _record_action_eval_stats(
+        stats,
+        sample_type=sample_type or "unknown",
+        gold_first=gold_first,
+        gold_final=gold_final,
+        first_action=first_action,
+        final_action=final_action,
+        format_ok=format_ok,
+        parse_failed=parse_failed,
+        reasons=reason_set,
+        answer_eval=answer_eval,
+    )
+    correction_detail["target_eval"] = {
+        "gold_first_action": gold_first,
+        "gold_final_action": gold_final,
+        "policy_first_action": first_action,
+        "policy_final_action": final_action,
+        "first_action_match": first_action == gold_first,
+        "final_action_match": final_action == gold_final,
+        "format_ok": format_ok,
+        "parse_failed": parse_failed,
+        "answer_eval": answer_eval,
+        "primary_error_type": primary_error,
+    }
+    _bump_bucket(stats, "targets_by_type_seen", sample_type or "unknown")
+
+    if sample_type == "recall":
+        _bump(stats, "gold_recall_targets_seen")
+        _bump_bucket(stats, "gold_recall_policy_first_action", first_action)
+        if first_action == "recall":
+            _bump(stats, "gold_recall_policy_recall")
+            target_chunks = set(correction_detail.get("recall_target_chunks") or [])
+            returned_chunks = set(correction_detail.get("recall_returned_chunks") or [])
+            if result.get("recall_result") is None:
+                retrieval_status = "not_run"
+            elif not returned_chunks:
+                retrieval_status = "empty"
+            elif target_chunks and (target_chunks & returned_chunks):
+                retrieval_status = "hit"
+            else:
+                retrieval_status = "miss"
+            _bump_bucket(stats, "gold_recall_retrieval_status", retrieval_status)
+            if "recall_query_hits_target" in correction_detail:
+                _bump_bucket(
+                    stats,
+                    "gold_recall_query_time_range_status",
+                    "hit" if correction_detail.get("recall_query_hits_target") else "miss",
+                )
+            _bump_bucket(stats, "gold_recall_post_action", final_action)
+            if result.get("recall_step2_blocked"):
+                _bump(stats, "gold_recall_post_blocked")
+        else:
+            _bump(stats, "gold_recall_policy_no_recall")
+
+    if sample_type in {"silent", "response"} and first_action == "recall":
+        _bump(stats, "policy_recall_on_non_recall_targets")
+        _bump_bucket(stats, "policy_recall_on_non_recall_by_gold_type", sample_type)
+
+
+def _safe_rate(numerator: Any, denominator: Any) -> Optional[float]:
+    try:
+        den = float(denominator)
+        if den <= 0:
+            return None
+        return round(float(numerator) / den, 6)
+    except (TypeError, ValueError, ZeroDivisionError):
+        return None
+
+
+def finalize_dagger_stats(stats: Dict[str, Any]) -> None:
+    """Attach derived DAgger rates and drop private live-tracking fields."""
+    metrics = stats.setdefault("metrics", {})
+    targets = int(stats.get("dagger_targets_seen", 0) or 0)
+    answers = int(stats.get("dagger_answer_targets_seen", 0) or 0)
+    if targets:
+        metrics["dagger_first_action_accuracy"] = _safe_rate(
+            stats.get("dagger_first_action_correct", 0), targets,
+        )
+        metrics["dagger_final_action_accuracy"] = _safe_rate(
+            stats.get("dagger_final_action_correct", 0), targets,
+        )
+        metrics["dagger_format_ok_rate"] = _safe_rate(
+            stats.get("dagger_format_ok_targets", 0), targets,
+        )
+    if answers:
+        metrics["dagger_answer_accuracy"] = _safe_rate(
+            stats.get("dagger_answer_correct", 0), answers,
+        )
+        metrics["dagger_answer_emit_rate"] = _safe_rate(
+            stats.get("dagger_answer_correct", 0) + stats.get("dagger_answer_wrong", 0),
+            answers,
+        )
+    missed = int(stats.get("missed_response_timing_targets", 0) or 0)
+    if missed:
+        metrics["missed_response_late_attempt_rate"] = _safe_rate(
+            stats.get("missed_response_late_attempts", 0), missed,
+        )
+        metrics["missed_response_late_correct_rate"] = _safe_rate(
+            stats.get("missed_response_late_correct", 0), missed,
+        )
+        metrics["missed_response_late_wrong_rate"] = _safe_rate(
+            stats.get("missed_response_late_wrong", 0), missed,
+        )
+        metrics["missed_response_unresolved_rate"] = _safe_rate(
+            stats.get("missed_response_unresolved", 0), missed,
+        )
+    response_gold = int(stats.get("response_event_gold_total", 0) or 0)
+    if response_gold:
+        response_tp = (
+            int(stats.get("response_event_matched_correct_on_time", 0) or 0)
+            + int(stats.get("response_event_matched_correct_late", 0) or 0)
+        )
+        response_wrong = (
+            int(stats.get("response_event_matched_wrong_on_time", 0) or 0)
+            + int(stats.get("response_event_matched_wrong_late", 0) or 0)
+        )
+        metrics["response_event_outcome"] = _safe_rate(response_tp, response_gold)
+        metrics["response_event_wrong_rate"] = _safe_rate(response_wrong, response_gold)
+        metrics["response_event_initial_miss_rate"] = _safe_rate(
+            stats.get("response_event_missed_initial", 0), response_gold,
+        )
+        metrics["response_event_unresolved_miss_rate"] = _safe_rate(
+            stats.get("response_event_missed_unresolved", 0), response_gold,
+        )
+        metrics["response_event_late_tp_rate"] = _safe_rate(
+            stats.get("response_event_matched_correct_late", 0), response_gold,
+        )
+    response_fp = (
+        int(stats.get("response_event_false_positive_early", 0) or 0)
+        + int(stats.get("response_event_false_positive_over", 0) or 0)
+    )
+    if response_gold or response_fp:
+        denominator = response_gold + response_fp
+        metrics["response_event_false_positive_rate"] = _safe_rate(response_fp, denominator)
+        metrics["response_event_early_fp_rate"] = _safe_rate(
+            stats.get("response_event_false_positive_early", 0), denominator,
+        )
+    for key in list(stats.keys()):
+        if str(key).startswith("_"):
+            stats.pop(key, None)
 
 
 def _build_dagger_recall_response_messages(
@@ -682,6 +1326,7 @@ def _build_dagger_recall_response_messages(
     base_path: Path,
     data_dir: Path,
     frame_protocol: str,
+    render_layout: str,
 ) -> Optional[List[Dict[str, Any]]]:
     recall_messages = result.get("recall_messages")
     if not isinstance(recall_messages, list) or len(recall_messages) < 4:
@@ -693,10 +1338,27 @@ def _build_dagger_recall_response_messages(
         base_path,
         data_dir=data_dir,
         frame_protocol=frame_protocol,
+        render_layout=render_layout,
     )
-    if len(gold_messages) < 5:
-        raise ValueError("gold recall messages missing final assistant target")
-    return deepcopy(recall_messages) + [deepcopy(gold_messages[-1])]
+    if len(gold_messages) < 3:
+        raise ValueError("gold messages missing final assistant target")
+    out = deepcopy(recall_messages)
+    if out and out[0].get("role") == "system":
+        out[0] = {
+            "role": "system",
+            "content": [{
+                "type": "text",
+                "text": system_prompt_for_frame_protocol(
+                    frame_protocol,
+                    prompt_kind="post_recall",
+                    render_layout=render_layout,
+                ),
+            }],
+        }
+    # For gold recall samples this is the teacher post-recall answer turn.
+    # For over-recall corrections on silent/response samples it is the gold
+    # direct answer/silent turn, reused as the no-tools post-recall decision.
+    return out + [deepcopy(gold_messages[-1])]
 
 
 def _attach_dagger_metadata(
@@ -720,9 +1382,23 @@ def _attach_dagger_metadata(
         "rollout_invalid_action": result.get("invalid_action", ""),
         "rollout_think": str(result.get("think", ""))[:1000],
         "rollout_payload": result.get("payload", {}),
-        "rollout_raw_output": str(result.get("raw_output", ""))[:2000],
+        "rollout_raw_output": str(result.get("raw_output") or result.get("raw") or "")[:2000],
         "rollout_recall_step2_raw_output": str(result.get("recall_step2_raw_text", ""))[:2000],
+        "rollout_compress_prefix_diagnostic": result.get("compress_prefix_diagnostic", {}),
         "rollout_inter_chunk_compress_prompt": bool(prompt_is_compress),
+        "rollout_forced_compress_trigger": bool(result.get("forced_compress_trigger", False)),
+        "rollout_compress_trigger_source": result.get("compress_trigger_source", ""),
+        "pre_compress_memory_token_count": result.get("pre_compress_memory_token_count"),
+        "pre_compress_recent_thinks": result.get("pre_compress_recent_thinks"),
+        "post_compress_memory_token_count": result.get("post_compress_memory_token_count"),
+        "compress_memory_token_delta": result.get("compress_memory_token_delta"),
+        "compress_runtime_error": result.get("compress_runtime_error", ""),
+        "compress_applied": bool(result.get("compress_applied", False)),
+        "compress_applied_chunks": result.get("compress_applied_chunks", []),
+        "compress_recovery": result.get("compress_recovery", {}),
+        "recall_prepare_error_reason": result.get("recall_prepare_error_reason", ""),
+        "recall_returned_chunks": result.get("recall_returned_chunks", []),
+        "recall_step2_blocked": result.get("recall_step2_blocked", {}),
         "memory_token_count": result.get("memory_token_count"),
         "prompt_text_token_count": result.get("prompt_text_token_count"),
         "correction_only": bool(correction_only),
@@ -759,6 +1435,7 @@ def _emit_dagger_row(
     ckpt: str,
     data_dir: Path,
     frame_protocol: str,
+    render_layout: str,
     include_failed_targets: bool,
     sample_types: set[str],
     correction_only: bool,
@@ -774,11 +1451,18 @@ def _emit_dagger_row(
         stats["skipped"][reason] = stats["skipped"].get(reason, 0) + 1
         return False
 
+    prompt_is_compress = _prompt_has_compress_trigger(onpolicy_prompt)
+    if prompt_is_compress or sample.get("sample_type") == "compress":
+        _record_compress_diag_stats(
+            stats, result, prefix="compress_prefix_by_target",
+        )
+
     reasons, correction_detail = _classify_dagger_corrections(
         sample,
         onpolicy_prompt,
         result,
     )
+    _record_dagger_target_stats(stats, sample, result, correction_detail, reasons)
     for r in reasons:
         bucket = stats.setdefault("by_correction_reason", {})
         bucket[r] = bucket.get(r, 0) + 1
@@ -792,13 +1476,19 @@ def _emit_dagger_row(
             stats["skipped"][key] = stats["skipped"].get(key, 0) + 1
         return False
 
-    prompt_is_compress = _prompt_has_compress_trigger(onpolicy_prompt)
     rows_written = 0
 
     try:
         if sample.get("sample_type") == "recall":
             first_action = str(result.get("action") or "")
-            first_reasons = {"missed_recall", "repeated_or_stale_think"}
+            first_reasons = {
+                "missed_recall",
+                "repeated_or_stale_think",
+                "bad_recall_query",
+                "recall_retrieval_empty",
+                "recall_retrieval_miss",
+                "recall_time_range_miss",
+            }
             first_needs = (
                 not correction_only
                 or bool(set(selected_reasons) & first_reasons)
@@ -817,6 +1507,7 @@ def _emit_dagger_row(
                     base_path=ROOT,
                     data_dir=data_dir,
                     frame_protocol=frame_protocol,
+                    render_layout=render_layout,
                 )
                 row = _emit_row(sample, messages, frame_protocol=frame_protocol)
                 _with_sft_turn_policy(
@@ -849,19 +1540,21 @@ def _emit_dagger_row(
                     base_path=ROOT,
                     data_dir=data_dir,
                     frame_protocol=frame_protocol,
+                    render_layout=render_layout,
                 )
                 if messages is None:
-                    stats["skipped"]["recall_response_unsupported_policy_recall"] = (
-                        stats["skipped"].get("recall_response_unsupported_policy_recall", 0) + 1
+                    key = "recall_response_correction_unsupported_retrieval"
+                    stats["skipped"][key] = (
+                        stats["skipped"].get(key, 0) + 1
                     )
                 else:
                     row = _emit_row(sample, messages, frame_protocol=frame_protocol)
                     _with_sft_turn_policy(
                         row,
-                        tool_schema_mode="recall_response",
+                        tool_schema_mode="post_recall",
                         loss_assistant_turns="last",
-                        sft_subtype="dagger_recall_answer",
-                        sample_id_suffix="dagger_recall_answer",
+                        sft_subtype="dagger_post_recall",
+                        sample_id_suffix="dagger_post_recall",
                     )
                     _attach_dagger_metadata(
                         row,
@@ -872,7 +1565,7 @@ def _emit_dagger_row(
                         reasons=reasons,
                         selected_reasons=selected_reasons,
                         correction_detail=correction_detail,
-                        dagger_subtype="recall_answer",
+                        dagger_subtype="post_recall",
                     )
                     _write_dagger_row(
                         row, fout=fout, stats=stats, selected_reasons=selected_reasons,
@@ -887,12 +1580,59 @@ def _emit_dagger_row(
                 )
                 return False
 
+        if (
+            sample.get("sample_type") in {"silent", "response"}
+            and str(result.get("action") or "") == "recall"
+            and (
+                not correction_only
+                or "over_recall" in selected_reasons
+                or bool(result.get("recall_step2_blocked"))
+            )
+        ):
+            messages = _build_dagger_recall_response_messages(
+                sample,
+                result,
+                base_path=ROOT,
+                data_dir=data_dir,
+                frame_protocol=frame_protocol,
+                render_layout=render_layout,
+            )
+            if messages is None:
+                key = "post_recall_correction_unsupported_retrieval"
+                stats["skipped"][key] = (
+                    stats["skipped"].get(key, 0) + 1
+                )
+            else:
+                row = _emit_row(sample, messages, frame_protocol=frame_protocol)
+                _with_sft_turn_policy(
+                    row,
+                    tool_schema_mode="post_recall",
+                    loss_assistant_turns="last",
+                    sft_subtype="dagger_post_recall",
+                    sample_id_suffix="dagger_post_recall",
+                )
+                _attach_dagger_metadata(
+                    row,
+                    ckpt=ckpt,
+                    result=result,
+                    prompt_is_compress=prompt_is_compress,
+                    correction_only=correction_only,
+                    reasons=reasons,
+                    selected_reasons=selected_reasons,
+                    correction_detail=correction_detail,
+                    dagger_subtype="post_recall",
+                )
+                _write_dagger_row(
+                    row, fout=fout, stats=stats, selected_reasons=selected_reasons,
+                )
+
         messages = _build_dagger_messages(
             sample,
             onpolicy_prompt,
             base_path=ROOT,
             data_dir=data_dir,
             frame_protocol=frame_protocol,
+            render_layout=render_layout,
         )
     except Exception as exc:
         reason = f"render_error:{type(exc).__name__}"
@@ -930,6 +1670,7 @@ def build_dagger(
     frames_root: str,
     video_root: Optional[str],
     frame_protocol: str,
+    render_layout: str,
     retriever_kind: str,
     max_results: int,
     alpha: float,
@@ -961,7 +1702,10 @@ def build_dagger(
         attn_implementation="flash_attention_2",
     ).cuda().eval()
     processor = load_processor_for_checkpoint(ckpt)
-    processor = update_processor_pixels(processor, DataArguments())
+    data_args = DataArguments()
+    data_args.min_pixels = int(os.environ.get("IMAGE_MIN_PIXELS", os.environ.get("MIN_PIXELS", "130000")))
+    data_args.max_pixels = int(os.environ.get("IMAGE_MAX_PIXELS", os.environ.get("MAX_PIXELS", "220000")))
+    processor = update_processor_pixels(processor, data_args)
     if hasattr(processor, "video_processor") and hasattr(
         processor.video_processor, "do_sample_frames"
     ):
@@ -993,8 +1737,8 @@ def build_dagger(
         tokenizer=tokenizer,
         processor=processor,
         model_type=model_type,
-        min_pixels=130_000,
-        max_pixels=220_000,
+        min_pixels=data_args.min_pixels,
+        max_pixels=data_args.max_pixels,
         max_new_tokens=max_new_tokens,
         retriever=retriever,
         compress_mode="system",
@@ -1084,6 +1828,9 @@ def build_dagger(
 
                     if prompt_is_compress:
                         stats["policy_compress_turns"] += 1
+                        _record_compress_diag_stats(
+                            stats, result, prefix="compress_prefix_by_turn",
+                        )
                         for sample in compress_samples:
                             _emit_dagger_row(
                                 sample=sample,
@@ -1094,6 +1841,7 @@ def build_dagger(
                                 ckpt=ckpt,
                                 data_dir=data_dir,
                                 frame_protocol=frame_protocol,
+                                render_layout=render_layout,
                                 include_failed_targets=include_failed_targets,
                                 sample_types=sample_types,
                                 correction_only=correction_only,
@@ -1165,6 +1913,7 @@ def build_dagger(
                             ckpt=ckpt,
                             data_dir=data_dir,
                             frame_protocol=frame_protocol,
+                            render_layout=render_layout,
                             include_failed_targets=include_failed_targets,
                             sample_types=sample_types,
                             correction_only=correction_only,
@@ -1203,6 +1952,7 @@ def build_dagger(
             if max_rows and stats["rows"] >= max_rows:
                 break
 
+    finalize_dagger_stats(stats)
     stats["out"] = str(out)
     stats["elapsed_sec"] = round(time.time() - t0, 3)
     return stats
@@ -1224,6 +1974,7 @@ def main() -> None:
     p.add_argument("--frames-root", default=str(batch_root / "frames"))
     p.add_argument("--video-root", default=None)
     p.add_argument("--frame-protocol", default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta"))
+    p.add_argument("--render-layout", default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard"))
     p.add_argument("--retriever", default="bm25", choices=["bm25", "hybrid"])
     p.add_argument("--max-results", type=int, default=4)
     p.add_argument("--alpha", type=float, default=0.5)
@@ -1280,6 +2031,15 @@ def main() -> None:
     args = p.parse_args()
 
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
+    render_layout = normalize_render_layout(args.render_layout)
+    os.environ["THINKSTREAM_RENDER_LAYOUT"] = render_layout
+    if args.out == str(batch_root / "rendered" / "video_meta" / "train_sft_dagger_messages.jsonl"):
+        out_dir = (
+            batch_root / "rendered" / frame_protocol
+            if render_layout == "standard"
+            else batch_root / "rendered" / f"{frame_protocol}_{render_layout}"
+        )
+        args.out = str(out_dir / "train_sft_dagger_messages.jsonl")
     sample_types = {x.strip() for x in args.sample_types.split(",") if x.strip()}
     correction_reasons = _parse_reason_set(args.correction_reasons)
     if args.shard_index < 0 or args.shard_index >= args.num_shards:
@@ -1293,6 +2053,7 @@ def main() -> None:
         frames_root=str(_resolve_path(args.frames_root)),
         video_root=str(_resolve_path(args.video_root)) if args.video_root else None,
         frame_protocol=frame_protocol,
+        render_layout=render_layout,
         retriever_kind=args.retriever,
         max_results=args.max_results,
         alpha=args.alpha,

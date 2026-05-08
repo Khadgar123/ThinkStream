@@ -22,16 +22,19 @@ from thinkstream.data.agent_protocol import (
     FRAMES_PER_CHUNK,
     RECALL_RETURN_CHUNKS,
     VISUAL_WINDOW_CHUNKS,
-    append_visual_frames,
     build_recalled_frames_metadata,
+    build_recall_result_user_content,
     build_user_content,
     format_memory_block,
     normalize_frame_protocol,
+    normalize_render_layout,
     parse_agent_output_v12,
     recall_time_string_for_chunks,
     select_recall_chunks,
     system_prompt_for_frame_protocol,
     action_space_error_for_turn,
+    append_query_answer_with_timing,
+    query_is_complete,
     tools_for_turn,
 )
 
@@ -47,6 +50,7 @@ def _parse_agent_output(output_text: str) -> Dict:
     v12 = parse_agent_output_v12(output_text)
     out: Dict = {
         "raw": v12.get("raw", output_text),
+        "raw_output": v12.get("raw", output_text),
         "think": v12.get("think", ""),
         "action": "",
         "payload": {},
@@ -300,6 +304,41 @@ class MemoryState:
             self._queries = []
         expected_chunks = list(answer_chunks or [])
         expected_emits = list(per_emit_answers or [])
+        for q in reversed(self._queries):
+            status = str(q.get("status", "")).strip().lower()
+            if q.get("question") == question and status in {"open", "pending", "active"}:
+                q["last_ask_time"] = ask_time
+                if options:
+                    q["options"] = list(options)
+                if answer_form:
+                    q["answer_form"] = answer_form
+                if answer_style:
+                    q["answer_style"] = answer_style
+                if answer_instruction:
+                    q["answer_instruction"] = answer_instruction
+                if expected_chunks:
+                    q["answer_chunks"] = expected_chunks
+                if expected_emits:
+                    q["per_emit_answers"] = expected_emits
+                if open_until is None and expected_chunks:
+                    try:
+                        open_until = max(int(x) for x in expected_chunks) * AGENT_CHUNK_SEC
+                    except (TypeError, ValueError):
+                        open_until = None
+                if open_until is not None:
+                    q["open_until"] = open_until
+                return
+        for q in self._queries:
+            status = str(q.get("status", "")).strip().lower()
+            if status in {"open", "pending", "active"}:
+                q["status"] = "replaced"
+                q["closed_at"] = ask_time
+                q["close_reason"] = "new_query"
+        if open_until is None and expected_chunks:
+            try:
+                open_until = max(int(x) for x in expected_chunks) * AGENT_CHUNK_SEC
+            except (TypeError, ValueError):
+                open_until = None
         self._queries.append({
             "question": question,
             "ask_time": ask_time,
@@ -309,7 +348,7 @@ class MemoryState:
             "answer_instruction": answer_instruction or "",
             "answer_chunks": expected_chunks,
             "per_emit_answers": expected_emits,
-            "open_until": open_until if open_until is not None else ask_time,
+            "open_until": open_until,
             "status": "open",
             "answers": [],
         })
@@ -327,19 +366,11 @@ class MemoryState:
             return
         for q in reversed(self._queries):
             if q["question"] == question:
-                q["answers"].append({"text": answer, "time": response_time})
+                append_query_answer_with_timing(q, answer, response_time)
                 if status is not None:
                     q["status"] = status
                 else:
-                    expected = max(
-                        1,
-                        len(q.get("answer_chunks") or []),
-                        len(q.get("per_emit_answers") or []),
-                    )
-                    q["status"] = (
-                        "answered" if len(q.get("answers") or []) >= expected
-                        else "open"
-                    )
+                    q["status"] = "answered" if query_is_complete(q) else "open"
                 return
 
     @property
@@ -368,6 +399,7 @@ def build_single_step_messages(
     frame_paths: Optional[List[str]] = None,
     frame_protocol: Optional[str] = None,
     inter_chunk: bool = False,
+    render_layout: Optional[str] = None,
 ) -> List[Dict]:
     """Build single-step chat messages matching training format.
 
@@ -378,6 +410,7 @@ def build_single_step_messages(
     inter_chunk=True marks a memory-compaction turn. It suppresses query /
     recalled-answer context and the visual sliding window.
     """
+    layout = normalize_render_layout(render_layout)
     memory_text = format_memory_block(snapshot)
     user_content = build_user_content(
         memory_text,
@@ -392,6 +425,8 @@ def build_single_step_messages(
         frame_paths=frame_paths,
         frame_protocol=frame_protocol,
         inter_chunk=inter_chunk,
+        memory_snapshot=snapshot,
+        render_layout=layout,
     )
 
     return [
@@ -401,7 +436,13 @@ def build_single_step_messages(
                 "type": "text",
                 "text": system_prompt_for_frame_protocol(
                     frame_protocol,
+                    prompt_kind=(
+                        "post_recall"
+                        if (recall_result or recalled_frames)
+                        else None
+                    ),
                     inter_chunk=inter_chunk,
+                    render_layout=layout,
                 ),
             }],
         },
@@ -440,17 +481,66 @@ def parse_time_range(tr) -> Optional[tuple]:
     return None
 
 
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(os.environ.get(name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
+def recall_time_range_margin_chunks() -> int:
+    """Small recall-range tolerance for RL exploration.
+
+    The model still emits the exact requested range, but retrieval widens that
+    range by a few chunks before scoring. This gives near-boundary recall
+    attempts a chance to retrieve the support evidence and receive downstream
+    answer reward. Set THINKSTREAM_RECALL_TIME_RANGE_MARGIN_CHUNKS=0 to recover
+    strict historical behavior.
+    """
+    return max(0, _env_int("THINKSTREAM_RECALL_TIME_RANGE_MARGIN_CHUNKS", 3))
+
+
+def expand_time_range_by_chunks(
+    time_range,
+    *,
+    margin_chunks: int,
+    chunk_sec: float = AGENT_CHUNK_SEC,
+) -> Optional[tuple]:
+    tr = parse_time_range(time_range)
+    if tr is None:
+        return None
+    t0, t1 = tr
+    if t0 > t1:
+        t0, t1 = t1, t0
+    margin = max(0, int(margin_chunks)) * float(chunk_sec)
+    if margin <= 0:
+        return t0, t1
+    return max(0.0, t0 - margin), t1 + margin
+
+
 def filter_archive_by_time_range(
-    archive: List[Dict], time_range, chunk_sec: float = AGENT_CHUNK_SEC,
+    archive: List[Dict],
+    time_range,
+    chunk_sec: float = AGENT_CHUNK_SEC,
+    *,
+    margin_chunks: Optional[int] = None,
 ) -> List[Dict]:
     """Restrict archive to items whose chunk overlaps [t_start, t_end].
 
     "with_time_range" mode = the model emits a time_range and the retriever
-    pre-filters to that window before scoring. Falls back to the full
-    archive when the range is missing/malformed (matches the SFT
-    distribution where ~30% of queries are keyword-only by design).
+    pre-filters to that window before scoring. A small margin can be applied
+    around valid ranges so near-boundary recalls still retrieve useful support
+    during RL exploration. Falls back to the full archive when the range is
+    missing/malformed (matches the SFT distribution where ~30% of queries are
+    keyword-only by design).
     """
-    tr = parse_time_range(time_range)
+    if margin_chunks is None:
+        margin_chunks = recall_time_range_margin_chunks()
+    tr = expand_time_range_by_chunks(
+        time_range,
+        margin_chunks=margin_chunks,
+        chunk_sec=chunk_sec,
+    )
     if tr is None:
         return archive
     t0, t1 = tr
@@ -489,7 +579,12 @@ def bm25_retrieve(
             "returned_chunks": [],
         }
 
-    archive = filter_archive_by_time_range(archive, query.get("time_range"))
+    margin_chunks = recall_time_range_margin_chunks()
+    archive = filter_archive_by_time_range(
+        archive,
+        query.get("time_range"),
+        margin_chunks=margin_chunks,
+    )
     if not archive:
         return {
             "source": "failure",
@@ -542,6 +637,8 @@ def bm25_retrieve(
         "time": recall_time_string_for_chunks(returned_chunks),
         "text_content": "\n".join(text_parts),
         "returned_chunks": returned_chunks,
+        "query_time_range": query.get("time_range"),
+        "time_range_margin_chunks": margin_chunks,
     }
 
 
@@ -730,6 +827,7 @@ class StreamingAgentLoop:
         self.max_pixels = max_pixels
         self.max_new_tokens = max_new_tokens
         self.frame_protocol = normalize_frame_protocol(frame_protocol)
+        self.render_layout = normalize_render_layout()
         # Resolve retriever: explicit `retriever` > `retrieve_fn` > BM25 default.
         # The new Retriever API has both __call__ and index_chunk; legacy
         # retrieve_fn callables are wrapped via coerce_retriever.
@@ -824,7 +922,9 @@ class StreamingAgentLoop:
         response_time = chunk_idx * AGENT_CHUNK_SEC
         for q in reversed(self.memory.queries):
             status = str(q.get("status", "")).strip().lower()
-            if status in {"open", "pending", "active"} or not q.get("answers"):
+            if status in {"open", "pending", "active"} or (
+                not status and not q.get("answers")
+            ):
                 self.memory.answer_query(q["question"], answer_text, response_time)
                 return
 
@@ -917,17 +1017,19 @@ class StreamingAgentLoop:
 
         # 3. Determine user_input
         user_input = ""
-        if compress_trigger and not user_question:
-            # Compression takes priority when no user question
+        if compress_trigger:
+            # Compression is a system memory-management turn. It preempts
+            # visual/question turns and does not consume the current video
+            # chunk; callers that maintain their own chunk cursor should retry
+            # this chunk after a successful compression.
             user_input = compress_trigger
         elif user_question:
             user_input = user_question
 
         # 4. Build single-step messages (matching training format).
-        # When compress_trigger is the user_input AND no user question fires
-        # in the same step, mark inter_chunk=True so the prompt uses the
-        # compression-only system prompt and omits the visual window.
-        is_inter_chunk = bool(compress_trigger and not user_question)
+        # When compression fires, mark inter_chunk=True so the prompt uses the
+        # compression-only system prompt and omits query/visual context.
+        is_inter_chunk = bool(compress_trigger)
         frame_paths = self._get_frame_paths(video_path, chunk_idx)
         messages = build_single_step_messages(
             snapshot,
@@ -940,6 +1042,7 @@ class StreamingAgentLoop:
             frame_paths=frame_paths,
             frame_protocol=self.frame_protocol,
             inter_chunk=is_inter_chunk,
+            render_layout=self.render_layout,
         )
         # v12.6: stash the EXACT messages used for generation so RL loss-time
         # reconstruction can replay the same prompt — see
@@ -950,10 +1053,11 @@ class StreamingAgentLoop:
 
         # 5. Generate
         tool_turn_kind = "compress" if is_inter_chunk else "streaming"
+        turn_max_new_tokens = 512 if tool_turn_kind == "compress" else self.max_new_tokens
         output_text = self.generate_fn(
             messages=messages,
             processor=self.processor,
-            max_new_tokens=self.max_new_tokens,
+            max_new_tokens=turn_max_new_tokens,
             tool_turn_kind=tool_turn_kind,
             tools=tools_for_turn(tool_turn_kind),
             **generate_kwargs,
@@ -1067,50 +1171,31 @@ class StreamingAgentLoop:
                 #   [system, user(chunk N), assistant(recall tool_call),
                 #    user(recall_result + recalled_frames)] → generate answer
                 # This is byte-identical to the SFT trajectory the model saw.
-                import json as _json
-                recall_messages = list(messages)             # [system, user(chunk N)]
+                recall_messages = deepcopy(messages)         # [system, user(chunk N)]
+                if recall_messages and recall_messages[0].get("role") == "system":
+                    recall_messages[0] = {
+                        "role": "system",
+                        "content": [{
+                            "type": "text",
+                            "text": system_prompt_for_frame_protocol(
+                                self.frame_protocol,
+                                prompt_kind="post_recall",
+                                render_layout=self.render_layout,
+                            ),
+                        }],
+                    }
                 recall_messages.append({                      # model's own recall turn
                     "role": "assistant",
                     "content": [{"type": "text", "text": output_text}],
                 })
-                tool_user_content = []
-                if recalled_frames:
-                    rf_header = _json.dumps({
-                        "time_range": recalled_frames["time_range"],
-                        "source": recalled_frames.get("source", "historical_frames"),
-                        "n_frames": recalled_frames["n_frames"],
-                    })
-                    tool_user_content.append({
-                        "type": "text",
-                        "text": f"<recalled_frames>{rf_header}</recalled_frames>",
-                    })
-                    if "frame_paths" in recalled_frames:
-                        tr_start, tr_end = recalled_frames["time_range"]
-                        tr_start_chunk = int(tr_start / float(AGENT_CHUNK_SEC))
-                        append_visual_frames(
-                            tool_user_content,
-                            recalled_frames["frame_paths"],
-                            frame_protocol=self.frame_protocol,
-                            fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
-                            start_frame_index=tr_start_chunk * FRAMES_PER_CHUNK,
-                            total_num_frames=int(
-                                tr_end / float(AGENT_CHUNK_SEC)
-                            ) * FRAMES_PER_CHUNK,
-                            context_label="recalled frame",
-                            min_pixels=self.min_pixels,
-                            max_pixels=self.max_pixels,
-                        )
-                rr_json = _json.dumps({
-                    "source": recall_result.get("source", ""),
-                    "time": recall_result.get("time", ""),
-                    "text": recall_result.get(
-                        "text_content", recall_result.get("text", "")
-                    ),
-                }, ensure_ascii=False)
-                tool_user_content.append({
-                    "type": "text",
-                    "text": f"<recall_result>{rr_json}</recall_result>",
-                })
+                tool_user_content = build_recall_result_user_content(
+                    recalled_frames,
+                    recall_result,
+                    frame_protocol=self.frame_protocol,
+                    min_pixels=self.min_pixels,
+                    max_pixels=self.max_pixels,
+                    render_layout=self.render_layout,
+                )
                 recall_messages.append({
                     "role": "user", "content": tool_user_content,
                 })
@@ -1118,8 +1203,8 @@ class StreamingAgentLoop:
                 # Second generate (allow_recall=False to prevent infinite loop)
                 recall_gen_kwargs = dict(generate_kwargs)
                 recall_gen_kwargs["allow_recall"] = False
-                recall_gen_kwargs["tool_turn_kind"] = "recall_response"
-                recall_gen_kwargs["tools"] = tools_for_turn("recall_response")
+                recall_gen_kwargs["tool_turn_kind"] = "post_recall"
+                recall_gen_kwargs["tools"] = tools_for_turn("post_recall")
                 recall_output_text = self.generate_fn(
                     messages=recall_messages,
                     processor=self.processor,
@@ -1130,10 +1215,12 @@ class StreamingAgentLoop:
                 recall_parsed = _parse_agent_output(recall_output_text)
                 recall_action_error = action_space_error_for_turn(
                     recall_parsed.get("action", ""),
-                    "recall_response",
+                    "post_recall",
                 )
-                # recall_response has NO think (observation was already
-                # emitted in sample1 for this same chunk_idx).
+                # post_recall may contain a local <think> over the tool
+                # result, but it is not a new video observation and is not
+                # inserted into recent_thinks / retrieval archive. The
+                # timestep memory was already emitted and indexed in turn 1.
 
                 # v12.6: post-parse recall-budget enforcement.
                 # The `allow_recall=False` flag became a no-op when v12.6

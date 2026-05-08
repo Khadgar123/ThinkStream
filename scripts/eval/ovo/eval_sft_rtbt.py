@@ -33,6 +33,7 @@ from thinkstream.data.agent_protocol import (
     VISUAL_WINDOW_CHUNKS,
     build_user_content,
     normalize_frame_protocol,
+    normalize_render_layout,
     system_prompt_for_frame_protocol,
 )
 from thinkstream.sft.argument import DataArguments
@@ -166,10 +167,19 @@ def main():
         default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
         choices=["ts_image", "video_meta"],
     )
+    p.add_argument(
+        "--render-layout",
+        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard"),
+        help="Prompt layout: standard, timeline_video, or timeline_video_imagepad.",
+    )
+    p.add_argument("--min-pixels", type=int, default=int(os.environ.get("IMAGE_MIN_PIXELS", os.environ.get("MIN_PIXELS", "130000"))))
+    p.add_argument("--max-pixels", type=int, default=int(os.environ.get("IMAGE_MAX_PIXELS", os.environ.get("MAX_PIXELS", "220000"))))
     p.add_argument("--no_bf16", action="store_true")
     p.add_argument("--out", default=None)
     args = p.parse_args()
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
+    render_layout = normalize_render_layout(args.render_layout)
+    os.environ["THINKSTREAM_RENDER_LAYOUT"] = render_layout
 
     # detect model class (copied from eval_full.py)
     name = args.ckpt.lower()
@@ -201,7 +211,10 @@ def main():
     model = model.cuda()
     model.eval()
     processor = load_processor_for_checkpoint(args.ckpt)
-    processor = update_processor_pixels(processor, DataArguments())
+    data_args = DataArguments()
+    data_args.min_pixels = int(args.min_pixels)
+    data_args.max_pixels = int(args.max_pixels)
+    processor = update_processor_pixels(processor, data_args)
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
         processor.video_processor.do_sample_frames = False
 
@@ -240,17 +253,22 @@ def main():
             video_path=video_path,
             user_input=question,
             queries=None,
-            min_pixels=130_000,    # v12.12: RUNTIME profile (was 100352*2)
-            max_pixels=220_000,    #          (was 100352*4)
+            min_pixels=args.min_pixels,
+            max_pixels=args.max_pixels,
             frame_paths=frame_paths,
             frame_protocol=frame_protocol,
+            memory_snapshot={"compressed_segments": [], "compressed": [], "recent_thinks": []},
+            render_layout=render_layout,
         )
         messages = [
             {
                 "role": "system",
                 "content": [{
                     "type": "text",
-                    "text": system_prompt_for_frame_protocol(frame_protocol),
+                    "text": system_prompt_for_frame_protocol(
+                        frame_protocol,
+                        render_layout=render_layout,
+                    ),
                 }],
             },
             {"role": "user", "content": user_content},
@@ -333,6 +351,7 @@ def main():
         json.dump({
             "ckpt": args.ckpt,
             "frame_protocol": frame_protocol,
+            "render_layout": render_layout,
             "tasks_evaluated": sorted(task_filter),
             "n_samples": len(results),
             "rt_avg": sum(rt_accs) / len(rt_accs) if rt_accs else 0,

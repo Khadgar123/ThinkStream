@@ -474,6 +474,7 @@ def rollout(
             tokenizer=tokenizer,
             group_size=group_size,
             max_new_tokens=rollout_max_new_tokens,
+            compress_max_new_tokens=512,
             rollout_max_chunks=rollout_max_chunks,
             rollout_extra_chunks=rollout_extra_chunks,
             min_pixels=rollout_min_pixels,
@@ -497,6 +498,8 @@ def rollout(
         turns pass no tools.
         """
         from thinkstream.data.agent_protocol import tools_for_turn
+        if kwargs.get("tool_turn_kind") == "compress":
+            max_new_tokens = 512
         video_metadata = []
         has_video_meta = True
         for msg in messages:
@@ -1234,6 +1237,13 @@ def _calc_rewards_v12_trajectory(
                 answer_window_chunks=answer_window_chunks,
             )
             all_rewards["outcome"].append(outcome_res["outcome"])
+            ev_counts = outcome_res.get("event_counts") or {}
+            _BEHAVIOR_AGG["n_response_event_gold"] += int(ev_counts.get("gold", 0) or 0)
+            _BEHAVIOR_AGG["n_response_event_tp"] += int(ev_counts.get("matched_correct", 0) or 0)
+            _BEHAVIOR_AGG["n_response_event_wrong"] += int(ev_counts.get("matched_wrong", 0) or 0)
+            _BEHAVIOR_AGG["n_response_event_missed"] += int(ev_counts.get("missed", 0) or 0)
+            _BEHAVIOR_AGG["n_response_event_fp_early"] += int(ev_counts.get("false_positive_early", 0) or 0)
+            _BEHAVIOR_AGG["n_response_event_fp_over"] += int(ev_counts.get("false_positive_over", 0) or 0)
             # Mask=0 if trajectory has no questions (base-only)
             all_masks["outcome"].append(1.0 if questions else 0.0)
 
@@ -1286,7 +1296,7 @@ def _calc_rewards_v12_trajectory(
                     )
                     next_floor = ask_chunk_q
                     for i, emit_chunk in enumerate(target_chunks):
-                        lo = max(next_floor, emit_chunk - SLACK)
+                        lo = max(next_floor, emit_chunk)
                         if i + 1 < len(target_chunks):
                             hi = min(emit_chunk + SLACK,
                                      target_chunks[i + 1] - 1)
@@ -1308,18 +1318,22 @@ def _calc_rewards_v12_trajectory(
                         next_floor = model_chunk + 1
                         t = _compute_timing_reward_v12(
                             answer_chunk=model_chunk,
-                            visible_start_chunk=max(ask_chunk_q, emit_chunk - SLACK),
-                            visible_end_chunk=hi,
+                            visible_start_chunk=emit_chunk,
+                            visible_end_chunk=emit_chunk,
+                            late_window_chunks=SLACK,
                         )
                         per_ask_t.append(t)
                 else:
-                    # Single-emit: full window from ask to last answer + slack
+                    # Single-emit: query is active from ask_chunk, but timing
+                    # reward starts at the expected answer chunk. This catches
+                    # early answers instead of treating the whole wait interval
+                    # as on-time.
                     last_emit = (answer_chunks_q[-1]
                                   if answer_chunks_q else
                                   ask_chunk_q + answer_window_chunks)
                     window_end = last_emit + SLACK
                     model_chunk = None
-                    for ci in range(ask_chunk_q, window_end + 1):
+                    for ci in range(last_emit, window_end + 1):
                         out = by_chunk_idx.get(ci)
                         if (out and out.get("kind") == "answer"
                                 and out.get("answer_text")):
@@ -1327,8 +1341,9 @@ def _calc_rewards_v12_trajectory(
                             break
                     t = _compute_timing_reward_v12(
                         answer_chunk=model_chunk,
-                        visible_start_chunk=ask_chunk_q,
-                        visible_end_chunk=window_end,
+                        visible_start_chunk=last_emit,
+                        visible_end_chunk=last_emit,
+                        late_window_chunks=SLACK,
                     )
                     per_ask_t.append(t)
 
@@ -1510,6 +1525,12 @@ _BEHAVIOR_AGG: Dict[str, int] = {
     "n_recall_emitted": 0,
     "n_compress_emitted": 0,
     "n_compress_well_formed": 0,
+    "n_response_event_gold": 0,
+    "n_response_event_tp": 0,
+    "n_response_event_wrong": 0,
+    "n_response_event_missed": 0,
+    "n_response_event_fp_early": 0,
+    "n_response_event_fp_over": 0,
 }
 
 
@@ -1525,6 +1546,13 @@ def _drain_behavior_metrics() -> Dict[str, float]:
     n_gold_silent = max(1, _BEHAVIOR_AGG["n_gold_silent"])
     n_gold_response = max(1, _BEHAVIOR_AGG["n_gold_response"])
     n_compress_chunks = max(1, _BEHAVIOR_AGG["n_compress_emitted"])
+    n_response_event_gold = max(1, _BEHAVIOR_AGG["n_response_event_gold"])
+    n_response_event_total = max(
+        1,
+        _BEHAVIOR_AGG["n_response_event_gold"]
+        + _BEHAVIOR_AGG["n_response_event_fp_early"]
+        + _BEHAVIOR_AGG["n_response_event_fp_over"],
+    )
     out = {
         "behavior_n_chunks_total": _BEHAVIOR_AGG["n_chunks_total"],
         "behavior_n_gold_silent": _BEHAVIOR_AGG["n_gold_silent"],
@@ -1535,6 +1563,21 @@ def _drain_behavior_metrics() -> Dict[str, float]:
         # Error rates: hallucinate normalized by gold-silent; missed by gold-response.
         "behavior_hallucinate_rate": _BEHAVIOR_AGG["n_hallucinate"] / n_gold_silent,
         "behavior_missed_rate": _BEHAVIOR_AGG["n_missed"] / n_gold_response,
+        "behavior_response_event_outcome": (
+            _BEHAVIOR_AGG["n_response_event_tp"] / n_response_event_gold
+        ),
+        "behavior_response_event_wrong_rate": (
+            _BEHAVIOR_AGG["n_response_event_wrong"] / n_response_event_gold
+        ),
+        "behavior_response_event_missed_rate": (
+            _BEHAVIOR_AGG["n_response_event_missed"] / n_response_event_gold
+        ),
+        "behavior_response_event_fp_early_rate": (
+            _BEHAVIOR_AGG["n_response_event_fp_early"] / n_response_event_total
+        ),
+        "behavior_response_event_fp_over_rate": (
+            _BEHAVIOR_AGG["n_response_event_fp_over"] / n_response_event_total
+        ),
         # Tool usage rates (across all chunks).
         "behavior_recall_used_rate": _BEHAVIOR_AGG["n_recall_emitted"] / n_total,
         "behavior_compress_format_rate": (

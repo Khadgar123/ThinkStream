@@ -13,6 +13,7 @@ Removed from Qwen3-VL official finetune:
 
 import json
 import os
+import re
 import time
 
 import torch
@@ -133,19 +134,23 @@ def expected_v12_kind_for_eval(
     action: str = "",
 ) -> str:
     """Expected assistant behavior for teacher-forced protocol metrics."""
-    if stype in ("recall_query", "recall") and n_turns >= 2:
+    stype = (stype or "").strip()
+    action = (action or "").strip().lower()
+    if stype in ("recall_query", "recall", "dagger_recall_query") and n_turns >= 2:
         if turn_idx == 0:
             return "recall"
         return (
             "answer_empty"
-            if (action or "").strip().lower() == "silent"
+            if action == "silent"
             else "answer_nonempty"
         )
     if stype == "silent":
         return "answer_empty"
     if stype in ("response", "recall_response"):
         return "answer_nonempty"
-    if stype in ("recall_query", "recall"):
+    if stype in ("dagger_post_recall", "post_recall"):
+        return "answer_empty" if action == "silent" else "answer_nonempty"
+    if stype in ("recall_query", "recall", "dagger_recall_query"):
         return "recall"
     if stype in ("compress", "compress_inter"):
         return "compress"
@@ -464,6 +469,18 @@ class WeightedSFTTrainer(Trainer):
                 "mean": float(unmasked.mean()),
                 "max": float(unmasked.max()),
             }
+            if token_loss_weight is not None:
+                valid = labels != IGNORE_INDEX
+                tw = token_loss_weight.detach().float()
+                if valid.any():
+                    valid_tw = tw[valid].cpu()
+                    step_record["token_loss_weight"] = {
+                        "mean": float(valid_tw.mean()),
+                        "min": float(valid_tw.min()),
+                        "max": float(valid_tw.max()),
+                        "lt1": int((valid_tw < 1.0).sum()),
+                        "gt1": int((valid_tw > 1.0).sum()),
+                    }
         self._audit_step_writer.write(step_record)
 
         # Per-sample stream — needs sample_meta from collator
@@ -521,7 +538,12 @@ class WeightedSFTTrainer(Trainer):
             for b, meta in enumerate(eval_meta):
                 if not meta:
                     continue
-                stype = meta.get("sample_type", "?") or "?"
+                expected_stype = meta.get("sample_type", "?") or "?"
+                metric_stype = (
+                    meta.get("sft_subtype")
+                    or meta.get("loss_class")
+                    or expected_stype
+                )
 
 
                 # v12.0: holistic teacher-forced argmax over the FULL
@@ -577,9 +599,9 @@ class WeightedSFTTrainer(Trainer):
                             matched += 1
                         total += 1
                     if total > 0:
-                        self._eval_acc["v12_argmax_total"][stype] += total
+                        self._eval_acc["v12_argmax_total"][metric_stype] += total
                         self._eval_acc["v12_argmax_total"]["_all"] += total
-                        self._eval_acc["v12_argmax_match"][stype] += matched
+                        self._eval_acc["v12_argmax_match"][metric_stype] += matched
                         self._eval_acc["v12_argmax_match"]["_all"] += matched
 
                     # v12.1 BEHAVIORAL METRICS — decode argmax tokens →
@@ -591,16 +613,18 @@ class WeightedSFTTrainer(Trainer):
                     # it can pick the right expected_kind for shape-B
                     # recall (turn 0 = tool_call, turn 1 = final answer).
                     self._accumulate_v12_behavioral(
-                        preds, input_ids, b, s, e, stype,
+                        preds, input_ids, b, s, e, metric_stype,
                         turn_idx=turn_idx,
                         n_turns=n_turns,
                         action=meta.get("action") or meta.get("gold_action", ""),
+                        expected_stype=expected_stype,
                     )
 
     def _accumulate_v12_behavioral(
         self, preds, input_ids, b: int, s: int, e: int, stype: str,
         turn_idx: int = 0, n_turns: int = 1,
         action: str = "",
+        expected_stype: str = "",
     ) -> None:
         """v12.1 per-sample behavioral counters from teacher-forced argmax.
 
@@ -614,11 +638,26 @@ class WeightedSFTTrainer(Trainer):
         # Lazy-init on first call so __init__ doesn't change.
         if "v12_kind_match" not in self._eval_acc:
             for k in (
-                "v12_kind_match", "v12_kind_total",
+                "v12_kind_match", "v12_kind_match_loose", "v12_kind_total",
                 "v12_format_valid", "v12_format_total",
                 "v12_observed_recall", "v12_observed_compress",
                 "v12_observed_answer",  "v12_observed_unknown",
+                "v12_observed_recall_toolaware",
+                "v12_observed_compress_toolaware",
                 "v12_silent_empty_match", "v12_answer_nonempty",
+                "v12_recall_emit_like",
+                "v12_recall_prefix_total",
+                "v12_compress_emit_like",
+                "v12_compress_prefix_total",
+                "v12_compress_prefix_level_sum",
+                "v12_compress_prefix_tool_open",
+                "v12_compress_prefix_front_ok",
+                "v12_compress_prefix_text_started",
+                "v12_compress_prefix_text_closed",
+                "v12_compress_prefix_json_complete",
+                "v12_compress_prefix_tool_closed",
+                "v12_compress_prefix_likely_truncated",
+                "v12_compress_prefix_missing_tool_close",
             ):
                 self._eval_acc[k] = defaultdict(int)
 
@@ -651,8 +690,58 @@ class WeightedSFTTrainer(Trainer):
         # sample_type would tag turn 1 as "recall" too → false negative on
         # v12_kind_match.
         expected_kind = expected_v12_kind_for_eval(
-            stype, turn_idx=turn_idx, n_turns=n_turns, action=action,
+            expected_stype or stype,
+            turn_idx=turn_idx,
+            n_turns=n_turns,
+            action=action,
         )
+
+        try:
+            from thinkstream.data.agent_protocol import diagnose_compress_output_v12
+            compress_diag = diagnose_compress_output_v12(decoded)
+        except Exception:
+            compress_diag = {}
+        compress_emit_like = bool(compress_diag.get("front_prefix_ok"))
+        if compress_emit_like:
+            self._eval_acc["v12_observed_compress_toolaware"][stype] += 1
+            self._eval_acc["v12_observed_compress_toolaware"]["_all"] += 1
+        if expected_kind == "compress":
+            if compress_emit_like:
+                self._eval_acc["v12_compress_emit_like"][stype] += 1
+                self._eval_acc["v12_compress_emit_like"]["_all"] += 1
+
+        try:
+            from thinkstream.data.agent_protocol import strip_chat_template_boundary_tokens
+            text = strip_chat_template_boundary_tokens(decoded)
+        except Exception:
+            text = decoded or ""
+        tool_open_pos = text.find("<tool_call>")
+        tool_close_pos = text.find("</tool_call>")
+        if tool_open_pos >= 0:
+            body_start = tool_open_pos + len("<tool_call>")
+            body_end = tool_close_pos if tool_close_pos > tool_open_pos else None
+            body = text[body_start:body_end]
+        else:
+            body = ""
+        for marker in ("<|im_end|>", "<|endoftext|>"):
+            marker_pos = body.find(marker)
+            if marker_pos >= 0:
+                body = body[:marker_pos]
+        recall_emit_like = bool(
+            tool_open_pos >= 0
+            and re.search(r'"name"\s*:\s*"recall"', body)
+            and re.search(r'"arguments"\s*:\s*\{', body)
+            and re.search(r'"query"\s*:\s*"', body)
+        )
+        if recall_emit_like:
+            self._eval_acc["v12_observed_recall_toolaware"][stype] += 1
+            self._eval_acc["v12_observed_recall_toolaware"]["_all"] += 1
+        if expected_kind == "recall":
+            self._eval_acc["v12_recall_prefix_total"][stype] += 1
+            self._eval_acc["v12_recall_prefix_total"]["_all"] += 1
+            if recall_emit_like:
+                self._eval_acc["v12_recall_emit_like"][stype] += 1
+                self._eval_acc["v12_recall_emit_like"]["_all"] += 1
 
         observed_bucket = {
             "answer": "v12_observed_answer",
@@ -662,6 +751,20 @@ class WeightedSFTTrainer(Trainer):
         }.get(observed_kind, "v12_observed_unknown")
         self._eval_acc[observed_bucket][stype] += 1
         self._eval_acc[observed_bucket]["_all"] += 1
+        if observed_kind == "recall":
+            self._eval_acc["v12_observed_recall_toolaware"][stype] += int(
+                not recall_emit_like
+            )
+            self._eval_acc["v12_observed_recall_toolaware"]["_all"] += int(
+                not recall_emit_like
+            )
+        elif observed_kind == "compress":
+            self._eval_acc["v12_observed_compress_toolaware"][stype] += int(
+                not compress_emit_like
+            )
+            self._eval_acc["v12_observed_compress_toolaware"]["_all"] += int(
+                not compress_emit_like
+            )
 
         self._eval_acc["v12_kind_total"][stype] += 1
         self._eval_acc["v12_kind_total"]["_all"] += 1
@@ -687,6 +790,38 @@ class WeightedSFTTrainer(Trainer):
         if kind_match:
             self._eval_acc["v12_kind_match"][stype] += 1
             self._eval_acc["v12_kind_match"]["_all"] += 1
+        kind_match_loose = kind_match or (
+            expected_kind == "compress" and compress_emit_like
+        ) or (
+            expected_kind == "recall" and recall_emit_like
+        )
+        if kind_match_loose:
+            self._eval_acc["v12_kind_match_loose"][stype] += 1
+            self._eval_acc["v12_kind_match_loose"]["_all"] += 1
+
+        if expected_kind == "compress":
+            diag = compress_diag
+            self._eval_acc["v12_compress_prefix_total"][stype] += 1
+            self._eval_acc["v12_compress_prefix_total"]["_all"] += 1
+            level = int(diag.get("prefix_level", 0) or 0)
+            self._eval_acc["v12_compress_prefix_level_sum"][stype] += level
+            self._eval_acc["v12_compress_prefix_level_sum"]["_all"] += level
+            for field, band in [
+                ("tool_call_open", "v12_compress_prefix_tool_open"),
+                ("front_prefix_ok", "v12_compress_prefix_front_ok"),
+                ("text_started", "v12_compress_prefix_text_started"),
+                ("text_closed", "v12_compress_prefix_text_closed"),
+                ("json_complete", "v12_compress_prefix_json_complete"),
+                ("tool_call_closed", "v12_compress_prefix_tool_closed"),
+                ("likely_truncated", "v12_compress_prefix_likely_truncated"),
+                (
+                    "missing_tool_close_after_complete_json",
+                    "v12_compress_prefix_missing_tool_close",
+                ),
+            ]:
+                if diag.get(field):
+                    self._eval_acc[band][stype] += 1
+                    self._eval_acc[band]["_all"] += 1
 
     def _all_reduce_eval_acc(self) -> None:
         """Sum per-rank counters across DDP world. No-op if not distributed."""
@@ -708,15 +843,30 @@ class WeightedSFTTrainer(Trainer):
         bands = [
             "v12_argmax_match", "v12_argmax_total",
             # v12.1 behavioral metrics
-            "v12_kind_match", "v12_kind_total",
+            "v12_kind_match", "v12_kind_match_loose", "v12_kind_total",
             "v12_format_valid", "v12_format_total",
             "v12_observed_recall", "v12_observed_compress",
             "v12_observed_answer", "v12_observed_unknown",
+            "v12_observed_recall_toolaware",
+            "v12_observed_compress_toolaware",
             "v12_silent_empty_match", "v12_answer_nonempty",
+            "v12_recall_emit_like",
+            "v12_recall_prefix_total",
+            "v12_compress_emit_like",
+            "v12_compress_prefix_total",
+            "v12_compress_prefix_level_sum",
+            "v12_compress_prefix_tool_open",
+            "v12_compress_prefix_front_ok",
+            "v12_compress_prefix_text_started",
+            "v12_compress_prefix_text_closed",
+            "v12_compress_prefix_json_complete",
+            "v12_compress_prefix_tool_closed",
+            "v12_compress_prefix_likely_truncated",
+            "v12_compress_prefix_missing_tool_close",
         ]
         buf = torch.zeros(len(bands) * n, dtype=torch.long, device=device)
         for bi, band in enumerate(bands):
-            d = self._eval_acc[band]
+            d = self._eval_acc.get(band, {})
             for ki, k in enumerate(all_keys):
                 buf[bi * n + ki] = int(d.get(k, 0))
         dist.all_reduce(buf, op=dist.ReduceOp.SUM)
@@ -753,15 +903,24 @@ class WeightedSFTTrainer(Trainer):
             out["eval/v12_kind_match"] = (
                 self._eval_acc["v12_kind_match"].get("_all", 0) / kind_tot
             )
+            out["eval/v12_kind_match_loose"] = (
+                self._eval_acc["v12_kind_match_loose"].get("_all", 0) / kind_tot
+            )
+            out["eval/v12_kind_match_toolaware"] = out["eval/v12_kind_match_loose"]
             out["eval/v12_format_valid"] = (
                 self._eval_acc["v12_format_valid"].get("_all", 0) / kind_tot
             )
             # Confusion: how often does the model emit each kind regardless
             # of expectation. Helps catch silent collapse / over-recall etc.
+            # Tool-call emit rates use a tool-aware prefix detector because
+            # teacher-forced per-position argmax can produce malformed JSON
+            # even when the model has clearly entered the correct tool call.
             for obs_band, name in [
                 ("v12_observed_answer", "answer_emit_rate"),
-                ("v12_observed_recall", "recall_emit_rate"),
-                ("v12_observed_compress", "compress_emit_rate"),
+                ("v12_observed_recall_toolaware", "recall_emit_rate"),
+                ("v12_observed_compress_toolaware", "compress_emit_rate"),
+                ("v12_observed_recall", "recall_emit_strict_rate"),
+                ("v12_observed_compress", "compress_emit_strict_rate"),
             ]:
                 out[f"eval/v12_{name}"] = (
                     self._eval_acc.get(obs_band, {}).get("_all", 0) / kind_tot
@@ -774,6 +933,12 @@ class WeightedSFTTrainer(Trainer):
             out[f"eval/v12_kind_match_{stype}"] = (
                 self._eval_acc["v12_kind_match"].get(stype, 0) / tot
             )
+            out[f"eval/v12_kind_match_loose_{stype}"] = (
+                self._eval_acc["v12_kind_match_loose"].get(stype, 0) / tot
+            )
+            out[f"eval/v12_kind_match_toolaware_{stype}"] = (
+                self._eval_acc["v12_kind_match_loose"].get(stype, 0) / tot
+            )
             out[f"eval/v12_format_valid_{stype}"] = (
                 self._eval_acc["v12_format_valid"].get(stype, 0) / tot
             )
@@ -783,8 +948,10 @@ class WeightedSFTTrainer(Trainer):
             #     (if >0 the model wrongly recalls during silent chunks)
             for obs_band, name in [
                 ("v12_observed_answer", "answer_emit_rate"),
-                ("v12_observed_recall", "recall_emit_rate"),
-                ("v12_observed_compress", "compress_emit_rate"),
+                ("v12_observed_recall_toolaware", "recall_emit_rate"),
+                ("v12_observed_compress_toolaware", "compress_emit_rate"),
+                ("v12_observed_recall", "recall_emit_strict_rate"),
+                ("v12_observed_compress", "compress_emit_strict_rate"),
             ]:
                 out[f"eval/v12_{name}_{stype}"] = (
                     self._eval_acc.get(obs_band, {}).get(stype, 0) / tot
@@ -794,6 +961,42 @@ class WeightedSFTTrainer(Trainer):
                 out[f"eval/v12_silent_empty_rate"] = (
                     self._eval_acc.get("v12_silent_empty_match", {}).get(stype, 0)
                     / tot
+                )
+
+        # Tool-call fallback-prefix diagnostics. These are intentionally looser
+        # than strict parser validity: they answer whether the model entered
+        # the correct tool JSON prefix before possibly running out of decode
+        # budget or missing the closing tool tag.
+        for stype, tot in self._eval_acc.get("v12_recall_prefix_total", {}).items():
+            if tot == 0:
+                continue
+            suffix = "" if stype == "_all" else f"_{stype}"
+            out[f"eval/v12_recall_emit_like_rate{suffix}"] = (
+                self._eval_acc.get("v12_recall_emit_like", {}).get(stype, 0) / tot
+            )
+
+        for stype, tot in self._eval_acc.get("v12_compress_prefix_total", {}).items():
+            if tot == 0:
+                continue
+            suffix = "" if stype == "_all" else f"_{stype}"
+            out[f"eval/v12_compress_prefix_level_mean{suffix}"] = (
+                self._eval_acc["v12_compress_prefix_level_sum"].get(stype, 0) / tot
+            )
+            out[f"eval/v12_compress_emit_like_rate{suffix}"] = (
+                self._eval_acc.get("v12_compress_emit_like", {}).get(stype, 0) / tot
+            )
+            for band, name in [
+                ("v12_compress_prefix_tool_open", "tool_open_rate"),
+                ("v12_compress_prefix_front_ok", "front_ok_rate"),
+                ("v12_compress_prefix_text_started", "text_started_rate"),
+                ("v12_compress_prefix_text_closed", "text_closed_rate"),
+                ("v12_compress_prefix_json_complete", "json_complete_rate"),
+                ("v12_compress_prefix_tool_closed", "tool_closed_rate"),
+                ("v12_compress_prefix_likely_truncated", "likely_truncated_rate"),
+                ("v12_compress_prefix_missing_tool_close", "missing_tool_close_rate"),
+            ]:
+                out[f"eval/v12_compress_prefix_{name}{suffix}"] = (
+                    self._eval_acc.get(band, {}).get(stype, 0) / tot
                 )
 
         return out
@@ -848,7 +1051,7 @@ class WeightedSFTTrainer(Trainer):
 
         # Per-class loss + weight + count
         for i, meta in enumerate(sample_meta):
-            stype = (meta.get("sample_type") or "?")
+            stype = (meta.get("loss_class") or meta.get("sample_type") or "?")
             if psl is not None and i < len(psl):
                 self._train_metrics["loss_sum"][stype] += psl[i]
                 self._train_metrics["loss_sum"]["_all"] += psl[i]

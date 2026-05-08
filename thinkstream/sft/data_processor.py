@@ -20,7 +20,7 @@ import logging
 import time
 from collections import Counter
 from dataclasses import dataclass
-from typing import Dict, Optional, Sequence, List, Any
+from typing import Dict, Optional, Sequence, List, Any, Tuple
 from pathlib import Path
 
 import numpy as np
@@ -85,6 +85,8 @@ def _estimate_sample_tokens(sample: Dict) -> int:
                     t = item.get("type")
                     if t == "text":
                         text_chars += len(item.get("text", ""))
+                    elif item.get("image") or item.get("image_url") or t == "image":
+                        n_frames += 1
                     elif t == "video":
                         v = item.get("video")
                         if isinstance(v, list):
@@ -94,8 +96,6 @@ def _estimate_sample_tokens(sample: Dict) -> int:
                             vs = item.get("video_start", 0)
                             ve = item.get("video_end", vs)
                             n_frames += max(1, int(ve - vs) * 2)  # FPS=2
-                    elif t == "image" or item.get("image_url") or item.get("image"):
-                        n_frames += 1
         return text_chars // 3 + n_frames * _VIS_TOK_PER_FRAME
 
     # ── Flat format (legacy) ──
@@ -166,16 +166,51 @@ def _parse_ratio_spec(spec: Optional[str]) -> Dict[str, float]:
     return {k: v / total for k, v in ratios.items()}
 
 
+def _sample_loss_class(sample: Dict) -> str:
+    """Class used for SFT loss weighting and train-time diagnostics.
+
+    ``sample_type`` stays protocol-facing. After pass5 recall splitting,
+    ``sample_type=recall`` covers both the recall tool-call row and the
+    post-recall answer row, which are different training behaviours. Use
+    ``sft_subtype`` to keep active recall weighting/metrics from being diluted
+    by the second no-tools answer turn.
+    """
+    meta = sample.get("metadata") or {}
+    explicit = (
+        sample.get("loss_class")
+        or sample.get("sft_loss_class")
+        or meta.get("loss_class")
+        or meta.get("sft_loss_class")
+    )
+    if explicit:
+        return str(explicit)
+
+    subtype = str(sample.get("sft_subtype") or meta.get("sft_subtype") or "").strip().lower()
+    if "recall_query" in subtype:
+        return "recall"
+    if "post_recall" in subtype or subtype in {"recall_answer", "recall_response"}:
+        return "post_recall"
+
+    stype = str(sample.get("sample_type") or "?")
+    if stype in ("recall_response", "post_recall"):
+        return "post_recall"
+    return stype
+
+
 def _assign_class_loss_weights(samples: List[Dict], data_args) -> None:
     """Assign normalized class weights after filtering, without resampling."""
     ratios = _parse_ratio_spec(getattr(data_args, "class_loss_target_ratios", None))
     alpha = float(getattr(data_args, "class_loss_alpha", 1.0) or 0.0)
     if not ratios or alpha <= 0 or not samples:
         for s in samples:
+            s["_loss_class"] = _sample_loss_class(s)
             s["_sample_weight"] = 1.0
         return
 
-    counts = Counter(s.get("sample_type", "?") for s in samples)
+    for s in samples:
+        s["_loss_class"] = _sample_loss_class(s)
+
+    counts = Counter(s.get("_loss_class", "?") for s in samples)
     total = sum(counts.values())
     weights: Dict[str, float] = {}
     max_weight = float(getattr(data_args, "class_loss_max_weight", 8.0) or 0.0)
@@ -193,7 +228,7 @@ def _assign_class_loss_weights(samples: List[Dict], data_args) -> None:
     for k in list(weights):
         weights[k] /= mean_w
     for s in samples:
-        s["_sample_weight"] = float(weights.get(s.get("sample_type", "?"), 1.0))
+        s["_sample_weight"] = float(weights.get(s.get("_loss_class", "?"), 1.0))
 
     rank0_print(
         "Class loss weights:",
@@ -374,6 +409,18 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                 "type": "text",
                 "text": system_prompt_for_frame_protocol(
                     frame_protocol,
+                    prompt_kind=(
+                        "post_recall"
+                        if (
+                            sample.get("sample_type") == "recall_response"
+                            or sample.get("sample_type") == "post_recall"
+                            or (
+                                inp.get("recall_result")
+                                and not is_recall_multiturn
+                            )
+                        )
+                        else None
+                    ),
                     inter_chunk=inter_chunk,
                 ),
             }],
@@ -660,16 +707,35 @@ def _resolve_video_paths(messages: List[Dict], base_path: Path) -> List[Dict]:
         if isinstance(content, list):
             new_content = []
             for item in content:
-                if isinstance(item, dict) and item.get("type") == "video":
+                if not isinstance(item, dict):
+                    new_content.append(item)
+                    continue
+                if "video" in item:
                     item = dict(item)
                     vp = item.get("video", "")
                     if isinstance(vp, str) and vp and not Path(vp).is_absolute():
                         item["video"] = str(base_path / vp)
-                elif isinstance(item, dict) and item.get("type") == "image":
+                if "image" in item:
                     item = dict(item)
                     ip = item.get("image", "")
                     if isinstance(ip, str) and ip and not Path(ip).is_absolute():
                         item["image"] = str(base_path / ip)
+                if (
+                    item.get("type") == "video"
+                    and item.get("visual_carrier") == "image_pad"
+                    and (item.get("image") or item.get("image_url"))
+                ):
+                    # Dataset routing/audits keep this as type=video, but
+                    # Qwen processors only materialize image-pad frames when
+                    # they are handed to apply_chat_template as type=image.
+                    # Drop render-time pixel hints so the run-level
+                    # --min_pixels/--max_pixels settings are the single source
+                    # of truth for image-pad SFT resolution.
+                    item = dict(item)
+                    item["type"] = "image"
+                    item.pop("visual_carrier", None)
+                    item.pop("min_pixels", None)
+                    item.pop("max_pixels", None)
                 new_content.append(item)
             msg = {**msg, "content": new_content}
         resolved.append(msg)
@@ -770,7 +836,210 @@ def _select_loss_assistant_spans(
     raise ValueError(f"unsupported loss_assistant_turns={loss_spec!r}")
 
 
-def preprocess_per_timestep(sample: Dict, processor) -> Dict:
+def _message_text_content(msg: Dict) -> str:
+    """Return the textual content rendered inside one chat message."""
+    content = msg.get("content")
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts: List[str] = []
+        for item in content:
+            if isinstance(item, str):
+                parts.append(item)
+            elif isinstance(item, dict) and item.get("type") == "text":
+                parts.append(str(item.get("text", "")))
+        return "".join(parts)
+    return ""
+
+
+def _assistant_texts_from_messages(messages: List[Dict]) -> List[str]:
+    return [
+        _message_text_content(m)
+        for m in messages
+        if m.get("role") == "assistant"
+    ]
+
+
+def _find_json_string_value_span(text: str, keys: Tuple[str, ...] = ("text", "summary")) -> Optional[Tuple[int, int]]:
+    """Find the char span of a JSON string value in a tool-call payload.
+
+    The returned span excludes the surrounding quotes, so JSON syntax tokens
+    such as ``"text": "``, the closing quote, braces, and tool-call tags stay
+    in the structural/closing regions.
+    """
+    for key in keys:
+        marker = f'"{key}"'
+        search_from = 0
+        while True:
+            key_pos = text.find(marker, search_from)
+            if key_pos < 0:
+                break
+            pos = key_pos + len(marker)
+            while pos < len(text) and text[pos].isspace():
+                pos += 1
+            if pos >= len(text) or text[pos] != ":":
+                search_from = key_pos + 1
+                continue
+            pos += 1
+            while pos < len(text) and text[pos].isspace():
+                pos += 1
+            if pos >= len(text) or text[pos] != '"':
+                search_from = key_pos + 1
+                continue
+
+            body_start = pos + 1
+            pos = body_start
+            escaped = False
+            while pos < len(text):
+                ch = text[pos]
+                if escaped:
+                    escaped = False
+                elif ch == "\\":
+                    escaped = True
+                elif ch == '"':
+                    return body_start, pos
+                pos += 1
+            return None
+    return None
+
+
+def _token_ids_no_special(tokenizer, text: str) -> List[int]:
+    ids = tokenizer.encode(text, add_special_tokens=False)
+    if ids and isinstance(ids[0], list):
+        ids = ids[0]
+    return list(ids)
+
+
+def _char_span_to_token_span(tokenizer, text: str, span: Tuple[int, int]) -> Optional[Tuple[int, int, int]]:
+    """Map a character span in assistant text to token indices.
+
+    Prefer tokenizer offsets when available. Fall back to prefix/body token
+    lengths; that fallback is only used after the full assistant-text token
+    sequence is verified against the chat-template span.
+    """
+    start, end = span
+    try:
+        enc = tokenizer(
+            text,
+            add_special_tokens=False,
+            return_offsets_mapping=True,
+        )
+        offsets = enc.get("offset_mapping")
+        ids = enc.get("input_ids")
+        if offsets is not None and ids is not None:
+            if offsets and isinstance(offsets[0], list):
+                offsets = offsets[0]
+            if ids and isinstance(ids[0], list):
+                ids = ids[0]
+            token_start = None
+            token_end = None
+            for i, (tok_start, tok_end) in enumerate(offsets):
+                if tok_end <= tok_start:
+                    continue
+                if tok_end > start and tok_start < end:
+                    if token_start is None:
+                        token_start = i
+                    token_end = i + 1
+            if token_start is not None and token_end is not None:
+                return token_start, token_end, len(ids)
+    except Exception:
+        pass
+
+    prefix_len = len(_token_ids_no_special(tokenizer, text[:start]))
+    body_len = len(_token_ids_no_special(tokenizer, text[start:end]))
+    total_len = len(_token_ids_no_special(tokenizer, text))
+    if body_len <= 0:
+        return None
+    return prefix_len, min(prefix_len + body_len, total_len), total_len
+
+
+def _apply_compress_token_loss_weights(
+    *,
+    token_loss_weight: torch.Tensor,
+    input_ids: torch.Tensor,
+    labels: torch.Tensor,
+    messages: List[Dict],
+    loss_spans: List[tuple],
+    loss_turn_indices: List[int],
+    tokenizer,
+    data_args,
+) -> Dict[str, Any]:
+    """Redistribute compress loss toward action/schema/close tokens."""
+    structure_w = float(getattr(data_args, "compress_structure_token_weight", 2.0) or 1.0)
+    body_w = float(getattr(data_args, "compress_body_token_weight", 0.35) or 1.0)
+    close_w = float(getattr(data_args, "compress_close_token_weight", 4.0) or 1.0)
+    close_tail = int(getattr(data_args, "compress_close_tail_tokens", 24) or 0)
+
+    assistant_texts = _assistant_texts_from_messages(messages)
+    diagnostics = {
+        "applied": False,
+        "aligned": False,
+        "body_tokens": 0,
+        "structure_weight": structure_w,
+        "body_weight": body_w,
+        "close_weight": close_w,
+    }
+
+    input_ids_flat = input_ids[0].tolist()
+    for (ans_start, ans_end), turn_idx in zip(loss_spans, loss_turn_indices):
+        if turn_idx >= len(assistant_texts):
+            continue
+        assistant_text = assistant_texts[turn_idx]
+        if "compress" not in assistant_text:
+            continue
+
+        # Default fallback: down-weight most of the assistant span as summary
+        # body, then explicitly emphasize the opening/action prefix and the
+        # closing tail. Exact alignment below will replace this with a cleaner
+        # schema/body/close split.
+        span_len = max(0, ans_end - ans_start)
+        if span_len <= 0:
+            continue
+        token_loss_weight[0, ans_start: ans_end + 1] = body_w
+        head_len = min(64, span_len)
+        token_loss_weight[0, ans_start: ans_start + head_len] = structure_w
+        if close_tail > 0:
+            tail_start = max(ans_start, ans_end + 1 - close_tail)
+            token_loss_weight[0, tail_start: ans_end + 1] = close_w
+        else:
+            token_loss_weight[0, ans_end] = close_w
+
+        body_span = _find_json_string_value_span(assistant_text)
+        assistant_ids = _token_ids_no_special(tokenizer, assistant_text)
+        span_ids = input_ids_flat[ans_start:ans_end]
+        exact_alignment = bool(assistant_ids) and assistant_ids == span_ids
+        if body_span is not None and exact_alignment:
+            mapped = _char_span_to_token_span(tokenizer, assistant_text, body_span)
+            if mapped is not None:
+                body_token_start, body_token_end, total_tokens = mapped
+                if total_tokens == len(span_ids):
+                    body_abs_start = ans_start + max(0, body_token_start)
+                    body_abs_end = min(ans_start + body_token_end, ans_end)
+                    if body_abs_start < body_abs_end:
+                        token_loss_weight[0, ans_start: ans_end + 1] = structure_w
+                        token_loss_weight[0, body_abs_start:body_abs_end] = body_w
+                        # BPE often merges the final summary punctuation with
+                        # the closing quote (e.g. ``."``), so include one
+                        # overlapping tail token in the close region.
+                        close_start = max(body_abs_end - 1, ans_start)
+                        token_loss_weight[0, close_start: ans_end + 1] = close_w
+                        diagnostics["aligned"] = True
+                        diagnostics["body_tokens"] += int(
+                            max(0, close_start - body_abs_start)
+                        )
+
+        # Never allow a labeled compress token to become zero-weight. The
+        # trainer normalizes by token-weight sum, so these are relative weights
+        # inside the sample rather than another sample-level multiplier.
+        valid = labels[0, ans_start: ans_end + 1].ne(IGNORE_INDEX)
+        local = token_loss_weight[0, ans_start: ans_end + 1]
+        local[valid] = local[valid].clamp_min(0.05)
+        diagnostics["applied"] = True
+
+    return diagnostics
+
+
+def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
     """Tokenize a single SFT sample (messages format) and mask labels.
 
     Input contract (post-pass5): sample MUST contain a ``messages`` key
@@ -794,9 +1063,10 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
         )
     messages = _resolve_video_paths(sample["messages"], base_path)
 
-    # Current pass5 messages use frame-tag text + image items, so no
-    # video_metadata is needed. Keep this only for legacy/raw-video fallback
-    # rows that still contain type="video".
+    # Current pass5 timeline-imagepad messages are normalized above from
+    # type=video/image-pad carrier to type=image before processor ingestion,
+    # so no video_metadata is needed for them. Keep this only for legacy/raw
+    # video fallback rows that still contain type="video".
     video_metadata = []
     has_video_meta = True
     for msg in messages:
@@ -860,9 +1130,9 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
         pos += 1
 
     # v12 allows 1 (silent/response/compress/recall_query) or 2
-    # (recall_answer full prefix) assistant turns per row. Rows can opt into
+    # (post_recall full prefix) assistant turns per row. Rows can opt into
     # a narrower label mask through loss_assistant_turns, e.g. pass5
-    # recall_answer rows use "last" so the previous recall tool_call is
+    # post_recall rows use "last" so the previous recall tool_call is
     # context, not a second target under a no-tools schema.
     if len(assistant_spans) not in {1, 2}:
         sid = sample.get("sample_id") or sample.get("trajectory_id") or "?"
@@ -880,7 +1150,37 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     )
 
     for ans_start, ans_end in loss_spans:
-        labels[0, ans_start: ans_end + 2] = input_ids[0, ans_start: ans_end + 2]
+        # ans_end is the <|im_end|> token. Train the assistant content plus
+        # its end marker, but not the following newline / next role marker.
+        labels[0, ans_start: ans_end + 1] = input_ids[0, ans_start: ans_end + 1]
+
+    loss_class = sample.get("_loss_class") or _sample_loss_class(sample)
+    compress_weight_diag: Optional[Dict[str, Any]] = None
+    if data_args is not None:
+        raw_enabled = getattr(data_args, "compress_token_weighting", True)
+        if isinstance(raw_enabled, str):
+            compress_token_weighting = raw_enabled.strip().lower() not in {
+                "0", "false", "no", "off",
+            }
+        else:
+            compress_token_weighting = bool(raw_enabled)
+        if compress_token_weighting:
+            # Always attach a token_loss_weight tensor when the feature is
+            # enabled. Mixed batches would otherwise drop token weights if only
+            # compress rows carried the key.
+            token_loss_weight = torch.ones_like(labels, dtype=torch.float32)
+            if loss_class == "compress":
+                compress_weight_diag = _apply_compress_token_loss_weights(
+                    token_loss_weight=token_loss_weight,
+                    input_ids=input_ids,
+                    labels=labels,
+                    messages=messages,
+                    loss_spans=loss_spans,
+                    loss_turn_indices=loss_turn_indices,
+                    tokenizer=processor.tokenizer,
+                    data_args=data_args,
+                )
+            full_result["token_loss_weight"] = token_loss_weight
 
     full_result["labels"] = labels
     full_result["input_ids"] = input_ids
@@ -895,6 +1195,7 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
         "sample_type": sample.get("sample_type", "?"),
         "action": sample.get("action", ""),
         "gold_action": (sample.get("metadata") or {}).get("gold_action", ""),
+        "loss_class": loss_class,
         "ans_start": ans_start,           # legacy: first span only
         "ans_end": ans_end,
         "ans_spans": list(assistant_spans),  # v12.11: all spans (1 or 2 turns)
@@ -903,6 +1204,7 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
         "loss_assistant_turns": sample.get("loss_assistant_turns", "all"),
         "n_assistant_turns": len(assistant_spans),
         "sft_subtype": sample.get("sft_subtype", ""),
+        "compress_token_weighting": compress_weight_diag,
     }
     return full_result
 
@@ -1058,6 +1360,7 @@ class PerTimestepDataset(Dataset):
 
         processor = update_processor_pixels(processor, data_args)
         self.processor = processor
+        self.data_args = data_args
         self.merge_size = getattr(processor.image_processor, "merge_size", 2)
         self.samples = all_samples
 
@@ -1105,7 +1408,7 @@ class PerTimestepDataset(Dataset):
 
         # Tokenize + vision + label mask. apply_chat_template uses the
         # turn-local tool schema carried by the sample.
-        data_dict = preprocess_per_timestep(sample, self.processor)
+        data_dict = preprocess_per_timestep(sample, self.processor, self.data_args)
 
         seq_len = data_dict["input_ids"][0].size(0)
 
@@ -1161,6 +1464,7 @@ class PerTimestepDataset(Dataset):
             "video_id": sample.get("video_id"),
             "chunk_idx": sample.get("chunk_idx"),
             "sample_type": sample.get("sample_type"),
+            "loss_class": sample.get("_loss_class") or _sample_loss_class(sample),
             "action": sample.get("action"),
             "sequence_type": sample.get("sequence_type"),
             "base_role": sample.get("base_role"),

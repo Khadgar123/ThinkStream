@@ -43,7 +43,8 @@ fi
 if [[ ! -f "${TRAIN_PARQUET}" || "${REGEN_DATA:-0}" == "1" ]]; then
     python -m scripts.agent_data_v5.build_verl_parquet \
         --jsonl "${TRAJ_JSONL}" --out "${TRAIN_PARQUET}" \
-        --frame-protocol "${FRAME_PROTOCOL}"
+        --frame-protocol "${FRAME_PROTOCOL}" \
+        --render-layout "${THINKSTREAM_RENDER_LAYOUT:-standard}"
 fi
 VAL_PARQUET="${VAL_PARQUET:-${TRAIN_PARQUET}}"
 
@@ -114,7 +115,7 @@ python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.free_cache_engine=True \
     actor_rollout_ref.rollout.enable_chunked_prefill=True \
     actor_rollout_ref.rollout.enable_prefix_caching=True \
-    +actor_rollout_ref.rollout.engine_kwargs.vllm.mm_processor_cache_gb=${MM_CACHE_GB:-8} \
+    +actor_rollout_ref.rollout.engine_kwargs.vllm.mm_processor_cache_gb=${MM_CACHE_GB:-512} \
     actor_rollout_ref.rollout.max_model_len=${MAX_MODEL_LEN} \
     actor_rollout_ref.rollout.response_length=${RESP_LEN} \
     actor_rollout_ref.rollout.prompt_length=${PROMPT_LEN} \

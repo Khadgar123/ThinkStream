@@ -25,10 +25,43 @@ cd "$ROOT"
 CKPT="${CKPT:?CKPT=/path/to/checkpoint is required}"
 PYTHON_BIN="${PYTHON_BIN:-/home/tione/notebook/gaozhenkun/hzh/envs/thinkstream/bin/python}"
 DATA_ROOT="${DATA_ROOT:-data/agent_v5/backups/batch1_aligned_20260506_1200}"
-FINAL_DIR="${FINAL_DIR:-${DATA_ROOT}/rendered/video_meta_all}"
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-video_meta}"
+THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard}"
+if [[ -z "${FINAL_DIR:-}" ]]; then
+  if [[ "$THINKSTREAM_RENDER_LAYOUT" == "standard" ]]; then
+    FINAL_DIR="${DATA_ROOT}/rendered/${FRAME_PROTOCOL}"
+  else
+    FINAL_DIR="${DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}"
+  fi
+fi
 FRAMES_ROOT="${FRAMES_ROOT:-${DATA_ROOT}/frames}"
 OUT_ROOT="${OUT_ROOT:-${ROOT}/output/eval/stage_$(basename "$CKPT")_$(date +%Y%m%d_%H%M%S)}"
+TEST_TRAJ="${TEST_TRAJ:-}"
+if [[ -z "$TEST_TRAJ" ]]; then
+  if [[ -f "${DATA_ROOT}/final/test_trajectories.jsonl" ]]; then
+    TEST_TRAJ="${DATA_ROOT}/final/test_trajectories.jsonl"
+  else
+    TEST_TRAJ="${DATA_ROOT}/final/test.jsonl"
+  fi
+fi
+VAL_TRAJ="${VAL_TRAJ:-}"
+if [[ -z "$VAL_TRAJ" ]]; then
+  if [[ -f "${DATA_ROOT}/final/val_trajectories.jsonl" ]]; then
+    VAL_TRAJ="${DATA_ROOT}/final/val_trajectories.jsonl"
+  else
+    VAL_TRAJ="${DATA_ROOT}/final/val.jsonl"
+  fi
+fi
+TRAIN_RL_TRAJ="${TRAIN_RL_TRAJ:-}"
+if [[ -z "$TRAIN_RL_TRAJ" ]]; then
+  if [[ -f "${DATA_ROOT}/final/train_rl_trajectories.jsonl" ]]; then
+    TRAIN_RL_TRAJ="${DATA_ROOT}/final/train_rl_trajectories.jsonl"
+  else
+    TRAIN_RL_TRAJ="${DATA_ROOT}/final/train_rl.jsonl"
+  fi
+fi
+export THINKSTREAM_FRAME_PROTOCOL="$FRAME_PROTOCOL"
+export THINKSTREAM_RENDER_LAYOUT="$THINKSTREAM_RENDER_LAYOUT"
 
 ACTION_N="${ACTION_N:-0}"
 SFT_GEN_N="${SFT_GEN_N:-0}"
@@ -41,6 +74,7 @@ mkdir -p "$OUT_ROOT/logs" "$OUT_ROOT/sft_eval"
 echo "[stage_eval] ckpt=$CKPT"
 echo "[stage_eval] data_root=$DATA_ROOT"
 echo "[stage_eval] final_dir=$FINAL_DIR"
+echo "[stage_eval] render_layout=$THINKSTREAM_RENDER_LAYOUT"
 echo "[stage_eval] out_root=$OUT_ROOT"
 
 JOB_DIR="$OUT_ROOT/jobs"
@@ -72,6 +106,7 @@ export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
   --val "$FINAL_DIR/test_messages.jsonl" \\
   --n "$ACTION_N" \\
   --frame-protocol "$FRAME_PROTOCOL" \\
+  --render-layout "$THINKSTREAM_RENDER_LAYOUT" \\
   --out "$OUT_ROOT/sft_eval/test_action_acc.json"
 EOF
 
@@ -85,6 +120,7 @@ export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
   --test_jsonl "$FINAL_DIR/test_messages.jsonl" \\
   --n "$SFT_GEN_N" \\
   --frame-protocol "$FRAME_PROTOCOL" \\
+  --render-layout "$THINKSTREAM_RENDER_LAYOUT" \\
   --out "$OUT_ROOT/sft_eval/test_answer_acc.json"
 EOF
 
@@ -96,7 +132,7 @@ cd "$ROOT"
 export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
 "$PYTHON_BIN" -m scripts.eval.test_set_agent \\
   --ckpt "$CKPT" \\
-  --test_jsonl "$DATA_ROOT/final/test.jsonl" \\
+  --test_jsonl "$TEST_TRAJ" \\
   --video_root / \\
   --frames_root "$FRAMES_ROOT" \\
   --retriever bm25 \\
@@ -104,11 +140,17 @@ export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
   --max_results 4 \\
   --n "$AGENT_N" \\
   --frame-protocol "$FRAME_PROTOCOL" \\
+  --render-layout "$THINKSTREAM_RENDER_LAYOUT" \\
   --out "$OUT_ROOT/sft_eval/test_agent_${compress_mode}_bm25.json"
 EOF
 done
 
 for split in val train_rl; do
+  if [[ "$split" == "val" ]]; then
+    split_traj="$VAL_TRAJ"
+  else
+    split_traj="$TRAIN_RL_TRAJ"
+  fi
   add_job "${split}_agent_system_bm25_think_audit" <<EOF
 #!/usr/bin/env bash
 set -euo pipefail
@@ -116,7 +158,7 @@ cd "$ROOT"
 export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
 "$PYTHON_BIN" -m scripts.eval.test_set_agent \\
   --ckpt "$CKPT" \\
-  --test_jsonl "$DATA_ROOT/final/${split}.jsonl" \\
+  --test_jsonl "$split_traj" \\
   --video_root / \\
   --frames_root "$FRAMES_ROOT" \\
   --retriever bm25 \\
@@ -124,6 +166,7 @@ export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
   --max_results 4 \\
   --n "$AGENT_AUDIT_N" \\
   --frame-protocol "$FRAME_PROTOCOL" \\
+  --render-layout "$THINKSTREAM_RENDER_LAYOUT" \\
   --out "$OUT_ROOT/sft_eval/${split}_agent_system_bm25_think_audit.json"
 EOF
 done
@@ -141,6 +184,7 @@ export CUDA_VISIBLE_DEVICES="\${GPU_ID:?}"
   --frames_root /home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench/frames \\
   --tasks "$OVO_TASKS" \\
   --frame-protocol "$FRAME_PROTOCOL" \\
+  --render-layout "$THINKSTREAM_RENDER_LAYOUT" \\
   --out "$OUT_ROOT/sft_eval/ovo_rtbt.json"
 EOF
 fi

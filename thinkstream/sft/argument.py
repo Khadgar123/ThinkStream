@@ -108,6 +108,46 @@ class DataArguments:
             "renormalizing. Set <=0 to disable clamping."
         },
     )
+    compress_token_weighting: bool = field(
+        default=True,
+        metadata={
+            "help": "For compress SFT rows, redistribute loss inside the "
+            "assistant span: emphasize tool/action/schema/closing tokens and "
+            "down-weight the open-ended summary body. This targets the hard "
+            "format/stop behaviour without teaching the model to simply keep "
+            "writing longer summaries."
+        },
+    )
+    compress_structure_token_weight: float = field(
+        default=2.0,
+        metadata={
+            "help": "Per-token loss weight for compress structure tokens "
+            "outside the summary body, including think/action text, tool tags, "
+            "JSON keys, braces, and time_range."
+        },
+    )
+    compress_body_token_weight: float = field(
+        default=0.35,
+        metadata={
+            "help": "Per-token loss weight for the free-form compress summary "
+            "text body."
+        },
+    )
+    compress_close_token_weight: float = field(
+        default=4.0,
+        metadata={
+            "help": "Per-token loss weight for compress closing tokens after "
+            "the summary body, including the closing quote/braces, tool tag, "
+            "and chat end marker."
+        },
+    )
+    compress_close_tail_tokens: int = field(
+        default=24,
+        metadata={
+            "help": "Fallback number of tail tokens to emphasize as close "
+            "tokens if exact summary-body token alignment cannot be resolved."
+        },
+    )
     require_pre_extracted_frames: bool = field(
         default=True,
         metadata={

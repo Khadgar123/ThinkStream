@@ -25,6 +25,7 @@ NGPU=${NGPU:-8}
 N_GEN=${N_GEN:-200}
 DATASET=${DATASET:-stream_agent_test}
 FRAME_PROTOCOL=${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}
+THINKSTREAM_RENDER_LAYOUT=${THINKSTREAM_RENDER_LAYOUT:-standard}
 NO_GEN=0
 NO_TF=0
 
@@ -35,6 +36,7 @@ while [[ $# -gt 0 ]]; do
         --n_gen)       N_GEN="$2"; shift 2 ;;
         --dataset)     DATASET="$2"; shift 2 ;;
         --frame_protocol|--frame-protocol) FRAME_PROTOCOL="$2"; shift 2 ;;
+        --render_layout|--render-layout) THINKSTREAM_RENDER_LAYOUT="$2"; shift 2 ;;
         --no_gen)      NO_GEN=1; shift 1 ;;
         --no_tf)       NO_TF=1; shift 1 ;;
         *) echo "Unknown parameter: $1" >&2; exit 1 ;;
@@ -52,15 +54,18 @@ if [[ "${DATA_ROOT}" == */final ]]; then
     DATA_ROOT="$(dirname "${DATA_ROOT}")"
 fi
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
+export THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT}"
 if [[ -z "${THINKSTREAM_FINAL_DIR:-}" ]]; then
-    if [[ -d "${DATA_ROOT}/rendered/${FRAME_PROTOCOL}" ]]; then
+    if [[ "${THINKSTREAM_RENDER_LAYOUT}" != "standard" && -d "${DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}" ]]; then
+        export THINKSTREAM_FINAL_DIR="${DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}"
+    elif [[ -d "${DATA_ROOT}/rendered/${FRAME_PROTOCOL}" ]]; then
         export THINKSTREAM_FINAL_DIR="${DATA_ROOT}/rendered/${FRAME_PROTOCOL}"
     else
         export THINKSTREAM_FINAL_DIR="${DATA_ROOT}/final"
     fi
 fi
 TEST_JSONL="${TEST_JSONL:-${THINKSTREAM_FINAL_DIR}/test_messages.jsonl}"
-OUT_DIR="${CKPT}/eval/test_${DATASET}_${FRAME_PROTOCOL}"
+OUT_DIR="${CKPT}/eval/test_${DATASET}_${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}"
 
 if [[ "$NO_TF" != "1" ]]; then
     echo "=========================================="
@@ -69,6 +74,7 @@ if [[ "$NO_TF" != "1" ]]; then
     echo "  dataset: ${DATASET}"
     echo "  ngpu:    ${NGPU}"
     echo "  proto:   ${FRAME_PROTOCOL}"
+    echo "  layout:  ${THINKSTREAM_RENDER_LAYOUT}"
     echo "  final:   ${THINKSTREAM_FINAL_DIR}"
     echo "=========================================="
 
@@ -89,6 +95,7 @@ if [[ "$NO_GEN" != "1" ]]; then
         --ckpt "${CKPT}" \
         --val "${TEST_JSONL}" \
         --frame-protocol "${FRAME_PROTOCOL}" \
+        --render-layout "${THINKSTREAM_RENDER_LAYOUT}" \
         --n "${N_GEN}" \
         --out "${OUT_DIR}/gen_action.json"
 fi

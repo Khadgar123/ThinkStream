@@ -39,7 +39,11 @@ from thinkstream.sft.data_processor import (
 from scripts.agent_data_v5.pass5_messages import (
     build_messages as build_per_timestep_messages,
 )
-from thinkstream.data.agent_protocol import normalize_frame_protocol, tools_for_turn
+from thinkstream.data.agent_protocol import (
+    normalize_frame_protocol,
+    normalize_render_layout,
+    tools_for_turn,
+)
 from thinkstream.trainer.outcome_match import score_outcome_by_form
 from scripts.eval.processor_loader import load_processor_for_checkpoint
 
@@ -241,9 +245,15 @@ def main():
         choices=["ts_image", "video_meta"],
         help="Used only when --test_jsonl is a flat row file rendered on the fly.",
     )
+    p.add_argument(
+        "--render-layout",
+        default=None,
+        help="Used only when --test_jsonl is a flat row file rendered on the fly.",
+    )
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
+    render_layout = normalize_render_layout(args.render_layout)
 
     Cls, model_type = detect_model_class(args.ckpt)
     print(f"Loading {Cls.__name__} from {args.ckpt} ...")
@@ -295,7 +305,10 @@ def main():
                 _resolve_video_paths(s["messages"], root_path)
                 if "messages" in s
                 else build_per_timestep_messages(
-                    s, root_path, frame_protocol=frame_protocol
+                    s,
+                    root_path,
+                    frame_protocol=frame_protocol,
+                    render_layout=render_layout,
                 )
             )
             # Drop only the target assistant. For recall_answer rows the

@@ -77,6 +77,33 @@ def _think_for_chunk(rollout: Dict, chunk_idx: int) -> str:
     return ""
 
 
+def _recall_action_think(visual_think: str, *, final_action: str) -> str:
+    """Gold first-turn think for recall tool calls.
+
+    Pass2 thinks are question-blind current-frame observations. For recall
+    turns, keep that observation as this timestep's text memory, then add a
+    short action decision so SFT learns why the recall tool is selected.
+    """
+    base = str(visual_think or "").strip()
+    low = base.lower()
+    if "visible evidence" in low and "recall" in low:
+        return base
+    if final_action == "silent":
+        decision = (
+            "Current visible evidence is insufficient to "
+            "answer the active query. The answer may not have appeared yet, "
+            "so I will recall elapsed history once and stay silent if still "
+            "unsupported."
+        )
+    else:
+        decision = (
+            "Current visible evidence is insufficient to answer the active "
+            "query because the needed evidence is historical, so I will "
+            "recall the earlier window rather than guess."
+        )
+    return f"{base} {decision}".strip()
+
+
 _OPTION_LABEL_RE = re.compile(r"^\s*[A-D][\).]\s*")
 _TOKEN_RE = re.compile(r"[^\W_]+", re.UNICODE)
 MC_ANSWER_STYLES = ("letter_only", "letter_plus_text", "text_only")
@@ -650,7 +677,9 @@ Rules:
   verify the answer; every index must appear in historical_evidence and be
   before c{int(current_chunk)}.
 - recall_query.query must contain search keywords only, not the answer value
-  or any correct-option text. Use neutral anchors from the question/event.
+  or any correct-option text. If the question asks for exact OCR/number/color/
+  state/count, query for the surrounding object/action/location instead of
+  that target value. Use neutral anchors from the question/event.
 
 Output ONLY a JSON array of {RECALL_HARDEN_CANDIDATES_PER_ATTEMPT} distinct
 candidate objects, best candidate first:
@@ -1358,7 +1387,9 @@ def _recall_response_sample(
       assistant → final answer
     """
     turn1 = build_assistant_content_v12(
-        think=think, kind="recall", recall_query=recall_query,
+        think=_recall_action_think(think, final_action="response"),
+        kind="recall",
+        recall_query=recall_query,
     )
     turn2_think = (
         "The recalled frames provide the historical evidence needed for this "
@@ -1404,7 +1435,9 @@ def _recall_silent_multiturn_sample(
       assistant → think + empty <answer>          ← turn2: wait, query stays open
     """
     turn1 = build_assistant_content_v12(
-        think=think, kind="recall", recall_query=recall_query,
+        think=_recall_action_think(think, final_action="silent"),
+        kind="recall",
+        recall_query=recall_query,
     )
     turn2_think = (
         "The recalled frames do not provide enough evidence to answer the "

@@ -169,6 +169,7 @@ def profile_vllm_rollout(
     """
     try:
         from vllm import LLM, SamplingParams
+        from thinkstream.eval.vllm_engine import default_mm_processor_cache_gb
     except ImportError:
         return {"error": "vllm not installed; pip install vllm"}
 
@@ -180,6 +181,7 @@ def profile_vllm_rollout(
         dtype="bfloat16",
         enforce_eager=False,
         trust_remote_code=True,
+        mm_processor_cache_gb=default_mm_processor_cache_gb(),
     )
     sampling = SamplingParams(
         temperature=1.0, top_p=1.0,

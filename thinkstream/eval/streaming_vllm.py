@@ -38,10 +38,14 @@ from thinkstream.data.agent_protocol import (
     FRAMES_PER_CHUNK,
     VISUAL_WINDOW_CHUNKS,
     action_space_error_for_turn,
-    append_visual_frames,
     build_recalled_frames_metadata,
+    build_recall_result_user_content,
+    diagnose_compress_output_v12,
     normalize_frame_protocol,
+    normalize_render_layout,
+    query_is_complete,
     select_recall_chunks,
+    system_prompt_for_frame_protocol,
     tools_for_turn,
 )
 from thinkstream.model.agent_loop import (
@@ -53,7 +57,11 @@ from thinkstream.model.agent_loop import (
 )
 
 from eval_baseline import DebugLogger, setup_eval_logging
-from vllm_engine import make_sampling_params, prepare_vllm_input
+from vllm_engine import (
+    generate_with_turn_sampling,
+    make_sampling_params,
+    prepare_vllm_input,
+)
 
 
 @dataclass
@@ -74,6 +82,9 @@ class _SampleRunner:
     frame_protocol: str = field(
         default_factory=lambda: normalize_frame_protocol(None)
     )
+    render_layout: str = field(
+        default_factory=lambda: normalize_render_layout(None)
+    )
     current_chunk: int = 0
     done: bool = False
     answer_text: Optional[str] = None
@@ -84,6 +95,7 @@ class _SampleRunner:
     # so caller can skip user_question on the same step.
     _last_trigger: bool = False
     _last_action: str = "unknown"
+    _last_compress_prefix_diagnostic: Dict[str, Any] = field(default_factory=dict)
     chunks_generated: int = 0
 
 
@@ -230,7 +242,7 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     compress_trigger = _maybe_compress_trigger(runner.memory, chunk_idx)
     runner._last_trigger = bool(compress_trigger)
 
-    if compress_trigger and not user_question:
+    if compress_trigger:
         user_input = compress_trigger
     elif user_question:
         user_input = user_question
@@ -240,7 +252,7 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     # Memory-compaction turns are text-only inter-chunk actions: suppress
     # visual_window, query/recalled-answer context, and expose compress-only
     # instructions/tools.
-    is_inter_chunk = bool(compress_trigger and not user_question)
+    is_inter_chunk = bool(compress_trigger)
     runner._last_turn_kind = "compress" if is_inter_chunk else "streaming"
 
     frame_paths = _resolve_frame_paths(
@@ -258,6 +270,7 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
         frame_paths=frame_paths,
         frame_protocol=getattr(runner, "frame_protocol", None),
         inter_chunk=is_inter_chunk,
+        render_layout=getattr(runner, "render_layout", None),
     )
 
 
@@ -280,6 +293,11 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> str:
         parsed["invalid_action"] = action
         action = "invalid"
     runner._last_action = action
+    runner._last_compress_prefix_diagnostic = (
+        diagnose_compress_output_v12(output_text)
+        if getattr(runner, "_last_turn_kind", "streaming") == "compress"
+        else {}
+    )
     if (
         parsed.get("think")
         and action != "compress"
@@ -302,13 +320,20 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> str:
         if answer_text:
             response_time = chunk_idx * AGENT_CHUNK_SEC
             # Attach to most-recent active query (mirrors _record_answer).
+            attached = False
+            complete = False
             for q in reversed(runner.memory.queries):
                 status = str(q.get("status", "")).strip().lower()
-                if status in {"open", "pending", "active"} or not q.get("answers"):
+                if status in {"open", "pending", "active"} or (
+                    not status and not q.get("answers")
+                ):
                     runner.memory.answer_query(q["question"], answer_text, response_time)
+                    attached = True
+                    complete = query_is_complete(q)
                     break
-            runner.answer_text = answer_text
-            runner.done = True
+            if attached and complete:
+                runner.answer_text = answer_text
+                runner.done = True
     return action
 
 
@@ -347,8 +372,10 @@ def _build_runners(
     video_root: Optional[str],
     tokenizer=None,
     frame_protocol: Optional[str] = None,
+    render_layout: Optional[str] = None,
 ) -> List[_SampleRunner]:
     frame_protocol = normalize_frame_protocol(frame_protocol)
+    render_layout = normalize_render_layout(render_layout)
     runners: List[_SampleRunner] = []
     for i in range(len(dataset)):
         idx = i
@@ -387,6 +414,7 @@ def _build_runners(
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
                 frame_protocol=frame_protocol,
+                render_layout=render_layout,
             ))
         except Exception as e:
             runners.append(_SampleRunner(
@@ -403,6 +431,7 @@ def _build_runners(
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
                 frame_protocol=frame_protocol,
+                render_layout=render_layout,
                 done=True,
                 error=str(e),
             ))
@@ -418,6 +447,7 @@ def streaming_predict_mcq_vllm(
     question_prefix: str = "",
     question_postfix: str = "\nPlease select the correct answer.",
     max_new_tokens: int = 256,
+    compress_max_new_tokens: int = 512,
     frames_per_chunk: int = 8,
     max_chunks: int = 30,
     min_pixels: int = 130_000,
@@ -429,6 +459,7 @@ def streaming_predict_mcq_vllm(
     debug: bool = False,
     debug_dir: Optional[str] = None,
     frame_protocol: Optional[str] = None,
+    render_layout: Optional[str] = None,
 ):
     """Chunk-lockstep streaming MCQ eval via vLLM batched generate.
 
@@ -452,17 +483,19 @@ def streaming_predict_mcq_vllm(
 
     tokenizer = processor.tokenizer
     frame_protocol = normalize_frame_protocol(frame_protocol)
+    render_layout = normalize_render_layout(render_layout)
     runners = _build_runners(
         dataset, options, question_prefix, question_postfix,
         frames_per_chunk, max_chunks, min_pixels, max_pixels,
         frames_root, video_root, tokenizer=tokenizer,
         frame_protocol=frame_protocol,
+        render_layout=render_layout,
     )
 
     log.info(
         f"vLLM streaming eval: {len(runners)} samples, "
         f"max_chunks={max_chunks}, frames_per_chunk={frames_per_chunk}, "
-        f"frame_protocol={frame_protocol}"
+        f"frame_protocol={frame_protocol}, render_layout={render_layout}"
     )
 
     # repetition_penalty>1.0 is critical for think generation — the v11.2
@@ -470,6 +503,12 @@ def streaming_predict_mcq_vllm(
     # decode without it, even though SFT training data caps think at 130.
     sampling_params = make_sampling_params(
         max_new_tokens=max_new_tokens,
+        temperature=temperature,
+        top_k=1 if temperature == 0.0 else -1,
+        repetition_penalty=repetition_penalty,
+    )
+    compress_sampling_params = make_sampling_params(
+        max_new_tokens=compress_max_new_tokens,
         temperature=temperature,
         top_k=1 if temperature == 0.0 else -1,
         repetition_penalty=repetition_penalty,
@@ -506,13 +545,17 @@ def streaming_predict_mcq_vllm(
 
         # Phase B: build vLLM inputs
         try:
+            turn_kinds = [
+                getattr(r, "_last_turn_kind", "streaming")
+                for r, _ in active_pairs
+            ]
             vllm_inputs = [
                 prepare_vllm_input(
                     m,
                     processor,
-                    tools=tools_for_turn(getattr(r, "_last_turn_kind", "streaming")),
+                    tools=tools_for_turn(turn_kind),
                 )
-                for r, m in active_pairs
+                for (_, m), turn_kind in zip(active_pairs, turn_kinds)
             ]
         except Exception as e:
             log.error(f"vLLM input prep failed at chunk {chunk_idx}: {e}", exc_info=True)
@@ -523,7 +566,13 @@ def streaming_predict_mcq_vllm(
             continue
 
         # Phase C: batched generate
-        outputs = llm.generate(vllm_inputs, sampling_params=sampling_params)
+        outputs = generate_with_turn_sampling(
+            llm,
+            vllm_inputs,
+            turn_kinds,
+            sampling_params,
+            {"compress": compress_sampling_params},
+        )
         n_total_calls += len(outputs)
 
         # Phase D: apply outputs
@@ -540,6 +589,7 @@ def streaming_predict_mcq_vllm(
                         "memory_thinks": len(r.memory.recent_thinks),
                         "memory_compressed": len(r.memory.compressed_segments),
                         "compress_trigger": r._last_trigger,
+                        "compress_prefix_diagnostic": r._last_compress_prefix_diagnostic,
                         "action": action,
                     })
             except Exception as e:
@@ -648,6 +698,9 @@ class _RolloutRunner:
     frame_protocol: str = field(
         default_factory=lambda: normalize_frame_protocol(None)
     )
+    render_layout: str = field(
+        default_factory=lambda: normalize_render_layout(None)
+    )
     current_chunk: int = 0
     done: bool = False
     error: Optional[str] = None
@@ -676,9 +729,40 @@ class _RolloutRunner:
         response_time = chunk_idx * AGENT_CHUNK_SEC
         for q in reversed(self.memory.queries):
             status = str(q.get("status", "")).strip().lower()
-            if status in {"open", "pending", "active"} or not q.get("answers"):
+            if status in {"open", "pending", "active"} or (
+                not status and not q.get("answers")
+            ):
                 self.memory.answer_query(q["question"], answer_text, response_time)
                 break
+
+
+def _runner_should_stop_after_response(runner: _RolloutRunner, chunk_idx: int) -> bool:
+    """Return whether a response should terminate this eval rollout.
+
+    Single-question eval can stop after a non-empty response. Multi-question
+    and multi-emit trajectories must continue to the fixed answer horizon so
+    later questions/emits can still be observed and scored.
+    """
+    if chunk_idx < int(getattr(runner, "ask_chunk", 0) or 0):
+        return False
+    q_at_chunk = getattr(runner, "question_at_chunk", None) or {}
+    q_meta_at_chunk = getattr(runner, "question_meta_at_chunk", None) or {}
+    if len(q_at_chunk) > 1:
+        return False
+    for meta in q_meta_at_chunk.values():
+        answer_chunks = meta.get("answer_chunks") or []
+        per_emit = meta.get("per_emit_answers") or []
+        try:
+            n_answer_chunks = len(answer_chunks)
+        except TypeError:
+            n_answer_chunks = 0
+        try:
+            n_per_emit = len(per_emit)
+        except TypeError:
+            n_per_emit = 0
+        if max(n_answer_chunks, n_per_emit) > 1:
+            return False
+    return True
 
 
 _USER_INPUT_RE = re.compile(r"<user_input>(.*?)</user_input>", re.DOTALL)
@@ -794,7 +878,9 @@ def _apply_rollout_output(
             response_time = chunk_idx * AGENT_CHUNK_SEC
             for q in reversed(runner.memory.queries):
                 status = str(q.get("status", "")).strip().lower()
-                if status in {"open", "pending", "active"} or not q.get("answers"):
+                if status in {"open", "pending", "active"} or (
+                    not status and not q.get("answers")
+                ):
                     runner.memory.answer_query(q["question"], answer_text, response_time)
                     break
 
@@ -804,6 +890,11 @@ def _apply_rollout_output(
         "think": parsed.get("think", ""),
         "payload": parsed.get("payload", {}),
         "raw_output": output_text,
+        "compress_prefix_diagnostic": (
+            diagnose_compress_output_v12(output_text)
+            if getattr(runner, "_last_turn_kind", "streaming") == "compress"
+            else {}
+        ),
         "action_space_error": parsed.get("action_space_error", ""),
         "invalid_action": parsed.get("invalid_action", ""),
         "generated_tokens": tokenizer.encode(output_text, add_special_tokens=False),
@@ -829,6 +920,7 @@ def streaming_vllm_rollout(
     *,
     group_size: int,
     max_new_tokens: int = 256,
+    compress_max_new_tokens: int = 512,
     rollout_max_chunks: int = 30,
     rollout_extra_chunks: int = 5,
     min_pixels: int = 130_000,
@@ -842,6 +934,7 @@ def streaming_vllm_rollout(
     compress_budget: Optional[int] = None,
     enable_recall: bool = True,
     frame_protocol: Optional[str] = None,
+    render_layout: Optional[str] = None,
 ) -> List[Dict]:
     """vLLM-batched RL rollout matching grpo.py:617-803 output contract.
 
@@ -875,6 +968,7 @@ def streaming_vllm_rollout(
         from thinkstream.model.agent_loop import RECENT_THINKS_TOKEN_BUDGET
         compress_budget = RECENT_THINKS_TOKEN_BUDGET
     frame_protocol = normalize_frame_protocol(frame_protocol)
+    render_layout = normalize_render_layout(render_layout)
 
     # ── Build N × G runners ──
     runners: List[_RolloutRunner] = []
@@ -956,6 +1050,7 @@ def streaming_vllm_rollout(
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
                 frame_protocol=frame_protocol,
+                render_layout=render_layout,
                 question_at_chunk=q_at_chunk,
                 question_meta_at_chunk=q_meta_at_chunk,    # v12.13 P0-1
                 retriever=runner_retriever,
@@ -966,6 +1061,13 @@ def streaming_vllm_rollout(
 
     sampling_params = make_sampling_params(
         max_new_tokens=max_new_tokens,
+        temperature=temperature,
+        top_p=top_p,
+        top_k=top_k,
+        repetition_penalty=repetition_penalty,
+    )
+    compress_sampling_params = make_sampling_params(
+        max_new_tokens=compress_max_new_tokens,
         temperature=temperature,
         top_p=top_p,
         top_k=top_k,
@@ -996,20 +1098,30 @@ def streaming_vllm_rollout(
 
         # Phase B: vLLM input + batch generate with turn-local tools.
         try:
+            turn_kinds = [
+                getattr(r, "_last_turn_kind", "streaming")
+                for r in live_active
+            ]
             vllm_inputs = [
                 prepare_vllm_input(
                     m,
                     processor,
-                    tools=tools_for_turn(getattr(r, "_last_turn_kind", "streaming")),
+                    tools=tools_for_turn(turn_kind),
                 )
-                for r, m in zip(live_active, messages_list)
+                for m, turn_kind in zip(messages_list, turn_kinds)
             ]
         except Exception as e:
             for r in live_active:
                 r.error = f"prep_input:{e}"
                 r.done = True
             continue
-        outputs = llm.generate(vllm_inputs, sampling_params=sampling_params)
+        outputs = generate_with_turn_sampling(
+            llm,
+            vllm_inputs,
+            turn_kinds,
+            sampling_params,
+            {"compress": compress_sampling_params},
+        )
 
         # Phase C: apply outputs + collect runners that emitted recall
         recall_runners: List[Tuple[_RolloutRunner, List[Dict], str]] = []
@@ -1049,12 +1161,12 @@ def streaming_vllm_rollout(
                 continue
 
             r.current_chunk += 1
-            # RL stops only when (a) the runner reached max_chunks (a few
-            # past ask_chunk) or (b) it emitted a response after ask_chunk.
-            # Mirrors grpo.py:760-761 early-stop.
+            # Single-Q eval can stop after a response. Multi-Q and multi-emit
+            # eval must keep rolling to the fixed answer horizon so later
+            # questions/emits are not hidden by the first response.
             if r.current_chunk >= r.max_chunks:
                 r.done = True
-            elif last_action == "response" and chunk_idx >= r.ask_chunk:
+            elif last_action == "response" and _runner_should_stop_after_response(r, chunk_idx):
                 r.done = True
 
         # ── Phase D: recall second-pass (batched vLLM generate) ──
@@ -1105,46 +1217,31 @@ def streaming_vllm_rollout(
 
                     # Multi-turn message construction: original prompt +
                     # assistant(first_text) + user(tool result + frames)
-                    rc_msgs = list(first_msgs)
+                    rc_msgs = deepcopy(first_msgs)
+                    if rc_msgs and rc_msgs[0].get("role") == "system":
+                        rc_msgs[0] = {
+                            "role": "system",
+                            "content": [{
+                                "type": "text",
+                                "text": system_prompt_for_frame_protocol(
+                                    r.frame_protocol,
+                                    prompt_kind="post_recall",
+                                    render_layout=r.render_layout,
+                                ),
+                            }],
+                        }
                     rc_msgs.append({
                         "role": "assistant",
                         "content": [{"type": "text", "text": first_text}],
                     })
-                    tool_user_content = []
-                    if recalled_frames:
-                        rf_header = json.dumps({
-                            "time_range": recalled_frames["time_range"],
-                            "source": recalled_frames["source"],
-                            "n_frames": recalled_frames["n_frames"],
-                        })
-                        tool_user_content.append({
-                            "type": "text",
-                            "text": f"<recalled_frames>{rf_header}</recalled_frames>",
-                        })
-                        if recalled_frames.get("frame_paths"):
-                            tr_start, tr_end = recalled_frames["time_range"]
-                            append_visual_frames(
-                                tool_user_content,
-                                recalled_frames["frame_paths"],
-                                frame_protocol=r.frame_protocol,
-                                fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
-                                start_frame_index=int(tr_start) * FRAMES_PER_CHUNK,
-                                total_num_frames=int(tr_end) * FRAMES_PER_CHUNK,
-                                context_label="recalled frame",
-                                min_pixels=r.min_pixels,
-                                max_pixels=r.max_pixels,
-                            )
-                    rr_json = json.dumps({
-                        "source": recall_result.get("source", ""),
-                        "time": recall_result.get("time", ""),
-                        "text": recall_result.get(
-                            "text_content", recall_result.get("text", "")
-                        ),
-                    }, ensure_ascii=False)
-                    tool_user_content.append({
-                        "type": "text",
-                        "text": f"<recall_result>{rr_json}</recall_result>",
-                    })
+                    tool_user_content = build_recall_result_user_content(
+                        recalled_frames,
+                        recall_result,
+                        frame_protocol=r.frame_protocol,
+                        min_pixels=r.min_pixels,
+                        max_pixels=r.max_pixels,
+                        render_layout=r.render_layout,
+                    )
                     rc_msgs.append({"role": "user", "content": tool_user_content})
 
                     recall_msgs_batch.append(rc_msgs)
@@ -1161,7 +1258,7 @@ def streaming_vllm_rollout(
                         prepare_vllm_input(
                             m,
                             processor,
-                            tools=tools_for_turn("recall_response"),
+                            tools=tools_for_turn("post_recall"),
                         )
                         for m in recall_msgs_batch
                     ]
@@ -1183,7 +1280,7 @@ def streaming_vllm_rollout(
                             rc_action = rc_parsed.get("action") or "unknown"
                             rc_action_error = action_space_error_for_turn(
                                 rc_action,
-                                "recall_response",
+                                "post_recall",
                             )
                             if rc_action_error:
                                 rc_parsed["action_space_error"] = rc_action_error
@@ -1247,7 +1344,7 @@ def streaming_vllm_rollout(
                         r.current_chunk += 1
                         if r.current_chunk >= r.max_chunks:
                             r.done = True
-                        elif rc_action == "response" and chunk_idx >= r.ask_chunk:
+                        elif rc_action == "response" and _runner_should_stop_after_response(r, chunk_idx):
                             r.done = True
 
     # ── Group runners back: per-sample list of G trajectories ──

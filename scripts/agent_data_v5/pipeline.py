@@ -1754,6 +1754,7 @@ async def run_pipeline(
                     "--out", str(out_path),
                     "--multi_q",
                     "--frame-protocol", frame_protocol,
+                    "--render-layout", "standard",
                 ]
                 try:
                     rc = _parquet_mod.main()

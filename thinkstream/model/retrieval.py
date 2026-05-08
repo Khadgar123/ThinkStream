@@ -159,8 +159,16 @@ class HybridRetriever:
         # bm25_retrieve — keeps the two retrievers behaviour-compatible
         # so SFT samples generated against either render identical recall_result
         # text under the same query.
-        from thinkstream.model.agent_loop import filter_archive_by_time_range
-        archive = filter_archive_by_time_range(archive, query.get("time_range"))
+        from thinkstream.model.agent_loop import (
+            filter_archive_by_time_range,
+            recall_time_range_margin_chunks,
+        )
+        margin_chunks = recall_time_range_margin_chunks()
+        archive = filter_archive_by_time_range(
+            archive,
+            query.get("time_range"),
+            margin_chunks=margin_chunks,
+        )
         if not archive:
             return _empty_recall()
 
@@ -209,6 +217,8 @@ class HybridRetriever:
             "time": recall_time_string_for_chunks(chunks),
             "text_content": "\n".join(text_parts),
             "returned_chunks": chunks,
+            "query_time_range": query.get("time_range"),
+            "time_range_margin_chunks": margin_chunks,
             "_score_breakdown": {
                 "alpha": self.alpha,
                 "bm25_top": float(bm25_norm[order[0]]),

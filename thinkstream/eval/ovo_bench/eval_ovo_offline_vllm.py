@@ -42,6 +42,7 @@ def add_vllm_offline_args(parser):
     parser.add_argument("--seed", type=int, default=3407)
     parser.add_argument("--enforce_eager", action="store_true",
                         help="Disable CUDA graph capture (slower, easier to debug).")
+    parser.add_argument("--mm_processor_cache_gb", type=int, default=None)
     return parser
 
 
@@ -68,6 +69,7 @@ if __name__ == "__main__":
         max_model_len=args.max_model_len,
         seed=args.seed,
         enforce_eager=args.enforce_eager,
+        mm_processor_cache_gb=args.mm_processor_cache_gb,
     )
 
     options = [

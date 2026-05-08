@@ -22,6 +22,14 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 export PHASE="${PHASE:-sft}"
 export FRAME_PROTOCOL="${FRAME_PROTOCOL:-video_meta}"
 export THINKSTREAM_DATA_ROOT="${THINKSTREAM_DATA_ROOT:-data/agent_v5/batch1}"
+export THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard}"
+if [[ -z "${THINKSTREAM_FINAL_DIR:-}" ]]; then
+    if [[ "${THINKSTREAM_RENDER_LAYOUT}" == "standard" ]]; then
+        export THINKSTREAM_FINAL_DIR="${THINKSTREAM_DATA_ROOT}/rendered/${FRAME_PROTOCOL}"
+    else
+        export THINKSTREAM_FINAL_DIR="${THINKSTREAM_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}"
+    fi
+fi
 
 # The "%N" suffix is a file subsample rate, not a mixing weight. Keep all
 # correction rows by default and use a small clean-anchor subsample.

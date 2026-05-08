@@ -251,16 +251,31 @@ def compute_trajectory_outcome_v12(
     # answer_chunks is missing (backward compat with old trajectories).
     SLACK = 2
 
+    event_counts = {
+        "gold": 0,
+        "matched_correct": 0,
+        "matched_wrong": 0,
+        "missed": 0,
+        "false_positive_early": 0,
+        "false_positive_over": 0,
+    }
+
     for q in trajectory_questions:
-        # New schema: prefer answer_chunks; fall back to ask_chunks for
-        # legacy trajectories where pass4 didn't separate them.
-        answer_chunks = sorted(q.get("answer_chunks") or [])
-        ask_chunks = sorted(q.get("ask_chunks") or [])
-        legacy_multi_from_ask_chunks = not answer_chunks and len(ask_chunks) > 1
-        if legacy_multi_from_ask_chunks:
-            # Backward compatibility for v12.4 trajectories/tests: repeated
-            # ask_chunks meant one expected emission per ask. New pass4 writes
-            # these as answer_chunks/per_emit_answers explicitly.
+        answer_chunks: List[int] = []
+        for x in q.get("answer_chunks") or []:
+            try:
+                answer_chunks.append(int(x))
+            except (TypeError, ValueError):
+                continue
+        answer_chunks = sorted(answer_chunks)
+        ask_chunks: List[int] = []
+        for x in q.get("ask_chunks") or []:
+            try:
+                ask_chunks.append(int(x))
+            except (TypeError, ValueError):
+                continue
+        ask_chunks = sorted(ask_chunks)
+        if not answer_chunks and len(ask_chunks) > 1:
             answer_chunks = list(ask_chunks)
         ask_chunk = q.get("ask_chunk")
         if not isinstance(ask_chunk, int):
@@ -275,95 +290,75 @@ def compute_trajectory_outcome_v12(
         answer_form = q.get("answer_form", "")
         options = q.get("options") or []
         correct_option = q.get("correct_option", "")
+        chunk_gold = {
+            int(e["chunk"]): str(e.get("value", gold_default))
+            for e in per_emit
+            if isinstance(e, dict) and e.get("chunk") is not None
+        }
+        target_chunks = sorted(chunk_gold.keys() or answer_chunks)
+        if not target_chunks:
+            target_chunks = [ask_chunk + answer_window_chunks]
+        gold_events = [
+            {"chunk": int(c), "gold": str(chunk_gold.get(int(c), gold_default))}
+            for c in target_chunks
+        ]
+        event_counts["gold"] += len(gold_events)
 
-        # Decide single vs multi-emit
-        is_multi = len(answer_chunks) > 1 or (len(per_emit) > 1)
+        scan_start = max(0, int(ask_chunk))
+        scan_end = max(int(e["chunk"]) for e in gold_events) + SLACK
+        policy_events: List[Dict] = []
+        for ci in range(scan_start, scan_end + 1):
+            out = by_chunk.get(ci)
+            if out and out.get("kind") == "answer" and out.get("answer_text"):
+                policy_events.append({"chunk": ci, "text": str(out["answer_text"])})
 
+        used_policy: set[int] = set()
         per_ask_scores: List[float] = []
-
-        if is_multi:
-            # MULTI-EMIT: score each expected answer chunk with its own gold.
-            # Build chunk → gold map from per_emit_answers; if missing,
-            # use canonical gold for all emit_chunks.
-            chunk_gold = {int(e["chunk"]): str(e.get("value", gold_default))
-                          for e in per_emit if isinstance(e, dict) and "chunk" in e}
-            target_chunks = sorted(chunk_gold.keys() or answer_chunks)
-            # Track lower-bound floor: next emit must search AFTER the chunk
-            # consumed by the previous emit's match — otherwise emit_2's
-            # window can scoop up emit_1's answer (e.g., emit_1 expected "1"
-            # at chunk 10, model answered at chunk 12; emit_2 expected "2"
-            # at chunk 20 with window [18, 22], but if we let it search
-            # from chunk 11+ we'd find the "1" at chunk 12 again).
-            next_search_floor = ask_chunk
-            for i, emit_chunk in enumerate(target_chunks):
-                lo = max(next_search_floor, emit_chunk - SLACK)
-                if i + 1 < len(target_chunks):
-                    hi = min(emit_chunk + SLACK, target_chunks[i + 1] - 1)
-                else:
-                    hi = emit_chunk + SLACK
-                if lo > hi:
-                    per_ask_scores.append(0.0)
+        for i, gold_event in enumerate(gold_events):
+            g_chunk = int(gold_event["chunk"])
+            hi = g_chunk + SLACK
+            if i + 1 < len(gold_events):
+                hi = min(hi, int(gold_events[i + 1]["chunk"]) - 1)
+            chosen_idx = None
+            for pi, ev in enumerate(policy_events):
+                if pi in used_policy:
                     continue
-                model_answer = None
-                found_at = None
-                for ci in range(lo, hi + 1):
-                    out = by_chunk.get(ci)
-                    if out and out.get("kind") == "answer" and out.get("answer_text"):
-                        model_answer = out["answer_text"]
-                        found_at = ci
-                        break
-                if model_answer is None:
-                    per_ask_scores.append(0.0)
-                    continue
-                # Advance floor past the consumed answer so next emit
-                # can't match the same chunk.
-                next_search_floor = found_at + 1
-                n_answered += 1
-                gold_for_emit = chunk_gold.get(emit_chunk, gold_default)
-                if answer_form_judge is not None:
-                    ask_score = float(answer_form_judge(
-                        model_answer, gold_for_emit, answer_form,
-                    ))
-                else:
-                    ask_score = compute_outcome_reward_v12(
-                        model_answer, gold_for_emit,
-                        answer_form=answer_form,
-                        options=options,
-                        correct_option=correct_option,
-                    )
-                if ask_score >= 1.0:
-                    n_correct += 1
-                per_ask_scores.append(ask_score)
-        else:
-            # SINGLE-EMIT: window from ask to max(answer_chunks) + SLACK.
-            # Covers forward (long lead) + backward + direct uniformly.
-            last_emit = answer_chunks[-1] if answer_chunks else (
-                ask_chunk + answer_window_chunks)
-            window_end = last_emit + SLACK
-            model_answer = None
-            for ci in range(ask_chunk, window_end + 1):
-                out = by_chunk.get(ci)
-                if out and out.get("kind") == "answer" and out.get("answer_text"):
-                    model_answer = out["answer_text"]
+                if g_chunk <= int(ev["chunk"]) <= hi:
+                    chosen_idx = pi
                     break
-            if model_answer is None:
+            if chosen_idx is None:
+                event_counts["missed"] += 1
                 per_ask_scores.append(0.0)
+                continue
+            used_policy.add(chosen_idx)
+            n_answered += 1
+            ev = policy_events[chosen_idx]
+            if answer_form_judge is not None:
+                ask_score = float(answer_form_judge(
+                    ev["text"], gold_event["gold"], answer_form,
+                ))
             else:
-                n_answered += 1
-                if answer_form_judge is not None:
-                    ask_score = float(answer_form_judge(
-                        model_answer, gold_default, answer_form,
-                    ))
-                else:
-                    ask_score = compute_outcome_reward_v12(
-                        model_answer, gold_default,
-                        answer_form=answer_form,
-                        options=options,
-                        correct_option=correct_option,
-                    )
-                if ask_score >= 1.0:
-                    n_correct += 1
-                per_ask_scores.append(ask_score)
+                ask_score = compute_outcome_reward_v12(
+                    ev["text"], gold_event["gold"],
+                    answer_form=answer_form,
+                    options=options,
+                    correct_option=correct_option,
+                )
+            if ask_score >= 1.0:
+                n_correct += 1
+                event_counts["matched_correct"] += 1
+            else:
+                event_counts["matched_wrong"] += 1
+            per_ask_scores.append(ask_score)
+
+        for pi, ev in enumerate(policy_events):
+            if pi in used_policy:
+                continue
+            ev_chunk = int(ev["chunk"])
+            if any(ev_chunk < int(g["chunk"]) for g in gold_events):
+                event_counts["false_positive_early"] += 1
+            else:
+                event_counts["false_positive_over"] += 1
 
         # Question outcome = mean over its emit chunks (multi: N emits;
         # single: 1 element).
@@ -380,6 +375,7 @@ def compute_trajectory_outcome_v12(
         "n_answered": n_answered,
         "n_correct": n_correct,
         "per_q_outcomes": per_q_outcomes,
+        "event_counts": event_counts,
     }
 
 

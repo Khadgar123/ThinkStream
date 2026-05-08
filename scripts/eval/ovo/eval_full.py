@@ -216,7 +216,8 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None,
     """
     per_chunk = {}
     ask_meta = ask_meta or {}
-    for chunk_idx in range(max_chunk + 1):
+    chunk_idx = 0
+    while chunk_idx <= max_chunk:
         q = ask_chunks.get(chunk_idx)
         try:
             result = loop.step(
@@ -284,6 +285,11 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None,
             per_chunk[chunk_idx] = ("compress", "")
         else:
             per_chunk[chunk_idx] = (action, "")
+        if action == "compress" and result.get("compress_telemetry") and result.get("compress_succeeded"):
+            # Inter-chunk memory management: retry the same video chunk after
+            # successful compression so ask_chunk questions are not skipped.
+            continue
+        chunk_idx += 1
     return per_chunk
 
 

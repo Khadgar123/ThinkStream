@@ -76,7 +76,7 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        videos, active query, or recalled-frame context. Regenerate all
     #        *_messages.jsonl and RL parquets that freeze prompts.
     #   v12.51 (2026-05-07): pass5 splits multi-turn recall SFT into
-    #        recall_query rows with recall tools and recall_answer rows with
+    #        recall_query rows with recall tools and post_recall rows with
     #        no tools plus last-assistant-only loss, matching runtime
     #        post-recall turns and DAgger correction outputs.
     #   v12.52 (2026-05-07): MC option rebalancing also rewrites
@@ -92,6 +92,33 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        current visual think before the recall tool call. This blocks
     #        recall samples whose answer is already visible in the current
     #        frame/context and catches short/non-ASCII answer leaks.
+    #   v12.55 (2026-05-07): streaming prompt explicitly prioritizes recall
+    #        when current visible evidence is insufficient, compression prompt
+    #        states that compress is mandatory on compression turns, and
+    #        pass3c/pass5 render recall_query first-turn thinks as
+    #        current-frame text memory plus action-aware recall decisions
+    #        instead of question-blind visual captions alone. Regenerate
+    #        pass3c or at least pass5 rendered messages.
+    #        The recall-result second turn also uses a separate
+    #        recall_response system prompt with no tool action space.
+    #   v12.56 (2026-05-07): pass5/DAgger use the clearer post_recall metadata
+    #        alias for the no-tools turn after recall, and DAgger can emit
+    #        post_recall empty-answer corrections when the policy over-recalls
+    #        on silent/response targets.
+    #   v12.57 (2026-05-07): pass5 marks recall_query and post_recall with
+    #        separate loss_class metadata. SFT uses loss_class for class
+    #        weighting/diagnostics and masks assistant spans through <|im_end|>
+    #        without also training the following newline.
+    #   v12.58 (2026-05-07): pass5/runtime prompts add explicit mode headers
+    #        for streaming QA, post-recall decision, and memory-maintenance
+    #        compression turns. Regenerate pass5 rendered messages so SFT/RL/eval
+    #        see the stronger mode separation text.
+    #   v12.59 (2026-05-08): pass5/runtime prompts soften recall/compress
+    #        exploration wording after DAgger diagnostics: recall is encouraged
+    #        when historical evidence could help, and compress range selection
+    #        asks for the contiguous range whose replacement least hurts later
+    #        reasoning rather than hard-coding rollout-specific age windows.
+    #        Regenerate pass5 rendered messages and RL/eval parquet prompts.
     #   v12.48 (2026-05-07): pass3b reserves one non-recall HLD/abstention
     #        slot when available, so HLD keeps a reasonable family share
     #        without being counted as successful recall supervision.
@@ -209,9 +236,9 @@ STAGE_VERSIONS: Dict[str, str] = {
     "2":  "v12.35",
     "3a": "v12.44",
     "3b": "v12.49",
-    "3c": "v12.54",
-    "4":  "v12.49",  # canonical key — verification
-    "5":  "v12.52",  # pass5_messages render version
+    "3c": "v12.55",
+    "4":  "v12.58",  # canonical key — verification/final split render
+    "5":  "v12.59",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

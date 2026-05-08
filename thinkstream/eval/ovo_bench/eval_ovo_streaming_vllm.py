@@ -39,8 +39,11 @@ def add_streaming_vllm_args(parser):
     parser.add_argument("--max_chunks", type=int, default=30)
     parser.add_argument("--frames_per_chunk", type=int, default=8)
     parser.add_argument("--max_new_tokens", type=int, default=256)
+    parser.add_argument("--compress_max_new_tokens", type=int, default=512)
     parser.add_argument("--min_pixels", type=int, default=130_000)
     parser.add_argument("--max_pixels", type=int, default=220_000)
+    parser.add_argument("--frame_protocol", "--frame-protocol", default=None)
+    parser.add_argument("--render_layout", "--render-layout", default=None)
     parser.add_argument("--sample", type=int, default=None)
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("--temperature", type=float, default=0.0)
@@ -55,6 +58,7 @@ def add_streaming_vllm_args(parser):
                              "samples can be long; set generously.")
     parser.add_argument("--seed", type=int, default=3407)
     parser.add_argument("--enforce_eager", action="store_true")
+    parser.add_argument("--mm_processor_cache_gb", type=int, default=None)
     return parser
 
 
@@ -82,6 +86,7 @@ if __name__ == "__main__":
         max_model_len=args.max_model_len,
         seed=args.seed,
         enforce_eager=args.enforce_eager,
+        mm_processor_cache_gb=args.mm_processor_cache_gb,
     )
 
     options = [
@@ -98,6 +103,7 @@ if __name__ == "__main__":
         dataset=dataset,
         options=options,
         max_new_tokens=args.max_new_tokens,
+        compress_max_new_tokens=args.compress_max_new_tokens,
         frames_per_chunk=args.frames_per_chunk,
         max_chunks=args.max_chunks,
         min_pixels=args.min_pixels,
@@ -108,6 +114,8 @@ if __name__ == "__main__":
         repetition_penalty=args.repetition_penalty,
         debug=args.debug,
         debug_dir=debug_dir,
+        frame_protocol=args.frame_protocol,
+        render_layout=args.render_layout,
     )
 
     results = build_results(datums, predictions, options)

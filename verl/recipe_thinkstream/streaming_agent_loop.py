@@ -32,7 +32,7 @@
 #   different bottleneck.
 #
 #   1. vLLM mm_processor_cache (CPU, configured via
-#      engine_kwargs.vllm.mm_processor_cache_gb=64 in run_thinkstream_grpo.sh):
+#      engine_kwargs.vllm.mm_processor_cache_gb in run_thinkstream_grpo.sh):
 #        Caches (PIL load + smart_resize + ViT-friendly tensor) per
 #        (frame_path, min_pixels, max_pixels) key. Sliding window means
 #        any single frame reappears in N=visual_window_chunks consecutive
@@ -122,6 +122,7 @@ import json
 import logging
 import os
 import re
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 from uuid import uuid4
@@ -416,11 +417,16 @@ def _register_streaming_agent_loop():
     from thinkstream.data.agent_protocol import (  # type: ignore
         action_space_error_for_turn,
         append_visual_frames,
+        append_query_answer_with_timing,
+        build_user_content,
+        build_recall_result_user_content,
         normalize_frame_protocol,
+        normalize_render_layout,
         parse_agent_output_v12,
         format_memory_block,
         format_queries_block,
         format_user_input_block,
+        query_is_complete,
         system_prompt_for_frame_protocol,
         tools_for_turn,
     )
@@ -428,6 +434,26 @@ def _register_streaming_agent_loop():
         VideoTrajectoryState,
         default_v12_update_state,
     )
+
+    def _runtime_mm_processor_kwargs() -> Dict[str, int]:
+        try:
+            from scripts.agent_data_v5.config import (
+                RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+            )
+        except ImportError:
+            _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+        return {
+            "min_pixels": int(
+                os.environ.get("IMAGE_MIN_PIXELS")
+                or os.environ.get("MIN_PIXELS")
+                or _RTKW["min_pixels"]
+            ),
+            "max_pixels": int(
+                os.environ.get("IMAGE_MAX_PIXELS")
+                or os.environ.get("MAX_PIXELS")
+                or _RTKW["max_pixels"]
+            ),
+        }
 
     class ThinkStreamStreamingAgentLoop(AgentLoopBase):
         """MemAgent-style chunk-level rollout for streaming video."""
@@ -438,15 +464,22 @@ def _register_streaming_agent_loop():
             self.response_length = self.rollout_config.response_length
             self.max_model_len = self.rollout_config.max_model_len or (self.prompt_length + self.response_length)
             # response_length is the stitched trajectory buffer used by verl's
-            # loss tensors. A single chunk action must be much smaller; pass2
-            # uses 1024 for observation and 4096 for compress. Use 4096 as a
-            # safe unified cap so max_model_len checks do not confuse the
-            # whole-trajectory buffer with one vLLM request.
+            # loss tensors. A single chunk action must be much smaller. Keep
+            # normal streaming/recall turns at the SFT/eval budget and give
+            # compression enough room for the JSON summary without letting
+            # ordinary turns drift into long repeated think loops.
             self.max_tokens_per_action = int(
-                os.environ.get("THINKSTREAM_MAX_TOKENS_PER_ACTION", "4096") or 4096
+                os.environ.get("THINKSTREAM_MAX_TOKENS_PER_ACTION", "256") or 256
+            )
+            self.max_tokens_per_compress_action = int(
+                os.environ.get("THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION", "512")
+                or 512
             )
             self.frame_protocol = normalize_frame_protocol(
                 os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image")
+            )
+            self.render_layout = normalize_render_layout(
+                os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard")
             )
             mt = self.rollout_config.multi_turn
             # v12.13 (2026-05-02): verl's MultiTurnConfig dataclass rejects
@@ -604,6 +637,42 @@ def _register_streaming_agent_loop():
             (engine_kwargs.vllm.mm_processor_cache_gb in run_thinkstream_grpo.sh),
             not by rearranging the text blocks.
             """
+            if compress_trigger_range is not None:
+                user_input_text = "<compress_trigger/>"
+            else:
+                user_input_text = self._format_user_input(
+                    chunk_idx, question, ask_chunks, triggered_questions,
+                ) or ""
+            try:
+                mem_snapshot = {
+                    "compressed_segments": state.compressed_summaries,
+                    "compressed": state.compressed_summaries,
+                    "recent_thinks": state.recent_thinks,
+                }
+                mem_text = format_memory_block(mem_snapshot)
+            except Exception:
+                mem_snapshot = {
+                    "compressed_segments": [],
+                    "compressed": [],
+                    "recent_thinks": [],
+                }
+                mem_text = ""
+            _RTKW = _runtime_mm_processor_kwargs()
+            return build_user_content(
+                mem_text,
+                chunk_idx,
+                "",
+                user_input=user_input_text,
+                queries=queries or [],
+                recall_result=recall_result,
+                min_pixels=_RTKW["min_pixels"],
+                max_pixels=_RTKW["max_pixels"],
+                frame_paths=window_paths,
+                frame_protocol=self.frame_protocol,
+                inter_chunk=inter_chunk,
+                memory_snapshot=mem_snapshot,
+                render_layout=self.render_layout,
+            )
             content: List[Dict[str, Any]] = []
 
             # User input — either the question (when it fires) or the bare
@@ -693,12 +762,7 @@ def _register_streaming_agent_loop():
                 # consecutive sliding windows. This is the ONLY visual-
                 # token reuse mechanism we rely on; do not rearrange the
                 # surrounding content blocks for prefix-cache purposes.
-                try:
-                    from scripts.agent_data_v5.config import (
-                        RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
-                    )
-                except ImportError:
-                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+                _RTKW = _runtime_mm_processor_kwargs()
                 append_visual_frames(
                     content,
                     window_paths,
@@ -846,56 +910,15 @@ def _register_streaming_agent_loop():
             """
             rr = recall_payload.get("recall_result") or {}
             rf = recall_payload.get("recalled_frames")  # may be None
-            content: List[Dict[str, Any]] = []
-
-            # 1. <recalled_frames> header text (only when frames exist)
-            if rf:
-                rf_header = json.dumps({
-                    "time_range": rf["time_range"],
-                    "source": rf.get("source", "historical_frames"),
-                    "n_frames": rf["n_frames"],
-                })
-                content.append({
-                    "type": "text",
-                    "text": f"<recalled_frames>{rf_header}</recalled_frames>",
-                })
-                # 2. historical frames via the active frame protocol.
-                try:
-                    from scripts.agent_data_v5.config import (
-                        RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
-                    )
-                except ImportError:
-                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-                tr_start, tr_end = rf["time_range"]
-                append_visual_frames(
-                    content,
-                    rf["frame_paths"],
-                    frame_protocol=self.frame_protocol,
-                    fps=float(self.frames_per_chunk) / float(self.chunk_sec),
-                    start_frame_index=int(tr_start) * self.frames_per_chunk,
-                    total_num_frames=int(tr_end) * self.frames_per_chunk,
-                    context_label="recalled frame",
-                    min_pixels=_RTKW["min_pixels"],
-                    max_pixels=_RTKW["max_pixels"],
-                )
-
-            # 3. <recall_result> text — pass5 puts this AFTER frames
-            #    (v12.11 audit-5 P0 fix). Empty/failure case still emits
-            #    the tag so the model can parse "no result found".
-            rr_json = json.dumps({
-                "source": rr.get("source", "failure"),
-                "time": rr.get("time", ""),
-                "text": rr.get("text_content", rr.get("text", "")),
-            }, ensure_ascii=False)
-            content.append({
-                "type": "text",
-                "text": (
-                    f"\n<recall_result>{rr_json}</recall_result>"
-                    if rf else
-                    f"<recall_result>{rr_json}</recall_result>"
-                ),
-            })
-
+            _RTKW = _runtime_mm_processor_kwargs()
+            content = build_recall_result_user_content(
+                rf,
+                rr,
+                frame_protocol=self.frame_protocol,
+                min_pixels=_RTKW["min_pixels"],
+                max_pixels=_RTKW["max_pixels"],
+                render_layout=self.render_layout,
+            )
             return {"role": "user", "content": content}
 
         def _check_compress_trigger(
@@ -1004,12 +1027,15 @@ def _register_streaming_agent_loop():
                 """Return True when this pending question has enough answers.
 
                 Empty <answer></answer> is a per-chunk silent action, not a
-                terminal event. A question is removed from the pending queue
-                only after a non-empty answer; multi-emit cards need one
-                non-empty answer per expected answer chunk.
+                terminal event. Early answers are logged but do not satisfy an
+                expected answer chunk; multi-emit cards need one countable
+                answer per expected answer chunk.
                 """
                 if q_idx < 0 or q_idx >= len(multi_q_list):
                     return True
+                qlog_i = query_log_idx_by_q.get(q_idx)
+                if qlog_i is not None and 0 <= qlog_i < len(query_log):
+                    return query_is_complete(query_log[qlog_i])
                 q_obj = multi_q_list[q_idx]
                 ans_ch = q_obj.get("answer_chunks") or []
                 if hasattr(ans_ch, "tolist"):
@@ -1116,9 +1142,8 @@ def _register_streaming_agent_loop():
                     break
 
                 # ── Decide turn type: compress trigger fires BETWEEN
-                # chunks. The compress turn still receives the same memory +
-                # visual-window payload shape; only the system prompt and
-                # allowed action differ.
+                # chunks. Compression turns are text-only memory management:
+                # compression-only system prompt + memory-only user payload.
                 compress_range = self._check_compress_trigger(state)
                 inter_chunk = compress_range is not None
 
@@ -1142,6 +1167,22 @@ def _register_streaming_agent_loop():
                 triggered_qs_for_chunk: List[Dict[str, Any]] = []
                 triggered_q_indices_for_chunk: List[int] = []
                 if multi_q_list and not inter_chunk:
+                    new_q_indices = [
+                        int(q_idx)
+                        for q_idx in ask_at_chunk.get(chunk_idx, [])
+                        if int(q_idx) not in query_log_idx_by_q
+                    ]
+                    if new_q_indices:
+                        new_q_set = set(new_q_indices)
+                        pending_q_indices = [
+                            qi for qi in pending_q_indices if qi in new_q_set
+                        ]
+                        for qlog in query_log:
+                            status = str(qlog.get("status", "")).strip().lower()
+                            if status in ("open", "pending", "active"):
+                                qlog["status"] = "replaced"
+                                qlog["closed_at"] = chunk_idx * self.chunk_sec
+                                qlog["close_reason"] = "new_query"
                     for q_idx in ask_at_chunk.get(chunk_idx, []):
                         q_obj = multi_q_list[q_idx]
                         triggered_qs_for_chunk.append(q_obj)
@@ -1196,21 +1237,28 @@ def _register_streaming_agent_loop():
                 )
                 recall_result_for_next = None
 
-                chunk_messages = list(initial_messages)
                 if inter_chunk:
-                    # Preserve the stable raw_prompt prefix for vLLM prefix
-                    # slicing, then add a turn-local system message that
-                    # carries the compression-only policy. The old user-side
-                    # memory-compaction rules are gone; <user_input> contains
-                    # only the bare legacy trigger marker.
-                    chunk_messages.append({
+                    # Compression is a turn-local system event, not a
+                    # continuation of the ordinary streaming prompt. Match
+                    # SFT/runtime exactly: one compression-only system prompt
+                    # plus memory-only user payload. Do not append a second
+                    # system prompt after the initial streaming raw_prompt.
+                    chunk_messages = [{
                         "role": "system",
                         "content": system_prompt_for_frame_protocol(
                             self.frame_protocol,
                             inter_chunk=True,
+                            render_layout=self.render_layout,
                         ),
-                    })
+                    }]
+                else:
+                    chunk_messages = list(initial_messages)
                 chunk_messages.append({"role": "user", "content": user_content})
+                chunk_mm_messages = (
+                    chunk_messages
+                    if inter_chunk
+                    else chunk_messages[len(initial_messages):]
+                )
 
                 # ── chunk-internal ready-loop (v12.13 D1):
                 #
@@ -1237,19 +1285,31 @@ def _register_streaming_agent_loop():
                     # it ALSO includes the appended assistant turn1 + tool
                     # message (recalled frames live in the tool message).
                     chunk_extra_mm = await self.process_vision_info(
-                        chunk_messages[len(initial_messages):],
+                        chunk_mm_messages,
                     )
                     chunk_images = chunk_extra_mm.get("images") or []
                     chunk_videos = chunk_extra_mm.get("videos") or []
 
                     turn_kind = (
-                        "recall_response"
+                        "post_recall"
                         if recall_rounds_this_chunk > 0
                         else ("compress" if inter_chunk else "streaming")
                     )
                     turn_tools = tools_for_turn(turn_kind)
+                    template_messages = chunk_messages
+                    if turn_kind == "post_recall":
+                        template_messages = deepcopy(chunk_messages)
+                        if template_messages and template_messages[0].get("role") == "system":
+                            template_messages[0] = {
+                                "role": "system",
+                                "content": system_prompt_for_frame_protocol(
+                                    self.frame_protocol,
+                                    prompt_kind="post_recall",
+                                    render_layout=self.render_layout,
+                                ),
+                            }
                     chunk_prompt_ids = await self.apply_chat_template(
-                        chunk_messages,
+                        template_messages,
                         tools=turn_tools,
                         images=(initial_images + chunk_images) if chunk_images else (
                             initial_images if initial_images else None
@@ -1267,13 +1327,28 @@ def _register_streaming_agent_loop():
                     if remaining_context <= 0:
                         inner_aborted = True
                         break
-                    user_block_len = len(chunk_prompt_ids) - last_prompt_len
+                    # post_recall swaps in a different turn-local system
+                    # prompt, so its full prompt is not a prefix-extension of
+                    # the previous recall_query prompt. For stitched mode,
+                    # append the whole post-recall prompt as zero-mask context
+                    # instead of slicing by the previous prefix length.
+                    effective_last_prompt_len = (
+                        0
+                        if turn_kind in ("post_recall", "compress")
+                        else last_prompt_len
+                    )
+                    user_block_len = len(chunk_prompt_ids) - effective_last_prompt_len
                     if user_block_len < 0:
                         inner_aborted = True
                         break
                     remaining_response = self.response_length - len(response_mask) - user_block_len - 1
+                    turn_max_tokens = (
+                        self.max_tokens_per_compress_action
+                        if turn_kind == "compress"
+                        else self.max_tokens_per_action
+                    )
                     max_tokens_this_turn = min(
-                        self.max_tokens_per_action,
+                        turn_max_tokens,
                         remaining_context,
                         remaining_response,
                     )
@@ -1309,7 +1384,7 @@ def _register_streaming_agent_loop():
                         break
 
                     # ── Stitch (incremental relative to last_prompt_len).
-                    user_block_ids = chunk_prompt_ids[last_prompt_len:]
+                    user_block_ids = chunk_prompt_ids[effective_last_prompt_len:]
                     response_ids.extend(user_block_ids)
                     response_mask.extend([0] * len(user_block_ids))
                     response_logprobs.extend([0.0] * len(user_block_ids))
@@ -1489,22 +1564,36 @@ def _register_streaming_agent_loop():
                         # (single pending Q → both LIFO/FIFO pick it).
 
                         q_idx = pending_q_indices[chosen_pos]
-                        per_q_answers[q_idx].append({
+                        answer_event: Dict[str, Any] = {
                             "chunk": int(chunk_idx),
                             "text": answer_str,
-                        })
+                        }
                         if per_q_answer_chunk[q_idx] < 0:
                             per_q_answer_chunk[q_idx] = chunk_idx
                             per_q_answer_text[q_idx] = answer_str
                         qlog_i = query_log_idx_by_q.get(q_idx)
                         if qlog_i is not None and 0 <= qlog_i < len(query_log):
-                            query_log[qlog_i].setdefault("answers", []).append({
-                                "text": answer_str,
-                                "time": chunk_idx * self.chunk_sec,
-                            })
-                            query_log[qlog_i]["status"] = (
-                                "answered" if _question_complete(q_idx) else "open"
+                            timing = append_query_answer_with_timing(
+                                query_log[qlog_i],
+                                answer_str,
+                                chunk_idx * self.chunk_sec,
+                                chunk_sec=self.chunk_sec,
                             )
+                            answer_event.update({
+                                "timing": timing.get("timing"),
+                                "expected_chunk": timing.get("expected_chunk"),
+                                "counts_for_completion": bool(
+                                    timing.get("counts_for_completion")
+                                ),
+                            })
+                            if timing.get("lead_chunks") is not None:
+                                answer_event["lead_chunks"] = timing.get("lead_chunks")
+                            if timing.get("delay_chunks") is not None:
+                                answer_event["delay_chunks"] = timing.get("delay_chunks")
+                            query_log[qlog_i]["status"] = (
+                                "answered" if query_is_complete(query_log[qlog_i]) else "open"
+                            )
+                        per_q_answers[q_idx].append(answer_event)
                         if _question_complete(q_idx):
                             pending_q_indices.pop(chosen_pos)
 
@@ -1533,9 +1622,16 @@ def _register_streaming_agent_loop():
                         # System event — don't consume a video chunk.
                         state.chunk_idx = pre_chunk_idx
                     else:
-                        # Append think to recent_thinks for next turn's memory.
+                        # Append only visual-turn think to memory. post_recall
+                        # reasoning is conditioned on retrieved evidence, not a
+                        # fresh frame observation, so it must not become stale
+                        # visual memory for later chunks.
                         think_text = parsed.get("think") or ""
-                        if think_text and kind in ("answer", "recall", "unknown"):
+                        if (
+                            think_text
+                            and turn_kind != "post_recall"
+                            and kind in ("answer", "recall", "unknown")
+                        ):
                             item = {"chunk": chunk_idx, "text": think_text}
                             state.recent_thinks.append(item)
                             state.think_archive.append(dict(item))

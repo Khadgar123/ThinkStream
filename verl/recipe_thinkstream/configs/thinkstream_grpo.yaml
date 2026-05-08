@@ -135,9 +135,9 @@ actor_rollout_ref:
     # also chews enormous KV at the wrong size, which is the root of the
     # downstream IndexError observed at startup.
     #
-    # Per-turn budget under v12.12 RUNTIME profile:
-    #   compress turn (worst): 5K input + 4K output = 9K
-    #   obs+recall (worst):   15K input + 1K output = 16K
+    # Per-turn budget under v12.50 RUNTIME profile:
+    #   compress turn (typical): 5K input + 512 output
+    #   obs+recall (typical):   15K input + 256 output
     # max_model_len 32K leaves 2× headroom for tokenizer drift / KV planner.
     # Each chunk is an INDEPENDENT generate (recipe header line 11-44),
     # so we don't need 360 × per_turn — only the single largest turn.

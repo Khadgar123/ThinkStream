@@ -24,7 +24,9 @@ import io
 import json
 import logging
 import os
+import random
 import re
+import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -481,7 +483,7 @@ def _per_chunk_action_avg(
             if turn_i < len(turn_kinds)
             else ""
         )
-        if turn_kind == "recall_response":
+        if turn_kind in {"recall_response", "post_recall"}:
             # The recall-response assistant turn is conditioned on the prior
             # tool result; answer correctness/timing scores it. The action
             # decision to train here is the preceding recall tool_call.
@@ -538,6 +540,357 @@ def _per_chunk_action_avg(
     if not scores:
         return None
     return sum(scores) / len(scores)
+
+
+def _coerce_float(v: Any) -> Optional[float]:
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return None
+
+
+def _parse_tool_time_range(kind: str, args: Dict[str, Any]) -> Optional[tuple[float, float]]:
+    tr = (args or {}).get("time_range")
+    if kind == "recall":
+        if not isinstance(tr, str):
+            return None
+        m = re.fullmatch(r"\s*([0-9]+(?:\.[0-9]+)?)\s*-\s*([0-9]+(?:\.[0-9]+)?)\s*", tr)
+        if not m:
+            return None
+        start = _coerce_float(m.group(1))
+        end = _coerce_float(m.group(2))
+    else:
+        if not isinstance(tr, (list, tuple)) or len(tr) != 2:
+            return None
+        start = _coerce_float(tr[0])
+        end = _coerce_float(tr[1])
+    if start is None or end is None:
+        return None
+    return start, end
+
+
+def _turn_current_chunk(extra: Dict[str, Any], turn_i: int) -> Optional[int]:
+    video_indices = _safe_list(extra.get("ts_chunk_video_indices"))
+    event_indices = _safe_list(extra.get("ts_chunk_event_indices"))
+    for values in (video_indices, event_indices):
+        if turn_i >= len(values):
+            continue
+        try:
+            chunk = int(values[turn_i])
+        except (TypeError, ValueError):
+            continue
+        if chunk >= 0:
+            return chunk
+    try:
+        n_chunks = int(extra.get("n_chunks") or -1)
+    except (TypeError, ValueError):
+        n_chunks = -1
+    return max(0, n_chunks - 1) if n_chunks > 0 else None
+
+
+def _tool_time_range_runtime_ok(
+    kind: str,
+    args: Dict[str, Any],
+    *,
+    current_chunk: Optional[int],
+    chunk_sec: float = 1.0,
+) -> bool:
+    """Check only runtime-safe range constraints, not teacher/gold agreement.
+
+    This keeps RL exploration open: non-gold ranges are allowed. Recall may be
+    broad as long as it can touch observed memory. Compress is stricter because
+    its range is written back into memory as summary provenance: it must be
+    fully within already observed past time.
+    """
+    tr = _parse_tool_time_range(kind, args)
+    if tr is None:
+        return False
+    start, end = tr
+    if start < 0 or end <= start:
+        return False
+    if current_chunk is None:
+        return True
+    if kind == "compress":
+        # Compression fires before processing current_chunk. Only chunks
+        # strictly before current_chunk are in recent_thinks and safe to cover.
+        compressible_end = max(0.0, float(current_chunk) * chunk_sec)
+        return start >= 0.0 and end <= compressible_end
+    observed_start = 0.0
+    observed_end = max(0.0, (float(current_chunk) + 1.0) * chunk_sec)
+    return start < observed_end and end > observed_start
+
+
+def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
+    """Minimal RL format reward for framework executability.
+
+    Positive credit means the turn can be parsed and executed. Negative credit
+    is reserved for failures that break or stall rollout: malformed v12 output,
+    illegal turn-local action, or tool time ranges that cannot touch observed
+    memory. It intentionally does not compare query text or time_range against
+    gold labels.
+    """
+    from thinkstream.data.agent_protocol import parse_agent_output_v12
+
+    chunks = _split_assistant_chunks(solution_str)
+    if not chunks:
+        return -1.0
+    action_errors = _safe_list(extra.get("ts_chunk_action_space_errors"))
+    scores: List[float] = []
+    for turn_i, text in enumerate(chunks):
+        parsed = parse_agent_output_v12(text)
+        action_error = (
+            str(action_errors[turn_i] or "").strip()
+            if turn_i < len(action_errors)
+            else ""
+        )
+        if parsed.get("format_error") or action_error:
+            scores.append(-1.0)
+            continue
+        kind = str(parsed.get("kind") or "")
+        if kind in {"recall", "compress"}:
+            args = (parsed.get("tool_call") or {}).get("arguments") or {}
+            ok = _tool_time_range_runtime_ok(
+                kind,
+                args,
+                current_chunk=_turn_current_chunk(extra, turn_i),
+            )
+            scores.append(1.0 if ok else -1.0)
+        else:
+            scores.append(1.0)
+    return min(scores) if any(s < 0.0 for s in scores) else 1.0
+
+
+_RL_ROLLOUT_AUDIT_COUNT = 0
+
+
+def _env_float(name: str, default: float) -> float:
+    try:
+        return float(os.environ.get(name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(os.environ.get(name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
+def _short_text(value: Any, max_chars: int = 600) -> str:
+    text = "" if value is None else str(value)
+    if max_chars <= 0 or len(text) <= max_chars:
+        return text
+    return f"{text[:max_chars]}...<truncated chars={len(text)}>"
+
+
+def _jsonable(value: Any) -> Any:
+    if hasattr(value, "tolist"):
+        value = value.tolist()
+    if isinstance(value, dict):
+        return {str(k): _jsonable(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_jsonable(v) for v in value]
+    if isinstance(value, (str, int, float, bool)) or value is None:
+        return value
+    return str(value)
+
+
+def _summarize_questions_for_audit(questions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    out: List[Dict[str, Any]] = []
+    for q in questions[: _env_int("THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_QUESTIONS", 64)]:
+        out.append({
+            "card_id": q.get("card_id") or q.get("id") or q.get("qid"),
+            "family": q.get("family") or q.get("question_family") or q.get("answer_form"),
+            "question": _short_text(q.get("question") or q.get("query") or "", 500),
+            "ask_chunks": _jsonable(_safe_list(q.get("ask_chunks"))),
+            "answer_chunks": _jsonable(_safe_list(q.get("answer_chunks"))),
+            "answer_form": q.get("answer_form"),
+            "correct_option": q.get("correct_option"),
+            "gold_answer": _short_text(q.get("gold_answer") or q.get("answer") or "", 500),
+            "per_emit_answers": _jsonable(_safe_list(q.get("per_emit_answers"))),
+        })
+    return out
+
+
+def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List[Dict[str, Any]]:
+    try:
+        from thinkstream.data.agent_protocol import parse_agent_output_v12
+    except Exception:  # noqa: BLE001
+        parse_agent_output_v12 = None
+
+    texts = _safe_list(extra.get("ts_chunk_asst_texts"))
+    if not texts:
+        texts = _split_assistant_chunks(solution_str)
+    kinds = _safe_list(extra.get("ts_chunk_kinds"))
+    turn_kinds = _safe_list(extra.get("ts_chunk_turn_kinds"))
+    action_errors = _safe_list(extra.get("ts_chunk_action_space_errors"))
+    video_indices = _safe_list(extra.get("ts_chunk_video_indices"))
+    event_indices = _safe_list(extra.get("ts_chunk_event_indices"))
+    max_turns = _env_int("THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_TURNS", 240)
+
+    out: List[Dict[str, Any]] = []
+    for i, raw in enumerate(texts[:max_turns]):
+        text = str(raw or "")
+        parsed = parse_agent_output_v12(text) if parse_agent_output_v12 else {}
+        kind = str(parsed.get("kind") or (kinds[i] if i < len(kinds) else "") or "")
+        item: Dict[str, Any] = {
+            "turn": i,
+            "kind": kind,
+            "rollout_kind": kinds[i] if i < len(kinds) else None,
+            "turn_kind": turn_kinds[i] if i < len(turn_kinds) else None,
+            "video_chunk": video_indices[i] if i < len(video_indices) else None,
+            "event_chunk": event_indices[i] if i < len(event_indices) else None,
+            "action_space_error": action_errors[i] if i < len(action_errors) else "",
+            "format_error": parsed.get("format_error"),
+            "think": _short_text(parsed.get("think") or "", 360),
+            "assistant_text": _short_text(text, 1000),
+        }
+        if kind == "answer":
+            item["answer_text"] = _short_text(parsed.get("answer_text") or "", 500)
+        elif kind in {"recall", "compress"}:
+            tool_call = parsed.get("tool_call") or {}
+            args = tool_call.get("arguments") or {}
+            item["tool_name"] = tool_call.get("name")
+            item["tool_args"] = _jsonable(args)
+            item["time_range_runtime_ok"] = _tool_time_range_runtime_ok(
+                kind,
+                args,
+                current_chunk=_turn_current_chunk(extra, i),
+            )
+        out.append(item)
+    if len(texts) > max_turns:
+        out.append({"truncated_turns": len(texts) - max_turns})
+    return out
+
+
+def _audit_reasons(result: Dict[str, float], extra: Dict[str, Any]) -> List[str]:
+    reasons: List[str] = []
+    score = float(result.get("score", 0.0) or 0.0)
+    outcome = float(result.get("outcome", 0.0) or 0.0)
+    fmt = float(result.get("format", 0.0) or 0.0)
+    action_space = float(result.get("action_space", 0.0) or 0.0)
+    n_questions = int(float(result.get("n_questions", 0.0) or 0.0))
+    n_answered = int(float(result.get("n_answered", 0.0) or 0.0))
+
+    if fmt < 0:
+        reasons.append("format_invalid")
+    if action_space < 0:
+        reasons.append("action_space_error")
+    if n_questions and n_answered < n_questions:
+        reasons.append("unanswered_questions")
+    if score > _env_float("THINKSTREAM_RL_AUDIT_HIGH_SCORE", 0.35) and outcome < 0.2:
+        reasons.append("high_score_low_outcome")
+    if outcome >= 0.9 and score < 0:
+        reasons.append("good_outcome_negative_total")
+
+    action_errors = [
+        str(x) for x in _safe_list(extra.get("ts_chunk_action_space_errors"))
+        if str(x or "").strip()
+    ]
+    if action_errors and "action_space_error" not in reasons:
+        reasons.append("action_space_error")
+
+    per_q_answers = _safe_list(extra.get("ts_per_q_answers"))
+    for per_q in per_q_answers:
+        for ev in _safe_list(per_q):
+            if not isinstance(ev, dict):
+                continue
+            timing = str(ev.get("timing") or "")
+            if timing == "early":
+                reasons.append("early_answer")
+                break
+            if ev.get("counts_for_completion") is False:
+                reasons.append("non_counted_answer")
+                break
+
+    n_recall = float(extra.get("ts_n_recall") or 0.0)
+    n_compress = float(extra.get("ts_n_compress") or 0.0)
+    if n_recall > _env_float("THINKSTREAM_RL_AUDIT_RECALL_SPAM", 12.0):
+        reasons.append("recall_spam")
+    if n_compress > _env_float("THINKSTREAM_RL_AUDIT_COMPRESS_SPAM", 8.0):
+        reasons.append("compress_spam")
+
+    # Keep stable order while removing duplicates.
+    seen: set[str] = set()
+    return [r for r in reasons if not (r in seen or seen.add(r))]
+
+
+def _append_jsonl_locked(path: Path, record: Dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    line = json.dumps(record, ensure_ascii=False, default=str)
+    with open(path, "a", encoding="utf-8", buffering=1) as f:
+        try:
+            import fcntl
+            fcntl.flock(f, fcntl.LOCK_EX)
+        except Exception:  # noqa: BLE001
+            pass
+        f.write(line + "\n")
+        try:
+            import fcntl
+            fcntl.flock(f, fcntl.LOCK_UN)
+        except Exception:  # noqa: BLE001
+            pass
+
+
+def _maybe_audit_rl_rollout(
+    *,
+    data_source: str,
+    extra: Dict[str, Any],
+    solution_str: str,
+    ground_truth: Any,
+    result: Dict[str, float],
+    questions: Optional[List[Dict[str, Any]]] = None,
+) -> None:
+    """Sample reward-time rollout records for manual reward-hack audits."""
+    global _RL_ROLLOUT_AUDIT_COUNT
+    audit_path = (
+        os.environ.get("THINKSTREAM_RL_ROLLOUT_AUDIT_PATH")
+        or os.environ.get("THINKSTREAM_RL_ROLLOUT_AUDIT")
+    )
+    if not audit_path:
+        return
+    max_records = _env_int("THINKSTREAM_RL_ROLLOUT_AUDIT_MAX", 2000)
+    if max_records >= 0 and _RL_ROLLOUT_AUDIT_COUNT >= max_records:
+        return
+
+    reasons = _audit_reasons(result, extra)
+    prob = max(0.0, min(1.0, _env_float("THINKSTREAM_RL_ROLLOUT_AUDIT_PROB", 0.01)))
+    random_sample = random.random() < prob
+    if not reasons and not random_sample:
+        return
+
+    _RL_ROLLOUT_AUDIT_COUNT += 1
+    max_solution_chars = _env_int("THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_CHARS", 16000)
+    record = {
+        "ts": time.time(),
+        "pid": os.getpid(),
+        "experiment_name": extra.get("experiment_name") or os.environ.get("THINKSTREAM_EXPERIMENT_NAME"),
+        "sample_reason": reasons or ["random"],
+        "data_source": data_source,
+        "video_id": extra.get("video_id") or extra.get("trajectory_id") or extra.get("index"),
+        "index": extra.get("index"),
+        "reward": _jsonable(result),
+        "counts": {
+            "n_questions": result.get("n_questions"),
+            "n_answered": result.get("n_answered"),
+            "n_recall": extra.get("ts_n_recall"),
+            "n_compress": extra.get("ts_n_compress"),
+            "chunks_used": extra.get("ts_chunks_used"),
+            "chunks_with_frames": extra.get("ts_chunks_with_frames"),
+            "chunks_text_only": extra.get("ts_chunks_text_only"),
+            "chunks_compress_inter": extra.get("ts_chunks_compress_inter"),
+        },
+        "questions": _summarize_questions_for_audit(questions or []),
+        "per_q_answers": _jsonable(_safe_list(extra.get("ts_per_q_answers"))),
+        "turns": _summarize_turns_for_audit(extra, solution_str),
+        "solution": _short_text(solution_str, max_solution_chars),
+        "ground_truth": _jsonable(_coerce_ground_truth(ground_truth)),
+    }
+    try:
+        _append_jsonl_locked(Path(audit_path), record)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("failed to write RL rollout audit sample: %s", e)
 
 
 def _outcome_gate(parts: Dict[str, float]) -> float:
@@ -670,7 +1023,10 @@ def _score_one_question(
             answer_chunks_int.append(int(x))
         except (TypeError, ValueError):
             continue
-    window_marks = ask_chunks_int + answer_chunks_int
+    # Timing is anchored on answer_chunks. The query may be active earlier
+    # for forward/wait cards, but an answer before the expected answer chunk
+    # is early, not on-time.
+    window_marks = answer_chunks_int or ask_chunks_int
     visible_start = min(window_marks) if window_marks else None
     visible_end = max(window_marks) if window_marks else None
 
@@ -682,6 +1038,10 @@ def _score_one_question(
     # v12_rewards.compute_outcome_reward_v12 only if our dispatcher
     # raises (defensive — should be a no-op in practice).
     if not answered:
+        outcome = 0.0
+    elif visible_start is not None and answered_chunk < visible_start:
+        # Correct text before the answer evidence/time is still an early
+        # response; do not give outcome credit for it.
         outcome = 0.0
     else:
         try:
@@ -700,11 +1060,11 @@ def _score_one_question(
             except Exception:
                 outcome = 0.0
 
-    # Timing — bucket the answered_chunk vs the visible window
-    # (now bracketed by both ask_chunks AND answer_chunks).
+    # Timing — bucket the answered_chunk against expected answer chunks.
     timing = float(rewards["timing"](
         answered_chunk if answered_chunk >= 0 else None,
         visible_start, visible_end,
+        late_window_chunks=2,
     ))
 
     # Silent quality — audit P1.6: per-Q silent decision.
@@ -777,7 +1137,13 @@ def _score_one_question_events(
             chunk = int(e.get("chunk", -1))
         except (TypeError, ValueError):
             chunk = -1
-        events.append({"chunk": chunk, "text": text})
+        events.append({
+            "chunk": chunk,
+            "text": text,
+            "timing": str(e.get("timing") or ""),
+            "counts_for_completion": e.get("counts_for_completion"),
+            "expected_chunk": e.get("expected_chunk"),
+        })
     events.sort(key=lambda x: int(x.get("chunk", -1)))
     if not events:
         return _score_one_question(
@@ -792,20 +1158,74 @@ def _score_one_question_events(
         except (TypeError, ValueError):
             continue
     answer_chunks_int = sorted(answer_chunks_int)
+    ask_chunks = _safe_list(q.get("ask_chunks"))
+    ask_chunks_int: List[int] = []
+    for x in ask_chunks:
+        try:
+            ask_chunks_int.append(int(x))
+        except (TypeError, ValueError):
+            continue
     per_emit = _safe_list(q.get("per_emit_answers"))
     is_multi = len(answer_chunks_int) > 1 or len(per_emit) > 1
+    gold_default = q.get("gold_answer", "") or ""
     if not is_multi:
-        first = events[0]
-        return _score_one_question(
+        expected_chunk = (
+            answer_chunks_int[-1]
+            if answer_chunks_int else
+            (max(ask_chunks_int) if ask_chunks_int else -1)
+        )
+        early_events = [
+            ev for ev in events
+            if expected_chunk >= 0 and int(ev.get("chunk", -1)) < expected_chunk
+        ]
+        first = next(
+            (ev for ev in events if int(ev.get("chunk", -1)) >= expected_chunk),
+            events[0],
+        )
+        extra_events = [
+            ev for ev in events
+            if ev is not first and ev not in early_events
+        ]
+        sub = _score_one_question(
             rewards,
             q=q,
             model_answer=str(first.get("text", "")),
             answered_chunk=int(first.get("chunk", -1)),
         )
+        if early_events and int(first.get("chunk", -1)) >= expected_chunk:
+            early = early_events[0]
+            early_timing = float(rewards["timing"](
+                int(early.get("chunk", -1)),
+                expected_chunk,
+                expected_chunk,
+                late_window_chunks=2,
+            ))
+            sub["timing"] = min(float(sub["timing"]), early_timing)
+            try:
+                early_silent = float(rewards["silent_quality"](
+                    str(early.get("text", "")),
+                    "silent",
+                    gold_default,
+                ))
+                sub["silent_quality"] = min(float(sub["silent_quality"]), early_silent)
+            except Exception:
+                pass
+        if extra_events:
+            sub["timing"] = min(float(sub["timing"]), -1.0)
+            try:
+                over_silent = min(
+                    float(rewards["silent_quality"](
+                        str(ev.get("text", "")), "silent", gold_default,
+                    ))
+                    for ev in extra_events
+                )
+                sub["silent_quality"] = min(float(sub["silent_quality"]), over_silent)
+            except Exception:
+                pass
+        return sub
 
     options = _safe_list(q.get("options"))
     correct_option = q.get("correct_option", "")
-    gold_default = q.get("gold_answer", "") or ""
     answer_form = q.get("answer_form", "") or ""
     chunk_gold = {
         int(e["chunk"]): str(e.get("value", gold_default))
@@ -827,8 +1247,10 @@ def _score_one_question_events(
     outcome_scores: List[float] = []
     timing_scores: List[float] = []
     silent_scores: List[float] = []
+    fp_timing_scores: List[float] = []
+    fp_silent_scores: List[float] = []
     for i, emit_chunk in enumerate(target_chunks):
-        lo = emit_chunk - slack
+        lo = emit_chunk
         hi = emit_chunk + slack
         if i + 1 < len(target_chunks):
             hi = min(hi, target_chunks[i + 1] - 1)
@@ -859,15 +1281,42 @@ def _score_one_question_events(
             gold_answer=gold_for_emit,
             answer_form=answer_form,
         )))
-        timing_scores.append(float(rewards["timing"](ev_chunk, emit_chunk, hi)))
+        timing_scores.append(float(rewards["timing"](
+            ev_chunk, emit_chunk, emit_chunk, late_window_chunks=slack,
+        )))
         silent_scores.append(float(rewards["silent_quality"](
             model_answer, "response", gold_for_emit,
         )))
 
+    for ei, ev in enumerate(events):
+        if ei in used_event_idx:
+            continue
+        ev_chunk = int(ev.get("chunk", -1))
+        early_by_meta = str(ev.get("timing") or "") == "early"
+        later_targets = [t for t in target_chunks if ev_chunk < int(t)]
+        early_by_chunk = bool(later_targets) and ev.get("counts_for_completion") is not True
+        if early_by_meta or early_by_chunk:
+            expected_chunk = min(later_targets) if later_targets else target_chunks[0]
+            fp_timing_scores.append(float(rewards["timing"](
+                ev_chunk, expected_chunk, expected_chunk, late_window_chunks=slack,
+            )))
+        else:
+            fp_timing_scores.append(-1.0)
+        fp_silent_scores.append(float(rewards["silent_quality"](
+            str(ev.get("text", "")), "silent", gold_default,
+        )))
+
+    timing = sum(timing_scores) / len(timing_scores)
+    silent_quality = sum(silent_scores) / len(silent_scores)
+    if fp_timing_scores:
+        timing = min(timing, min(fp_timing_scores))
+    if fp_silent_scores:
+        silent_quality = min(silent_quality, min(fp_silent_scores))
+
     return {
         "outcome": sum(outcome_scores) / len(outcome_scores),
-        "timing": sum(timing_scores) / len(timing_scores),
-        "silent_quality": sum(silent_scores) / len(silent_scores),
+        "timing": timing,
+        "silent_quality": silent_quality,
         "answered": 1.0 if used_event_idx else 0.0,
     }
 
@@ -931,12 +1380,10 @@ def _compute_score_multi_q(
     avg_timing = sum(per_q_timing) / n_q
     avg_silent = sum(per_q_silent) / n_q
 
-    # Format + spam are trajectory-level (not per-Q).
-    chunks = _split_assistant_chunks(solution_str)
-    try:
-        fmt = float(rewards["format"](chunks))
-    except Exception:
-        fmt = 0.0
+    # Format + spam are trajectory-level (not per-Q). Format is a minimal
+    # framework-executability signal: parse/action-space/runtime time_range
+    # validity, without gold range/query matching.
+    fmt = float(_framework_format_score(extra, solution_str))
     tool_counts = _count_tool_calls(solution_str)
     try:
         spam = float(rewards["spam"](
@@ -1052,9 +1499,18 @@ def compute_score(
                 q = q.tolist()
             if isinstance(q, dict):
                 norm.append({k: q[k] for k in q.keys()})
-        return _compute_score_multi_q(
+        result = _compute_score_multi_q(
             rewards, weights, norm, extra, solution_str,
         )
+        _maybe_audit_rl_rollout(
+            data_source=data_source,
+            extra=extra,
+            solution_str=solution_str,
+            ground_truth=ground_truth,
+            result=result,
+            questions=norm,
+        )
+        return result
 
     # Fall back to the trajectory index if extra_info doesn't carry the bundle
     # (e.g., when verl strips dict columns down to scalars at parquet load).
@@ -1137,7 +1593,7 @@ def compute_score(
             correct_option=correct_option,
         )
         parts["timing"] = rewards["timing"](answer_chunk, visible_start, visible_end)
-        parts["format"] = rewards["format"](chunks)
+        parts["format"] = _framework_format_score(extra, solution_str)
         parts["spam"] = rewards["spam"](
             n_recall_calls=tool_counts["recall"],
             n_compress_calls=tool_counts["compress"],
@@ -1179,11 +1635,28 @@ def compute_score(
     # has already been folded into `total` via the GDPO α-mix above —
     # we don't return a separate per-chunk vector because there's no
     # per-token broadcast hook in the new framework.
-    return {
+    result = {
         "score": total,
         **{k: float(v) for k, v in parts.items()},
         "outcome_gate": float(gate),
     }
+    single_question = {
+        "question": extra.get("question", ""),
+        "ask_chunks": ask_chunks,
+        "answer_chunks": extra.get("answer_chunks") or [],
+        "answer_form": answer_form,
+        "correct_option": correct_option,
+        "gold_answer": gold_answer,
+    }
+    _maybe_audit_rl_rollout(
+        data_source=data_source,
+        extra=extra,
+        solution_str=solution_str,
+        ground_truth=ground_truth,
+        result=result,
+        questions=[single_question],
+    )
+    return result
 
 
 if __name__ == "__main__":

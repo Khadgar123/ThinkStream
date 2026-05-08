@@ -365,13 +365,24 @@ def recall_query_prompt(card: Dict) -> str:
         tr = f"{int(min(grounding) * AGENT_CHUNK_SEC)}-{int((max(grounding) + 1) * AGENT_CHUNK_SEC)}"
     else:
         tr = ""
-    return f"""Generate a retrieval query for this question.
+    return f"""Generate a retrieval query for this historical-recall question.
 
 Question: {card.get('question', '')}
 Approximate time range of evidence: {tr or 'unknown'}
 
-Output 3-5 discriminative keywords (entity descriptions + action anchors).
-NO answer values, NO pronouns, NO articles.
+The query is used only to FIND the past evidence. It must not contain the
+answer itself.
+
+Rules:
+- Output 3-5 discriminative keywords: visible entity descriptions, scene
+  anchors, object names, and actions near the evidence.
+- Do NOT include answer values, correct-option text, exact OCR/number/color
+  values being asked for, or words that trivially reveal the answer.
+- If the question asks "what text/number/color/state/count", query for the
+  surrounding object/action/location instead of the target value.
+- NO pronouns, NO articles, NO full sentence.
+- time_range must be the provided historical range and must end before the
+  current ask chunk.
 
 Output JSON ONLY (one line):
 {{"query": "keyword1 keyword2 keyword3", "time_range": "{tr}"}}"""

@@ -44,17 +44,23 @@ from typing import Any, Dict, Iterable, List, Optional
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
+    append_video_metadata_frame_list,
     format_memory_block,
     format_queries_block,
     format_user_input_block,
     append_visual_frames,
     build_recalled_frames_metadata,
+    infer_video_metadata,
     normalize_frame_protocol,
     select_recall_chunks,
     system_prompt_for_frame_protocol,
 )
 
 logger = logging.getLogger(__name__)
+
+RENDER_LAYOUT_STANDARD = "standard"
+RENDER_LAYOUT_TIMELINE_VIDEO = "timeline_video"
+RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD = "timeline_video_imagepad"
 
 # Project layout:
 #   <batch_root>/                         (DEFAULT_DATA_DIR)
@@ -232,12 +238,567 @@ def _normalise_assistant_output(sample: Dict) -> str:
     return replacement + output
 
 
+def _runtime_mm_kwargs() -> Dict[str, int]:
+    try:
+        from scripts.agent_data_v5.config import RUNTIME_MM_PROCESSOR_KWARGS as _RTKW
+    except ImportError:
+        return {"min_pixels": 130_000, "max_pixels": 220_000}
+    return {
+        "min_pixels": int(_RTKW.get("min_pixels", 130_000)),
+        "max_pixels": int(_RTKW.get("max_pixels", 220_000)),
+    }
+
+
+def _visual_window_start(chunk_idx: int) -> int:
+    try:
+        from scripts.agent_data_v5.config import (
+            VISUAL_WINDOW_CHUNKS as _VWC,
+            compute_visual_window_start as _cvws,
+        )
+    except ImportError:
+        return max(0, int(chunk_idx) - 15)
+    return int(_cvws(int(chunk_idx), _VWC))
+
+
+def _infer_visual_frame_paths(
+    sample: Dict[str, Any],
+    data_dir: Path,
+    *,
+    frame_rel_prefix: str,
+) -> List[str]:
+    inp = sample.get("input") or {}
+    vw = inp.get("visual_window") or {}
+    if "frame_paths" in vw:
+        return list(vw.get("frame_paths") or [])
+    if "frames" not in vw:
+        return []
+    vid = sample.get("video_id", "")
+    if not vid:
+        return []
+    chunk_idx = int(sample.get("chunk_idx", 0) or 0)
+    paths: List[str] = []
+    for ci in range(_visual_window_start(chunk_idx), chunk_idx + 1):
+        for fi in range(FRAMES_PER_CHUNK):
+            fnum = ci * FRAMES_PER_CHUNK + fi + 1
+            paths.append(f"{frame_rel_prefix}/{vid}/frame_{fnum:06d}.jpg")
+    return paths
+
+
+def _group_frames_by_chunk(
+    frame_paths: List[str],
+    *,
+    window_start: int,
+) -> Dict[int, List[str]]:
+    grouped: Dict[int, List[str]] = {}
+    for offset, path in enumerate(frame_paths):
+        chunk = int(window_start) + int(offset // FRAMES_PER_CHUNK)
+        grouped.setdefault(chunk, []).append(path)
+    return grouped
+
+
+def _coerce_timeline_think(item: Any) -> Optional[Dict[str, Any]]:
+    if isinstance(item, dict):
+        text = str(item.get("text") or item.get("observation") or "").strip()
+        if not text:
+            return None
+        try:
+            chunk = int(item.get("chunk"))
+        except (TypeError, ValueError):
+            chunk = None
+        time_text = str(item.get("time") or "").strip()
+        if chunk is None and time_text:
+            m = re.match(r"\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)", time_text)
+            if m:
+                chunk = int(float(m.group(1)) // float(AGENT_CHUNK_SEC))
+        if chunk is None:
+            return None
+        return {"chunk": chunk, "time": time_text, "text": text}
+    raw = str(item or "").strip()
+    if not raw:
+        return None
+    m = re.match(r"^\[(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\]\s*(.*)$", raw, re.DOTALL)
+    if m:
+        start = float(m.group(1))
+        end = float(m.group(2))
+        text = m.group(3).strip()
+        return {
+            "chunk": int(start // float(AGENT_CHUNK_SEC)),
+            "time": (
+                f"{int(start) if start.is_integer() else start}-"
+                f"{int(end) if end.is_integer() else end}"
+            ),
+            "text": text,
+        }
+    return {"chunk": 0, "time": "", "text": raw}
+
+
+def _segment_chunks(seg: Dict[str, Any]) -> List[int]:
+    out: List[int] = []
+    for raw in seg.get("source_chunks") or seg.get("chunks") or []:
+        try:
+            out.append(int(raw))
+        except (TypeError, ValueError):
+            continue
+    if out:
+        return sorted(set(out))
+    tr = seg.get("time_range") or []
+    if isinstance(tr, list) and len(tr) == 2:
+        try:
+            start = int(float(tr[0]) // float(AGENT_CHUNK_SEC))
+            end = int((float(tr[1]) - 1e-9) // float(AGENT_CHUNK_SEC))
+            return list(range(max(0, start), max(0, end) + 1))
+        except (TypeError, ValueError):
+            return []
+    return []
+
+
+def _format_summary_capsule(seg: Dict[str, Any], idx: int) -> str:
+    chunks = _segment_chunks(seg)
+    if chunks:
+        start = min(chunks) * AGENT_CHUNK_SEC
+        end = (max(chunks) + 1) * AGENT_CHUNK_SEC
+        time_range = f"{int(start)}-{int(end)}"
+    else:
+        tr = seg.get("time_range") or ["?", "?"]
+        time_range = f"{tr[0]}-{tr[1]}"
+    text = str(seg.get("text") or "").strip()
+    lines = [
+        f"<SUMMARY time_range={json.dumps(time_range, ensure_ascii=False)}>",
+        text,
+    ]
+    lines.append("</SUMMARY>")
+    return "\n".join(lines)
+
+
+def _format_memory_think_capsule(rec: Dict[str, Any]) -> str:
+    chunk = int(rec.get("chunk", 0) or 0)
+    time_text = str(rec.get("time") or "").strip()
+    if not time_text:
+        start = chunk * AGENT_CHUNK_SEC
+        time_text = f"{int(start)}"
+    elif "-" in time_text:
+        time_text = time_text.split("-", 1)[0].strip()
+    text = str(rec.get("text") or "").strip()
+    return f"<MEMORY_THINK time={json.dumps(time_text)}>{text}</MEMORY_THINK>"
+
+
+def _timeline_system_prompt(
+    *,
+    frame_protocol: str,
+    prompt_kind: Optional[str],
+    inter_chunk: bool,
+    render_layout: str = RENDER_LAYOUT_TIMELINE_VIDEO,
+) -> str:
+    prompt = system_prompt_for_frame_protocol(
+        frame_protocol,
+        prompt_kind=prompt_kind,
+        inter_chunk=inter_chunk,
+    )
+    if render_layout == RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD:
+        carrier = (
+            "Each turn you receive: a time-ordered timeline with tagged memory "
+            "capsules and time-marked visual chunks. Each visual chunk contains "
+            "the pre-sampled image-pad frames for one second. Summary capsules "
+            "are historical memory at their covered time range; recalled "
+            "evidence is newly retrieved for the current decision but cites "
+            "older time ranges. Use the last visual chunk as the primary source "
+            "for current observation. Single-step visual and memory tags use "
+            "time points, while multi-step summaries and recalled evidence use "
+            "time ranges. Timeline tags never expose frame or chunk ids. "
+            "Temporal metadata is routing metadata only: never copy or "
+            "paraphrase timestamp markers or metadata lines in your output. "
+        )
+    else:
+        carrier = (
+            "Each turn you receive: a time-ordered timeline with tagged memory "
+            "capsules and one or more pre-sampled video blocks. Each video block uses "
+            "Qwen video_metadata (fps, frames_indices, total_num_frames) to carry "
+            "absolute frame timestamps. Summary capsules are historical memory at "
+            "their covered time range; recalled evidence is newly retrieved for the "
+            "current decision but cites older time ranges. Use the last "
+            "visual chunk as the primary source for current observation. Single-step "
+            "visual and memory tags use time points, while multi-step summaries "
+            "and recalled evidence use time ranges. Timeline tags never expose "
+            "frame or chunk ids. Temporal metadata is routing metadata only: "
+            "never copy or paraphrase timestamp markers or metadata lines in "
+            "your output. "
+        )
+    prompt = prompt.replace(
+        "Each turn you receive: a pre-sampled video block (recent 16s window) + "
+        "tagged memory state. The video block uses Qwen video_metadata (fps, "
+        "frames_indices, total_num_frames) to carry frame timestamps; use those "
+        "timestamps together with <visual_window>.current_time to identify the "
+        "current chunk. Temporal metadata is routing metadata only: never copy or "
+        "paraphrase timestamp markers, frame indices, role markers, or metadata "
+        "lines in your output. ",
+        carrier,
+    )
+    return (
+        prompt.replace("current <visual_window>", "current visual chunks")
+        .replace("the current <visual_window>", "the current visual chunks")
+        .replace("current visual window", "current visual chunks")
+        .replace("original current visual window", "original current visual chunks")
+    )
+
+
+def _append_video_typed_imagepad_frame_list(
+    content: List[Dict[str, Any]],
+    frames: List[str],
+    *,
+    min_pixels: int,
+    max_pixels: int,
+) -> None:
+    for frame in frames:
+        item: Dict[str, Any] = {
+            "type": "video",
+            "image": frame,
+            "visual_carrier": "image_pad",
+        }
+        if min_pixels is not None:
+            item["min_pixels"] = min_pixels
+        if max_pixels is not None:
+            item["max_pixels"] = max_pixels
+        content.append(item)
+
+
+def _append_chunk_video_block(
+    content: List[Dict[str, Any]],
+    *,
+    frames: List[str],
+    chunk: int,
+    current_chunk: int,
+    role: str,
+    min_pixels: int,
+    max_pixels: int,
+    imagepad_video_type: bool = False,
+) -> None:
+    start = chunk * AGENT_CHUNK_SEC
+    end = start + AGENT_CHUNK_SEC
+    content.append({
+        "type": "text",
+        "text": f"\n<VISUAL_CHUNK time=\"{int(start)}\">",
+    })
+    fps = float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC))
+    if imagepad_video_type:
+        _append_video_typed_imagepad_frame_list(
+            content,
+            frames,
+            min_pixels=min_pixels,
+            max_pixels=max_pixels,
+        )
+    else:
+        append_video_metadata_frame_list(
+            content,
+            frames,
+            fps=fps,
+            start_frame_index=chunk * FRAMES_PER_CHUNK,
+            total_num_frames=(current_chunk + 1) * FRAMES_PER_CHUNK,
+            min_pixels=min_pixels,
+            max_pixels=max_pixels,
+        )
+    content.append({"type": "text", "text": "</VISUAL_CHUNK>"})
+
+
+def _append_recalled_video_blocks(
+    content: List[Dict[str, Any]],
+    *,
+    rf: Dict[str, Any],
+    base_path: Path,
+    data_dir: Path,
+    min_pixels: int,
+    max_pixels: int,
+    imagepad_video_type: bool = False,
+) -> None:
+    if "frame_paths" not in rf:
+        return
+    frame_paths = _resolve_paths(rf["frame_paths"], base_path, data_dir)
+    tr0, tr1 = rf["time_range"]
+    start_chunk = int(float(tr0) // float(AGENT_CHUNK_SEC))
+    grouped = _group_frames_by_chunk(frame_paths, window_start=start_chunk)
+    for chunk in sorted(grouped):
+        start = chunk * AGENT_CHUNK_SEC
+        end = start + AGENT_CHUNK_SEC
+        content.append({
+            "type": "text",
+            "text": (
+                f"\n<RECALLED_CHUNK time=\"{int(start)}\">"
+            ),
+        })
+        fps = float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC))
+        total_num_frames = max(
+            int(float(tr1) * FRAMES_PER_CHUNK),
+            (chunk + 1) * FRAMES_PER_CHUNK,
+        )
+        if imagepad_video_type:
+            _append_video_typed_imagepad_frame_list(
+                content,
+                grouped[chunk],
+                min_pixels=min_pixels,
+                max_pixels=max_pixels,
+            )
+        else:
+            append_video_metadata_frame_list(
+                content,
+                grouped[chunk],
+                fps=fps,
+                start_frame_index=chunk * FRAMES_PER_CHUNK,
+                total_num_frames=total_num_frames,
+                min_pixels=min_pixels,
+                max_pixels=max_pixels,
+            )
+        content.append({"type": "text", "text": "</RECALLED_CHUNK>"})
+
+
+def _append_recall_result_text(content: List[Dict[str, Any]], rr: Dict[str, Any]) -> None:
+    rr_json = json.dumps({
+        "source": rr.get("source", ""),
+        "time": rr.get("time", ""),
+        "text": rr.get("text_content", rr.get("text", "")),
+    }, ensure_ascii=False)
+    content.append({
+        "type": "text",
+        "text": f"\n<recall_result>{rr_json}</recall_result>",
+    })
+
+
+def _build_timeline_user_content(
+    sample: Dict[str, Any],
+    base_path: Path,
+    data_dir: Path,
+    *,
+    frame_rel_prefix: str,
+    include_legacy_recall: bool,
+    render_layout: str = RENDER_LAYOUT_TIMELINE_VIDEO,
+    imagepad_video_type: bool = False,
+) -> List[Dict[str, Any]]:
+    inp = sample["input"]
+    chunk_idx = int(sample.get("chunk_idx", 0) or 0)
+    inter_chunk = bool(sample.get("v12_inter_chunk", False))
+    mm = _runtime_mm_kwargs()
+    content: List[Dict[str, Any]] = []
+
+    if inp.get("user_input"):
+        user_input_block = format_user_input_block(
+            inp["user_input"],
+            inter_chunk=inter_chunk,
+        )
+        if user_input_block:
+            content.append({"type": "text", "text": user_input_block.lstrip("\n")})
+
+    memory = inp.get("memory", {}) or {}
+    compressed = list(memory.get("compressed_segments", memory.get("compressed", [])) or [])
+    recent = [
+        rec for rec in (
+            _coerce_timeline_think(item)
+            for item in (memory.get("recent_thinks", memory.get("recent_observations", [])) or [])
+        )
+        if rec is not None
+    ]
+    recent_by_chunk: Dict[int, List[Dict[str, Any]]] = {}
+    for rec in recent:
+        recent_by_chunk.setdefault(int(rec["chunk"]), []).append(rec)
+
+    visual_by_chunk: Dict[int, List[str]] = {}
+    window_start = _visual_window_start(chunk_idx)
+    if not inter_chunk:
+        frame_paths = _infer_visual_frame_paths(
+            sample,
+            data_dir,
+            frame_rel_prefix=frame_rel_prefix,
+        )
+        frame_paths = _resolve_paths(frame_paths, base_path, data_dir)
+        visual_by_chunk = _group_frames_by_chunk(frame_paths, window_start=window_start)
+
+    summary_by_chunk: Dict[int, List[str]] = {}
+    for idx, seg in enumerate(compressed, start=1):
+        chunks = _segment_chunks(seg)
+        start_chunk = min(chunks) if chunks else 0
+        summary_by_chunk.setdefault(start_chunk, []).append(_format_summary_capsule(seg, idx))
+
+    timeline_chunks = sorted(set(summary_by_chunk) | set(recent_by_chunk) | set(visual_by_chunk))
+    in_memory_timeline = False
+
+    def _open_memory_timeline() -> None:
+        nonlocal in_memory_timeline
+        if not in_memory_timeline:
+            content.append({"type": "text", "text": "\n<memory>" if content else "<memory>"})
+            in_memory_timeline = True
+
+    def _close_memory_timeline() -> None:
+        nonlocal in_memory_timeline
+        if in_memory_timeline:
+            content.append({"type": "text", "text": "\n</memory>"})
+            in_memory_timeline = False
+
+    for chunk in timeline_chunks:
+        summary_capsules = summary_by_chunk.get(chunk, [])
+        if summary_capsules:
+            _open_memory_timeline()
+            for capsule in summary_capsules:
+                content.append({"type": "text", "text": f"\n{capsule}"})
+        if chunk in visual_by_chunk:
+            _close_memory_timeline()
+            role = "current" if chunk == chunk_idx else "older_context"
+            _append_chunk_video_block(
+                content,
+                frames=visual_by_chunk[chunk],
+                chunk=chunk,
+                current_chunk=chunk_idx,
+                role=role,
+                min_pixels=mm["min_pixels"],
+                max_pixels=mm["max_pixels"],
+                imagepad_video_type=imagepad_video_type,
+            )
+            if chunk < chunk_idx:
+                recent_recs = recent_by_chunk.get(chunk, [])
+                if recent_recs:
+                    _open_memory_timeline()
+                    for rec in recent_recs:
+                        content.append({"type": "text", "text": f"\n{_format_memory_think_capsule(rec)}"})
+        else:
+            recent_recs = recent_by_chunk.get(chunk, [])
+            if recent_recs:
+                _open_memory_timeline()
+                for rec in recent_recs:
+                    content.append({"type": "text", "text": f"\n{_format_memory_think_capsule(rec)}"})
+    _close_memory_timeline()
+
+    queries = inp.get("queries", [])
+    if queries and not inter_chunk:
+        qt = format_queries_block(queries)
+        if qt:
+            content.append({"type": "text", "text": f"\n{qt}"})
+
+    if include_legacy_recall and not inter_chunk:
+        rf = _normalise_recalled_frames(inp, float(AGENT_CHUNK_SEC))
+        if rf:
+            rf_header = json.dumps({
+                "time_range": rf["time_range"],
+                "source": rf.get("source", "historical_frames"),
+                "n_frames": rf["n_frames"],
+                "current_step_chunk": chunk_idx,
+            })
+            content.append({
+                "type": "text",
+                "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
+            })
+            _append_recalled_video_blocks(
+                content,
+                rf=rf,
+                base_path=base_path,
+                data_dir=data_dir,
+                min_pixels=mm["min_pixels"],
+                max_pixels=mm["max_pixels"],
+                imagepad_video_type=imagepad_video_type,
+            )
+        if inp.get("recall_result"):
+            _append_recall_result_text(content, inp["recall_result"])
+
+    return content
+
+
+def _build_timeline_video_messages(
+    sample: Dict[str, Any],
+    base_path: Path,
+    *,
+    data_dir: Path,
+    render_layout: str = RENDER_LAYOUT_TIMELINE_VIDEO,
+) -> List[Dict[str, Any]]:
+    frame_rel_prefix = _frame_rel_prefix(data_dir)
+    inp = sample["input"]
+    inter_chunk = bool(sample.get("v12_inter_chunk", False))
+    is_recall_multiturn = (
+        sample.get("sample_type") == "recall"
+        and "v12_assistant_turn_1" in sample
+    )
+    prompt_kind = (
+        "post_recall"
+        if (
+            sample.get("sample_type") == "recall_response"
+            or sample.get("sample_type") == "post_recall"
+            or (inp.get("recall_result") and not is_recall_multiturn)
+        )
+        else None
+    )
+    messages: List[Dict[str, Any]] = [{
+        "role": "system",
+        "content": [{
+            "type": "text",
+            "text": _timeline_system_prompt(
+                frame_protocol="video_meta",
+                prompt_kind=prompt_kind,
+                inter_chunk=inter_chunk,
+                render_layout=render_layout,
+            ),
+        }],
+    }]
+    messages.append({
+        "role": "user",
+        "content": _build_timeline_user_content(
+            sample,
+            base_path,
+            data_dir,
+            frame_rel_prefix=frame_rel_prefix,
+            include_legacy_recall=not is_recall_multiturn,
+            render_layout=render_layout,
+            imagepad_video_type=(
+                render_layout == RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD
+            ),
+        ),
+    })
+
+    if is_recall_multiturn:
+        messages.append({
+            "role": "assistant",
+            "content": [{"type": "text", "text": sample["v12_assistant_turn_1"]}],
+        })
+        rr = sample.get("recall_result") or inp.get("recall_result") or {}
+        tool_payload: List[Dict[str, Any]] = []
+        rf = _normalise_recalled_frames(inp, float(AGENT_CHUNK_SEC))
+        mm = _runtime_mm_kwargs()
+        if rf:
+            rf_header = json.dumps({
+                "time_range": rf["time_range"],
+                "source": rf.get("source", "historical_frames"),
+                "n_frames": rf["n_frames"],
+                "current_step_chunk": sample.get("chunk_idx"),
+            })
+            tool_payload.append({
+                "type": "text",
+                "text": f"<recalled_frames>{rf_header}</recalled_frames>",
+            })
+            _append_recalled_video_blocks(
+                tool_payload,
+                rf=rf,
+                base_path=base_path,
+                data_dir=data_dir,
+                min_pixels=mm["min_pixels"],
+                max_pixels=mm["max_pixels"],
+                imagepad_video_type=(
+                    render_layout == RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD
+                ),
+            )
+        _append_recall_result_text(tool_payload, rr)
+        messages.append({"role": "user", "content": tool_payload})
+        messages.append({
+            "role": "assistant",
+            "content": [{"type": "text", "text": sample["v12_assistant_turn_2"]}],
+        })
+    else:
+        messages.append({
+            "role": "assistant",
+            "content": [{"type": "text", "text": _normalise_assistant_output(sample)}],
+        })
+    return messages
+
+
 def build_messages(
     sample: Dict,
     base_path: Path,
     *,
     data_dir: Optional[Path] = None,
     frame_protocol: str = "ts_image",
+    render_layout: str = RENDER_LAYOUT_STANDARD,
 ) -> List[Dict]:
     """Produce v12 ShareGPT messages for one sample. Stdlib-only.
 
@@ -247,6 +808,23 @@ def build_messages(
     protocol-selected visual frames, recalled frames, then recall_result.
     """
     data_dir = data_dir or DEFAULT_DATA_DIR
+    if render_layout in {
+        RENDER_LAYOUT_TIMELINE_VIDEO,
+        RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
+    }:
+        protocol = normalize_frame_protocol(frame_protocol)
+        if protocol != "video_meta":
+            raise ValueError(
+                f"{render_layout} render_layout requires frame_protocol=video_meta"
+            )
+        return _build_timeline_video_messages(
+            sample,
+            base_path,
+            data_dir=data_dir,
+            render_layout=render_layout,
+        )
+    if render_layout != RENDER_LAYOUT_STANDARD:
+        raise ValueError(f"Unsupported render_layout={render_layout!r}")
     frame_rel_prefix = _frame_rel_prefix(data_dir)
 
     inp = sample["input"]
@@ -265,6 +843,18 @@ def build_messages(
                 "type": "text",
                 "text": system_prompt_for_frame_protocol(
                     frame_protocol,
+                    prompt_kind=(
+                        "post_recall"
+                        if (
+                            sample.get("sample_type") == "recall_response"
+                            or sample.get("sample_type") == "post_recall"
+                            or (
+                                inp.get("recall_result")
+                                and not is_recall_multiturn
+                            )
+                        )
+                        else None
+                    ),
                     inter_chunk=inter_chunk,
                 ),
             }],
@@ -596,15 +1186,27 @@ def _with_sft_turn_policy(
     tool_schema_mode: str,
     loss_assistant_turns: str = "all",
     sft_subtype: str = "",
+    loss_class: str = "",
     sample_id_suffix: str = "",
 ) -> Dict[str, Any]:
     """Attach row-local tool schema + label-mask policy metadata."""
     row["tool_schema_mode"] = tool_schema_mode
     row["loss_assistant_turns"] = loss_assistant_turns
+    if not loss_class:
+        subtype = str(sft_subtype or row.get("sft_subtype") or "").strip().lower()
+        if "recall_query" in subtype:
+            loss_class = "recall"
+        elif "post_recall" in subtype or subtype in {"recall_answer", "recall_response"}:
+            loss_class = "post_recall"
+        else:
+            loss_class = str(row.get("sample_type") or "")
+    if loss_class:
+        row["loss_class"] = loss_class
     if sft_subtype:
         row["sft_subtype"] = sft_subtype
         meta = dict(row.get("metadata") or {})
         meta["sft_subtype"] = sft_subtype
+        meta["loss_class"] = loss_class
         meta["loss_assistant_turns"] = loss_assistant_turns
         row["metadata"] = meta
     if sample_id_suffix:
@@ -612,6 +1214,111 @@ def _with_sft_turn_policy(
         if sid:
             row["sample_id"] = f"{sid}:{sample_id_suffix}"
     return row
+
+
+def _recall_action_think_for_sample(sample: Dict, visual_think: str = "") -> str:
+    """Action-aware first-turn think for recall_query SFT rows."""
+    base = str(visual_think or "").strip()
+    low = base.lower()
+    if "visible evidence" in low and "recall" in low:
+        return base
+    if sample.get("action") == "silent" or sample.get("base_role") == "recall_silent":
+        decision = (
+            "Current visible evidence is insufficient to "
+            "answer the active query. The answer may not have appeared yet, "
+            "so I will recall elapsed history once and stay silent if still "
+            "unsupported."
+        )
+    else:
+        decision = (
+            "Current visible evidence is insufficient to answer the active "
+            "query because the needed evidence is historical, so I will "
+            "recall the earlier window rather than guess."
+        )
+    return f"{base} {decision}".strip()
+
+
+def _extract_first_think(text: str) -> str:
+    if not isinstance(text, str):
+        return ""
+    match = re.search(
+        r"<think>(.*?)</think>",
+        text,
+        flags=re.DOTALL,
+    )
+    return match.group(1).strip() if match else ""
+
+
+def _replace_first_think(text: str, think: str) -> str:
+    if not isinstance(text, str):
+        return text
+    replaced, n = re.subn(
+        r"<think>.*?</think>",
+        f"<think>{think}</think>",
+        text,
+        count=1,
+        flags=re.DOTALL,
+    )
+    return replaced if n else text
+
+
+def _rewrite_recall_query_turn1_think(sample: Dict, messages: List[Dict]) -> None:
+    """Rewrite the first recall assistant turn in-place for old bank samples.
+
+    Existing trajectory banks may carry pass2's question-blind visual think in
+    v12_assistant_turn_1. Rewriting at pass5 render time lets us regenerate
+    better SFT/DAgger messages without rerunning pass3.
+    """
+    for msg in messages:
+        if msg.get("role") != "assistant":
+            continue
+        content = msg.get("content") or []
+        if not isinstance(content, list):
+            continue
+        for item in content:
+            if not isinstance(item, dict) or "text" not in item:
+                continue
+            text = item.get("text") or ""
+            if '"name": "recall"' in text or '"name":"recall"' in text:
+                think = _recall_action_think_for_sample(
+                    sample,
+                    _extract_first_think(text),
+                )
+                item["text"] = _replace_first_think(text, think)
+                return
+
+
+def _set_system_prompt_kind(
+    messages: List[Dict],
+    *,
+    frame_protocol: str,
+    prompt_kind: str,
+    render_layout: str = RENDER_LAYOUT_STANDARD,
+) -> None:
+    """Replace the first system prompt in-place for turn-local prompt kinds."""
+    if not messages or messages[0].get("role") != "system":
+        return
+    if render_layout in {
+        RENDER_LAYOUT_TIMELINE_VIDEO,
+        RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
+    }:
+        prompt = _timeline_system_prompt(
+            frame_protocol=frame_protocol,
+            prompt_kind=prompt_kind,
+            inter_chunk=False,
+            render_layout=render_layout,
+        )
+    else:
+        prompt = system_prompt_for_frame_protocol(
+            frame_protocol,
+            prompt_kind=prompt_kind,
+        )
+    content = messages[0].get("content")
+    if isinstance(content, list) and content:
+        if isinstance(content[0], dict):
+            content[0]["text"] = prompt
+            return
+    messages[0]["content"] = [{"type": "text", "text": prompt}]
 
 
 def _is_recall_multiturn_messages(sample: Dict, messages: List[Dict]) -> bool:
@@ -626,11 +1333,24 @@ def _is_recall_multiturn_messages(sample: Dict, messages: List[Dict]) -> bool:
     )
 
 
+def _is_post_recall_single_turn(sample: Dict) -> bool:
+    """Rows that already represent the no-tools answer turn after recall."""
+    stype = str(sample.get("sample_type") or "").strip().lower()
+    if stype in {"post_recall", "recall_response", "recall_answer"}:
+        return True
+    subtype = str(sample.get("sft_subtype") or "").strip().lower()
+    if "post_recall" in subtype or subtype in {"recall_response", "recall_answer"}:
+        return True
+    inp = sample.get("input") or {}
+    return bool(inp.get("recall_result")) and stype != "recall"
+
+
 def build_sft_rows(
     sample: Dict,
     messages: List[Dict],
     *,
     frame_protocol: str,
+    render_layout: str = RENDER_LAYOUT_STANDARD,
 ) -> List[Dict]:
     """Return one or more runtime-aligned SFT rows for a rendered sample.
 
@@ -639,37 +1359,57 @@ def build_sft_rows(
     both the recall tool call and the post-recall answer in one sample without
     leaking recall tools into the second assistant turn. Split it:
       - recall_query: first assistant turn only, recall schema available;
-      - recall_answer: full prefix including recall_result, no tool schema,
-        loss only on the final assistant turn.
+      - post_recall: full prefix including recall_result, no tool schema,
+        loss only on the final assistant decision turn.
     """
     if _is_recall_multiturn_messages(sample, messages):
-        first_messages = deepcopy(messages[:3])
+        aligned_messages = deepcopy(messages)
+        _rewrite_recall_query_turn1_think(sample, aligned_messages)
+
+        first_messages = deepcopy(aligned_messages[:3])
         first_row = _emit_row(sample, first_messages, frame_protocol=frame_protocol)
         _with_sft_turn_policy(
             first_row,
             tool_schema_mode="streaming",
             loss_assistant_turns="all",
             sft_subtype="recall_query",
+            loss_class="recall",
             sample_id_suffix="recall_query",
         )
 
-        second_messages = deepcopy(messages)
+        second_messages = deepcopy(aligned_messages)
+        _set_system_prompt_kind(
+            second_messages,
+            frame_protocol=frame_protocol,
+            prompt_kind="post_recall",
+            render_layout=render_layout,
+        )
         second_row = _emit_row(sample, second_messages, frame_protocol=frame_protocol)
         _with_sft_turn_policy(
             second_row,
-            tool_schema_mode="recall_response",
+            tool_schema_mode="post_recall",
             loss_assistant_turns="last",
-            sft_subtype="recall_answer",
-            sample_id_suffix="recall_answer",
+            sft_subtype="post_recall",
+            loss_class="post_recall",
+            sample_id_suffix="post_recall",
         )
         return [first_row, second_row]
 
     row = _emit_row(sample, deepcopy(messages), frame_protocol=frame_protocol)
+    if _is_post_recall_single_turn(sample):
+        tool_schema_mode = "post_recall"
+        sft_subtype = "post_recall"
+    elif sample.get("v12_inter_chunk"):
+        tool_schema_mode = "compress"
+        sft_subtype = str(sample.get("sample_type") or "")
+    else:
+        tool_schema_mode = "streaming"
+        sft_subtype = str(sample.get("sample_type") or "")
     _with_sft_turn_policy(
         row,
-        tool_schema_mode="compress" if sample.get("v12_inter_chunk") else "streaming",
+        tool_schema_mode=tool_schema_mode,
         loss_assistant_turns="all",
-        sft_subtype=str(sample.get("sample_type") or ""),
+        sft_subtype=sft_subtype,
     )
     return [row]
 
@@ -839,6 +1579,7 @@ def convert(
     limit: Optional[int] = None,
     balance_sft: bool = False,
     frame_protocol: str = "ts_image",
+    render_layout: str = RENDER_LAYOUT_STANDARD,
 ) -> Dict[str, int]:
     data_dir = data_dir or DEFAULT_DATA_DIR
     iter_fn = _iter_trajectories if is_trajectory else _iter_flat
@@ -864,6 +1605,7 @@ def convert(
                     base_path,
                     data_dir=data_dir,
                     frame_protocol=frame_protocol,
+                    render_layout=render_layout,
                 )
             except (KeyError, ValueError) as exc:
                 counts["failed"] += 1
@@ -872,9 +1614,18 @@ def convert(
                     logger.warning(f"[{src.name}] sample {sid} skipped: {exc}")
                 continue
 
-            for row in build_sft_rows(sample, messages, frame_protocol=frame_protocol):
+            for row in build_sft_rows(
+                sample,
+                messages,
+                frame_protocol=frame_protocol,
+                render_layout=render_layout,
+            ):
                 if limit and counts["ok"] >= limit:
                     break
+                row["render_layout"] = render_layout
+                meta = dict(row.get("metadata") or {})
+                meta["render_layout"] = render_layout
+                row["metadata"] = meta
                 out.write(json.dumps(row, ensure_ascii=False) + "\n")
                 counts["ok"] += 1
                 by_type[row["sample_type"]] = by_type.get(row["sample_type"], 0) + 1
@@ -942,6 +1693,23 @@ def main() -> None:
             "with video_metadata. Teacher pass caches are unchanged."
         ),
     )
+    parser.add_argument(
+        "--render-layout",
+        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", RENDER_LAYOUT_STANDARD),
+        choices=[
+            RENDER_LAYOUT_STANDARD,
+            RENDER_LAYOUT_TIMELINE_VIDEO,
+            RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
+        ],
+        help=(
+            "User payload layout. standard keeps the existing block order; "
+            "timeline_video keeps frame_protocol=video_meta but splits extracted "
+            "frames into time-ordered type=video chunk blocks and places summary/"
+            "memory/recall tags around that timeline. timeline_video_imagepad "
+            "uses type=video items with image-pad frame carriers plus timestamp "
+            "text instead of Qwen video_metadata blocks."
+        ),
+    )
     parser.add_argument("--base-path", default=str(PROJECT_ROOT),
                         help="Project root for resolving relative video/frame paths. "
                         "Generated samples store frame paths relative to the repo "
@@ -957,6 +1725,17 @@ def main() -> None:
     base_path = _resolve_cli_path(args.base_path)
     data_dir = final_dir.parent if final_dir.name == "final" else DEFAULT_DATA_DIR
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
+    render_layout = str(args.render_layout or RENDER_LAYOUT_STANDARD)
+    if (
+        render_layout in {
+            RENDER_LAYOUT_TIMELINE_VIDEO,
+            RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
+        }
+        and frame_protocol != "video_meta"
+    ):
+        raise SystemExit(
+            f"--render-layout {render_layout} requires --frame-protocol video_meta"
+        )
     if not final_dir.exists():
         raise SystemExit(f"final dir not found: {final_dir}")
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -986,13 +1765,15 @@ def main() -> None:
         dst = output_dir / f"{out_stem}.jsonl"
         logger.info(
             f"Converting {src.name} → {dst} "
-            f"(is_trajectory={is_traj}, frame_protocol={frame_protocol})"
+            f"(is_trajectory={is_traj}, frame_protocol={frame_protocol}, "
+            f"render_layout={render_layout})"
         )
         balance = out_stem == "train_sft_messages" and not args.no_balance_sft
         counts = convert(src, dst, is_trajectory=is_traj, base_path=base_path,
                          data_dir=data_dir,
                          limit=args.limit or None, balance_sft=balance,
-                         frame_protocol=frame_protocol)
+                         frame_protocol=frame_protocol,
+                         render_layout=render_layout)
         logger.info(
             f"  ok={counts['ok']} failed={counts['failed']} by_type={counts['by_type']}"
         )
@@ -1007,6 +1788,7 @@ def main() -> None:
             "source_final_dir": str(final_dir),
             "output_dir": str(output_dir),
             "frame_protocol": frame_protocol,
+            "render_layout": render_layout,
             "splits": splits_done,
         }, ensure_ascii=False, indent=2))
         logger.info(f"Wrote dataset_info.json → {output_dir / 'dataset_info.json'}")

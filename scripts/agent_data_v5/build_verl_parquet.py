@@ -34,6 +34,7 @@ from __future__ import annotations
 import argparse
 import json
 import gzip
+import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, Iterator, List
@@ -50,6 +51,7 @@ if str(_REPO) not in sys.path:
 
 from thinkstream.data.agent_protocol import (  # noqa: E402
     normalize_frame_protocol,
+    normalize_render_layout,
     system_prompt_for_frame_protocol,
 )
 
@@ -65,8 +67,12 @@ def _iter_rows(
     max_questions_per_traj: int,
     *,
     frame_protocol: str,
+    render_layout: str,
 ) -> Iterator[Dict[str, Any]]:
-    system_prompt = system_prompt_for_frame_protocol(frame_protocol)
+    system_prompt = system_prompt_for_frame_protocol(
+        frame_protocol,
+        render_layout=render_layout,
+    )
     with _open_jsonl(jsonl_path) as f:
         for line in f:
             line = line.strip()
@@ -163,6 +169,7 @@ def _iter_rows(
                         "support_chunks": list(q.get("support_chunks") or []),
                         "answer_chunks": list(q.get("answer_chunks") or []),
                         "per_emit_answers": list(q.get("per_emit_answers") or []),
+                        "render_layout": render_layout,
                     },
                     # verl convention: reward_model.ground_truth is what the
                     # reward function receives as `ground_truth`. Use a dict
@@ -184,6 +191,7 @@ def _iter_rows(
                     },
                     "data_source": "thinkstream_v12_streaming",
                     "frame_protocol": frame_protocol,
+                    "render_layout": render_layout,
                 }
 
 
@@ -192,6 +200,7 @@ def _iter_rows_multi_q(
     max_questions_per_traj: int,
     *,
     frame_protocol: str,
+    render_layout: str,
 ) -> Iterator[Dict[str, Any]]:
     """Multi-Q trajectory rows: 1 video → 1 row containing ALL questions.
 
@@ -215,7 +224,10 @@ def _iter_rows_multi_q(
     question's text into <user_input> at its `ask_chunk`; compute_score
     then evaluates each Q independently and aggregates (mean by default).
     """
-    system_prompt = system_prompt_for_frame_protocol(frame_protocol)
+    system_prompt = system_prompt_for_frame_protocol(
+        frame_protocol,
+        render_layout=render_layout,
+    )
     with _open_jsonl(jsonl_path) as f:
         for line in f:
             line = line.strip()
@@ -290,6 +302,7 @@ def _iter_rows_multi_q(
                     "questions": q_targets,
                     "gold_action_per_chunk": gold_action,
                     "all_ask_chunks": sorted(set(all_ask_chunks)),
+                    "render_layout": render_layout,
                 },
                 "reward_model": {
                     "ground_truth": json.dumps({
@@ -300,6 +313,7 @@ def _iter_rows_multi_q(
                 },
                 "data_source": "thinkstream_v12_streaming_multi_q",
                 "frame_protocol": frame_protocol,
+                "render_layout": render_layout,
             }
 
 
@@ -332,8 +346,14 @@ def main() -> int:
             "THINKSTREAM_FRAME_PROTOCOL at training/eval time."
         ),
     )
+    ap.add_argument(
+        "--render-layout",
+        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard"),
+        help="Prompt layout: standard, timeline_video, or timeline_video_imagepad.",
+    )
     args = ap.parse_args()
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
+    render_layout = normalize_render_layout(args.render_layout)
 
     in_path = Path(args.jsonl)
     out_path = Path(args.out)
@@ -344,12 +364,14 @@ def main() -> int:
             in_path,
             max_questions_per_traj=args.max_questions_per_traj,
             frame_protocol=frame_protocol,
+            render_layout=render_layout,
         )
         if args.multi_q
         else _iter_rows(
             in_path,
             max_questions_per_traj=args.max_questions_per_traj,
             frame_protocol=frame_protocol,
+            render_layout=render_layout,
         )
     )
     rows: List[Dict[str, Any]] = list(iterator)
@@ -363,7 +385,7 @@ def main() -> int:
     print(
         f"[build_verl_parquet] {in_path.name}: {len(rows)} {shape_label} rows "
         f"→ {out_path} ({out_path.stat().st_size/1024:.1f} KiB, "
-        f"frame_protocol={frame_protocol})"
+        f"frame_protocol={frame_protocol}, render_layout={render_layout})"
     )
     return 0
 

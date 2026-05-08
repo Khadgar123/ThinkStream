@@ -16,12 +16,14 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import os
 from typing import Dict, List, Iterator, Optional
 
 from torch.utils.data import Dataset
 
 from thinkstream.data.agent_protocol import (
     normalize_frame_protocol,
+    normalize_render_layout,
     system_prompt_for_frame_protocol,
     tools_for_turn,
 )
@@ -42,10 +44,14 @@ class ThinkStreamRLDataset(Dataset):
         *,
         max_questions_per_traj: int = 5,
         frame_protocol: str = "ts_image",
+        render_layout: Optional[str] = None,
     ):
         self.path = Path(annotation_path)
         self.max_questions_per_traj = max_questions_per_traj
         self.frame_protocol = normalize_frame_protocol(frame_protocol)
+        self.render_layout = normalize_render_layout(
+            render_layout or os.environ.get("THINKSTREAM_RENDER_LAYOUT")
+        )
         self._index: List[Dict] = self._load(self.path)
 
     def _load(self, path: Path) -> List[Dict]:
@@ -125,7 +131,8 @@ class ThinkStreamRLDataset(Dataset):
                 {
                     "role": "system",
                     "content": system_prompt_for_frame_protocol(
-                        self.frame_protocol
+                        self.frame_protocol,
+                        render_layout=self.render_layout,
                     ),
                 },
             ],
@@ -138,6 +145,7 @@ class ThinkStreamRLDataset(Dataset):
                 "seed_state": seed_state,
                 "tools": tools_for_turn("streaming"),
                 "frame_protocol": self.frame_protocol,
+                "render_layout": self.render_layout,
             },
         }
 

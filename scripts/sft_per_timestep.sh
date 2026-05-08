@@ -58,6 +58,14 @@
 #                 Uses weighted loss instead of physically duplicating rows.
 #   CLASS_LOSS_ALPHA / CLASS_LOSS_MAX_WEIGHT
 #               - Reweighting strength and clamp.
+#   COMPRESS_TOKEN_WEIGHTING
+#               - True by default. Redistributes compress assistant loss so
+#                 tool/action/schema/closing tokens get more weight and the
+#                 free-form summary body gets less.
+#   COMPRESS_STRUCTURE_TOKEN_WEIGHT / COMPRESS_BODY_TOKEN_WEIGHT
+#   COMPRESS_CLOSE_TOKEN_WEIGHT / COMPRESS_CLOSE_TAIL_TOKENS
+#               - Fine-grained compress token weights. Defaults:
+#                 structure=2.0, body=0.35, close=4.0, close_tail=24.
 #   GROUP_BY_MODALITY
 #               - 1 by default. Keeps text-only compress rows and visual rows
 #                 in separate global batches to avoid ZeRO3 ranks taking
@@ -117,14 +125,34 @@ FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
 INCLUDE_FAILED_VERIFICATION="${INCLUDE_FAILED_VERIFICATION:-False}"
 MAX_SAMPLE_TOKENS="${MAX_SAMPLE_TOKENS:-16384}"
 TORCH_EMPTY_CACHE_STEPS="${TORCH_EMPTY_CACHE_STEPS:-0}"
-CLASS_LOSS_TARGET_RATIOS="${CLASS_LOSS_TARGET_RATIOS:-}"
+# Macro action balance: silent/response/recall/compress = 0.25 each.
+# Recall is split into tool-call and post-recall no-tools answer rows in pass5,
+# so the two recall subtypes share the 0.25 macro bucket.
+CLASS_LOSS_TARGET_RATIOS="${CLASS_LOSS_TARGET_RATIOS:-silent=0.25,response=0.25,recall=0.125,post_recall=0.125,compress=0.25}"
 CLASS_LOSS_ALPHA="${CLASS_LOSS_ALPHA:-1.0}"
 CLASS_LOSS_MAX_WEIGHT="${CLASS_LOSS_MAX_WEIGHT:-8.0}"
+COMPRESS_TOKEN_WEIGHTING="${COMPRESS_TOKEN_WEIGHTING:-True}"
+COMPRESS_STRUCTURE_TOKEN_WEIGHT="${COMPRESS_STRUCTURE_TOKEN_WEIGHT:-2.0}"
+COMPRESS_BODY_TOKEN_WEIGHT="${COMPRESS_BODY_TOKEN_WEIGHT:-0.35}"
+COMPRESS_CLOSE_TOKEN_WEIGHT="${COMPRESS_CLOSE_TOKEN_WEIGHT:-4.0}"
+COMPRESS_CLOSE_TAIL_TOKENS="${COMPRESS_CLOSE_TAIL_TOKENS:-24}"
 GROUP_BY_MODALITY="${GROUP_BY_MODALITY:-1}"
 export THINKSTREAM_GROUP_BY_MODALITY="${GROUP_BY_MODALITY}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
+IMAGE_MIN_PIXELS="${IMAGE_MIN_PIXELS:-${MIN_PIXELS:-}}"
+IMAGE_MAX_PIXELS="${IMAGE_MAX_PIXELS:-${MAX_PIXELS:-}}"
+image_pixel_args=""
+if [[ -n "${IMAGE_MIN_PIXELS}" ]]; then
+    image_pixel_args="${image_pixel_args} --min_pixels ${IMAGE_MIN_PIXELS}"
+fi
+if [[ -n "${IMAGE_MAX_PIXELS}" ]]; then
+    image_pixel_args="${image_pixel_args} --max_pixels ${IMAGE_MAX_PIXELS}"
+fi
 if [[ -z "${THINKSTREAM_FINAL_DIR:-}" ]]; then
-    if [[ -d "${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}" ]]; then
+    RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard}"
+    if [[ "${RENDER_LAYOUT}" != "standard" && -d "${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${RENDER_LAYOUT}" ]]; then
+        export THINKSTREAM_FINAL_DIR="${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${RENDER_LAYOUT}"
+    elif [[ -d "${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}" ]]; then
         export THINKSTREAM_FINAL_DIR="${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}"
     else
         export THINKSTREAM_FINAL_DIR="${AGENT_DATA_ROOT}/final"
@@ -187,6 +215,11 @@ case $PHASE in
         fi
         extra_args="${extra_args} --class_loss_alpha ${CLASS_LOSS_ALPHA}"
         extra_args="${extra_args} --class_loss_max_weight ${CLASS_LOSS_MAX_WEIGHT}"
+        extra_args="${extra_args} --compress_token_weighting ${COMPRESS_TOKEN_WEIGHTING}"
+        extra_args="${extra_args} --compress_structure_token_weight ${COMPRESS_STRUCTURE_TOKEN_WEIGHT}"
+        extra_args="${extra_args} --compress_body_token_weight ${COMPRESS_BODY_TOKEN_WEIGHT}"
+        extra_args="${extra_args} --compress_close_token_weight ${COMPRESS_CLOSE_TOKEN_WEIGHT}"
+        extra_args="${extra_args} --compress_close_tail_tokens ${COMPRESS_CLOSE_TAIL_TOKENS}"
         if [[ "${TORCH_EMPTY_CACHE_STEPS}" =~ ^[1-9][0-9]*$ ]]; then
             extra_args="${extra_args} --torch_empty_cache_steps ${TORCH_EMPTY_CACHE_STEPS}"
         fi
@@ -216,7 +249,7 @@ case $PHASE in
         ;;
 esac
 
-output_dir="${PROJECT_DIR}/output/${run_name}"
+output_dir="${OUTPUT_DIR:-${PROJECT_DIR}/output/${run_name}}"
 echo "=== Per-timestep Agent SFT ==="
 echo "Phase:    ${PHASE}"
 echo "Model:    ${llm}"
@@ -230,7 +263,9 @@ echo "Max sample tokens: ${MAX_SAMPLE_TOKENS}"
 echo "Torch empty cache steps: ${TORCH_EMPTY_CACHE_STEPS}"
 echo "Class loss target ratios: ${CLASS_LOSS_TARGET_RATIOS:-none}"
 echo "Class loss alpha: ${CLASS_LOSS_ALPHA}"
+echo "Compress token weighting: ${COMPRESS_TOKEN_WEIGHTING} structure=${COMPRESS_STRUCTURE_TOKEN_WEIGHT} body=${COMPRESS_BODY_TOKEN_WEIGHT} close=${COMPRESS_CLOSE_TOKEN_WEIGHT} tail=${COMPRESS_CLOSE_TAIL_TOKENS}"
 echo "Group by modality: ${GROUP_BY_MODALITY}"
+echo "Image pixels: ${IMAGE_MIN_PIXELS:-default} .. ${IMAGE_MAX_PIXELS:-default}"
 echo "LR:       ${lr}"
 echo "Epochs:   ${epochs}"
 echo "Output:   ${output_dir}"
@@ -271,6 +306,7 @@ PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
     --max_sample_tokens ${MAX_SAMPLE_TOKENS} \
     --include_failed_verification ${INCLUDE_FAILED_VERIFICATION} \
     --dataloader_num_workers 4 \
+    ${image_pixel_args} \
     --video_min_pixels 130000 \
     --video_max_pixels 220000 \
     --video_fps 2.0 \
