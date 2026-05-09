@@ -204,12 +204,19 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
       data_source:            "thinkstream_v12_streaming"
     """
 
+    @staticmethod
+    def _normalize_episode_mode(value: Any) -> str:
+        mode = str(value or "full").strip().lower().replace("-", "_")
+        if mode in {"segment", "single_question", "single_q", "question", "per_question"}:
+            return "single_question"
+        if mode in {"full", "full_video", "trajectory", "multi_q"}:
+            return "full"
+        return "full"
+
     def __init__(self, *args, **kwargs):
-        self.thinkstream_episode_mode = str(
+        self.thinkstream_episode_mode = self._normalize_episode_mode(
             os.environ.get("THINKSTREAM_RL_EPISODE_MODE", "full") or "full"
-        ).strip().lower()
-        if self.thinkstream_episode_mode not in {"full", "single_question"}:
-            self.thinkstream_episode_mode = "full"
+        )
         if self.thinkstream_episode_mode == "single_question":
             cfg = kwargs.get("config")
             if cfg is None and len(args) >= 3:
@@ -413,6 +420,47 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
         )
         return bool(cls._plain_list(archive))
 
+    @classmethod
+    def _student_archive_until(
+        cls,
+        extra: Dict[str, Any],
+        snapshot_chunk: int,
+    ) -> List[Dict[str, Any]]:
+        """Return student-generated archive entries before a snapshot.
+
+        Pass2 snapshots intentionally store only the visible memory. The
+        sibling rollout cache also has per-chunk student thinks; combine those
+        at materialization time so recall in a segment can search the same
+        student-observation history without storing O(n^2) archives in parquet.
+        """
+        for key in ("student_think_archive", "pass2_thinks", "think_archive"):
+            raw = extra.get(key)
+            archive = cls._plain_list(raw)
+            if not archive:
+                continue
+            out: List[Dict[str, Any]] = []
+            for item in archive:
+                if hasattr(item, "tolist"):
+                    item = item.tolist()
+                if not isinstance(item, dict):
+                    continue
+                try:
+                    chunk = int(item.get("chunk", item.get("chunk_idx", -1)))
+                except (TypeError, ValueError):
+                    continue
+                if 0 <= chunk < int(snapshot_chunk):
+                    clean = dict(item)
+                    clean.setdefault("chunk", chunk)
+                    clean.setdefault("chunk_idx", chunk)
+                    if "text" not in clean and "think" in clean:
+                        clean["text"] = clean.get("think", "")
+                    if clean.get("text"):
+                        out.append(clean)
+            if out:
+                out.sort(key=lambda x: int(x.get("chunk", x.get("chunk_idx", 0))))
+                return out
+        return []
+
     def _find_initial_student_state(
         self,
         extra: Dict[str, Any],
@@ -433,6 +481,12 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
             )
             if initial_state is None or snapshot_chunk is None:
                 continue
+            if not self._snapshot_has_recall_archive(initial_state):
+                archive = self._student_archive_until(extra, int(snapshot_chunk))
+                if archive:
+                    initial_state = dict(initial_state)
+                    initial_state["think_archive"] = archive
+                    initial_state["retrieval_archive"] = archive
             if (
                 self.segment_require_recall_archive
                 and snapshot_chunk > 0
@@ -513,6 +567,16 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
         if initial_state is not None:
             single_extra["initial_student_state"] = initial_state
             single_extra["initial_student_state_source"] = initial_state_source
+            cache_meta = extra.get("student_cache_meta")
+            if hasattr(cache_meta, "tolist"):
+                cache_meta = cache_meta.tolist()
+            if isinstance(cache_meta, dict):
+                single_extra["initial_student_state_meta"] = dict(cache_meta)
+                for key in ("checkpoint", "global_step", "epoch"):
+                    if cache_meta.get(key) not in (None, ""):
+                        single_extra[f"initial_student_state_{key}"] = cache_meta.get(key)
+                if cache_meta.get("source") not in (None, ""):
+                    single_extra["initial_student_cache_source"] = cache_meta.get("source")
         elif planned_start > 0:
             single_extra["initial_student_state_missing"] = True
         row_dict["extra_info"] = single_extra

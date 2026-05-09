@@ -41,7 +41,9 @@
 #                       path that lifts this to 600+ without OOM.)
 #   GPU_MEM_UTIL [0.55]
 #   MM_CACHE_GB [auto]       vLLM CPU mm processor cache GB
-#   THINKSTREAM_FRAME_PROTOCOL [ts_image]
+#   THINKSTREAM_FRAME_PROTOCOL [video_meta]
+#   THINKSTREAM_RENDER_LAYOUT [timeline_video_imagepad]
+#   THINKSTREAM_RL_EPISODE_MODE [full] full | segment
 #   LIMIT_IMAGES [64]       vLLM limit_mm_per_prompt.image for timestamped frames
 #   LIMIT_VIDEOS [2]        vLLM limit_mm_per_prompt.video for video_meta blocks
 #   PROJECT_NAME [thinkstream-v12]
@@ -166,7 +168,9 @@ export MM_CACHE_GB
 export THINKSTREAM_MM_CACHE_GB="${MM_CACHE_GB}"
 
 PROJECT_NAME=${PROJECT_NAME:-thinkstream-v12}
-EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v12.26-verl-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}
+THINKSTREAM_FRAME_PROTOCOL="${THINKSTREAM_FRAME_PROTOCOL:-video_meta}"
+THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-timeline_video_imagepad}"
+EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v12.26-verl-${THINKSTREAM_FRAME_PROTOCOL}}
 SAVE_DIR=${SAVE_DIR:-./output/${EXPERIMENT_NAME}}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
@@ -212,7 +216,8 @@ fi
 # rejects custom keys, so we pass them as env vars; streaming_agent_loop.py
 # reads them in __init__ at line 316+). frames_root="" → text-only run.
 export THINKSTREAM_FRAMES_ROOT="${THINKSTREAM_FRAMES_ROOT:-${THINKSTREAM_DATA_ROOT}/frames}"
-export THINKSTREAM_FRAME_PROTOCOL="${THINKSTREAM_FRAME_PROTOCOL:-ts_image}"
+export THINKSTREAM_FRAME_PROTOCOL
+export THINKSTREAM_RENDER_LAYOUT
 export THINKSTREAM_FRAMES_PER_CHUNK="${THINKSTREAM_FRAMES_PER_CHUNK:-2}"
 export THINKSTREAM_VISUAL_WINDOW_CHUNKS="${THINKSTREAM_VISUAL_WINDOW_CHUNKS:-16}"
 export THINKSTREAM_RECALL_STUB="${THINKSTREAM_RECALL_STUB:-(no relevant past observation found)}"
@@ -289,6 +294,7 @@ export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding
 #   for headroom. The Phase 4 swap+pad path doesn't crash with 32768 —
 #   it's purely a memory/throughput concern.
 export THINKSTREAM_RECURRENT_MODE="${THINKSTREAM_RECURRENT_MODE:-stitched}"
+export THINKSTREAM_RL_EPISODE_MODE="${THINKSTREAM_RL_EPISODE_MODE:-full}"
 export THINKSTREAM_MAX_RECALL_PER_CHUNK="${THINKSTREAM_MAX_RECALL_PER_CHUNK:-1}"
 
 # v12.13 P0: enable ReMemR1-style double-layer GRPO flags for telemetry and

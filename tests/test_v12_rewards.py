@@ -677,6 +677,14 @@ def _single_q_dataset_stub():
     return ds
 
 
+def test_rl_episode_mode_segment_alias():
+    from recipe_thinkstream.thinkstream import CustomRLHFDataset
+
+    assert CustomRLHFDataset._normalize_episode_mode("segment") == "single_question"
+    assert CustomRLHFDataset._normalize_episode_mode("single-question") == "single_question"
+    assert CustomRLHFDataset._normalize_episode_mode("full-video") == "full"
+
+
 def test_single_question_window_boundaries_and_scalar_chunks():
     ds = _single_q_dataset_stub()
 
@@ -738,6 +746,15 @@ def test_single_question_segment_uses_student_snapshot_or_rolls_from_zero():
             "n_chunks": 80,
             "questions": [q],
             "gold_action_per_chunk": {"12": "silent", "30": "silent", "40": "response"},
+            "student_cache_meta": {
+                "source": "pass2_student_rollout",
+                "checkpoint": "ckpt-a",
+                "global_step": 12,
+            },
+            "student_think_archive": [
+                {"chunk": 12, "time": "24-26", "text": "saw a red cup"},
+                {"chunk": 31, "time": "62-64", "text": "future after snapshot"},
+            ],
             "student_state_by_chunk": {
                 "30": {
                     "compressed_segments": [{
@@ -746,7 +763,6 @@ def test_single_question_segment_uses_student_snapshot_or_rolls_from_zero():
                         "source_chunks": [0, 1],
                     }],
                     "recent_thinks": [{"chunk": 29, "time": "58-60", "text": "student think"}],
-                    "think_archive": [{"chunk": 12, "time": "24-26", "text": "saw a red cup"}],
                 }
             },
         },
@@ -764,12 +780,16 @@ def test_single_question_segment_uses_student_snapshot_or_rolls_from_zero():
     assert extra["question_index"] == 0
     assert extra["initial_student_state_source"] == "student_state_by_chunk"
     assert extra["initial_student_state"]["compressed_segments"][0]["text"] == "student summary"
+    assert [x["chunk"] for x in extra["initial_student_state"]["think_archive"]] == [12]
+    assert extra["initial_student_state_checkpoint"] == "ckpt-a"
+    assert extra["initial_student_state_global_step"] == 12
     assert "12" not in extra["gold_action_per_chunk"]
     assert "30" in extra["gold_action_per_chunk"]
     assert "40" in extra["gold_action_per_chunk"]
 
     bad_cache_row = dict(row)
     bad_cache_row["extra_info"] = dict(row["extra_info"])
+    bad_cache_row["extra_info"].pop("student_think_archive", None)
     bad_cache_row["extra_info"]["student_state_by_chunk"] = {
         "32": {"recent_thinks": [{"chunk": 31, "text": "no archive"}]},
     }
@@ -835,6 +855,7 @@ if __name__ == "__main__":
     test_recipe_reward_scales_auxiliary_on_partial_outcome()
     test_recipe_multi_q_reward_gates_each_question_independently()
     test_recipe_action_shaping_scores_system_compress_only()
+    test_rl_episode_mode_segment_alias()
     test_single_question_window_boundaries_and_scalar_chunks()
     test_single_question_segment_uses_student_snapshot_or_rolls_from_zero()
     test_silent_quality_v12_complements_outcome()

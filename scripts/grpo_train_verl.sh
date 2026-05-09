@@ -131,6 +131,19 @@ FREEZE_VISION_TOWER=${FREEZE_VISION_TOWER:-true}
 PPO_MAX_TOKEN_LEN_PER_GPU=${PPO_MAX_TOKEN_LEN_PER_GPU:-65536}
 LOG_PROB_MAX_TOKEN_LEN_PER_GPU=${LOG_PROB_MAX_TOKEN_LEN_PER_GPU:-65536}
 ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-vllm}
+THINKSTREAM_RL_EPISODE_MODE="${THINKSTREAM_RL_EPISODE_MODE:-full}"
+case "${THINKSTREAM_RL_EPISODE_MODE}" in
+    full|full_video|trajectory)
+        THINKSTREAM_RL_EPISODE_MODE="full"
+        ;;
+    segment|single_question|single_q|question|per_question)
+        THINKSTREAM_RL_EPISODE_MODE="segment"
+        ;;
+    *)
+        echo "ERROR: THINKSTREAM_RL_EPISODE_MODE must be full or segment, got ${THINKSTREAM_RL_EPISODE_MODE}" >&2
+        exit 2
+        ;;
+esac
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
@@ -167,12 +180,21 @@ TRAIN_JSONL="${TRAIN_JSONL:-${AGENT_DATA_ROOT}/final/train_rl_trajectories.jsonl
 VAL_JSONL="${VAL_JSONL:-${AGENT_DATA_ROOT}/final/val_trajectories.jsonl}"
 MULTI_Q="${MULTI_Q:-1}"
 PARQUET_DIR="${PARQUET_DIR:-${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}}"
+if [[ "${THINKSTREAM_RL_EPISODE_MODE}" == "segment" && "${MULTI_Q}" != "1" ]]; then
+    echo "ERROR: segment RL requires MULTI_Q=1 parquet rows so questions stay video-ordered." >&2
+    exit 2
+fi
 
 # verl's RLHFDataset reads parquet; auto-build from JSONL if user didn't
 # supply a parquet directly.
 if [[ "${MULTI_Q}" == "1" ]]; then
-    DEFAULT_TRAIN_PARQUET="${PARQUET_DIR}/train_rl_multi_q.parquet"
-    DEFAULT_VAL_PARQUET="${PARQUET_DIR}/val_rl_multi_q.parquet"
+    if [[ "${THINKSTREAM_RL_EPISODE_MODE}" == "segment" ]]; then
+        DEFAULT_TRAIN_PARQUET="${PARQUET_DIR}/train_rl_multi_q_segment_cache.parquet"
+        DEFAULT_VAL_PARQUET="${PARQUET_DIR}/val_rl_multi_q_segment_cache.parquet"
+    else
+        DEFAULT_TRAIN_PARQUET="${PARQUET_DIR}/train_rl_multi_q.parquet"
+        DEFAULT_VAL_PARQUET="${PARQUET_DIR}/val_rl_multi_q.parquet"
+    fi
 else
     DEFAULT_TRAIN_PARQUET="${PARQUET_DIR}/train_rl_single_q.parquet"
     DEFAULT_VAL_PARQUET="${PARQUET_DIR}/val_rl_single_q.parquet"
@@ -185,20 +207,24 @@ MULTI_Q_FLAG=""
 if [[ "${MULTI_Q}" == "1" ]]; then
     MULTI_Q_FLAG="--multi_q"
 fi
+STUDENT_CACHE_FLAG=()
+if [[ "${THINKSTREAM_RL_EPISODE_MODE}" == "segment" ]]; then
+    STUDENT_CACHE_FLAG=(--include-student-cache)
+fi
 
 if [[ ! -f "${TRAIN_PARQUET}" ]]; then
     echo "Building train parquet from ${TRAIN_JSONL}…  (multi_q=${MULTI_Q})"
     "${PYTHON_BIN}" "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
         --jsonl "${TRAIN_JSONL}" --out "${TRAIN_PARQUET}" \
         --frame-protocol "${FRAME_PROTOCOL}" \
-        --render-layout "${THINKSTREAM_RENDER_LAYOUT}" ${MULTI_Q_FLAG}
+        --render-layout "${THINKSTREAM_RENDER_LAYOUT}" ${MULTI_Q_FLAG} "${STUDENT_CACHE_FLAG[@]}"
 fi
 if [[ ! -f "${VAL_PARQUET}" ]]; then
     echo "Building val parquet from ${VAL_JSONL}…  (multi_q=${MULTI_Q})"
     "${PYTHON_BIN}" "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
         --jsonl "${VAL_JSONL}" --out "${VAL_PARQUET}" \
         --frame-protocol "${FRAME_PROTOCOL}" \
-        --render-layout "${THINKSTREAM_RENDER_LAYOUT}" ${MULTI_Q_FLAG}
+        --render-layout "${THINKSTREAM_RENDER_LAYOUT}" ${MULTI_Q_FLAG} "${STUDENT_CACHE_FLAG[@]}"
 fi
 
 mkdir -p "${OUTPUT_DIR}"
@@ -231,6 +257,7 @@ echo "Image pixels:      ${IMAGE_MIN_PIXELS:-default} .. ${IMAGE_MAX_PIXELS:-def
 echo "Train parquet:     ${TRAIN_PARQUET}"
 echo "Val parquet:       ${VAL_PARQUET}"
 echo "Multi-Q rows:      ${MULTI_Q}"
+echo "RL episode mode:   ${THINKSTREAM_RL_EPISODE_MODE}"
 echo "Output:            ${OUTPUT_DIR}"
 echo "Runtime root:      ${RUNTIME_ROOT}"
 echo "GPUs:              ${NPROC}"
@@ -284,6 +311,7 @@ FRAMES_ROOT="${FRAMES_ROOT:-${AGENT_DATA_ROOT}/frames}"
 export THINKSTREAM_FRAMES_ROOT="${FRAMES_ROOT}"
 export THINKSTREAM_MAX_TOKENS_PER_ACTION="${MAX_ACTION_TOKENS}"
 export THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION="${MAX_COMPRESS_ACTION_TOKENS}"
+export THINKSTREAM_RL_EPISODE_MODE
 
 export THINKSTREAM_HOME="${PROJECT_DIR}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"

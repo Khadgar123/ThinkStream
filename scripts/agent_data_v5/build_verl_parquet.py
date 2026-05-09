@@ -128,12 +128,139 @@ def _infer_n_chunks(traj: Dict[str, Any]) -> int:
     return (max(candidates) + 1) if candidates else 0
 
 
+def _jsonl_data_root(jsonl_path: Path) -> Path:
+    """Return the batch root for final/*.jsonl inputs."""
+    return jsonl_path.parent.parent if jsonl_path.parent.name == "final" else jsonl_path.parent
+
+
+def _load_student_rollout(jsonl_path: Path, video_id: str) -> Dict[str, Any]:
+    if not video_id:
+        return {}
+    path = _jsonl_data_root(jsonl_path) / "rollout" / f"{video_id}.json"
+    if not path.exists():
+        return {}
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            rollout = json.load(f)
+    except Exception:
+        return {}
+    if not isinstance(rollout, dict):
+        return {}
+    rollout["_source_path"] = str(path)
+    return rollout
+
+
+def _normalise_student_thinks(rollout: Dict[str, Any]) -> List[Dict[str, Any]]:
+    out: List[Dict[str, Any]] = []
+    for item in rollout.get("thinks") or []:
+        if not isinstance(item, dict):
+            continue
+        chunk = _safe_int(item.get("chunk_idx", item.get("chunk")))
+        if chunk is None or chunk < 0:
+            continue
+        text = item.get("think", item.get("text", "")) or ""
+        if not text:
+            continue
+        out.append({
+            "chunk": chunk,
+            "chunk_idx": chunk,
+            "time": item.get("time", ""),
+            "text": text,
+            "source": item.get("source", "student_rollout"),
+        })
+    out.sort(key=lambda x: int(x.get("chunk", 0)))
+    return out
+
+
+def _student_cache_payload(
+    traj: Dict[str, Any],
+    *,
+    jsonl_path: Path,
+    video_id: str,
+) -> Dict[str, Any]:
+    """Preserve student prefix state for segment RL.
+
+    The trajectory JSONL is the canonical supervision file, but the student
+    prefix memory usually lives in the sibling pass2 rollout cache. Keep
+    snapshots and a compact per-video think archive separately, so parquet
+    size stays O(n_chunks) rather than O(n_chunks^2). CustomRLHFDataset
+    combines the one selected snapshot with archive entries strictly before
+    that snapshot chunk at materialization time.
+    """
+    payload: Dict[str, Any] = {}
+    for key in (
+        "initial_student_state_by_chunk",
+        "student_state_by_chunk",
+        "student_memory_snapshots",
+        "student_snapshots",
+        "memory_snapshots",
+        "snapshots",
+        "student_think_archive",
+        "pass2_thinks",
+        "student_cache_meta",
+    ):
+        if key in traj:
+            payload[key] = traj[key]
+
+    rollout = _load_student_rollout(jsonl_path, video_id)
+    if rollout:
+        if not any(
+            key in payload
+            for key in (
+                "initial_student_state_by_chunk",
+                "student_state_by_chunk",
+                "student_memory_snapshots",
+                "student_snapshots",
+                "memory_snapshots",
+                "snapshots",
+            )
+        ):
+            snapshots = rollout.get("snapshots")
+            if isinstance(snapshots, dict):
+                payload["student_state_by_chunk"] = snapshots
+        if "student_think_archive" not in payload:
+            payload["student_think_archive"] = _normalise_student_thinks(rollout)
+
+        meta_raw = payload.get("student_cache_meta") or {}
+        meta = dict(meta_raw) if isinstance(meta_raw, dict) else {}
+        meta.update({
+            "source": meta.get("source") or "pass2_student_rollout",
+            "source_path": meta.get("source_path") or rollout.get("_source_path", ""),
+            "schema": meta.get("schema") or "pass2_rollout_snapshots_v1",
+            "checkpoint": (
+                os.environ.get("THINKSTREAM_STUDENT_CACHE_CHECKPOINT")
+                or meta.get("checkpoint")
+                or rollout.get("checkpoint")
+                or rollout.get("model_path")
+                or ""
+            ),
+            "global_step": (
+                os.environ.get("THINKSTREAM_STUDENT_CACHE_GLOBAL_STEP")
+                or meta.get("global_step")
+                or rollout.get("global_step")
+                or ""
+            ),
+            "epoch": (
+                os.environ.get("THINKSTREAM_STUDENT_CACHE_EPOCH")
+                or meta.get("epoch")
+                or ""
+            ),
+            "refresh_policy": (
+                "refresh each epoch or when policy drift makes prefix "
+                "memory distribution stale"
+            ),
+        })
+        payload["student_cache_meta"] = meta
+    return payload
+
+
 def _iter_rows(
     jsonl_path: Path,
     max_questions_per_traj: int,
     *,
     frame_protocol: str,
     render_layout: str,
+    include_student_cache: bool,
 ) -> Iterator[Dict[str, Any]]:
     system_prompt = system_prompt_for_frame_protocol(
         frame_protocol,
@@ -153,6 +280,11 @@ def _iter_rows(
             gold_action = traj.get("gold_action_per_chunk", {}) or {}
             n_chunks = _infer_n_chunks(traj)
             questions = (traj.get("questions") or [])[:max_questions_per_traj]
+            student_cache = (
+                _student_cache_payload(traj, jsonl_path=jsonl_path, video_id=str(video_id))
+                if include_student_cache
+                else {}
+            )
 
             if not questions:
                 continue
@@ -236,6 +368,7 @@ def _iter_rows(
                         "answer_chunks": list(q.get("answer_chunks") or []),
                         "per_emit_answers": list(q.get("per_emit_answers") or []),
                         "render_layout": render_layout,
+                        **student_cache,
                     },
                     # verl convention: reward_model.ground_truth is what the
                     # reward function receives as `ground_truth`. Use a dict
@@ -267,6 +400,7 @@ def _iter_rows_multi_q(
     *,
     frame_protocol: str,
     render_layout: str,
+    include_student_cache: bool,
 ) -> Iterator[Dict[str, Any]]:
     """Multi-Q trajectory rows: 1 video → 1 row containing ALL questions.
 
@@ -308,6 +442,11 @@ def _iter_rows_multi_q(
             gold_action = traj.get("gold_action_per_chunk", {}) or {}
             n_chunks = _infer_n_chunks(traj)
             questions = (traj.get("questions") or [])[:max_questions_per_traj]
+            student_cache = (
+                _student_cache_payload(traj, jsonl_path=jsonl_path, video_id=str(video_id))
+                if include_student_cache
+                else {}
+            )
 
             if not questions:
                 continue
@@ -369,6 +508,7 @@ def _iter_rows_multi_q(
                     "gold_action_per_chunk": gold_action,
                     "all_ask_chunks": sorted(set(all_ask_chunks)),
                     "render_layout": render_layout,
+                    **student_cache,
                 },
                 "reward_model": {
                     "ground_truth": json.dumps({
@@ -418,6 +558,15 @@ def main() -> int:
         choices=["timeline_video_imagepad"],
         help="Canonical prompt layout used by SFT, RL, and eval.",
     )
+    ap.add_argument(
+        "--include-student-cache",
+        action="store_true",
+        help=(
+            "Attach pass2 student snapshots and student think archive for "
+            "segment RL. Keep this off for full-video RL to avoid large "
+            "unused Ray/parquet payloads."
+        ),
+    )
     args = ap.parse_args()
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
     render_layout = normalize_render_layout(args.render_layout)
@@ -432,6 +581,7 @@ def main() -> int:
             max_questions_per_traj=args.max_questions_per_traj,
             frame_protocol=frame_protocol,
             render_layout=render_layout,
+            include_student_cache=args.include_student_cache,
         )
         if args.multi_q
         else _iter_rows(
@@ -439,6 +589,7 @@ def main() -> int:
             max_questions_per_traj=args.max_questions_per_traj,
             frame_protocol=frame_protocol,
             render_layout=render_layout,
+            include_student_cache=args.include_student_cache,
         )
     )
     rows: List[Dict[str, Any]] = list(iterator)
@@ -452,7 +603,8 @@ def main() -> int:
     print(
         f"[build_verl_parquet] {in_path.name}: {len(rows)} {shape_label} rows "
         f"→ {out_path} ({out_path.stat().st_size/1024:.1f} KiB, "
-        f"frame_protocol={frame_protocol}, render_layout={render_layout})"
+        f"frame_protocol={frame_protocol}, render_layout={render_layout}, "
+        f"student_cache={args.include_student_cache})"
     )
     return 0
 

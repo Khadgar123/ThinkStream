@@ -476,10 +476,10 @@ def _register_streaming_agent_loop():
                 or 512
             )
             self.frame_protocol = normalize_frame_protocol(
-                os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image")
+                os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta")
             )
             self.render_layout = normalize_render_layout(
-                os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard")
+                os.environ.get("THINKSTREAM_RENDER_LAYOUT", "timeline_video_imagepad")
             )
             mt = self.rollout_config.multi_turn
             # v12.13 (2026-05-02): verl's MultiTurnConfig dataclass rejects
