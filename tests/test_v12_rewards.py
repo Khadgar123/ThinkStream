@@ -40,6 +40,23 @@ def test_outcome_v12():
     assert f("the answer is red apple", "red apple") == 1.0
     assert f("blueberry", "red") == 0.0
 
+    # Form-aware fallback: MCQ should still score by letter/correct_option even
+    # if legacy rows are missing the options list.
+    assert f("C", "blue", answer_form="multiple_choice", correct_option="C") == 1.0
+    assert f("A", "blue", answer_form="multiple_choice", correct_option="C") == 0.0
+    assert f(
+        "red apple",
+        "red apple",
+        answer_form="multiple_choice",
+        correct_option="",
+        options=[],
+    ) == 1.0
+
+    # Other generated answer forms.
+    assert f("Yes.", "yes", answer_form="binary") == 1.0
+    assert f("$12.00", "12", answer_form="number") == 1.0
+    assert f("the red apron", "red apron", answer_form="short_exact") == 1.0
+
     # Custom judge
     assert f("answer", "gold", judge_fn=lambda a, b: 0.7) == 0.7
 

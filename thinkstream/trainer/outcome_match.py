@@ -295,7 +295,7 @@ def score_outcome_by_form(
     af = (answer_form or "").lower()
     opts = options or []
 
-    if af in ("multiple_choice", "mc") and opts:
+    if af in ("multiple_choice", "mc"):
         return 1.0 if match_mcq_answer(
             model_answer, opts, correct_option, gold_answer,
         ) else 0.0
