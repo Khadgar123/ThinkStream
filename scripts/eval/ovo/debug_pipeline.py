@@ -29,6 +29,7 @@ from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
     update_processor_pixels,
 )
+from thinkstream.eval.prompt_contract import build_streaming_query_meta
 
 
 def detect_model_class(ckpt: str):
@@ -53,12 +54,15 @@ def resolve_video_path(video_field, video_root):
 
 
 def build_mcq_question(sample):
-    options = sample.get("options", [])
-    lines = [sample["question"]]
-    for i, opt in enumerate(options):
-        lines.append(f"{chr(65+i)}. {opt}")
-    lines.append("Answer with a single letter.")
-    return "\n".join(lines)
+    return str(sample.get("question", ""))
+
+
+def build_mcq_query_meta(sample):
+    return build_streaming_query_meta(
+        sample,
+        answer_form="multiple_choice",
+        answer_style="letter_only",
+    )
 
 
 def build_crr_question(sample):
@@ -89,13 +93,19 @@ def build_ssr_question(step_text):
     )
 
 
-def debug_run_agent(loop, video_path, ask_chunks, max_chunk, retriever):
+def debug_run_agent(loop, video_path, ask_chunks, max_chunk, retriever, ask_meta=None):
     """Run agent with verbose per-step logging."""
     per_chunk = {}
+    ask_meta = ask_meta or {}
     for chunk_idx in range(max_chunk + 1):
         q = ask_chunks.get(chunk_idx)
         t0 = time.time()
-        result = loop.step(chunk_idx=chunk_idx, video_path=video_path, user_question=q)
+        result = loop.step(
+            chunk_idx=chunk_idx,
+            video_path=video_path,
+            user_question=q,
+            user_question_meta=ask_meta.get(chunk_idx) if q else None,
+        )
         dt = time.time() - t0
 
         action = result.get("action", "?")
@@ -168,12 +178,15 @@ def eval_one(sample, loop, retriever, video_root, scoring="strict"):
         extra = 2 if scoring == "strict" else 60
         max_chunk = ask_chunk + extra
         question = build_mcq_question(sample)
+        ask_meta = {ask_chunk: build_mcq_query_meta(sample)}
         print(f"MCQ ask_chunk={ask_chunk} max_chunk={max_chunk}")
         print(f"Question: {question[:200]}")
 
         loop.reset()
         retriever.chunk_embeddings.clear() if hasattr(retriever, "chunk_embeddings") else None
-        per_chunk = debug_run_agent(loop, video_path, {ask_chunk: question}, max_chunk, retriever)
+        per_chunk = debug_run_agent(
+            loop, video_path, {ask_chunk: question}, max_chunk, retriever, ask_meta,
+        )
 
         pred = None
         for c in range(ask_chunk, max_chunk + 1):
@@ -195,7 +208,10 @@ def eval_one(sample, loop, retriever, video_root, scoring="strict"):
 
         loop.reset()
         retriever.chunk_embeddings.clear() if hasattr(retriever, "chunk_embeddings") else None
-        per_chunk = debug_run_agent(loop, video_path, {0: question}, max_chunk, retriever)
+        per_chunk = debug_run_agent(
+            loop, video_path, {0: question}, max_chunk, retriever,
+            {0: {"answer_form": "number"}},
+        )
 
     elif task == "SSR":
         test_info = sample["test_info"]
@@ -209,7 +225,10 @@ def eval_one(sample, loop, retriever, video_root, scoring="strict"):
 
         loop.reset()
         retriever.chunk_embeddings.clear() if hasattr(retriever, "chunk_embeddings") else None
-        per_chunk = debug_run_agent(loop, video_path, ask_chunks, max_chunk, retriever)
+        per_chunk = debug_run_agent(
+            loop, video_path, ask_chunks, max_chunk, retriever,
+            {c: {"answer_form": "binary"} for c in ask_chunks},
+        )
 
     elif task == "CRR":
         ask_time = float(sample["ask_time"])
@@ -222,7 +241,10 @@ def eval_one(sample, loop, retriever, video_root, scoring="strict"):
 
         loop.reset()
         retriever.chunk_embeddings.clear() if hasattr(retriever, "chunk_embeddings") else None
-        per_chunk = debug_run_agent(loop, video_path, {ask_chunk: question}, max_chunk, retriever)
+        per_chunk = debug_run_agent(
+            loop, video_path, {ask_chunk: question}, max_chunk, retriever,
+            {ask_chunk: {"answer_form": "binary"}},
+        )
 
     return per_chunk
 
@@ -305,20 +327,24 @@ def main():
         realtime = float(sample["realtime"])
         ask_chunk = int(realtime / AGENT_CHUNK_SEC)
         ask_chunks = {ask_chunk: build_mcq_question(sample)}
+        ask_meta = {ask_chunk: build_mcq_query_meta(sample)}
         default_max = ask_chunk + 2
     elif task == "REC":
         test_info = sample["test_info"]
         last_probe = max(float(t["realtime"]) for t in test_info)
         default_max = int(last_probe / AGENT_CHUNK_SEC) + 1
         ask_chunks = {0: build_rec_question(sample)}
+        ask_meta = {0: {"answer_form": "number"}}
     elif task == "SSR":
         test_info = sample["test_info"]
         last_probe = max(float(t["realtime"]) for t in test_info)
         default_max = int(last_probe / AGENT_CHUNK_SEC) + 1
         ask_chunks = {}
+        ask_meta = {}
         for probe in test_info:
             c = int(float(probe["realtime"]) / AGENT_CHUNK_SEC)
             ask_chunks[c] = build_ssr_question(probe.get("step", ""))
+            ask_meta[c] = {"answer_form": "binary"}
     elif task == "CRR":
         ask_time = float(sample["ask_time"])
         test_info = sample["test_info"]
@@ -326,6 +352,7 @@ def main():
         ask_chunk = int(ask_time / AGENT_CHUNK_SEC)
         default_max = int(last_probe / AGENT_CHUNK_SEC) + 1
         ask_chunks = {ask_chunk: build_crr_question(sample)}
+        ask_meta = {ask_chunk: {"answer_form": "binary"}}
     else:
         print(f"Unknown task {task}")
         return
@@ -338,7 +365,9 @@ def main():
     if hasattr(retriever, "chunk_embeddings"):
         retriever.chunk_embeddings.clear()
 
-    per_chunk = debug_run_agent(loop, video_path, ask_chunks, max_chunk, retriever)
+    per_chunk = debug_run_agent(
+        loop, video_path, ask_chunks, max_chunk, retriever, ask_meta,
+    )
     print("\nDone.")
 
 

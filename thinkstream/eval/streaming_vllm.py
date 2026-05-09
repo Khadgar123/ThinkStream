@@ -55,6 +55,7 @@ from thinkstream.model.agent_loop import (
     build_single_step_messages,
     select_compress_range_by_tokens,
 )
+from thinkstream.eval.prompt_contract import build_streaming_query_meta
 
 from eval_baseline import DebugLogger, setup_eval_logging
 from vllm_engine import (
@@ -97,6 +98,8 @@ class _SampleRunner:
     _last_action: str = "unknown"
     _last_compress_prefix_diagnostic: Dict[str, Any] = field(default_factory=dict)
     chunks_generated: int = 0
+    question_at_chunk: Dict[int, str] = field(default_factory=dict)
+    question_meta_at_chunk: Dict[int, Dict] = field(default_factory=dict)
 
 
 def _resolve_frame_paths(
@@ -390,13 +393,12 @@ def _build_runners(
             num_chunks = min(num_chunks, max_chunks)
             ask_chunk = max(0, num_chunks - 1)
 
-            if datum.get("options"):
-                query = (
-                    question_prefix + datum["question"] + "\n"
-                    + "\n".join(datum["options"]) + question_postfix
-                )
-            else:
-                query = datum["question"]
+            query = str(datum.get("question", ""))
+            question_at_chunk = {ask_chunk: query} if query else {}
+            question_meta_at_chunk = (
+                {ask_chunk: build_streaming_query_meta(datum)}
+                if query else {}
+            )
 
             video_path = os.path.join(dataset.data_dir, datum["video"])
 
@@ -415,6 +417,8 @@ def _build_runners(
                 max_pixels=max_pixels,
                 frame_protocol=frame_protocol,
                 render_layout=render_layout,
+                question_at_chunk=question_at_chunk,
+                question_meta_at_chunk=question_meta_at_chunk,
             ))
         except Exception as e:
             runners.append(_SampleRunner(
@@ -445,7 +449,7 @@ def streaming_predict_mcq_vllm(
     options: List[str],
     *,
     question_prefix: str = "",
-    question_postfix: str = "\nPlease select the correct answer.",
+    question_postfix: str = "\nAnswer with a single letter.",
     max_new_tokens: int = 256,
     compress_max_new_tokens: int = 512,
     frames_per_chunk: int = 8,

@@ -32,6 +32,7 @@ sys.path.insert(0, str(_EVAL_DIR))
 from eval_baseline import (
     DebugLogger,
     OfflineMCQDataset,
+    build_baseline_mcq_query,
     _load_video_frames,
     eval_system_prompt,
     parse_answer,
@@ -45,13 +46,11 @@ def _build_messages(datum: dict, frames, frame_meta: dict, options: list,
                     question_prefix: str, question_postfix: str,
                     frame_protocol: str = "ts_image") -> tuple:
     frame_protocol = normalize_frame_protocol(frame_protocol)
-    if "options" in datum and datum["options"]:
-        query = (
-            question_prefix + datum["question"] + "\n"
-            + "\n".join(datum["options"]) + question_postfix
-        )
-    else:
-        query = datum["question"]
+    query = build_baseline_mcq_query(
+        datum,
+        question_prefix=question_prefix,
+        question_postfix=question_postfix,
+    )
     user_content = []
     append_visual_frames(
         user_content,
@@ -82,7 +81,7 @@ def offline_predict_mcq_vllm(
     benchmark_path: str,
     options: list,
     question_prefix: str = "",
-    question_postfix: str = "\nPlease select the correct answer.",
+    question_postfix: str = "\nAnswer with a single letter.",
     max_new_tokens: int = 30,
     max_frames: int = 64,
     sample: Optional[int] = None,

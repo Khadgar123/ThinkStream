@@ -59,6 +59,7 @@ from thinkstream.data.agent_protocol import (
     append_visual_frames,
     normalize_frame_protocol,
 )
+from thinkstream.eval.prompt_contract import build_plain_mcq_prompt
 
 FRAME_TAG_EVAL_SYSTEM = (
     "You are a video understanding assistant. Each image is preceded by "
@@ -178,6 +179,25 @@ def parse_answer(generated_text: str, options: list) -> dict:
         "matched": False,
         "match_type": "random_fallback",
     }
+
+
+def build_baseline_mcq_query(
+    datum: dict,
+    *,
+    question_prefix: str = "",
+    question_postfix: str = "\nAnswer with a single letter.",
+) -> str:
+    """Plain baseline prompt: inline options exactly once plus answer format."""
+    question = str(datum.get("question", ""))
+    if datum.get("options"):
+        instruction = str(question_postfix or "").strip()
+        return question_prefix + build_plain_mcq_prompt(
+            question,
+            datum.get("options") or [],
+            option_style="dot",
+            instruction=instruction,
+        )
+    return question_prefix + question
 
 
 # ---------------------------------------------------------------------------
@@ -335,7 +355,7 @@ def offline_predict_mcq(
     benchmark_path: str,
     options: list,
     question_prefix: str = "",
-    question_postfix: str = "\nPlease select the correct answer.",
+    question_postfix: str = "\nAnswer with a single letter.",
     max_new_tokens: int = 30,
     max_frames: int = 64,
     min_pixels: int = 130_000,
@@ -405,13 +425,11 @@ def offline_predict_mcq(
             video_end = datum.get("video_end")
             video_start = datum.get("video_start", 0.0)
 
-            if "options" in datum and datum["options"]:
-                query = (
-                    question_prefix + datum["question"] + "\n"
-                    + "\n".join(datum["options"]) + question_postfix
-                )
-            else:
-                query = datum["question"]
+            query = build_baseline_mcq_query(
+                datum,
+                question_prefix=question_prefix,
+                question_postfix=question_postfix,
+            )
 
             frames, frame_meta = _load_video_frames(
                 video_path, video_start=video_start,

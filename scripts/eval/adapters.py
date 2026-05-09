@@ -43,6 +43,8 @@ from thinkstream.trainer.outcome_match import (
     match_mcq_answer,
     score_outcome_by_form,
 )
+from thinkstream.data.agent_protocol import answer_format_instruction
+from thinkstream.eval.prompt_contract import build_plain_mcq_prompt
 
 
 # Match a single-letter answer like "A", "C", or "C." (with trailing period
@@ -132,9 +134,14 @@ class OVOBenchAdapter:
             return f"Q: {item['question']}"
 
         letters = ["A", "B", "C", "D", "E"][: len(opts)]
-        opts_block = "\n".join(f"{l}. {t}" for l, t in zip(letters, opts))
         instr = f"Answer with one letter ({'/'.join(letters)})."
-        return f"Q: {item['question']}\nOptions:\n{opts_block}\n{instr}"
+        return build_plain_mcq_prompt(
+            f"Q: {item['question']}",
+            opts,
+            option_style="dot",
+            instruction=instr,
+            include_options_header=True,
+        )
 
     @staticmethod
     def score(item: Dict, model_outputs: List[Dict]) -> Dict:
@@ -219,9 +226,16 @@ class OurOpenEndedAdapter:
         opts = item.get("options") or []
         if opts:
             letters = ["A", "B", "C", "D", "E"][: len(opts)]
-            opts_block = "\n".join(f"{l}. {t}" for l, t in zip(letters, opts))
-            return f"Q: {q}\nOptions:\n{opts_block}\nAnswer with one letter ({'/'.join(letters)})."
-        return f"Q: {q}"
+            instr = f"Answer with one letter ({'/'.join(letters)})."
+            return build_plain_mcq_prompt(
+                f"Q: {q}",
+                opts,
+                option_style="dot",
+                instruction=instr,
+                include_options_header=True,
+            )
+        instr = answer_format_instruction(item.get("answer_form", "")).strip()
+        return f"Q: {q}\n{instr}" if instr else f"Q: {q}"
 
     @staticmethod
     def score(item: Dict, model_outputs: List[Dict], *, judge_fn=None) -> Dict:

@@ -42,6 +42,7 @@ from eval_common import (
     cleanup_distributed,
 )
 from eval_baseline import (
+    build_baseline_mcq_query,
     baseline_sample_restricted,
     parse_answer,
     setup_eval_logging,
@@ -70,7 +71,7 @@ def baseline_predict_streaming(
     benchmark_path: str,
     options: list,
     question_prefix: str = "",
-    question_postfix: str = "\nPlease select the correct answer.",
+    question_postfix: str = "\nAnswer with a single letter.",
     max_len: int = 24576,
     frames_per_chunk: int = FRAMES_PER_CHUNK,
     max_new_tokens: int = 30,
@@ -183,13 +184,11 @@ def baseline_predict_streaming(
                 else:
                     raise ValueError(f"Sample {idx}: Cannot determine video_end.")
 
-            if "options" in datum and datum["options"]:
-                query = (
-                    question_prefix + datum["question"] + "\n"
-                    + "\n".join(datum["options"]) + question_postfix
-                )
-            else:
-                query = datum["question"]
+            query = build_baseline_mcq_query(
+                datum,
+                question_prefix=question_prefix,
+                question_postfix=question_postfix,
+            )
 
             debug_record["query"] = query
             debug_record["query_ts"] = query_ts

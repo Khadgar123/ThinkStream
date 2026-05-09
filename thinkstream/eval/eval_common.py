@@ -34,6 +34,7 @@ from thinkstream.data.stream_data_processor import (
     preload_video,
     _resolve_vit_patch_size,
 )
+from thinkstream.eval.prompt_contract import build_streaming_query_meta
 
 # ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -347,10 +348,8 @@ def mcq_predict_agent_loop(
         datum = dataset.datums[idx]
         video_path = os.path.join(dataset.data_dir, datum["video"])
 
-        if "options" in datum and datum["options"]:
-            query = question_prefix + datum["question"] + "\n" + "\n".join(datum["options"]) + question_postfix
-        else:
-            query = datum["question"]
+        query = str(datum.get("question", ""))
+        query_meta = build_streaming_query_meta(datum) if query else {}
 
         # Determine timing
         video_end = datum.get("video_end")
@@ -377,7 +376,13 @@ def mcq_predict_agent_loop(
         answer_text = ""
         for chunk_idx in range(num_chunks):
             q = query if chunk_idx == ask_chunk else None
-            result = loop.step(chunk_idx=chunk_idx, video_path=video_path, user_question=q)
+            q_meta = query_meta if q else None
+            result = loop.step(
+                chunk_idx=chunk_idx,
+                video_path=video_path,
+                user_question=q,
+                user_question_meta=q_meta,
+            )
 
             if result["action"] == "response":
                 answer_text = result["payload"].get("response", "")

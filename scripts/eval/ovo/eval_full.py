@@ -99,6 +99,10 @@ from thinkstream.data.agent_protocol import (
     system_prompt_for_frame_protocol,
     tools_for_turn,
 )
+from thinkstream.eval.prompt_contract import (
+    build_plain_mcq_prompt,
+    build_streaming_query_meta,
+)
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
     update_processor_pixels,
@@ -144,12 +148,26 @@ def resolve_video_path(video_field, video_root):
 
 def build_mcq_question(sample):
     """BT/RT MCQ prompt: question + options + 'Answer with a single letter.'"""
-    options = sample.get("options", [])
-    lines = [sample["question"]]
-    for i, opt in enumerate(options):
-        lines.append(f"{chr(65+i)}. {opt}")
-    lines.append("Answer with a single letter.")
-    return "\n".join(lines)
+    return build_plain_mcq_prompt(
+        sample["question"],
+        sample.get("options", []),
+        option_style="dot",
+        instruction="Answer with a single letter.",
+    )
+
+
+def build_mcq_agent_question(sample):
+    """Bare MCQ question for StreamingAgentLoop active-query rendering."""
+    return str(sample.get("question", ""))
+
+
+def build_mcq_query_meta(sample):
+    """Structured MCQ metadata; active_query renders options exactly once."""
+    return build_streaming_query_meta(
+        sample,
+        answer_form="multiple_choice",
+        answer_style="letter_only",
+    )
 
 
 def build_rec_question(sample):
@@ -1263,18 +1281,8 @@ def eval_mcq(sample, loop, retriever, video_root, scoring="strict",
     extra = LENIENT_MAX_EXTRA_CHUNKS if scoring == "lenient" else 2
     max_chunk = ask_chunk + extra
 
-    question = build_mcq_question(sample)
-    q_meta = {
-        ask_chunk: {
-            "options": [
-                f"{chr(65+i)}) {opt}"
-                for i, opt in enumerate(sample.get("options", []))
-            ],
-            "answer_form": "multiple_choice",
-            "answer_style": "letter_only",
-            "answer_instruction": "Answer format: one letter only (A, B, C, or D).",
-        }
-    }
+    question = build_mcq_agent_question(sample)
+    q_meta = {ask_chunk: build_mcq_query_meta(sample)}
     loop.reset()
     reset_visual_index(retriever)
     telemetry: Dict = {}
@@ -1618,18 +1626,8 @@ def build_agent_job(sample, video_root, scoring="strict"):
             "id": sample.get("id"),
             "sample": sample,
             "video_path": video_path,
-            "ask_chunks": {ask_chunk: build_mcq_question(sample)},
-            "ask_meta": {
-                ask_chunk: {
-                    "options": [
-                        f"{chr(65+i)}) {opt}"
-                        for i, opt in enumerate(sample.get("options", []))
-                    ],
-                    "answer_form": "multiple_choice",
-                    "answer_style": "letter_only",
-                    "answer_instruction": "Answer format: one letter only (A, B, C, or D).",
-                }
-            },
+            "ask_chunks": {ask_chunk: build_mcq_agent_question(sample)},
+            "ask_meta": {ask_chunk: build_mcq_query_meta(sample)},
             "max_chunk": ask_chunk + extra,
             "kind": "mcq",
         }
