@@ -4,9 +4,10 @@ Canonical SFT inputs are pass5 LLaMA-Factory/DeepEyes-style ShareGPT
 `*_messages.jsonl` files. Canonical RL inputs are verl parquets built from
 `*_trajectories.jsonl` by scripts/agent_data_v5/build_verl_parquet.py.
 
-Older phase/category entries remain only for archived ablations. Do not use
-them as a staged curriculum; production SFT is a single pass over
-`stream_agent_sft`.
+The registry intentionally exposes only the current interleaved
+`video_meta + timeline_video_imagepad` message/trajectory datasets. Archived
+flat phase/category datasets were removed from the training surface so SFT,
+RL, and eval cannot silently mix incompatible prompt layouts.
 """
 
 import os
@@ -67,83 +68,24 @@ def _agent_path(filename: str) -> str:
 
 DATASET_REGISTRY = {
     # ─── Production ─────────────────────────────────────────────────
-    # All train samples mixed. Legacy alias — kept for backward compat.
-    # New runs should prefer `stream_agent_sft` (SFT-only) and
-    # `stream_agent_rl` (RL-only, held out from SFT) so the GDPO stage
-    # cannot reward-hack via memorization on SFT-seen prompts.
-    "stream_agent_p5": {
-        "annotation_path": _agent_path("phase5_train.jsonl"),
-        "data_path": "./",
-    },
-    # Same content as p5, kept as an alias for explicit "everything" loads.
-    "stream_agent_all": {
-        "annotation_path": _agent_path("train.jsonl"),
-        "data_path": "./",
-    },
-
-    # ─── Ablation-only diagnostic splits ─────────────────────────────
-    # Per-category subsets of train samples, for category-specific eval
-    # or ablation. Do NOT chain into a curriculum — see module docstring.
-    "stream_agent_p1": {
-        # Basic silent + response samples only.
-        "annotation_path": _agent_path("phase1_train.jsonl"),
-        "data_path": "./",
-    },
-    "stream_agent_p2": {
-        # Recall samples (recall_query / recall_response / recall_silent)
-        # and query-aware silent/response.
-        "annotation_path": _agent_path("phase2_train.jsonl"),
-        "data_path": "./",
-    },
-    "stream_agent_c1": {
-        # Compress samples (system trigger + teacher gold range).
-        "annotation_path": _agent_path("c1_train.jsonl"),
-        "data_path": "./",
-    },
-
-    # ─── v12.4/v12.5 trajectory + flat datasets ──────────────────────
-    # New canonical inputs, produced by `python -m
-    # scripts.agent_data_v5.pass4`. The OLD per-step files above remain
-    # for backward compat (1,635 each, post-MAX_SAMPLES_PER_VIDEO=15
-    # density cap). New datasets preserve all 47,289 verified samples
-    # from pass3e (no post-cap drop), organized by trajectory.
-    #
-    # v12.6: SFT trainer ingests `*_messages.jsonl` (LLaMA-Factory
-    # ShareGPT format) produced by pass5_messages.py from
-    # `train_sft_trajectories.jsonl`. Each row = one chunk's snapshot
-    # rendered as messages. The flat `*_full.jsonl` form is kept here as
-    # `stream_agent_sft_full` for backward compat with archived ablations
-    # but the canonical entry is `stream_agent_sft`.
+    # SFT trainer ingests pass5 `*_messages.jsonl` rows. Each row is one
+    # chunk/action snapshot rendered in the same interleaved prompt contract
+    # used by RL rollout and OVO eval.
     "stream_agent_sft": {
         "annotation_path": _agent_path("train_sft_messages.jsonl"),
-        "data_path": "./",
-    },
-    "stream_agent_sft_natural": {
-        "annotation_path": _agent_path("train_sft_messages_natural.jsonl"),
         "data_path": "./",
     },
     "stream_agent_val": {
         "annotation_path": _agent_path("val_messages.jsonl"),
         "data_path": "./",
     },
-    "stream_agent_val_balanced": {
-        "annotation_path": _agent_path("val_messages_balanced.jsonl"),
-        "data_path": "./",
-    },
     "stream_agent_test": {
         "annotation_path": _agent_path("test_messages.jsonl"),
         "data_path": "./",
     },
-    # Legacy flat format — pre pass5_messages converter
-    "stream_agent_sft_full": {
-        "annotation_path": _agent_path("train_sft_full.jsonl"),
-        "data_path": "./",
-    },
 
-    # RL trainer + streaming benchmark eval ingest `*_trajectories.jsonl`
-    # — one row per trajectory, with `questions`, `gold_action_per_chunk`,
-    # full `samples` list. Consumed by `_calc_rewards_v12_trajectory` for
-    # multi-question per-ask scoring.
+    # RL trainer and streaming eval ingest trajectory JSONL/parquets with
+    # `questions`, `gold_action_per_chunk`, and full sample metadata.
     "stream_agent_rl_traj": {
         "annotation_path": _agent_path("train_rl_trajectories.jsonl"),
         "data_path": "./",
@@ -162,7 +104,7 @@ DATASET_REGISTRY = {
 def data_list(dataset_names: list) -> list:
     """Resolve dataset names to config dicts.
 
-    Supports sampling: "stream_agent_p1%50" = 50% of phase 1 data.
+    Supports sampling: "stream_agent_sft%50" = 50% of SFT data.
     """
     result = []
     for name in dataset_names:

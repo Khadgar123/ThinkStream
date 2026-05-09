@@ -178,12 +178,10 @@ case $PHASE in
         # v11.2: in-loop eval on stream_agent_val (1,550-sample held-out
         # video-disjoint pool). Subsampled to EVAL_N (default 300) so
         # one eval pass takes ~2 min on 8×GPU instead of ~10 min.
-        # v12.6 default: stream_agent_sft (LLaMA-Factory ShareGPT messages
-        # format; pass5_messages.py converts trajectory→messages preserving
-        # all 18,229 samples). This is the canonical entry — flat
-        # train_sft_full.jsonl is kept as stream_agent_sft_full for
-        # backward-compat with archived ablations only.
-        # Override with DATASETS=stream_agent_sft_full to use legacy flat.
+        # v12.6+ default: stream_agent_sft (LLaMA-Factory ShareGPT messages
+        # format; pass5_messages.py converts trajectory→messages). This is
+        # the only supported SFT entry; archived flat phase datasets are not
+        # registered in data_list.py.
         llm=${LLM:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
         datasets=${DATASETS:-stream_agent_sft}
         eval_datasets=${EVAL_DATASETS:-stream_agent_val}
@@ -233,10 +231,8 @@ case $PHASE in
         ;;
     mixed|1|2|C1)
         # v12.6: legacy PHASEs (mixed, 1, 2, C1) are gated. They pointed at
-        # archived flat datasets (stream_agent_p1/p2/p5/c1) that don't have
-        # the messages key required by preprocess_per_timestep. To re-enable,
-        # convert those datasets through pass5_messages.py first OR use
-        # PHASE=sft on the canonical messages dataset.
+        # archived flat datasets that do not use the current interleaved
+        # messages contract. Use PHASE=sft on the canonical messages dataset.
         echo "ERROR: PHASE=$PHASE is archived in v12.6."
         echo "  Legacy phases pointed at flat *_full.jsonl datasets (no"
         echo "  'messages' key); preprocess_per_timestep now requires"

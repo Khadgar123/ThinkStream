@@ -44,6 +44,7 @@
 #   THINKSTREAM_FRAME_PROTOCOL [video_meta]
 #   THINKSTREAM_RENDER_LAYOUT [timeline_video_imagepad]
 #   THINKSTREAM_RL_EPISODE_MODE [full] full | segment
+#   THINKSTREAM_RECURRENT_MODE [recurrent] recurrent | stitched
 #   LIMIT_IMAGES [64]       vLLM limit_mm_per_prompt.image for timestamped frames
 #   LIMIT_VIDEOS [2]        vLLM limit_mm_per_prompt.video for video_meta blocks
 #   PROJECT_NAME [thinkstream-v12]
@@ -108,6 +109,14 @@ PPO_MINI_BS=${PPO_MINI_BS:-${BATCH_SIZE}}
 LR=${LR:-5e-7}
 EPOCHS=${EPOCHS:-1}
 MAX_PROMPT_LEN=${MAX_PROMPT_LEN:-16384}
+THINKSTREAM_RECURRENT_MODE="${THINKSTREAM_RECURRENT_MODE:-recurrent}"
+case "${THINKSTREAM_RECURRENT_MODE}" in
+    recurrent|stitched) ;;
+    *)
+        echo "ERROR: THINKSTREAM_RECURRENT_MODE must be recurrent or stitched, got ${THINKSTREAM_RECURRENT_MODE}" >&2
+        exit 2
+        ;;
+esac
 # v12.14 (2026-05-03): MAX_RESP_LEN is the STITCHED total across all chunk
 # turns. With D1 chunk-internal multi-turn recall a chunk with one recall
 # round costs ~3× a plain chunk; size with 1.5× headroom on top:
@@ -130,7 +139,13 @@ MAX_PROMPT_LEN=${MAX_PROMPT_LEN:-16384}
 #     120-240s = 32% (120-240 chunks)← stitched OK ≤180; 240+ needs v12.14
 #     240-600s = 7%                  ← needs v12.14
 #     >=600s   = 3%                  ← needs v12.14
-MAX_RESP_LEN=${MAX_RESP_LEN:-32768}
+if [[ -z "${MAX_RESP_LEN:-}" ]]; then
+    if [[ "${THINKSTREAM_RECURRENT_MODE}" == "recurrent" ]]; then
+        MAX_RESP_LEN=4096
+    else
+        MAX_RESP_LEN=32768
+    fi
+fi
 MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-256}
 MAX_COMPRESS_ACTION_TOKENS=${MAX_COMPRESS_ACTION_TOKENS:-512}
 # Default 120 chunks comfortably covers all of current batch1 (max=95) and
@@ -293,7 +308,7 @@ export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding
 #   ~4096 (typical single-action upper bound for ThinkStream) or 6144
 #   for headroom. The Phase 4 swap+pad path doesn't crash with 32768 —
 #   it's purely a memory/throughput concern.
-export THINKSTREAM_RECURRENT_MODE="${THINKSTREAM_RECURRENT_MODE:-stitched}"
+export THINKSTREAM_RECURRENT_MODE
 export THINKSTREAM_RL_EPISODE_MODE="${THINKSTREAM_RL_EPISODE_MODE:-full}"
 export THINKSTREAM_MAX_RECALL_PER_CHUNK="${THINKSTREAM_MAX_RECALL_PER_CHUNK:-1}"
 

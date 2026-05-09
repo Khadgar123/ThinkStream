@@ -24,7 +24,8 @@
 #   NPROC           — GPUs per node (8)
 #   GROUP_SIZE      — GRPO group size G (8) — enough variance for GRPO
 #   MAXLEN          — max prompt length (16384) — vLLM context cap
-#   MAX_NEW_TOKEN   — total stitched response buffer (32768)
+#   MAX_NEW_TOKEN   — response buffer. Defaults to 4096 in recurrent mode
+#                     and 32768 in stitched mode.
 #   MAX_ACTION_TOKENS — per-action streaming/recall vLLM cap (256)
 #   MAX_COMPRESS_ACTION_TOKENS — per-action compression vLLM cap (512)
 #   MAX_CHUNKS      — max turns per video (120 by default; use recurrent for 240+)
@@ -51,9 +52,10 @@
 #                  — dynamic micro-batch token budget (65536).
 #   RUNTIME_ROOT    — Ray/vLLM/HF/Triton cache root. Defaults to
 #                    .runtime/$RUN_NAME to keep /tmp from filling.
-#   THINKSTREAM_RECURRENT_MODE — stitched | recurrent. Recurrent is required
-#                    for long full-video trajectories without dense
-#                    stitched-response OOM.
+#   THINKSTREAM_RECURRENT_MODE — recurrent | stitched. Recurrent is the
+#                    production default: rollout emits one action row at a
+#                    time, so B>1 multi-trajectory batches do not allocate
+#                    one giant stitched response tensor per trajectory.
 #   THINKSTREAM_RL_EPISODE_MODE — full | segment. full preserves one
 #                    full-video trajectory per sample; segment uses student
 #                    prefix state when available for faster training windows.
@@ -76,10 +78,25 @@ NPROC=${NPROC:-8}
 # GROUP_SIZE=2 MAX_STEPS=2.
 GROUP_SIZE=${GROUP_SIZE:-8}
 MAXLEN=${MAXLEN:-16384}
-# MAX_NEW_TOKEN sets verl's rollout.response_length, which is the TOTAL
-# stitched response buffer across all chunks. It is NOT the per-action
-# generation cap; MAX_ACTION_TOKENS below controls each vLLM request.
-MAX_NEW_TOKEN=${MAX_NEW_TOKEN:-32768}
+THINKSTREAM_RECURRENT_MODE="${THINKSTREAM_RECURRENT_MODE:-recurrent}"
+case "${THINKSTREAM_RECURRENT_MODE}" in
+    recurrent|stitched) ;;
+    *)
+        echo "ERROR: THINKSTREAM_RECURRENT_MODE must be recurrent or stitched, got ${THINKSTREAM_RECURRENT_MODE}" >&2
+        exit 2
+        ;;
+esac
+# MAX_NEW_TOKEN sets verl's rollout.response_length. In stitched mode this is
+# the total trajectory response buffer; in recurrent mode it is per action-row.
+# Keep recurrent small so B>1 multi-trajectory rollout/update does not allocate
+# dense 32K response tensors for every action.
+if [[ -z "${MAX_NEW_TOKEN:-}" ]]; then
+    if [[ "${THINKSTREAM_RECURRENT_MODE}" == "recurrent" ]]; then
+        MAX_NEW_TOKEN=4096
+    else
+        MAX_NEW_TOKEN=32768
+    fi
+fi
 MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-256}
 MAX_COMPRESS_ACTION_TOKENS=${MAX_COMPRESS_ACTION_TOKENS:-512}
 MAX_CHUNKS=${MAX_CHUNKS:-120}
@@ -258,6 +275,7 @@ echo "Train parquet:     ${TRAIN_PARQUET}"
 echo "Val parquet:       ${VAL_PARQUET}"
 echo "Multi-Q rows:      ${MULTI_Q}"
 echo "RL episode mode:   ${THINKSTREAM_RL_EPISODE_MODE}"
+echo "Recurrent mode:    ${THINKSTREAM_RECURRENT_MODE}"
 echo "Output:            ${OUTPUT_DIR}"
 echo "Runtime root:      ${RUNTIME_ROOT}"
 echo "GPUs:              ${NPROC}"
@@ -312,6 +330,7 @@ export THINKSTREAM_FRAMES_ROOT="${FRAMES_ROOT}"
 export THINKSTREAM_MAX_TOKENS_PER_ACTION="${MAX_ACTION_TOKENS}"
 export THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION="${MAX_COMPRESS_ACTION_TOKENS}"
 export THINKSTREAM_RL_EPISODE_MODE
+export THINKSTREAM_RECURRENT_MODE
 
 export THINKSTREAM_HOME="${PROJECT_DIR}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"

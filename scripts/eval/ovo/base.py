@@ -180,7 +180,7 @@ def build_messages(frame_paths, question, *, frame_protocol="video_meta",
 
 def eval_one_probe(model, processor, pad_id,
                    frame_paths, question, max_new_tokens,
-                   frame_protocol="ts_image", fps: float = DEFAULT_FRAME_FPS,
+                   frame_protocol="video_meta", fps: float = DEFAULT_FRAME_FPS,
                    enable_thinking=None):
     """Single VLM forward. Returns the decoded text."""
     messages = build_messages(
@@ -274,7 +274,7 @@ def _strict_int(text: str):
 
 def eval_mcq_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient", frame_protocol="ts_image",
+                  scoring="lenient", frame_protocol="video_meta",
                   fps: float = DEFAULT_FRAME_FPS, enable_thinking=None):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
@@ -303,7 +303,7 @@ def eval_mcq_base(sample, model, processor, pad_id, video_root, frames_root,
 
 def eval_rec_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient", frame_protocol="ts_image",
+                  scoring="lenient", frame_protocol="video_meta",
                   fps: float = DEFAULT_FRAME_FPS, enable_thinking=None):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
@@ -346,7 +346,7 @@ def _yes_no_pred(text, scoring):
 
 def eval_ssr_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient", frame_protocol="ts_image",
+                  scoring="lenient", frame_protocol="video_meta",
                   fps: float = DEFAULT_FRAME_FPS, enable_thinking=None):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
@@ -375,7 +375,7 @@ def eval_ssr_base(sample, model, processor, pad_id, video_root, frames_root,
 
 def eval_crr_base(sample, model, processor, pad_id, video_root, frames_root,
                   mode, visual_window_sec, max_frames, max_new_tokens,
-                  scoring="lenient", frame_protocol="ts_image",
+                  scoring="lenient", frame_protocol="video_meta",
                   fps: float = DEFAULT_FRAME_FPS, enable_thinking=None):
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():

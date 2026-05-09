@@ -403,7 +403,7 @@ def first_yes_response_between(per_chunk, start_chunk, end_chunk):
 
 def make_loop(model, processor, tokenizer, model_type, retriever,
               compress_mode, max_new_tokens, frames_root=None, video_root=None,
-              frame_protocol="ts_image", memory_mode="full"):
+              frame_protocol="video_meta", memory_mode="full"):
     # v12.12 (2026-05-02): RUNTIME profile aligned with pass2/SFT/RL
     # (was 100352/150528, before that 200704/401408). Empirically measured
     # 130k/220k → ~235 tok/frame, 32-frame window = 7,520 vis tok in 16K.

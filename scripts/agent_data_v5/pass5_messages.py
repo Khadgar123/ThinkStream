@@ -797,8 +797,8 @@ def build_messages(
     base_path: Path,
     *,
     data_dir: Optional[Path] = None,
-    frame_protocol: str = "ts_image",
-    render_layout: str = RENDER_LAYOUT_STANDARD,
+    frame_protocol: str = "video_meta",
+    render_layout: str = RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
 ) -> List[Dict]:
     """Produce v12 ShareGPT messages for one sample. Stdlib-only.
 
@@ -1579,8 +1579,8 @@ def convert(
     data_dir: Optional[Path] = None,
     limit: Optional[int] = None,
     balance_sft: bool = False,
-    frame_protocol: str = "ts_image",
-    render_layout: str = RENDER_LAYOUT_STANDARD,
+    frame_protocol: str = "video_meta",
+    render_layout: str = RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
 ) -> Dict[str, int]:
     data_dir = data_dir or DEFAULT_DATA_DIR
     iter_fn = _iter_trajectories if is_trajectory else _iter_flat

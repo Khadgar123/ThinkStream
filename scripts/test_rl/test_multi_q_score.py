@@ -66,7 +66,18 @@ def main() -> int:
     print(f"  target video={r['video_id']} n_q={n_q}")
 
     # ── ALL CORRECT
-    per_q_chunk = [int(q.get("ask_chunk", -1)) for q in questions]
+    # Current multi-Q reward scores answer content at the expected answer
+    # chunk, not merely at the query injection chunk. Delayed questions can
+    # have ask_chunk << answer_chunks[0].
+    per_q_chunk = []
+    for q in questions:
+        answer_chunks = q.get("answer_chunks") or []
+        if hasattr(answer_chunks, "tolist"):
+            answer_chunks = answer_chunks.tolist()
+        if answer_chunks:
+            per_q_chunk.append(int(answer_chunks[0]))
+        else:
+            per_q_chunk.append(int(q.get("ask_chunk", -1)))
     per_q_text = [
         str(q.get("correct_option") or q.get("gold_answer", ""))
         for q in questions

@@ -496,6 +496,19 @@ def _link_frames_for_selected(out: Path, rows: Sequence[Dict[str, Any]], *, forc
             _relative_symlink(src, frames_root / vid, force=force)
 
 
+def _link_rollouts_for_selected(out: Path, rows: Sequence[Dict[str, Any]], *, force: bool) -> None:
+    rollout_root = out / "rollout"
+    rollout_root.mkdir(parents=True, exist_ok=True)
+    for row in rows:
+        vid = _video_id(row)
+        source = Path(str(row.get("_source") or ""))
+        if not vid or not source:
+            continue
+        src = source / "rollout" / f"{vid}.json"
+        if src.exists():
+            _relative_symlink(src, rollout_root / f"{vid}.json", force=force)
+
+
 def _write_split_manifests(
     *,
     sources: Sequence[Path],
@@ -536,6 +549,11 @@ def _write_split_manifests(
     for bank in banks:
         source = _resolve_source_from_bank(bank)
         _link_if_exists(bank, bank_dir / _source_key(source), force=force)
+    _link_rollouts_for_selected(
+        out,
+        [row for rows in splits.values() for row in rows],
+        force=force,
+    )
     return counts
 
 
@@ -636,19 +654,22 @@ def _build_rl_parquets(
 
     counts: Dict[str, int] = {}
     specs = [
-        ("train_rl_trajectories.jsonl", "train_rl_multi_q.parquet"),
-        ("val_trajectories.jsonl", "val_rl_multi_q.parquet"),
+        ("train_rl_trajectories.jsonl", "train_rl_multi_q.parquet", False),
+        ("val_trajectories.jsonl", "val_rl_multi_q.parquet", False),
+        ("train_rl_trajectories.jsonl", "train_rl_multi_q_segment_cache.parquet", True),
+        ("val_trajectories.jsonl", "val_rl_multi_q_segment_cache.parquet", True),
     ]
     for protocol in protocols:
         rendered = out / "rendered" / _render_dir_name(protocol, render_layout)
         rendered.mkdir(parents=True, exist_ok=True)
-        for src_name, dst_name in specs:
+        for src_name, dst_name, include_student_cache in specs:
             rows = list(
                 _iter_rows_multi_q(
                     final_dir / src_name,
                     max_questions_per_traj=16,
                     frame_protocol=protocol,
                     render_layout=render_layout,
+                    include_student_cache=include_student_cache,
                 )
             )
             if not rows:
@@ -702,8 +723,16 @@ def _write_report(
                 p: str(out / "rendered" / _render_dir_name(p, render_layout) / "train_rl_multi_q.parquet")
                 for p in protocols
             },
+            "rl_train_segment_parquet": {
+                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "train_rl_multi_q_segment_cache.parquet")
+                for p in protocols
+            },
             "rl_val_parquet": {
                 p: str(out / "rendered" / _render_dir_name(p, render_layout) / "val_rl_multi_q.parquet")
+                for p in protocols
+            },
+            "rl_val_segment_parquet": {
+                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "val_rl_multi_q_segment_cache.parquet")
                 for p in protocols
             },
             "eval_messages": {
@@ -757,7 +786,9 @@ def _write_report(
         "",
         "- Stage-1 SFT: `rendered/video_meta_timeline_video_imagepad/train_sft_messages.jsonl`",
         "- Eval: `rendered/video_meta_timeline_video_imagepad/val_messages.jsonl`, `rendered/video_meta_timeline_video_imagepad/test_messages.jsonl`",
-        "- RL: `rendered/video_meta_timeline_video_imagepad/train_rl_multi_q.parquet` and `final/train_rl_trajectories.jsonl`",
+        "- RL full-video: `rendered/video_meta_timeline_video_imagepad/train_rl_multi_q.parquet`",
+        "- RL segment: `rendered/video_meta_timeline_video_imagepad/train_rl_multi_q_segment_cache.parquet`",
+        "- RL source trajectories: `final/train_rl_trajectories.jsonl`",
         "",
     ])
     (reports / "distribution.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -840,7 +871,7 @@ def main() -> None:
         if not bank.is_absolute():
             bank = Path.cwd() / bank
         banks.append(bank)
-    if args.banks:
+    if args.batches or args.banks or len(banks) > 1:
         sources = [_resolve_source_from_bank(bank) for bank in banks]
     else:
         source = Path(args.source).expanduser() if args.source else _resolve_source_from_bank(banks[0])

@@ -14,13 +14,11 @@ Specifically tests:
   - per-action shape/values match what ray_trainer.fit() now writes
 
 Why this test exists:
-  test_recurrent_reward_broadcast.py exercised the OLD Phase 2 block
-  (broadcast same scalar to all sibling actions then run standard GRPO).
-  That approach was wrong — same uid + same scalar → within-group
-  variance=0 → advantage=0 → no learning signal. The user's audit
-  flagged it. This test exercises the NEW (correct) MemAgent-aligned
-  flow: trajectory-level groups → within-group variance comes from
-  actually-different rollout outcomes.
+  The retired Phase 2 broadcast path used to apply the same scalar to all
+  sibling actions before standard GRPO. That was wrong: same uid + same scalar
+  gives within-group variance=0 and no learning signal. This test exercises
+  the current MemAgent-aligned flow: trajectory-level groups, then broadcast
+  the trajectory advantage back to recurrent action rows.
 """
 from __future__ import annotations
 
