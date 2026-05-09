@@ -34,15 +34,36 @@ data/agent_v5/<batch_root>/
     val_rl_multi_q.parquet         # auto-built if missing
 ```
 
-For a standard render layout, set `THINKSTREAM_RENDER_LAYOUT=standard`.
+The supported project entry is intentionally fixed to
+`FRAME_PROTOCOL=video_meta` and `THINKSTREAM_RENDER_LAYOUT=timeline_video_imagepad`.
+Archived `ts_image` and standard block layouts are not produced by the main
+pipeline or launchers.
 
-## 3. One-Command SFT -> RL
+## 3. Multi-Batch Training Scheme
+
+Use this when several generated batches need to become one SFT/RL/eval/test
+root. The split is video-disjoint and balances task family, recall frequency,
+and compression frequency across SFT, RL, val, and test.
+
+```bash
+bash scripts/prepare_training_data.sh \
+  --out data/agent_v5/scheme_v1 \
+  --batches data/agent_v5/batch1 data/agent_v5/batch2 data/agent_v5/batch3 \
+  --sft-videos 150 \
+  --rl-videos 175 \
+  --val-videos 50 \
+  --test-videos 50 \
+  --force
+```
+
+The output already contains canonical rendered SFT messages and RL parquet
+files under `rendered/video_meta_timeline_video_imagepad/`.
+
+## 4. One-Command SFT -> RL
 
 ```bash
 THINKSTREAM_DATA_ROOT=data/agent_v5/<batch_root> \
 BASE_MODEL=/path/to/Qwen3-VL-8B-Instruct \
-FRAME_PROTOCOL=video_meta \
-THINKSTREAM_RENDER_LAYOUT=timeline_video_imagepad \
 bash scripts/run_sft_rl.sh
 ```
 
@@ -58,7 +79,7 @@ THINKSTREAM_DATA_ROOT=data/agent_v5/<batch_root> \
 bash scripts/run_sft_rl.sh
 ```
 
-## 4. RL Defaults
+## 5. RL Defaults
 
 The default RL path uses full-video recurrent rollout:
 
@@ -79,7 +100,7 @@ FREEZE_VISION_TOWER=true
 Runtime spill/cache files are kept under `.runtime/$RUN_NAME` so Ray/vLLM do
 not fill `/tmp`. Override with `RUNTIME_ROOT=/path/to/runtime` if needed.
 
-## 5. Monitoring
+## 6. Monitoring
 
 For recurrent RL, keep the compact audit enabled and monitor with:
 
@@ -92,3 +113,11 @@ python scripts/monitor_rl_recurrent.py \
 The monitor reports action rows, recall frequency, recall/support overlap,
 answer timing, answer accuracy, compression parse health, JSON/action parse
 errors, and time-range validity.
+
+OVO full eval writes the same abnormal-behavior signals in one compact
+`summary.health` block:
+
+- `answer`: content accuracy, no-early/no-late/on-time accuracy, missing/early/late rates.
+- `recall`: recall frequency, support-hit rate, recall-before-answer rate, accuracy with and without recall, blocked second-step recall rate.
+- `compression`: compression frequency, success rate, and system trigger/range/calculation checks.
+- `format_runtime`: step errors, format/action-space errors, stable-think rate, max prompt/think tokens, and action histogram.

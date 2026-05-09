@@ -1268,7 +1268,7 @@ def _rewrite_recall_query_turn1_think(sample: Dict, messages: List[Dict]) -> Non
 
     Existing trajectory banks may carry pass2's question-blind visual think in
     v12_assistant_turn_1. Rewriting at pass5 render time lets us regenerate
-    better SFT/DAgger messages without rerunning pass3.
+    better SFT messages without rerunning pass3.
     """
     for msg in messages:
         if msg.get("role") != "assistant":
@@ -1679,36 +1679,27 @@ def main() -> None:
         default="",
         help=(
             "Directory for rendered *_messages.jsonl outputs. Defaults to "
-            "--final-dir. Use this to render AB variants from one canonical "
-            "trajectory set, e.g. final/rendered/ts_image and "
-            "final/rendered/video_meta."
+            "--final-dir. The canonical training/eval directory is "
+            "rendered/video_meta_timeline_video_imagepad."
         ),
     )
     parser.add_argument(
         "--frame-protocol",
-        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
-        choices=["ts_image", "video_meta"],
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta"),
+        choices=["video_meta"],
         help=(
-            "Student/eval visual carrier. ts_image = timestamp text + image "
-            "items; video_meta = pre-extracted frame list as Qwen video block "
-            "with video_metadata. Teacher pass caches are unchanged."
+            "Student/eval visual carrier. The supported project entry uses "
+            "video_meta plus timeline_video_imagepad interleaving."
         ),
     )
     parser.add_argument(
         "--render-layout",
-        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", RENDER_LAYOUT_STANDARD),
-        choices=[
-            RENDER_LAYOUT_STANDARD,
-            RENDER_LAYOUT_TIMELINE_VIDEO,
-            RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
-        ],
+        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD),
+        choices=[RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD],
         help=(
-            "User payload layout. standard keeps the existing block order; "
-            "timeline_video keeps frame_protocol=video_meta but splits extracted "
-            "frames into time-ordered type=video chunk blocks and places summary/"
-            "memory/recall tags around that timeline. timeline_video_imagepad "
-            "uses type=video items with image-pad frame carriers plus timestamp "
-            "text instead of Qwen video_metadata blocks."
+            "Canonical interleaved layout: time-ordered video/image-pad chunk "
+            "carriers with memory, question, recall, and compression context "
+            "rendered around the timeline."
         ),
     )
     parser.add_argument("--base-path", default=str(PROJECT_ROOT),

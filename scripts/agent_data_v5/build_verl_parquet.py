@@ -405,17 +405,18 @@ def main() -> int:
     )
     ap.add_argument(
         "--frame-protocol",
-        default="ts_image",
-        choices=["ts_image", "video_meta"],
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta"),
+        choices=["video_meta"],
         help=(
-            "Visual protocol used by the RL rollout loop. Must match "
-            "THINKSTREAM_FRAME_PROTOCOL at training/eval time."
+            "Visual protocol used by the RL rollout loop. The supported "
+            "project entry uses video_meta plus timeline_video_imagepad."
         ),
     )
     ap.add_argument(
         "--render-layout",
-        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard"),
-        help="Prompt layout: standard, timeline_video, or timeline_video_imagepad.",
+        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "timeline_video_imagepad"),
+        choices=["timeline_video_imagepad"],
+        help="Canonical prompt layout used by SFT, RL, and eval.",
     )
     args = ap.parse_args()
     frame_protocol = normalize_frame_protocol(args.frame_protocol)

@@ -339,8 +339,8 @@ def add_offline_args(parser):
     parser.add_argument(
         "--frame_protocol",
         type=str,
-        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
-        choices=["ts_image", "video_meta"],
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta"),
+        choices=["video_meta"],
     )
     parser.add_argument("--sample", type=int, default=None)
     parser.add_argument("--debug", action="store_true",

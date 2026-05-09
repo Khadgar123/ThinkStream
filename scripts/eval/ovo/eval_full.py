@@ -60,7 +60,7 @@ import os
 import re
 import sys
 import time
-from collections import defaultdict
+from collections import Counter, defaultdict
 from copy import deepcopy
 from dataclasses import dataclass, field
 from difflib import SequenceMatcher
@@ -251,8 +251,8 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None,
     telemetry:  optional dict; if provided, populated with per-step stats:
                   compress_events: list of {chunk, thinks_count, n_compressed}
                   recall_events:   list of {chunk, returned_chunks}
-                These are the v9.4.2 stream-eval metrics (see docstring of
-                test_set_agent.walk_and_score for full breakdown).
+                These feed the compact `summary.health` abnormal-behavior
+                report in addition to per-probe accuracy.
 
     Returns: dict {chunk_idx: (action, response_text)}
     """
@@ -333,6 +333,12 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None,
             if not result.get("format_ok", True):
                 telemetry["n_format_violations"] = (
                     telemetry.get("n_format_violations", 0) + 1)
+            if result.get("action_space_error") or result.get("invalid_action"):
+                telemetry["n_action_space_errors"] = (
+                    telemetry.get("n_action_space_errors", 0) + 1)
+            if result.get("recall_step2_blocked"):
+                telemetry["n_recall_step2_blocked"] = (
+                    telemetry.get("n_recall_step2_blocked", 0) + 1)
             telemetry["total_steps"] = telemetry.get("total_steps", 0) + 1
 
         action = result.get("action", "?")
@@ -364,6 +370,9 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None,
                 "prompt_tokens": result.get("prompt_text_token_count"),
                 "memory_tokens": result.get("memory_token_count"),
                 "format_ok": bool(result.get("format_ok", True)),
+                "action_space_error": result.get("action_space_error", ""),
+                "invalid_action": result.get("invalid_action", ""),
+                "recall_step2_blocked": bool(result.get("recall_step2_blocked")),
                 "compress_succeeded": result.get("compress_succeeded"),
             })
         if action == "compress" and result.get("compress_telemetry") and result.get("compress_succeeded"):
@@ -960,6 +969,12 @@ def _record_vllm_step_telemetry(
     if not result.get("format_ok", True):
         telemetry["n_format_violations"] = (
             telemetry.get("n_format_violations", 0) + 1)
+    if result.get("action_space_error") or result.get("invalid_action"):
+        telemetry["n_action_space_errors"] = (
+            telemetry.get("n_action_space_errors", 0) + 1)
+    if result.get("recall_step2_blocked"):
+        telemetry["n_recall_step2_blocked"] = (
+            telemetry.get("n_recall_step2_blocked", 0) + 1)
     telemetry["total_steps"] = telemetry.get("total_steps", 0) + 1
     final_action, final_response = per_chunk.get(chunk_idx, ("missing", ""))
     if result.get("action") == "recall" and telemetry.get("recall_events"):
@@ -975,6 +990,9 @@ def _record_vllm_step_telemetry(
         "prompt_tokens": result.get("prompt_text_token_count"),
         "memory_tokens": result.get("memory_token_count"),
         "format_ok": bool(result.get("format_ok", True)),
+        "action_space_error": result.get("action_space_error", ""),
+        "invalid_action": result.get("invalid_action", ""),
+        "recall_step2_blocked": bool(result.get("recall_step2_blocked")),
         "compress_succeeded": result.get("compress_succeeded"),
     })
 
@@ -1129,6 +1147,8 @@ def telemetry_summary(
         "n_step_errors": telemetry.get("n_step_errors", 0),
         "step_errors": telemetry.get("step_errors", [])[:10],
         "n_format_violations": telemetry.get("n_format_violations", 0),
+        "n_action_space_errors": telemetry.get("n_action_space_errors", 0),
+        "n_recall_step2_blocked": telemetry.get("n_recall_step2_blocked", 0),
         "action_histogram": dict(action_hist),
         "n_recall_events": len(recalls),
         "n_recall_returned_nonempty": sum(
@@ -2085,7 +2105,10 @@ def aggregate(results):
                                     "n_compress_system_calc_checked": 0,
                                     "n_compress_system_calc_ok": 0,
                                     "n_step_errors": 0, "n_format_violations": 0,
+                                    "n_action_space_errors": 0,
+                                    "n_recall_step2_blocked": 0,
                                     "total_steps": 0,
+                                    "action_histogram": Counter(),
                                     "stable_think_samples": 0,
                                     "stable_think_pairs": 0,
                                     "prompt_tokens_max": 0,
@@ -2126,7 +2149,14 @@ def aggregate(results):
         by_task[task]["n_format_violations"] += int(
             telemetry.get("n_format_violations", 0) or 0
         )
+        by_task[task]["n_action_space_errors"] += int(
+            telemetry.get("n_action_space_errors", 0) or 0
+        )
+        by_task[task]["n_recall_step2_blocked"] += int(
+            telemetry.get("n_recall_step2_blocked", 0) or 0
+        )
         by_task[task]["total_steps"] += int(telemetry.get("total_steps", 0) or 0)
+        by_task[task]["action_histogram"].update(telemetry.get("action_histogram") or {})
         stable = telemetry.get("stable_think") or {}
         if int(stable.get("n_stable_pairs", 0) or 0) > 0:
             by_task[task]["stable_think_samples"] += 1
@@ -2271,8 +2301,17 @@ def aggregate(results):
             "n_compress_system_calc_checked": v["n_compress_system_calc_checked"],
             "step_errors": v["n_step_errors"],
             "format_violations": v["n_format_violations"],
+            "action_space_errors": v["n_action_space_errors"],
+            "recall_step2_blocked": v["n_recall_step2_blocked"],
+            "step_error_rate": _pct(v["n_step_errors"], v["total_steps"]),
+            "format_violation_rate": _pct(v["n_format_violations"], v["total_steps"]),
+            "action_space_error_rate": _pct(v["n_action_space_errors"], v["total_steps"]),
+            "recall_step2_blocked_rate": _pct(v["n_recall_step2_blocked"], v["n_recall_events"]),
+            "action_histogram": dict(v["action_histogram"]),
             "stable_think_samples": v["stable_think_samples"],
             "stable_think_pairs": v["stable_think_pairs"],
+            "stable_think_sample_rate": _pct(v["stable_think_samples"], v["n"]),
+            "stable_think_pair_rate": _pct(v["stable_think_pairs"], v["total_steps"]),
             "prompt_tokens_max": v["prompt_tokens_max"],
             "think_tokens_max": v["think_tokens_max"],
             "response_offset_mean": _mean(offsets),
@@ -2284,6 +2323,109 @@ def aggregate(results):
             "response_early_rate": _pct(v["response_early_n"], v["n"]),
             "response_late_rate": _pct(v["response_late_n"], v["n"]),
         }
+
+    total = defaultdict(int)
+    action_hist = Counter()
+    all_probe_offsets = []
+    for v in by_task.values():
+        for key in (
+            "n", "correct", "no_early_correct", "no_late_correct",
+            "on_time_correct", "response_missing_n", "response_early_n",
+            "response_late_n", "with_recall_n", "with_recall_correct",
+            "without_recall_n", "without_recall_correct",
+            "n_recall_events", "n_recall_returned_nonempty",
+            "n_recall_support_hits", "n_recall_before_response",
+            "n_recall_support_hit_before_response", "n_compress_events",
+            "n_compress_succeeded", "n_compress_system_trigger_rule_checked",
+            "n_compress_system_trigger_rule_ok",
+            "n_compress_system_range_rule_checked",
+            "n_compress_system_range_rule_ok",
+            "n_compress_system_calc_checked",
+            "n_compress_system_calc_ok", "n_step_errors",
+            "n_format_violations", "n_action_space_errors",
+            "n_recall_step2_blocked", "total_steps",
+            "stable_think_samples", "stable_think_pairs",
+        ):
+            total[key] += int(v.get(key, 0) or 0)
+        action_hist.update(v.get("action_histogram") or {})
+        all_probe_offsets.extend(v.get("response_to_probe_offsets") or [])
+        total["prompt_tokens_max"] = max(
+            total["prompt_tokens_max"], int(v.get("prompt_tokens_max", 0) or 0)
+        )
+        total["think_tokens_max"] = max(
+            total["think_tokens_max"], int(v.get("think_tokens_max", 0) or 0)
+        )
+
+    health = {
+        "answer": {
+            "probes": total["n"],
+            "content_acc": _pct(total["correct"], total["n"]),
+            "no_early_acc": _pct(total["no_early_correct"], total["n"]),
+            "no_late_acc": _pct(total["no_late_correct"], total["n"]),
+            "on_time_acc": _pct(total["on_time_correct"], total["n"]),
+            "missing_rate": _pct(total["response_missing_n"], total["n"]),
+            "early_rate": _pct(total["response_early_n"], total["n"]),
+            "late_rate": _pct(total["response_late_n"], total["n"]),
+            "response_to_probe_offset_mean": _mean(all_probe_offsets),
+            "response_to_probe_offset_min": min(all_probe_offsets) if all_probe_offsets else None,
+            "response_to_probe_offset_max": max(all_probe_offsets) if all_probe_offsets else None,
+        },
+        "recall": {
+            "events": total["n_recall_events"],
+            "events_per_step": _pct(total["n_recall_events"], total["total_steps"]),
+            "events_per_probe": _pct(total["n_recall_events"], total["n"]),
+            "return_nonempty_rate": _pct(
+                total["n_recall_returned_nonempty"], total["n_recall_events"]
+            ),
+            "support_hit_rate": _pct(total["n_recall_support_hits"], total["n_recall_events"]),
+            "before_response_rate": _pct(total["with_recall_n"], total["n"]),
+            "before_response_support_hit_rate": _pct(
+                total["n_recall_support_hit_before_response"], total["with_recall_n"]
+            ),
+            "acc_with_recall": _pct(total["with_recall_correct"], total["with_recall_n"]),
+            "acc_without_recall": _pct(
+                total["without_recall_correct"], total["without_recall_n"]
+            ),
+            "step2_blocked_rate": _pct(
+                total["n_recall_step2_blocked"], total["n_recall_events"]
+            ),
+        },
+        "compression": {
+            "events": total["n_compress_events"],
+            "events_per_step": _pct(total["n_compress_events"], total["total_steps"]),
+            "events_per_probe": _pct(total["n_compress_events"], total["n"]),
+            "success_rate": _pct(total["n_compress_succeeded"], total["n_compress_events"]),
+            "system_trigger_rule_rate": _pct(
+                total["n_compress_system_trigger_rule_ok"],
+                total["n_compress_system_trigger_rule_checked"],
+            ),
+            "system_range_rule_rate": _pct(
+                total["n_compress_system_range_rule_ok"],
+                total["n_compress_system_range_rule_checked"],
+            ),
+            "system_calc_ok_rate": _pct(
+                total["n_compress_system_calc_ok"],
+                total["n_compress_system_calc_checked"],
+            ),
+        },
+        "format_runtime": {
+            "steps": total["total_steps"],
+            "step_error_rate": _pct(total["n_step_errors"], total["total_steps"]),
+            "format_violation_rate": _pct(
+                total["n_format_violations"], total["total_steps"]
+            ),
+            "action_space_error_rate": _pct(
+                total["n_action_space_errors"], total["total_steps"]
+            ),
+            "stable_think_sample_rate": _pct(total["stable_think_samples"], total["n"]),
+            "stable_think_pair_rate": _pct(
+                total["stable_think_pairs"], total["total_steps"]
+            ),
+            "prompt_tokens_max": total["prompt_tokens_max"],
+            "think_tokens_max": total["think_tokens_max"],
+            "action_histogram": dict(action_hist),
+        },
+    }
 
     return {
         "by_task": dict(by_task),
@@ -2311,6 +2453,7 @@ def aggregate(results):
         "overall_no_early": overall_no_early,
         "overall_no_late": overall_no_late,
         "overall_on_time": overall_on_time,
+        "health": health,
         "diagnostics": diagnostics,
     }
 
@@ -2357,6 +2500,22 @@ def print_report(agg):
           f"{agg.get('overall_no_early', 0.0):.3f} / "
           f"{agg.get('overall_no_late', 0.0):.3f} / "
           f"{agg.get('overall_on_time', 0.0):.3f}")
+    health = agg.get("health") or {}
+    recall = health.get("recall") or {}
+    compression = health.get("compression") or {}
+    runtime = health.get("format_runtime") or {}
+    print(f"Health recall: events={recall.get('events', 0)} "
+          f"per_step={recall.get('events_per_step', 0.0):.3f} "
+          f"support_hit={recall.get('support_hit_rate', 0.0):.3f} "
+          f"acc_with/without={recall.get('acc_with_recall', 0.0):.3f}/"
+          f"{recall.get('acc_without_recall', 0.0):.3f}")
+    print(f"Health compression: events={compression.get('events', 0)} "
+          f"success={compression.get('success_rate', 0.0):.3f} "
+          f"system_calc_ok={compression.get('system_calc_ok_rate', 0.0):.3f}")
+    print(f"Health runtime: steps={runtime.get('steps', 0)} "
+          f"format_bad={runtime.get('format_violation_rate', 0.0):.3f} "
+          f"action_bad={runtime.get('action_space_error_rate', 0.0):.3f} "
+          f"stable_pair={runtime.get('stable_think_pair_rate', 0.0):.3f}")
     print()
     print("Diagnostics: recall = event count; comp = compression trigger count; "
           "stable = consecutive high-similarity think pairs; acc = content "
@@ -2415,16 +2574,16 @@ def main():
                         "is the test).")
     p.add_argument(
         "--frame-protocol",
-        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
-        choices=["ts_image", "video_meta"],
-        help="Visual carrier for pre-extracted frames in the streaming agent.",
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta"),
+        choices=["video_meta"],
+        help="Canonical visual carrier for pre-extracted frames.",
     )
     p.add_argument(
         "--render-layout",
         dest="render_layout",
-        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard"),
-        choices=["standard", "timeline_video", "timeline_video_imagepad"],
-        help="Prompt render layout for visual frames.",
+        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "timeline_video_imagepad"),
+        choices=["timeline_video_imagepad"],
+        help="Canonical interleaved video/image-pad prompt layout.",
     )
     p.add_argument("--engine", default="hf", choices=["hf", "vllm"],
                    help="Inference backend. vllm batches multiple live video "

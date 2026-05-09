@@ -44,7 +44,7 @@ from thinkstream.data.agent_protocol import append_visual_frames, normalize_fram
 
 def _build_messages(datum: dict, frames, frame_meta: dict, options: list,
                     question_prefix: str, question_postfix: str,
-                    frame_protocol: str = "ts_image") -> tuple:
+                    frame_protocol: str = "video_meta") -> tuple:
     frame_protocol = normalize_frame_protocol(frame_protocol)
     query = build_baseline_mcq_query(
         datum,
@@ -89,7 +89,7 @@ def offline_predict_mcq_vllm(
     debug: bool = False,
     debug_dir: Optional[str] = None,
     protocol_version: str = "v11",
-    frame_protocol: str = "ts_image",
+    frame_protocol: str = "video_meta",
 ):
     """Offline MCQ prediction via vLLM batch generate.
 

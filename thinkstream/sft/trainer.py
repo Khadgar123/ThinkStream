@@ -136,7 +136,7 @@ def expected_v12_kind_for_eval(
     """Expected assistant behavior for teacher-forced protocol metrics."""
     stype = (stype or "").strip()
     action = (action or "").strip().lower()
-    if stype in ("recall_query", "recall", "dagger_recall_query") and n_turns >= 2:
+    if stype in ("recall_query", "recall") and n_turns >= 2:
         if turn_idx == 0:
             return "recall"
         return (
@@ -148,9 +148,9 @@ def expected_v12_kind_for_eval(
         return "answer_empty"
     if stype in ("response", "recall_response"):
         return "answer_nonempty"
-    if stype in ("dagger_post_recall", "post_recall"):
+    if stype == "post_recall":
         return "answer_empty" if action == "silent" else "answer_nonempty"
-    if stype in ("recall_query", "recall", "dagger_recall_query"):
+    if stype in ("recall_query", "recall"):
         return "recall"
     if stype in ("compress", "compress_inter"):
         return "compress"

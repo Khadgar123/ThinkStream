@@ -150,13 +150,14 @@ def main():
     p.add_argument("--out", default=None, help="Output JSON path")
     p.add_argument(
         "--frame-protocol",
-        default=None,
-        choices=["ts_image", "video_meta"],
+        default="video_meta",
+        choices=["video_meta"],
         help="Used only when --val is a flat row file rendered on the fly.",
     )
     p.add_argument(
         "--render-layout",
-        default=None,
+        default="timeline_video_imagepad",
+        choices=["timeline_video_imagepad"],
         help="Used only when --val is a flat row file rendered on the fly.",
     )
     p.add_argument("--no_bf16", action="store_true")

@@ -39,11 +39,14 @@
 #   THINKSTREAM_DATA_ROOT / AGENT_DATA_DIR
 #               - Generated batch root. Default: data/agent_v5.
 #   THINKSTREAM_FINAL_DIR
-#               - Optional rendered messages dir. If unset and
-#                 rendered/$FRAME_PROTOCOL exists, this script uses it.
+#               - Optional rendered messages dir. If unset this script uses
+#                 rendered/video_meta_timeline_video_imagepad.
 #   FRAME_PROTOCOL / THINKSTREAM_FRAME_PROTOCOL
-#               - ts_image | video_meta. Must match the rendered SFT
-#                 messages and later RL/eval protocol.
+#               - video_meta. SFT/RL/eval intentionally share one canonical
+#                 interleaved video/image-pad protocol.
+#   THINKSTREAM_RENDER_LAYOUT
+#               - timeline_video_imagepad. Older standard block layouts are
+#                 kept only inside low-level renderers for archived data reads.
 #   INCLUDE_FAILED_VERIFICATION
 #               - False drops verifier-failed samples for the main cold-start
 #                 SFT path. Override to True only for robustness/continuity
@@ -121,7 +124,13 @@ AGENT_DATA_ROOT="${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-${PROJECT_DIR}/data/
 if [[ "${AGENT_DATA_ROOT}" == */final ]]; then
     AGENT_DATA_ROOT="$(dirname "${AGENT_DATA_ROOT}")"
 fi
-FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
+FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-video_meta}}"
+THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-timeline_video_imagepad}"
+if [[ "${FRAME_PROTOCOL}" != "video_meta" || "${THINKSTREAM_RENDER_LAYOUT}" != "timeline_video_imagepad" ]]; then
+    echo "ERROR: canonical SFT uses FRAME_PROTOCOL=video_meta THINKSTREAM_RENDER_LAYOUT=timeline_video_imagepad" >&2
+    echo "       got FRAME_PROTOCOL=${FRAME_PROTOCOL} THINKSTREAM_RENDER_LAYOUT=${THINKSTREAM_RENDER_LAYOUT}" >&2
+    exit 2
+fi
 INCLUDE_FAILED_VERIFICATION="${INCLUDE_FAILED_VERIFICATION:-False}"
 MAX_SAMPLE_TOKENS="${MAX_SAMPLE_TOKENS:-16384}"
 TORCH_EMPTY_CACHE_STEPS="${TORCH_EMPTY_CACHE_STEPS:-0}"
@@ -149,14 +158,12 @@ if [[ -n "${IMAGE_MAX_PIXELS}" ]]; then
     image_pixel_args="${image_pixel_args} --max_pixels ${IMAGE_MAX_PIXELS}"
 fi
 if [[ -z "${THINKSTREAM_FINAL_DIR:-}" ]]; then
-    RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard}"
-    if [[ "${RENDER_LAYOUT}" != "standard" && -d "${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${RENDER_LAYOUT}" ]]; then
-        export THINKSTREAM_FINAL_DIR="${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${RENDER_LAYOUT}"
-    elif [[ -d "${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}" ]]; then
-        export THINKSTREAM_FINAL_DIR="${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}"
-    else
-        export THINKSTREAM_FINAL_DIR="${AGENT_DATA_ROOT}/final"
-    fi
+    export THINKSTREAM_FINAL_DIR="${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}"
+fi
+if [[ ! -d "${THINKSTREAM_FINAL_DIR}" && "${DRY_RUN:-0}" != "1" ]]; then
+    echo "ERROR: rendered SFT dir not found: ${THINKSTREAM_FINAL_DIR}" >&2
+    echo "       build it with scripts/agent_data_v5/make_training_scheme.py or pipeline pass45." >&2
+    exit 2
 fi
 
 # extra_args is appended in the case-block when phase needs special flags

@@ -1,86 +1,93 @@
 #!/bin/bash
+# OVO-Bench full eval — base VLM without ThinkStream memory/recall/compress.
 #
-# OVO-Bench eval — BASE Qwen3-VL-Instruct (no SFT, no agent protocol).
-#
-# Two sub-modes:
-#   FORM=offline   - 64 frames uniformly sampled from full video
-#   FORM=streaming - chunk-by-chunk video delivery, no agent protocol
-#                    (matches the streaming rate at which our SFT model
-#                     would see the video; fairer for streaming-vs-offline
-#                     gap analysis)
-#
-# Usage:
-#   bash scripts/eval/ovo/run_base.sh \
-#     --benchmark_dir /path/with/ovo-bench-formatted.jsonl \
-#     [--ckpt Qwen/Qwen3-VL-8B-Instruct] \
-#     [--ngpu 8] [--form offline|streaming]
-#
-# Result location: ${ckpt}/eval/ovo_bench/<filename>.json with per-task
-# accuracy and the three category averages (RT / BT / FT).
+# Uses the original ovo_bench_new.json, matching run_sft_full.sh/run_rl_full.sh.
+# FORM=offline samples uniformly from the visible prefix up to each question
+# time; FORM=streaming samples only the recent visual window.
 
 set -euo pipefail
 
 CKPT=${CKPT:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
-NGPU=${NGPU:-8}
-MODEL_TYPE=${MODEL_TYPE:-qwen3vl}
+BENCHMARK_JSON=${BENCHMARK_JSON:-}
+VIDEO_ROOT=${VIDEO_ROOT:-}
+FRAMES_ROOT=${FRAMES_ROOT:-${THINKSTREAM_FRAMES_ROOT:-}}
 FORM=${FORM:-offline}
+MAX_FRAMES=${MAX_FRAMES:-64}
+MAX_NEW_TOKENS=${MAX_NEW_TOKENS:-64}
+TASKS=${TASKS:-}
+N_PER_TASK=${N_PER_TASK:-}
+FRAME_PROTOCOL=${FRAME_PROTOCOL:-video_meta}
 MIN_PIXELS=${MIN_PIXELS:-130000}
 MAX_PIXELS=${MAX_PIXELS:-220000}
-MAX_NEW_TOKENS=${MAX_NEW_TOKENS:-30}
-MAX_FRAMES=${MAX_FRAMES:-64}
-BENCHMARK_DIR=${BENCHMARK_DIR:-}
+OUT=${OUT:-}
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --ckpt)           CKPT="$2"; shift 2 ;;
-        --ngpu)           NGPU="$2"; shift 2 ;;
-        --model_type)     MODEL_TYPE="$2"; shift 2 ;;
-        --form)           FORM="$2"; shift 2 ;;
-        --benchmark_dir)  BENCHMARK_DIR="$2"; shift 2 ;;
-        --min_pixels)     MIN_PIXELS="$2"; shift 2 ;;
-        --max_pixels)     MAX_PIXELS="$2"; shift 2 ;;
+        --ckpt) CKPT="$2"; shift 2 ;;
+        --benchmark_json) BENCHMARK_JSON="$2"; shift 2 ;;
+        --video_root) VIDEO_ROOT="$2"; shift 2 ;;
+        --frames_root) FRAMES_ROOT="$2"; shift 2 ;;
+        --form|--mode) FORM="$2"; shift 2 ;;
+        --max_frames) MAX_FRAMES="$2"; shift 2 ;;
         --max_new_tokens) MAX_NEW_TOKENS="$2"; shift 2 ;;
-        --max_frames)     MAX_FRAMES="$2"; shift 2 ;;
+        --tasks) TASKS="$2"; shift 2 ;;
+        --n_per_task) N_PER_TASK="$2"; shift 2 ;;
+        --frame_protocol|--frame-protocol) FRAME_PROTOCOL="$2"; shift 2 ;;
+        --min_pixels) MIN_PIXELS="$2"; shift 2 ;;
+        --max_pixels) MAX_PIXELS="$2"; shift 2 ;;
+        --out) OUT="$2"; shift 2 ;;
         *) echo "Unknown parameter: $1" >&2; exit 1 ;;
     esac
 done
 
-if [[ -z "$BENCHMARK_DIR" ]]; then
-    echo "ERROR: --benchmark_dir is required (must contain ovo-bench-formatted.jsonl)." >&2
+if [[ -z "${BENCHMARK_JSON}" || -z "${VIDEO_ROOT}" ]]; then
+    echo "ERROR: --benchmark_json and --video_root are required" >&2
     exit 1
 fi
-if [[ ! -f "$BENCHMARK_DIR/ovo-bench-formatted.jsonl" ]]; then
-    echo "ERROR: $BENCHMARK_DIR/ovo-bench-formatted.jsonl not found." >&2
+if [[ ! -f "${BENCHMARK_JSON}" ]]; then
+    echo "ERROR: benchmark json not found: ${BENCHMARK_JSON}" >&2
     exit 1
 fi
-
-case "$FORM" in
-    offline)
-        ENTRY=thinkstream/eval/ovo_bench/eval_ovo_offline.py
-        EXTRA_ARGS=("--max_frames" "${MAX_FRAMES}")
-        echo "=== Base Qwen3-VL — OVO-Bench (OFFLINE, ${MAX_FRAMES} frames) ==="
-        ;;
-    streaming)
-        ENTRY=thinkstream/eval/ovo_bench/eval_ovo_baseline.py
-        EXTRA_ARGS=()
-        echo "=== Base Qwen3-VL — OVO-Bench (STREAMING, no agent) ==="
-        ;;
-    *)
-        echo "Unknown FORM=$FORM. Use offline | streaming." >&2; exit 1 ;;
+case "${FORM}" in
+    offline|streaming) ;;
+    *) echo "ERROR: --form must be offline or streaming" >&2; exit 1 ;;
 esac
 
-echo "Model: ${CKPT}"
-echo "GPUs:  ${NGPU}"
-echo "Bench: ${BENCHMARK_DIR}"
-echo "Pixels: ${MIN_PIXELS}-${MAX_PIXELS}"
-echo "============================================="
+ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+cd "${ROOT}"
 
-TOKENIZERS_PARALLELISM=false \
-torchrun --nproc_per_node=${NGPU} ${ENTRY} \
-    --benchmark_dir "${BENCHMARK_DIR}" \
-    --model_path "${CKPT}" \
-    --model_type "${MODEL_TYPE}" \
+OUT_DIR="${CKPT}/eval/ovo_full"
+mkdir -p "${OUT_DIR}" 2>/dev/null || OUT_DIR="${ROOT}/output/ovo_full"
+mkdir -p "${OUT_DIR}"
+if [[ -z "${OUT}" ]]; then
+    OUT="${OUT_DIR}/base_${FORM}_${MAX_FRAMES}f_${FRAME_PROTOCOL}.json"
+fi
+
+EXTRA=()
+[[ -n "${FRAMES_ROOT}" ]] && EXTRA+=("--frames_root" "${FRAMES_ROOT}")
+[[ -n "${TASKS}" ]] && EXTRA+=("--tasks" "${TASKS}")
+[[ -n "${N_PER_TASK}" ]] && EXTRA+=("--n_per_task" "${N_PER_TASK}")
+
+echo "============================================================"
+echo "OVO full eval — base VLM (${FORM}, ${MAX_FRAMES} frames)"
+echo "  ckpt:      ${CKPT}"
+echo "  benchmark: ${BENCHMARK_JSON}"
+echo "  videos:    ${VIDEO_ROOT}"
+[[ -n "${FRAMES_ROOT}" ]] && echo "  frames:    ${FRAMES_ROOT}"
+echo "  protocol:  ${FRAME_PROTOCOL}"
+echo "  pixels:    ${MIN_PIXELS}-${MAX_PIXELS}"
+echo "  out:       ${OUT}"
+echo "============================================================"
+
+python scripts/eval/ovo/base.py \
+    --ckpt "${CKPT}" \
+    --benchmark_json "${BENCHMARK_JSON}" \
+    --video_root "${VIDEO_ROOT}" \
+    --mode "${FORM}" \
+    --max_frames "${MAX_FRAMES}" \
+    --max_new_tokens "${MAX_NEW_TOKENS}" \
+    --frame-protocol "${FRAME_PROTOCOL}" \
     --min_pixels "${MIN_PIXELS}" \
     --max_pixels "${MAX_PIXELS}" \
-    --max_new_tokens "${MAX_NEW_TOKENS}" \
-    "${EXTRA_ARGS[@]}"
+    --out "${OUT}" \
+    "${EXTRA[@]}"

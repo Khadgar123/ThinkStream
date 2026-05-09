@@ -376,12 +376,9 @@ evaluators (`eval_rec`, `eval_ssr`, `eval_crr`) that walk the agent across
 the right probe times and score per-probe. So **no eval-side changes**;
 the v9.5 SFT data brings TRAINING in line with how eval already works.
 
-`scripts/eval/test_set_agent.py` (our test.jsonl walker) handles
-single-probe samples. For multi-probe samples, score the FIRST probe's
-gold (since test.jsonl entries are still per-sample). This is a soft
-limitation: if you want to evaluate the multi-probe training signal on
-test.jsonl, you'd render ONE sample per probe and score per-sample.
-Already the case after pass3c expands probes.
+Current eval uses `scripts/eval/ovo/eval_full.py` on the original full-video
+OVO JSON. It scores each annotated probe in video order and writes abnormal
+behavior metrics to `summary.health`, so no separate test-set walker is kept.
 
 ## 7. Migration path
 

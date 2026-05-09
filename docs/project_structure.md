@@ -118,12 +118,11 @@ LLM=output/agent-sft-v12.22/checkpoint-... \
 bash scripts/grpo_train_verl.sh
 ```
 
-The old `scripts/grpo_train.sh` only forwards to the verl launcher.
-`thinkstream/trainer/grpo.py` is retained for archived tests/parity helpers,
-not as a supported training entrypoint.
+`thinkstream/trainer/grpo.py` is retained for archived parity helpers, not as
+a supported training entrypoint.
 
 ## Eval
 
-Use the wrappers under `scripts/eval/`. The active streaming eval engines
-share the v12 answer matcher and timestamped-frame input construction with
-SFT/RL.
+Use `scripts/eval/ovo/run_sft_full.sh`, `scripts/eval/ovo/run_rl_full.sh`, and
+`scripts/eval/ovo/run_base.sh`. The active streaming eval engines share the
+canonical `video_meta_timeline_video_imagepad` prompt contract with SFT/RL.

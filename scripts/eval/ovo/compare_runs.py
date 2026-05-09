@@ -10,6 +10,28 @@ def _pct(num, den):
 
 
 def _agent_diag(summary):
+    health = summary.get("health") or {}
+    if health:
+        answer = health.get("answer") or {}
+        recall = health.get("recall") or {}
+        comp = health.get("compression") or {}
+        runtime = health.get("format_runtime") or {}
+        return {
+            "recall": recall.get("events", 0),
+            "recall_hit": recall.get("support_hit_rate", 0.0),
+            "comp": comp.get("events", 0),
+            "comp_succ": comp.get("success_rate", 0.0),
+            "stable": runtime.get("stable_think_pair_rate", 0.0),
+            "acc_wr": recall.get("acc_with_recall", 0.0),
+            "acc_nr": recall.get("acc_without_recall", 0.0),
+            "early": answer.get("early_rate", 0.0),
+            "late": answer.get("late_rate", 0.0),
+            "missing": answer.get("missing_rate", 0.0),
+            "acc_no_early": answer.get("no_early_acc", summary.get("overall_no_early", 0.0)),
+            "acc_no_late": answer.get("no_late_acc", summary.get("overall_no_late", 0.0)),
+            "acc_on_time": answer.get("on_time_acc", summary.get("overall_on_time", 0.0)),
+        }
+
     diag = summary.get("diagnostics") or {}
     by_task = summary.get("by_task") or summary.get("per_task") or {}
     recall = sum(v.get("recall_events", 0) for v in diag.values())
@@ -107,7 +129,7 @@ def main():
             f"{int(r['recall']):>5} {r['recall_hit']:>6.3f} "
             f"{r['acc_wr']:>7.3f} {r['acc_nr']:>7.3f} "
             f"{r['early']:>6.3f} {r['late']:>6.3f} {r['missing']:>6.3f} "
-            f"{int(r['comp']):>5} {r['comp_succ']:>6.3f} {int(r['stable']):>7}"
+            f"{int(r['comp']):>5} {r['comp_succ']:>6.3f} {r['stable']:>7.3f}"
         )
 
 

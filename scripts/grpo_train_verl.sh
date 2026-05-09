@@ -30,8 +30,8 @@
 #   MAX_CHUNKS      — max turns per video (120 by default; use recurrent for 240+)
 #   GPU_MEM_UTIL    — vLLM gpu_memory_utilization (0.55 — leave room for FSDP)
 #   MM_CACHE_GB     — vLLM CPU mm processor cache GB (auto: 512 on this box)
-#   FRAME_PROTOCOL  — ts_image | video_meta (default: ts_image). Must match SFT/eval.
-#   THINKSTREAM_RENDER_LAYOUT — standard | timeline_video | timeline_video_imagepad.
+#   FRAME_PROTOCOL  — video_meta. Must match SFT/eval.
+#   THINKSTREAM_RENDER_LAYOUT — timeline_video_imagepad.
 #   IMAGE_MIN_PIXELS / IMAGE_MAX_PIXELS — optional runtime image resize bounds.
 #   LIMIT_IMAGES    — vLLM limit_mm_per_prompt.image for timestamped frames (64)
 #   LIMIT_VIDEOS    — vLLM limit_mm_per_prompt.video for video_meta blocks (2)
@@ -114,8 +114,13 @@ EPOCHS=${EPOCHS:-1}
 MAX_STEPS=${MAX_STEPS:-}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
-FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-ts_image}}"
-THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard}"
+FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-video_meta}}"
+THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-timeline_video_imagepad}"
+if [[ "${FRAME_PROTOCOL}" != "video_meta" || "${THINKSTREAM_RENDER_LAYOUT}" != "timeline_video_imagepad" ]]; then
+    echo "ERROR: canonical RL uses FRAME_PROTOCOL=video_meta THINKSTREAM_RENDER_LAYOUT=timeline_video_imagepad" >&2
+    echo "       got FRAME_PROTOCOL=${FRAME_PROTOCOL} THINKSTREAM_RENDER_LAYOUT=${THINKSTREAM_RENDER_LAYOUT}" >&2
+    exit 2
+fi
 IMAGE_MIN_PIXELS="${IMAGE_MIN_PIXELS:-${MIN_PIXELS:-}}"
 IMAGE_MAX_PIXELS="${IMAGE_MAX_PIXELS:-${MAX_PIXELS:-}}"
 RUN_NAME=${RUN_NAME:-grpo-v12.26-verl-${FRAME_PROTOCOL}}
@@ -161,11 +166,7 @@ RUNTIME_ROOT="${RUNTIME_ROOT:-${PROJECT_DIR}/.runtime/${RUN_NAME}}"
 TRAIN_JSONL="${TRAIN_JSONL:-${AGENT_DATA_ROOT}/final/train_rl_trajectories.jsonl}"
 VAL_JSONL="${VAL_JSONL:-${AGENT_DATA_ROOT}/final/val_trajectories.jsonl}"
 MULTI_Q="${MULTI_Q:-1}"
-if [[ "${THINKSTREAM_RENDER_LAYOUT}" == "standard" ]]; then
-    PARQUET_DIR="${PARQUET_DIR:-${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}}"
-else
-    PARQUET_DIR="${PARQUET_DIR:-${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}}"
-fi
+PARQUET_DIR="${PARQUET_DIR:-${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}}"
 
 # verl's RLHFDataset reads parquet; auto-build from JSONL if user didn't
 # supply a parquet directly.

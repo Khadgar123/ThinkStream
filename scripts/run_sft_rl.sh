@@ -60,6 +60,11 @@ require_file() {
 RUN_ID="${RUN_ID:-sft_rl_$(timestamp)}"
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-video_meta}}"
 THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-timeline_video_imagepad}"
+if [[ "${FRAME_PROTOCOL}" != "video_meta" || "${THINKSTREAM_RENDER_LAYOUT}" != "timeline_video_imagepad" ]]; then
+  echo "ERROR: canonical SFT/RL uses FRAME_PROTOCOL=video_meta THINKSTREAM_RENDER_LAYOUT=timeline_video_imagepad" >&2
+  echo "       got FRAME_PROTOCOL=${FRAME_PROTOCOL} THINKSTREAM_RENDER_LAYOUT=${THINKSTREAM_RENDER_LAYOUT}" >&2
+  exit 2
+fi
 THINKSTREAM_DATA_ROOT="${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-data/agent_v5}}"
 if [[ "${THINKSTREAM_DATA_ROOT}" == */final ]]; then
   THINKSTREAM_DATA_ROOT="$(dirname "${THINKSTREAM_DATA_ROOT}")"
@@ -80,11 +85,7 @@ OUTPUT_ROOT="${OUTPUT_ROOT:-output}"
 LOG_ROOT="${LOG_ROOT:-logs/${RUN_ID}}"
 mkdir -p "${LOG_ROOT}"
 
-if [[ "${THINKSTREAM_RENDER_LAYOUT}" == "standard" ]]; then
-  RENDERED_DIR="${THINKSTREAM_DATA_ROOT}/rendered/${FRAME_PROTOCOL}"
-else
-  RENDERED_DIR="${THINKSTREAM_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}"
-fi
+RENDERED_DIR="${THINKSTREAM_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}"
 
 RUN_SFT="${RUN_SFT:-1}"
 RUN_RL="${RUN_RL:-1}"

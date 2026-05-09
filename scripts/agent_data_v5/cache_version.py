@@ -78,10 +78,10 @@ STAGE_VERSIONS: Dict[str, str] = {
     #   v12.51 (2026-05-07): pass5 splits multi-turn recall SFT into
     #        recall_query rows with recall tools and post_recall rows with
     #        no tools plus last-assistant-only loss, matching runtime
-    #        post-recall turns and DAgger correction outputs.
+    #        post-recall turns.
     #   v12.52 (2026-05-07): MC option rebalancing also rewrites
     #        per_emit_answers values in flat metadata and trajectory questions,
-    #        keeping chunk-level RL/DAgger gold answers aligned with the
+    #        keeping chunk-level RL gold answers aligned with the
     #        rebalanced correct_option/options and rendered <answer>.
     #   v12.53 (2026-05-07): pass3c recall hardening asks for multiple
     #        memory-novel replacement candidates per selected recall slot,
@@ -101,10 +101,8 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        pass3c or at least pass5 rendered messages.
     #        The recall-result second turn also uses a separate
     #        recall_response system prompt with no tool action space.
-    #   v12.56 (2026-05-07): pass5/DAgger use the clearer post_recall metadata
-    #        alias for the no-tools turn after recall, and DAgger can emit
-    #        post_recall empty-answer corrections when the policy over-recalls
-    #        on silent/response targets.
+    #   v12.56 (2026-05-07): pass5 uses the clearer post_recall metadata
+    #        alias for the no-tools turn after recall.
     #   v12.57 (2026-05-07): pass5 marks recall_query and post_recall with
     #        separate loss_class metadata. SFT uses loss_class for class
     #        weighting/diagnostics and masks assistant spans through <|im_end|>
@@ -114,7 +112,7 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        compression turns. Regenerate pass5 rendered messages so SFT/RL/eval
     #        see the stronger mode separation text.
     #   v12.59 (2026-05-08): pass5/runtime prompts soften recall/compress
-    #        exploration wording after DAgger diagnostics: recall is encouraged
+    #        exploration wording after rollout diagnostics: recall is encouraged
     #        when historical evidence could help, and compress range selection
     #        asks for the contiguous range whose replacement least hurts later
     #        reasoning rather than hard-coding rollout-specific age windows.

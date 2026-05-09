@@ -46,9 +46,9 @@ def test_pass5_recall_rows_split_tool_schema_and_loss_policy():
     assert first["loss_assistant_turns"] == "all"
     assert len(first["messages"]) == 3
 
-    assert second["sample_id"] == "r0:recall_answer"
-    assert second["sft_subtype"] == "recall_answer"
-    assert second["tool_schema_mode"] == "recall_response"
+    assert second["sample_id"] == "r0:post_recall"
+    assert second["sft_subtype"] == "post_recall"
+    assert second["tool_schema_mode"] == "post_recall"
     assert second["loss_assistant_turns"] == "last"
     assert len(second["messages"]) == 5
 
@@ -73,13 +73,10 @@ def test_rl_compress_turn_is_text_only_in_source():
     assert inter_chunk_return < visual_start
 
 
-def test_sft_generation_eval_uses_turn_local_tools_and_keeps_recall_prefix():
+def test_sft_action_eval_uses_turn_local_tools():
     root = Path(__file__).resolve().parents[1]
     action_src = (root / "scripts/eval/sft_action_acc.py").read_text()
-    answer_src = (root / "scripts/eval/test_set_sft_gen.py").read_text()
     assert "tools_for_turn(_tool_mode_for_prompt(s, msgs))" in action_src
-    assert "tools_for_turn(_tool_mode_for_prompt(s, messages))" in answer_src
-    assert 'm["role"] != "assistant"' not in answer_src
 
 
 def test_grpo_loss_replay_uses_turn_local_tool_kind():
@@ -96,7 +93,7 @@ def main() -> None:
     test_pass5_recall_rows_split_tool_schema_and_loss_policy()
     test_select_loss_assistant_spans_supports_last_only()
     test_rl_compress_turn_is_text_only_in_source()
-    test_sft_generation_eval_uses_turn_local_tools_and_keeps_recall_prefix()
+    test_sft_action_eval_uses_turn_local_tools()
     test_grpo_loss_replay_uses_turn_local_tool_kind()
     print("PASS test_pass5_recall_split")
 

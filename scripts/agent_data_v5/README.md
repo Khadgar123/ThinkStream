@@ -69,25 +69,19 @@ python -m scripts.agent_data_v5.build_verl_parquet \
 Train/eval with the same protocol end to end:
 
 ```bash
-# SFT reads THINKSTREAM_FINAL_DIR when set; otherwise it auto-picks
-# data root/rendered/$FRAME_PROTOCOL if that directory exists.
+# Pass45 emits only rendered/video_meta_timeline_video_imagepad.
 THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
-FRAME_PROTOCOL=ts_image \
-bash scripts/sft_per_timestep.sh
+bash scripts/run_sft_rl.sh
 
-THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
-FRAME_PROTOCOL=ts_image \
-LLM=output/agent-sft-v12.26-ts_image/checkpoint-best \
-bash scripts/grpo_train_verl.sh
-
-FRAME_PROTOCOL=ts_image \
-bash scripts/eval/run_matrix.sh all
+bash scripts/eval/ovo/run_sft_full.sh \
+  --ckpt output/agent-sft/checkpoint-... \
+  --benchmark_json /path/to/ovo_bench_new.json \
+  --video_root /path/to/videos \
+  --frames_root data/agent_v5/batch2/frames
 ```
 
-For the native-video AB run, switch only `FRAME_PROTOCOL=video_meta` and use
-the matching rendered messages/parquets/checkpoint output names. The teacher
-passes do not need to be re-run because both variants consume the same
-pre-extracted frames and canonical trajectories.
+The old `ts_image` and standard-layout AB paths are archived; current
+SFT/RL/eval launchers intentionally use `video_meta_timeline_video_imagepad`.
 
 `v2/` is the current pass3 design implementation, not a deprecated folder.
 It owns the card taxonomy, placement rules, and LLM prompts used by

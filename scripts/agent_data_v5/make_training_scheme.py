@@ -1,14 +1,13 @@
-"""Create a non-destructive SFT/DAgger/RL/eval scheme from a trajectory bank.
+"""Create a non-destructive SFT/RL/eval/test scheme from trajectory banks.
 
 The generated directory is a standalone data root for training scripts:
 
 - final/train_sft_trajectories.jsonl
-- final/train_sft_dagger_source_trajectories.jsonl
 - final/train_rl_trajectories.jsonl
 - final/val_trajectories.jsonl
 - final/test_trajectories.jsonl
-- rendered/<protocol>/{train_sft,val,test}_messages.jsonl
-- rendered/<protocol>/{train_rl,val}_rl_multi_q.parquet
+- rendered/video_meta_timeline_video_imagepad/{train_sft,val,test}_messages.jsonl
+- rendered/video_meta_timeline_video_imagepad/{train_rl,val}_rl_multi_q.parquet
 - reports/distribution.{json,md}
 
 No source files are modified. The split is trajectory/video-disjoint and uses
@@ -34,10 +33,12 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+CANONICAL_FRAME_PROTOCOL = "video_meta"
+CANONICAL_RENDER_LAYOUT = "timeline_video_imagepad"
+CANONICAL_RENDER_DIRNAME = f"{CANONICAL_FRAME_PROTOCOL}_{CANONICAL_RENDER_LAYOUT}"
 
 DEFAULT_SPLIT_COUNTS = {
     "train_sft": 150,
-    "dagger_source": 75,
     "train_rl": 175,
     "val": 50,
     "test": 50,
@@ -79,6 +80,13 @@ def _resolve_source_from_bank(bank: Path) -> Path:
     if not source:
         raise ValueError(f"missing source_data_dir in {manifest}")
     return source
+
+
+def _resolve_bank_from_batch(batch: Path) -> Path:
+    bank = batch / "trajectory_bank"
+    if not bank.exists():
+        raise FileNotFoundError(f"trajectory bank not found under batch root: {bank}")
+    return bank
 
 
 def _relative_symlink(src: Path, dst: Path, *, force: bool) -> None:
@@ -208,9 +216,6 @@ def _weighted_take(
         recall = float(row.get("n_recall_calls") or 0)
         compress = float(row.get("n_compress_events") or 0)
         questions = float(row.get("n_questions") or 0)
-        multi_compress = 1.0 if row.get("has_multiple_compressions") else 0.0
-        if mode == "dagger_source":
-            return 1.0 + 2.4 * recall + 1.2 * compress + 2.0 * multi_compress
         if mode == "train_sft":
             return 1.0 + 1.6 * recall + 0.8 * compress + 0.1 * questions
         if mode == "train_rl":
@@ -232,12 +237,100 @@ def _weighted_take(
     return selected
 
 
+def _render_dir_name(protocol: str, render_layout: str) -> str:
+    if protocol == CANONICAL_FRAME_PROTOCOL and render_layout == CANONICAL_RENDER_LAYOUT:
+        return CANONICAL_RENDER_DIRNAME
+    return f"{protocol}_{render_layout}"
+
+
+def _feature_vector(row: Dict[str, Any]) -> Counter:
+    """Video-level distribution features used for split balancing."""
+    c = Counter()
+    families = Counter(row.get("families") or {})
+    family_total = sum(families.values()) or 1
+    for family, value in families.items():
+        c[f"family:{family}"] = float(value) / family_total
+    n_questions = max(1.0, float(row.get("n_questions") or 0))
+    recall = float(row.get("n_recall_calls") or 0)
+    compress = float(row.get("n_compress_events") or 0)
+    c["has_recall"] = 1.0 if recall > 0 else 0.0
+    c["has_compress"] = 1.0 if compress > 0 else 0.0
+    c["recall_per_question"] = min(2.0, recall / n_questions)
+    c["compress_per_question"] = min(2.0, compress / n_questions)
+    c["questions_per_video"] = min(16.0, n_questions) / 16.0
+    return c
+
+
+def _mean_feature_vector(rows: Sequence[Dict[str, Any]]) -> Counter:
+    out = Counter()
+    if not rows:
+        return out
+    for row in rows:
+        out.update(_feature_vector(row))
+    scale = 1.0 / float(len(rows))
+    for key in list(out):
+        out[key] *= scale
+    return out
+
+
+def _feature_distance(a: Counter, b: Counter) -> float:
+    keys = set(a) | set(b)
+    total = 0.0
+    for key in keys:
+        weight = 2.0 if key.startswith("family:") else 1.0
+        total += weight * abs(float(a.get(key, 0.0)) - float(b.get(key, 0.0)))
+    return total
+
+
+def _balanced_take(
+    rows: Sequence[Dict[str, Any]],
+    count: int,
+    *,
+    rng: random.Random,
+    target: Counter,
+    mode: str,
+) -> List[Dict[str, Any]]:
+    """Greedy subset selection that keeps family/recall/compress ratios close.
+
+    For train splits we add a small value bonus so SFT/RL still see
+    enough recall/compress cases after the distribution constraint is met.
+    """
+    pool = list(rows)
+    selected: List[Dict[str, Any]] = []
+    if count > len(pool):
+        raise ValueError(f"requested {count} rows, only {len(pool)} available")
+
+    running = Counter()
+    for _ in range(count):
+        best_idx = 0
+        best_score = float("inf")
+        denom = float(len(selected) + 1)
+        for idx, row in enumerate(pool):
+            cand = Counter(running)
+            cand.update(_feature_vector(row))
+            avg = Counter({k: v / denom for k, v in cand.items()})
+            score = _feature_distance(avg, target)
+            if mode in {"train_sft", "train_rl"}:
+                recall = float(row.get("n_recall_calls") or 0)
+                compress = float(row.get("n_compress_events") or 0)
+                questions = float(row.get("n_questions") or 0)
+                score -= 0.015 * min(10.0, recall + compress + 0.1 * questions)
+            score += rng.random() * 1e-6
+            if score < best_score:
+                best_idx = idx
+                best_score = score
+        chosen = pool.pop(best_idx)
+        selected.append(chosen)
+        running.update(_feature_vector(chosen))
+    return selected
+
+
 def _build_splits(
     rows: List[Dict[str, Any]],
     *,
     counts: Dict[str, int],
     seed: int,
-    train_allocation: str = "weighted",
+    train_allocation: str = "balanced",
 ) -> Dict[str, List[Dict[str, Any]]]:
     need = sum(counts.values())
     if need > len(rows):
@@ -247,6 +340,25 @@ def _build_splits(
     rng.shuffle(remaining)
 
     splits: Dict[str, List[Dict[str, Any]]] = {}
+    target = _mean_feature_vector(rows)
+
+    if train_allocation == "balanced":
+        # Holdout first keeps eval/test close to the global distribution, then
+        # train splits are filled with the same target plus a slight value
+        # preference for recall/compress-heavy trajectories.
+        for name in ("test", "val", "train_rl", "train_sft"):
+            selected = _balanced_take(
+                remaining,
+                counts[name],
+                rng=rng,
+                target=target,
+                mode=name,
+            )
+            selected_ids = {_video_id(r) for r in selected}
+            remaining = [r for r in remaining if _video_id(r) not in selected_ids]
+            splits[name] = selected
+        return splits
+
     # Holdout first keeps eval/test closest to the global distribution.
     for name in ("test", "val"):
         selected = _weighted_take(
@@ -261,9 +373,9 @@ def _build_splits(
 
     if train_allocation == "weighted":
         # Historical behavior: each train split is sampled independently with
-        # its own weight function. This makes SFT/DAgger very high-value but can
+        # its own weight function. This makes SFT high-value but can
         # leave RL with fewer recall/compress trajectories.
-        order = ("dagger_source", "train_sft", "train_rl")
+        order = ("train_sft", "train_rl")
         for name in order:
             selected = _weighted_take(
                 remaining,
@@ -286,7 +398,7 @@ def _build_splits(
             + 0.15 * float(row.get("n_questions") or 0)
         )
 
-    train_names = ("train_rl", "train_sft", "dagger_source")
+    train_names = ("train_rl", "train_sft")
     sorted_remaining = sorted(
         remaining,
         key=lambda r: (score(r), int(r.get("n_samples") or 0)),
@@ -437,7 +549,6 @@ def _write_trajectory_files(
     counts: Dict[str, int] = {}
     mapping = {
         "train_sft": "train_sft_trajectories.jsonl",
-        "dagger_source": "train_sft_dagger_source_trajectories.jsonl",
         "train_rl": "train_rl_trajectories.jsonl",
         "val": "val_trajectories.jsonl",
         "test": "test_trajectories.jsonl",
@@ -456,14 +567,10 @@ def _write_trajectory_files(
             raise ValueError(f"missing source trajectories for {split}: {missing[:5]}")
         counts[filename] = _write_jsonl(final / filename, rows)
 
-    # Useful explicit aliases for stage names and debugging.
+    # Useful explicit alias for stage names and debugging.
     shutil.copyfile(
         final / "train_sft_trajectories.jsonl",
         final / "stage1_sft_trajectories.jsonl",
-    )
-    shutil.copyfile(
-        final / "train_sft_dagger_source_trajectories.jsonl",
-        final / "stage2_dagger_source_trajectories.jsonl",
     )
     return counts
 
@@ -473,13 +580,14 @@ def _render_messages(
     final_dir: Path,
     out: Path,
     protocols: Sequence[str],
+    render_layout: str,
     no_balance_sft: bool,
 ) -> Dict[str, int]:
     from scripts.agent_data_v5.pass5_messages import convert, write_dataset_info
 
     counts: Dict[str, int] = {}
     for protocol in protocols:
-        rendered = out / "rendered" / protocol
+        rendered = out / "rendered" / _render_dir_name(protocol, render_layout)
         rendered.mkdir(parents=True, exist_ok=True)
         split_specs = [
             ("train_sft_trajectories.jsonl", "train_sft_messages.jsonl", True),
@@ -497,8 +605,9 @@ def _render_messages(
                 limit=None,
                 balance_sft=balance,
                 frame_protocol=protocol,
+                render_layout=render_layout,
             )
-            counts[f"rendered/{protocol}/{dst_name}"] = int(result.get("ok", 0))
+            counts[f"rendered/{rendered.name}/{dst_name}"] = int(result.get("ok", 0))
         write_dataset_info(rendered, ["train_sft", "val", "test"])
         _write_json(
             rendered / "render_manifest.json",
@@ -507,6 +616,7 @@ def _render_messages(
                 "source_final_dir": str(final_dir),
                 "output_dir": str(rendered),
                 "frame_protocol": protocol,
+                "render_layout": render_layout,
                 "splits": ["train_sft", "val", "test"],
             },
         )
@@ -518,6 +628,7 @@ def _build_rl_parquets(
     final_dir: Path,
     out: Path,
     protocols: Sequence[str],
+    render_layout: str,
 ) -> Dict[str, int]:
     import pandas as pd
 
@@ -529,7 +640,7 @@ def _build_rl_parquets(
         ("val_trajectories.jsonl", "val_rl_multi_q.parquet"),
     ]
     for protocol in protocols:
-        rendered = out / "rendered" / protocol
+        rendered = out / "rendered" / _render_dir_name(protocol, render_layout)
         rendered.mkdir(parents=True, exist_ok=True)
         for src_name, dst_name in specs:
             rows = list(
@@ -537,13 +648,13 @@ def _build_rl_parquets(
                     final_dir / src_name,
                     max_questions_per_traj=16,
                     frame_protocol=protocol,
-                    render_layout="standard",
+                    render_layout=render_layout,
                 )
             )
             if not rows:
                 raise ValueError(f"no RL rows from {src_name}")
             pd.DataFrame(rows).to_parquet(rendered / dst_name, index=False)
-            counts[f"rendered/{protocol}/{dst_name}"] = len(rows)
+            counts[f"rendered/{rendered.name}/{dst_name}"] = len(rows)
     return counts
 
 
@@ -560,6 +671,7 @@ def _write_report(
     message_counts: Dict[str, int],
     parquet_counts: Dict[str, int],
     protocols: Sequence[str],
+    render_layout: str,
 ) -> Dict[str, Any]:
     global_rows = [row for rows in splits.values() for row in rows]
     split_summaries = {name: _split_summary(rows) for name, rows in splits.items()}
@@ -570,6 +682,8 @@ def _write_report(
         "seed": seed,
         "train_allocation": train_allocation,
         "protocols": list(protocols),
+        "render_layout": render_layout,
+        "canonical_render_dir": CANONICAL_RENDER_DIRNAME,
         "video_counts": {name: len(rows) for name, rows in splits.items()},
         "global_selected": _split_summary(global_rows),
         "splits": split_summaries,
@@ -581,32 +695,24 @@ def _write_report(
         },
         "canonical_paths": {
             "stage1_sft_messages": {
-                p: str(out / "rendered" / p / "train_sft_messages.jsonl")
-                for p in protocols
-            },
-            "dagger_source_trajectories": str(
-                out / "final" / "train_sft_dagger_source_trajectories.jsonl"
-            ),
-            "dagger_output_messages": {
-                p: str(out / "rendered" / p / "train_sft_dagger_messages.jsonl")
+                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "train_sft_messages.jsonl")
                 for p in protocols
             },
             "rl_train_parquet": {
-                p: str(out / "rendered" / p / "train_rl_multi_q.parquet")
+                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "train_rl_multi_q.parquet")
                 for p in protocols
             },
             "rl_val_parquet": {
-                p: str(out / "rendered" / p / "val_rl_multi_q.parquet")
+                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "val_rl_multi_q.parquet")
                 for p in protocols
             },
             "eval_messages": {
-                p: str(out / "rendered" / p / "val_messages.jsonl")
+                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "val_messages.jsonl")
                 for p in protocols
             },
         },
         "suggested_loss_ratios": {
             "teacher_sft": "silent=0.35,response=0.25,recall=0.25,compress=0.15",
-            "dagger_sft": "silent=0.25,response=0.25,recall=0.25,compress=0.25",
         },
     }
     reports = out / "reports"
@@ -622,13 +728,14 @@ def _write_report(
         f"- seed: `{seed}`",
         f"- train allocation: `{train_allocation}`",
         f"- protocols: `{', '.join(protocols)}`",
+        f"- render layout: `{render_layout}`",
         "",
         "## Split Summary",
         "",
         "| split | videos | samples | silent | response | recall | compress | recall/video | compress/video |",
         "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
-    for name in ("train_sft", "dagger_source", "train_rl", "val", "test"):
+    for name in ("train_sft", "train_rl", "val", "test"):
         s = split_summaries[name]
         st = s["sample_types"]
         lines.append(
@@ -648,11 +755,9 @@ def _write_report(
         "",
         "## Trainable Files",
         "",
-        "- Stage-1 SFT: `rendered/<protocol>/train_sft_messages.jsonl`",
-        "- DAgger source: `final/train_sft_dagger_source_trajectories.jsonl`",
-        "- DAgger output target: `rendered/<protocol>/train_sft_dagger_messages.jsonl`",
-        "- Eval: `rendered/<protocol>/val_messages.jsonl`, `rendered/<protocol>/test_messages.jsonl`",
-        "- RL: `rendered/<protocol>/train_rl_multi_q.parquet` and `final/train_rl_trajectories.jsonl`",
+        "- Stage-1 SFT: `rendered/video_meta_timeline_video_imagepad/train_sft_messages.jsonl`",
+        "- Eval: `rendered/video_meta_timeline_video_imagepad/val_messages.jsonl`, `rendered/video_meta_timeline_video_imagepad/test_messages.jsonl`",
+        "- RL: `rendered/video_meta_timeline_video_imagepad/train_rl_multi_q.parquet` and `final/train_rl_trajectories.jsonl`",
         "",
     ])
     (reports / "distribution.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -669,9 +774,14 @@ def main() -> None:
         default=None,
         help="One or more trajectory banks. When set, --source is ignored.",
     )
+    parser.add_argument(
+        "--batches",
+        nargs="+",
+        default=None,
+        help="One or more batch roots; each must contain trajectory_bank/.",
+    )
     parser.add_argument("--out", required=True)
     parser.add_argument("--sft-videos", type=int, default=DEFAULT_SPLIT_COUNTS["train_sft"])
-    parser.add_argument("--dagger-videos", type=int, default=DEFAULT_SPLIT_COUNTS["dagger_source"])
     parser.add_argument("--rl-videos", type=int, default=DEFAULT_SPLIT_COUNTS["train_rl"])
     parser.add_argument("--val-videos", type=int, default=DEFAULT_SPLIT_COUNTS["val"])
     parser.add_argument("--test-videos", type=int, default=DEFAULT_SPLIT_COUNTS["test"])
@@ -679,17 +789,26 @@ def main() -> None:
     parser.add_argument(
         "--frame-protocols",
         nargs="+",
-        default=["video_meta", "ts_image"],
-        choices=["video_meta", "ts_image"],
+        default=[CANONICAL_FRAME_PROTOCOL],
+        choices=[CANONICAL_FRAME_PROTOCOL],
+    )
+    parser.add_argument(
+        "--render-layout",
+        default=CANONICAL_RENDER_LAYOUT,
+        choices=[CANONICAL_RENDER_LAYOUT],
+        help="Canonical interleaved video/image-pad layout.",
     )
     parser.add_argument("--no-render", action="store_true", help="Only write split trajectories/reports.")
     parser.add_argument("--no-parquet", action="store_true", help="Skip RL parquet generation.")
     parser.add_argument("--no-balance-sft", action="store_true", help="Disable pass5 SFT silent downsampling.")
     parser.add_argument(
         "--train-allocation",
-        choices=["weighted", "stratified"],
-        default="weighted",
-        help="How to allocate high-value videos after val/test are held out.",
+        choices=["balanced", "weighted", "stratified"],
+        default="balanced",
+        help=(
+            "balanced keeps family/recall/compress ratios close across "
+            "SFT/RL/eval/test; weighted and stratified are archived."
+        ),
     )
     parser.add_argument(
         "--dedupe-video-id",
@@ -703,7 +822,18 @@ def main() -> None:
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
 
-    raw_banks = args.banks if args.banks else [args.bank]
+    if args.batches and args.banks:
+        raise ValueError("pass either --batches or --banks, not both")
+
+    if args.batches:
+        raw_banks = []
+        for raw_batch in args.batches:
+            batch = Path(raw_batch).expanduser()
+            if not batch.is_absolute():
+                batch = Path.cwd() / batch
+            raw_banks.append(str(_resolve_bank_from_batch(batch)))
+    else:
+        raw_banks = args.banks if args.banks else [args.bank]
     banks: List[Path] = []
     for raw in raw_banks:
         bank = Path(raw).expanduser()
@@ -726,7 +856,6 @@ def main() -> None:
 
     counts = {
         "train_sft": args.sft_videos,
-        "dagger_source": args.dagger_videos,
         "train_rl": args.rl_videos,
         "val": args.val_videos,
         "test": args.test_videos,
@@ -763,6 +892,7 @@ def main() -> None:
             final_dir=out / "final",
             out=out,
             protocols=protocols,
+            render_layout=args.render_layout,
             no_balance_sft=args.no_balance_sft,
         )
     if not args.no_parquet:
@@ -770,6 +900,7 @@ def main() -> None:
             final_dir=out / "final",
             out=out,
             protocols=protocols,
+            render_layout=args.render_layout,
         )
 
     report = _write_report(
@@ -784,6 +915,7 @@ def main() -> None:
         message_counts=message_counts,
         parquet_counts=parquet_counts,
         protocols=protocols,
+        render_layout=args.render_layout,
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
 

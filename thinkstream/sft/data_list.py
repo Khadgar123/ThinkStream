@@ -122,22 +122,6 @@ DATASET_REGISTRY = {
         "annotation_path": _agent_path("train_sft_messages_natural.jsonl"),
         "data_path": "./",
     },
-    # On-policy / DAgger corrective SFT rows. Built by
-    # scripts.agent_data_v5.build_dagger_sft: prompts use policy-generated
-    # memory state, assistant tails use gold targets from the existing
-    # trajectories. Use alone for ablation or mix with stream_agent_sft.
-    "stream_agent_sft_dagger": {
-        "annotation_path": _agent_path("train_sft_dagger_messages.jsonl"),
-        "data_path": "./",
-    },
-    "stream_agent_sft_dagger_base": {
-        "annotation_path": _agent_path("train_sft_dagger_base_messages.jsonl"),
-        "data_path": "./",
-    },
-    "stream_agent_sft_dagger_iter1": {
-        "annotation_path": _agent_path("train_sft_dagger_iter1_messages.jsonl"),
-        "data_path": "./",
-    },
     "stream_agent_val": {
         "annotation_path": _agent_path("val_messages.jsonl"),
         "data_path": "./",

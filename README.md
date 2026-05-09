@@ -35,7 +35,9 @@ Experiments on multiple streaming video benchmarks show that ThinkStream signifi
 ```text
 ThinkStream/
 ├── scripts/agent_data_v5/         # data construction passes: pass1...pass5
-├── scripts/eval/                  # evaluation entrypoints
+├── scripts/eval/ovo/              # OVO full-video evaluation entrypoints
+├── scripts/prepare_training_data.sh # multi-batch balanced data scheme
+├── scripts/run_sft_rl.sh          # one-command SFT -> verl GRPO
 ├── scripts/sft_per_timestep.sh    # production SFT launcher
 ├── scripts/grpo_train_verl.sh     # production GRPO launcher
 ├── thinkstream/
@@ -68,12 +70,26 @@ pip install -r requirements.txt
 
 **Run Training (SFT → verl GRPO RL):**
 
-Generated data should live under one batch root, for example
-`data/agent_v5/batch2`. The pipeline emits SFT messages and RL trajectories
-under `final/`.
+Generated data should live under one batch root or a balanced scheme root. The
+supported project protocol is fixed to the interleaved full-video layout:
+`video_meta + timeline_video_imagepad`.
+
+To combine several generated batches into one train/eval root:
 
 ```bash
-THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
+bash scripts/prepare_training_data.sh \
+    --out data/agent_v5/scheme_v1 \
+    --batches data/agent_v5/batch1 data/agent_v5/batch2 data/agent_v5/batch3 \
+    --sft-videos 150 --rl-videos 175 \
+    --val-videos 50 --test-videos 50 --force
+```
+
+This writes SFT messages and RL parquet files to
+`rendered/video_meta_timeline_video_imagepad/` and keeps split trajectories in
+`final/`.
+
+```bash
+THINKSTREAM_DATA_ROOT=data/agent_v5/scheme_v1 \
 BASE_MODEL=/path/to/Qwen3-VL-8B-Instruct \
 bash scripts/run_sft_rl.sh
 ```
@@ -85,22 +101,15 @@ adapter. Current full-video defaults use recurrent rollout with `MULTI_Q=1`,
 `MAX_NEW_TOKEN=4096`, `PPO_MAX_TOKEN_LEN_PER_GPU=65536`, and
 `FREEZE_VISION_TOWER=true`.
 
-`scripts/grpo_train.sh` is only a backward-compatible forwarder. The active
-RL implementation is `scripts/grpo_train_verl.sh` plus
+The active RL implementation is `scripts/grpo_train_verl.sh` plus
 `verl/recipe_thinkstream/run_thinkstream_grpo.sh`. See
-`docs/sft_rl_quickstart.md`, `docs/project_structure.md`, `docs/design.md` §8,
-and `docs/v12.14_recurrent_design.md` for recurrent/full-video details.
+`docs/sft_rl_quickstart.md` for the minimal runnable workflow.
 
 ### Evaluation
 
-First, prepare the official datasets for OVO-Bench and StreamingBench.
-
-Run the respective `transfer_annotation_format.py` scripts under the `thinkstream/eval` folder to convert the format:
-- `thinkstream/eval/ovo_bench/transfer_annotation_format.py`
-- `thinkstream/eval/rtvu/transfer_annotation_format.py`
-
-For OVO-Bench, run the full-format v12 streaming agent eval. It drives
-`StreamingAgentLoop` with the same timestamped-frame protocol as SFT/RL.
+For OVO-Bench, use the full-video eval directly on the original
+`ovo_bench_new.json`. It drives `StreamingAgentLoop` with the same
+`video_meta_timeline_video_imagepad` prompt contract as SFT/RL.
 
 ```bash
 bash scripts/eval/ovo/run_sft_full.sh \
@@ -111,9 +120,8 @@ bash scripts/eval/ovo/run_sft_full.sh \
 ```
 
 Use `scripts/eval/ovo/run_rl_full.sh` for RL checkpoints
-(`compress_mode=self`) and `scripts/eval/run_matrix.sh` for the full
-base/SFT/RL matrix. Set `N_TEST=200 N_PER_OVO_TASK=30` for a smoke run;
-defaults run all samples.
+(`compress_mode=self`). Set `--n_per_task 30` for a smoke run; defaults run all
+samples. Offline/base baselines use `scripts/eval/ovo/run_base.sh`.
 
 ### Inference
 

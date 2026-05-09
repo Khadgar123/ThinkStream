@@ -1444,8 +1444,9 @@ def build_user_content(
         frame_paths: Optional explicit frame paths. This is the canonical path
                      for pass/SFT/RL/eval. If None, uses video_path with time
                      range as a legacy fallback.
-        frame_protocol: "ts_image" or "video_meta"; defaults to
-                        THINKSTREAM_FRAME_PROTOCOL or "ts_image".
+        frame_protocol: "video_meta" for the supported entrypoints; the old
+                        timestamped-image carrier remains only as an internal
+                        legacy parser fallback.
         inter_chunk: Memory-compaction turn. Queries, recalled frames, and the
                      current visual sliding window are suppressed; compression
                      is a text-memory action between visual timesteps.
@@ -2482,7 +2483,7 @@ def diagnose_compress_output_v12(output_text: str) -> Dict[str, Any]:
 
     Strict parsing deliberately fails when generation is truncated before
     ``</tool_call>``. This helper is a fallback metric: it checks whether the
-    *front* of the compress tool call is correct, so eval/DAgger can distinguish
+    *front* of the compress tool call is correct, so eval can distinguish
     "never entered compress format" from "correct prefix but likely ran out of
     decode budget while writing summary text".
     """

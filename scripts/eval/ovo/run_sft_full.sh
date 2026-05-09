@@ -77,6 +77,11 @@ while [[ $# -gt 0 ]]; do
         *) echo "Unknown parameter: $1" >&2; exit 1 ;;
     esac
 done
+if [[ "${FRAME_PROTOCOL}" != "video_meta" || "${RENDER_LAYOUT}" != "timeline_video_imagepad" ]]; then
+    echo "ERROR: canonical OVO SFT eval uses FRAME_PROTOCOL=video_meta RENDER_LAYOUT=timeline_video_imagepad" >&2
+    echo "       got FRAME_PROTOCOL=${FRAME_PROTOCOL} RENDER_LAYOUT=${RENDER_LAYOUT}" >&2
+    exit 2
+fi
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 export THINKSTREAM_RENDER_LAYOUT="${RENDER_LAYOUT}"
 export THINKSTREAM_EVAL_MEMORY_MODE="${MEMORY_MODE}"

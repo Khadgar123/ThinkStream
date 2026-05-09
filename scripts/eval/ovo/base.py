@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 """OVO-Bench base eval — VLM-only (no streaming agent, no recall, no compress).
 
-Mirrors scripts/eval/test_set_base.py for the OVO benchmark. Used to measure
-"what does a plain Qwen3-VL get on OVO when given N frames of video?" — the
-ceiling/baseline a streaming agent must beat.
+Used to measure "what does a plain Qwen3-VL get on OVO when given N frames of
+video?" — the ceiling/baseline a streaming agent must beat.
 
 Two video-context modes (--mode):
   offline    — uniformly sample --max_frames frames from [0, ask_realtime].
@@ -144,7 +143,7 @@ def _chat_template_supports_thinking(processor) -> bool:
     return "enable_thinking" in (tmpl or "")
 
 
-def build_messages(frame_paths, question, *, frame_protocol="ts_image",
+def build_messages(frame_paths, question, *, frame_protocol="video_meta",
                    fps: float = DEFAULT_FRAME_FPS):
     frame_protocol = normalize_frame_protocol(frame_protocol)
     frame_list = list(frame_paths)
@@ -544,10 +543,12 @@ def main():
                         "caps. Match the agent profile when comparing.")
     p.add_argument(
         "--frame-protocol",
-        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "ts_image"),
-        choices=["ts_image", "video_meta"],
+        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta"),
+        choices=["video_meta"],
         help="Visual carrier for pre-extracted frames in this baseline eval.",
     )
+    p.add_argument("--min_pixels", type=int, default=130000)
+    p.add_argument("--max_pixels", type=int, default=220000)
     p.add_argument("--out", default=None)
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
@@ -560,7 +561,10 @@ def main():
         attn_implementation="flash_attention_2",
     ).cuda().eval()
     processor = AutoProcessor.from_pretrained(args.ckpt)
-    processor = update_processor_pixels(processor, DataArguments())
+    data_args = DataArguments(min_pixels=args.min_pixels, max_pixels=args.max_pixels)
+    data_args.video_min_pixels = args.min_pixels
+    data_args.video_max_pixels = args.max_pixels
+    processor = update_processor_pixels(processor, data_args)
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
         processor.video_processor.do_sample_frames = False
     pad_id = processor.tokenizer.pad_token_id or processor.tokenizer.eos_token_id
