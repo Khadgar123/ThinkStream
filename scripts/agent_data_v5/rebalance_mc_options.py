@@ -214,16 +214,24 @@ def build_mapping(final_dir: Path) -> Dict[Tuple[str, str, str], Dict[str, Any]]
 
 
 def _lookup(mapping: Dict[Tuple[str, str, str], Dict[str, Any]], video_id: str, obj: Dict[str, Any]):
-    key = _question_key(video_id, obj.get("card_id", ""), obj.get("question", ""))
-    hit = mapping.get(key)
-    if hit:
-        return hit
-    # Some nested query states do not carry card_id.
+    card_id = str(obj.get("card_id") or "")
+    question = str(obj.get("question", ""))
+    if card_id:
+        key = _question_key(video_id, card_id, question)
+        hit = mapping.get(key)
+        if hit:
+            return hit
+
+    # Some legacy nested query states do not carry card_id. Fall back to the
+    # question text only when it is unique for this video; otherwise different
+    # cards with identical wording can receive each other's option order.
     q = str(obj.get("question", ""))
-    for (vid, _cid, question), value in mapping.items():
-        if vid == str(video_id or "") and question == q:
-            return value
-    return None
+    matches = [
+        value
+        for (vid, _cid, mapped_question), value in mapping.items()
+        if vid == str(video_id or "") and mapped_question == q
+    ]
+    return matches[0] if len(matches) == 1 else None
 
 
 def _patch_question(mapping: Dict[Tuple[str, str, str], Dict[str, Any]], video_id: str, obj: Dict[str, Any]) -> bool:
@@ -274,6 +282,9 @@ def patch_row(
 
     metadata = row.get("metadata")
     if isinstance(metadata, dict):
+        if row.get("card_id") and not metadata.get("card_id"):
+            metadata["card_id"] = row.get("card_id")
+            changed += 1
         row_hit = _lookup(mapping, video_id, metadata)
         changed += int(_patch_question(mapping, video_id, metadata))
         if row_hit:
@@ -328,9 +339,14 @@ def patch_row(
 
 
 def apply_mapping(final_dir: Path, mapping: Dict[Tuple[str, str, str], Dict[str, Any]]) -> Dict[str, Any]:
-    by_video_question: Dict[Tuple[str, str], Dict[str, Any]] = {}
+    by_video_question_candidates: Dict[Tuple[str, str], List[Dict[str, Any]]] = defaultdict(list)
     for (video_id, _card_id, question), value in mapping.items():
-        by_video_question[(video_id, question)] = value
+        by_video_question_candidates[(video_id, question)].append(value)
+    by_video_question: Dict[Tuple[str, str], Dict[str, Any]] = {
+        key: values[0]
+        for key, values in by_video_question_candidates.items()
+        if len(values) == 1
+    }
 
     changed_by_file = {}
     for filename in ALL_JSONL_FILES:

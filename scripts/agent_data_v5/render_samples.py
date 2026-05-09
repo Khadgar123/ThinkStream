@@ -182,6 +182,10 @@ def _build_queries_input(queries_state: List[Dict]) -> List[Dict]:
             "card_id": q.get("card_id", ""),
             "question": q.get("question", ""),
             "options": list(q.get("options") or []),
+            "correct_option": q.get("correct_option", ""),
+            "gold_answer": q.get("gold_answer", ""),
+            "correct_answer_text": q.get("correct_answer_text", ""),
+            "accepted_answers": list(q.get("accepted_answers") or []),
             "answer_form": q.get("answer_form", ""),
             "answer_style": q.get("answer_style", ""),
             "answer_instruction": q.get("answer_instruction", ""),
@@ -346,6 +350,9 @@ def render_sample(
         "sft_answer": sft_answer,
         "correct_answer_text": correct_answer_text,
         "accepted_answers": _accepted_answers(card, gold_answer),
+        # Required for post-pass MC option rebalance and audits. Several videos
+        # intentionally contain distinct cards with identical question text.
+        "card_id": card_id,
         # Keep the card-level canonical separately so GRPO / eval can
         # tell when a sample's gold_answer diverges from the card final
         # answer (signal that it's a multi-probe pre-event chunk).

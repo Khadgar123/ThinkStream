@@ -1161,6 +1161,7 @@ def _emit_row(sample: Dict, messages: List[Dict], *, frame_protocol: str) -> Dic
     return {
         "trajectory_id": sample.get("trajectory_id", ""),
         "video_id": sample.get("video_id", ""),
+        "card_id": sample.get("card_id", ""),
         "chunk_idx": sample.get("chunk_idx", -1),
         "sample_type": sample.get("sample_type", ""),
         "sample_id": sample.get("sample_id", ""),
