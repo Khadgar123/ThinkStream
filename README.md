@@ -73,28 +73,23 @@ Generated data should live under one batch root, for example
 under `final/`.
 
 ```bash
-# SFT on the batch's messages file
 THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
-bash scripts/sft_per_timestep.sh
-# → output/agent-sft-v12.23/
-
-# GRPO RL from the SFT checkpoint, using vendored verl
-THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
-LLM=output/agent-sft-v12.23/checkpoint-<best> \
-bash scripts/grpo_train_verl.sh
-# → output/grpo-v12.23-verl/
+BASE_MODEL=/path/to/Qwen3-VL-8B-Instruct \
+bash scripts/run_sft_rl.sh
 ```
 
-GRPO RL uses the vendored verl recipe with the shared v12 reward adapter.
-The production launcher defaults are `GROUP_SIZE=8`, `BATCH_SIZE=4`,
-`PPO_MINI_BS=4`, `LR=5e-7`, `EPOCHS=1`, `MAX_CHUNKS=120`,
-`MAX_NEW_TOKEN=32768`, and `MAX_ACTION_TOKENS=4096`.
+The one-command launcher runs per-step SFT and then GRPO RL from the best SFT
+checkpoint. GRPO RL uses the vendored verl recipe with the shared v12 reward
+adapter. Current full-video defaults use recurrent rollout with `MULTI_Q=1`,
+`GROUP_SIZE=8`, `BATCH_SIZE=1`, `TP_SIZE=2`, `MAX_CHUNKS=420`,
+`MAX_NEW_TOKEN=4096`, `PPO_MAX_TOKEN_LEN_PER_GPU=65536`, and
+`FREEZE_VISION_TOWER=true`.
 
 `scripts/grpo_train.sh` is only a backward-compatible forwarder. The active
 RL implementation is `scripts/grpo_train_verl.sh` plus
 `verl/recipe_thinkstream/run_thinkstream_grpo.sh`. See
-`docs/project_structure.md`, `docs/design.md` §8, and
-`docs/v12.14_recurrent_design.md` for the >180-chunk recurrent variant.
+`docs/sft_rl_quickstart.md`, `docs/project_structure.md`, `docs/design.md` §8,
+and `docs/v12.14_recurrent_design.md` for recurrent/full-video details.
 
 ### Evaluation
 

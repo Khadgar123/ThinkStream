@@ -1,5 +1,48 @@
 # OVO-Bench evaluation matrix
 
+## Current full-video protocol
+
+Use `eval_full.py` on the original `ovo_bench_new.json` for ChronoStream /
+ThinkStream-style SFT and RL checkpoints. This path keeps the evaluation as a
+full-video trajectory: each sample starts at chunk 0, advances in video order,
+updates the same memory state, and scores each task at its annotated probe
+time. It does not use the single-question RL segment mode.
+
+The reported agent metrics separate several questions:
+
+- `acc`: content accuracy. A correct answer still counts even if it was early
+  or late.
+- `noE`: correct and not earlier than the probe.
+- `noL`: correct and not later than the probe.
+- `onT`: correct exactly at the probe chunk.
+- `early`, `late`, `miss`: timing error rates.
+- `rec`, `r_hit`: recall count and best-effort overlap with annotated support.
+- `comp`, `c_ok`: compression trigger count and parse success rate.
+- `stable`: consecutive high-similarity think pairs, used to catch degenerate
+  stable-think loops.
+
+## Base VideoLLM baselines
+
+`base.py` evaluates plain VideoLLMs without agent memory, recall, or
+compression. These baselines are not meant to be weak:
+
+- `offline`: uniformly sample frames from the entire causal prefix
+  `[video_start, probe_time]`. The model sees all visual evidence that has
+  appeared so far, never future frames. This is the paper's strong base-model
+  setting because it gives the static VLM global observed context without a
+  memory bottleneck.
+- `streaming`: uniformly sample frames from `[probe_time - window, probe_time]`.
+  This matches the short visual window available to the streaming agent and
+  shows how much is lost when the plain VLM has no persistent memory.
+
+For FT tasks, the base VLM is called independently at each annotated probe
+time, so its timing-aware scores equal content accuracy by construction
+(`acc = noE = noL = onT`, with `early = late = miss = 0`). This makes the base
+strong on answer timing and isolates whether it can infer the answer from the
+provided frames. ChronoStream is evaluated under the harder online trajectory:
+it must carry state through the whole video and decide when to answer, while
+only using the current window, text memory, compression, and optional recall.
+
 Three eval entry points map to three checkpoint maturity levels.
 
 | Script | Ckpt type | Recall | Compression | What it tests |

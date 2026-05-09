@@ -69,6 +69,57 @@ def test_v12_assistant_content_roundtrip():
     p = parse_agent_output_v12("<think>x</think><tool_call>not json</tool_call>")
     assert "JSON parse error" in p["format_error"]
 
+    # narrow JSON repair: model sometimes escapes apostrophes as \'
+    p = parse_agent_output_v12(
+        '<think>x</think><tool_call>{"name":"compress","arguments":'
+        '{"time_range":[4,12],"text":"chef adds \\\'Honey\\\' to bowl"}}'
+        '</tool_call>'
+    )
+    assert p["kind"] == "compress"
+    assert p["format_error"] is None
+    assert p["tool_call"]["arguments"]["text"] == "chef adds 'Honey' to bowl"
+
+    # narrow JSON repair: raw OCR quotes/newlines inside compress summaries
+    p = parse_agent_output_v12(
+        '<think>x</think><tool_call>{"name":"compress","arguments":'
+        '{"time_range":[0,53],"text":"Text reads "\'Healthy Weight Loss Recipe,\' '
+        'then line one\nline two"}}}</tool_call>'
+    )
+    assert p["kind"] == "compress"
+    assert p["format_error"] is None
+    assert p["tool_call"]["arguments"]["time_range"] == [0, 53]
+    assert "Healthy Weight Loss Recipe" in p["tool_call"]["arguments"]["text"]
+    assert "line one\nline two" in p["tool_call"]["arguments"]["text"]
+
+    # narrow JSON repair: duplicated compress prefix embedded in summary text
+    p = parse_agent_output_v12(
+        '<think>x</think><tool_call>{"name":"compress","arguments":'
+        '{"time_range":[6,29],"text":"bad prefix</think><tool_call>\n'
+        '{"name":"compress","arguments":{"time_range":[6,29],"text":"usable summary"}}}'
+        '</tool_call>'
+    )
+    assert p["kind"] == "compress"
+    assert p["format_error"] is None
+    assert p["tool_call"]["arguments"]["text"] == "usable summary"
+
+    # post-recall runtime may accept a bare answer, but the default parser stays strict.
+    bare = "<think>use recalled frames</think>B"
+    assert parse_agent_output_v12(bare)["format_error"] == "neither <answer> nor <tool_call> emitted"
+    p = parse_agent_output_v12(bare, allow_bare_answer=True)
+    assert p["kind"] == "answer"
+    assert p["answer_text"] == "B"
+
+    # compress-turn runtime may recover a malformed tool tag, but default stays strict.
+    bad_tag = (
+        '<think>compress memory</think><tool {"name":"compress","arguments":'
+        '{"time_range":[111,135],"text":"usable compression summary"}}</tool>'
+    )
+    assert parse_agent_output_v12(bad_tag)["format_error"] == "neither <answer> nor <tool_call> emitted"
+    p = parse_agent_output_v12(bad_tag, allow_malformed_tool_call=True)
+    assert p["kind"] == "compress"
+    assert p["format_error"] is None
+    assert p["tool_call"]["arguments"]["time_range"] == [111, 135]
+
     # format error: unknown tool
     p = parse_agent_output_v12(
         '<think>x</think><tool_call>{"name":"foo","arguments":{}}</tool_call>'

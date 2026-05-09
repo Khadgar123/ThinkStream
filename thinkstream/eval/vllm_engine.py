@@ -141,6 +141,23 @@ def generate_with_turn_sampling(
     if not sampling_params_by_turn:
         return llm.generate(inputs, sampling_params=default_sampling_params)
 
+    params = [
+        sampling_params_by_turn.get(kind, default_sampling_params)
+        for kind in turn_kinds
+    ]
+    if all(p is default_sampling_params for p in params):
+        return llm.generate(inputs, sampling_params=default_sampling_params)
+
+    # vLLM accepts one SamplingParams object per request. This keeps mixed
+    # streaming/compress turns in a single scheduler batch instead of splitting
+    # them into small generate calls such as 61+3 or 63+1.
+    try:
+        return llm.generate(inputs, sampling_params=params)
+    except (TypeError, ValueError, AssertionError) as exc:
+        msg = str(exc).lower()
+        if "sampling" not in msg and "params" not in msg and "list" not in msg:
+            raise
+
     grouped: Dict[str, List[int]] = {}
     for i, kind in enumerate(turn_kinds):
         key = kind if kind in sampling_params_by_turn else "__default__"

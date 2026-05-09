@@ -204,6 +204,341 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
       data_source:            "thinkstream_v12_streaming"
     """
 
+    def __init__(self, *args, **kwargs):
+        self.thinkstream_episode_mode = str(
+            os.environ.get("THINKSTREAM_RL_EPISODE_MODE", "full") or "full"
+        ).strip().lower()
+        if self.thinkstream_episode_mode not in {"full", "single_question"}:
+            self.thinkstream_episode_mode = "full"
+        if self.thinkstream_episode_mode == "single_question":
+            cfg = kwargs.get("config")
+            if cfg is None and len(args) >= 3:
+                cfg = args[2]
+            if cfg is not None and _env_bool("THINKSTREAM_SINGLE_Q_FORCE_ORDER", True):
+                for key, value in (("shuffle", False), ("dataloader_num_workers", 0)):
+                    try:
+                        cfg[key] = value
+                    except Exception:
+                        try:
+                            setattr(cfg, key, value)
+                        except Exception:
+                            pass
+        self.segment_pre_context = _env_int("THINKSTREAM_SEGMENT_PRE_CONTEXT", 8)
+        self.segment_post_context = _env_int("THINKSTREAM_SEGMENT_POST_CONTEXT", 8)
+        self.segment_max_chunks = _env_int("THINKSTREAM_SEGMENT_MAX_CHUNKS", 64)
+        self.segment_require_recall_archive = _env_bool(
+            "THINKSTREAM_SEGMENT_REQUIRE_RECALL_ARCHIVE", True,
+        )
+        self._question_episode_index: List[tuple[int, int]] = []
+        super().__init__(*args, **kwargs)
+        if self.thinkstream_episode_mode == "single_question":
+            self._build_question_episode_index()
+
+    def __len__(self):
+        if (
+            getattr(self, "thinkstream_episode_mode", "full") == "single_question"
+            and getattr(self, "_question_episode_index", None)
+        ):
+            return len(self._question_episode_index)
+        return super().__len__()
+
+    @staticmethod
+    def _plain_list(value: Any) -> List[Any]:
+        if hasattr(value, "tolist"):
+            value = value.tolist()
+        if value is None:
+            return []
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        return []
+
+    @classmethod
+    def _normalize_questions(cls, questions_raw: Any) -> List[Dict[str, Any]]:
+        questions_raw = cls._plain_list(questions_raw)
+        out: List[Dict[str, Any]] = []
+        for q in questions_raw:
+            if hasattr(q, "tolist"):
+                q = q.tolist()
+            if not isinstance(q, dict):
+                continue
+            clean: Dict[str, Any] = {}
+            for k, v in q.items():
+                if hasattr(v, "tolist"):
+                    v = v.tolist()
+                clean[k] = v
+            out.append(clean)
+        return out
+
+    @staticmethod
+    def _safe_int_list(value: Any) -> List[int]:
+        out: List[int] = []
+        if hasattr(value, "tolist"):
+            value = value.tolist()
+        if value is None:
+            values: List[Any] = []
+        elif isinstance(value, (list, tuple)):
+            values = list(value)
+        else:
+            values = [value]
+        for x in values:
+            try:
+                out.append(int(x))
+            except (TypeError, ValueError):
+                continue
+        return out
+
+    @staticmethod
+    def _valid_chunks(chunks: List[int], *, n_chunks: int) -> List[int]:
+        if n_chunks <= 0:
+            return [c for c in chunks if c >= 0]
+        return [c for c in chunks if 0 <= c < n_chunks]
+
+    def _build_question_episode_index(self) -> None:
+        ordered: List[tuple[int, int, int, int]] = []
+        for row_i in range(len(self.dataframe)):
+            row = self.dataframe[row_i]
+            extra = row.get("extra_info", {}) or {}
+            if hasattr(extra, "tolist"):
+                extra = extra.tolist()
+            if not isinstance(extra, dict):
+                continue
+            n_chunks = int(row.get("n_chunks") or extra.get("n_chunks") or 0)
+            questions = self._normalize_questions(extra.get("questions"))
+            for q_i, q in enumerate(questions):
+                segment_start, segment_end = self._window_for_question(
+                    q, n_chunks=n_chunks,
+                )
+                ordered.append((row_i, segment_start, segment_end, q_i))
+        ordered.sort(key=lambda x: (x[0], x[1], x[2], x[3]))
+        self._question_episode_index = [(row_i, q_i) for row_i, _, _, q_i in ordered]
+        print(
+            "thinkstream single_question episodes: "
+            f"{len(self._question_episode_index)} from {len(self.dataframe)} video rows"
+        )
+
+    def _window_for_question(
+        self, q: Dict[str, Any], *, n_chunks: int,
+    ) -> tuple[int, int]:
+        n_chunks = max(0, int(n_chunks or 0))
+        asks = self._valid_chunks(self._safe_int_list(q.get("ask_chunks")), n_chunks=n_chunks)
+        if not asks and q.get("ask_chunk") is not None:
+            asks = self._valid_chunks(self._safe_int_list(q.get("ask_chunk")), n_chunks=n_chunks)
+        answers = self._valid_chunks(self._safe_int_list(q.get("answer_chunks")), n_chunks=n_chunks)
+        supports = self._valid_chunks(self._safe_int_list(q.get("support_chunks")), n_chunks=n_chunks)
+        probes = self._valid_chunks(
+            self._safe_int_list(q.get("probe_chunks") or q.get("test_chunks")),
+            n_chunks=n_chunks,
+        )
+
+        anchor_start = min(asks) if asks else 0
+        targets = answers + supports + probes + asks
+        anchor_end = max(targets) if targets else anchor_start
+        start = max(0, anchor_start - max(0, self.segment_pre_context))
+        end = min(
+            max(0, n_chunks - 1),
+            anchor_end + max(0, self.segment_post_context),
+        )
+        if self.segment_max_chunks > 0 and end - start + 1 > self.segment_max_chunks:
+            capped_start = max(0, end - self.segment_max_chunks + 1)
+            # Correctness first: the online segment must include the query
+            # injection chunk. If the ask-to-answer/support span is longer
+            # than max_chunks, allow a longer segment rather than creating an
+            # answer-only rollout where the model never sees the question.
+            if not asks or min(asks) >= capped_start:
+                # Keep ask/probe tail in the online segment. Earlier support
+                # must come from a student-generated initial_memory_snapshot.
+                start = capped_start
+        if end < start:
+            end = start
+        return start, end
+
+    @classmethod
+    def _snapshot_for_chunk_with_key(
+        cls, snapshots: Any, chunk_idx: int,
+    ) -> tuple[Optional[int], Optional[Dict[str, Any]]]:
+        """Pick a student-generated memory snapshot for the start of a segment.
+
+        Snapshot key `chunk_idx` means "state before processing this chunk",
+        matching MemoryState.snapshot(chunk_idx). If an exact key is missing,
+        fall back to the latest earlier key; this lets cached prefix rollouts
+        be sparse without ever inventing teacher history.
+        """
+        if hasattr(snapshots, "tolist"):
+            snapshots = snapshots.tolist()
+        if isinstance(snapshots, list):
+            if 0 <= chunk_idx < len(snapshots) and isinstance(snapshots[chunk_idx], dict):
+                return chunk_idx, dict(snapshots[chunk_idx])
+            for idx in range(min(chunk_idx, len(snapshots) - 1), -1, -1):
+                if isinstance(snapshots[idx], dict):
+                    return idx, dict(snapshots[idx])
+            return None, None
+        if not isinstance(snapshots, dict):
+            return None, None
+        for key in (chunk_idx, str(chunk_idx)):
+            value = snapshots.get(key)
+            if hasattr(value, "tolist"):
+                value = value.tolist()
+            if isinstance(value, dict):
+                return chunk_idx, dict(value)
+
+        best_key: Optional[int] = None
+        for key in snapshots.keys():
+            try:
+                k_int = int(key)
+            except (TypeError, ValueError):
+                continue
+            if k_int <= chunk_idx and (best_key is None or k_int > best_key):
+                best_key = k_int
+        if best_key is None:
+            return None, None
+        value = snapshots.get(best_key, snapshots.get(str(best_key)))
+        if hasattr(value, "tolist"):
+            value = value.tolist()
+        return (best_key, dict(value)) if isinstance(value, dict) else (None, None)
+
+    @classmethod
+    def _snapshot_for_chunk(cls, snapshots: Any, chunk_idx: int) -> Optional[Dict[str, Any]]:
+        _, snapshot = cls._snapshot_for_chunk_with_key(snapshots, chunk_idx)
+        return snapshot
+
+    @classmethod
+    def _snapshot_has_recall_archive(cls, snapshot: Dict[str, Any]) -> bool:
+        archive = (
+            snapshot.get("think_archive")
+            or snapshot.get("retrieval_archive")
+            or snapshot.get("evidence_bank")
+            or []
+        )
+        return bool(cls._plain_list(archive))
+
+    def _find_initial_student_state(
+        self,
+        extra: Dict[str, Any],
+        planned_start: int,
+    ) -> tuple[int, Optional[Dict[str, Any]], str]:
+        if planned_start <= 0:
+            return 0, None, "rollout_from_zero"
+        for snapshots_key in (
+            "initial_student_state_by_chunk",
+            "student_state_by_chunk",
+            "student_memory_snapshots",
+            "student_snapshots",
+            "memory_snapshots",
+            "snapshots",
+        ):
+            snapshot_chunk, initial_state = self._snapshot_for_chunk_with_key(
+                extra.get(snapshots_key), planned_start,
+            )
+            if initial_state is None or snapshot_chunk is None:
+                continue
+            if (
+                self.segment_require_recall_archive
+                and snapshot_chunk > 0
+                and not self._snapshot_has_recall_archive(initial_state)
+            ):
+                continue
+            return max(0, int(snapshot_chunk)), initial_state, snapshots_key
+        return 0, None, "missing_cache_rollout_from_zero"
+
+    def _materialize_single_question_row(
+        self,
+        row_dict: dict,
+        q_idx: int,
+        *,
+        source_row_i: Optional[int] = None,
+    ) -> dict:
+        row_dict = dict(row_dict)
+        extra = row_dict.get("extra_info", {}) or {}
+        if hasattr(extra, "tolist"):
+            extra = extra.tolist()
+        if not isinstance(extra, dict):
+            extra = {}
+        else:
+            extra = dict(extra)
+
+        questions = self._normalize_questions(extra.get("questions"))
+        if not questions or q_idx < 0 or q_idx >= len(questions):
+            return row_dict
+
+        q = dict(questions[q_idx])
+        n_chunks = int(row_dict.get("n_chunks") or extra.get("n_chunks") or 0)
+        planned_start, segment_end = self._window_for_question(q, n_chunks=n_chunks)
+        segment_start, initial_state, initial_state_source = self._find_initial_student_state(
+            extra,
+            planned_start,
+        )
+        gold_action = extra.get("gold_action_per_chunk") or {}
+        if hasattr(gold_action, "tolist"):
+            gold_action = gold_action.tolist()
+        if not isinstance(gold_action, dict):
+            gold_action = {}
+        segment_gold_action: Dict[str, Any] = {}
+        for k, v in gold_action.items():
+            try:
+                ck = int(k)
+            except (TypeError, ValueError):
+                continue
+            if segment_start <= ck <= segment_end:
+                segment_gold_action[str(ck)] = v
+
+        single_extra = dict(extra)
+        if source_row_i is not None:
+            source_video_row_index = int(source_row_i)
+        elif str(row_dict.get("index", "")).isdigit():
+            source_video_row_index = int(row_dict.get("index", 0) or 0)
+        else:
+            source_video_row_index = 0
+        single_extra.update({
+            "episode_mode": "single_question",
+            "source_video_row_index": source_video_row_index,
+            "question_idx": int(q_idx),
+            "question_index": int(q_idx),
+            "questions": [q],
+            "gold_action_per_chunk": segment_gold_action,
+            "all_ask_chunks": self._safe_int_list(q.get("ask_chunks") or [q.get("ask_chunk")]),
+            "segment_planned_start_chunk": int(planned_start),
+            "segment_start_chunk": int(segment_start),
+            "segment_end_chunk": int(segment_end),
+            "segment_prefix_source": initial_state_source,
+            "video_id": str(row_dict.get("video_id", extra.get("video_id", ""))),
+            "video_path": str(row_dict.get("video_path", extra.get("video_path", ""))),
+            "n_chunks": n_chunks,
+            "question": str(q.get("question", "")),
+            "gold_answer": str(q.get("gold_answer") or q.get("correct_answer_text") or ""),
+            "answer_form": str(q.get("answer_form", "")),
+            "ask_chunks": self._safe_int_list(q.get("ask_chunks") or [q.get("ask_chunk")]),
+        })
+        if initial_state is not None:
+            single_extra["initial_student_state"] = initial_state
+            single_extra["initial_student_state_source"] = initial_state_source
+        elif planned_start > 0:
+            single_extra["initial_student_state_missing"] = True
+        row_dict["extra_info"] = single_extra
+
+        gt = {
+            "questions": [q],
+            "gold_action_per_chunk": segment_gold_action,
+            "episode_mode": "single_question",
+            "source_video_row_index": source_video_row_index,
+            "question_idx": int(q_idx),
+            "question_index": int(q_idx),
+            "segment_planned_start_chunk": int(planned_start),
+            "segment_start_chunk": int(segment_start),
+            "segment_end_chunk": int(segment_end),
+        }
+        reward_model = row_dict.get("reward_model") or {}
+        if hasattr(reward_model, "tolist"):
+            reward_model = reward_model.tolist()
+        if not isinstance(reward_model, dict):
+            reward_model = {}
+        reward_model = dict(reward_model)
+        reward_model["ground_truth"] = json.dumps(gt, ensure_ascii=False)
+        row_dict["reward_model"] = reward_model
+        row_dict["data_source"] = "thinkstream_v12_streaming_multi_q"
+        return row_dict
+
     def _build_messages(self, example: dict):
         """Return messages for prompt-length filtering (doc2len).
 
@@ -217,7 +552,16 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
 
     def __getitem__(self, item):
         import torch  # type: ignore
-        row_dict: dict = self.dataframe[item]
+        if (
+            getattr(self, "thinkstream_episode_mode", "full") == "single_question"
+            and getattr(self, "_question_episode_index", None)
+        ):
+            row_i, q_i = self._question_episode_index[item]
+            row_dict: dict = self._materialize_single_question_row(
+                self.dataframe[row_i], q_i, source_row_i=row_i,
+            )
+        else:
+            row_dict = dict(self.dataframe[item])
 
         # raw_prompt is the chat-format messages. Parquet stored it as
         # numpy array of {role, content}; ensure plain Python list-of-dict.
@@ -279,22 +623,7 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
             # Normalize questions list (parquet may have stored as np array
             # of object-dtype dicts; nested fields like options/ask_chunks
             # may also be ndarrays).
-            if hasattr(questions_raw, "tolist"):
-                questions_raw = questions_raw.tolist()
-            normalized_qs: list = []
-            for q in questions_raw:
-                if hasattr(q, "tolist"):
-                    q = q.tolist()
-                if not isinstance(q, dict):
-                    continue
-                # Coerce nested ndarray fields to plain lists so downstream
-                # `if x:` / `len(x)` checks don't blow up.
-                clean = {}
-                for k, val in q.items():
-                    if hasattr(val, "tolist"):
-                        val = val.tolist()
-                    clean[k] = val
-                normalized_qs.append(clean)
+            normalized_qs = self._normalize_questions(questions_raw)
             extra["questions"] = normalized_qs
 
             gap = extra.get("gold_action_per_chunk")
@@ -465,16 +794,14 @@ def _per_chunk_action_avg(
 ) -> Optional[float]:
     """Small action-shaping signal aligned to turn-local rollout metadata."""
     chunk_kinds = _safe_list(extra.get("ts_chunk_kinds"))
-    if not chunk_kinds or not gold_action_per_chunk:
+    if not chunk_kinds:
         return None
 
     chunk_texts = _safe_list(extra.get("ts_chunk_asst_texts"))
     chunk_vidx = _safe_list(extra.get("ts_chunk_video_indices"))
-    chunk_events = _safe_list(extra.get("ts_chunk_event_indices"))
     turn_kinds = _safe_list(extra.get("ts_chunk_turn_kinds"))
     scores: List[float] = []
     recall_seen_for_chunk: set[int] = set()
-    compress_seen_for_chunk: set[int] = set()
 
     for turn_i, kind_raw in enumerate(chunk_kinds):
         kind = str(kind_raw or "unknown")
@@ -489,15 +816,20 @@ def _per_chunk_action_avg(
             # decision to train here is the preceding recall tool_call.
             continue
 
+        text = chunk_texts[turn_i] if turn_i < len(chunk_texts) else ""
+        model_action = _model_action_from_turn(kind, str(text or ""))
+
+        if turn_kind == "compress":
+            # Compression is system-triggered by the memory budget. Do not
+            # align it to offline gold chunk positions; only score whether the
+            # model complied with the actual compression turn.
+            scores.append(0.1 if model_action == "compress" else -0.05)
+            continue
+
         try:
             video_chunk_idx = int(chunk_vidx[turn_i]) if turn_i < len(chunk_vidx) else turn_i
         except (TypeError, ValueError):
             video_chunk_idx = turn_i
-        if video_chunk_idx < 0 and turn_kind == "compress":
-            try:
-                video_chunk_idx = int(chunk_events[turn_i])
-            except (IndexError, TypeError, ValueError):
-                video_chunk_idx = -1
         if video_chunk_idx < 0:
             continue
 
@@ -507,18 +839,10 @@ def _per_chunk_action_avg(
         if not gold_action:
             continue
 
-        text = chunk_texts[turn_i] if turn_i < len(chunk_texts) else ""
-        model_action = _model_action_from_turn(kind, str(text or ""))
-
         if gold_action == "compress":
-            if turn_kind == "compress":
-                if model_action == "compress":
-                    compress_seen_for_chunk.add(video_chunk_idx)
-                    scores.append(0.1)
-                else:
-                    scores.append(-0.05)
-            elif video_chunk_idx not in compress_seen_for_chunk:
-                scores.append(-0.05)
+            # Offline compress labels mark where pass2/eval happened to
+            # compact memory. In RL the trigger is derived from the live
+            # memory state, so these labels are not active policy targets.
             continue
 
         if gold_action in {"recall", "recall_silent"}:
@@ -635,9 +959,15 @@ def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
     if not chunks:
         return -1.0
     action_errors = _safe_list(extra.get("ts_chunk_action_space_errors"))
+    turn_kinds = _safe_list(extra.get("ts_chunk_turn_kinds"))
     scores: List[float] = []
     for turn_i, text in enumerate(chunks):
-        parsed = parse_agent_output_v12(text)
+        turn_kind = str(turn_kinds[turn_i] or "") if turn_i < len(turn_kinds) else ""
+        parsed = parse_agent_output_v12(
+            text,
+            allow_bare_answer=turn_kind in {"recall_response", "post_recall"},
+            allow_malformed_tool_call=turn_kind == "compress",
+        )
         action_error = (
             str(action_errors[turn_i] or "").strip()
             if turn_i < len(action_errors)
@@ -668,6 +998,13 @@ def _env_float(name: str, default: float) -> float:
         return float(os.environ.get(name, str(default)))
     except (TypeError, ValueError):
         return default
+
+
+def _env_bool(name: str, default: bool) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return str(value).strip().lower() not in {"0", "false", "no", "off", ""}
 
 
 def _env_int(name: str, default: int) -> int:
@@ -732,13 +1069,22 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
     out: List[Dict[str, Any]] = []
     for i, raw in enumerate(texts[:max_turns]):
         text = str(raw or "")
-        parsed = parse_agent_output_v12(text) if parse_agent_output_v12 else {}
+        turn_kind = str(turn_kinds[i] or "") if i < len(turn_kinds) else ""
+        parsed = (
+            parse_agent_output_v12(
+                text,
+                allow_bare_answer=turn_kind in {"recall_response", "post_recall"},
+                allow_malformed_tool_call=turn_kind == "compress",
+            )
+            if parse_agent_output_v12
+            else {}
+        )
         kind = str(parsed.get("kind") or (kinds[i] if i < len(kinds) else "") or "")
         item: Dict[str, Any] = {
             "turn": i,
             "kind": kind,
             "rollout_kind": kinds[i] if i < len(kinds) else None,
-            "turn_kind": turn_kinds[i] if i < len(turn_kinds) else None,
+            "turn_kind": turn_kind or None,
             "video_chunk": video_indices[i] if i < len(video_indices) else None,
             "event_chunk": event_indices[i] if i < len(event_indices) else None,
             "action_space_error": action_errors[i] if i < len(action_errors) else "",
@@ -850,6 +1196,20 @@ def _maybe_audit_rl_rollout(
     )
     if not audit_path:
         return
+    if _env_bool("THINKSTREAM_RL_ROLLOUT_AUDIT_FINAL_ONLY", True):
+        action_is_final = extra.get("ts_action_is_final")
+        if action_is_final is not None:
+            if not bool(action_is_final):
+                return
+        else:
+            action_index = extra.get("ts_action_index")
+            n_actions = extra.get("ts_n_actions_in_traj")
+            if action_index is not None and n_actions is not None:
+                try:
+                    if int(action_index) != int(n_actions) - 1:
+                        return
+                except (TypeError, ValueError):
+                    pass
     max_records = _env_int("THINKSTREAM_RL_ROLLOUT_AUDIT_MAX", 2000)
     if max_records >= 0 and _RL_ROLLOUT_AUDIT_COUNT >= max_records:
         return
@@ -877,9 +1237,19 @@ def _maybe_audit_rl_rollout(
             "n_recall": extra.get("ts_n_recall"),
             "n_compress": extra.get("ts_n_compress"),
             "chunks_used": extra.get("ts_chunks_used"),
+            "turns_used": extra.get("ts_turns_used"),
+            "action_rows_used": extra.get("ts_action_rows_used"),
+            "action_units_used": extra.get("ts_action_units_used"),
             "chunks_with_frames": extra.get("ts_chunks_with_frames"),
             "chunks_text_only": extra.get("ts_chunks_text_only"),
             "chunks_compress_inter": extra.get("ts_chunks_compress_inter"),
+            "action_index": extra.get("ts_action_index"),
+            "n_actions_in_traj": extra.get("ts_n_actions_in_traj"),
+            "action_is_final": extra.get("ts_action_is_final"),
+            "action_unit_index": extra.get("ts_action_unit_index"),
+            "n_action_units_in_traj": extra.get("ts_n_action_units_in_traj"),
+            "action_subturn_index": extra.get("ts_action_subturn_index"),
+            "action_unit_is_final": extra.get("ts_action_unit_is_final"),
         },
         "questions": _summarize_questions_for_audit(questions or []),
         "per_q_answers": _jsonable(_safe_list(extra.get("ts_per_q_answers"))),

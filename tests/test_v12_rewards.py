@@ -16,6 +16,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "verl"))
 
 import torch
 
@@ -458,7 +459,7 @@ def test_recall_silent_requires_recall_check():
 
 
 def test_recipe_reward_gates_positive_auxiliary_on_correct_answer():
-    from verl.recipe_thinkstream.thinkstream import _combine_reward_parts
+    from recipe_thinkstream.thinkstream import _combine_reward_parts
 
     weights = {
         "outcome": 1.0,
@@ -481,7 +482,7 @@ def test_recipe_reward_gates_positive_auxiliary_on_correct_answer():
 
 
 def test_recipe_reward_keeps_negative_auxiliary_when_answer_wrong():
-    from verl.recipe_thinkstream.thinkstream import _combine_reward_parts
+    from recipe_thinkstream.thinkstream import _combine_reward_parts
 
     weights = {
         "outcome": 1.0,
@@ -504,7 +505,7 @@ def test_recipe_reward_keeps_negative_auxiliary_when_answer_wrong():
 
 
 def test_recipe_reward_allows_auxiliary_when_answer_correct():
-    from verl.recipe_thinkstream.thinkstream import _combine_reward_parts
+    from recipe_thinkstream.thinkstream import _combine_reward_parts
 
     weights = {
         "outcome": 1.0,
@@ -527,7 +528,7 @@ def test_recipe_reward_allows_auxiliary_when_answer_correct():
 
 
 def test_recipe_reward_scales_auxiliary_on_partial_outcome():
-    from verl.recipe_thinkstream.thinkstream import _combine_reward_parts
+    from recipe_thinkstream.thinkstream import _combine_reward_parts
 
     weights = {
         "outcome": 1.0,
@@ -551,7 +552,7 @@ def test_recipe_reward_scales_auxiliary_on_partial_outcome():
 
 
 def test_recipe_multi_q_reward_gates_each_question_independently():
-    from verl.recipe_thinkstream.thinkstream import _compute_score_multi_q
+    from recipe_thinkstream.thinkstream import _compute_score_multi_q
     from thinkstream.trainer.v12_rewards import (
         compute_timing_reward_v12,
         compute_silent_quality_v12,
@@ -621,6 +622,149 @@ def test_recipe_multi_q_reward_gates_each_question_independently():
     assert abs(res["score"] - expected) < 1e-6, res
 
 
+def test_recipe_action_shaping_scores_system_compress_only():
+    from recipe_thinkstream.thinkstream import _per_chunk_action_avg
+
+    extra = {
+        "ts_chunk_kinds": ["answer", "compress", "answer"],
+        "ts_chunk_asst_texts": [
+            "<think>x</think><answer>A</answer>",
+            (
+                "<think>x</think><tool_call>"
+                '{"name":"compress","arguments":{"time_range":[0,1],"text":"x"}}'
+                "</tool_call>"
+            ),
+            "<think>x</think><answer>B</answer>",
+        ],
+        "ts_chunk_video_indices": [0, -1, 2],
+        "ts_chunk_turn_kinds": ["streaming", "compress", "streaming"],
+    }
+    # The offline compress label at chunk 0 is neutral. The live system
+    # compress turn and the response chunk are both correct: (0.1 + 0.1) / 2.
+    assert _per_chunk_action_avg(extra, {"0": "compress", "2": "response"}) == 0.1
+
+    bad_extra = dict(extra)
+    bad_extra["ts_chunk_kinds"] = ["answer", "answer", "answer"]
+    # The live compress turn is now non-compliant: (-0.05 + 0.1) / 2.
+    assert _per_chunk_action_avg(bad_extra, {"0": "compress", "2": "response"}) == 0.025
+
+
+def _single_q_dataset_stub():
+    from recipe_thinkstream.thinkstream import CustomRLHFDataset
+
+    ds = object.__new__(CustomRLHFDataset)
+    ds.segment_pre_context = 8
+    ds.segment_post_context = 8
+    ds.segment_max_chunks = 64
+    ds.segment_require_recall_archive = True
+    return ds
+
+
+def test_single_question_window_boundaries_and_scalar_chunks():
+    ds = _single_q_dataset_stub()
+
+    assert ds._safe_int_list(5) == [5]
+    assert ds._safe_int_list(None) == []
+    assert ds._safe_int_list(["2", "bad", -1]) == [2, -1]
+
+    q = {
+        "ask_chunk": "40",
+        "answer_chunks": 45,
+        "support_chunks": [10, 12, 99, -2],
+    }
+    # start anchors around the ask chunk, end covers the farthest valid target.
+    assert ds._window_for_question(q, n_chunks=60) == (32, 53)
+
+    long_q = {
+        "ask_chunks": [140],
+        "answer_chunks": [170],
+        "support_chunks": [20],
+    }
+    # Earlier support is represented through student prefix state; online
+    # segment starts near the ask chunk.
+    assert ds._window_for_question(long_q, n_chunks=200) == (132, 178)
+
+    capped_q = dict(long_q)
+    capped_q["answer_chunks"] = [190]
+    # If the ask-to-answer tail exceeds max_chunks, keep the answer tail.
+    assert ds._window_for_question(capped_q, n_chunks=200) == (135, 198)
+
+    far_q = {
+        "ask_chunk": 0,
+        "answer_chunks": [190],
+        "support_chunks": [180],
+    }
+    # Correctness wins over the max window: do not cut away the query ask
+    # chunk, otherwise the segment would never receive the question.
+    assert ds._window_for_question(far_q, n_chunks=200) == (0, 198)
+
+    empty_q = {"ask_chunks": [], "answer_chunks": [], "support_chunks": []}
+    assert ds._window_for_question(empty_q, n_chunks=0) == (0, 0)
+
+
+def test_single_question_segment_uses_student_snapshot_or_rolls_from_zero():
+    ds = _single_q_dataset_stub()
+    q = {
+        "question": "What color is the cup?",
+        "gold_answer": "red",
+        "answer_form": "short_exact",
+        "ask_chunks": [40],
+        "answer_chunks": [45],
+        "support_chunks": [12],
+    }
+    row = {
+        "index": "7",
+        "video_id": "v1",
+        "video_path": "v1.mp4",
+        "n_chunks": 80,
+        "extra_info": {
+            "n_chunks": 80,
+            "questions": [q],
+            "gold_action_per_chunk": {"12": "silent", "30": "silent", "40": "response"},
+            "student_state_by_chunk": {
+                "30": {
+                    "compressed_segments": [{
+                        "time_range": [0, 20],
+                        "text": "student summary",
+                        "source_chunks": [0, 1],
+                    }],
+                    "recent_thinks": [{"chunk": 29, "time": "58-60", "text": "student think"}],
+                    "think_archive": [{"chunk": 12, "time": "24-26", "text": "saw a red cup"}],
+                }
+            },
+        },
+        "reward_model": {},
+    }
+
+    materialized = ds._materialize_single_question_row(row, 0)
+    extra = materialized["extra_info"]
+    assert extra["segment_planned_start_chunk"] == 32
+    # Nearest earlier student snapshot is used, so chunks 30..31 are simulated
+    # before the planned question window. This preserves compression/memory state.
+    assert extra["segment_start_chunk"] == 30
+    assert extra["segment_end_chunk"] == 53
+    assert extra["question_idx"] == 0
+    assert extra["question_index"] == 0
+    assert extra["initial_student_state_source"] == "student_state_by_chunk"
+    assert extra["initial_student_state"]["compressed_segments"][0]["text"] == "student summary"
+    assert "12" not in extra["gold_action_per_chunk"]
+    assert "30" in extra["gold_action_per_chunk"]
+    assert "40" in extra["gold_action_per_chunk"]
+
+    bad_cache_row = dict(row)
+    bad_cache_row["extra_info"] = dict(row["extra_info"])
+    bad_cache_row["extra_info"]["student_state_by_chunk"] = {
+        "32": {"recent_thinks": [{"chunk": 31, "text": "no archive"}]},
+    }
+    bad_materialized = ds._materialize_single_question_row(bad_cache_row, 0)
+    bad_extra = bad_materialized["extra_info"]
+    # Without a recall archive, correctness wins over speed: run prefix from 0
+    # and let the live student trajectory trigger compression naturally.
+    assert bad_extra["segment_start_chunk"] == 0
+    assert bad_extra["segment_prefix_source"] == "missing_cache_rollout_from_zero"
+    assert bad_extra["initial_student_state_missing"] is True
+
+
 def test_silent_quality_v12_complements_outcome():
     """Verify silent_quality fills the reward gap that outcome alone misses.
 
@@ -673,6 +817,9 @@ if __name__ == "__main__":
     test_recipe_reward_allows_auxiliary_when_answer_correct()
     test_recipe_reward_scales_auxiliary_on_partial_outcome()
     test_recipe_multi_q_reward_gates_each_question_independently()
+    test_recipe_action_shaping_scores_system_compress_only()
+    test_single_question_window_boundaries_and_scalar_chunks()
+    test_single_question_segment_uses_student_snapshot_or_rolls_from_zero()
     test_silent_quality_v12_complements_outcome()
     test_v12_advantage_aggregation()
     print("\n✅ all v12.0 reward smoke tests passed")

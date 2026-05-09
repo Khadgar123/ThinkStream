@@ -5,12 +5,14 @@ BENCH=${BENCH:-/home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench/ovo_bench_new.
 VIDEO_ROOT=${VIDEO_ROOT:-/home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench/}
 FRAMES_ROOT=${FRAMES_ROOT:-/home/tione/notebook/gaozhenkun/hzh/data/OVO-Bench/frames}
 SCRIPT_PATH=${SCRIPT_PATH:-/home/tione/notebook/gaozhenkun/hzh/ThinkStream/scripts/eval/ovo/base.py}
-PYTHON=${PYTHON:-/tmp/ovo_eval_env/bin/python}
+PYTHON=${PYTHON:-/home/tione/notebook/gaozhenkun/hzh/envs/thinkstream/bin/python}
 N_PER_TASK=${N_PER_TASK:-20}
 SCORING=${SCORING:-lenient}
 FPS=${FPS:-2}
-LOG_DIR=${LOG_DIR:-/tmp/ovo_base_fps2_logs}
-HOLD_GPUS_AFTER=${HOLD_GPUS_AFTER:-1}
+FRAME_PROTOCOL=${FRAME_PROTOCOL:-ts_image}
+LOG_DIR=${LOG_DIR:-/home/tione/notebook/gaozhenkun/hzh/ThinkStream/output/ovo_base_fps2_logs}
+OUT_ROOT=${OUT_ROOT:-/home/tione/notebook/gaozhenkun/hzh/ThinkStream/output/ovo_base_fps2}
+HOLD_GPUS_AFTER=${HOLD_GPUS_AFTER:-0}
 HOLD_SCRIPT=${HOLD_SCRIPT:-/home/tione/notebook/gaozhenkun/hzh/ThinkStream/scripts/eval/ovo/hold_gpus.py}
 HOLD_GPU_FRACTION=${HOLD_GPU_FRACTION:-0.85}
 HOLD_LOG=${HOLD_LOG:-${LOG_DIR}/hold_gpus.log}
@@ -19,13 +21,17 @@ HOLD_LOG=${HOLD_LOG:-${LOG_DIR}/hold_gpus.log}
 GPUS_STR=${GPUS:-"0 1 2 3 4 5 6 7"}
 read -r -a GPUS_ARR <<< "$GPUS_STR"
 
-MODELS=(
-  "Qwen3.5-4B|/home/tione/notebook/gaozhenkun/model/Qwen3.5-4B"
-  "Qwen3.5-9B|/home/tione/notebook/gaozhenkun/model/Qwen3.5-9B"
-  "Qwen3-VL-2B-Instruct|/home/tione/notebook/gaozhenkun/model/Qwen3-VL-2B-Instruct"
-  "Qwen3-VL-4B-Instruct|/home/tione/notebook/gaozhenkun/model/Qwen3-VL-4B-Instruct"
-  "Qwen3-VL-8B-Instruct|/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct"
-)
+if [[ -n "${MODELS_STR:-}" ]]; then
+  readarray -t MODELS <<< "${MODELS_STR}"
+else
+  MODELS=(
+    "Qwen3.5-4B|/home/tione/notebook/gaozhenkun/model/Qwen3.5-4B"
+    "Qwen3.5-9B|/home/tione/notebook/gaozhenkun/model/Qwen3.5-9B"
+    "Qwen3-VL-2B-Instruct|/home/tione/notebook/gaozhenkun/model/Qwen3-VL-2B-Instruct"
+    "Qwen3-VL-4B-Instruct|/home/tione/notebook/gaozhenkun/model/Qwen3-VL-4B-Instruct"
+    "Qwen3-VL-8B-Instruct|/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct"
+  )
+fi
 
 OFFLINE_FRAMES=(64 128 256)
 ONLINE_WINDOWS=(8 16 32)
@@ -35,7 +41,7 @@ mkdir -p "$LOG_DIR"
 JOBS=()
 for model_entry in "${MODELS[@]}"; do
   IFS='|' read -r name ckpt <<< "$model_entry"
-  out_dir="${ckpt}/eval/ovo_base_fps2"
+  out_dir="${OUT_ROOT}/${name}"
 
   for frames in "${OFFLINE_FRAMES[@]}"; do
     out="${out_dir}/offline_f${frames}_fps${FPS}_${SCORING}_n${N_PER_TASK}.json"
@@ -72,6 +78,7 @@ run_job() {
     --fps "$FPS" \
     --n_per_task "$N_PER_TASK" \
     --scoring "$SCORING" \
+    --frame-protocol "$FRAME_PROTOCOL" \
     --out "$out" \
     > "$log" 2>&1
   echo "[$(date '+%F %T')] [GPU ${gpu}] DONE ${name} ${mode} frames=${max_frames} window=${visual_window}s"
@@ -86,8 +93,9 @@ worker() {
 }
 
 echo "Matrix: ${#MODELS[@]} models x (${#OFFLINE_FRAMES[@]} offline + ${#ONLINE_WINDOWS[@]} online) = ${#JOBS[@]} jobs"
-echo "Tasks: all OVO tasks, N_PER_TASK=${N_PER_TASK}; FPS=${FPS}; logs=${LOG_DIR}"
+echo "Tasks: all OVO tasks, N_PER_TASK=${N_PER_TASK}; FPS=${FPS}; frame_protocol=${FRAME_PROTOCOL}; logs=${LOG_DIR}"
 echo "GPUs: ${GPUS_ARR[*]}"
+echo "Out: ${OUT_ROOT}"
 
 for idx in "${!GPUS_ARR[@]}"; do
   worker "${GPUS_ARR[$idx]}" "$idx" "${#GPUS_ARR[@]}" &

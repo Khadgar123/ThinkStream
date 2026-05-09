@@ -11,6 +11,6 @@ Use this file as the control surface for the paper. Do not write a strong paper 
 | ThinkStream reduces the mismatch between streaming inference and training. | Prompt/sample construction proof, code path, ablation or training stability evidence. | `docs/design.md`, `scripts/agent_data_v5/`, `thinkstream/sft/` | TODO |
 | Reasoning-compressed memory bounds context growth while preserving useful history. | Token budget, memory state design, long-video efficiency table. | `docs/design.md` | TODO |
 | Watch-Think-Speak supports streaming response timing, recall, and silence decisions. | Protocol examples, parser/runtime code, qualitative case. | `docs/design.md`, `scripts/eval/ovo/` | TODO |
-| ThinkStream outperforms online/open-source video baselines. | OVO-Bench and StreamingBench main table. | `scripts/eval/`, result logs TBD | TODO |
+| ThinkStream outperforms online/open-source video baselines. | OVO-Bench and StreamingBench main table; include strong OVO offline base with uniform causal-prefix frame sampling and online streaming-window base. | `scripts/eval/ovo/base.py`, `scripts/eval/ovo/eval_full.py`, result logs TBD | Running |
 | RL improves streaming-specific behavior beyond SFT. | SFT vs RL ablation, reward decomposition. | `thinkstream/trainer_verl/`, `scripts/test_rl/`, result logs TBD | TODO |
 | Recurrent rollout is the path for very long trajectories. | Design/status doc, smoke test, memory comparison. | `docs/v12.14_recurrent_design.md`, `docs/v12.14_integration_status.md` | Optional / appendix |

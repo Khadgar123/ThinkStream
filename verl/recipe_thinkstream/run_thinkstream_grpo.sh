@@ -48,6 +48,12 @@
 #   EXPERIMENT_NAME [grpo-v12.26-verl-$THINKSTREAM_FRAME_PROTOCOL]
 #   SAVE_DIR [./output/$EXPERIMENT_NAME]
 #   SAVE_FREQ [50] / TEST_FREQ [25]
+#   PARAM_OFFLOAD [true] / OPTIMIZER_OFFLOAD [true]
+#   FREEZE_VISION_TOWER [true]
+#   PPO_MAX_TOKEN_LEN_PER_GPU / LOG_PROB_MAX_TOKEN_LEN_PER_GPU [65536]
+#   RUNTIME_ROOT [$THINKSTREAM_HOME/.runtime/$EXPERIMENT_NAME]
+#                            local root for Ray temp, HF cache, Torch cache,
+#                            Triton cache, and XDG cache.
 #   ROLLOUT_DATA_DIR [""]    optional full verl generation dump, one JSONL
 #                            file per step; can be large.
 #   THINKSTREAM_RL_ROLLOUT_AUDIT_PATH [$SAVE_DIR/audit/rl_rollout_samples.jsonl]
@@ -167,8 +173,26 @@ TEST_FREQ=${TEST_FREQ:-25}
 ROLLOUT_DATA_DIR=${ROLLOUT_DATA_DIR:-}
 PARAM_OFFLOAD=${PARAM_OFFLOAD:-true}
 OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
+FREEZE_VISION_TOWER=${FREEZE_VISION_TOWER:-true}
+PPO_MAX_TOKEN_LEN_PER_GPU=${PPO_MAX_TOKEN_LEN_PER_GPU:-65536}
+LOG_PROB_MAX_TOKEN_LEN_PER_GPU=${LOG_PROB_MAX_TOKEN_LEN_PER_GPU:-65536}
 ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-vllm}
 MAX_STEPS=${MAX_STEPS:-}
+DATA_SHUFFLE=${DATA_SHUFFLE:-true}
+DATALOADER_NUM_WORKERS=${DATALOADER_NUM_WORKERS:-0}
+
+RUNTIME_ROOT="${RUNTIME_ROOT:-${THINKSTREAM_HOME}/.runtime/${EXPERIMENT_NAME}}"
+mkdir -p "${RUNTIME_ROOT}"/{tmp,ray,hf,torch,triton,xdg}
+export TMPDIR="${TMPDIR:-${RUNTIME_ROOT}/tmp}"
+export TMP="${TMP:-${TMPDIR}}"
+export TEMP="${TEMP:-${TMPDIR}}"
+export RAY_TMPDIR="${RAY_TMPDIR:-${RUNTIME_ROOT}/ray}"
+export HF_HOME="${HF_HOME:-${RUNTIME_ROOT}/hf}"
+export TRANSFORMERS_CACHE="${TRANSFORMERS_CACHE:-${HF_HOME}/transformers}"
+export HF_DATASETS_CACHE="${HF_DATASETS_CACHE:-${HF_HOME}/datasets}"
+export TORCH_HOME="${TORCH_HOME:-${RUNTIME_ROOT}/torch}"
+export TRITON_CACHE_DIR="${TRITON_CACHE_DIR:-${RUNTIME_ROOT}/triton}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${RUNTIME_ROOT}/xdg}"
 
 # verl spawns Ray workers; each worker process inherits PYTHONPATH so the
 # reward function can import thinkstream.trainer.v12_rewards.
@@ -293,6 +317,17 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     data.max_response_length=${MAX_RESP_LEN} \
     data.return_raw_chat=True \
     data.filter_overlong_prompts=True \
+    data.shuffle=${DATA_SHUFFLE} \
+    data.dataloader_num_workers=${DATALOADER_NUM_WORKERS} \
+    ray_kwargs.ray_init._temp_dir="${RAY_TMPDIR}" \
+    ray_kwargs.ray_init.runtime_env.env_vars.TMPDIR="${TMPDIR}" \
+    ray_kwargs.ray_init.runtime_env.env_vars.RAY_TMPDIR="${RAY_TMPDIR}" \
+    ray_kwargs.ray_init.runtime_env.env_vars.HF_HOME="${HF_HOME}" \
+    ray_kwargs.ray_init.runtime_env.env_vars.TRANSFORMERS_CACHE="${TRANSFORMERS_CACHE}" \
+    ray_kwargs.ray_init.runtime_env.env_vars.HF_DATASETS_CACHE="${HF_DATASETS_CACHE}" \
+    ray_kwargs.ray_init.runtime_env.env_vars.TORCH_HOME="${TORCH_HOME}" \
+    ray_kwargs.ray_init.runtime_env.env_vars.TRITON_CACHE_DIR="${TRITON_CACHE_DIR}" \
+    ray_kwargs.ray_init.runtime_env.env_vars.XDG_CACHE_HOME="${XDG_CACHE_HOME}" \
     algorithm.adv_estimator=grpo \
     algorithm.kl_ctrl.kl_coef=0.0 \
     actor_rollout_ref.model.path="${HF_MODEL_PATH}" \
@@ -306,13 +341,14 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     actor_rollout_ref.actor.kl_loss_type=low_var_kl \
     actor_rollout_ref.actor.entropy_coeff=0.0 \
     actor_rollout_ref.actor.use_dynamic_bsz=True \
-    actor_rollout_ref.actor.ppo_max_token_len_per_gpu=$((MAX_PROMPT_LEN + MAX_RESP_LEN)) \
+    actor_rollout_ref.actor.ppo_max_token_len_per_gpu=${PPO_MAX_TOKEN_LEN_PER_GPU} \
+    actor_rollout_ref.actor.freeze_vision_tower=${FREEZE_VISION_TOWER} \
     actor_rollout_ref.actor.fsdp_config.param_offload=${PARAM_OFFLOAD} \
     actor_rollout_ref.actor.fsdp_config.optimizer_offload=${OPTIMIZER_OFFLOAD} \
     actor_rollout_ref.actor.checkpoint.save_contents=['model','hf_model','optimizer','extra'] \
     actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.ref.log_prob_use_dynamic_bsz=True \
-    actor_rollout_ref.ref.log_prob_max_token_len_per_gpu=$((MAX_PROMPT_LEN + MAX_RESP_LEN)) \
+    actor_rollout_ref.ref.log_prob_max_token_len_per_gpu=${LOG_PROB_MAX_TOKEN_LEN_PER_GPU} \
     actor_rollout_ref.ref.fsdp_config.param_offload=True \
     actor_rollout_ref.rollout.name=${ROLLOUT_BACKEND} \
     actor_rollout_ref.rollout.mode=async \
@@ -331,7 +367,7 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.prompt_length=${MAX_PROMPT_LEN} \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.rollout.log_prob_use_dynamic_bsz=True \
-    actor_rollout_ref.rollout.log_prob_max_token_len_per_gpu=$((MAX_PROMPT_LEN + MAX_RESP_LEN)) \
+    actor_rollout_ref.rollout.log_prob_max_token_len_per_gpu=${LOG_PROB_MAX_TOKEN_LEN_PER_GPU} \
     actor_rollout_ref.rollout.multi_turn.enable=True \
     actor_rollout_ref.rollout.multi_turn.max_assistant_turns=${MAX_TURNS} \
     actor_rollout_ref.rollout.multi_turn.max_user_turns=${MAX_TURNS} \

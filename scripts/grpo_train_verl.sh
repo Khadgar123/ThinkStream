@@ -46,6 +46,17 @@
 #   WANDB_PROJECT   — wandb project (thinkstream-v12)
 #   PARAM_OFFLOAD   — FSDP offload params to CPU (true).
 #   OPTIMIZER_OFFLOAD — FSDP offload optimizer state (true).
+#   FREEZE_VISION_TOWER — freeze Qwen VL vision tower during RL update (true).
+#   PPO_MAX_TOKEN_LEN_PER_GPU / LOG_PROB_MAX_TOKEN_LEN_PER_GPU
+#                  — dynamic micro-batch token budget (65536).
+#   RUNTIME_ROOT    — Ray/vLLM/HF/Triton cache root. Defaults to
+#                    .runtime/$RUN_NAME to keep /tmp from filling.
+#   THINKSTREAM_RECURRENT_MODE — stitched | recurrent. Recurrent is required
+#                    for long full-video trajectories without dense
+#                    stitched-response OOM.
+#   THINKSTREAM_RL_EPISODE_MODE — full | segment. full preserves one
+#                    full-video trajectory per sample; segment uses student
+#                    prefix state when available for faster training windows.
 #   ROLLOUT_BACKEND — rollout backend: vllm | sglang | hf (vllm).
 #   TRAIN_PARQUET / VAL_PARQUET — verl parquets. If unset, we auto-build
 #                  from data/agent_v5/final/*.jsonl via
@@ -111,6 +122,9 @@ RUN_NAME=${RUN_NAME:-grpo-v12.26-verl-${FRAME_PROTOCOL}}
 WANDB_PROJECT=${WANDB_PROJECT:-thinkstream-v12}
 PARAM_OFFLOAD=${PARAM_OFFLOAD:-true}
 OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
+FREEZE_VISION_TOWER=${FREEZE_VISION_TOWER:-true}
+PPO_MAX_TOKEN_LEN_PER_GPU=${PPO_MAX_TOKEN_LEN_PER_GPU:-65536}
+LOG_PROB_MAX_TOKEN_LEN_PER_GPU=${LOG_PROB_MAX_TOKEN_LEN_PER_GPU:-65536}
 ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-vllm}
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -143,6 +157,7 @@ if [[ "${AGENT_DATA_ROOT}" == */final ]]; then
 fi
 
 OUTPUT_DIR="${THINKSTREAM_OUTPUT_DIR:-${PROJECT_DIR}/output/${RUN_NAME}}"
+RUNTIME_ROOT="${RUNTIME_ROOT:-${PROJECT_DIR}/.runtime/${RUN_NAME}}"
 TRAIN_JSONL="${TRAIN_JSONL:-${AGENT_DATA_ROOT}/final/train_rl_trajectories.jsonl}"
 VAL_JSONL="${VAL_JSONL:-${AGENT_DATA_ROOT}/final/val_trajectories.jsonl}"
 MULTI_Q="${MULTI_Q:-1}"
@@ -186,6 +201,21 @@ if [[ ! -f "${VAL_PARQUET}" ]]; then
 fi
 
 mkdir -p "${OUTPUT_DIR}"
+mkdir -p "${RUNTIME_ROOT}"/{tmp,ray,hf,torch,triton,xdg}
+
+# Keep Ray spill files, vLLM processor cache metadata, and Triton/HF caches on
+# the project filesystem. Long recurrent rollouts can otherwise fill /tmp.
+export TMPDIR="${TMPDIR:-${RUNTIME_ROOT}/tmp}"
+export RUNTIME_ROOT
+export TMP="${TMP:-${TMPDIR}}"
+export TEMP="${TEMP:-${TMPDIR}}"
+export RAY_TMPDIR="${RAY_TMPDIR:-${RUNTIME_ROOT}/ray}"
+export HF_HOME="${HF_HOME:-${RUNTIME_ROOT}/hf}"
+export TRANSFORMERS_CACHE="${TRANSFORMERS_CACHE:-${HF_HOME}/transformers}"
+export HF_DATASETS_CACHE="${HF_DATASETS_CACHE:-${HF_HOME}/datasets}"
+export TORCH_HOME="${TORCH_HOME:-${RUNTIME_ROOT}/torch}"
+export TRITON_CACHE_DIR="${TRITON_CACHE_DIR:-${RUNTIME_ROOT}/triton}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${RUNTIME_ROOT}/xdg}"
 
 echo "=== ThinkStream GRPO via verl ==="
 echo "Checkpoint:        ${LLM}"
@@ -201,6 +231,7 @@ echo "Train parquet:     ${TRAIN_PARQUET}"
 echo "Val parquet:       ${VAL_PARQUET}"
 echo "Multi-Q rows:      ${MULTI_Q}"
 echo "Output:            ${OUTPUT_DIR}"
+echo "Runtime root:      ${RUNTIME_ROOT}"
 echo "GPUs:              ${NPROC}"
 echo "Rollout backend:   ${ROLLOUT_BACKEND}"
 echo "TP size:           ${TP_SIZE}"
@@ -219,6 +250,9 @@ echo "Epochs:            ${EPOCHS}"
 echo "Max steps:         ${MAX_STEPS:-<epoch-based>}"
 echo "PPO mini bs:       ${PPO_MINI_BS}"
 echo "Batch size:        ${BATCH_SIZE}"
+echo "PPO max tok/GPU:   ${PPO_MAX_TOKEN_LEN_PER_GPU}"
+echo "Logprob max tok/GPU: ${LOG_PROB_MAX_TOKEN_LEN_PER_GPU}"
+echo "Freeze vision:     ${FREEZE_VISION_TOWER}"
 echo "FSDP param offload: ${PARAM_OFFLOAD}"
 echo "FSDP opt offload:   ${OPTIMIZER_OFFLOAD}"
 echo "================================="
@@ -284,6 +318,9 @@ export SAVE_FREQ="${SAVE_FREQ}"
 export TEST_FREQ="${TEST_FREQ}"
 export PARAM_OFFLOAD="${PARAM_OFFLOAD}"
 export OPTIMIZER_OFFLOAD="${OPTIMIZER_OFFLOAD}"
+export FREEZE_VISION_TOWER="${FREEZE_VISION_TOWER}"
+export PPO_MAX_TOKEN_LEN_PER_GPU="${PPO_MAX_TOKEN_LEN_PER_GPU}"
+export LOG_PROB_MAX_TOKEN_LEN_PER_GPU="${LOG_PROB_MAX_TOKEN_LEN_PER_GPU}"
 export ROLLOUT_BACKEND="${ROLLOUT_BACKEND}"
 if [[ -n "${MAX_STEPS}" ]]; then
     export MAX_STEPS

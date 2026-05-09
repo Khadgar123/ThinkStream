@@ -427,21 +427,69 @@ def aggregate(results):
             by_task[r["task"]]["n"] += 1
             by_task[r["task"]]["correct"] += int(bool(p.get("correct")))
     out = {}
+    diagnostics = {}
     for t, v in by_task.items():
-        out[t] = {"n": v["n"], "acc": v["correct"] / max(v["n"], 1)}
+        acc = v["correct"] / max(v["n"], 1)
+        out[t] = {"n": v["n"], "acc": acc}
+        # Base VLM eval answers each probe as an independent call at probe
+        # time, so timing-aware accuracies are identical to content accuracy.
+        diagnostics[t] = {
+            "acc_content": acc,
+            "acc_no_early": acc,
+            "acc_no_late": acc,
+            "acc_on_time": acc,
+            "response_early_rate": 0.0,
+            "response_late_rate": 0.0,
+            "response_missing_rate": 0.0,
+            "recall_events": 0,
+            "recall_support_hit_rate": 0.0,
+            "acc_with_recall": 0.0,
+            "n_with_recall": 0,
+            "acc_without_recall": acc,
+            "n_without_recall": v["n"],
+            "compress_events": 0,
+            "compress_success_rate": 0.0,
+            "stable_think_pairs": 0,
+        }
     # Category averages (mean of per-task accs in each category)
-    def cat_avg(tasks):
-        accs = [out[t]["acc"] for t in tasks if t in out]
+    def cat_avg(tasks, metric="acc"):
+        if metric == "acc":
+            accs = [out[t]["acc"] for t in tasks if t in out]
+        else:
+            accs = [diagnostics[t][metric] for t in tasks if t in diagnostics]
         return {"avg": sum(accs) / max(len(accs), 1), "n_tasks": len(accs)}
+    rt = cat_avg(RT_TASKS)
+    bt = cat_avg(BT_TASKS)
+    ft = cat_avg(FT_TASKS)
+    active_cats = [v for v in (rt, bt, ft) if v["n_tasks"] > 0]
+    overall = sum(v["avg"] for v in active_cats) / max(len(active_cats), 1)
     return {
         "per_task": out,
+        "diagnostics": diagnostics,
         "category": {
-            "RT": cat_avg(RT_TASKS),
-            "BT": cat_avg(BT_TASKS),
-            "FT": cat_avg(FT_TASKS),
+            "RT": {
+                **rt,
+                "acc_no_early": cat_avg(RT_TASKS, "acc_no_early")["avg"],
+                "acc_no_late": cat_avg(RT_TASKS, "acc_no_late")["avg"],
+                "acc_on_time": cat_avg(RT_TASKS, "acc_on_time")["avg"],
+            },
+            "BT": {
+                **bt,
+                "acc_no_early": cat_avg(BT_TASKS, "acc_no_early")["avg"],
+                "acc_no_late": cat_avg(BT_TASKS, "acc_no_late")["avg"],
+                "acc_on_time": cat_avg(BT_TASKS, "acc_on_time")["avg"],
+            },
+            "FT": {
+                **ft,
+                "acc_no_early": cat_avg(FT_TASKS, "acc_no_early")["avg"],
+                "acc_no_late": cat_avg(FT_TASKS, "acc_no_late")["avg"],
+                "acc_on_time": cat_avg(FT_TASKS, "acc_on_time")["avg"],
+            },
         },
-        "overall": (cat_avg(RT_TASKS)["avg"] + cat_avg(BT_TASKS)["avg"]
-                    + cat_avg(FT_TASKS)["avg"]) / 3,
+        "overall": overall,
+        "overall_no_early": overall,
+        "overall_no_late": overall,
+        "overall_on_time": overall,
     }
 
 

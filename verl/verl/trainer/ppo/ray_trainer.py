@@ -1467,9 +1467,26 @@ class RayPPOTrainer:
                         metrics["recurrent/swap_fired"] = 1.0
                         metrics["recurrent/expanded_rows"] = float(len(batch))
                         metrics["recurrent/n_trajectories"] = float(len(original_batch))
-                        metrics["recurrent/avg_actions_per_traj"] = (
+                        metrics["recurrent/avg_subturn_rows_per_traj"] = (
                             float(len(batch)) / max(1, len(original_batch))
                         )
+                        metrics["recurrent/avg_actions_per_traj"] = metrics[
+                            "recurrent/avg_subturn_rows_per_traj"
+                        ]
+                        unit_counts = batch.non_tensor_batch.get("ts_n_action_units_in_traj")
+                        if unit_counts is not None and "final_mask" in batch.batch:
+                            try:
+                                final_np = batch.batch["final_mask"].detach().cpu().numpy().astype(bool)
+                                unit_np = np.asarray(unit_counts, dtype=float)
+                                if unit_np.shape[0] == final_np.shape[0] and final_np.any():
+                                    unit_mean = float(unit_np[final_np].mean())
+                                    metrics["recurrent/avg_action_units_per_traj"] = unit_mean
+                                    # Backwards-compatible name, but now it
+                                    # means chunk-level env action units, not
+                                    # internal recall/compress subturn rows.
+                                    metrics["recurrent/avg_actions_per_traj"] = unit_mean
+                            except Exception:
+                                pass
                     else:
                         batch = batch.union(gen_batch_output)
                     if self._should_compute_teacher_colocate(batch):

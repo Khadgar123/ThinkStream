@@ -295,11 +295,20 @@ def compute_trajectory_outcome_v12(
             for e in per_emit
             if isinstance(e, dict) and e.get("chunk") is not None
         }
+        used_legacy_window = False
         target_chunks = sorted(chunk_gold.keys() or answer_chunks)
         if not target_chunks:
-            target_chunks = [ask_chunk + answer_window_chunks]
+            # Backward-compatible old trajectories only had ask_chunks. The
+            # answer should be accepted from ask_chunk through ask+window, not
+            # treated as if the gold answer first appears at ask+window.
+            target_chunks = [ask_chunk]
+            used_legacy_window = True
         gold_events = [
-            {"chunk": int(c), "gold": str(chunk_gold.get(int(c), gold_default))}
+            {
+                "chunk": int(c),
+                "gold": str(chunk_gold.get(int(c), gold_default)),
+                "window_end": int(c) + answer_window_chunks if used_legacy_window else int(c) + SLACK,
+            }
             for c in target_chunks
         ]
         event_counts["gold"] += len(gold_events)
@@ -316,7 +325,7 @@ def compute_trajectory_outcome_v12(
         per_ask_scores: List[float] = []
         for i, gold_event in enumerate(gold_events):
             g_chunk = int(gold_event["chunk"])
-            hi = g_chunk + SLACK
+            hi = int(gold_event.get("window_end", g_chunk + SLACK))
             if i + 1 < len(gold_events):
                 hi = min(hi, int(gold_events[i + 1]["chunk"]) - 1)
             chosen_idx = None

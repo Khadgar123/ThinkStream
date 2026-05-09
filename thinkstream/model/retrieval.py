@@ -29,6 +29,7 @@ Cost:
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import Callable, Dict, List, Optional, Protocol
 
 import numpy as np
@@ -104,6 +105,9 @@ class HybridRetriever:
         alpha: float = 0.5,
         max_results: int = RECALL_RETURN_CHUNKS,
         device: str = "cuda",
+        frames_root: Optional[str] = None,
+        video_root: Optional[str] = None,
+        frame_fps: Optional[float] = None,
     ):
         if not 0.0 <= alpha <= 1.0:
             raise ValueError(f"alpha must be in [0, 1], got {alpha}")
@@ -113,9 +117,84 @@ class HybridRetriever:
         self.max_results = max_results
         self.device = device
         self.chunk_embeddings: Dict[int, torch.Tensor] = {}
+        self.frames_root = Path(frames_root) if frames_root else None
+        self.video_root = Path(video_root) if video_root else None
+        self.frame_fps = float(
+            frame_fps or (FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC))
+        )
+
+    def clone_empty(self):
+        """Return a new per-trajectory index sharing encoder callables."""
+        return HybridRetriever(
+            self.encode_image,
+            self.encode_text,
+            alpha=self.alpha,
+            max_results=self.max_results,
+            device=self.device,
+            frames_root=str(self.frames_root) if self.frames_root else None,
+            video_root=str(self.video_root) if self.video_root else None,
+            frame_fps=self.frame_fps,
+        )
+
+    @staticmethod
+    def _frame_index(fp: Path) -> Optional[int]:
+        stem = fp.stem
+        raw = stem[6:] if stem.startswith("frame_") else stem
+        if not raw.isdigit():
+            return None
+        idx = int(raw)
+        return max(0, idx - 1) if stem.startswith("frame_") else max(0, idx)
+
+    def _preextracted_frame_dir(self, video_path: str) -> Optional[Path]:
+        if self.frames_root is None:
+            return None
+        vp = Path(video_path)
+        if self.video_root is not None:
+            try:
+                rel = vp.relative_to(self.video_root)
+                return self.frames_root / rel.with_suffix("")
+            except ValueError:
+                pass
+        return self.frames_root / vp.with_suffix("")
+
+    def _extract_preextracted_frames(self, video_path: str, chunk_idx: int):
+        frame_dir = self._preextracted_frame_dir(video_path)
+        if frame_dir is None or not frame_dir.exists():
+            return None
+        t0 = chunk_idx * AGENT_CHUNK_SEC
+        t1 = t0 + AGENT_CHUNK_SEC
+        candidates = []
+        for fp in sorted(frame_dir.glob("*.jpg")):
+            idx = self._frame_index(fp)
+            if idx is None:
+                continue
+            ts = idx / self.frame_fps
+            if t0 <= ts < t1:
+                candidates.append(fp)
+        if not candidates:
+            return None
+        if len(candidates) > FRAMES_PER_CHUNK:
+            pick = np.linspace(0, len(candidates) - 1, FRAMES_PER_CHUNK)
+            candidates = [candidates[int(round(i))] for i in pick]
+        try:
+            from PIL import Image
+            return [
+                np.asarray(Image.open(fp).convert("RGB"))
+                for fp in candidates
+            ]
+        except Exception as e:
+            logger.warning(
+                "Pre-extracted frame load failed (chunk=%d): %s",
+                chunk_idx,
+                e,
+            )
+            return None
 
     def _extract_frames(self, video_path: str, chunk_idx: int):
         """Pull FRAMES_PER_CHUNK frames from chunk's [t0, t1] range."""
+        frames = self._extract_preextracted_frames(video_path, chunk_idx)
+        if frames is not None:
+            return frames
         try:
             from decord import VideoReader, cpu
         except ImportError:
@@ -336,6 +415,9 @@ def make_retriever(
     device: str = "cuda",
     agent_model=None,
     agent_processor=None,
+    frames_root: Optional[str] = None,
+    video_root: Optional[str] = None,
+    frame_fps: Optional[float] = None,
 ) -> Retriever:
     """Build a Retriever instance.
 
@@ -360,6 +442,9 @@ def make_retriever(
             alpha=alpha,
             max_results=max_results,
             device=device,
+            frames_root=frames_root,
+            video_root=video_root,
+            frame_fps=frame_fps,
         )
     raise ValueError(f"Unknown retriever kind: {kind}")
 

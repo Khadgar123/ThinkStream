@@ -782,6 +782,7 @@ class StreamingAgentLoop:
         retrieve_fn: Optional[Callable] = None,
         retriever=None,
         compress_mode: str = "system",
+        memory_mode: Optional[str] = None,
         frames_root: Optional[str] = None,
         video_root: Optional[str] = None,
         frame_protocol: Optional[str] = None,
@@ -814,10 +815,39 @@ class StreamingAgentLoop:
                 summarize. Only enable "self" with an RL-tuned ckpt:
                 v11 SFT samples were all C1 (system-triggered fixed
                 range), so a pure-SFT model under "self" mode is OOD.
+            memory_mode: eval ablation switch. "full" keeps text memory in
+                ordinary prompts and recall archives. "no_prompt" hides text
+                memory from ordinary prompts but still records it for
+                recall/compression. "no_recall" keeps prompt memory but makes
+                recall retrieve nothing. "none" disables text memory prompt,
+                recall archive, and compression.
         """
-        if compress_mode not in ("system", "self"):
+        compress_mode = str(compress_mode or "system").strip().lower()
+        if compress_mode == "none":
+            compress_mode = "off"
+        if compress_mode not in ("system", "self", "off"):
             raise ValueError(
-                f"compress_mode must be 'system' or 'self', got {compress_mode!r}"
+                "compress_mode must be 'system', 'self', or 'off', "
+                f"got {compress_mode!r}"
+            )
+        memory_mode = str(
+            memory_mode
+            or os.environ.get("THINKSTREAM_EVAL_MEMORY_MODE", "full")
+            or "full"
+        ).strip().lower().replace("-", "_")
+        memory_mode = {
+            "prompt_off": "no_prompt",
+            "no_memory_prompt": "no_prompt",
+            "disable_prompt": "no_prompt",
+            "recall_off": "no_recall",
+            "disable_recall": "no_recall",
+            "off": "none",
+            "no_memory": "none",
+        }.get(memory_mode, memory_mode)
+        if memory_mode not in {"full", "no_prompt", "no_recall", "none"}:
+            raise ValueError(
+                "memory_mode must be full, no_prompt, no_recall, or none, "
+                f"got {memory_mode!r}"
             )
         self.generate_fn = generate_fn
         self.tokenizer = tokenizer       # needed for telemetry token counts
@@ -841,6 +871,7 @@ class StreamingAgentLoop:
         # retrieve_fn kept as a thin alias for legacy access.
         self.retrieve_fn = self.retriever
         self.compress_mode = compress_mode
+        self.memory_mode = memory_mode
         self.frames_root = frames_root
         self.video_root = video_root
         self.memory = MemoryState(tokenizer=tokenizer)
@@ -851,6 +882,16 @@ class StreamingAgentLoop:
         # _build_rollout_messages._captured_for_gen() falls back to legacy
         # reconstruction when the field is None.
         self._last_step_messages: Optional[List[Dict]] = None
+
+    def _ordinary_prompt_snapshot(self, snapshot: Dict) -> Dict:
+        """Apply text-memory ablation to ordinary streaming prompts."""
+        if self.memory_mode not in {"no_prompt", "none"}:
+            return snapshot
+        out = dict(snapshot)
+        out["compressed_segments"] = []
+        out["compressed"] = []
+        out["recent_thinks"] = []
+        return out
 
     def _get_frame_paths(self, video_path: str, chunk_idx: int) -> Optional[List[str]]:
         """Build frame_paths for the current visual_window from pre-extracted frames."""
@@ -945,8 +986,9 @@ class StreamingAgentLoop:
         for MC queries so MemoryState.add_query stores them; subsequent
         chunks render Options in the active-query block via format_queries_block.
         """
-        # 1. Snapshot BEFORE this step
-        snapshot = self.memory.snapshot(chunk_idx)
+        # 1. Snapshot BEFORE this step. Compression turns must still see the
+        # full memory state; ordinary turns may hide text memory for ablations.
+        full_snapshot = self.memory.snapshot(chunk_idx)
 
         # 1b. Register the new question (if any) into the queries log so
         # it appears in the active-query block this step. Training data has
@@ -988,7 +1030,11 @@ class StreamingAgentLoop:
         # (vs the 480-tok / 4-think threshold) and which chunks got rolled
         # into the summary. Set on parsed below.
         _compress_telemetry = None
-        if self.compress_mode == "system" and self.memory.should_compress():
+        if (
+            self.compress_mode == "system"
+            and self.memory_mode != "none"
+            and self.memory.should_compress()
+        ):
             n_to_compress = select_compress_range_by_tokens(
                 self.memory.recent_thinks,
                 token_count_fn=self.memory._token_count,
@@ -1007,6 +1053,16 @@ class StreamingAgentLoop:
                     "thinks_token_count": self.memory.count_recent_tokens(),
                     "compressed_chunks": chunks,
                     "trigger_chunk": chunk_idx,
+                    "compress_threshold": COMPRESS_TOKEN_THRESHOLD,
+                    "compress_range_min": COMPRESS_RANGE_MIN,
+                    "compress_range_max": COMPRESS_RANGE_MAX,
+                    "system_trigger_rule_ok": (
+                        self.memory.count_recent_tokens() >= COMPRESS_TOKEN_THRESHOLD
+                        and len(self.memory.recent_thinks) >= COMPRESS_RANGE_MIN
+                    ),
+                    "system_range_rule_ok": (
+                        COMPRESS_RANGE_MIN <= len(chunks) <= COMPRESS_RANGE_MAX
+                    ),
                 }
         # compress_mode == "self": no trigger inserted. The model is
         # expected to autonomously emit <action>compress</action> when
@@ -1030,6 +1086,11 @@ class StreamingAgentLoop:
         # When compression fires, mark inter_chunk=True so the prompt uses the
         # compression-only system prompt and omits query/visual context.
         is_inter_chunk = bool(compress_trigger)
+        snapshot = (
+            full_snapshot
+            if is_inter_chunk
+            else self._ordinary_prompt_snapshot(full_snapshot)
+        )
         frame_paths = self._get_frame_paths(video_path, chunk_idx)
         messages = build_single_step_messages(
             snapshot,
@@ -1082,7 +1143,12 @@ class StreamingAgentLoop:
         # 7. Update memory state based on action. Compress turns are
         # memory-management tool calls, not video observations, so their
         # <think> is not inserted into recent_thinks / recall archive.
-        if parsed["think"] and parsed["action"] != "compress" and not is_inter_chunk:
+        if (
+            parsed["think"]
+            and parsed["action"] != "compress"
+            and not is_inter_chunk
+            and self.memory_mode != "none"
+        ):
             self.memory.add_think(chunk_idx, parsed["think"])
             # Stateful retrievers (e.g. HybridRetriever) hook here to
             # encode the chunk's frames into their visual index. BM25Retriever
@@ -1113,9 +1179,12 @@ class StreamingAgentLoop:
             # Orchestrate recall: retrieve → build recall_response input → second generate
             query = parsed["payload"].get("query", {})
             if query:
-                recall_result = self.retriever(
-                    query, self.memory.retrieval_archive
+                recall_archive = (
+                    []
+                    if self.memory_mode in {"no_recall", "none"}
+                    else self.memory.retrieval_archive
                 )
+                recall_result = self.retriever(query, recall_archive)
                 returned_chunks = select_recall_chunks(
                     recall_result.get("returned_chunks", [])
                 )

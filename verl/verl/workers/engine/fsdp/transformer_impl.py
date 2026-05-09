@@ -904,14 +904,20 @@ class FSDPEngineWithLMHead(FSDPEngine):
 
             if pad_mode == DatasetPadMode.NO_PADDING:
                 input_ids_rmpad = input_ids.values().unsqueeze(0)  # (1, total_nnz)
-                print(f"[DEBUG] input_ids shape: {input_ids.shape}, values shape: {input_ids.values().shape}")
-                print(f"[DEBUG] position_ids type: {type(position_ids)}, dim: {position_ids.dim()}, shape: {position_ids.shape if hasattr(position_ids, 'shape') else 'N/A'}")
+                debug_padding = os.environ.get("VERL_DEBUG_PADDING", "").strip().lower() in {
+                    "1", "true", "yes", "on",
+                }
+                if debug_padding:
+                    print(f"[DEBUG] input_ids shape: {input_ids.shape}, values shape: {input_ids.values().shape}")
+                    print(f"[DEBUG] position_ids type: {type(position_ids)}, dim: {position_ids.dim()}, shape: {position_ids.shape if hasattr(position_ids, 'shape') else 'N/A'}")
                 if position_ids.dim() == 3:
                     position_ids_rmpad = position_ids.values().unsqueeze(1)  # (4, 1, total_nnz)
-                    print(f"[DEBUG] position_ids values shape: {position_ids.values().shape}, rmpad shape: {position_ids_rmpad.shape}")
+                    if debug_padding:
+                        print(f"[DEBUG] position_ids values shape: {position_ids.values().shape}, rmpad shape: {position_ids_rmpad.shape}")
                 else:
                     position_ids_rmpad = position_ids.values().unsqueeze(0)  # (1, total_nnz)
-                    print(f"[DEBUG] position_ids values shape: {position_ids.values().shape}, rmpad shape: {position_ids_rmpad.shape}")
+                    if debug_padding:
+                        print(f"[DEBUG] position_ids values shape: {position_ids.values().shape}, rmpad shape: {position_ids_rmpad.shape}")
             else:
                 raise NotImplementedError(f"pad_mode {pad_mode} not implemented")
 

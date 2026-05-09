@@ -2607,7 +2607,12 @@ def diagnose_compress_output_v12(output_text: str) -> Dict[str, Any]:
     }
 
 
-def parse_agent_output_v12(output_text: str) -> Dict:
+def parse_agent_output_v12(
+    output_text: str,
+    *,
+    allow_bare_answer: bool = False,
+    allow_malformed_tool_call: bool = False,
+) -> Dict:
     """Parse v12.0 agent output (think + tool_call|answer).
 
     Returns:
@@ -2691,37 +2696,207 @@ def parse_agent_output_v12(output_text: str) -> Dict:
 
     if tool_match:
         try:
-            tool_obj = json.loads(tool_match.group(1).strip())
+            tool_obj = _loads_tool_call_json_lenient(tool_match.group(1).strip())
         except (json.JSONDecodeError, ValueError) as e:
             result["format_error"] = f"tool_call JSON parse error: {e}"
             return result
 
-        if not isinstance(tool_obj, dict):
-            result["format_error"] = "tool_call JSON must be an object"
-            return result
+        return _finish_tool_call_parse(result, tool_obj)
 
-        result["tool_call"] = tool_obj
-        name = tool_obj.get("name", "")
-        args = tool_obj.get("arguments")
-        if name == "recall":
-            schema_error = _validate_recall_tool_args(args)
-            if schema_error:
-                result["format_error"] = schema_error
+    if allow_malformed_tool_call and len(think_matches) == 1:
+        tool_body = _extract_malformed_tool_call_body(output_text, think_matches[0])
+        if tool_body:
+            try:
+                tool_obj = _loads_tool_call_json_lenient(tool_body)
+            except (json.JSONDecodeError, ValueError) as e:
+                result["format_error"] = f"tool_call JSON parse error: {e}"
                 return result
-            result["kind"] = "recall"
-        elif name == "compress":
-            schema_error = _validate_compress_tool_args(args)
-            if schema_error:
-                result["format_error"] = schema_error
-                return result
-            result["kind"] = "compress"
-        else:
-            result["format_error"] = f"unknown tool name: {name!r}"
+            return _finish_tool_call_parse(result, tool_obj)
+
+    if allow_bare_answer and len(think_matches) == 1:
+        think_match = think_matches[0]
+        prefix = output_text[:think_match.start()].strip()
+        bare = output_text[think_match.end():].strip()
+        if (
+            prefix == ""
+            and bare
+            and "<tool_call" not in bare
+            and "<answer" not in bare
+        ):
+            result["kind"] = "answer"
+            result["answer_text"] = _normalize_bare_answer_text(bare)
+            result["format_error"] = None
             return result
-        return result
 
     result["format_error"] = "neither <answer> nor <tool_call> emitted"
     return result
+
+
+def _finish_tool_call_parse(result: Dict[str, Any], tool_obj: Any) -> Dict[str, Any]:
+    if not isinstance(tool_obj, dict):
+        result["format_error"] = "tool_call JSON must be an object"
+        return result
+
+    result["tool_call"] = tool_obj
+    name = tool_obj.get("name", "")
+    args = tool_obj.get("arguments")
+    if name == "recall":
+        schema_error = _validate_recall_tool_args(args)
+        if schema_error:
+            result["format_error"] = schema_error
+            return result
+        result["kind"] = "recall"
+    elif name == "compress":
+        schema_error = _validate_compress_tool_args(args)
+        if schema_error:
+            result["format_error"] = schema_error
+            return result
+        result["kind"] = "compress"
+    else:
+        result["format_error"] = f"unknown tool name: {name!r}"
+        return result
+    return result
+
+
+def _extract_malformed_tool_call_body(output_text: str, think_match: re.Match) -> Optional[str]:
+    suffix = str(output_text or "")[think_match.end():].strip()
+    if not suffix.startswith("<tool"):
+        return None
+    brace = suffix.find("{")
+    if brace < 0:
+        return None
+    body = suffix[brace:].strip()
+    for marker in ("</tool_call>", "</tool>", "<|im_end|>", "<|endoftext|>"):
+        marker_pos = body.find(marker)
+        if marker_pos >= 0:
+            body = body[:marker_pos].strip()
+            break
+    scan = _scan_json_prefix_state(body)
+    complete_at = scan.get("complete_at")
+    if scan.get("complete") and complete_at is not None:
+        try:
+            body = body[: int(complete_at) + 1]
+        except (TypeError, ValueError):
+            pass
+    return body or None
+
+
+def _loads_tool_call_json_lenient(raw: str) -> Dict:
+    """Load tool-call JSON with narrow model-output repairs.
+
+    Some rollouts emit Python-style escaped apostrophes inside JSON strings
+    (``\'``). That sequence is invalid JSON because apostrophes do not need
+    escaping, but the intended value is unambiguous.
+
+    Compression summaries also occasionally contain raw OCR quotes/newlines, or
+    a duplicated ``<tool_call>`` prefix inside the summary text. For that case,
+    recover only the known ``compress`` object shape and leave other malformed
+    JSON strict.
+    """
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError as original_error:
+        repaired = raw.replace("\\'", "'")
+        if repaired != raw:
+            try:
+                return json.loads(repaired)
+            except json.JSONDecodeError:
+                pass
+        fallback = _parse_tool_call_json_fallback(repaired)
+        if fallback is not None:
+            return fallback
+        raise original_error
+
+
+def _normalize_bare_answer_text(text: str) -> str:
+    """Clean post-recall bare answers without relaxing the global grammar."""
+    value = str(text or "").strip()
+    simple_tag = re.fullmatch(r"<([A-Za-z][A-Za-z0-9_-]*)>(.*?)</\1>", value, re.DOTALL)
+    if simple_tag:
+        return simple_tag.group(2).strip()
+    return value
+
+
+def _json_unescape_best_effort(value: str) -> str:
+    value = str(value or "")
+    try:
+        return json.loads(f'"{value}"')
+    except json.JSONDecodeError:
+        return (
+            value.replace(r"\'", "'")
+            .replace(r'\"', '"')
+            .replace(r"\n", "\n")
+            .replace(r"\t", "\t")
+            .replace(r"\\", "\\")
+        )
+
+
+def _extract_json_string_value_lenient(raw: str, key: str, *, last: bool = True) -> Optional[str]:
+    pattern = re.compile(rf'"{re.escape(key)}"\s*:\s*"', re.DOTALL)
+    matches = list(pattern.finditer(raw or ""))
+    if not matches:
+        return None
+    match = matches[-1] if last else matches[0]
+    start = match.end()
+
+    if key == "text":
+        tail = raw[start:]
+        close_match = re.search(r'"\s*\}\s*\}[\s\}\]]*$', tail, re.DOTALL)
+        if close_match:
+            return _json_unescape_best_effort(tail[:close_match.start()])
+
+    pos = start
+    escaped = False
+    while pos < len(raw):
+        ch = raw[pos]
+        if escaped:
+            escaped = False
+        elif ch == "\\":
+            escaped = True
+        elif ch == '"':
+            return _json_unescape_best_effort(raw[start:pos])
+        pos += 1
+    return None
+
+
+def _parse_tool_call_json_fallback(raw: str) -> Optional[Dict[str, Any]]:
+    """Recover known tool-call shapes from malformed model JSON."""
+    text = str(raw or "").strip()
+    names = re.findall(r'"name"\s*:\s*"([^"]+)"', text)
+    if not names:
+        return None
+    name = names[-1]
+
+    if name == "compress":
+        ranges = list(re.finditer(
+            r'"time_range"\s*:\s*\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]',
+            text,
+            re.DOTALL,
+        ))
+        if not ranges:
+            return None
+        start_raw, end_raw = ranges[-1].group(1), ranges[-1].group(2)
+        summary = _extract_json_string_value_lenient(text, "text", last=True)
+        if summary is None or not summary.strip():
+            return None
+        start = float(start_raw) if "." in start_raw else int(start_raw)
+        end = float(end_raw) if "." in end_raw else int(end_raw)
+        return {
+            "name": "compress",
+            "arguments": {"time_range": [start, end], "text": summary.strip()},
+        }
+
+    if name == "recall":
+        query = _extract_json_string_value_lenient(text, "query", last=True)
+        time_range = _extract_json_string_value_lenient(text, "time_range", last=True)
+        if query is None or time_range is None:
+            return None
+        return {
+            "name": "recall",
+            "arguments": {"query": query.strip(), "time_range": time_range.strip()},
+        }
+
+    return None
 
 
 def has_compress_trigger(user_text: str) -> bool:

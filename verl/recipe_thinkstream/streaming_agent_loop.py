@@ -955,6 +955,63 @@ def _register_streaming_agent_loop():
                 return None
             return (min(chunks), max(chunks))
 
+        @staticmethod
+        def _as_plain_list(value: Any) -> List[Any]:
+            if hasattr(value, "tolist"):
+                value = value.tolist()
+            if value is None:
+                return []
+            if isinstance(value, list):
+                return value
+            if isinstance(value, tuple):
+                return list(value)
+            return []
+
+        def _apply_initial_student_state(
+            self,
+            state: "VideoTrajectoryState",
+            snapshot: Any,
+        ) -> None:
+            """Seed a segment rollout from a student-generated memory state.
+
+            This is intentionally a pure state restore. It does not synthesize
+            teacher memory. If no snapshot is provided, the segment starts with
+            empty memory and should therefore normally start at chunk 0 or at
+            the question ask chunk only for no-history ablations.
+            """
+            if hasattr(snapshot, "tolist"):
+                snapshot = snapshot.tolist()
+            if not isinstance(snapshot, dict):
+                return
+
+            compressed = (
+                snapshot.get("compressed_segments")
+                or snapshot.get("compressed")
+                or snapshot.get("compressed_summaries")
+                or []
+            )
+            recent = snapshot.get("recent_thinks") or []
+            archive = (
+                snapshot.get("think_archive")
+                or snapshot.get("retrieval_archive")
+                or snapshot.get("evidence_bank")
+                or []
+            )
+            state.compressed_summaries = [
+                dict(x) for x in self._as_plain_list(compressed)
+                if isinstance(x, dict)
+            ]
+            state.recent_thinks = [
+                dict(x) for x in self._as_plain_list(recent)
+                if isinstance(x, dict)
+            ]
+            # If the cache does not carry a full archive, recent_thinks is the
+            # best student-state fallback for recall over the restored segment.
+            archive_list = self._as_plain_list(archive) or list(state.recent_thinks)
+            state.think_archive = [
+                dict(x) for x in archive_list if isinstance(x, dict)
+            ]
+
         async def run(
             self, sampling_params: dict[str, Any], **kwargs,
         ) -> Union["AgentLoopOutput", List["AgentLoopOutput"]]:
@@ -966,6 +1023,14 @@ def _register_streaming_agent_loop():
             video_path = extra_info.get("video_path", "")
             n_chunks_dataset = int(extra_info.get("n_chunks") or 0)
             n_chunks = min(self.max_chunks, n_chunks_dataset) if n_chunks_dataset else self.max_chunks
+            segment_start_chunk = int(extra_info.get("segment_start_chunk") or 0)
+            segment_end_raw = extra_info.get("segment_end_chunk")
+            segment_end_chunk: Optional[int] = None
+            if segment_end_raw is not None:
+                try:
+                    segment_end_chunk = int(segment_end_raw)
+                except (TypeError, ValueError):
+                    segment_end_chunk = None
             question = extra_info.get("question", "")
             ask_chunks = list(extra_info.get("ask_chunks") or [])
 
@@ -1006,6 +1071,11 @@ def _register_streaming_agent_loop():
                 if ask_at_chunk:
                     n_chunks = max(n_chunks, max(ask_at_chunk.keys()) + 1)
                     n_chunks = min(self.max_chunks, n_chunks)
+
+            if segment_end_chunk is not None:
+                segment_end_chunk = max(segment_start_chunk, segment_end_chunk)
+                n_chunks = min(n_chunks, segment_end_chunk + 1)
+            segment_start_chunk = max(0, min(segment_start_chunk, max(0, n_chunks - 1)))
 
             # Per-Q answer tracking (multi-Q mode only). Indexed by q_idx;
             # captured when the corresponding chunk's assistant turn parses
@@ -1129,17 +1199,27 @@ def _register_streaming_agent_loop():
             per_action_response_logprobs: List[Optional[List[float]]] = []
             per_action_mm_data: List[Optional[Dict[str, Any]]] = []
 
-            state = VideoTrajectoryState(video_uid=str(video_id), chunk_idx=0)
+            state = VideoTrajectoryState(
+                video_uid=str(video_id),
+                chunk_idx=segment_start_chunk,
+            )
+            self._apply_initial_student_state(
+                state,
+                extra_info.get("initial_student_state")
+                or extra_info.get("initial_memory_snapshot")
+                or extra_info.get("initial_state"),
+            )
             recall_result_for_next: Optional[Dict[str, Any]] = None
             num_assistant_turns = 0
             n_chunks_with_frames = 0
             n_chunks_text_only = 0
             n_chunks_compress_inter = 0
 
-            chunk_idx = 0
+            chunk_idx = segment_start_chunk
             while chunk_idx < n_chunks:
                 if not state.is_active:
                     break
+                state.chunk_idx = chunk_idx
 
                 # ── Decide turn type: compress trigger fires BETWEEN
                 # chunks. Compression turns are text-only memory management:
@@ -1254,12 +1334,6 @@ def _register_streaming_agent_loop():
                 else:
                     chunk_messages = list(initial_messages)
                 chunk_messages.append({"role": "user", "content": user_content})
-                chunk_mm_messages = (
-                    chunk_messages
-                    if inter_chunk
-                    else chunk_messages[len(initial_messages):]
-                )
-
                 # ── chunk-internal ready-loop (v12.13 D1):
                 #
                 # When `max_recall_per_chunk == 0` (legacy default), the
@@ -1284,6 +1358,11 @@ def _register_streaming_agent_loop():
                     # On round 1 this is just the user payload. On round 2+
                     # it ALSO includes the appended assistant turn1 + tool
                     # message (recalled frames live in the tool message).
+                    chunk_mm_messages = (
+                        chunk_messages
+                        if inter_chunk
+                        else chunk_messages[len(initial_messages):]
+                    )
                     chunk_extra_mm = await self.process_vision_info(
                         chunk_mm_messages,
                     )
@@ -1341,7 +1420,22 @@ def _register_streaming_agent_loop():
                     if user_block_len < 0:
                         inner_aborted = True
                         break
-                    remaining_response = self.response_length - len(response_mask) - user_block_len - 1
+                    if self.recurrent_mode == "recurrent":
+                        # In recurrent mode `response_length` is the dense
+                        # per-action tensor width used by verl after this
+                        # loop emits one AgentLoopOutput per assistant turn.
+                        # Do not spend it as a stitched trajectory-wide
+                        # budget, or long videos stop after only a few
+                        # chunks once accumulated user/context blocks fill
+                        # the old stitched buffer.
+                        remaining_response = self.response_length
+                    else:
+                        remaining_response = (
+                            self.response_length
+                            - len(response_mask)
+                            - user_block_len
+                            - 1
+                        )
                     turn_max_tokens = (
                         self.max_tokens_per_compress_action
                         if turn_kind == "compress"
@@ -1445,7 +1539,11 @@ def _register_streaming_agent_loop():
                     response_text = self.tokenizer.decode(
                         assistant_ids, skip_special_tokens=True,
                     )
-                    parsed = parse_agent_output_v12(response_text)
+                    parsed = parse_agent_output_v12(
+                        response_text,
+                        allow_bare_answer=(turn_kind == "post_recall"),
+                        allow_malformed_tool_call=(turn_kind == "compress"),
+                    )
                     kind = parsed.get("kind", "unknown")
                     action_error = action_space_error_for_turn(kind, turn_kind)
                     if action_error:
@@ -1655,7 +1753,10 @@ def _register_streaming_agent_loop():
 
                 if not state.is_active or state.is_done:
                     break
-                if len(response_mask) >= self.response_length:
+                if (
+                    self.recurrent_mode != "recurrent"
+                    and len(response_mask) >= self.response_length
+                ):
                     break
 
                 # Advance video chunk pointer ONLY on non-compress turns.
@@ -1669,6 +1770,33 @@ def _register_streaming_agent_loop():
 
             num_turns = num_assistant_turns + 1
 
+            # One environment/action unit is one video chunk. Some chunks
+            # produce multiple assistant generations internally (e.g. recall
+            # tool_call + post-recall answer, or a compression system turn
+            # before the chunk is retried). Keep those as trainable subturn
+            # rows, but expose chunk-level unit accounting separately so
+            # trainer metrics/audits do not confuse subturn rows with env
+            # timesteps.
+            unit_index_by_event: Dict[int, int] = {}
+            unit_subturn_counts: Dict[int, int] = {}
+            per_action_unit_indices: List[int] = []
+            per_action_subturn_indices: List[int] = []
+            for raw_event_idx in chunk_event_indices:
+                try:
+                    event_idx = int(raw_event_idx)
+                except (TypeError, ValueError):
+                    event_idx = -1
+                if event_idx < 0:
+                    event_idx = len(unit_index_by_event)
+                if event_idx not in unit_index_by_event:
+                    unit_index_by_event[event_idx] = len(unit_index_by_event)
+                unit_idx = unit_index_by_event[event_idx]
+                per_action_unit_indices.append(unit_idx)
+                subturn_idx = unit_subturn_counts.get(unit_idx, 0)
+                per_action_subturn_indices.append(subturn_idx)
+                unit_subturn_counts[unit_idx] = subturn_idx + 1
+            n_action_units = len(unit_index_by_event)
+
             # Common extra_fields content for both stitched and recurrent modes.
             common_extras = {
                 "turn_scores": [],
@@ -1676,7 +1804,10 @@ def _register_streaming_agent_loop():
                 "ts_frame_protocol": self.frame_protocol,
                 "ts_n_recall": float(state.n_recall_calls),
                 "ts_n_compress": float(state.n_compress_calls),
-                "ts_chunks_used": float(num_assistant_turns),
+                "ts_chunks_used": float(n_action_units),
+                "ts_turns_used": float(num_assistant_turns),
+                "ts_action_rows_used": float(len(per_action_prompt_ids)),
+                "ts_action_units_used": float(n_action_units),
                 "ts_chunks_with_frames": float(n_chunks_with_frames),
                 "ts_chunks_text_only": float(n_chunks_text_only),
                 "ts_chunks_compress_inter": float(n_chunks_compress_inter),
@@ -1735,15 +1866,32 @@ def _register_streaming_agent_loop():
                             **common_extras,
                             "ts_action_index": 0,
                             "ts_n_actions_in_traj": 1,
+                            "ts_action_is_final": True,
+                            "ts_action_unit_index": 0,
+                            "ts_n_action_units_in_traj": 1,
+                            "ts_action_subturn_index": 0,
+                            "ts_action_unit_is_final": True,
                         },
                     ))
                 else:
                     for ai in range(n_actions):
                         a_mm = per_action_mm_data[ai] or {}
+                        unit_idx = (
+                            per_action_unit_indices[ai]
+                            if ai < len(per_action_unit_indices) else ai
+                        )
                         ext = {
                             **common_extras,
                             "ts_action_index": ai,
                             "ts_n_actions_in_traj": n_actions,
+                            "ts_action_is_final": ai == n_actions - 1,
+                            "ts_action_unit_index": unit_idx,
+                            "ts_n_action_units_in_traj": n_action_units,
+                            "ts_action_subturn_index": (
+                                per_action_subturn_indices[ai]
+                                if ai < len(per_action_subturn_indices) else 0
+                            ),
+                            "ts_action_unit_is_final": unit_idx == n_action_units - 1,
                             # video chunk this action belongs to (-1 for
                             # compress inter-chunk turns); useful for the
                             # trainer-side reward path.

@@ -5,8 +5,17 @@ Deduplicates by (task, sample_id) so overlapping parallel runs are safe.
 """
 import argparse
 import json
+import sys
 from collections import defaultdict
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT))
+
+from scripts.eval.ovo.eval_full import (  # noqa: E402
+    aggregate as aggregate_full,
+    print_report as print_report_full,
+)
 
 
 def load_all(json_paths):
@@ -119,8 +128,11 @@ def main():
 
     results = load_all(args.jsons)
     results = deduplicate(results)
-    agg = aggregate(results)
-    print_report(agg)
+    # Keep parallel reports on the same metric definition as eval_full.py:
+    # content acc, no-early/no-late/on-time acc, recall/compress diagnostics,
+    # and stable-think telemetry.
+    agg = aggregate_full(results)
+    print_report_full(agg)
 
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     with open(args.out, "w") as f:

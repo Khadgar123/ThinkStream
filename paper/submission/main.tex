@@ -110,7 +110,17 @@ TODO: Describe SFT, streaming RLVR / GDPO, reward components, and training-infer
 
 \subsection{Benchmarks}
 
-TODO: Describe OVO-Bench, StreamingBench Real-Time, and any internal construction protocol.
+We evaluate on the original OVO-Bench annotations rather than the probe-expanded single-question format.
+For ChronoStream, each sample is executed as a full video trajectory: the agent starts from the beginning of the video, receives chunks in temporal order, maintains its memory state, optionally recalls past evidence, and answers only from observations that have arrived so far.
+This protocol is used for real-time and backward-tracing tasks as well as forward active responding tasks such as REC, SSR, and CRR, where each probe is scored at its annotated time.
+
+For base VideoLLM comparisons, we report both streaming and offline settings.
+The streaming base receives uniformly sampled frames from the same recent temporal window available to the agent at the probe time.
+The offline base receives uniformly sampled frames from the entire causal prefix from the start of the video to the probe or question time, never from the future.
+This offline setting is intentionally a strong baseline rather than a weakened one: it gives the base model global access to all visual evidence that has appeared so far, without requiring it to compress memory or decide when to recall.
+It therefore measures the underlying video understanding capacity of a plain VideoLLM under a generous causal context budget.
+ChronoStream is more constrained in raw visual access, because it operates with a fixed current window and bounded textual memory, but is allowed to maintain, consolidate, and recall temporal evidence throughout the stream.
+We report content accuracy together with timing-aware variants that separately count correct early, late, and exactly-on-probe responses, so gains cannot be explained by answering at an incorrect time.
 
 \subsection{Main Results}
 
