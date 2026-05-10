@@ -27,8 +27,10 @@ from .config import (
     AGENT_CHUNK_SEC,
     EVIDENCE_1B_DIR,
     PASS_CONFIG,
+    VLLM_MODEL,
     VLLM_MAX_MODEL_LEN,
 )
+from scripts.agent_data_pipeline.vllm_client import TruncatedCompletionError
 
 logger = logging.getLogger(__name__)
 
@@ -90,7 +92,9 @@ Linking rules:
 - Same object with stable color/shape → same id, even if action differs.
 - DO NOT merge across visual categories (text overlay vs arrow vs object
   must stay separate).
-- An entity mentioned in ≥2 chunks should always be grouped.
+- Output only real merged groups with at least two descs. Omit descriptions
+  that do not clearly merge with another input description; the pipeline will
+  assign them deterministic local ids.
 - Use stable descriptive ids: person_chef_1, pot_silver_1, etc.
 
 TASK 2 — State change detection. Below is a per-chunk action/entity summary.
@@ -347,19 +351,64 @@ def _parse_combined_json(raw: str):
 
 MAX_MODEL_LEN = VLLM_MAX_MODEL_LEN
 INPUT_MARGIN = 1000  # safety margin for tokenizer differences
+_TOKENIZER = None
+_TOKENIZER_UNAVAILABLE = False
 
 
-def _safe_max_tokens(prompt: str, configured_max: int) -> int:
+def _estimate_input_tokens(prompt: str) -> int:
+    """Estimate chat prompt tokens for pass1b.
+
+    Prefer the local model tokenizer so an 8-card/65K server can use the real
+    remaining context. If tokenizer loading fails, fall back to a deliberately
+    conservative char-based estimate to avoid vLLM 400 context errors.
+    """
+    global _TOKENIZER, _TOKENIZER_UNAVAILABLE
+    if not _TOKENIZER_UNAVAILABLE:
+        try:
+            if _TOKENIZER is None:
+                from transformers import AutoTokenizer
+                _TOKENIZER = AutoTokenizer.from_pretrained(
+                    VLLM_MODEL,
+                    trust_remote_code=True,
+                )
+            messages = [{"role": "user", "content": prompt}]
+            try:
+                token_ids = _TOKENIZER.apply_chat_template(
+                    messages,
+                    tokenize=True,
+                    add_generation_prompt=True,
+                    enable_thinking=False,
+                )
+            except TypeError:
+                token_ids = _TOKENIZER.apply_chat_template(
+                    messages,
+                    tokenize=True,
+                    add_generation_prompt=True,
+                )
+            return len(token_ids)
+        except Exception as exc:
+            _TOKENIZER_UNAVAILABLE = True
+            logger.warning(
+                "pass1b tokenizer estimate unavailable; using conservative "
+                "char estimate: %s",
+                exc,
+            )
+
+    return max(len(prompt) // 2, len(prompt) // 3 + 7000)
+
+
+def _safe_max_tokens(prompt: str, configured_max: int, min_completion_tokens: int = 1) -> int:
     """Dynamically cap max_tokens so input + max_tokens <= MAX_MODEL_LEN.
 
     The model context limit is exported by the batch launcher. For batch2's
     4-card teacher this is 32K, so output budget must be capped by remaining
     context rather than assuming the historical 64K server.
     """
-    # Estimate input tokens: ~1 token per 3.5 chars for mixed EN/CJK
-    estimated_input = len(prompt) // 3 + INPUT_MARGIN
-    available = MAX_MODEL_LEN - estimated_input
-    return max(1, min(configured_max, available))
+    estimated_input = _estimate_input_tokens(prompt)
+    available = MAX_MODEL_LEN - estimated_input - INPUT_MARGIN
+    if available < max(1, min_completion_tokens):
+        return 0
+    return max(min_completion_tokens, min(configured_max, available))
 
 
 async def _call_with_semaphore(client, prompt, max_tokens, temperature, request_id, semaphore,
@@ -370,14 +419,36 @@ async def _call_with_semaphore(client, prompt, max_tokens, temperature, request_
     When thinking consumes all max_tokens, content is empty.
     Retry with higher temperature (encourages shorter thinking) as fallback.
     """
-    max_tokens = _safe_max_tokens(prompt, max_tokens)
+    min_completion_tokens = int(
+        PASS_CONFIG.get("pass1b", {}).get("min_completion_tokens", 1)
+    )
+    max_tokens = _safe_max_tokens(prompt, max_tokens, min_completion_tokens)
+    if max_tokens <= 0:
+        logger.warning(
+            "  [%s] pass1b prompt leaves too little output room under "
+            "max_model_len=%d; falling back to deterministic state/entity "
+            "heuristics (min_completion_tokens=%d)",
+            request_id,
+            MAX_MODEL_LEN,
+            min_completion_tokens,
+        )
+        return ""
     # v9.5: pass1b honours PASS_CONFIG["pass1b"]["thinking"] (default True
     # to preserve current behaviour). Routed through raw httpx when False.
     enable_thinking = bool(PASS_CONFIG.get("pass1b", {}).get("thinking", True))
     for attempt in range(max_retries + 1):
         temp = temperature if attempt == 0 else min(temperature + 0.2 * attempt, 1.0)
-        if semaphore:
-            async with semaphore:
+        try:
+            if semaphore:
+                async with semaphore:
+                    raw = await client._call_one(
+                        messages=[{"role": "user", "content": prompt}],
+                        max_tokens=max_tokens,
+                        temperature=temp,
+                        request_id=f"{request_id}_r{attempt}" if attempt > 0 else request_id,
+                        enable_thinking=enable_thinking,
+                    )
+            else:
                 raw = await client._call_one(
                     messages=[{"role": "user", "content": prompt}],
                     max_tokens=max_tokens,
@@ -385,14 +456,14 @@ async def _call_with_semaphore(client, prompt, max_tokens, temperature, request_
                     request_id=f"{request_id}_r{attempt}" if attempt > 0 else request_id,
                     enable_thinking=enable_thinking,
                 )
-        else:
-            raw = await client._call_one(
-                messages=[{"role": "user", "content": prompt}],
-                max_tokens=max_tokens,
-                temperature=temp,
-                request_id=f"{request_id}_r{attempt}" if attempt > 0 else request_id,
-                enable_thinking=enable_thinking,
+        except TruncatedCompletionError as exc:
+            logger.warning(
+                "  [%s] truncated response; falling back to deterministic "
+                "pass1b state/entity heuristics: %s",
+                request_id,
+                exc,
             )
+            return ""
 
         if raw:
             raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()

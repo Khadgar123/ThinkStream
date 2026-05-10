@@ -81,16 +81,65 @@ def _require_nonempty(label: str, items) -> None:
         raise RuntimeError(f"{label}: empty output; aborting to avoid bad final data")
 
 
-_SPLIT_BALANCE_WEIGHTS = {
-    "questions": 1.0,
-    "non_mcq_questions": 4.0,
-    "recall_questions": 4.0,
-    "multi_questions": 2.5,
-    "compress_rows": 3.0,
+_SPLIT_CORE_WEIGHTS = {
+    # All splits should see the same question distribution because RL/eval/test
+    # measure benchmark-like ability, while SFT still needs enough questions to
+    # learn the response semantics behind each action.
+    "questions": 3.0,
+    "non_mcq_questions": 8.0,
+    "recall_questions": 7.0,
+    "multi_questions": 4.0,
     "response_rows": 1.5,
-    "recall_rows": 2.0,
-    "silent_rows": 0.25,
+    "recall_rows": 2.5,
+    "silent_rows": 0.15,
 }
+
+_SPLIT_DYNAMIC_PREFIX_WEIGHTS = {
+    "q_family:": 2.5,
+    "q_category:": 1.5,
+    "q_form:": 5.0,
+    "q_availability:": 2.0,
+    "q_type:": 2.0,
+    "q_family_form:": 2.0,
+    "q_recall_family:": 3.0,
+    "q_recall_form:": 3.0,
+}
+
+_SPLIT_SFT_ACTION_PREFIX_WEIGHTS = {
+    "sft_action:recall|": 4.0,
+    "sft_action:response|": 2.0,
+    "sft_action:silent|": 1.0,
+    "sft_silent:": 1.0,
+}
+
+_SFT_COMPRESS_TARGET_FRACTION = float(
+    os.environ.get("THINKSTREAM_SFT_COMPRESS_TARGET_FRACTION", "0.18")
+)
+_SPLIT_SWAP_CANDIDATE_LIMIT = int(
+    os.environ.get("THINKSTREAM_SPLIT_SWAP_CANDIDATES", "24")
+)
+
+
+def _split_feature_weight(feature: str, bucket: str) -> float:
+    """Return the split-balancing weight for a profile feature.
+
+    Question features are shared by every split. SFT gets extra behavior-state
+    features because it supervises boundary actions directly. Compress is mostly
+    a system-maintenance action for RL/eval/test, so it is only strongly balanced
+    into SFT.
+    """
+    if feature == "compress_rows":
+        return 18.0 if bucket == "train_sft" else 0.15
+    if feature in _SPLIT_CORE_WEIGHTS:
+        return _SPLIT_CORE_WEIGHTS[feature]
+    for prefix, weight in _SPLIT_DYNAMIC_PREFIX_WEIGHTS.items():
+        if feature.startswith(prefix):
+            return weight
+    if bucket == "train_sft":
+        for prefix, weight in _SPLIT_SFT_ACTION_PREFIX_WEIGHTS.items():
+            if feature.startswith(prefix):
+                return weight
+    return 0.0
 
 
 def _video_split_profiles(samples: List[Dict]) -> Dict[str, Counter]:
@@ -98,16 +147,36 @@ def _video_split_profiles(samples: List[Dict]) -> Dict[str, Counter]:
     profiles: Dict[str, Counter] = defaultdict(Counter)
     seen_questions: Dict[str, set] = defaultdict(set)
     recall_questions: Dict[str, set] = defaultdict(set)
+    question_meta: Dict[str, Dict[tuple, Dict]] = defaultdict(dict)
 
     for s in samples:
         vid = str(s.get("video_id") or "")
         if not vid:
             continue
         action = str(s.get("sample_type") or s.get("action") or "")
+        profiles[vid]["rows"] += 1
         if action:
             profiles[vid][f"{action}_rows"] += 1
 
         meta = s.get("metadata") or {}
+        answer_form = str(meta.get("answer_form") or "unknown")
+        question_type = str(meta.get("question_type") or "unknown")
+        availability = str(
+            meta.get("availability")
+            or s.get("sequence_type")
+            or "unknown"
+        )
+        family = str(meta.get("family") or "unknown")
+        category = str(meta.get("category") or "unknown")
+
+        if action in {"recall", "response", "silent"} and meta.get("question"):
+            profiles[vid][f"sft_action:{action}|family:{family}"] += 1
+            profiles[vid][f"sft_action:{action}|form:{answer_form}"] += 1
+            profiles[vid][f"sft_action:{action}|availability:{availability}"] += 1
+            if action == "silent":
+                base_role = str(s.get("base_role") or "active")
+                profiles[vid][f"sft_silent:{base_role}|{availability}|{family}|{answer_form}"] += 1
+
         card_id = str(s.get("card_id") or meta.get("card_id") or "")
         if not card_id:
             continue
@@ -117,14 +186,15 @@ def _video_split_profiles(samples: List[Dict]) -> Dict[str, Counter]:
         if qkey in seen_questions[vid]:
             continue
         seen_questions[vid].add(qkey)
+        question_meta[vid][qkey] = meta
 
-        answer_form = str(meta.get("answer_form") or "")
-        question_type = str(meta.get("question_type") or "")
-        availability = str(meta.get("availability") or "")
-        family = str(meta.get("family") or "")
         profiles[vid]["questions"] += 1
-        profiles[vid][f"form:{answer_form or 'unknown'}"] += 1
-        profiles[vid][f"family:{family or 'unknown'}"] += 1
+        profiles[vid][f"q_family:{family}"] += 1
+        profiles[vid][f"q_category:{category}"] += 1
+        profiles[vid][f"q_form:{answer_form}"] += 1
+        profiles[vid][f"q_availability:{availability}"] += 1
+        profiles[vid][f"q_type:{question_type}"] += 1
+        profiles[vid][f"q_family_form:{family}|{answer_form}"] += 1
         if answer_form != "multiple_choice":
             profiles[vid]["non_mcq_questions"] += 1
         if question_type == "multi_emit" or availability == "multi_response":
@@ -132,6 +202,12 @@ def _video_split_profiles(samples: List[Dict]) -> Dict[str, Counter]:
 
     for vid, qkeys in recall_questions.items():
         profiles[vid]["recall_questions"] = len(qkeys)
+        for qkey in qkeys:
+            meta = question_meta.get(vid, {}).get(qkey) or {}
+            family = str(meta.get("family") or "unknown")
+            answer_form = str(meta.get("answer_form") or "unknown")
+            profiles[vid][f"q_recall_family:{family}"] += 1
+            profiles[vid][f"q_recall_form:{answer_form}"] += 1
     return profiles
 
 
@@ -164,35 +240,80 @@ def _balanced_video_buckets(
     def profile_weight(vid: str) -> float:
         p = profiles.get(vid, Counter())
         return (
-            p.get("questions", 0)
-            + 2.0 * p.get("non_mcq_questions", 0)
-            + 2.0 * p.get("recall_questions", 0)
-            + 1.5 * p.get("multi_questions", 0)
-            + 0.5 * p.get("compress_rows", 0)
+            2.0 * p.get("questions", 0)
+            + 4.0 * p.get("non_mcq_questions", 0)
+            + 4.0 * p.get("recall_questions", 0)
+            + 2.0 * p.get("multi_questions", 0)
+            + 3.0 * p.get("compress_rows", 0)
         )
 
     order.sort(key=profile_weight, reverse=True)
 
     buckets: Dict[str, List[str]] = {name: [] for name in targets}
     bucket_profiles: Dict[str, Counter] = {name: Counter() for name in targets}
+    balance_features = [
+        feat for feat, value in global_profile.items()
+        if value and any(_split_feature_weight(feat, name) > 0 for name in targets)
+    ]
     target_profiles = {
         name: Counter({
             feat: global_profile.get(feat, 0) * (size / max(n, 1))
-            for feat in _SPLIT_BALANCE_WEIGHTS
+            for feat in balance_features
         })
         for name, size in targets.items()
     }
+    if global_profile.get("compress_rows", 0):
+        target_profiles["train_sft"]["compress_rows"] = (
+            global_profile["compress_rows"] * _SFT_COMPRESS_TARGET_FRACTION
+        )
+
+    def profile_error(bucket: str, projected: Counter) -> float:
+        target = target_profiles[bucket]
+        err = 0.0
+        for feat in balance_features:
+            weight = _split_feature_weight(feat, bucket)
+            if weight <= 0:
+                continue
+            denom = max(float(target.get(feat, 0.0)), 1.0)
+            diff = float(projected.get(feat, 0.0)) - float(target.get(feat, 0.0))
+            if bucket == "train_sft" and feat in {"compress_rows", "recall_rows"} and diff < 0:
+                weight *= 3.0
+            err += weight * (diff / denom) ** 2
+        return err
 
     def score(bucket: str, vid: str) -> float:
         projected = bucket_profiles[bucket] + profiles.get(vid, Counter())
-        target = target_profiles[bucket]
-        err = 0.0
-        for feat, weight in _SPLIT_BALANCE_WEIGHTS.items():
-            denom = max(float(target.get(feat, 0.0)), 1.0)
-            diff = float(projected.get(feat, 0.0)) - float(target.get(feat, 0.0))
-            err += weight * (diff / denom) ** 2
+        err = profile_error(bucket, projected)
         fill = (len(buckets[bucket]) + 1) / max(targets[bucket], 1)
         return err + 0.10 * fill
+
+    # SFT is the only split with direct compress-action supervision. Seed it
+    # with compress-rich videos before the general benchmark-style balancing so
+    # rare memory-maintenance behavior is not accidentally concentrated in
+    # RL/eval/test, where it is mostly a system-side runtime event.
+    sft_compress_target = float(target_profiles["train_sft"].get("compress_rows", 0.0))
+    if sft_compress_target > 0:
+        max_preseed = max(1, int(targets["train_sft"] * 0.25))
+        preseeded = set()
+        for vid in sorted(
+            order,
+            key=lambda v: (
+                -profiles.get(v, Counter()).get("compress_rows", 0),
+                -profiles.get(v, Counter()).get("questions", 0),
+                -profile_weight(v),
+            ),
+        ):
+            if len(buckets["train_sft"]) >= max_preseed:
+                break
+            if profiles.get(vid, Counter()).get("compress_rows", 0) <= 0:
+                break
+            buckets["train_sft"].append(vid)
+            bucket_profiles["train_sft"].update(profiles.get(vid, Counter()))
+            preseeded.add(vid)
+            if bucket_profiles["train_sft"].get("compress_rows", 0) >= sft_compress_target:
+                break
+        if preseeded:
+            order = [vid for vid in order if vid not in preseeded]
 
     for vid in order:
         candidates = [
@@ -204,6 +325,85 @@ def _balanced_video_buckets(
         best = min(candidates, key=lambda name: (score(name, vid), name))
         buckets[best].append(vid)
         bucket_profiles[best].update(profiles.get(vid, Counter()))
+
+    # Greedy assignment can get trapped when compress-heavy videos also carry
+    # skewed question profiles. A few deterministic pair-swap passes make the
+    # final split match both benchmark-like question distribution and SFT
+    # behavior coverage without changing split sizes.
+    def swap_candidates(bucket: str) -> List[str]:
+        vids = list(buckets[bucket])
+        if len(vids) <= _SPLIT_SWAP_CANDIDATE_LIMIT:
+            return vids
+        picked: List[str] = []
+        if bucket == "train_sft":
+            # Prefer low-compress SFT videos as possible outgoing swaps.
+            picked.extend(sorted(
+                vids,
+                key=lambda v: (
+                    profiles.get(v, Counter()).get("compress_rows", 0),
+                    profile_weight(v),
+                ),
+            )[:_SPLIT_SWAP_CANDIDATE_LIMIT // 2])
+        else:
+            # Prefer compress-rich non-SFT videos as possible incoming swaps.
+            picked.extend(sorted(
+                vids,
+                key=lambda v: (
+                    -profiles.get(v, Counter()).get("compress_rows", 0),
+                    -profile_weight(v),
+                ),
+            )[:_SPLIT_SWAP_CANDIDATE_LIMIT // 2])
+        picked.extend(sorted(vids, key=profile_weight, reverse=True))
+        out: List[str] = []
+        seen = set()
+        for vid in picked:
+            if vid in seen:
+                continue
+            seen.add(vid)
+            out.append(vid)
+            if len(out) >= _SPLIT_SWAP_CANDIDATE_LIMIT:
+                break
+        return out
+
+    for _pass in range(1):
+        improved = False
+        bucket_names = list(targets)
+        for i, left in enumerate(bucket_names):
+            for right in bucket_names[i + 1:]:
+                old_pair = (
+                    profile_error(left, bucket_profiles[left])
+                    + profile_error(right, bucket_profiles[right])
+                )
+                left_vids = swap_candidates(left)
+                right_vids = swap_candidates(right)
+                best_gain = 0.0
+                best_swap = None
+                for lv in left_vids:
+                    lp = profiles.get(lv, Counter())
+                    for rv in right_vids:
+                        rp = profiles.get(rv, Counter())
+                        new_left = bucket_profiles[left] - lp + rp
+                        new_right = bucket_profiles[right] - rp + lp
+                        new_pair = (
+                            profile_error(left, new_left)
+                            + profile_error(right, new_right)
+                        )
+                        gain = old_pair - new_pair
+                        if gain > best_gain + 1e-9:
+                            best_gain = gain
+                            best_swap = (lv, rv, new_left, new_right)
+                if best_swap is None:
+                    continue
+                lv, rv, new_left, new_right = best_swap
+                buckets[left].remove(lv)
+                buckets[right].remove(rv)
+                buckets[left].append(rv)
+                buckets[right].append(lv)
+                bucket_profiles[left] = new_left
+                bucket_profiles[right] = new_right
+                improved = True
+        if not improved:
+            break
 
     audit: Dict[str, Dict[str, float]] = {}
     for name, vids in buckets.items():
@@ -218,11 +418,16 @@ def _balanced_video_buckets(
         audit[name] = {
             "videos": float(len(vids)),
             "questions": float(p.get("questions", 0)),
+            "rows": float(rows),
+            "response_rows": float(p.get("response_rows", 0)),
+            "recall_rows": float(p.get("recall_rows", 0)),
+            "compress_rows": float(p.get("compress_rows", 0)),
             "non_mcq_question_pct": round(p.get("non_mcq_questions", 0) / q * 100, 2),
             "recall_question_pct": round(p.get("recall_questions", 0) / q * 100, 2),
             "multi_question_pct": round(p.get("multi_questions", 0) / q * 100, 2),
             "recall_row_pct": round(p.get("recall_rows", 0) / rows * 100, 2),
             "compress_row_pct": round(p.get("compress_rows", 0) / rows * 100, 2),
+            "split_score": round(profile_error(name, p), 4),
         }
     return {name: set(vs) for name, vs in buckets.items()}, audit
 

@@ -1458,6 +1458,7 @@ def _silent_diversity_key(sample: Dict) -> str:
     role = _silent_role(sample)
     meta = sample.get("metadata") or {}
     family = str(meta.get("family") or "none")
+    answer_form = str(meta.get("answer_form") or "none")
     availability = str(
         meta.get("availability")
         or sample.get("sequence_type")
@@ -1481,10 +1482,10 @@ def _silent_diversity_key(sample: Dict) -> str:
             subtype = "immediate_boundary_wait"
         else:
             subtype = availability or "pending"
-        return f"{role}|{subtype}|{family}"
+        return f"{role}|{subtype}|{family}|{answer_form}|{question_type}"
 
     if role == "post_answer":
-        return f"{role}|{family}"
+        return f"{role}|{family}|{answer_form}|{question_type}"
     return f"{role}|{base_role or 'patrol'}"
 
 
@@ -1537,26 +1538,30 @@ def _choose_multi_emit_response(
 ) -> List[tuple[int, Dict]]:
     if n <= 0:
         return []
-    by_family: Dict[str, List[tuple[int, Dict]]] = {}
+    by_key: Dict[str, List[tuple[int, Dict]]] = {}
     for item in items:
         meta = item[1].get("metadata") or {}
-        fam = meta.get("family") or "unknown"
-        by_family.setdefault(fam, []).append(item)
-    for fam in by_family:
-        by_family[fam] = _choose_ranked(by_family[fam], len(by_family[fam]))
+        key = "|".join([
+            str(meta.get("family") or "unknown"),
+            str(meta.get("answer_form") or "unknown"),
+            str(meta.get("availability") or item[1].get("sequence_type") or "unknown"),
+        ])
+        by_key.setdefault(key, []).append(item)
+    for key in by_key:
+        by_key[key] = _choose_ranked(by_key[key], len(by_key[key]))
 
     selected: List[tuple[int, Dict]] = []
-    cursors = {fam: 0 for fam in by_family}
-    families = sorted(by_family)
+    cursors = {key: 0 for key in by_key}
+    keys = sorted(by_key)
     while len(selected) < n:
         progressed = False
-        for fam in families:
-            cur = cursors[fam]
-            bucket = by_family[fam]
+        for key in keys:
+            cur = cursors[key]
+            bucket = by_key[key]
             if cur >= len(bucket):
                 continue
             selected.append(bucket[cur])
-            cursors[fam] += 1
+            cursors[key] += 1
             progressed = True
             if len(selected) >= n:
                 break
