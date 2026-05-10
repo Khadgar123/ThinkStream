@@ -545,6 +545,9 @@ def _write_batch_manifest(videos: List[Dict], *, source: str, seed: int) -> None
             "val_parquet": str(
                 DATA_ROOT / "rendered" / CANONICAL_RENDER_DIRNAME / "val_rl_multi_q.parquet"
             ),
+            "test_parquet": str(
+                DATA_ROOT / "rendered" / CANONICAL_RENDER_DIRNAME / "test_rl_multi_q.parquet"
+            ),
         },
     }
     (DATA_ROOT / "batch_manifest.json").write_text(
@@ -2151,6 +2154,13 @@ async def run_pipeline(
                     "canonical val",
                     FINAL_DIR / "val_trajectories.jsonl",
                     DATA_ROOT / "rendered" / CANONICAL_RENDER_DIRNAME / "val_rl_multi_q.parquet",
+                    CANONICAL_FRAME_PROTOCOL,
+                    CANONICAL_RENDER_LAYOUT,
+                ),
+                (
+                    "canonical test",
+                    FINAL_DIR / "test_trajectories.jsonl",
+                    DATA_ROOT / "rendered" / CANONICAL_RENDER_DIRNAME / "test_rl_multi_q.parquet",
                     CANONICAL_FRAME_PROTOCOL,
                     CANONICAL_RENDER_LAYOUT,
                 ),

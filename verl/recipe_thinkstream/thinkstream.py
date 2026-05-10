@@ -163,6 +163,19 @@ def _load_traj_index() -> Dict[str, Dict[str, Any]]:
     return idx
 
 
+def _strip_offline_compress_actions(gold_action: Any) -> Dict[str, str]:
+    """Remove offline compress labels from RL/eval action shaping maps."""
+    if hasattr(gold_action, "tolist"):
+        gold_action = gold_action.tolist()
+    if not isinstance(gold_action, dict):
+        return {}
+    return {
+        str(k): str(v)
+        for k, v in gold_action.items()
+        if str(v or "") != "compress"
+    }
+
+
 def _get_base_rlhf_dataset():
     from verl.utils.dataset.rl_dataset import RLHFDataset  # type: ignore
     return RLHFDataset
@@ -707,9 +720,7 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
             extra["questions"] = normalized_qs
 
             gap = extra.get("gold_action_per_chunk")
-            if hasattr(gap, "tolist"):
-                gap = gap.tolist()
-            extra["gold_action_per_chunk"] = dict(gap) if gap else {}
+            extra["gold_action_per_chunk"] = _strip_offline_compress_actions(gap)
 
             extra.update({
                 "video_id": str(row_dict.get("video_id", "")),
@@ -724,7 +735,9 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
                 "gold_answer": str(row_dict.get("gold_answer", "")),
                 "answer_form": str(row_dict.get("answer_form", "")),
                 "ask_chunks": list(row_dict.get("ask_chunks") or []),
-                "gold_action_per_chunk": dict(row_dict.get("gold_action_per_chunk") or {}),
+                "gold_action_per_chunk": _strip_offline_compress_actions(
+                    row_dict.get("gold_action_per_chunk")
+                ),
                 "n_chunks": int(row_dict.get("n_chunks") or 0),
             })
 
@@ -1861,7 +1874,9 @@ def _compute_score_multi_q(
     if not gold_action_per_chunk and extra.get("video_id"):
         traj = _load_traj_index().get(str(extra["video_id"]))
         if traj:
-            gold_action_per_chunk = traj.get("gold_action_per_chunk", {}) or {}
+            gold_action_per_chunk = _strip_offline_compress_actions(
+                traj.get("gold_action_per_chunk", {}) or {}
+            )
     action_avg = _per_chunk_action_avg(extra, gold_action_per_chunk)
     if action_avg is not None:
         alpha = float(extra.get("gdpo_alpha", 0.7))
@@ -1971,7 +1986,10 @@ def compute_score(
         traj = idx.get(str(extra["video_id"]))
         if traj:
             extra.setdefault(
-                "gold_action_per_chunk", traj.get("gold_action_per_chunk", {})
+                "gold_action_per_chunk",
+                _strip_offline_compress_actions(
+                    traj.get("gold_action_per_chunk", {})
+                ),
             )
             extra.setdefault("ask_chunks", [])
 
@@ -1996,6 +2014,7 @@ def compute_score(
         or extra.get("gold_action_per_chunk")
         or {}
     )
+    gold_action_per_chunk = _strip_offline_compress_actions(gold_action_per_chunk)
 
     chunks = _split_assistant_chunks(solution_str)
     final_answer_inferred = _extract_final_answer(solution_str)

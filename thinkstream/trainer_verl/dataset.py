@@ -30,6 +30,27 @@ from thinkstream.data.agent_protocol import (
 from thinkstream.trainer.v12_rollout import VideoTrajectoryState
 
 
+def _sanitize_rl_gold_actions(gold_action: Dict) -> tuple[Dict[str, str], List[int]]:
+    """Strip offline compress labels from RL action targets.
+
+    Compression in rollout/eval is triggered by the live memory budget. Raw
+    pass4 trajectories may still contain pass2/pass3 compress positions; keep
+    them only as diagnostics.
+    """
+    out: Dict[str, str] = {}
+    offline: List[int] = []
+    for key, value in (gold_action or {}).items():
+        action = str(value or "")
+        if action == "compress":
+            try:
+                offline.append(int(key))
+            except (TypeError, ValueError):
+                pass
+            continue
+        out[str(key)] = action
+    return out, sorted(set(offline))
+
+
 class ThinkStreamRLDataset(Dataset):
     """Trajectory-keyed RL dataset.
 
@@ -81,6 +102,9 @@ class ThinkStreamRLDataset(Dataset):
             video_uid=traj.get("video_id", ""),
             chunk_idx=0,
         )
+        gold_action, offline_compress_chunks = _sanitize_rl_gold_actions(
+            traj.get("gold_action_per_chunk", {})
+        )
 
         # Pre-compute ground_truth bundle expected by reward_fn
         ground_truth = {
@@ -89,7 +113,9 @@ class ThinkStreamRLDataset(Dataset):
             "ask_chunks":             [],
             "visible_start_chunk":    None,
             "visible_end_chunk":      None,
-            "gold_action_per_chunk":  traj.get("gold_action_per_chunk", {}),
+            "gold_action_per_chunk":  gold_action,
+            "offline_compress_chunks": offline_compress_chunks,
+            "compress_trigger_source": "runtime_memory_threshold",
             "questions":              questions,
             # support_chunks intentionally NOT exposed to reward_fn — we no
             # longer reward against this gold under the v12.6 minimal scheme.
@@ -146,6 +172,8 @@ class ThinkStreamRLDataset(Dataset):
                 "tools": tools_for_turn("streaming"),
                 "frame_protocol": self.frame_protocol,
                 "render_layout": self.render_layout,
+                "offline_compress_chunks": offline_compress_chunks,
+                "compress_trigger_source": "runtime_memory_threshold",
             },
         }
 

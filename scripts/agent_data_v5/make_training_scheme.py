@@ -713,8 +713,10 @@ def _build_rl_parquets(
     specs = [
         ("train_rl_trajectories.jsonl", "train_rl_multi_q.parquet", False),
         ("val_trajectories.jsonl", "val_rl_multi_q.parquet", False),
+        ("test_trajectories.jsonl", "test_rl_multi_q.parquet", False),
         ("train_rl_trajectories.jsonl", "train_rl_multi_q_segment_cache.parquet", True),
         ("val_trajectories.jsonl", "val_rl_multi_q_segment_cache.parquet", True),
+        ("test_trajectories.jsonl", "test_rl_multi_q_segment_cache.parquet", True),
     ]
     for protocol in protocols:
         rendered = out / "rendered" / _render_dir_name(protocol, render_layout)
@@ -797,6 +799,14 @@ def _write_report(
                 p: str(out / "rendered" / _render_dir_name(p, render_layout) / "val_rl_multi_q_segment_cache.parquet")
                 for p in protocols
             },
+            "rl_test_parquet": {
+                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "test_rl_multi_q.parquet")
+                for p in protocols
+            },
+            "rl_test_segment_parquet": {
+                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "test_rl_multi_q_segment_cache.parquet")
+                for p in protocols
+            },
             "eval_messages": {
                 p: str(out / "rendered" / _render_dir_name(p, render_layout) / "val_messages.jsonl")
                 for p in protocols
@@ -854,6 +864,7 @@ def _write_report(
         f"- DAgger output target: `rendered/{render_dir}/train_sft_dagger_messages.jsonl`",
         f"- Eval: `rendered/{render_dir}/val_messages.jsonl`, `rendered/{render_dir}/test_messages.jsonl`",
         f"- RL full-video: `rendered/{render_dir}/train_rl_multi_q.parquet`",
+        f"- RL/agent eval: `rendered/{render_dir}/val_rl_multi_q.parquet`, `rendered/{render_dir}/test_rl_multi_q.parquet`",
         f"- RL segment: `rendered/{render_dir}/train_rl_multi_q_segment_cache.parquet`",
         "- RL source trajectories: `final/train_rl_trajectories.jsonl`",
         "",
