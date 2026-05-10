@@ -16,7 +16,7 @@ from thinkstream.data.agent_protocol import answer_format_instruction
 
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-_OPTION_LABEL_RE = re.compile(r"^\s*[A-Z][\).:]\s*")
+_OPTION_LABEL_RE = re.compile(r"^\s*(?:\([A-Z]\)|[A-Z][\).:])\s*")
 
 
 def strip_option_label(option: Any) -> str:
@@ -88,6 +88,22 @@ def build_streaming_query_meta(
 
     form = answer_form or infer_answer_form(item)
     meta: Dict[str, Any] = {"answer_form": form}
+    answer_chunks = item.get("answer_chunks") or item.get("expected_answer_chunks")
+    if answer_chunks is not None:
+        try:
+            meta["answer_chunks"] = [int(x) for x in answer_chunks]
+        except TypeError:
+            try:
+                meta["answer_chunks"] = [int(answer_chunks)]
+            except (TypeError, ValueError):
+                pass
+        except ValueError:
+            pass
+    per_emit = item.get("per_emit_answers")
+    if per_emit:
+        meta["per_emit_answers"] = list(per_emit)
+    if meta.get("answer_chunks") and item.get("open_until") is not None:
+        meta["open_until"] = item.get("open_until")
     if form == "multiple_choice":
         opts = label_mc_options(item.get("options") or [], style="paren")
         correct_raw = item.get("correct_option", "")

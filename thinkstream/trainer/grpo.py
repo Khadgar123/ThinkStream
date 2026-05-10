@@ -1698,7 +1698,7 @@ def _extract_questions_at_chunks(raw_sample) -> Dict[int, str]:
             and isinstance(raw_sample.get("gold_action_per_chunk"), dict)):
         # v12.13: question text only — options live in the active-query block.
         # Avoids ~30-tok duplication at ask_chunk where queries_state +
-        # user_input would both show A-D options.
+        # user_input would both show the same options.
         for q in raw_sample["questions"]:
             q_text = q.get("question") or q.get("gold_answer", "")
             for ac in q.get("ask_chunks") or []:

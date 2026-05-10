@@ -23,8 +23,9 @@ import json
 import logging
 import os
 import random
+from collections import Counter
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from .progress import ProgressTracker
 from .stable_hash import stable_seed
@@ -47,7 +48,10 @@ from .config import (
 logger = logging.getLogger(__name__)
 
 CANONICAL_FRAME_PROTOCOL = "video_meta"
-CANONICAL_RENDER_LAYOUT = "timeline_video_imagepad"
+CANONICAL_RENDER_LAYOUT = os.environ.get(
+    "THINKSTREAM_RENDER_LAYOUT",
+    "standard_query_last",
+)
 CANONICAL_RENDER_DIRNAME = f"{CANONICAL_FRAME_PROTOCOL}_{CANONICAL_RENDER_LAYOUT}"
 
 
@@ -208,13 +212,9 @@ def _write_batch_manifest(videos: List[Dict], *, source: str, seed: int) -> None
 def assign_phase(sample: Dict) -> str:
     """Assign a per-category label used for diagnostic file splits.
 
-    v11 (2026-04-27): training is single-stage SFT on the merged
-    phase5_train.jsonl. The per-category labels below are NOT a training
-    curriculum; they only feed `phase{1,2,C1,5}_train.jsonl` for
-    per-category eval and ablation. The old "C2" label (model-self-pick
-    range) was removed when SFT collapsed C1+C2 into one stage that
-    always uses teacher gold range; range exploration moved to RL via
-    `overflow_pen` reward.
+    The label is retained as metadata for audit/debugging. It is no longer
+    emitted as separate phase{1,2,C1,5}_train files; canonical training
+    outputs are train_sft/train_rl plus trajectory/message/parquet renders.
     """
     sample_type = sample.get("sample_type", "")
     sequence_type = sample.get("sequence_type", "")
@@ -468,7 +468,68 @@ def select_videos(
     return selected
 
 
-def extract_frames(video_path: str, output_dir: Path, fps: int = 1) -> List[str]:
+def _normalize_frame_tail(
+    output_dir: Path,
+    *,
+    frames_per_chunk: Optional[int],
+    tail_policy: str,
+) -> List[Path]:
+    frames = sorted(output_dir.glob("frame_*.jpg"))
+    if not frames or not frames_per_chunk:
+        return frames
+
+    fpc = int(frames_per_chunk)
+    if fpc <= 1:
+        return frames
+
+    remainder = len(frames) % fpc
+    dropped: List[str] = []
+    padded: List[str] = []
+    policy = str(tail_policy or "drop").strip().lower()
+
+    if remainder:
+        if policy in {"drop", "trim", "truncate"}:
+            for p in frames[-remainder:]:
+                dropped.append(p.name)
+                p.unlink()
+        elif policy in {"pad", "pad_duplicate", "duplicate"}:
+            import shutil
+
+            last = frames[-1]
+            missing = fpc - remainder
+            start_no = int(last.stem.split("_", 1)[1])
+            for offset in range(1, missing + 1):
+                dst = output_dir / f"frame_{start_no + offset:06d}.jpg"
+                shutil.copy2(last, dst)
+                padded.append(dst.name)
+        elif policy in {"keep", "none"}:
+            pass
+        else:
+            raise ValueError(
+                f"Unsupported frame tail policy {tail_policy!r}; expected "
+                "drop, pad_duplicate, or keep"
+            )
+
+    frames = sorted(output_dir.glob("frame_*.jpg"))
+    (output_dir / ".frame_norm.json").write_text(json.dumps({
+        "frames_per_chunk": fpc,
+        "tail_policy": policy,
+        "n_frames": len(frames),
+        "num_chunks": len(frames) // fpc,
+        "dropped_tail_frames": dropped,
+        "padded_tail_frames": padded,
+    }, indent=2, ensure_ascii=False))
+    return frames
+
+
+def extract_frames(
+    video_path: str,
+    output_dir: Path,
+    fps: int = 1,
+    *,
+    frames_per_chunk: Optional[int] = None,
+    tail_policy: str = "drop",
+) -> List[str]:
     """Extract frames from video at given fps.
 
     Returns list of frame file paths in order.
@@ -485,7 +546,12 @@ def extract_frames(video_path: str, output_dir: Path, fps: int = 1) -> List[str]
     fps_marker = output_dir / ".fps"
     existing = sorted(output_dir.glob("frame_*.jpg"))
     if existing and fps_marker.exists() and fps_marker.read_text().strip() == str(fps):
-        return [str(p) for p in existing]
+        frames = _normalize_frame_tail(
+            output_dir,
+            frames_per_chunk=frames_per_chunk,
+            tail_policy=tail_policy,
+        )
+        return [str(p) for p in frames]
     # Stale fps or no marker → purge and re-extract.
     for f in output_dir.glob("frame_*.jpg"):
         f.unlink()
@@ -503,7 +569,11 @@ def extract_frames(video_path: str, output_dir: Path, fps: int = 1) -> List[str]
         logger.warning(f"Frame extraction failed for {video_path}: {e}")
         return []
 
-    frames = sorted(output_dir.glob("frame_*.jpg"))
+    frames = _normalize_frame_tail(
+        output_dir,
+        frames_per_chunk=frames_per_chunk,
+        tail_policy=tail_policy,
+    )
     fps_marker.write_text(str(fps))
     return [str(p) for p in frames]
 
@@ -553,19 +623,15 @@ async def run_pipeline(
         **_client_kwargs,
         max_concurrent=safe_concurrency_for_pass("pass3a"),
     )
-    client_3b = VLLMClient(
-        **_client_kwargs,
-        max_concurrent=safe_concurrency_for_pass("pass3b_visibility"),
-    )
     client_3c = VLLMClient(
         **_client_kwargs,
         max_concurrent=safe_concurrency_for_pass("pass3c"),
     )
     logger.info(
-        "VLLMClient caps: 1a=%d 1b=%d 2=%d 3a=%d 3b=%d 3c=%d (timeout=5400s)",
+        "VLLMClient caps: 1a=%d 1b=%d 2=%d 3a=%d 3c=%d (timeout=5400s)",
         client_1a.max_concurrent, client_1b.max_concurrent,
         client_2.max_concurrent, client_3a.max_concurrent,
-        client_3b.max_concurrent, client_3c.max_concurrent,
+        client_3c.max_concurrent,
     )
 
     # --- Video selection / explicit batch input ---
@@ -588,12 +654,19 @@ async def run_pipeline(
     # v12.5 (2026-04-29): fps=2 + FRAMES_PER_CHUNK=2 → 1s/chunk (was fps=1 → 2s/chunk).
     from scripts.agent_data_v5.config import FPS, FRAMES_PER_CHUNK
     frames_dir = DATA_ROOT / "frames"
+    frame_tail_policy = os.environ.get("THINKSTREAM_FRAME_TAIL_POLICY", "drop")
     video_frames = {}
     valid_videos = []
     skipped_zero_chunk = []
     for v in videos:
         v_frames_dir = frames_dir / v["video_id"]
-        frames = extract_frames(v["video_path"], v_frames_dir, fps=FPS)
+        frames = extract_frames(
+            v["video_path"],
+            v_frames_dir,
+            fps=FPS,
+            frames_per_chunk=FRAMES_PER_CHUNK,
+            tail_policy=frame_tail_policy,
+        )
         num_chunks = len(frames) // FRAMES_PER_CHUNK
         if num_chunks <= 0:
             skipped_zero_chunk.append({
@@ -924,7 +997,9 @@ async def run_pipeline(
         # client_3a.semaphore. If the outer video task already holds the same
         # semaphore, all family tasks deadlock (resource exhaustion — every
         # permit is held by a video task waiting on its own children).
-        VIDEO_CONCURRENCY_3A = 8
+        VIDEO_CONCURRENCY_3A = max(
+            1, int(os.environ.get("THINKSTREAM_PASS3A_VIDEO_CONCURRENT", "8") or 8)
+        )
         video_semaphore_3a = asyncio.Semaphore(VIDEO_CONCURRENCY_3A)
 
         uncached_3a = [v for v in videos if not load_cards(v["video_id"]) and v["video_id"] in evidence_map]
@@ -998,6 +1073,7 @@ async def run_pipeline(
             trajectories = plan_trajectories(
                 placements, cards_map=vid_cards,
                 num_chunks=nc, evidence=evidence_map[vid],
+                rollout=rollout_map[vid], video_id=vid,
                 seed=traj_seed)
             data = {"placements": placements, "trajectories": trajectories}
             save_placements(vid, data)
@@ -1513,33 +1589,11 @@ async def run_pipeline(
     _write_quality_audit(FINAL_DIR / "train_sft.jsonl", "train_sft")
     _write_quality_audit(FINAL_DIR / "train_rl.jsonl", "train_rl")
 
-    # Per-category diagnostic split files (NOT a training curriculum).
-    # v11 production trains on phase5_train.jsonl (= all train samples).
-    # The 1/2/C1 splits exist only for per-category ablation eval.
-    # "C2" was removed in v11 (was always empty: assign_phase never
-    # returned "C2"; model-self-pick range moved to RL stage).
-    phase_map = {
-        "1": "phase1_train.jsonl",
-        "2": "phase2_train.jsonl",
-        "C1": "c1_train.jsonl",
-    }
-    phase_counts = {}
-    for phase_key, filename in phase_map.items():
-        phase_data = [s for s in train_samples if s.get("phase") == phase_key]
-        path = FINAL_DIR / filename
-        with open(path, "w") as f:
-            for s in phase_data:
-                f.write(json.dumps(s, ensure_ascii=False) + "\n")
-        phase_counts[phase_key] = len(phase_data)
-        logger.info(f"  phase {phase_key}: {len(phase_data)} train samples → {path}")
-
-    # Phase 5 = ALL train samples (the production SFT dataset).
-    p5_path = FINAL_DIR / "phase5_train.jsonl"
-    with open(p5_path, "w") as f:
-        for s in train_samples:
-            f.write(json.dumps(s, ensure_ascii=False) + "\n")
-    phase_counts["5"] = len(train_samples)
-    logger.info(f"  phase 5 (mixed): {len(train_samples)} train samples → {p5_path}")
+    phase_counts = Counter(str(s.get("phase", "")) for s in train_samples)
+    logger.info(
+        "  legacy phase train files are retired; phase metadata counts: %s",
+        dict(phase_counts),
+    )
 
     # Save comprehensive stats
     stats_path = FINAL_DIR / "pipeline_stats.json"
@@ -1555,7 +1609,8 @@ async def run_pipeline(
         "val": len(val_vids),
         "test": len(test_vids),
     }
-    stats["phase_counts"] = phase_counts
+    stats["phase_counts"] = dict(phase_counts)
+    stats["legacy_phase_files_emitted"] = False
     stats["split_by_video"] = True
     stats["global_family_distribution"] = global_families
     stats["global_category_distribution"] = global_categories
@@ -1627,10 +1682,21 @@ async def run_pipeline(
 
             mapping = _mc_mod.build_mapping(FINAL_DIR)
             changed = _mc_mod.apply_mapping(FINAL_DIR, mapping)
+            validation = _mc_mod.validate_mapping(FINAL_DIR, mapping)
             report = _mc_mod.summarize_mapping(mapping)
             report["changed_by_file"] = changed
+            report["validation"] = {
+                "rows_checked": validation["rows_checked"],
+                "n_errors": validation["n_errors"],
+                "errors_preview": validation["errors"][:20],
+            }
             report_path = AUDIT_DIR / "mc_rebalance_report.json"
             report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False))
+            if validation["errors"]:
+                raise RuntimeError(
+                    "MC option rebalance validation failed:\n"
+                    + "\n".join(validation["errors"][:20])
+                )
             logger.info(
                 "MC option rebalance: %d questions; report -> %s",
                 report.get("n_questions", 0),
@@ -1646,6 +1712,7 @@ async def run_pipeline(
                 )
         except Exception as e:
             logger.error(f"MC option rebalance failed: {e}; inspect MC balance audit")
+            raise
 
         logger.info("=" * 60)
         logger.info("PASS 5: messages-format conversion (LLaMA-Factory ShareGPT)")
@@ -1699,7 +1766,7 @@ async def run_pipeline(
             _sys.argv = _argv_backup
 
         logger.info("=" * 60)
-        logger.info("RL PARQUET: build canonical video_meta_timeline_video_imagepad")
+        logger.info("RL PARQUET: build canonical %s", CANONICAL_RENDER_DIRNAME)
         logger.info("=" * 60)
         try:
             from scripts.agent_data_v5 import build_verl_parquet as _parquet_mod

@@ -23,8 +23,8 @@ from typing import Any, Dict, List, Tuple
 
 _HEURISTICS = [
     ("yes_no", re.compile(r"^(yes|no)\b\.?$", re.IGNORECASE)),
-    ("mc_letter", re.compile(r"^[A-D]\.?$")),
-    ("mc_drift", re.compile(r"^[A-D]\.\s+\w+", re.IGNORECASE)),
+    ("mc_letter", re.compile(r"^[A-E]\.?$")),
+    ("mc_drift", re.compile(r"^[A-E]\.\s+\w+", re.IGNORECASE)),
     ("number", re.compile(r"^-?\d+(\.\d+)?$")),
 ]
 _ANSWER_RE = re.compile(r"<(?:response|answer)>(.*?)</(?:response|answer)>", re.DOTALL)
@@ -261,7 +261,7 @@ class Accumulator:
                 "non_mc_rate": _pct(non_mc, len(q_records)),
                 "multi_answer_questions": len(multi_answer),
                 "multi_answer_rate": _pct(len(multi_answer), len(q_records)),
-                "mc_correct_option": {k: mc_correct.get(k, 0) for k in ["A", "B", "C", "D"]},
+                "mc_correct_option": {k: mc_correct.get(k, 0) for k in ["A", "B", "C", "D", "E"]},
             },
             "timing": {
                 "ask_chunk": _stats([float(x) for x in ask_chunks]),

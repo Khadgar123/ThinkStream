@@ -44,23 +44,51 @@ from typing import Any, Dict, Iterable, List, Optional
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
-    append_video_metadata_frame_list,
+    RENDER_LAYOUT_STANDARD_QUERY_LAST,
     format_memory_block,
     format_queries_block,
     format_user_input_block,
     append_visual_frames,
     build_recalled_frames_metadata,
-    infer_video_metadata,
     normalize_frame_protocol,
+    prompt_time_range,
+    prompt_time_value,
     select_recall_chunks,
     system_prompt_for_frame_protocol,
+    user_input_is_active_query_duplicate,
 )
 
 logger = logging.getLogger(__name__)
 
-RENDER_LAYOUT_STANDARD = "standard"
-RENDER_LAYOUT_TIMELINE_VIDEO = "timeline_video"
-RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD = "timeline_video_imagepad"
+RENDER_LAYOUT_QUERY_LAST = RENDER_LAYOUT_STANDARD_QUERY_LAST
+ANSWER_BLOCK_RE = re.compile(r"<answer>(.*?)</answer>", flags=re.DOTALL)
+ACTIVE_QUERY_BLOCK_RE = re.compile(
+    r"<active_query>\s*(.*?)\s*</active_query>",
+    flags=re.DOTALL,
+)
+RESPONSE_HISTORY_BLOCK_RE = re.compile(
+    r"<response_history>\s*(.*?)\s*</response_history>",
+    flags=re.DOTALL,
+)
+USER_INPUT_BLOCK_RE = re.compile(
+    r"<user_input>\s*(.*?)\s*</user_input>",
+    flags=re.DOTALL,
+)
+QUESTION_LINE_RE = re.compile(r"^\s*(?:\[[^\]\n]+s\]\s+)?Q:\s*(.*?)\s*$", re.MULTILINE)
+OPTIONS_LINE_RE = re.compile(r"^\s*(?:\[[^\]\n]+s\]\s+)?Options:\s*(.*?)\s*$", re.MULTILINE)
+ANSWER_FORMAT_LINE_RE = re.compile(
+    r"^\s*(?:\[[^\]\n]+s\]\s+)?Answer format:\s*(.*?)\s*$",
+    re.MULTILINE,
+)
+OPTION_LABEL_RE = re.compile(
+    r"^\s*(?:\(([A-Z])\)|([A-Z])[\).:])\s*(.*)$",
+    flags=re.IGNORECASE,
+)
+OPTION_LETTERS = tuple("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+
+class QueryRenderContractError(ValueError):
+    """Raised when query/options/answer-format rendering is missing or duplicated."""
 
 # Project layout:
 #   <batch_root>/                         (DEFAULT_DATA_DIR)
@@ -95,7 +123,8 @@ SPLITS = [
 # actions, then downsample low-information patrol silence so SFT still learns
 # silence without drowning recall/compress/answer actions.
 SFT_SILENT_TO_ACTIVE_RATIO = 1.25
-SFT_ACTIVE_SILENT_FRACTION = 0.70
+SFT_PENDING_SILENT_FRACTION = 0.55
+SFT_POST_ANSWER_SILENT_FRACTION = 0.25
 SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO = 0.35
 
 
@@ -221,32 +250,109 @@ def _compress_management_think_from_output(output: str) -> str:
     return think
 
 
-def _normalise_assistant_output(sample: Dict) -> str:
-    output = str(sample.get("output", ""))
+def _strip_option_label(text: str) -> str:
+    match = OPTION_LABEL_RE.match(str(text or ""))
+    return (match.group(3) if match else str(text or "")).strip()
+
+
+def _mc_letter_text(question: Dict[str, Any]) -> tuple[str, str]:
+    options = list(question.get("options") or [])
+    correct = str(question.get("correct_option") or "").strip().upper()
+    if correct in OPTION_LETTERS and len(options) >= OPTION_LETTERS.index(correct) + 1:
+        return correct, _strip_option_label(options[OPTION_LETTERS.index(correct)])
+    text = (
+        question.get("correct_answer_text")
+        or question.get("canonical_answer")
+        or question.get("gold_answer")
+        or ""
+    )
+    return correct, _strip_option_label(str(text))
+
+
+def _accepted_answers_for_question(question: Dict[str, Any]) -> List[str]:
+    if question.get("answer_form") != "multiple_choice":
+        gold = str(question.get("canonical_answer") or question.get("gold_answer") or "").strip()
+        return [gold] if gold else []
+    letter, text = _mc_letter_text(question)
+    values = []
+    if letter:
+        values.append(letter)
+    if letter and text:
+        values.append(f"{letter}) {text}")
+    if text:
+        values.append(text)
+    seen = set()
+    return [v for v in values if v and not (v.lower() in seen or seen.add(v.lower()))]
+
+
+def _per_emit_target(question: Dict[str, Any], chunk_idx: Any) -> str:
+    try:
+        current = int(chunk_idx)
+    except Exception:
+        current = None
+    for emit in question.get("per_emit_answers") or []:
+        if not isinstance(emit, dict):
+            continue
+        try:
+            emit_chunk = int(emit.get("chunk"))
+        except Exception:
+            emit_chunk = None
+        if current is None or emit_chunk == current:
+            value = str(emit.get("value") or "").strip()
+            if value:
+                return value
+    return ""
+
+
+def _mc_target_for_question(question: Dict[str, Any], chunk_idx: Any) -> str:
+    per_emit = _per_emit_target(question, chunk_idx)
+    if per_emit:
+        return per_emit
+    letter, text = _mc_letter_text(question)
+    style = str(question.get("answer_style") or "").strip().lower()
+    instruction = str(question.get("answer_instruction") or "").strip().lower()
+    if style == "letter_only" or "one letter only" in instruction:
+        return letter
+    if style == "text_only":
+        return text
+    if letter and text:
+        return f"{letter}) {text}"
+    return letter or text
+
+
+def _canonical_answer_target(sample: Dict[str, Any]) -> str:
+    question = sample.get("_trajectory_question") or sample.get("metadata") or {}
+    if question.get("answer_form") == "multiple_choice":
+        return _mc_target_for_question(question, sample.get("chunk_idx"))
+    return _per_emit_target(question, sample.get("chunk_idx"))
+
+
+def _replace_answer_target(text: str, target: str) -> str:
+    if not target:
+        return text
+    match = ANSWER_BLOCK_RE.search(text)
+    if not match or not match.group(1).strip():
+        return text
+    return ANSWER_BLOCK_RE.sub(f"<answer>{target}</answer>", text, count=1)
+
+
+def _normalise_assistant_output(sample: Dict, output: Optional[str] = None) -> str:
+    output = str(sample.get("output", "") if output is None else output)
     if sample.get("sample_type") != "compress":
-        return output
+        return _replace_answer_target(output, _canonical_answer_target(sample))
     think = _compress_management_think_from_output(output)
     replacement = f"<think>{think}</think>"
     if re.search(r"<think>.*?</think>", output, flags=re.DOTALL):
-        return re.sub(
+        output = re.sub(
             r"<think>.*?</think>",
             replacement,
             output,
             count=1,
             flags=re.DOTALL,
         )
-    return replacement + output
-
-
-def _runtime_mm_kwargs() -> Dict[str, int]:
-    try:
-        from scripts.agent_data_v5.config import RUNTIME_MM_PROCESSOR_KWARGS as _RTKW
-    except ImportError:
-        return {"min_pixels": 130_000, "max_pixels": 220_000}
-    return {
-        "min_pixels": int(_RTKW.get("min_pixels", 130_000)),
-        "max_pixels": int(_RTKW.get("max_pixels", 220_000)),
-    }
+    else:
+        output = replacement + output
+    return _replace_answer_target(output, _canonical_answer_target(sample))
 
 
 def _visual_window_start(chunk_idx: int) -> int:
@@ -284,552 +390,29 @@ def _infer_visual_frame_paths(
     return paths
 
 
-def _group_frames_by_chunk(
-    frame_paths: List[str],
-    *,
-    window_start: int,
-) -> Dict[int, List[str]]:
-    grouped: Dict[int, List[str]] = {}
-    for offset, path in enumerate(frame_paths):
-        chunk = int(window_start) + int(offset // FRAMES_PER_CHUNK)
-        grouped.setdefault(chunk, []).append(path)
-    return grouped
-
-
-def _coerce_timeline_think(item: Any) -> Optional[Dict[str, Any]]:
-    if isinstance(item, dict):
-        text = str(item.get("text") or item.get("observation") or "").strip()
-        if not text:
-            return None
-        try:
-            chunk = int(item.get("chunk"))
-        except (TypeError, ValueError):
-            chunk = None
-        time_text = str(item.get("time") or "").strip()
-        if chunk is None and time_text:
-            m = re.match(r"\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)", time_text)
-            if m:
-                chunk = int(float(m.group(1)) // float(AGENT_CHUNK_SEC))
-        if chunk is None:
-            return None
-        return {"chunk": chunk, "time": time_text, "text": text}
-    raw = str(item or "").strip()
-    if not raw:
-        return None
-    m = re.match(r"^\[(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\]\s*(.*)$", raw, re.DOTALL)
-    if m:
-        start = float(m.group(1))
-        end = float(m.group(2))
-        text = m.group(3).strip()
-        return {
-            "chunk": int(start // float(AGENT_CHUNK_SEC)),
-            "time": (
-                f"{int(start) if start.is_integer() else start}-"
-                f"{int(end) if end.is_integer() else end}"
-            ),
-            "text": text,
-        }
-    return {"chunk": 0, "time": "", "text": raw}
-
-
-def _segment_chunks(seg: Dict[str, Any]) -> List[int]:
-    out: List[int] = []
-    for raw in seg.get("source_chunks") or seg.get("chunks") or []:
-        try:
-            out.append(int(raw))
-        except (TypeError, ValueError):
-            continue
-    if out:
-        return sorted(set(out))
-    tr = seg.get("time_range") or []
-    if isinstance(tr, list) and len(tr) == 2:
-        try:
-            start = int(float(tr[0]) // float(AGENT_CHUNK_SEC))
-            end = int((float(tr[1]) - 1e-9) // float(AGENT_CHUNK_SEC))
-            return list(range(max(0, start), max(0, end) + 1))
-        except (TypeError, ValueError):
-            return []
-    return []
-
-
-def _format_summary_capsule(seg: Dict[str, Any], idx: int) -> str:
-    chunks = _segment_chunks(seg)
-    if chunks:
-        start = min(chunks) * AGENT_CHUNK_SEC
-        end = (max(chunks) + 1) * AGENT_CHUNK_SEC
-        time_range = f"{int(start)}-{int(end)}"
-    else:
-        tr = seg.get("time_range") or ["?", "?"]
-        time_range = f"{tr[0]}-{tr[1]}"
-    text = str(seg.get("text") or "").strip()
-    lines = [
-        f"<SUMMARY time_range={json.dumps(time_range, ensure_ascii=False)}>",
-        text,
-    ]
-    lines.append("</SUMMARY>")
-    return "\n".join(lines)
-
-
-def _format_memory_think_capsule(rec: Dict[str, Any]) -> str:
-    chunk = int(rec.get("chunk", 0) or 0)
-    time_text = str(rec.get("time") or "").strip()
-    if not time_text:
-        start = chunk * AGENT_CHUNK_SEC
-        time_text = f"{int(start)}"
-    elif "-" in time_text:
-        time_text = time_text.split("-", 1)[0].strip()
-    text = str(rec.get("text") or "").strip()
-    return f"<MEMORY_THINK time={json.dumps(time_text)}>{text}</MEMORY_THINK>"
-
-
-def _timeline_system_prompt(
-    *,
-    frame_protocol: str,
-    prompt_kind: Optional[str],
-    inter_chunk: bool,
-    render_layout: str = RENDER_LAYOUT_TIMELINE_VIDEO,
-) -> str:
-    prompt = system_prompt_for_frame_protocol(
-        frame_protocol,
-        prompt_kind=prompt_kind,
-        inter_chunk=inter_chunk,
-    )
-    if render_layout == RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD:
-        carrier = (
-            "Each turn you receive: a time-ordered timeline with tagged memory "
-            "capsules and time-marked visual chunks. Each visual chunk contains "
-            "the pre-sampled image-pad frames for one second. Summary capsules "
-            "are historical memory at their covered time range; recalled "
-            "evidence is newly retrieved for the current decision but cites "
-            "older time ranges. Use the last visual chunk as the primary source "
-            "for current observation. Single-step visual and memory tags use "
-            "time points, while multi-step summaries and recalled evidence use "
-            "time ranges. Timeline tags never expose frame or chunk ids. "
-            "Temporal metadata is routing metadata only: never copy or "
-            "paraphrase timestamp markers or metadata lines in your output. "
-        )
-    else:
-        carrier = (
-            "Each turn you receive: a time-ordered timeline with tagged memory "
-            "capsules and one or more pre-sampled video blocks. Each video block uses "
-            "Qwen video_metadata (fps, frames_indices, total_num_frames) to carry "
-            "absolute frame timestamps. Summary capsules are historical memory at "
-            "their covered time range; recalled evidence is newly retrieved for the "
-            "current decision but cites older time ranges. Use the last "
-            "visual chunk as the primary source for current observation. Single-step "
-            "visual and memory tags use time points, while multi-step summaries "
-            "and recalled evidence use time ranges. Timeline tags never expose "
-            "frame or chunk ids. Temporal metadata is routing metadata only: "
-            "never copy or paraphrase timestamp markers or metadata lines in "
-            "your output. "
-        )
-    prompt = prompt.replace(
-        "Each turn you receive: a pre-sampled video block (recent 16s window) + "
-        "tagged memory state. The video block uses Qwen video_metadata (fps, "
-        "frames_indices, total_num_frames) to carry frame timestamps; use those "
-        "timestamps together with <visual_window>.current_time to identify the "
-        "current chunk. Temporal metadata is routing metadata only: never copy or "
-        "paraphrase timestamp markers, frame indices, role markers, or metadata "
-        "lines in your output. ",
-        carrier,
-    )
-    return (
-        prompt.replace("current <visual_window>", "current visual chunks")
-        .replace("the current <visual_window>", "the current visual chunks")
-        .replace("current visual window", "current visual chunks")
-        .replace("original current visual window", "original current visual chunks")
-    )
-
-
-def _append_video_typed_imagepad_frame_list(
-    content: List[Dict[str, Any]],
-    frames: List[str],
-    *,
-    min_pixels: int,
-    max_pixels: int,
-) -> None:
-    for frame in frames:
-        item: Dict[str, Any] = {
-            "type": "video",
-            "image": frame,
-            "visual_carrier": "image_pad",
-        }
-        if min_pixels is not None:
-            item["min_pixels"] = min_pixels
-        if max_pixels is not None:
-            item["max_pixels"] = max_pixels
-        content.append(item)
-
-
-def _append_chunk_video_block(
-    content: List[Dict[str, Any]],
-    *,
-    frames: List[str],
-    chunk: int,
-    current_chunk: int,
-    role: str,
-    min_pixels: int,
-    max_pixels: int,
-    imagepad_video_type: bool = False,
-) -> None:
-    start = chunk * AGENT_CHUNK_SEC
-    end = start + AGENT_CHUNK_SEC
-    content.append({
-        "type": "text",
-        "text": f"\n<VISUAL_CHUNK time=\"{int(start)}\">",
-    })
-    fps = float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC))
-    if imagepad_video_type:
-        _append_video_typed_imagepad_frame_list(
-            content,
-            frames,
-            min_pixels=min_pixels,
-            max_pixels=max_pixels,
-        )
-    else:
-        append_video_metadata_frame_list(
-            content,
-            frames,
-            fps=fps,
-            start_frame_index=chunk * FRAMES_PER_CHUNK,
-            total_num_frames=(current_chunk + 1) * FRAMES_PER_CHUNK,
-            min_pixels=min_pixels,
-            max_pixels=max_pixels,
-        )
-    content.append({"type": "text", "text": "</VISUAL_CHUNK>"})
-
-
-def _append_recalled_video_blocks(
-    content: List[Dict[str, Any]],
-    *,
-    rf: Dict[str, Any],
-    base_path: Path,
-    data_dir: Path,
-    min_pixels: int,
-    max_pixels: int,
-    imagepad_video_type: bool = False,
-) -> None:
-    if "frame_paths" not in rf:
-        return
-    frame_paths = _resolve_paths(rf["frame_paths"], base_path, data_dir)
-    tr0, tr1 = rf["time_range"]
-    start_chunk = int(float(tr0) // float(AGENT_CHUNK_SEC))
-    grouped = _group_frames_by_chunk(frame_paths, window_start=start_chunk)
-    for chunk in sorted(grouped):
-        start = chunk * AGENT_CHUNK_SEC
-        end = start + AGENT_CHUNK_SEC
-        content.append({
-            "type": "text",
-            "text": (
-                f"\n<RECALLED_CHUNK time=\"{int(start)}\">"
-            ),
-        })
-        fps = float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC))
-        total_num_frames = max(
-            int(float(tr1) * FRAMES_PER_CHUNK),
-            (chunk + 1) * FRAMES_PER_CHUNK,
-        )
-        if imagepad_video_type:
-            _append_video_typed_imagepad_frame_list(
-                content,
-                grouped[chunk],
-                min_pixels=min_pixels,
-                max_pixels=max_pixels,
-            )
-        else:
-            append_video_metadata_frame_list(
-                content,
-                grouped[chunk],
-                fps=fps,
-                start_frame_index=chunk * FRAMES_PER_CHUNK,
-                total_num_frames=total_num_frames,
-                min_pixels=min_pixels,
-                max_pixels=max_pixels,
-            )
-        content.append({"type": "text", "text": "</RECALLED_CHUNK>"})
-
-
-def _append_recall_result_text(content: List[Dict[str, Any]], rr: Dict[str, Any]) -> None:
-    rr_json = json.dumps({
-        "source": rr.get("source", ""),
-        "time": rr.get("time", ""),
-        "text": rr.get("text_content", rr.get("text", "")),
-    }, ensure_ascii=False)
-    content.append({
-        "type": "text",
-        "text": f"\n<recall_result>{rr_json}</recall_result>",
-    })
-
-
-def _build_timeline_user_content(
-    sample: Dict[str, Any],
-    base_path: Path,
-    data_dir: Path,
-    *,
-    frame_rel_prefix: str,
-    include_legacy_recall: bool,
-    render_layout: str = RENDER_LAYOUT_TIMELINE_VIDEO,
-    imagepad_video_type: bool = False,
-) -> List[Dict[str, Any]]:
-    inp = sample["input"]
-    chunk_idx = int(sample.get("chunk_idx", 0) or 0)
-    inter_chunk = bool(sample.get("v12_inter_chunk", False))
-    mm = _runtime_mm_kwargs()
-    content: List[Dict[str, Any]] = []
-
-    if inp.get("user_input"):
-        user_input_block = format_user_input_block(
-            inp["user_input"],
-            inter_chunk=inter_chunk,
-        )
-        if user_input_block:
-            content.append({"type": "text", "text": user_input_block.lstrip("\n")})
-
-    memory = inp.get("memory", {}) or {}
-    compressed = list(memory.get("compressed_segments", memory.get("compressed", [])) or [])
-    recent = [
-        rec for rec in (
-            _coerce_timeline_think(item)
-            for item in (memory.get("recent_thinks", memory.get("recent_observations", [])) or [])
-        )
-        if rec is not None
-    ]
-    recent_by_chunk: Dict[int, List[Dict[str, Any]]] = {}
-    for rec in recent:
-        recent_by_chunk.setdefault(int(rec["chunk"]), []).append(rec)
-
-    visual_by_chunk: Dict[int, List[str]] = {}
-    window_start = _visual_window_start(chunk_idx)
-    if not inter_chunk:
-        frame_paths = _infer_visual_frame_paths(
-            sample,
-            data_dir,
-            frame_rel_prefix=frame_rel_prefix,
-        )
-        frame_paths = _resolve_paths(frame_paths, base_path, data_dir)
-        visual_by_chunk = _group_frames_by_chunk(frame_paths, window_start=window_start)
-
-    summary_by_chunk: Dict[int, List[str]] = {}
-    for idx, seg in enumerate(compressed, start=1):
-        chunks = _segment_chunks(seg)
-        start_chunk = min(chunks) if chunks else 0
-        summary_by_chunk.setdefault(start_chunk, []).append(_format_summary_capsule(seg, idx))
-
-    timeline_chunks = sorted(set(summary_by_chunk) | set(recent_by_chunk) | set(visual_by_chunk))
-    in_memory_timeline = False
-
-    def _open_memory_timeline() -> None:
-        nonlocal in_memory_timeline
-        if not in_memory_timeline:
-            content.append({"type": "text", "text": "\n<memory>" if content else "<memory>"})
-            in_memory_timeline = True
-
-    def _close_memory_timeline() -> None:
-        nonlocal in_memory_timeline
-        if in_memory_timeline:
-            content.append({"type": "text", "text": "\n</memory>"})
-            in_memory_timeline = False
-
-    for chunk in timeline_chunks:
-        summary_capsules = summary_by_chunk.get(chunk, [])
-        if summary_capsules:
-            _open_memory_timeline()
-            for capsule in summary_capsules:
-                content.append({"type": "text", "text": f"\n{capsule}"})
-        if chunk in visual_by_chunk:
-            _close_memory_timeline()
-            role = "current" if chunk == chunk_idx else "older_context"
-            _append_chunk_video_block(
-                content,
-                frames=visual_by_chunk[chunk],
-                chunk=chunk,
-                current_chunk=chunk_idx,
-                role=role,
-                min_pixels=mm["min_pixels"],
-                max_pixels=mm["max_pixels"],
-                imagepad_video_type=imagepad_video_type,
-            )
-            if chunk < chunk_idx:
-                recent_recs = recent_by_chunk.get(chunk, [])
-                if recent_recs:
-                    _open_memory_timeline()
-                    for rec in recent_recs:
-                        content.append({"type": "text", "text": f"\n{_format_memory_think_capsule(rec)}"})
-        else:
-            recent_recs = recent_by_chunk.get(chunk, [])
-            if recent_recs:
-                _open_memory_timeline()
-                for rec in recent_recs:
-                    content.append({"type": "text", "text": f"\n{_format_memory_think_capsule(rec)}"})
-    _close_memory_timeline()
-
-    queries = inp.get("queries", [])
-    if queries and not inter_chunk:
-        qt = format_queries_block(queries)
-        if qt:
-            content.append({"type": "text", "text": f"\n{qt}"})
-
-    if include_legacy_recall and not inter_chunk:
-        rf = _normalise_recalled_frames(inp, float(AGENT_CHUNK_SEC))
-        if rf:
-            rf_header = json.dumps({
-                "time_range": rf["time_range"],
-                "source": rf.get("source", "historical_frames"),
-                "n_frames": rf["n_frames"],
-                "current_step_chunk": chunk_idx,
-            })
-            content.append({
-                "type": "text",
-                "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
-            })
-            _append_recalled_video_blocks(
-                content,
-                rf=rf,
-                base_path=base_path,
-                data_dir=data_dir,
-                min_pixels=mm["min_pixels"],
-                max_pixels=mm["max_pixels"],
-                imagepad_video_type=imagepad_video_type,
-            )
-        if inp.get("recall_result"):
-            _append_recall_result_text(content, inp["recall_result"])
-
-    return content
-
-
-def _build_timeline_video_messages(
-    sample: Dict[str, Any],
-    base_path: Path,
-    *,
-    data_dir: Path,
-    render_layout: str = RENDER_LAYOUT_TIMELINE_VIDEO,
-) -> List[Dict[str, Any]]:
-    frame_rel_prefix = _frame_rel_prefix(data_dir)
-    inp = sample["input"]
-    inter_chunk = bool(sample.get("v12_inter_chunk", False))
-    is_recall_multiturn = (
-        sample.get("sample_type") == "recall"
-        and "v12_assistant_turn_1" in sample
-    )
-    prompt_kind = (
-        "post_recall"
-        if (
-            sample.get("sample_type") == "recall_response"
-            or sample.get("sample_type") == "post_recall"
-            or (inp.get("recall_result") and not is_recall_multiturn)
-        )
-        else None
-    )
-    messages: List[Dict[str, Any]] = [{
-        "role": "system",
-        "content": [{
-            "type": "text",
-            "text": _timeline_system_prompt(
-                frame_protocol="video_meta",
-                prompt_kind=prompt_kind,
-                inter_chunk=inter_chunk,
-                render_layout=render_layout,
-            ),
-        }],
-    }]
-    messages.append({
-        "role": "user",
-        "content": _build_timeline_user_content(
-            sample,
-            base_path,
-            data_dir,
-            frame_rel_prefix=frame_rel_prefix,
-            include_legacy_recall=not is_recall_multiturn,
-            render_layout=render_layout,
-            imagepad_video_type=(
-                render_layout == RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD
-            ),
-        ),
-    })
-
-    if is_recall_multiturn:
-        messages.append({
-            "role": "assistant",
-            "content": [{"type": "text", "text": sample["v12_assistant_turn_1"]}],
-        })
-        rr = sample.get("recall_result") or inp.get("recall_result") or {}
-        tool_payload: List[Dict[str, Any]] = []
-        rf = _normalise_recalled_frames(inp, float(AGENT_CHUNK_SEC))
-        mm = _runtime_mm_kwargs()
-        if rf:
-            rf_header = json.dumps({
-                "time_range": rf["time_range"],
-                "source": rf.get("source", "historical_frames"),
-                "n_frames": rf["n_frames"],
-                "current_step_chunk": sample.get("chunk_idx"),
-            })
-            tool_payload.append({
-                "type": "text",
-                "text": f"<recalled_frames>{rf_header}</recalled_frames>",
-            })
-            _append_recalled_video_blocks(
-                tool_payload,
-                rf=rf,
-                base_path=base_path,
-                data_dir=data_dir,
-                min_pixels=mm["min_pixels"],
-                max_pixels=mm["max_pixels"],
-                imagepad_video_type=(
-                    render_layout == RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD
-                ),
-            )
-        _append_recall_result_text(tool_payload, rr)
-        messages.append({"role": "user", "content": tool_payload})
-        messages.append({
-            "role": "assistant",
-            "content": [{"type": "text", "text": sample["v12_assistant_turn_2"]}],
-        })
-    else:
-        messages.append({
-            "role": "assistant",
-            "content": [{"type": "text", "text": _normalise_assistant_output(sample)}],
-        })
-    return messages
-
-
 def build_messages(
     sample: Dict,
     base_path: Path,
     *,
     data_dir: Optional[Path] = None,
     frame_protocol: str = "video_meta",
-    render_layout: str = RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
+    render_layout: str = RENDER_LAYOUT_QUERY_LAST,
 ) -> List[Dict]:
     """Produce v12 ShareGPT messages for one sample. Stdlib-only.
 
     This is the canonical offline renderer. It must stay aligned with
     thinkstream.data.agent_protocol.build_user_content and the verl RL
-    prompt builder: user_input, memory, queries, visual_window,
-    protocol-selected visual frames, recalled frames, then recall_result.
+    prompt builder. Rows render user_input, memory, visual_window/video_meta,
+    then active_query/response_history.
     """
     data_dir = data_dir or DEFAULT_DATA_DIR
-    if render_layout in {
-        RENDER_LAYOUT_TIMELINE_VIDEO,
-        RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
-    }:
-        protocol = normalize_frame_protocol(frame_protocol)
-        if protocol != "video_meta":
-            raise ValueError(
-                f"{render_layout} render_layout requires frame_protocol=video_meta"
-            )
-        return _build_timeline_video_messages(
-            sample,
-            base_path,
-            data_dir=data_dir,
-            render_layout=render_layout,
-        )
-    if render_layout != RENDER_LAYOUT_STANDARD:
+    if render_layout != RENDER_LAYOUT_QUERY_LAST:
         raise ValueError(f"Unsupported render_layout={render_layout!r}")
     frame_rel_prefix = _frame_rel_prefix(data_dir)
 
     inp = sample["input"]
     chunk_idx = sample["chunk_idx"]
-    chunk_sec = float(AGENT_CHUNK_SEC)
+    chunk_sec = AGENT_CHUNK_SEC
     inter_chunk = bool(sample.get("v12_inter_chunk", False))
     is_recall_multiturn = (
         sample.get("sample_type") == "recall"
@@ -856,6 +439,7 @@ def build_messages(
                         else None
                     ),
                     inter_chunk=inter_chunk,
+                    render_layout=render_layout,
                 ),
             }],
         }
@@ -868,17 +452,22 @@ def build_messages(
     user_content: List[Dict] = []
 
     # ── User input first ───────────────────────────────────────────────
-    user_input_block = ""
-    if inp.get("user_input"):
-        user_input_block = format_user_input_block(
-            inp["user_input"],
-            inter_chunk=inter_chunk,
-        )
-        if user_input_block:
-            user_content.append({
-                "type": "text",
-                "text": user_input_block.lstrip("\n"),
-            })
+    raw_user_input = inp.get("user_input", "")
+    if user_input_is_active_query_duplicate(
+        raw_user_input,
+        inp.get("queries", []),
+        inter_chunk=inter_chunk,
+    ):
+        raw_user_input = ""
+    user_input_block = format_user_input_block(
+        raw_user_input,
+        inter_chunk=inter_chunk,
+    )
+    if user_input_block:
+        user_content.append({
+            "type": "text",
+            "text": user_input_block.lstrip("\n"),
+        })
 
     # ── Memory block ───────────────────────────────────────────────────
     memory_text = format_memory_block(inp.get("memory", {}))
@@ -888,9 +477,11 @@ def build_messages(
         else f"<memory>\n{memory_text}\n</memory>",
     })
 
+    query_last = render_layout == RENDER_LAYOUT_QUERY_LAST
+
     # ── Active query + response history for that same query ─────────────
     queries = inp.get("queries", [])
-    if queries and not inter_chunk:
+    if queries and not inter_chunk and not query_last:
         qt = format_queries_block(queries)
         if qt:
             user_content.append({"type": "text", "text": f"\n{qt}"})
@@ -903,10 +494,10 @@ def build_messages(
         current_start = chunk_idx * chunk_sec
         current_end = current_start + chunk_sec
         vw_header = json.dumps({
-            "start": vw["video_start"],
-            "end": vw["video_end"],
+            "start": prompt_time_value(vw["video_start"]),
+            "end": prompt_time_value(vw["video_end"]),
             "frames": vw["frames"],
-            "current_time": [current_start, current_end],
+            "current_time": prompt_time_value(current_start),
         })
         user_content.append({
             "type": "text",
@@ -966,13 +557,19 @@ def build_messages(
         elif "frame_indices" in vw and video_path:
             user_content.append({
                 "type": "video", "video": video_path,
-                "video_start": vw["video_start"], "video_end": vw["video_end"],
+                "video_start": prompt_time_value(vw["video_start"]),
+                "video_end": prompt_time_value(vw["video_end"]),
             })
         else:
             raise ValueError(
                 f"Sample {sample.get('sample_id', '?')}: visual_window has neither "
                 f"frame_paths nor frame_indices."
             )
+
+    if queries and not inter_chunk and query_last:
+        qt = format_queries_block(queries)
+        if qt:
+            user_content.append({"type": "text", "text": f"\n{qt}"})
 
     # ── Recalled frames (legacy single-turn recall) ────────────────────
     if (
@@ -983,7 +580,7 @@ def build_messages(
     ):
         rf = _normalise_recalled_frames(inp, chunk_sec) or inp["recalled_frames"]
         rf_header = json.dumps({
-            "time_range": rf["time_range"],
+            "time_range": prompt_time_range(rf["time_range"]),
             "source": rf.get("source", "historical_frames"),
             "n_frames": rf["n_frames"],
         })
@@ -1013,8 +610,8 @@ def build_messages(
         elif video_path:
             user_content.append({
                 "type": "video", "video": video_path,
-                "video_start": rf["time_range"][0],
-                "video_end": rf["time_range"][1],
+                "video_start": prompt_time_value(rf["time_range"][0]),
+                "video_end": prompt_time_value(rf["time_range"][1]),
             })
 
     # ── Legacy single-turn recall_result (text only, no tool turn) ──────
@@ -1057,7 +654,7 @@ def build_messages(
         rf = _normalise_recalled_frames(inp, chunk_sec)
         if rf:
             rf_header = json.dumps({
-                "time_range": rf["time_range"],
+                "time_range": prompt_time_range(rf["time_range"]),
                 "source": rf.get("source", "historical_frames"),
                 "n_frames": rf["n_frames"],
             })
@@ -1091,8 +688,8 @@ def build_messages(
             elif video_path:
                 tool_payload.append({
                     "type": "video", "video": video_path,
-                    "video_start": rf["time_range"][0],
-                    "video_end": rf["time_range"][1],
+                    "video_start": prompt_time_value(rf["time_range"][0]),
+                    "video_end": prompt_time_value(rf["time_range"][1]),
                 })
 
         # v12.11 audit-5 P0 #1: append <recall_result> AFTER frames so the
@@ -1109,7 +706,12 @@ def build_messages(
         messages.append({"role": "user", "content": tool_payload})
         messages.append({
             "role": "assistant",
-            "content": [{"type": "text", "text": sample["v12_assistant_turn_2"]}],
+            "content": [{
+                "type": "text",
+                "text": _normalise_assistant_output(
+                    sample, sample["v12_assistant_turn_2"]
+                ),
+            }],
         })
     else:
         messages.append({
@@ -1143,10 +745,53 @@ def _iter_trajectories(path: Path) -> Iterable[Dict]:
             video_id = traj.get("video_id", "")
             video_path = traj.get("video_path", "")
             traj_id = traj.get("trajectory_id", "")
+            questions_by_card = {
+                q.get("card_id"): q
+                for q in traj.get("questions", [])
+                if isinstance(q, dict) and q.get("card_id")
+            }
             for s in traj.get("samples", []):
                 s.setdefault("video_id", video_id)
                 s.setdefault("video_path", video_path)
                 s.setdefault("trajectory_id", traj_id)
+                card_id = s.get("card_id") or (s.get("metadata") or {}).get("card_id")
+                q = questions_by_card.get(card_id)
+                if q:
+                    s["_trajectory_question"] = q
+                    meta = dict(s.get("metadata") or {})
+                    for key in (
+                        "card_id",
+                        "question",
+                        "options",
+                        "correct_option",
+                        "answer_form",
+                        "answer_style",
+                        "answer_instruction",
+                        "question_type",
+                        "family",
+                        "family_name",
+                        "category",
+                        "skill",
+                        "ours_unique",
+                        "availability",
+                        "support_chunks",
+                        "gold_compress_chunks",
+                        "ask_chunk",
+                        "per_emit_answers",
+                    ):
+                        if key in q:
+                            value = q.get(key)
+                            meta[key] = list(value) if isinstance(value, list) else value
+                    if q.get("answer_form") == "multiple_choice":
+                        _letter, correct_text = _mc_letter_text(q)
+                        meta["correct_answer_text"] = correct_text
+                        meta["canonical_answer"] = correct_text or q.get("canonical_answer", "")
+                        meta["gold_answer"] = correct_text or q.get("gold_answer", "")
+                        meta["accepted_answers"] = _accepted_answers_for_question(q)
+                        target = _mc_target_for_question(q, s.get("chunk_idx"))
+                        if target:
+                            meta["sft_answer"] = target
+                    s["metadata"] = meta
                 yield s
 
 
@@ -1294,26 +939,16 @@ def _set_system_prompt_kind(
     *,
     frame_protocol: str,
     prompt_kind: str,
-    render_layout: str = RENDER_LAYOUT_STANDARD,
+    render_layout: str = RENDER_LAYOUT_QUERY_LAST,
 ) -> None:
     """Replace the first system prompt in-place for turn-local prompt kinds."""
     if not messages or messages[0].get("role") != "system":
         return
-    if render_layout in {
-        RENDER_LAYOUT_TIMELINE_VIDEO,
-        RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
-    }:
-        prompt = _timeline_system_prompt(
-            frame_protocol=frame_protocol,
-            prompt_kind=prompt_kind,
-            inter_chunk=False,
-            render_layout=render_layout,
-        )
-    else:
-        prompt = system_prompt_for_frame_protocol(
-            frame_protocol,
-            prompt_kind=prompt_kind,
-        )
+    prompt = system_prompt_for_frame_protocol(
+        frame_protocol,
+        prompt_kind=prompt_kind,
+        render_layout=render_layout,
+    )
     content = messages[0].get("content")
     if isinstance(content, list) and content:
         if isinstance(content[0], dict):
@@ -1346,12 +981,153 @@ def _is_post_recall_single_turn(sample: Dict) -> bool:
     return bool(inp.get("recall_result")) and stype != "recall"
 
 
+def _message_text(messages: List[Dict], *, roles: Optional[set[str]] = None) -> str:
+    parts: List[str] = []
+    for msg in messages:
+        if roles is not None and str(msg.get("role") or "") not in roles:
+            continue
+        content = msg.get("content")
+        if isinstance(content, str):
+            parts.append(content)
+            continue
+        if not isinstance(content, list):
+            continue
+        for item in content:
+            if isinstance(item, dict) and item.get("type") == "text":
+                parts.append(str(item.get("text") or ""))
+    return "\n".join(parts)
+
+
+def _query_sort_key(q: Dict[str, Any], idx: int) -> tuple[float, int]:
+    for key in ("ask_time", "time", "timestamp"):
+        try:
+            return float(q.get(key, 0)), idx
+        except (TypeError, ValueError):
+            continue
+    return 0.0, idx
+
+
+def _selected_open_query(queries: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    candidates: List[tuple[int, Dict[str, Any]]] = []
+    for i, q in enumerate(queries or []):
+        if not isinstance(q, dict):
+            continue
+        status = str(q.get("status", "") or "").strip().lower()
+        if status in {"open", "pending", "active"} or (
+            not status and not q.get("answers")
+        ):
+            candidates.append((i, q))
+    if not candidates:
+        return None
+    return max(candidates, key=lambda item: _query_sort_key(item[1], item[0]))[1]
+
+
+def _normalise_ws(text: str) -> str:
+    return " ".join(str(text or "").split())
+
+
+def validate_query_render_contract(sample: Dict, messages: List[Dict]) -> None:
+    """Hard-check active_query rendering in final ShareGPT messages.
+
+    This catches the two failure modes that are otherwise easy to miss:
+    silently losing the options/answer-format line, or rendering them more than
+    once after pass4/pass5/rebalance transformations.
+    """
+    inp = sample.get("input") or {}
+    inter_chunk = bool(sample.get("v12_inter_chunk", False))
+    queries = list(inp.get("queries") or [])
+    expected_query = None if inter_chunk else _selected_open_query(queries)
+    user_text = _message_text(messages, roles={"user"})
+    active_blocks = ACTIVE_QUERY_BLOCK_RE.findall(user_text)
+    history_blocks = RESPONSE_HISTORY_BLOCK_RE.findall(user_text)
+    user_input_blocks = USER_INPUT_BLOCK_RE.findall(user_text)
+    sample_id = sample.get("sample_id") or sample.get("trajectory_id") or "?"
+
+    if expected_query is None:
+        if active_blocks or history_blocks:
+            raise QueryRenderContractError(
+                f"sample={sample_id}: inactive/compress turn rendered "
+                f"active_query={len(active_blocks)} response_history={len(history_blocks)}"
+            )
+        return
+
+    if len(active_blocks) != 1 or len(history_blocks) != 1:
+        raise QueryRenderContractError(
+            f"sample={sample_id}: expected exactly one active_query and one "
+            f"response_history, got active_query={len(active_blocks)} "
+            f"response_history={len(history_blocks)}"
+        )
+
+    active = active_blocks[0]
+    q_lines = QUESTION_LINE_RE.findall(active)
+    if len(q_lines) != 1 or not q_lines[0].strip():
+        raise QueryRenderContractError(
+            f"sample={sample_id}: active_query must contain one non-empty Q line"
+        )
+    expected_question = str(expected_query.get("question") or "").strip()
+    if not expected_question:
+        raise QueryRenderContractError(
+            f"sample={sample_id}: structured active query question is empty"
+        )
+    if _normalise_ws(q_lines[0]) != _normalise_ws(expected_question):
+        raise QueryRenderContractError(
+            f"sample={sample_id}: rendered query text mismatch: "
+            f"{q_lines[0]!r} != {expected_question!r}"
+        )
+    for user_input in user_input_blocks:
+        if user_input_is_active_query_duplicate(
+            user_input,
+            queries,
+            inter_chunk=inter_chunk,
+        ):
+            raise QueryRenderContractError(
+                f"sample={sample_id}: active query duplicated in <user_input>"
+            )
+
+    option_lines = OPTIONS_LINE_RE.findall(active)
+    answer_format_lines = ANSWER_FORMAT_LINE_RE.findall(active)
+    answer_form = str(expected_query.get("answer_form") or "").strip()
+    if answer_form == "multiple_choice":
+        options = [str(x) for x in expected_query.get("options") or [] if str(x).strip()]
+        if not options:
+            raise QueryRenderContractError(
+                f"sample={sample_id}: MC active query has empty structured options"
+            )
+        if len(option_lines) != 1 or not option_lines[0].strip():
+            raise QueryRenderContractError(
+                f"sample={sample_id}: MC active_query must render exactly one "
+                "non-empty Options line"
+            )
+        rendered_options = _normalise_ws(option_lines[0])
+        expected_options = _normalise_ws(" ".join(options))
+        if rendered_options != expected_options:
+            raise QueryRenderContractError(
+                f"sample={sample_id}: rendered Options mismatch: "
+                f"{rendered_options!r} != {expected_options!r}"
+            )
+        if len(answer_format_lines) != 1 or not answer_format_lines[0].strip():
+            raise QueryRenderContractError(
+                f"sample={sample_id}: MC active_query must render exactly one "
+                "non-empty Answer format line"
+            )
+    else:
+        if option_lines:
+            raise QueryRenderContractError(
+                f"sample={sample_id}: non-MC active_query rendered Options line"
+            )
+        if answer_form and (len(answer_format_lines) != 1 or not answer_format_lines[0].strip()):
+            raise QueryRenderContractError(
+                f"sample={sample_id}: active_query answer_form={answer_form!r} "
+                "requires one non-empty Answer format line"
+            )
+
+
 def build_sft_rows(
     sample: Dict,
     messages: List[Dict],
     *,
     frame_protocol: str,
-    render_layout: str = RENDER_LAYOUT_STANDARD,
+    render_layout: str = RENDER_LAYOUT_QUERY_LAST,
 ) -> List[Dict]:
     """Return one or more runtime-aligned SFT rows for a rendered sample.
 
@@ -1426,19 +1202,41 @@ def _sample_rank(sample: Dict, idx: int) -> str:
     return hashlib.sha1(key.encode("utf-8")).hexdigest()
 
 
-def _is_active_silent(sample: Dict) -> bool:
+def _silent_role(sample: Dict) -> str:
+    """Classify silent rows by training value.
+
+    pending_question:
+      The model has an open query and must intentionally wait.
+    post_answer:
+      The model has just answered or the query is already closed; this teaches
+      not to repeat answers.
+    no_question:
+      Background/patrol silence; useful but low information in bulk.
+    """
     if sample.get("sample_type") != "silent" or sample.get("action") != "silent":
-        return False
+        return ""
+    queries = list(sample.get("queries") or [])
+    card_id = str(sample.get("card_id") or "")
+    if queries:
+        related = [
+            q for q in queries
+            if not card_id or str(q.get("card_id") or "") == card_id
+        ]
+        if not related:
+            related = queries
+        has_open = any(
+            str(q.get("status", "")).lower() in {"open", "pending", "active"}
+            for q in related
+        )
+        if has_open:
+            return "pending_question"
+        has_answer = any(q.get("answers") for q in related)
+        if has_answer:
+            return "post_answer"
     meta = sample.get("metadata") or {}
-    if sample.get("card_id") or meta.get("question"):
-        return True
-    return sample.get("sequence_type") in {
-        "event_watch",
-        "multi_response",
-        "recall_success",
-        "immediate_response",
-        "memory_response",
-    }
+    if card_id or meta.get("question"):
+        return "pending_question"
+    return "no_question"
 
 
 def _choose_ranked(items: List[tuple[int, Dict]], n: int) -> List[tuple[int, Dict]]:
@@ -1453,7 +1251,7 @@ def _is_multi_emit_response(sample: Dict) -> bool:
     meta = sample.get("metadata") or {}
     return (
         meta.get("question_type") == "multi_emit"
-        or meta.get("family") in {"F5", "F7", "PN1"}
+        or meta.get("family") in {"F5", "F7", "CRR1", "PN1"}
     )
 
 
@@ -1499,12 +1297,17 @@ def balance_sft_samples(samples: List[Dict]) -> tuple[List[Dict], Dict[str, int]
       - keep ordinary response rows;
       - cap multi-emit response rows so F5/PN1 do not dominate SFT;
       - keep enough silent rows to make silent roughly 55-60% of SFT;
-      - prefer active query-bearing silent rows over patrol/background rows.
+      - prefer pending-query and post-answer silent rows over patrol/background
+        rows so SFT learns answer timing boundaries instead of just idle chunks.
     """
     indexed = list(enumerate(samples))
-    recall_compress = [
+    recall_rows = [
         (i, s) for i, s in indexed
-        if s.get("sample_type") in {"recall", "compress"}
+        if s.get("sample_type") == "recall"
+    ]
+    compress_rows = [
+        (i, s) for i, s in indexed
+        if s.get("sample_type") == "compress"
     ]
     multi_emit_response = [
         (i, s) for i, s in indexed if _is_multi_emit_response(s)
@@ -1521,35 +1324,52 @@ def balance_sft_samples(samples: List[Dict]) -> tuple[List[Dict], Dict[str, int]
         len(multi_emit_response),
         max(1, int(len(ordinary_response) * SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO)),
     )
-    active = (
-        recall_compress
-        + ordinary_response
+    response_rows = (
+        ordinary_response
         + other_active
         + _choose_multi_emit_response(multi_emit_response, multi_limit)
     )
-    active_silent = [(i, s) for i, s in indexed if _is_active_silent(s)]
-    base_silent = [
-        (i, s) for i, s in indexed
-        if s.get("sample_type") == "silent" and not _is_active_silent(s)
+    active = (
+        recall_rows
+        + compress_rows
+        + response_rows
+    )
+    pending_silent = [
+        (i, s) for i, s in indexed if _silent_role(s) == "pending_question"
     ]
+    post_answer_silent = [
+        (i, s) for i, s in indexed if _silent_role(s) == "post_answer"
+    ]
+    base_silent = [(i, s) for i, s in indexed if _silent_role(s) == "no_question"]
     if not active:
         return samples, {"before": len(samples), "after": len(samples)}
 
     target_silent = min(
-        len(active_silent) + len(base_silent),
+        len(pending_silent) + len(post_answer_silent) + len(base_silent),
         max(1, int(len(active) * SFT_SILENT_TO_ACTIVE_RATIO)),
     )
-    target_active_silent = min(
-        len(active_silent),
-        int(target_silent * SFT_ACTIVE_SILENT_FRACTION),
+    target_pending = min(
+        len(pending_silent),
+        int(target_silent * SFT_PENDING_SILENT_FRACTION),
     )
-    kept_silent = _choose_ranked(active_silent, target_active_silent)
+    target_post_answer = min(
+        len(post_answer_silent),
+        int(target_silent * SFT_POST_ANSWER_SILENT_FRACTION),
+    )
+    kept_silent = (
+        _choose_ranked(pending_silent, target_pending)
+        + _choose_ranked(post_answer_silent, target_post_answer)
+    )
     remaining = target_silent - len(kept_silent)
     if remaining > 0:
         kept_silent.extend(_choose_ranked(base_silent, remaining))
     if len(kept_silent) < target_silent:
         used = {i for i, _s in kept_silent}
-        rest = [(i, s) for i, s in active_silent if i not in used]
+        rest = [
+            (i, s) for bucket in (pending_silent, post_answer_silent, base_silent)
+            for i, s in bucket
+            if i not in used
+        ]
         kept_silent.extend(_choose_ranked(rest, target_silent - len(kept_silent)))
 
     selected = active + kept_silent
@@ -1562,11 +1382,24 @@ def balance_sft_samples(samples: List[Dict]) -> tuple[List[Dict], Dict[str, int]
         "ordinary_response_kept": len(ordinary_response),
         "multi_emit_response_before": len(multi_emit_response),
         "multi_emit_response_kept": min(len(multi_emit_response), multi_limit),
-        "recall_compress_kept": len(recall_compress),
-        "silent_before": len(active_silent) + len(base_silent),
+        "recall_kept": len(recall_rows),
+        "compress_before": len(compress_rows),
+        "compress_kept": len(compress_rows),
+        "recall_compress_kept": len(recall_rows) + len(compress_rows),
+        "silent_before": len(pending_silent) + len(post_answer_silent) + len(base_silent),
         "silent_kept": len(kept_silent),
-        "active_silent_kept": sum(1 for _i, s in kept_silent if _is_active_silent(s)),
-        "base_silent_kept": sum(1 for _i, s in kept_silent if not _is_active_silent(s)),
+        "pending_silent_before": len(pending_silent),
+        "post_answer_silent_before": len(post_answer_silent),
+        "base_silent_before": len(base_silent),
+        "pending_silent_kept": sum(
+            1 for _i, s in kept_silent if _silent_role(s) == "pending_question"
+        ),
+        "post_answer_silent_kept": sum(
+            1 for _i, s in kept_silent if _silent_role(s) == "post_answer"
+        ),
+        "base_silent_kept": sum(
+            1 for _i, s in kept_silent if _silent_role(s) == "no_question"
+        ),
     }
 
 
@@ -1580,7 +1413,7 @@ def convert(
     limit: Optional[int] = None,
     balance_sft: bool = False,
     frame_protocol: str = "video_meta",
-    render_layout: str = RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
+    render_layout: str = RENDER_LAYOUT_QUERY_LAST,
 ) -> Dict[str, int]:
     data_dir = data_dir or DEFAULT_DATA_DIR
     iter_fn = _iter_trajectories if is_trajectory else _iter_flat
@@ -1608,6 +1441,9 @@ def convert(
                     frame_protocol=frame_protocol,
                     render_layout=render_layout,
                 )
+                validate_query_render_contract(sample, messages)
+            except QueryRenderContractError:
+                raise
             except (KeyError, ValueError) as exc:
                 counts["failed"] += 1
                 if counts["failed"] <= 5:
@@ -1679,8 +1515,8 @@ def main() -> None:
         default="",
         help=(
             "Directory for rendered *_messages.jsonl outputs. Defaults to "
-            "--final-dir. The canonical training/eval directory is "
-            "rendered/video_meta_timeline_video_imagepad."
+            "--final-dir. New training/eval runs should use "
+            "rendered/video_meta_standard_query_last."
         ),
     )
     parser.add_argument(
@@ -1689,17 +1525,16 @@ def main() -> None:
         choices=["video_meta"],
         help=(
             "Student/eval visual carrier. The supported project entry uses "
-            "video_meta plus timeline_video_imagepad interleaving."
+            "video_meta plus the selected render layout."
         ),
     )
     parser.add_argument(
         "--render-layout",
-        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD),
-        choices=[RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD],
+        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", RENDER_LAYOUT_QUERY_LAST),
+        choices=[RENDER_LAYOUT_QUERY_LAST],
         help=(
-            "Canonical interleaved layout: time-ordered video/image-pad chunk "
-            "carriers with memory, question, recall, and compression context "
-            "rendered around the timeline."
+            "Prompt layout. standard_query_last keeps memory before visual and "
+            "places active_query after the current visual window."
         ),
     )
     parser.add_argument("--base-path", default=str(PROJECT_ROOT),
@@ -1717,14 +1552,8 @@ def main() -> None:
     base_path = _resolve_cli_path(args.base_path)
     data_dir = final_dir.parent if final_dir.name == "final" else DEFAULT_DATA_DIR
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
-    render_layout = str(args.render_layout or RENDER_LAYOUT_STANDARD)
-    if (
-        render_layout in {
-            RENDER_LAYOUT_TIMELINE_VIDEO,
-            RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
-        }
-        and frame_protocol != "video_meta"
-    ):
+    render_layout = str(args.render_layout or RENDER_LAYOUT_QUERY_LAST)
+    if frame_protocol != "video_meta":
         raise SystemExit(
             f"--render-layout {render_layout} requires --frame-protocol video_meta"
         )

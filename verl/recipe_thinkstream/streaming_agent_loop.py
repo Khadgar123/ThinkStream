@@ -416,7 +416,6 @@ def _register_streaming_agent_loop():
 
     from thinkstream.data.agent_protocol import (  # type: ignore
         action_space_error_for_turn,
-        append_visual_frames,
         append_query_answer_with_timing,
         build_user_content,
         build_recall_result_user_content,
@@ -424,8 +423,6 @@ def _register_streaming_agent_loop():
         normalize_render_layout,
         parse_agent_output_v12,
         format_memory_block,
-        format_queries_block,
-        format_user_input_block,
         query_is_complete,
         system_prompt_for_frame_protocol,
         tools_for_turn,
@@ -479,7 +476,7 @@ def _register_streaming_agent_loop():
                 os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta")
             )
             self.render_layout = normalize_render_layout(
-                os.environ.get("THINKSTREAM_RENDER_LAYOUT", "timeline_video_imagepad")
+                os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard_query_last")
             )
             mt = self.rollout_config.multi_turn
             # v12.13 (2026-05-02): verl's MultiTurnConfig dataclass rejects
@@ -627,10 +624,9 @@ def _register_streaming_agent_loop():
             window, and frame carriers are suppressed to match pass5/runtime.
 
             Mirrors the shared SFT/runtime layout in
-            thinkstream/data/agent_protocol.py:213-214 build_user_content
-            EXACTLY:
-              <user_input> → <memory> → (active_query + response_history) →
-              <visual_window> + protocol visual frames → <recall_result> → ...
+            thinkstream.data.agent_protocol.build_user_content EXACTLY:
+              <user_input> → <memory> → <visual_window> + video_meta frames →
+              <active_query> + <response_history> → <recall_result> → ...
 
             Distribution alignment is the hard constraint. Per-frame ViT
             re-encoding cost is handled by vLLM's mm_processor_cache
@@ -673,123 +669,6 @@ def _register_streaming_agent_loop():
                 memory_snapshot=mem_snapshot,
                 render_layout=self.render_layout,
             )
-            content: List[Dict[str, Any]] = []
-
-            # User input — either the question (when it fires) or the bare
-            # compress_trigger system event. This comes before memory to match
-            # SFT/pass5/build_user_content.
-            if compress_trigger_range is not None:
-                user_input_block = format_user_input_block(
-                    "<compress_trigger/>",
-                    inter_chunk=True,
-                )
-            else:
-                user_input_text = self._format_user_input(
-                    chunk_idx, question, ask_chunks, triggered_questions,
-                )
-                user_input_block = format_user_input_block(
-                    user_input_text,
-                    inter_chunk=False,
-                )
-            if user_input_block:
-                content.append({
-                    "type": "text",
-                    "text": user_input_block.lstrip("\n"),
-                })
-
-            # ── Memory block ──
-            # P0.5 fix (post-review 2026-05-01): format_memory_block reads
-            # the dict under "compressed_segments" or legacy "compressed".
-            # We were passing "compressed_summaries" → memory after compress
-            # silently disappeared from the prompt. Pass under BOTH keys
-            # so the legacy reader path works regardless of which alias
-            # format_memory_block prefers.
-            try:
-                mem_text = format_memory_block({
-                    "compressed_segments": state.compressed_summaries,
-                    "compressed": state.compressed_summaries,
-                    "recent_thinks": state.recent_thinks,
-                })
-            except Exception:
-                mem_text = ""
-            content.append({
-                "type": "text",
-                "text": f"\n<memory>\n{mem_text}\n</memory>" if content
-                else f"<memory>\n{mem_text}\n</memory>",
-            })
-
-            # ── Active query block — same renderer as SFT/pass5. Data carries
-            # structured question/options/answer_style fields; prompt text is
-            # rendered here so eval adapters can reuse the same interface.
-            try:
-                queries_text = format_queries_block(queries or [])
-            except Exception:
-                queries_text = ""
-            if queries_text and not inter_chunk:
-                content.append({
-                    "type": "text",
-                    "text": f"\n{queries_text}",
-                })
-
-            if inter_chunk:
-                return content
-
-            # ── Visual window header + protocol-selected frame carrier
-            # (after memory, matches SFT). Header layout copies
-            # agent_protocol.py: keys
-            # `start`, `end`, `frames`, `current_time` are all required —
-            # SFT trained the model on this exact JSON shape, removing
-            # any field would diverge train/RL distribution.
-            vw_header = json.dumps({
-                "start": window_start_chunk * self.chunk_sec,
-                "end": (window_end_chunk + 1) * self.chunk_sec,
-                "frames": len(window_paths),
-                "current_time": [
-                    chunk_idx * self.chunk_sec,
-                    (chunk_idx + 1) * self.chunk_sec,
-                ],
-            })
-            content.append({
-                "type": "text",
-                "text": f"\n<visual_window>{vw_header}</visual_window>",
-            })
-            if window_paths:
-                # v12.22: runtime resize bounds are attached to each image.
-                # v12.13: identical kwargs
-                # across chunks → vLLM mm_processor_cache key is stable
-                # (frame_path, min_pixels, max_pixels) so PIL+ViT
-                # preprocessing is cached when the same frame recurs in
-                # consecutive sliding windows. This is the ONLY visual-
-                # token reuse mechanism we rely on; do not rearrange the
-                # surrounding content blocks for prefix-cache purposes.
-                _RTKW = _runtime_mm_processor_kwargs()
-                append_visual_frames(
-                    content,
-                    window_paths,
-                    frame_protocol=self.frame_protocol,
-                    fps=float(self.frames_per_chunk) / float(self.chunk_sec),
-                    start_frame_index=window_start_chunk * self.frames_per_chunk,
-                    total_num_frames=(chunk_idx + 1) * self.frames_per_chunk,
-                    latest_start_frame_index=chunk_idx * self.frames_per_chunk,
-                    min_pixels=_RTKW["min_pixels"],
-                    max_pixels=_RTKW["max_pixels"],
-                )
-
-            # Recall result (single-turn legacy form — SFT shape A inline).
-            # True shape-B intra-chunk multi-turn is a deferred follow-up.
-            if recall_result is not None and not inter_chunk:
-                rr_json = json.dumps({
-                    "source": recall_result.get("source", ""),
-                    "time": recall_result.get("time", ""),
-                    "text": recall_result.get("text", ""),
-                }, ensure_ascii=False)
-                content.append({
-                    "type": "text",
-                    "text": f"\n<recall_result>{rr_json}</recall_result>",
-                })
-
-            return content
-
         async def _execute_recall(
             self, args: Dict[str, Any], state: "VideoTrajectoryState",
             *, video_path: str = "",

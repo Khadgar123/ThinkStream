@@ -264,11 +264,14 @@ MAX_SAMPLES_PER_VIDEO = 0            # v12.9 (2026-04-30): disable cap. pass3c
 # MAX_QUESTIONS_PER_TRAJECTORY 5 → 8.
 MAX_TRAJECTORIES_PER_VIDEO = 1
 # v12.15 (2026-05-03): align config with the v2 placement source of truth.
-# The actual count is adaptive, roughly one question per 12 chunks, capped
-# here; short videos still use the v2 floor of 6 questions. This keeps the
+# The actual count is adaptive, roughly one question per 10 chunks, capped
+# here; short videos still use the v2 floor of 8 questions. This keeps the
 # observed q-interval near the LiveChat/MMDuet 7-15s band while preserving
 # enough family/mechanism diversity per trajectory.
-MAX_QUESTIONS_PER_TRAJECTORY = 14
+# v12.61 (2026-05-10): allow very long videos to carry more questions,
+# while pass3B enforces a hard ask-gap floor so short/medium videos do not
+# become denser by accident.
+MAX_QUESTIONS_PER_TRAJECTORY = 20
 MAX_ACTIVE_QUERIES = 1               # one active question; no cross-question interference
 
 # Backward compat aliases (deprecated — use token-based constants above)
@@ -348,8 +351,8 @@ MAX_SAMPLE_TOKENS = 16384
 VLLM_CONTEXT_SAFETY_RATIO = _env_float("THINKSTREAM_VLLM_CONTEXT_SAFETY_RATIO", 0.85)
 VLLM_PREFILL_BATCH_TOKEN_BUDGET = _env_int(
     "THINKSTREAM_VLLM_PREFILL_BATCH_TOKEN_BUDGET",
-    32_000_000,
-)  # KV usage ~2.6% at 64 conc → 1024 conc fits easily
+    64_000_000,
+)  # Allows 1024-way pass3a after the v12.66 long-video prompt audit.
 
 # Per-request token estimates (text + vision + output + thinking).
 # v12.12 (2026-05-02): visual budgets reflect mm_processor_kwargs profiles.
@@ -378,12 +381,13 @@ PASS_CONTEXT_ESTIMATES = {
     # Output: weighted avg of (obs max_tokens=1024) and (compress max_tokens=4096)
     # at 97/3 frequency = 1116; rounded to 1500.
     "pass2_rollout":  {"input": 13_500, "output": 1_500, "thinking": 0},
-    # v12.5: all passes now thinking=False. Estimates drop the thinking
-    # column (was 16K-buffer reservations under thinking=True).
-    "pass3a": {"input": 700, "output": 1_500, "thinking": 0},          # text-only card gen
-    "pass3a_verify": {"input": 800, "output": 600, "thinking": 0},     # card verify (yes/no)
-    "pass3b_visibility": {"input": 600, "output": 300, "thinking": 0}, # visibility check
-    "pass3c": {"input": 2_000, "output": 2_000, "thinking": 0},        # response/query gen
+    # v12.66: pass3a sees a compact full-video pass1/pass1b timeline. Batch1-8
+    # prompt audit after full-coverage compaction: max prompt ≈98k chars,
+    # roughly 28k text tokens; keep a 30k estimate plus 8k output headroom.
+    "pass3a": {"input": 30_000, "output": 8_000, "thinking": 0},       # text-only card gen
+    # pass3c has mostly tiny deterministic calls, but recall hardening can see
+    # ~7k chars current memory + ~11k chars historical evidence + rules.
+    "pass3c": {"input": 8_000, "output": 4_000, "thinking": 0},        # response/query/hardening gen
 }
 
 
@@ -461,8 +465,8 @@ PASS_CONFIG = {
         # thinking, per-request load drops and we can run wider.
         # max_tokens kept at 16K so a verbose chunk doesn't truncate
         # the JSON before it closes — short chunks early-stop anyway.
-        # concurrent=1024: by safe_concurrency_for_pass calc, 32M //
-        # (1500+16384) ≈ 1789 fits in vLLM prefill budget. httpx pool
+        # concurrent=1024: by safe_concurrency_for_pass calc, 64M //
+        # (1500+16384) ≈ 3578 fits in vLLM prefill budget. httpx pool
         # uplifted in VLLMClient (limits=2048).
         "max_tokens": 16384,
         "temperature": 0.3,
@@ -521,70 +525,34 @@ PASS_CONFIG = {
     },
     "pass3c": {
         # v12.5 (2026-04-30): thinking True → False per user audit. Generation
-        # tasks (response / recall_query / recall_think / fork_think) are
+        # tasks (response / recall_query / recall_hardening) are
         # template-driven; CoT marginally improved quality but added latency
-        # without floor-shifting correctness. 16K context preserved.
+        # without floor-shifting correctness.
         "max_tokens": 8192,
         "temperature": 0.3,
         "thinking": False,
         "concurrent": 1024,
     },
-    # pass3a_verify and pass3b_visibility share their outer pass's client
-    # (client_3a and client_3b respectively). The "concurrent" entries
-    # below are no longer the binding cap — they exist for documentation
-    # only. The actual cap is on the outer client.
-    # v11.3: per-call thinking control. The 5 lightweight calls below were
-    # downgraded from thinking=True to thinking=False because their tasks
-    # (verification / classification / templating / keyword extraction)
-    # don't benefit from CoT — empirically the teacher's thinking budget
-    # went unused. max_tokens KEPT at 16K so a verbose response never
-    # truncates: GPU has the headroom for 16K @ 1024 concurrent and the
-    # speedup comes from disabling reasoning, not from cap reduction.
-    # Card generation and fork_think are also non-thinking in v12.5+; their
-    # prompts carry the multi-constraint and anti-leakage rules explicitly.
-    "pass3a_verify": {
-        "max_tokens": 16384,
-        "temperature": 0.1,
-        "thinking": False,
-        "concurrent": 1024,   # bound by client_3a
-    },
-    "pass3b_visibility": {
-        "max_tokens": 16384,
-        "temperature": 0.1,
-        "thinking": False,
-        "concurrent": 1024,   # bound by client_3b
-    },
     # v11.3: pass3c split into per-call-type sub-configs so thinking can
     # be controlled per call. The umbrella "pass3c" entry above stays as a
     # legacy fallback — new code should read these specific sub-keys.
     "pass3c_response": {
-        "max_tokens": 16384,
+        # Descriptive responses are constrained to 1-2 sentences; MC/binary/
+        # number/short_exact are deterministic and never call the teacher.
+        "max_tokens": 1024,
         "temperature": 0.3,
         "thinking": False,
     },
     "pass3c_recall_query": {
-        "max_tokens": 16384,
+        # One-line JSON: {"query": "...", "time_range": "..."}.
+        "max_tokens": 1024,
         "temperature": 0.3,
         "thinking": False,
     },
     "pass3c_recall_hardening": {
-        "max_tokens": 8192,
+        # Three compact replacement candidates with MC options when needed.
+        "max_tokens": 4096,
         "temperature": 0.4,
-        "thinking": False,
-    },
-    "pass3c_recall_think": {
-        "max_tokens": 16384,
-        "temperature": 0.3,
-        "thinking": False,
-    },
-    "pass3c_fork_think": {
-        "max_tokens": 16384,
-        "temperature": 0.3,
-        # v12.5 (2026-04-30): thinking True → False per user audit "在pass3
-        # 全流程中 enable_think=false". The "answer-leakage avoidance" was
-        # the historical reason to keep CoT; FAMILY_PROMPTS already include
-        # explicit anti-leakage rules in the system prompt, so deterministic
-        # generation should suffice. 16K context preserved.
         "thinking": False,
     },
 }

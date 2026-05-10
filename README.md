@@ -71,8 +71,7 @@ pip install -r requirements.txt
 **Run Training (SFT → verl GRPO RL):**
 
 Generated data should live under one batch root or a balanced scheme root. The
-supported project protocol is fixed to the interleaved full-video layout:
-`video_meta + timeline_video_imagepad`.
+supported project protocol is fixed to `video_meta + standard_query_last`.
 
 To combine several generated batches into one train/eval root:
 
@@ -85,7 +84,7 @@ bash scripts/prepare_training_data.sh \
 ```
 
 This writes SFT messages and RL parquet files to
-`rendered/video_meta_timeline_video_imagepad/` and keeps split trajectories in
+`rendered/video_meta_standard_query_last/` and keeps split trajectories in
 `final/`.
 
 ```bash
@@ -109,7 +108,7 @@ The active RL implementation is `scripts/grpo_train_verl.sh` plus
 
 For OVO-Bench, use the full-video eval directly on the original
 `ovo_bench_new.json`. It drives `StreamingAgentLoop` with the same
-`video_meta_timeline_video_imagepad` prompt contract as SFT/RL.
+`video_meta_standard_query_last` prompt contract as SFT/RL.
 
 ```bash
 bash scripts/eval/ovo/run_sft_full.sh \

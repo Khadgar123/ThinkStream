@@ -104,11 +104,12 @@ def check_protocol(a: Audit):
     # separate system prompt selected via system_prompt_for_frame_protocol.
     sp = ap.SYSTEM_PROMPT_V12
     cp = ap.system_prompt_for_frame_protocol(inter_chunk=True)
-    a.check("SYSTEM_PROMPT mentions '1-second video chunks'",
-            "1-second video chunks" in sp)
-    a.check("SYSTEM_PROMPT mentions '16s window'", "16s window" in sp)
+    a.check("SYSTEM_PROMPT uses canonical video_meta carrier",
+            "Qwen video block" in sp and "video_metadata carries frame timestamps" in sp)
+    a.check("SYSTEM_PROMPT uses query-last order",
+            "<active_query> appears after the visual window" in sp)
     a.check("COMPRESS prompt is separated",
-            "Directly compress memory now" in cp and "Do not call recall" in cp)
+            "memory-compaction controller" in cp and "do not call recall" in cp)
     a.check("SYSTEM_PROMPT does NOT mention '2-second'", "2-second" not in sp)
     a.check("SYSTEM_PROMPT does NOT mention '24s'", "24s window" not in sp)
     mem_text = ap.format_memory_block({

@@ -6,8 +6,8 @@ The generated directory is a standalone data root for training scripts:
 - final/train_rl_trajectories.jsonl
 - final/val_trajectories.jsonl
 - final/test_trajectories.jsonl
-- rendered/video_meta_timeline_video_imagepad/{train_sft,val,test}_messages.jsonl
-- rendered/video_meta_timeline_video_imagepad/{train_rl,val}_rl_multi_q.parquet
+- rendered/video_meta_standard_query_last/{train_sft,val,test}_messages.jsonl
+- rendered/video_meta_standard_query_last/{train_rl,val}_rl_multi_q.parquet
 - reports/distribution.{json,md}
 
 No source files are modified. The split is trajectory/video-disjoint and uses
@@ -34,15 +34,23 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 CANONICAL_FRAME_PROTOCOL = "video_meta"
-CANONICAL_RENDER_LAYOUT = "timeline_video_imagepad"
+CANONICAL_RENDER_LAYOUT = os.environ.get(
+    "THINKSTREAM_RENDER_LAYOUT",
+    "standard_query_last",
+)
 CANONICAL_RENDER_DIRNAME = f"{CANONICAL_FRAME_PROTOCOL}_{CANONICAL_RENDER_LAYOUT}"
+SUPPORTED_RENDER_LAYOUTS = ["standard_query_last"]
 
 DEFAULT_SPLIT_COUNTS = {
     "train_sft": 150,
+    "dagger_source": 0,
     "train_rl": 175,
     "val": 50,
     "test": 50,
 }
+
+SPLIT_ORDER = ("train_sft", "dagger_source", "train_rl", "val", "test")
+BALANCED_CANDIDATE_POOL = 512
 
 
 def _read_jsonl(path: Path) -> Iterable[dict]:
@@ -129,13 +137,29 @@ def _load_video_stats(bank: Path) -> List[Dict[str, Any]]:
         for row in rows:
             sample_types = Counter()
             gold_actions = Counter()
+            question_types = Counter()
+            answer_forms = Counter()
+            categories = Counter()
+            skills = Counter()
             for traj in by_video.get(_video_id(row), []):
                 sample_types.update(traj.get("sample_types") or {})
                 gold_actions.update(traj.get("gold_actions") or {})
+                question_types.update(traj.get("question_types") or {})
+                answer_forms.update(traj.get("answer_forms") or {})
+                categories.update(traj.get("categories") or {})
+                skills.update(traj.get("skills") or {})
             if sample_types:
                 row["sample_types"] = dict(sample_types)
             if gold_actions:
                 row["gold_actions"] = dict(gold_actions)
+            if question_types:
+                row["question_types"] = dict(question_types)
+            if answer_forms:
+                row["answer_forms"] = dict(answer_forms)
+            if categories:
+                row["categories"] = dict(categories)
+            if skills:
+                row["skills"] = dict(skills)
     for row in rows:
         row["_bank"] = str(bank)
         row["_source"] = str(source)
@@ -246,10 +270,21 @@ def _render_dir_name(protocol: str, render_layout: str) -> str:
 def _feature_vector(row: Dict[str, Any]) -> Counter:
     """Video-level distribution features used for split balancing."""
     c = Counter()
-    families = Counter(row.get("families") or {})
-    family_total = sum(families.values()) or 1
-    for family, value in families.items():
-        c[f"family:{family}"] = float(value) / family_total
+    for key, prefix in (
+        ("families", "family"),
+        ("question_types", "question_type"),
+        ("answer_forms", "answer_form"),
+        ("categories", "category"),
+        ("skills", "skill"),
+        ("sample_types", "sample_type"),
+        ("gold_actions", "gold_action"),
+        ("availability", "availability"),
+    ):
+        values = Counter(row.get(key) or {})
+        total = sum(values.values()) or 1
+        for name, value in values.items():
+            if name:
+                c[f"{prefix}:{name}"] = float(value) / total
     n_questions = max(1.0, float(row.get("n_questions") or 0))
     recall = float(row.get("n_recall_calls") or 0)
     compress = float(row.get("n_compress_events") or 0)
@@ -277,7 +312,12 @@ def _feature_distance(a: Counter, b: Counter) -> float:
     keys = set(a) | set(b)
     total = 0.0
     for key in keys:
-        weight = 2.0 if key.startswith("family:") else 1.0
+        if key.startswith("family:"):
+            weight = 2.0
+        elif key.startswith(("question_type:", "sample_type:", "gold_action:")):
+            weight = 1.5
+        else:
+            weight = 1.0
         total += weight * abs(float(a.get(key, 0.0)) - float(b.get(key, 0.0)))
     return total
 
@@ -290,12 +330,9 @@ def _balanced_take(
     target: Counter,
     mode: str,
 ) -> List[Dict[str, Any]]:
-    """Greedy subset selection that keeps family/recall/compress ratios close.
-
-    For train splits we add a small value bonus so SFT/RL still see
-    enough recall/compress cases after the distribution constraint is met.
-    """
+    """Greedy subset selection that keeps family/recall/compress ratios close."""
     pool = list(rows)
+    pool_features = [_feature_vector(row) for row in pool]
     selected: List[Dict[str, Any]] = []
     if count > len(pool):
         raise ValueError(f"requested {count} rows, only {len(pool)} available")
@@ -305,23 +342,24 @@ def _balanced_take(
         best_idx = 0
         best_score = float("inf")
         denom = float(len(selected) + 1)
-        for idx, row in enumerate(pool):
+        if len(pool) > BALANCED_CANDIDATE_POOL:
+            candidate_indices = rng.sample(range(len(pool)), BALANCED_CANDIDATE_POOL)
+        else:
+            candidate_indices = range(len(pool))
+        for idx in candidate_indices:
+            row = pool[idx]
             cand = Counter(running)
-            cand.update(_feature_vector(row))
+            cand.update(pool_features[idx])
             avg = Counter({k: v / denom for k, v in cand.items()})
             score = _feature_distance(avg, target)
-            if mode in {"train_sft", "train_rl"}:
-                recall = float(row.get("n_recall_calls") or 0)
-                compress = float(row.get("n_compress_events") or 0)
-                questions = float(row.get("n_questions") or 0)
-                score -= 0.015 * min(10.0, recall + compress + 0.1 * questions)
             score += rng.random() * 1e-6
             if score < best_score:
                 best_idx = idx
                 best_score = score
         chosen = pool.pop(best_idx)
+        chosen_features = pool_features.pop(best_idx)
         selected.append(chosen)
-        running.update(_feature_vector(chosen))
+        running.update(chosen_features)
     return selected
 
 
@@ -346,7 +384,10 @@ def _build_splits(
         # Holdout first keeps eval/test close to the global distribution, then
         # train splits are filled with the same target plus a slight value
         # preference for recall/compress-heavy trajectories.
-        for name in ("test", "val", "train_rl", "train_sft"):
+        for name in ("test", "val", "dagger_source", "train_rl", "train_sft"):
+            if counts.get(name, 0) <= 0:
+                splits[name] = []
+                continue
             selected = _balanced_take(
                 remaining,
                 counts[name],
@@ -361,6 +402,9 @@ def _build_splits(
 
     # Holdout first keeps eval/test closest to the global distribution.
     for name in ("test", "val"):
+        if counts.get(name, 0) <= 0:
+            splits[name] = []
+            continue
         selected = _weighted_take(
             remaining,
             counts[name],
@@ -375,8 +419,11 @@ def _build_splits(
         # Historical behavior: each train split is sampled independently with
         # its own weight function. This makes SFT high-value but can
         # leave RL with fewer recall/compress trajectories.
-        order = ("train_sft", "train_rl")
+        order = ("dagger_source", "train_sft", "train_rl")
         for name in order:
+            if counts.get(name, 0) <= 0:
+                splits[name] = []
+                continue
             selected = _weighted_take(
                 remaining,
                 counts[name],
@@ -398,7 +445,12 @@ def _build_splits(
             + 0.15 * float(row.get("n_questions") or 0)
         )
 
-    train_names = ("train_rl", "train_sft")
+    train_names = tuple(
+        name for name in ("train_rl", "dagger_source", "train_sft")
+        if counts.get(name, 0) > 0
+    )
+    if not train_names:
+        return splits
     sorted_remaining = sorted(
         remaining,
         key=lambda r: (score(r), int(r.get("n_samples") or 0)),
@@ -443,8 +495,13 @@ def _counter_sum(rows: Sequence[Dict[str, Any]], key: str) -> Counter:
 
 def _split_summary(rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
     sample_types = _counter_sum(rows, "sample_types")
+    gold_actions = _counter_sum(rows, "gold_actions")
     families = _counter_sum(rows, "families")
     availability = _counter_sum(rows, "availability")
+    question_types = _counter_sum(rows, "question_types")
+    answer_forms = _counter_sum(rows, "answer_forms")
+    categories = _counter_sum(rows, "categories")
+    skills = _counter_sum(rows, "skills")
     sources = Counter(str(r.get("_source_key") or "unknown") for r in rows)
     n_samples = sum(int(r.get("n_samples") or 0) for r in rows)
     n_questions = sum(int(r.get("n_questions") or 0) for r in rows)
@@ -457,11 +514,16 @@ def _split_summary(rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
         "recall_calls": n_recall,
         "compress_events": n_compress,
         "sample_types": dict(sample_types),
+        "gold_actions": dict(gold_actions),
         "sample_type_ratio": {
             k: round(v / n_samples, 6) for k, v in sorted(sample_types.items()) if n_samples
         },
         "families": dict(families),
         "availability": dict(availability),
+        "question_types": dict(question_types),
+        "answer_forms": dict(answer_forms),
+        "categories": dict(categories),
+        "skills": dict(skills),
         "sources": dict(sources),
         "recall_per_video": round(n_recall / len(rows), 3) if rows else 0.0,
         "compress_per_video": round(n_compress / len(rows), 3) if rows else 0.0,
@@ -567,11 +629,14 @@ def _write_trajectory_files(
     counts: Dict[str, int] = {}
     mapping = {
         "train_sft": "train_sft_trajectories.jsonl",
+        "dagger_source": "train_sft_dagger_source_trajectories.jsonl",
         "train_rl": "train_rl_trajectories.jsonl",
         "val": "val_trajectories.jsonl",
         "test": "test_trajectories.jsonl",
     }
     for split, filename in mapping.items():
+        if split not in splits:
+            continue
         rows = []
         missing = []
         for stat in splits[split]:
@@ -585,11 +650,6 @@ def _write_trajectory_files(
             raise ValueError(f"missing source trajectories for {split}: {missing[:5]}")
         counts[filename] = _write_jsonl(final / filename, rows)
 
-    # Useful explicit alias for stage names and debugging.
-    shutil.copyfile(
-        final / "train_sft_trajectories.jsonl",
-        final / "stage1_sft_trajectories.jsonl",
-    )
     return counts
 
 
@@ -704,7 +764,7 @@ def _write_report(
         "train_allocation": train_allocation,
         "protocols": list(protocols),
         "render_layout": render_layout,
-        "canonical_render_dir": CANONICAL_RENDER_DIRNAME,
+        "canonical_render_dir": _render_dir_name(CANONICAL_FRAME_PROTOCOL, render_layout),
         "video_counts": {name: len(rows) for name, rows in splits.items()},
         "global_selected": _split_summary(global_rows),
         "splits": split_summaries,
@@ -715,8 +775,13 @@ def _write_report(
             "parquets": parquet_counts,
         },
         "canonical_paths": {
-            "stage1_sft_messages": {
+            "sft_messages": {
                 p: str(out / "rendered" / _render_dir_name(p, render_layout) / "train_sft_messages.jsonl")
+                for p in protocols
+            },
+            "dagger_source_trajectories": str(out / "final" / "train_sft_dagger_source_trajectories.jsonl"),
+            "dagger_output_messages": {
+                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "train_sft_dagger_messages.jsonl")
                 for p in protocols
             },
             "rl_train_parquet": {
@@ -764,7 +829,9 @@ def _write_report(
         "| split | videos | samples | silent | response | recall | compress | recall/video | compress/video |",
         "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
-    for name in ("train_sft", "train_rl", "val", "test"):
+    for name in ("train_sft", "dagger_source", "train_rl", "val", "test"):
+        if name not in split_summaries:
+            continue
         s = split_summaries[name]
         st = s["sample_types"]
         lines.append(
@@ -780,14 +847,17 @@ def _write_report(
                 cpv=s["compress_per_video"],
             )
         )
+    render_dir = _render_dir_name(CANONICAL_FRAME_PROTOCOL, render_layout)
     lines.extend([
         "",
         "## Trainable Files",
         "",
-        "- Stage-1 SFT: `rendered/video_meta_timeline_video_imagepad/train_sft_messages.jsonl`",
-        "- Eval: `rendered/video_meta_timeline_video_imagepad/val_messages.jsonl`, `rendered/video_meta_timeline_video_imagepad/test_messages.jsonl`",
-        "- RL full-video: `rendered/video_meta_timeline_video_imagepad/train_rl_multi_q.parquet`",
-        "- RL segment: `rendered/video_meta_timeline_video_imagepad/train_rl_multi_q_segment_cache.parquet`",
+        f"- SFT: `rendered/{render_dir}/train_sft_messages.jsonl`",
+        "- DAgger source: `final/train_sft_dagger_source_trajectories.jsonl`",
+        f"- DAgger output target: `rendered/{render_dir}/train_sft_dagger_messages.jsonl`",
+        f"- Eval: `rendered/{render_dir}/val_messages.jsonl`, `rendered/{render_dir}/test_messages.jsonl`",
+        f"- RL full-video: `rendered/{render_dir}/train_rl_multi_q.parquet`",
+        f"- RL segment: `rendered/{render_dir}/train_rl_multi_q_segment_cache.parquet`",
         "- RL source trajectories: `final/train_rl_trajectories.jsonl`",
         "",
     ])
@@ -813,6 +883,7 @@ def main() -> None:
     )
     parser.add_argument("--out", required=True)
     parser.add_argument("--sft-videos", type=int, default=DEFAULT_SPLIT_COUNTS["train_sft"])
+    parser.add_argument("--dagger-videos", type=int, default=DEFAULT_SPLIT_COUNTS["dagger_source"])
     parser.add_argument("--rl-videos", type=int, default=DEFAULT_SPLIT_COUNTS["train_rl"])
     parser.add_argument("--val-videos", type=int, default=DEFAULT_SPLIT_COUNTS["val"])
     parser.add_argument("--test-videos", type=int, default=DEFAULT_SPLIT_COUNTS["test"])
@@ -826,8 +897,11 @@ def main() -> None:
     parser.add_argument(
         "--render-layout",
         default=CANONICAL_RENDER_LAYOUT,
-        choices=[CANONICAL_RENDER_LAYOUT],
-        help="Canonical interleaved video/image-pad layout.",
+        choices=SUPPORTED_RENDER_LAYOUTS,
+        help=(
+            "Prompt layout for rendered messages and RL parquets. "
+            "standard_query_last is the only supported training layout."
+        ),
     )
     parser.add_argument("--no-render", action="store_true", help="Only write split trajectories/reports.")
     parser.add_argument("--no-parquet", action="store_true", help="Skip RL parquet generation.")
@@ -887,6 +961,7 @@ def main() -> None:
 
     counts = {
         "train_sft": args.sft_videos,
+        "dagger_source": args.dagger_videos,
         "train_rl": args.rl_videos,
         "val": args.val_videos,
         "test": args.test_videos,

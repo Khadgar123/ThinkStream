@@ -156,8 +156,8 @@ def main():
     )
     p.add_argument(
         "--render-layout",
-        default="timeline_video_imagepad",
-        choices=["timeline_video_imagepad"],
+        default="standard_query_last",
+        choices=["standard_query_last"],
         help="Used only when --val is a flat row file rendered on the fly.",
     )
     p.add_argument("--no_bf16", action="store_true")

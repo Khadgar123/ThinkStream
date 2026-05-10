@@ -64,6 +64,7 @@ from collections import Counter, defaultdict
 from copy import deepcopy
 from dataclasses import dataclass, field
 from difflib import SequenceMatcher
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -94,6 +95,7 @@ from thinkstream.data.agent_protocol import (
     build_recalled_frames_metadata,
     build_recall_result_user_content,
     normalize_frame_protocol,
+    normalize_memory_position,
     normalize_render_layout,
     select_recall_chunks,
     system_prompt_for_frame_protocol,
@@ -109,12 +111,20 @@ from thinkstream.sft.data_processor import (
 )
 
 
+class FrameCacheMissError(RuntimeError):
+    """Raised when eval forbids raw-video decode fallback."""
+
+
 # ─── Task taxonomy (mirrors official constant.py) ────────────────────────────
 
 RT_TASKS = {"OCR", "ACR", "ATR", "STU", "FPD", "OJR"}
 BT_TASKS = {"EPM", "ASI", "HLD"}
 FT_TASKS = {"REC", "SSR", "CRR"}
 ALL_TASKS = RT_TASKS | BT_TASKS | FT_TASKS
+
+# Pre-extracted OVO frames are mixed: most streams are 2 frames/chunk, while
+# Perception Test REC videos are 1 frame/chunk. 0 means infer per video.
+SOURCE_FRAMES_PER_CHUNK = 0
 
 
 # ─── Detect ckpt model class ─────────────────────────────────────────────────
@@ -203,7 +213,7 @@ def build_crr_question(sample):
 
 # ─── Answer extraction & scoring ─────────────────────────────────────────────
 
-_LETTER_RE = re.compile(r"\b([A-Da-d])\b")
+_LETTER_RE = re.compile(r"\b([A-Za-z])\b")
 _INT_RE = re.compile(r"\d+")
 
 
@@ -211,8 +221,8 @@ def extract_letter(text):
     if not text:
         return None
     t = text.strip()
-    # First A-D letter (word boundary or first char)
-    if t and t[0].upper() in "ABCD":
+    # First option letter (word boundary or first char).
+    if t and t[0].isalpha() and (len(t) == 1 or not t[1].isalpha()):
         return t[0].upper()
     m = _LETTER_RE.search(t)
     return m.group(1).upper() if m else None
@@ -403,7 +413,8 @@ def first_yes_response_between(per_chunk, start_chunk, end_chunk):
 
 def make_loop(model, processor, tokenizer, model_type, retriever,
               compress_mode, max_new_tokens, frames_root=None, video_root=None,
-              frame_protocol="video_meta", memory_mode="full"):
+              frame_protocol="video_meta", memory_mode="full",
+              min_pixels=130_000, max_pixels=220_000):
     # v12.12 (2026-05-02): RUNTIME profile aligned with pass2/SFT/RL
     # (was 100352/150528, before that 200704/401408). Empirically measured
     # 130k/220k → ~235 tok/frame, 32-frame window = 7,520 vis tok in 16K.
@@ -412,8 +423,8 @@ def make_loop(model, processor, tokenizer, model_type, retriever,
         tokenizer=tokenizer,
         processor=processor,
         model_type=model_type,
-        min_pixels=130_000,
-        max_pixels=220_000,
+        min_pixels=min_pixels,
+        max_pixels=max_pixels,
         max_new_tokens=max_new_tokens,
         retriever=retriever,
         compress_mode=compress_mode,
@@ -454,16 +465,13 @@ def _ordinary_prompt_snapshot(memory_mode: str, snapshot: Dict) -> Dict:
     return out
 
 
-def _resolve_window_frame_paths(
+def _resolve_frame_dir(
     video_path: str,
-    chunk_idx: int,
     frames_root: Optional[str],
     video_root: Optional[str],
-) -> Optional[List[str]]:
+) -> Optional[Path]:
     if not frames_root:
         return None
-    window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
-    n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
     vp = Path(video_path)
     if video_root:
         try:
@@ -475,12 +483,96 @@ def _resolve_window_frame_paths(
     if not frame_dir.exists():
         flat_dir = Path(frames_root) / vp.stem
         frame_dir = flat_dir if flat_dir.exists() else frame_dir
-    if not frame_dir.exists():
+    return frame_dir if frame_dir.exists() else None
+
+
+def _selected_source_frame_offsets(source_fpc: int) -> List[int]:
+    source_fpc = max(1, int(source_fpc))
+    target_fpc = max(1, int(FRAMES_PER_CHUNK))
+    if target_fpc == 1:
+        return [source_fpc // 2]
+    return [
+        min(source_fpc - 1, int(round(i * (source_fpc - 1) / max(1, target_fpc - 1))))
+        for i in range(target_fpc)
+    ]
+
+
+@lru_cache(maxsize=4096)
+def _frame_cache_max_number(
+    video_path: str,
+    frames_root: str,
+    video_root: str,
+) -> int:
+    frame_dir = _resolve_frame_dir(video_path, frames_root, video_root)
+    if frame_dir is None:
+        return 0
+    max_no = 0
+    for fp in frame_dir.glob("frame_*.jpg"):
+        raw = fp.stem[6:] if fp.stem.startswith("frame_") else fp.stem
+        if raw.isdigit():
+            max_no = max(max_no, int(raw))
+    return max_no
+
+
+@lru_cache(maxsize=4096)
+def _video_duration_seconds(video_path: str) -> float:
+    try:
+        import cv2
+
+        cap = cv2.VideoCapture(video_path)
+        fps = float(cap.get(cv2.CAP_PROP_FPS) or 0.0)
+        nframes = float(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0.0)
+        cap.release()
+        if fps > 0 and nframes > 0:
+            return nframes / fps
+    except Exception:
+        return 0.0
+    return 0.0
+
+
+def _effective_source_frames_per_chunk(
+    video_path: str,
+    frames_root: Optional[str],
+    video_root: Optional[str],
+    *,
+    max_chunk_hint: Optional[int] = None,
+) -> int:
+    configured = int(SOURCE_FRAMES_PER_CHUNK)
+    if configured > 0:
+        return configured
+    max_frame_no = _frame_cache_max_number(
+        str(video_path),
+        str(frames_root or ""),
+        str(video_root or ""),
+    )
+    duration = _video_duration_seconds(str(video_path))
+    if duration > 0 and max_frame_no > 0:
+        return max(1, min(8, int(round(max_frame_no / duration))))
+    if max_chunk_hint is not None and max_frame_no > 0:
+        ratio = max_frame_no / max(1, int(max_chunk_hint) + 1)
+        return max(1, min(8, int(round(ratio))))
+    return max(1, int(FRAMES_PER_CHUNK))
+
+
+def _resolve_window_frame_paths(
+    video_path: str,
+    chunk_idx: int,
+    frames_root: Optional[str],
+    video_root: Optional[str],
+) -> Optional[List[str]]:
+    window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
+    n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
+    frame_dir = _resolve_frame_dir(video_path, frames_root, video_root)
+    if frame_dir is None:
         return None
     out = []
+    source_fpc = _effective_source_frames_per_chunk(
+        video_path, frames_root, video_root, max_chunk_hint=chunk_idx,
+    )
+    offsets = _selected_source_frame_offsets(source_fpc)
     for ci in range(window_start, chunk_idx + 1):
-        for fi in range(FRAMES_PER_CHUNK):
-            fp = frame_dir / f"frame_{ci * FRAMES_PER_CHUNK + fi + 1:06d}.jpg"
+        for fi in offsets:
+            fp = frame_dir / f"frame_{ci * source_fpc + fi + 1:06d}.jpg"
             if fp.exists():
                 out.append(str(fp))
     if len(out) < max(1, n_frames // 2):
@@ -494,24 +586,16 @@ def _resolve_chunk_frame_paths(
     frames_root: Optional[str],
     video_root: Optional[str],
 ) -> List[str]:
-    if not frames_root:
-        return []
-    vp = Path(video_path)
-    if video_root:
-        try:
-            frame_dir = Path(frames_root) / vp.relative_to(Path(video_root)).with_suffix("")
-        except ValueError:
-            frame_dir = Path(frames_root) / vp.with_suffix("")
-    else:
-        frame_dir = Path(frames_root) / vp.with_suffix("")
-    if not frame_dir.exists():
-        flat_dir = Path(frames_root) / vp.stem
-        frame_dir = flat_dir if flat_dir.exists() else frame_dir
-    if not frame_dir.exists():
+    frame_dir = _resolve_frame_dir(video_path, frames_root, video_root)
+    if frame_dir is None:
         return []
     out = []
-    for fi in range(FRAMES_PER_CHUNK):
-        fp = frame_dir / f"frame_{int(chunk_idx) * FRAMES_PER_CHUNK + fi + 1:06d}.jpg"
+    source_fpc = _effective_source_frames_per_chunk(
+        video_path, frames_root, video_root, max_chunk_hint=chunk_idx,
+    )
+    offsets = _selected_source_frame_offsets(source_fpc)
+    for fi in offsets:
+        fp = frame_dir / f"frame_{int(chunk_idx) * source_fpc + fi + 1:06d}.jpg"
         if fp.exists():
             out.append(str(fp))
     return out
@@ -623,6 +707,7 @@ class _VllmAgentRunner:
     memory_mode: str
     min_pixels: int = 130_000
     max_pixels: int = 220_000
+    require_frame_cache: bool = False
     current_chunk: int = 0
     done: bool = False
     per_chunk: Dict[int, Tuple[str, str]] = field(default_factory=dict)
@@ -713,6 +798,22 @@ class _VllmAgentRunner:
         frame_paths = _resolve_window_frame_paths(
             self.video_path, chunk_idx, self.frames_root, self.video_root,
         )
+        if not is_inter_chunk and self.frames_root and not frame_paths:
+            miss = {
+                "chunk": int(chunk_idx),
+                "video_path": self.video_path,
+                "window_chunks": int(VISUAL_WINDOW_CHUNKS),
+                "frames_per_chunk": int(FRAMES_PER_CHUNK),
+            }
+            self.telemetry["n_frame_cache_misses"] = (
+                self.telemetry.get("n_frame_cache_misses", 0) + 1
+            )
+            self.telemetry.setdefault("frame_cache_misses", []).append(miss)
+            if self.require_frame_cache:
+                raise FrameCacheMissError(
+                    "frame cache miss at "
+                    f"chunk={chunk_idx} video={self.video_path}"
+                )
         messages = build_single_step_messages(
             snapshot,
             chunk_idx,
@@ -1146,6 +1247,8 @@ def telemetry_summary(
         "total_steps": telemetry.get("total_steps", len(steps)),
         "n_step_errors": telemetry.get("n_step_errors", 0),
         "step_errors": telemetry.get("step_errors", [])[:10],
+        "n_frame_cache_misses": telemetry.get("n_frame_cache_misses", 0),
+        "frame_cache_misses": telemetry.get("frame_cache_misses", [])[:10],
         "n_format_violations": telemetry.get("n_format_violations", 0),
         "n_action_space_errors": telemetry.get("n_action_space_errors", 0),
         "n_recall_step2_blocked": telemetry.get("n_recall_step2_blocked", 0),
@@ -1204,6 +1307,69 @@ def telemetry_summary(
     return out
 
 
+def merge_telemetry_summaries(items: List[Dict]) -> Dict:
+    """Merge per-probe telemetry summaries for expanded SSR samples."""
+    if not items:
+        return {}
+    keys = [
+        "total_steps",
+        "n_step_errors",
+        "n_frame_cache_misses",
+        "n_format_violations",
+        "n_action_space_errors",
+        "n_recall_step2_blocked",
+        "n_recall_events",
+        "n_recall_returned_nonempty",
+        "n_recall_support_hits",
+        "n_compress_events",
+        "n_compress_succeeded",
+        "n_compress_system_trigger_rule_checked",
+        "n_compress_system_trigger_rule_ok",
+        "n_compress_system_range_rule_checked",
+        "n_compress_system_range_rule_ok",
+        "n_compress_system_calc_checked",
+        "n_compress_system_calc_ok",
+    ]
+    out = {key: sum(int(item.get(key, 0) or 0) for item in items) for key in keys}
+    out["step_errors"] = [
+        e for item in items for e in item.get("step_errors", [])
+    ][:10]
+    out["frame_cache_misses"] = [
+        e for item in items for e in item.get("frame_cache_misses", [])
+    ][:10]
+    hist = Counter()
+    for item in items:
+        hist.update(item.get("action_histogram") or {})
+    out["action_histogram"] = dict(hist)
+    out["recall_support_hit_rate"] = _pct(
+        out["n_recall_support_hits"], out["n_recall_events"]
+    )
+    out["compress_success_rate"] = _pct(
+        out["n_compress_succeeded"], out["n_compress_events"]
+    )
+    out["compress_system_trigger_rule_rate"] = _pct(
+        out["n_compress_system_trigger_rule_ok"],
+        out["n_compress_system_trigger_rule_checked"],
+    )
+    out["compress_system_range_rule_rate"] = _pct(
+        out["n_compress_system_range_rule_ok"],
+        out["n_compress_system_range_rule_checked"],
+    )
+    out["compress_system_calc_ok_rate"] = _pct(
+        out["n_compress_system_calc_ok"],
+        out["n_compress_system_calc_checked"],
+    )
+    out["prompt_tokens_max"] = max((item.get("prompt_tokens_max", 0) or 0) for item in items)
+    out["think_tokens_max"] = max((item.get("think_tokens_max", 0) or 0) for item in items)
+    out["stable_think"] = {
+        "n_stable_pairs": sum(
+            int((item.get("stable_think") or {}).get("n_stable_pairs", 0) or 0)
+            for item in items
+        )
+    }
+    return out
+
+
 def recall_events_between(telemetry: Dict, since_chunk: int, until_chunk: int) -> List[Dict]:
     return [
         e for e in telemetry.get("recall_events", [])
@@ -1254,6 +1420,58 @@ def support_intervals_for_sample(sample, task=None) -> List[Tuple[int, int]]:
         c = _time_to_chunk(sample["realtime"])
         return [(c, c)]
     return []
+
+
+def _probe_chunk(probe: Dict) -> int:
+    return _time_to_chunk(probe.get("realtime", 0))
+
+
+def _rec_query_meta(sample: Dict) -> Dict:
+    """REC is one question with many expected running-count answers."""
+    per_emit = []
+    chunks = []
+    for probe in sample.get("test_info", []) or []:
+        c = _probe_chunk(probe)
+        chunks.append(c)
+        per_emit.append({"chunk": c, "value": str(int(probe.get("count", 0)))})
+    chunks = sorted(set(chunks))
+    meta = {
+        "answer_form": "number",
+        "answer_chunks": chunks,
+        "per_emit_answers": per_emit,
+    }
+    if chunks:
+        meta["open_until"] = max(chunks) * AGENT_CHUNK_SEC
+    return meta
+
+
+def _crr_query_meta(sample: Dict) -> Dict:
+    """CRR is a persistent question; keep it open until the first Yes slot."""
+    positive_chunks = sorted({
+        _probe_chunk(probe)
+        for probe in sample.get("test_info", []) or []
+        if int(probe.get("type", 0) or 0) == 1
+    })
+    meta = {"answer_form": "binary"}
+    if positive_chunks:
+        meta.update({
+            "answer_chunks": positive_chunks,
+            "per_emit_answers": [
+                {"chunk": c, "value": "Yes"} for c in positive_chunks
+            ],
+            "open_until": max(positive_chunks) * AGENT_CHUNK_SEC,
+        })
+    return meta
+
+
+def _ssr_query_meta(chunk: int, probe: Dict) -> Dict:
+    gt = "Yes" if int(probe.get("type", 0) or 0) == 1 else "No"
+    return {
+        "answer_form": "binary",
+        "answer_chunks": [int(chunk)],
+        "per_emit_answers": [{"chunk": int(chunk), "value": gt}],
+        "open_until": int(chunk) * AGENT_CHUNK_SEC,
+    }
 
 
 def attach_probe_recall_fields(
@@ -1340,6 +1558,8 @@ def eval_mcq(sample, loop, retriever, video_root, scoring="strict",
         "gt": gt_letter,
         "pred": pred_letter,
         "correct": correct,
+        "targeted_correct": correct,
+        "strict_correct": correct and response_chunk == ask_chunk,
     }
     attach_probe_recall_fields(
         probe_out,
@@ -1373,7 +1593,7 @@ def eval_rec(sample, loop, retriever, video_root, save_step_trace=False):
 
     test_info = sample["test_info"]
     last_probe = max(float(t["realtime"]) for t in test_info)
-    max_chunk = int(last_probe / AGENT_CHUNK_SEC) + 1
+    max_chunk = int(last_probe / AGENT_CHUNK_SEC)
 
     question = build_rec_question(sample)
     loop.reset()
@@ -1385,7 +1605,7 @@ def eval_rec(sample, loop, retriever, video_root, save_step_trace=False):
         {0: question},
         max_chunk,
         telemetry=telemetry,
-        ask_meta={0: {"answer_form": "number"}},
+        ask_meta={0: _rec_query_meta(sample)},
     )
 
     probes = []
@@ -1411,6 +1631,11 @@ def eval_rec(sample, loop, retriever, video_root, save_step_trace=False):
             "gt": gt_count,
             "pred": pred_count,
             "correct": pred_count == gt_count,
+            "targeted_correct": pred_count == gt_count,
+            "strict_correct": (
+                pred_count == gt_count and response_chunk == c
+            ),
+            "count_abs_error": abs(pred_count - gt_count) if pred_count is not None else None,
         }
         attach_probe_recall_fields(
             probe_out,
@@ -1440,36 +1665,24 @@ def eval_ssr(sample, loop, retriever, video_root, save_step_trace=False):
         return None
 
     test_info = sample["test_info"]
-    last_probe = max(float(t["realtime"]) for t in test_info)
-    max_chunk = int(last_probe / AGENT_CHUNK_SEC) + 1
-
-    # Inject question at each probe's chunk (with that probe's step)
-    ask_chunks = {}
-    probes_meta = []
-    for probe in test_info:
+    probes = []
+    telemetry_parts = []
+    support_intervals = support_intervals_for_sample(sample, "SSR")
+    for probe_i, probe in enumerate(test_info):
         t = float(probe["realtime"])
         c = int(t / AGENT_CHUNK_SEC)
-        step = probe.get("step", "")
-        ask_chunks[c] = build_ssr_question(step)
-        probes_meta.append({"realtime": t, "chunk_idx": c, "type": probe["type"]})
-
-    loop.reset()
-    reset_visual_index(retriever)
-    telemetry: Dict = {}
-    per_chunk = run_agent(
-        loop,
-        video_path,
-        ask_chunks,
-        max_chunk,
-        telemetry=telemetry,
-        ask_meta={c: {"answer_form": "binary"} for c in ask_chunks},
-    )
-
-    probes = []
-    support_intervals = support_intervals_for_sample(sample, "SSR")
-    for meta in probes_meta:
-        c = meta["chunk_idx"]
-        ptype = meta["type"]
+        ptype = probe["type"]
+        loop.reset()
+        reset_visual_index(retriever)
+        telemetry: Dict = {}
+        per_chunk = run_agent(
+            loop,
+            video_path,
+            {c: build_ssr_question(probe.get("step", ""))},
+            c,
+            telemetry=telemetry,
+            ask_meta={c: _ssr_query_meta(c, probe)},
+        )
         action, resp = per_chunk.get(c, ("missing", ""))
         said_yes = is_yes(resp) if action == "response" else False
         said_no = is_no(resp) if action == "response" else False
@@ -1483,10 +1696,11 @@ def eval_ssr(sample, loop, retriever, video_root, save_step_trace=False):
             lenient = said_yes
             fp = False
         probe_out = {
-            "realtime": meta["realtime"],
+            "realtime": t,
             "chunk_idx": c,
             "ask_chunk": c,
             "type": ptype,
+            "probe_index": probe_i,
             "action": action,
             "response": resp,
             "response_chunk": c if action == "response" and resp else None,
@@ -1494,6 +1708,7 @@ def eval_ssr(sample, loop, retriever, video_root, save_step_trace=False):
             "response_to_probe_offset_chunks": 0 if action == "response" and resp else None,
             "strict_correct": strict,
             "lenient_correct": lenient,
+            "targeted_correct": lenient,
             "false_positive": fp,
         }
         attach_probe_recall_fields(
@@ -1504,15 +1719,16 @@ def eval_ssr(sample, loop, retriever, video_root, save_step_trace=False):
             support_intervals=support_intervals,
         )
         probes.append(probe_out)
+        telemetry_parts.append(telemetry_summary(
+            telemetry,
+            support_intervals=support_intervals,
+            save_step_trace=save_step_trace,
+        ))
     return {
         "task": "SSR",
         "id": sample.get("id"),
         "probes": probes,
-        "telemetry": telemetry_summary(
-            telemetry,
-            support_intervals=support_intervals,
-            save_step_trace=save_step_trace,
-        ),
+        "telemetry": merge_telemetry_summaries(telemetry_parts),
     }
 
 
@@ -1526,7 +1742,7 @@ def eval_crr(sample, loop, retriever, video_root, save_step_trace=False):
     test_info = sample["test_info"]
     last_probe = max(float(t["realtime"]) for t in test_info)
     ask_chunk = int(ask_time / AGENT_CHUNK_SEC)
-    max_chunk = int(last_probe / AGENT_CHUNK_SEC) + 1
+    max_chunk = int(last_probe / AGENT_CHUNK_SEC)
 
     question = build_crr_question(sample)
     loop.reset()
@@ -1538,7 +1754,7 @@ def eval_crr(sample, loop, retriever, video_root, save_step_trace=False):
         {ask_chunk: question},
         max_chunk,
         telemetry=telemetry,
-        ask_meta={ask_chunk: {"answer_form": "binary"}},
+        ask_meta={ask_chunk: _crr_query_meta(sample)},
     )
 
     probes = []
@@ -1582,6 +1798,7 @@ def eval_crr(sample, loop, retriever, video_root, save_step_trace=False):
             ),
             "strict_correct": strict,
             "lenient_correct": lenient,
+            "targeted_correct": lenient,
             "false_positive": fp,
             "false_positive_chunk": fp_chunk,
             "false_positive_response": fp_resp,
@@ -1660,8 +1877,8 @@ def build_agent_job(sample, video_root, scoring="strict"):
             "sample": sample,
             "video_path": video_path,
             "ask_chunks": {0: build_rec_question(sample)},
-            "ask_meta": {0: {"answer_form": "number"}},
-            "max_chunk": int(last_probe / AGENT_CHUNK_SEC) + 1,
+            "ask_meta": {0: _rec_query_meta(sample)},
+            "max_chunk": int(last_probe / AGENT_CHUNK_SEC),
             "kind": "rec",
         }
 
@@ -1672,7 +1889,7 @@ def build_agent_job(sample, video_root, scoring="strict"):
         for probe in sample["test_info"]:
             c = int(float(probe["realtime"]) / AGENT_CHUNK_SEC)
             ask_chunks[c] = build_ssr_question(probe.get("step", ""))
-            ask_meta[c] = {"answer_form": "binary"}
+            ask_meta[c] = _ssr_query_meta(c, probe)
         return {
             "task": "SSR",
             "id": sample.get("id"),
@@ -1694,13 +1911,83 @@ def build_agent_job(sample, video_root, scoring="strict"):
             "sample": sample,
             "video_path": video_path,
             "ask_chunks": {ask_chunk: build_crr_question(sample)},
-            "ask_meta": {ask_chunk: {"answer_form": "binary"}},
-            "max_chunk": int(last_probe / AGENT_CHUNK_SEC) + 1,
+            "ask_meta": {ask_chunk: _crr_query_meta(sample)},
+            "max_chunk": int(last_probe / AGENT_CHUNK_SEC),
             "kind": "crr",
             "ask_time": ask_time,
         }
 
     return None
+
+
+def build_agent_jobs_for_sample(sample, video_root, scoring="strict") -> List[Dict]:
+    """Build one or more vLLM trajectory jobs for an OVO sample.
+
+    SSR follows the Streamo benchmark script's expansion strategy: each
+    step/probe is its own full-prefix trajectory, because several steps can
+    share the same realtime chunk and a single active query cannot represent
+    multiple distinct step questions at once.
+    """
+    if sample.get("task") != "SSR":
+        job = build_agent_job(sample, video_root, scoring=scoring)
+        return [job] if job is not None else []
+
+    video_path = resolve_video_path(sample["video"], video_root)
+    if not Path(video_path).exists():
+        return []
+    jobs = []
+    for probe_i, probe in enumerate(sample.get("test_info", []) or []):
+        c = int(float(probe["realtime"]) / AGENT_CHUNK_SEC)
+        jobs.append({
+            "task": "SSR",
+            "id": f"{sample.get('id')}:{probe_i}",
+            "sample": sample,
+            "video_path": video_path,
+            "ask_chunks": {c: build_ssr_question(probe.get("step", ""))},
+            "ask_meta": {c: _ssr_query_meta(c, probe)},
+            "max_chunk": c,
+            "kind": "ssr_probe",
+            "probe_index": probe_i,
+            "probe": probe,
+        })
+    return jobs
+
+
+def job_frame_cache_complete(
+    job: Dict,
+    frames_root: Optional[str],
+    video_root: Optional[str],
+) -> Tuple[bool, Optional[Dict]]:
+    """Return whether all streaming chunks can use pre-extracted frames."""
+    if not frames_root:
+        return True, None
+    max_chunk = int(job.get("max_chunk", -1))
+    source_fpc = _effective_source_frames_per_chunk(
+        str(job["video_path"]),
+        frames_root,
+        video_root,
+        max_chunk_hint=max_chunk,
+    )
+    offsets = _selected_source_frame_offsets(source_fpc)
+    max_offset = max(offsets) if offsets else 0
+    needed_frame_no = max_chunk * source_fpc + max_offset + 1
+    max_frame_no = _frame_cache_max_number(
+        str(job["video_path"]),
+        str(frames_root or ""),
+        str(video_root or ""),
+    )
+    if max_frame_no < needed_frame_no:
+        first_missing_chunk = max(0, int((max_frame_no - max_offset) // source_fpc))
+        return False, {
+            "task": job.get("task"),
+            "id": job.get("id"),
+            "video_path": job.get("video_path"),
+            "chunk": int(first_missing_chunk),
+            "max_chunk": max_chunk,
+            "max_frame_no": int(max_frame_no),
+            "needed_frame_no": int(needed_frame_no),
+        }
+    return True, None
 
 
 def score_agent_job(job, per_chunk, telemetry, save_step_trace=False):
@@ -1739,6 +2026,10 @@ def score_agent_job(job, per_chunk, telemetry, save_step_trace=False):
             "gt": gt_letter,
             "pred": pred_letter,
             "correct": pred_letter == gt_letter,
+            "targeted_correct": pred_letter == gt_letter,
+            "strict_correct": (
+                pred_letter == gt_letter and response_chunk == ask_chunk
+            ),
         }
         attach_probe_recall_fields(
             probe_out,
@@ -1784,6 +2075,14 @@ def score_agent_job(job, per_chunk, telemetry, save_step_trace=False):
                 "gt": int(probe["count"]),
                 "pred": pred_count,
                 "correct": pred_count == int(probe["count"]),
+                "targeted_correct": pred_count == int(probe["count"]),
+                "strict_correct": (
+                    pred_count == int(probe["count"]) and response_chunk == c
+                ),
+                "count_abs_error": (
+                    abs(pred_count - int(probe["count"]))
+                    if pred_count is not None else None
+                ),
             }
             attach_probe_recall_fields(
                 probe_out,
@@ -1797,6 +2096,59 @@ def score_agent_job(job, per_chunk, telemetry, save_step_trace=False):
             "task": "REC",
             "id": sample.get("id"),
             "probes": probes,
+            "telemetry": telemetry_summary(
+                telemetry,
+                support_intervals=support_intervals,
+                save_step_trace=save_step_trace,
+            ),
+        }
+
+    if job["kind"] == "ssr_probe":
+        probe = job["probe"]
+        t = float(probe["realtime"])
+        c = int(t / AGENT_CHUNK_SEC)
+        ptype = probe["type"]
+        support_intervals = support_intervals_for_sample(sample, "SSR")
+        action, resp = per_chunk.get(c, ("missing", ""))
+        said_yes = is_yes(resp) if action == "response" else False
+        said_no = is_no(resp) if action == "response" else False
+        was_silent = action == "silent"
+        if ptype == 0:
+            strict = said_no
+            lenient = was_silent or said_no
+            fp = said_yes
+        else:
+            strict = said_yes
+            lenient = said_yes
+            fp = False
+        probe_out = {
+            "realtime": t,
+            "chunk_idx": c,
+            "ask_chunk": c,
+            "type": ptype,
+            "probe_index": job.get("probe_index"),
+            "action": action,
+            "response": resp,
+            "response_chunk": c if action == "response" and resp else None,
+            "response_offset_chunks": 0 if action == "response" and resp else None,
+            "response_to_probe_offset_chunks": 0 if action == "response" and resp else None,
+            "strict_correct": strict,
+            "lenient_correct": lenient,
+            "targeted_correct": lenient,
+            "false_positive": fp,
+        }
+        attach_probe_recall_fields(
+            probe_out,
+            telemetry,
+            since_chunk=c,
+            until_chunk=c,
+            support_intervals=support_intervals,
+        )
+        return {
+            "task": "SSR",
+            "id": job.get("id"),
+            "source_id": sample.get("id"),
+            "probes": [probe_out],
             "telemetry": telemetry_summary(
                 telemetry,
                 support_intervals=support_intervals,
@@ -1835,6 +2187,7 @@ def score_agent_job(job, per_chunk, telemetry, save_step_trace=False):
                 "response_to_probe_offset_chunks": 0 if action == "response" and resp else None,
                 "strict_correct": strict,
                 "lenient_correct": lenient,
+                "targeted_correct": lenient,
                 "false_positive": fp,
             }
             attach_probe_recall_fields(
@@ -1899,6 +2252,7 @@ def score_agent_job(job, per_chunk, telemetry, save_step_trace=False):
                 ),
                 "strict_correct": strict,
                 "lenient_correct": lenient,
+                "targeted_correct": lenient,
                 "false_positive": fp,
                 "false_positive_chunk": fp_chunk,
                 "false_positive_response": fp_resp,
@@ -1961,6 +2315,9 @@ def run_agent_jobs_vllm(
             render_layout=render_layout,
             compress_mode="off" if args.compress_mode == "none" else args.compress_mode,
             memory_mode=args.memory_mode,
+            min_pixels=args.min_pixels,
+            max_pixels=args.max_pixels,
+            require_frame_cache=bool(args.require_frame_cache),
         )
         for i, job in enumerate(jobs)
     ]
@@ -1991,6 +2348,9 @@ def run_agent_jobs_vllm(
             try:
                 messages, turn_kind = r.prepare()
                 prepared.append((r, messages, turn_kind))
+            except FrameCacheMissError as exc:
+                r.record_error(exc)
+                r.done = True
             except Exception as exc:
                 r.record_error(exc)
         if not prepared:
@@ -2080,6 +2440,8 @@ def run_agent_jobs_vllm(
 def aggregate(results):
     """Build per-task / per-category / overall accuracy. Matches OVO Table 2."""
     by_task = defaultdict(lambda: {"n": 0, "correct": 0,
+                                    "strict_metric_correct": 0,
+                                    "targeted_correct": 0,
                                     "fp_n": 0, "fp": 0,
                                     "type0_n": 0, "type0_strict": 0, "type0_lenient": 0,
                                     "type1_n": 0, "type1_strict": 0, "type1_lenient": 0,
@@ -2090,6 +2452,7 @@ def aggregate(results):
                                     "on_time_correct": 0,
                                     "response_offsets": [],
                                     "response_to_probe_offsets": [],
+                                    "count_abs_errors": [],
                                     "response_missing_n": 0,
                                     "response_early_n": 0,
                                     "response_late_n": 0,
@@ -2105,6 +2468,7 @@ def aggregate(results):
                                     "n_compress_system_calc_checked": 0,
                                     "n_compress_system_calc_ok": 0,
                                     "n_step_errors": 0, "n_format_violations": 0,
+                                    "n_frame_cache_misses": 0,
                                     "n_action_space_errors": 0,
                                     "n_recall_step2_blocked": 0,
                                     "total_steps": 0,
@@ -2146,6 +2510,9 @@ def aggregate(results):
             telemetry.get("n_compress_system_calc_ok", 0) or 0
         )
         by_task[task]["n_step_errors"] += int(telemetry.get("n_step_errors", 0) or 0)
+        by_task[task]["n_frame_cache_misses"] += int(
+            telemetry.get("n_frame_cache_misses", 0) or 0
+        )
         by_task[task]["n_format_violations"] += int(
             telemetry.get("n_format_violations", 0) or 0
         )
@@ -2189,6 +2556,14 @@ def aggregate(results):
                     by_task[task]["type1_n"] += 1
                     by_task[task]["type1_strict"] += int(p["strict_correct"])
                     by_task[task]["type1_lenient"] += int(p["lenient_correct"])
+            strict_metric = int(bool(p.get("strict_correct", bool(correct))))
+            targeted_metric = int(bool(
+                p.get("targeted_correct", p.get("lenient_correct", bool(correct)))
+            ))
+            by_task[task]["strict_metric_correct"] += strict_metric
+            by_task[task]["targeted_correct"] += targeted_metric
+            if p.get("count_abs_error") is not None:
+                by_task[task]["count_abs_errors"].append(float(p["count_abs_error"]))
             if p.get("used_recall_before_response"):
                 by_task[task]["with_recall_n"] += 1
                 by_task[task]["with_recall_correct"] += correct
@@ -2231,6 +2606,18 @@ def aggregate(results):
     bt_avg, bt_n = cat_avg(BT_TASKS)
     ft_avg, ft_n = cat_avg(FT_TASKS)
     overall = (rt_avg + bt_avg + ft_avg) / max(1, sum(1 for n in [rt_n, bt_n, ft_n] if n > 0))
+    rt_strict, _ = cat_avg(RT_TASKS, "strict_metric_correct")
+    bt_strict, _ = cat_avg(BT_TASKS, "strict_metric_correct")
+    ft_strict, _ = cat_avg(FT_TASKS, "strict_metric_correct")
+    overall_strict = (
+        rt_strict + bt_strict + ft_strict
+    ) / max(1, sum(1 for n in [rt_n, bt_n, ft_n] if n > 0))
+    rt_targeted, _ = cat_avg(RT_TASKS, "targeted_correct")
+    bt_targeted, _ = cat_avg(BT_TASKS, "targeted_correct")
+    ft_targeted, _ = cat_avg(FT_TASKS, "targeted_correct")
+    overall_targeted = (
+        rt_targeted + bt_targeted + ft_targeted
+    ) / max(1, sum(1 for n in [rt_n, bt_n, ft_n] if n > 0))
     rt_no_early, _ = cat_avg(RT_TASKS, "no_early_correct")
     bt_no_early, _ = cat_avg(BT_TASKS, "no_early_correct")
     ft_no_early, _ = cat_avg(FT_TASKS, "no_early_correct")
@@ -2273,6 +2660,9 @@ def aggregate(results):
             "acc_without_recall": _pct(v["without_recall_correct"], v["without_recall_n"]),
             "n_without_recall": v["without_recall_n"],
             "acc_content": _pct(v["correct"], v["n"]),
+            "acc_strict": _pct(v["strict_metric_correct"], v["n"]),
+            "acc_targeted": _pct(v["targeted_correct"], v["n"]),
+            "count_mae": _mean(v.get("count_abs_errors", [])),
             "acc_no_early": _pct(v["no_early_correct"], v["n"]),
             "acc_no_late": _pct(v["no_late_correct"], v["n"]),
             "acc_on_time": _pct(v["on_time_correct"], v["n"]),
@@ -2300,6 +2690,7 @@ def aggregate(results):
             ),
             "n_compress_system_calc_checked": v["n_compress_system_calc_checked"],
             "step_errors": v["n_step_errors"],
+            "frame_cache_misses": v["n_frame_cache_misses"],
             "format_violations": v["n_format_violations"],
             "action_space_errors": v["n_action_space_errors"],
             "recall_step2_blocked": v["n_recall_step2_blocked"],
@@ -2329,7 +2720,8 @@ def aggregate(results):
     all_probe_offsets = []
     for v in by_task.values():
         for key in (
-            "n", "correct", "no_early_correct", "no_late_correct",
+            "n", "correct", "strict_metric_correct", "targeted_correct",
+            "no_early_correct", "no_late_correct",
             "on_time_correct", "response_missing_n", "response_early_n",
             "response_late_n", "with_recall_n", "with_recall_correct",
             "without_recall_n", "without_recall_correct",
@@ -2342,13 +2734,15 @@ def aggregate(results):
             "n_compress_system_range_rule_ok",
             "n_compress_system_calc_checked",
             "n_compress_system_calc_ok", "n_step_errors",
-            "n_format_violations", "n_action_space_errors",
+            "n_frame_cache_misses", "n_format_violations", "n_action_space_errors",
             "n_recall_step2_blocked", "total_steps",
             "stable_think_samples", "stable_think_pairs",
         ):
             total[key] += int(v.get(key, 0) or 0)
         action_hist.update(v.get("action_histogram") or {})
         all_probe_offsets.extend(v.get("response_to_probe_offsets") or [])
+        total.setdefault("count_abs_errors", [])
+        total["count_abs_errors"].extend(v.get("count_abs_errors") or [])
         total["prompt_tokens_max"] = max(
             total["prompt_tokens_max"], int(v.get("prompt_tokens_max", 0) or 0)
         )
@@ -2360,9 +2754,12 @@ def aggregate(results):
         "answer": {
             "probes": total["n"],
             "content_acc": _pct(total["correct"], total["n"]),
+            "strict_acc": _pct(total["strict_metric_correct"], total["n"]),
+            "targeted_acc": _pct(total["targeted_correct"], total["n"]),
             "no_early_acc": _pct(total["no_early_correct"], total["n"]),
             "no_late_acc": _pct(total["no_late_correct"], total["n"]),
             "on_time_acc": _pct(total["on_time_correct"], total["n"]),
+            "count_mae": _mean(total.get("count_abs_errors", [])),
             "missing_rate": _pct(total["response_missing_n"], total["n"]),
             "early_rate": _pct(total["response_early_n"], total["n"]),
             "late_rate": _pct(total["response_late_n"], total["n"]),
@@ -2411,6 +2808,10 @@ def aggregate(results):
         "format_runtime": {
             "steps": total["total_steps"],
             "step_error_rate": _pct(total["n_step_errors"], total["total_steps"]),
+            "frame_cache_miss_rate": _pct(
+                total["n_frame_cache_misses"], total["total_steps"]
+            ),
+            "frame_cache_misses": total["n_frame_cache_misses"],
             "format_violation_rate": _pct(
                 total["n_format_violations"], total["total_steps"]
             ),
@@ -2432,24 +2833,32 @@ def aggregate(results):
         "category": {
             "RT": {
                 "avg": rt_avg, "n_tasks": rt_n,
+                "strict_acc": rt_strict,
+                "targeted_acc": rt_targeted,
                 "acc_no_early": rt_no_early,
                 "acc_no_late": rt_no_late,
                 "acc_on_time": rt_on_time,
             },
             "BT": {
                 "avg": bt_avg, "n_tasks": bt_n,
+                "strict_acc": bt_strict,
+                "targeted_acc": bt_targeted,
                 "acc_no_early": bt_no_early,
                 "acc_no_late": bt_no_late,
                 "acc_on_time": bt_on_time,
             },
             "FT": {
                 "avg": ft_avg, "n_tasks": ft_n,
+                "strict_acc": ft_strict,
+                "targeted_acc": ft_targeted,
                 "acc_no_early": ft_no_early,
                 "acc_no_late": ft_no_late,
                 "acc_on_time": ft_on_time,
             },
         },
         "overall": overall,
+        "overall_strict": overall_strict,
+        "overall_targeted": overall_targeted,
         "overall_no_early": overall_no_early,
         "overall_no_late": overall_no_late,
         "overall_on_time": overall_on_time,
@@ -2460,8 +2869,8 @@ def aggregate(results):
 
 def print_report(agg):
     print()
-    print(f"{'task':<8}  {'n':>6}  {'acc':>7}  {'noE':>7}  {'noL':>7}  {'onT':>7}  {'recall':>7}  {'comp':>6}  {'stable':>6}  {'early':>6}  {'late':>6}  notes")
-    print("-" * 133)
+    print(f"{'task':<8}  {'n':>6}  {'acc':>7}  {'strict':>7}  {'target':>7}  {'noE':>7}  {'noL':>7}  {'onT':>7}  {'recall':>7}  {'comp':>6}  {'early':>6}  {'late':>6}  notes")
+    print("-" * 144)
     for task in sorted(agg["by_task"]):
         v = agg["by_task"][task]
         if v["n"] == 0:
@@ -2478,6 +2887,8 @@ def print_report(agg):
             notes = f"t0={t0a:.3f}({t0}) t1={t1a:.3f}({t1}) fp={fp:.3f}"
         print(
             f"{task:<8}  {v['n']:>6}  {acc:>7.3f}  "
+            f"{diag.get('acc_strict', 0.0):>7.3f}  "
+            f"{diag.get('acc_targeted', 0.0):>7.3f}  "
             f"{diag.get('acc_no_early', 0.0):>7.3f}  "
             f"{diag.get('acc_no_late', 0.0):>7.3f}  "
             f"{diag.get('acc_on_time', 0.0):>7.3f}  "
@@ -2490,12 +2901,21 @@ def print_report(agg):
 
     print()
     print(f"Real-Time Visual Perception (RT): {agg['category']['RT']['avg']:.3f} "
+          f"strict={agg['category']['RT'].get('strict_acc', 0.0):.3f} "
+          f"target={agg['category']['RT'].get('targeted_acc', 0.0):.3f} "
           f"({agg['category']['RT']['n_tasks']} tasks)")
     print(f"Backward Tracing (BT):            {agg['category']['BT']['avg']:.3f} "
+          f"strict={agg['category']['BT'].get('strict_acc', 0.0):.3f} "
+          f"target={agg['category']['BT'].get('targeted_acc', 0.0):.3f} "
           f"({agg['category']['BT']['n_tasks']} tasks)")
     print(f"Forward Active Responding (FT):   {agg['category']['FT']['avg']:.3f} "
+          f"strict={agg['category']['FT'].get('strict_acc', 0.0):.3f} "
+          f"target={agg['category']['FT'].get('targeted_acc', 0.0):.3f} "
           f"({agg['category']['FT']['n_tasks']} tasks)")
     print(f"OVERALL (mean of categories):     {agg['overall']:.3f}")
+    print(f"OVERALL strict/targeted:          "
+          f"{agg.get('overall_strict', 0.0):.3f} / "
+          f"{agg.get('overall_targeted', 0.0):.3f}")
     print(f"OVERALL no-early/no-late/on-time: "
           f"{agg.get('overall_no_early', 0.0):.3f} / "
           f"{agg.get('overall_no_late', 0.0):.3f} / "
@@ -2518,10 +2938,10 @@ def print_report(agg):
           f"stable_pair={runtime.get('stable_think_pair_rate', 0.0):.3f}")
     print()
     print("Diagnostics: recall = event count; comp = compression trigger count; "
-          "stable = consecutive high-similarity think pairs; acc = content "
-          "accuracy where early correct answers still count; noE = correct "
-          "and not early; noL = correct and not late; onT = correct exactly "
-          "at the probe chunk.")
+          "acc = main content/official-style score; strict = targeted answer "
+          "at the exact probe chunk; target = task-specific scorer that allows "
+          "valid non-speaking states such as No-by-silence; noE/noL/onT split "
+          "answer timing after content correctness.")
 
 
 # ─── Main ────────────────────────────────────────────────────────────────────
@@ -2541,6 +2961,25 @@ def main():
                    help="Comma-separated subset (e.g., CRR,SSR,REC). Default: all 12.")
     p.add_argument("--n_per_task", type=int, default=None,
                    help="Cap samples per task (for quick smoke-tests)")
+    p.add_argument("--sample_ids", default=None,
+                   help="Comma-separated OVO sample ids to keep before task and "
+                        "length caps. Useful for targeted long-trajectory "
+                        "protocol stress tests.")
+    p.add_argument("--max_job_chunk", type=int, default=None,
+                   help="Protocol-search filter: keep only samples whose "
+                        "streaming trajectory jobs end at or before this "
+                        "chunk. This preserves correctness while avoiding "
+                        "very long full-video tails in fast design sweeps.")
+    p.add_argument("--prefer_short_jobs", action="store_true",
+                   help="Sort samples by trajectory length before applying "
+                        "--n_per_task. Useful for quick, fixed protocol sweeps.")
+    p.add_argument("--prefer_long_jobs", action="store_true",
+                   help="Sort samples by descending trajectory length before "
+                        "applying --n_per_task. Intended for memory-pressure "
+                        "stress tests.")
+    p.add_argument("--max_agent_jobs", type=int, default=None,
+                   help="Hard cap on built vLLM trajectory jobs after all "
+                        "sample filters. Intended only for protocol smoke tests.")
     p.add_argument("--retriever", default="hybrid", choices=["none", "bm25", "hybrid"])
     p.add_argument("--alpha", type=float, default=0.5)
     p.add_argument("--siglip_path", default="google/siglip-base-patch16-224")
@@ -2575,16 +3014,40 @@ def main():
     p.add_argument(
         "--frame-protocol",
         default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta"),
-        choices=["video_meta"],
-        help="Canonical visual carrier for pre-extracted frames.",
+        choices=["video_meta", "ts_image"],
+        help="Visual carrier for pre-extracted frames. Production SFT/RL "
+             "wrappers still lock this to video_meta.",
     )
     p.add_argument(
         "--render-layout",
         dest="render_layout",
-        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "timeline_video_imagepad"),
-        choices=["timeline_video_imagepad"],
-        help="Canonical interleaved video/image-pad prompt layout.",
+        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard_query_last"),
+        choices=["standard_query_last"],
+        help="Prompt layout. Production SFT/RL wrappers default to "
+             "standard_query_last.",
     )
+    p.add_argument("--memory-position",
+                   default=os.environ.get("THINKSTREAM_MEMORY_POSITION", "before_visual"),
+                   choices=["before_visual"],
+                   help="Render text memory before the visual window.")
+    p.add_argument("--min_pixels", type=int, default=130_000)
+    p.add_argument("--max_pixels", type=int, default=220_000)
+    p.add_argument("--visual_window_chunks", type=int, default=None,
+                   help="Eval-only override for the sliding visual window size.")
+    p.add_argument("--frames_per_chunk", type=int, default=None,
+                   help="Eval-only selected frames per 1-second chunk.")
+    p.add_argument("--source_frames_per_chunk", type=int, default=0,
+                   help="Frames per chunk in the pre-extracted frame cache. "
+                        "0 means infer per video; OVO mixes 1fps and 2fps "
+                        "frame dumps.")
+    p.add_argument("--require_frame_cache", action="store_true",
+                   help="Forbid fallback to raw video_path decoding when a "
+                        "pre-extracted frame window is missing. Use for fair "
+                        "visual-protocol speed/quality sweeps.")
+    p.add_argument("--drop_incomplete_frame_cache", action="store_true",
+                   help="Before applying --n_per_task, skip samples whose "
+                        "trajectory would need raw-video fallback because the "
+                        "pre-extracted frame cache ends before max_chunk.")
     p.add_argument("--engine", default="hf", choices=["hf", "vllm"],
                    help="Inference backend. vllm batches multiple live video "
                         "trajectories and advances their memory states locally.")
@@ -2598,6 +3061,7 @@ def main():
     p.add_argument("--vllm_max_images_per_prompt", type=int, default=96)
     p.add_argument("--vllm_max_videos_per_prompt", type=int, default=2)
     p.add_argument("--vllm_mm_processor_cache_gb", type=int, default=None)
+    p.add_argument("--disable_vllm_mm_preprocessor_cache", action="store_true")
     p.add_argument("--vllm_repetition_penalty", type=float, default=1.0)
     p.add_argument("--progress_every", type=int, default=10)
     p.add_argument("--query-policy", default=os.environ.get(
@@ -2607,31 +3071,90 @@ def main():
                         "OVO tasks are independent, so default keeps only the active query.")
     p.add_argument("--queries-history-cap", type=int, default=None,
                    help="Override query history cap after applying profile.")
+    p.add_argument("--recall_text_max_chars", type=int, default=None,
+                   help="Override eval-side recall_result text character cap.")
+    p.add_argument("--recent_thinks_token_budget", type=int, default=None,
+                   help="Override inference memory recent_thinks token budget; "
+                        "the compression trigger remains 80%% of this value.")
+    p.add_argument("--summary_tokens_max", type=int, default=None,
+                   help="Override inference compressed-summary token cap.")
     p.add_argument("--out", default=None)
     p.add_argument("--save_step_trace", action="store_true",
                    help="Store per-step truncated think/response trace in JSON. "
                         "Useful for stable-think audits; large on full OVO.")
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
+    global VISUAL_WINDOW_CHUNKS, FRAMES_PER_CHUNK, SOURCE_FRAMES_PER_CHUNK
     frame_protocol = normalize_frame_protocol(args.frame_protocol)
     args.render_layout = normalize_render_layout(args.render_layout)
+    args.memory_position = normalize_memory_position(args.memory_position)
     os.environ["THINKSTREAM_RENDER_LAYOUT"] = args.render_layout
+    os.environ["THINKSTREAM_MEMORY_POSITION"] = args.memory_position
+    os.environ["THINKSTREAM_PREFER_PATH_FRAME_INDEX"] = "0"
 
-    # Apply eval profile FIRST (mutates agent_protocol globals).
+    if args.visual_window_chunks is not None:
+        VISUAL_WINDOW_CHUNKS = max(1, int(args.visual_window_chunks))
+    if args.frames_per_chunk is not None:
+        FRAMES_PER_CHUNK = max(1, int(args.frames_per_chunk))
+    SOURCE_FRAMES_PER_CHUNK = max(0, int(args.source_frames_per_chunk))
+    from thinkstream.data import agent_protocol as _agent_protocol
+    _agent_protocol.VISUAL_WINDOW_CHUNKS = VISUAL_WINDOW_CHUNKS
+    _agent_protocol.FRAMES_PER_CHUNK = FRAMES_PER_CHUNK
+
+    # Apply eval profile (mutates agent_protocol token-budget globals).
     from scripts.eval.eval_profiles import apply_profile, describe_profile
     profile_cfg = apply_profile(args.profile)
     from thinkstream.data import agent_protocol
+    agent_protocol.VISUAL_WINDOW_CHUNKS = VISUAL_WINDOW_CHUNKS
+    agent_protocol.FRAMES_PER_CHUNK = FRAMES_PER_CHUNK
     agent_protocol.QUERY_HISTORY_POLICY = args.query_policy
     if args.queries_history_cap is not None:
         agent_protocol.QUERIES_HISTORY_CAP = int(args.queries_history_cap)
     elif args.query_policy in {"single_active", "replace_on_new"}:
         agent_protocol.QUERIES_HISTORY_CAP = 1
+    if args.recall_text_max_chars is not None:
+        agent_protocol.RECALL_TEXT_MAX_CHARS = max(1, int(args.recall_text_max_chars))
+        profile_cfg = dict(profile_cfg)
+        profile_cfg["recall_text_max_chars"] = agent_protocol.RECALL_TEXT_MAX_CHARS
+    if args.recent_thinks_token_budget is not None:
+        import thinkstream.model.agent_loop as _agent_loop
+        global RECENT_THINKS_TOKEN_BUDGET, COMPRESS_TOKEN_THRESHOLD
+        RECENT_THINKS_TOKEN_BUDGET = max(1, int(args.recent_thinks_token_budget))
+        _agent_loop.RECENT_THINKS_TOKEN_BUDGET = RECENT_THINKS_TOKEN_BUDGET
+        _agent_loop.COMPRESS_TOKEN_THRESHOLD = int(
+            RECENT_THINKS_TOKEN_BUDGET * _agent_loop.COMPRESS_TRIGGER_RATIO
+        )
+        COMPRESS_TOKEN_THRESHOLD = _agent_loop.COMPRESS_TOKEN_THRESHOLD
+    if args.summary_tokens_max is not None:
+        import thinkstream.model.agent_loop as _agent_loop
+        _agent_loop.SUMMARY_TOKENS_MAX = max(1, int(args.summary_tokens_max))
     print(describe_profile(args.profile))
     print(f"query_history: policy={agent_protocol.QUERY_HISTORY_POLICY}, "
           f"cap={agent_protocol.QUERIES_HISTORY_CAP}")
+    if (
+        args.recent_thinks_token_budget is not None
+        or args.summary_tokens_max is not None
+        or args.recall_text_max_chars is not None
+    ):
+        import thinkstream.model.agent_loop as _agent_loop
+        print(
+            "memory_budget_override: "
+            f"recent_tokens={_agent_loop.RECENT_THINKS_TOKEN_BUDGET}, "
+            f"compress_threshold={_agent_loop.COMPRESS_TOKEN_THRESHOLD}, "
+            f"summary_tokens={_agent_loop.SUMMARY_TOKENS_MAX}, "
+            f"recall_chars={agent_protocol.RECALL_TEXT_MAX_CHARS}",
+            flush=True,
+        )
     print(f"agent_ablation: compress_mode={args.compress_mode}, "
           f"memory_mode={args.memory_mode}, retriever={args.retriever}, "
           f"engine={args.engine}")
+    print(f"visual_ablation: frame_protocol={frame_protocol}, "
+          f"render_layout={args.render_layout}, "
+          f"memory_position={args.memory_position}, "
+          f"window_chunks={VISUAL_WINDOW_CHUNKS}, "
+          f"frames_per_chunk={FRAMES_PER_CHUNK}, "
+          f"source_frames_per_chunk={SOURCE_FRAMES_PER_CHUNK or 'auto'}, "
+          f"pixels={args.min_pixels}-{args.max_pixels}")
     if args.max_new_tokens == 128 and args.profile == "32k":
         args.max_new_tokens = profile_cfg["max_new_tokens_default"]
 
@@ -2660,9 +3183,90 @@ def main():
 
     # Group by task to apply per-task caps and report progress
     by_task = defaultdict(list)
+    sample_id_filter = None
+    if args.sample_ids:
+        sample_id_filter = {
+            raw.strip() for raw in str(args.sample_ids).split(",") if raw.strip()
+        }
+
     for s in all_samples:
+        if sample_id_filter is not None and str(s.get("id")) not in sample_id_filter:
+            continue
         if s.get("task") in task_filter:
             by_task[s["task"]].append(s)
+
+    if args.drop_incomplete_frame_cache:
+        skipped = 0
+        examples = []
+        for task in list(by_task.keys()):
+            kept = []
+            for sample in by_task[task]:
+                jobs = build_agent_jobs_for_sample(
+                    sample, args.video_root, scoring=args.scoring,
+                )
+                if not jobs:
+                    skipped += 1
+                    continue
+                complete = True
+                first_miss = None
+                for job in jobs:
+                    ok, miss = job_frame_cache_complete(
+                        job, args.frames_root, args.video_root,
+                    )
+                    if not ok:
+                        complete = False
+                        first_miss = miss
+                        break
+                if complete:
+                    kept.append(sample)
+                else:
+                    skipped += 1
+                    if first_miss and len(examples) < 5:
+                        examples.append(first_miss)
+            by_task[task] = kept
+        print(
+            "frame_cache_filter: "
+            f"skipped={skipped}, examples={examples}",
+            flush=True,
+        )
+
+    if args.prefer_short_jobs and args.prefer_long_jobs:
+        raise ValueError("--prefer_short_jobs and --prefer_long_jobs are mutually exclusive")
+
+    if args.max_job_chunk is not None or args.prefer_short_jobs or args.prefer_long_jobs:
+        max_job_chunk = (
+            max(0, int(args.max_job_chunk))
+            if args.max_job_chunk is not None else None
+        )
+        skipped = 0
+        for task in list(by_task.keys()):
+            ranked = []
+            for sample in by_task[task]:
+                jobs = build_agent_jobs_for_sample(
+                    sample, args.video_root, scoring=args.scoring,
+                )
+                if not jobs:
+                    skipped += 1
+                    continue
+                sample_max_chunk = max(int(job.get("max_chunk", -1)) for job in jobs)
+                if max_job_chunk is not None and sample_max_chunk > max_job_chunk:
+                    skipped += 1
+                    continue
+                ranked.append((sample_max_chunk, sample))
+            if args.prefer_short_jobs:
+                ranked.sort(key=lambda x: x[0])
+            elif args.prefer_long_jobs:
+                ranked.sort(key=lambda x: x[0], reverse=True)
+            by_task[task] = [sample for _, sample in ranked]
+        print(
+            "job_length_filter: "
+            f"max_job_chunk={max_job_chunk}, "
+            f"prefer_short={bool(args.prefer_short_jobs)}, "
+            f"prefer_long={bool(args.prefer_long_jobs)}, "
+            f"skipped={skipped}",
+            flush=True,
+        )
+
     if args.n_per_task:
         for t in by_task:
             by_task[t] = by_task[t][: args.n_per_task]
@@ -2688,20 +3292,23 @@ def main():
             max_images_per_prompt=args.vllm_max_images_per_prompt,
             max_videos_per_prompt=args.vllm_max_videos_per_prompt,
             mm_processor_cache_gb=args.vllm_mm_processor_cache_gb,
+            disable_mm_preprocessor_cache=args.disable_vllm_mm_preprocessor_cache,
             enable_prefix_caching=True,
         )
         jobs = []
         for task in sorted(by_task.keys()):
             for sample in by_task[task]:
                 try:
-                    job = build_agent_job(sample, args.video_root, scoring=args.scoring)
-                    if job is not None:
-                        jobs.append(job)
+                    jobs.extend(build_agent_jobs_for_sample(
+                        sample, args.video_root, scoring=args.scoring,
+                    ))
                 except Exception as e:
                     print(
                         f"[{task} id={sample.get('id')}] job failed: "
                         f"{type(e).__name__}: {e}"
                     )
+        if args.max_agent_jobs is not None:
+            jobs = jobs[: max(1, int(args.max_agent_jobs))]
         print(f"Built {len(jobs)} vLLM trajectory jobs")
         results = run_agent_jobs_vllm(
             jobs,
@@ -2737,7 +3344,8 @@ def main():
         loop = make_loop(model, processor, tokenizer, model_type, retriever,
                          args.compress_mode, args.max_new_tokens,
                          frames_root=args.frames_root, video_root=args.video_root,
-                         frame_protocol=frame_protocol, memory_mode=args.memory_mode)
+                         frame_protocol=frame_protocol, memory_mode=args.memory_mode,
+                         min_pixels=args.min_pixels, max_pixels=args.max_pixels)
 
         results = []
         done = 0
@@ -2780,9 +3388,34 @@ def main():
             "profile": args.profile,
             "frame_protocol": frame_protocol,
             "render_layout": args.render_layout,
+            "memory_position": args.memory_position,
+            "min_pixels": args.min_pixels,
+            "max_pixels": args.max_pixels,
+            "visual_window_chunks": VISUAL_WINDOW_CHUNKS,
+            "frames_per_chunk": FRAMES_PER_CHUNK,
+            "source_frames_per_chunk": (
+                SOURCE_FRAMES_PER_CHUNK if SOURCE_FRAMES_PER_CHUNK > 0 else "auto"
+            ),
+            "prefer_path_frame_index": False,
+            "require_frame_cache": bool(args.require_frame_cache),
+            "drop_incomplete_frame_cache": bool(args.drop_incomplete_frame_cache),
             "engine": args.engine,
             "rollout_batch_size": args.rollout_batch_size if args.engine == "vllm" else None,
+            "vllm_mm_processor_cache_gb": args.vllm_mm_processor_cache_gb,
+            "disable_vllm_mm_preprocessor_cache": args.disable_vllm_mm_preprocessor_cache,
             "profile_cfg": profile_cfg,
+            "max_job_chunk": args.max_job_chunk,
+            "prefer_short_jobs": bool(args.prefer_short_jobs),
+            "prefer_long_jobs": bool(args.prefer_long_jobs),
+            "sample_ids": args.sample_ids,
+            "max_agent_jobs": args.max_agent_jobs,
+            "recall_text_max_chars": agent_protocol.RECALL_TEXT_MAX_CHARS,
+            "recent_thinks_token_budget": RECENT_THINKS_TOKEN_BUDGET,
+            "compress_token_threshold": COMPRESS_TOKEN_THRESHOLD,
+            "summary_tokens_max": (
+                __import__("thinkstream.model.agent_loop", fromlist=["SUMMARY_TOKENS_MAX"])
+                .SUMMARY_TOKENS_MAX
+            ),
             "tasks_evaluated": sorted(by_task.keys()),
             "n_samples": len(results),
             "summary": agg,

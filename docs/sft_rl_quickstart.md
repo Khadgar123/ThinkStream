@@ -27,7 +27,7 @@ data/agent_v5/<batch_root>/
     train_rl_trajectories.jsonl
     val_trajectories.jsonl
   frames/
-  rendered/video_meta_timeline_video_imagepad/
+  rendered/video_meta_standard_query_last/
     train_sft_messages.jsonl
     val_messages.jsonl
     train_rl_multi_q.parquet       # auto-built if missing
@@ -35,9 +35,9 @@ data/agent_v5/<batch_root>/
 ```
 
 The supported project entry is intentionally fixed to
-`FRAME_PROTOCOL=video_meta` and `THINKSTREAM_RENDER_LAYOUT=timeline_video_imagepad`.
-Archived `ts_image` and standard block layouts are not produced by the main
-pipeline or launchers.
+`FRAME_PROTOCOL=video_meta` and `THINKSTREAM_RENDER_LAYOUT=standard_query_last`.
+Archived `ts_image` and block layouts are not produced by the main pipeline or
+launchers.
 
 ## 3. Multi-Batch Training Scheme
 
@@ -57,7 +57,7 @@ bash scripts/prepare_training_data.sh \
 ```
 
 The output already contains canonical rendered SFT messages and RL parquet
-files under `rendered/video_meta_timeline_video_imagepad/`.
+files under `rendered/video_meta_standard_query_last/`.
 
 ## 4. One-Command SFT -> RL
 

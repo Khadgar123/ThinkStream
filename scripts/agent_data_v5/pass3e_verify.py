@@ -185,8 +185,11 @@ def _verify_mc_response_text(resp_text: str, metadata: Dict) -> Tuple[bool, str]
     """Validate MC answer semantics and, when present, the SFT target style."""
     style = (metadata.get("answer_style") or "").strip()
     correct = (metadata.get("correct_option") or "").strip().upper()
+    options = list(metadata.get("options") or [])
+    valid_letters = "".join(chr(ord("A") + i) for i in range(min(len(options), 26)))
     if style == "letter_only":
-        if not re.fullmatch(r"[A-D]", resp_text.strip()):
+        letter_pattern = f"[{re.escape(valid_letters or 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')}]"
+        if not re.fullmatch(letter_pattern, resp_text.strip().upper()):
             return False, f"mc_response_not_letter_only: '{resp_text[:30]}'"
         if correct and resp_text.strip().upper() != correct:
             return False, f"mc_response_letter_mismatch: got '{resp_text}' want '{correct}'"
@@ -194,7 +197,7 @@ def _verify_mc_response_text(resp_text: str, metadata: Dict) -> Tuple[bool, str]
         if correct and not re.match(rf"^\s*{re.escape(correct)}[\).:\s]", resp_text.strip(), re.I):
             return False, f"mc_response_not_letter_plus_text: '{resp_text[:30]}'"
     elif style == "text_only":
-        if re.match(r"^\s*[A-D][\).:]", resp_text.strip(), re.I):
+        if re.match(r"^\s*(?:\([A-Z]\)|[A-Z][\).:])", resp_text.strip(), re.I):
             return False, f"mc_response_has_letter_for_text_only: '{resp_text[:30]}'"
 
     gold = (metadata.get("correct_answer_text")
@@ -203,7 +206,7 @@ def _verify_mc_response_text(resp_text: str, metadata: Dict) -> Tuple[bool, str]
             or "")
     score = score_outcome_by_form(
         resp_text,
-        options=list(metadata.get("options") or []),
+        options=options,
         correct_option=metadata.get("correct_option", ""),
         gold_answer=gold,
         answer_form="multiple_choice",
@@ -1085,6 +1088,7 @@ def verify_queries_state_temporal(sample: Dict) -> Tuple[bool, str]:
     # question text, not chunk). But we CAN check that queries_state is
     # monotonically growing across the trajectory — verified at trajectory level.
     # Per-sample check: queries must be a list of dicts with question+answers.
+    open_queries = []
     for i, q in enumerate(queries):
         if not isinstance(q, dict):
             return False, f"queries_state[{i}] is not a dict"
@@ -1094,6 +1098,13 @@ def verify_queries_state_temporal(sample: Dict) -> Tuple[bool, str]:
             return False, f"queries_state[{i}] missing 'answers' field"
         if not isinstance(q["answers"], list):
             return False, f"queries_state[{i}]['answers'] is not a list"
+        status = str(q.get("status", "open")).strip().lower()
+        if status in {"open", "pending", "active"}:
+            open_queries.append(q)
+
+    if len(open_queries) > 1:
+        ids = [str(q.get("card_id") or q.get("question", ""))[:60] for q in open_queries]
+        return False, f"multiple_open_queries:{ids}"
 
     return True, "pass"
 
@@ -1106,8 +1117,8 @@ def verify_trajectory_action_distribution(
     Checks at the trajectory level (not per-sample):
     - At least 1 response or recall sample (not all silent)
     - Silent should not exceed an adaptive threshold:
-        * 95% if any placement is event_watch (legit long waits)
-        * 92% if any placement is multi_response (silent gaps OK)
+        * 98% if any placement is event_watch (legit long waits)
+        * 97% if any placement is multi_response (silent gaps OK)
         * 90% otherwise
     """
     if not trajectory_samples:
@@ -1135,9 +1146,9 @@ def verify_trajectory_action_distribution(
         # legitimately spend most chunks waiting for the trigger.
         seq_types = {s.get("sequence_type", "") for s in trajectory_samples}
         if "event_watch" in seq_types:
-            silent_threshold = 95.0
+            silent_threshold = 98.0
         elif "multi_response" in seq_types:
-            silent_threshold = 92.0
+            silent_threshold = 97.0
         else:
             silent_threshold = 90.0
 
@@ -1230,6 +1241,17 @@ def verify_recall_evidence_reachable(sample: Dict, rollout: Dict = None) -> Tupl
     recall_result = sample.get("recall_result")
     if not recall_result and isinstance(sample.get("input"), dict):
         recall_result = sample["input"].get("recall_result")
+    if not isinstance(recall_result, dict):
+        return False, "recall_result_missing"
+    if recall_result.get("source") != "historical_frames":
+        return False, f"recall_result_bad_source:{recall_result.get('source')}"
+    text_content = str(
+        recall_result.get("text_content")
+        or recall_result.get("text")
+        or ""
+    ).strip()
+    if not text_content:
+        return False, "recall_result_empty_text"
     if isinstance(recall_result, dict):
         tr = recall_result.get("time", "")
         if tr:
@@ -1247,6 +1269,8 @@ def verify_recall_evidence_reachable(sample: Dict, rollout: Dict = None) -> Tupl
                 returned.append(int(c))
             except (TypeError, ValueError):
                 continue
+        if not returned:
+            return False, "recall_result_empty_returned_chunks"
         future_returned = [c for c in returned if chunk_idx_int >= 0 and c >= chunk_idx_int]
         if future_returned:
             return False, (

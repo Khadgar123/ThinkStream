@@ -39,7 +39,7 @@ def test_sft_rl_eval_use_canonical_prompt_contract():
 
     for text in (sft, rl, ovo_sft, ovo_rl):
         assert "video_meta" in text
-        assert "timeline_video_imagepad" in text
+        assert "standard_query_last" in text
 
     assert "canonical SFT uses FRAME_PROTOCOL=video_meta" in sft
     assert "canonical RL uses FRAME_PROTOCOL=video_meta" in rl

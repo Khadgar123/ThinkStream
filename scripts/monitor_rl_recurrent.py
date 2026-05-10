@@ -62,7 +62,7 @@ def _norm_text(value: Any) -> str:
 
 def _extract_mc_letter(value: Any) -> str:
     text = "" if value is None else str(value).strip()
-    m = re.match(r"^\s*([A-Da-d])(?:\b|\)|\.|:)", text)
+    m = re.match(r"^\s*([A-Za-z])(?:\b|\)|\.|:)", text)
     return m.group(1).upper() if m else ""
 
 

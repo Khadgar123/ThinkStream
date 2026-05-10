@@ -150,7 +150,9 @@ def main() -> None:
         if q0.get("answer_form") == "multiple_choice":
             if not ground_truth["options"]:
                 local_fail.append("MC missing options")
-            if ground_truth["correct_option"] not in {"A", "B", "C", "D"}:
+            options = ground_truth.get("options") or []
+            valid = {chr(ord("A") + i) for i in range(min(len(options), 26))}
+            if ground_truth["correct_option"] not in valid:
                 local_fail.append(
                     f"MC correct_option = {ground_truth['correct_option']!r}"
                 )

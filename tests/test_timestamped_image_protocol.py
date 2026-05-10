@@ -35,7 +35,7 @@ def _frame_timestamp_texts(content):
     ]
 
 
-def test_runtime_build_user_content_uses_timestamped_images():
+def test_runtime_build_user_content_defaults_to_video_metadata_protocol():
     content = build_user_content(
         memory_text="",
         chunk_idx=1,
@@ -46,6 +46,27 @@ def test_runtime_build_user_content_uses_timestamped_images():
             "frame_000003.jpg",
             "frame_000004.jpg",
         ],
+    )
+
+    types = [item["type"] for item in content]
+    assert types.count("video") == 1
+    assert "image" not in types
+    video = next(item for item in content if item["type"] == "video")
+    assert video["video_metadata"]["frames_indices"] == [0, 1, 2, 3]
+
+
+def test_runtime_build_user_content_can_use_timestamped_images_explicitly():
+    content = build_user_content(
+        memory_text="",
+        chunk_idx=1,
+        video_path="/unused.mp4",
+        frame_paths=[
+            "frame_000001.jpg",
+            "frame_000002.jpg",
+            "frame_000003.jpg",
+            "frame_000004.jpg",
+        ],
+        frame_protocol="ts_image",
     )
 
     types = [item["type"] for item in content]
@@ -89,7 +110,7 @@ def test_runtime_build_user_content_can_use_video_metadata_protocol():
     assert video["video_metadata"]["do_sample_frames"] is False
 
 
-def test_pass5_sft_messages_use_same_timestamped_image_protocol():
+def test_pass5_sft_messages_use_video_metadata_protocol_by_default():
     sample = {
         "sample_id": "s0",
         "video_id": "vid0",
@@ -116,11 +137,10 @@ def test_pass5_sft_messages_use_same_timestamped_image_protocol():
     content = messages[1]["content"]
 
     types = [item["type"] for item in content]
-    assert "video" not in types
-    assert types.count("image") == 4
-    assert _frame_timestamp_texts(content)[-1] == (
-        '<frame ts="1.5" role="latest chunk" />'
-    )
+    assert types.count("video") == 1
+    assert "image" not in types
+    video = next(item for item in content if item.get("type") == "video")
+    assert video["video_metadata"]["frames_indices"] == [0, 1, 2, 3]
 
 
 def test_pass5_sft_messages_can_render_video_meta_protocol():
@@ -149,7 +169,7 @@ def test_pass5_sft_messages_can_render_video_meta_protocol():
     messages = build_messages(sample, Path("/repo"), frame_protocol="video_meta")
     content = messages[1]["content"]
 
-    assert "pre-sampled video block" in messages[0]["content"][0]["text"]
+    assert "Qwen video block" in messages[0]["content"][0]["text"]
     assert [item["type"] for item in content].count("video") == 1
     video = next(item for item in content if item.get("type") == "video")
     assert video["video_metadata"]["frames_indices"] == [0, 1, 2, 3]
@@ -193,7 +213,7 @@ def test_pass5_compress_messages_use_compress_system_prompt():
         item.get("text", "") for item in messages[1]["content"]
         if item.get("type") == "text"
     )
-    assert "Directly compress memory now" in system_text
+    assert "memory-compaction controller" in system_text
     assert "<queries>" not in user_text
     assert "<active_query>" not in user_text
     assert "<visual_window>" not in user_text
@@ -239,13 +259,9 @@ def test_pass5_relocates_moved_absolute_frame_paths(tmp_path):
         "output": "<think>x</think><answer></answer>",
     }
     messages = build_messages(sample, tmp_path)
-    image_paths = [
-        item["image"]
-        for item in messages[1]["content"]
-        if item.get("type") == "image"
-    ]
-    assert all(Path(p).exists() for p in image_paths)
-    assert str(frame_dir / "frame_000004.jpg") in image_paths
+    video = next(item for item in messages[1]["content"] if item.get("type") == "video")
+    assert all(Path(p).exists() for p in video["video"])
+    assert str(frame_dir / "frame_000004.jpg") in video["video"]
 
 
 def test_teacher_passes_use_timestamped_image_url_protocol(tmp_path):
@@ -277,8 +293,9 @@ def test_teacher_passes_use_timestamped_image_url_protocol(tmp_path):
 
 
 def test_runtime_prompt_and_parser_use_frame_tags():
-    assert '<frame ts="12.5" role="latest chunk" />' in SYSTEM_PROMPT_V12
-    assert "never copy" in SYSTEM_PROMPT_V12.lower()
+    assert "Qwen video block" in SYSTEM_PROMPT_V12
+    assert "video_metadata carries frame timestamps" in SYSTEM_PROMPT_V12
+    assert '<frame ts="12.5" role="latest chunk" />' not in SYSTEM_PROMPT_V12
 
     parsed = parse_agent_output_v12(
         '<think><frame ts="2.0" role="latest chunk" /> new brush appears</think>'
@@ -292,23 +309,21 @@ def test_protocol_prompts_and_query_answer_format_are_explicit():
     ts_prompt = system_prompt_for_frame_protocol("ts_image")
     vm_prompt = system_prompt_for_frame_protocol("video_meta")
     compress_prompt = system_prompt_for_frame_protocol("ts_image", inter_chunk=True)
-    assert "frame-tagged visual frames" in ts_prompt
-    assert "pre-sampled video block" in vm_prompt
-    assert "Answer response format" in ts_prompt
-    assert "Answer response format" in vm_prompt
-    assert "exactly three terminal forms" in ts_prompt
-    assert "Recall tool:" in ts_prompt
-    assert "Answer response:" in ts_prompt
-    assert "Silent answer:" in ts_prompt
+    assert "Each frame has a timestamp tag" in ts_prompt
+    assert "Qwen video block" in vm_prompt
+    assert "Answer format:" in ts_prompt
+    assert "Answer format:" in vm_prompt
+    assert "Recall tool format:" in ts_prompt
+    assert "Silent format:" in ts_prompt
     assert "<active_query>" in ts_prompt
     assert "<response_history>" in ts_prompt
-    assert "Required output grammar for ordinary streaming turns:" in ts_prompt
+    assert "Output grammar:" in ts_prompt
     assert "{\"name\":\"recall\",\"arguments\":{\"query\"" in ts_prompt
     assert "<answer>response text</answer>" in ts_prompt
-    assert "The silent answer must be empty" in ts_prompt
-    assert "Never emit <tool_call>{\"name\":\"compress\"" in ts_prompt
-    assert "Directly compress memory now" in compress_prompt
-    assert "Do not call recall" in compress_prompt
+    assert "The silent answer is empty" in ts_prompt
+    assert "Compression belongs to the memory-maintenance prompt" in ts_prompt
+    assert "memory-compaction controller" in compress_prompt
+    assert "do not call recall" in compress_prompt
     assert "Required output grammar for compression turns:" in compress_prompt
     assert "<tool_call>{\"name\":\"compress\"" in compress_prompt
     assert "time_range must be a two-integer array" in compress_prompt
@@ -355,7 +370,7 @@ def test_memory_recent_thinks_are_tagged_json_records():
     })
     assert "<compressed>{" in text
     assert "<memory_think>{" in text
-    assert '"time": "8-9"' in text
+    assert '"time": 8' in text
     assert '"text": "A red bowl appears on the counter."' in text
 
 

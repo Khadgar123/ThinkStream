@@ -528,6 +528,17 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
             gold_action = gold_action.tolist()
         if not isinstance(gold_action, dict):
             gold_action = {}
+        q_ask_chunks = self._valid_chunks(
+            self._safe_int_list(q.get("ask_chunks") or [q.get("ask_chunk")]),
+            n_chunks=n_chunks,
+        )
+        q_answer_chunks = self._valid_chunks(
+            self._safe_int_list(q.get("answer_chunks")),
+            n_chunks=n_chunks,
+        )
+        q_live_marks = q_ask_chunks + q_answer_chunks
+        q_live_start = min(q_ask_chunks or q_live_marks or [segment_start])
+        q_live_end = max(q_answer_chunks or q_ask_chunks or q_live_marks or [segment_end])
         segment_gold_action: Dict[str, Any] = {}
         for k, v in gold_action.items():
             try:
@@ -535,7 +546,9 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
             except (TypeError, ValueError):
                 continue
             if segment_start <= ck <= segment_end:
-                segment_gold_action[str(ck)] = v
+                segment_gold_action[str(ck)] = (
+                    v if q_live_start <= ck <= q_live_end else "silent"
+                )
 
         single_extra = dict(extra)
         if source_row_i is not None:
@@ -562,7 +575,10 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
             "question": str(q.get("question", "")),
             "gold_answer": str(q.get("gold_answer") or q.get("correct_answer_text") or ""),
             "answer_form": str(q.get("answer_form", "")),
-            "ask_chunks": self._safe_int_list(q.get("ask_chunks") or [q.get("ask_chunk")]),
+            "ask_chunks": q_ask_chunks,
+            "answer_chunks": q_answer_chunks,
+            "question_live_start_chunk": int(q_live_start),
+            "question_live_end_chunk": int(q_live_end),
         })
         if initial_state is not None:
             single_extra["initial_student_state"] = initial_state

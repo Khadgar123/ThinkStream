@@ -41,7 +41,8 @@ MAX_NEW_TOKENS=${MAX_NEW_TOKENS:-128}
 PROFILE=${PROFILE:-16k}
 SCORING=${SCORING:-strict}
 FRAME_PROTOCOL=${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-video_meta}}
-RENDER_LAYOUT=${RENDER_LAYOUT:-${THINKSTREAM_RENDER_LAYOUT:-timeline_video_imagepad}}
+RENDER_LAYOUT=${RENDER_LAYOUT:-${THINKSTREAM_RENDER_LAYOUT:-standard_query_last}}
+MEMORY_POSITION=${MEMORY_POSITION:-${THINKSTREAM_MEMORY_POSITION:-before_visual}}
 COMPRESS_MODE=${COMPRESS_MODE:-system}
 MEMORY_MODE=${MEMORY_MODE:-full}
 SAVE_STEP_TRACE=${SAVE_STEP_TRACE:-0}
@@ -71,19 +72,28 @@ while [[ $# -gt 0 ]]; do
         --render_layout|--render-layout) RENDER_LAYOUT="$2"; shift 2 ;;
         --compress_mode|--compress-mode) COMPRESS_MODE="$2"; shift 2 ;;
         --memory_mode|--memory-mode) MEMORY_MODE="$2"; shift 2 ;;
+        --memory_position|--memory-position) MEMORY_POSITION="$2"; shift 2 ;;
         --save_step_trace|--save-step-trace) SAVE_STEP_TRACE=1; shift ;;
         --engine) ENGINE="$2"; shift 2 ;;
         --rollout_batch_size|--rollout-batch-size) ROLLOUT_BATCH_SIZE="$2"; shift 2 ;;
         *) echo "Unknown parameter: $1" >&2; exit 1 ;;
     esac
 done
-if [[ "${FRAME_PROTOCOL}" != "video_meta" || "${RENDER_LAYOUT}" != "timeline_video_imagepad" ]]; then
-    echo "ERROR: canonical OVO SFT eval uses FRAME_PROTOCOL=video_meta RENDER_LAYOUT=timeline_video_imagepad" >&2
+case "${RENDER_LAYOUT}" in
+    standard_query_last) ;;
+    *)
+        echo "ERROR: unsupported RENDER_LAYOUT=${RENDER_LAYOUT}" >&2
+        exit 2
+        ;;
+esac
+if [[ "${FRAME_PROTOCOL}" != "video_meta" ]]; then
+    echo "ERROR: canonical OVO SFT eval uses FRAME_PROTOCOL=video_meta" >&2
     echo "       got FRAME_PROTOCOL=${FRAME_PROTOCOL} RENDER_LAYOUT=${RENDER_LAYOUT}" >&2
     exit 2
 fi
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 export THINKSTREAM_RENDER_LAYOUT="${RENDER_LAYOUT}"
+export THINKSTREAM_MEMORY_POSITION="${MEMORY_POSITION}"
 export THINKSTREAM_EVAL_MEMORY_MODE="${MEMORY_MODE}"
 
 if [[ -z "$CKPT" || -z "$BENCHMARK_JSON" || -z "$VIDEO_ROOT" ]]; then
@@ -114,6 +124,7 @@ echo "  profile:    ${PROFILE}"
 echo "  scoring:    ${SCORING}"
 echo "  protocol:   ${FRAME_PROTOCOL}"
 echo "  layout:     ${RENDER_LAYOUT}"
+echo "  memory pos: ${MEMORY_POSITION}"
 echo "  engine:     ${ENGINE}"
 [[ "${ENGINE}" == "vllm" ]] && echo "  batch:      ${ROLLOUT_BATCH_SIZE}"
 [ -n "$TASKS" ] && echo "  tasks:      ${TASKS}"
@@ -142,6 +153,7 @@ python scripts/eval/ovo/eval_full.py \
     --scoring "${SCORING}" \
     --frame-protocol "${FRAME_PROTOCOL}" \
     --render-layout "${RENDER_LAYOUT}" \
+    --memory-position "${MEMORY_POSITION}" \
     --engine "${ENGINE}" \
     --rollout_batch_size "${ROLLOUT_BATCH_SIZE}" \
     --gpu_memory_utilization "${GPU_MEMORY_UTILIZATION}" \

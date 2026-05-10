@@ -121,7 +121,11 @@ def match_mcq_answer(
 
     # Strategy 1: leading-letter match.
     leading = ma.lstrip("([").lstrip()
-    if leading and correct_letter and leading[0] in "abcd":
+    valid_letters = {
+        chr(ord("a") + i)
+        for i in range(min(max(len(options), 0), 26))
+    }
+    if leading and correct_letter and leading[0] in valid_letters:
         if len(leading) == 1 or not leading[1].isalpha():
             if leading[0] != correct_letter:
                 return False

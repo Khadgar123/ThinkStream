@@ -15,7 +15,26 @@ import random
 from typing import Dict, List, Tuple
 
 from ..stable_hash import stable_mod, stable_seed
-from .design import Card, F7_ADOPT_RATE, GoldEmit, MULTI_EMIT_ADOPT_RATE
+from .design import (
+    CRR1_ADOPT_RATE,
+    Card,
+    F7_ADOPT_RATE,
+    GoldEmit,
+    MULTI_EMIT_ADOPT_RATE,
+)
+
+MC_OPTION_LETTERS = "ABCDE"
+
+
+def _ovo_option_count(*keys) -> int:
+    bucket = stable_mod(*keys, "OPTION_COUNT", modulo=100)
+    if bucket < 3:
+        return 2
+    if bucket < 6:
+        return 3
+    if bucket < 7:
+        return 5
+    return 4
 
 
 # Family taxonomy aligned with OVOBench (MC-dominant) + 3-bucket profile.
@@ -25,16 +44,16 @@ from .design import Card, F7_ADOPT_RATE, GoldEmit, MULTI_EMIT_ADOPT_RATE
 #
 # Bucket allocation (matches PLACEMENT_PROFILE in design.py):
 #   backward (recall-heavy):  N1, P1, HLD1, CR1, CR2, CR4, CR5, M1
-#   forward  (silent-then-respond): E2, F6
+#   forward  (silent-then-respond): E2
 #   realtime (immediate):     CR3, CR7, R1, ACR1, STU1, OJR1, C1
-#   streaming multi_emit:     F5, F7, PN1
+#   streaming multi_emit:     F5, F7, CRR1, PN1
 #   ────────────────────────────────────────────────────────────────
 #   total target                                                     20 cards
 FAMILY_BUDGET = {
     # backward MC
     "N1":  1, "P1":  1, "HLD1": 1, "CR1": 1, "CR2": 1, "CR4": 1, "CR5": 1,
     # forward MC + binary
-    "E2":  1, "F6":  1, "F7":  1,
+    "E2":  1, "F6":  1, "F7":  1, "CRR1": 1,
     # realtime MC + number + short_exact
     "CR3": 1, "CR7": 1, "R1":  1, "ACR1": 1, "STU1": 1, "OJR1": 1,
     "F5":  1, "C1":  2,
@@ -310,6 +329,48 @@ def gen_f7_status_flip(evidence: List[Dict], video_id: str) -> List[Card]:
     return cards
 
 
+def gen_crr_event_status(evidence: List[Dict], video_id: str) -> List[Card]:
+    """CRR1 cards: repeated Yes/No probes around an event becoming true."""
+    scs = _state_change_chunks(evidence)
+    if not evidence:
+        return []
+    n_chunks = max((c.get("chunk_idx", 0) for c in evidence), default=0) + 1
+    cards = []
+    for c, text in scs:
+        if c < 8 or n_chunks - c < 2:
+            continue
+        pre_far = max(0, c - min(96, max(10, c // 2)))
+        pre_near = max(0, c - min(12, max(4, c // 4)))
+        post_near = min(n_chunks - 1, c + 2)
+        post_far = min(
+            n_chunks - 1,
+            c + min(96, max(24, (n_chunks - 1 - c) // 2)),
+        )
+        probe_chunks = sorted({pre_far, pre_near, c, post_near, post_far})
+        emits = [
+            GoldEmit(chunk=pc, value=("No" if pc < c else "Yes"))
+            for pc in probe_chunks
+        ]
+        values = {e.value for e in emits}
+        if len(emits) < 3 or not {"No", "Yes"}.issubset(values):
+            continue
+        event = str(text or "").strip().rstrip(".")
+        if not event:
+            continue
+        cards.append(Card(
+            card_id=f"{video_id}_CRR1_{_hash_id(video_id, c, event)}",
+            family="CRR1",
+            question=f"Has \"{event[:70]}\" happened yet?",
+            answer_form="binary",
+            question_type="multi_emit",
+            gold_emits=emits,
+            grounding_frames=[c],
+        ))
+        if len(cards) >= FAMILY_BUDGET["CRR1"]:
+            break
+    return cards
+
+
 def gen_hld_unanswerable(evidence: List[Dict], video_id: str) -> List[Card]:
     """HLD1 cards: explicit "Unable to answer" MC negatives.
 
@@ -359,11 +420,13 @@ def gen_hld_unanswerable(evidence: List[Dict], video_id: str) -> List[Card]:
         "Magenta", "Cyan", "Violet", "Maroon", "Beige", "Ivory",
         "Navy", "Teal", "Lavender",
     ]
+    option_count = _ovo_option_count(video_id, "HLD1")
+    distractor_count = option_count - 1
     # Prefer options absent from the whole video evidence. With the larger pool
     # this normally succeeds; if not, fall back to support-local absence below.
-    options = [o for o in option_pool if o.lower() not in blob][:3]
-    if len(options) < 3:
-        options = option_pool[:3]
+    options = [o for o in option_pool if o.lower() not in blob][:distractor_count]
+    if len(options) < distractor_count:
+        options = option_pool[:distractor_count]
 
     chunks = [
         int(cap.get("chunk_idx", 0)) for cap in evidence
@@ -387,7 +450,7 @@ def gen_hld_unanswerable(evidence: List[Dict], video_id: str) -> List[Card]:
         grounding = chunks
     emit_chunk = max(grounding)
 
-    correct_pos = ["A", "B", "C", "D"][stable_mod(video_id, "HLD1", modulo=4)]
+    correct_pos = MC_OPTION_LETTERS[stable_mod(video_id, "HLD1", modulo=option_count)]
     options.insert(ord(correct_pos) - ord("A"), "Unable to answer")
     opts_with_letter = [f"{chr(65+j)}) {o}" for j, o in enumerate(options)]
     return [Card(
@@ -427,7 +490,9 @@ def gen_ocr(evidence: List[Dict], video_id: str) -> List[Card]:
             continue
         chunk_rng = random.Random(_hash_id(video_id, "C1", c, text))
         distractors = chunk_rng.sample(candidates_d, 3)
-        correct_pos = ["A", "B", "C", "D"][(i + stable_mod(video_id, "C1", modulo=4)) % 4]
+        correct_pos = MC_OPTION_LETTERS[
+            (i + stable_mod(video_id, "C1", modulo=4)) % 4
+        ]
         options = list(distractors)
         options.insert(ord(correct_pos) - ord("A"), ans)
         options = options[:4]
@@ -457,7 +522,7 @@ def gen_mc_card(
     """Generic MC generator for OVOBench-style families.
 
     Picks `budget` chunks (stratified across video timeline), produces
-    one MC card per chunk with rotated correct option (A/B/C/D) for
+    one MC card per chunk with rotated correct option for
     dataset-level balance.
     """
     candidates = []
@@ -505,8 +570,7 @@ def gen_mc_card(
         x for x in distractor_pool if not (x in seen_d or seen_d.add(x))
     ]
 
-    rotation = ["A", "B", "C", "D"]
-    family_offset = stable_mod(video_id, family, modulo=4)
+    rotation = list(MC_OPTION_LETTERS)
     cards = []
     for i, (c, ents, facts) in enumerate(bins):
         if family in {"ACR1", "STU1", "OJR1", "R1", "CR1", "CR3", "CR4"} and facts:
@@ -518,10 +582,13 @@ def gen_mc_card(
         if not correct_text:
             continue
 
-        # Sample 3 distractors that aren't the correct answer.
+        option_count = _ovo_option_count(video_id, family, c)
+        family_offset = stable_mod(video_id, family, modulo=option_count)
+
+        # Sample distractors that aren't the correct answer.
         candidates_d = [d for d in distractor_pool
                         if d.strip().lower() != correct_text.strip().lower()]
-        if len(candidates_d) < 3:
+        if len(candidates_d) < option_count - 1:
             # Heuristic pool too thin → fall back to short_exact (entity name)
             # so reward+eval stay valid (no MC letter without real options).
             cards.append(Card(
@@ -539,12 +606,11 @@ def gen_mc_card(
 
         # Deterministic distractor pick by chunk hash (stable across runs)
         chunk_rng = random.Random(_hash_id(video_id, family, c))
-        distractors = chunk_rng.sample(candidates_d, 3)
-        correct_pos = rotation[(i + family_offset) % 4]
+        distractors = chunk_rng.sample(candidates_d, option_count - 1)
+        correct_pos = rotation[(i + family_offset) % option_count]
         options = list(distractors)
         options.insert(ord(correct_pos) - ord("A"), correct_text)
-        # Drop the surplus item that pushed list to length 5 (insert grew it)
-        options = options[:4]
+        options = options[:option_count]
         opts_with_letter = [f"{chr(65+j)}) {o}" for j, o in enumerate(options)]
         emits = [GoldEmit(chunk=c, value=correct_pos)]
         question_by_family = {
@@ -623,6 +689,8 @@ def generate_cards(evidence: List[Dict], video_id: str, seed: int = 42) -> List[
     cards += gen_hld_unanswerable(evidence, video_id)    # MC Unable-to-answer
     if stable_mod(video_id, "F7_ADOPT", modulo=100) < int(F7_ADOPT_RATE * 100):
         cards += gen_f7_status_flip(evidence, video_id)  # binary SSR status flip
+    if stable_mod(video_id, "CRR1_ADOPT", modulo=100) < int(CRR1_ADOPT_RATE * 100):
+        cards += gen_crr_event_status(evidence, video_id)  # CRR-like before/after probes
     cards += gen_ocr(evidence, video_id)                 # MC OCR (realtime)
     cards += gen_m1_summary(evidence, video_id)          # descriptive (backward)
     # Multi_emit / narration — adopt only in MULTI_EMIT_ADOPT_RATE of videos

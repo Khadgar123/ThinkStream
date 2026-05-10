@@ -7,7 +7,7 @@
 #   bash scripts/run_sft_rl.sh
 #
 # Defaults target the current full-video OVO-style setting:
-#   video_meta + timeline_video_imagepad, multi-question rows, recurrent RL.
+#   video_meta + standard_query_last, multi-question rows, recurrent RL.
 
 set -Eeuo pipefail
 
@@ -59,12 +59,20 @@ require_file() {
 
 RUN_ID="${RUN_ID:-sft_rl_$(timestamp)}"
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-video_meta}}"
-THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-timeline_video_imagepad}"
-if [[ "${FRAME_PROTOCOL}" != "video_meta" || "${THINKSTREAM_RENDER_LAYOUT}" != "timeline_video_imagepad" ]]; then
-  echo "ERROR: canonical SFT/RL uses FRAME_PROTOCOL=video_meta THINKSTREAM_RENDER_LAYOUT=timeline_video_imagepad" >&2
+THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard_query_last}"
+case "${THINKSTREAM_RENDER_LAYOUT}" in
+  standard_query_last) ;;
+  *)
+    echo "ERROR: unsupported THINKSTREAM_RENDER_LAYOUT=${THINKSTREAM_RENDER_LAYOUT}" >&2
+    exit 2
+    ;;
+esac
+if [[ "${FRAME_PROTOCOL}" != "video_meta" ]]; then
+  echo "ERROR: canonical SFT/RL uses FRAME_PROTOCOL=video_meta" >&2
   echo "       got FRAME_PROTOCOL=${FRAME_PROTOCOL} THINKSTREAM_RENDER_LAYOUT=${THINKSTREAM_RENDER_LAYOUT}" >&2
   exit 2
 fi
+export THINKSTREAM_MEMORY_POSITION="${THINKSTREAM_MEMORY_POSITION:-before_visual}"
 THINKSTREAM_DATA_ROOT="${THINKSTREAM_DATA_ROOT:-${AGENT_DATA_DIR:-data/agent_v5}}"
 if [[ "${THINKSTREAM_DATA_ROOT}" == */final ]]; then
   THINKSTREAM_DATA_ROOT="$(dirname "${THINKSTREAM_DATA_ROOT}")"

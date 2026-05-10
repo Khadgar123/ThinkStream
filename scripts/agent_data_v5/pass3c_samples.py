@@ -2,8 +2,8 @@
 
 For each trajectory's selected placements, walks every chunk in [0, num_chunks)
 and emits ONE raw SFT sample per chunk (silent / response / recall+response /
-patrol / compress_silent), using v2/design.py as the single source of truth
-for gold actions.
+recall+silent / patrol / compress_silent), using v2/design.py as the single
+source of truth for gold actions.
 
 Pipeline contract preserved:
   generate_trajectory_samples(trajectory, cards_map, rollout, evidence,
@@ -13,6 +13,7 @@ Pipeline contract preserved:
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import random
@@ -77,7 +78,12 @@ def _think_for_chunk(rollout: Dict, chunk_idx: int) -> str:
     return ""
 
 
-def _recall_action_think(visual_think: str, *, final_action: str) -> str:
+def _recall_action_think(
+    visual_think: str,
+    *,
+    final_action: str,
+    reason: str = "",
+) -> str:
     """Gold first-turn think for recall tool calls.
 
     Pass2 thinks are question-blind current-frame observations. For recall
@@ -88,23 +94,66 @@ def _recall_action_think(visual_think: str, *, final_action: str) -> str:
     low = base.lower()
     if "visible evidence" in low and "recall" in low:
         return base
+    reason = str(reason or "").strip()
     if final_action == "silent":
-        decision = (
-            "Current visible evidence is insufficient to "
-            "answer the active query. The answer may not have appeared yet, "
-            "so I will recall elapsed history once and stay silent if still "
-            "unsupported."
-        )
+        if reason == "memory_unclear":
+            decision = (
+                "The active query depends on elapsed context, but the current "
+                "view is not enough to answer. I will recall the earlier "
+                "history once, and stay silent if it still does not contain "
+                "the needed evidence."
+            )
+        elif reason == "related_history_check":
+            decision = (
+                "A related moment may have occurred earlier, so I should "
+                "recall the elapsed history before deciding. If the retrieved "
+                "history still lacks the answer, I will keep waiting."
+            )
+        elif reason == "pre_answer_check":
+            decision = (
+                "Before answering the pending query, I should check whether "
+                "the answer already appeared in history. If it has not, the "
+                "correct action is still an empty answer."
+            )
+        elif reason == "long_wait_history_check":
+            decision = (
+                "The query has stayed open long enough that earlier visual "
+                "details may no longer be in current memory. I will recall "
+                "elapsed history and keep waiting if the answer is still not "
+                "supported."
+            )
+        else:
+            decision = (
+                "Current visible evidence is insufficient to answer the "
+                "active query. The answer may not have appeared yet, so I "
+                "will recall elapsed history once and stay silent if still "
+                "unsupported."
+            )
     else:
-        decision = (
-            "Current visible evidence is insufficient to answer the active "
-            "query because the needed evidence is historical, so I will "
-            "recall the earlier window rather than guess."
-        )
+        if reason == "cumulative_history":
+            decision = (
+                "The current moment is relevant, but the answer also depends "
+                "on earlier occurrences, so I will recall the prior window "
+                "before giving the cumulative answer."
+            )
+        elif reason == "status_history":
+            decision = (
+                "The status question depends on an event that may have "
+                "happened earlier, so I will recall that historical moment "
+                "before answering."
+            )
+        else:
+            decision = (
+                "Current visible evidence is insufficient to answer the "
+                "active query because the needed evidence is historical, so "
+                "I will recall the earlier window rather than guess."
+            )
     return f"{base} {decision}".strip()
 
 
-_OPTION_LABEL_RE = re.compile(r"^\s*[A-D][\).]\s*")
+MC_OPTION_LETTERS = "ABCDE"
+MC_OPTION_COUNTS = {2, 3, 4, 5}
+_OPTION_LABEL_RE = re.compile(r"^\s*(?:\([A-E]\)|[A-E][\).:])\s*")
 _TOKEN_RE = re.compile(r"[^\W_]+", re.UNICODE)
 MC_ANSWER_STYLES = ("letter_only", "letter_plus_text", "text_only")
 _STOPWORDS = {
@@ -163,11 +212,28 @@ def _answer_visible_in_text(answer: str, text: str, *, threshold: float) -> bool
     )
 
 
-def _memory_overlap_score(text: str, memory_text: str) -> float:
+def _recall_query_leaks_answer(card: Dict, query: Dict) -> bool:
+    """True when a recall search query exposes the target answer itself."""
+    answer = _card_answer_text(card)
+    if not answer or answer.strip().lower() == "unable to answer":
+        return False
+    return _answer_visible_in_text(
+        answer,
+        str((query or {}).get("query", "")),
+        threshold=0.50,
+    )
+
+
+def _memory_overlap_score(
+    text: str,
+    memory_text: str,
+    *,
+    memory_tokens: Optional[set[str]] = None,
+) -> float:
     toks = set(_tokens(text))
     if not toks:
         return 0.0
-    mem = set(_tokens(memory_text))
+    mem = memory_tokens if memory_tokens is not None else set(_tokens(memory_text))
     if not mem:
         return 0.0
     return len(toks & mem) / max(len(toks), 1)
@@ -268,14 +334,14 @@ def _mc_correct_letter_text(card: Dict, fallback: str = "") -> tuple[str, str]:
     """Return (correct_letter, correct_option_text) for an MC card."""
     options = list(card.get("options") or [])
     correct = str(card.get("correct_option") or "").strip().upper()
-    if correct in {"A", "B", "C", "D"} and len(options) == 4:
+    if len(options) in MC_OPTION_COUNTS and correct in MC_OPTION_LETTERS[:len(options)]:
         idx = ord(correct) - ord("A")
         if 0 <= idx < len(options):
             text = _strip_option_label(options[idx])
             if text:
                 return correct, text
     canonical = str(card.get("canonical_answer") or "").strip()
-    if canonical and canonical.upper() not in {"A", "B", "C", "D"}:
+    if canonical and canonical.upper() not in set(MC_OPTION_LETTERS):
         return correct, _strip_option_label(canonical)
     return correct, str(fallback or "").strip()
 
@@ -300,9 +366,12 @@ def _mc_answer_style_for_card(card: Dict, video_id: str = "") -> str:
     return "text_only"
 
 
-def _mc_answer_instruction(style: str) -> str:
+def _mc_answer_instruction(style: str, options: Optional[List[str]] = None) -> str:
     if style == "letter_only":
-        return "Answer format: one letter only (A, B, C, or D)."
+        n_opts = len(list(options or []))
+        labels = [chr(ord("A") + i) for i in range(max(2, min(n_opts or 4, 26)))]
+        label_text = ", ".join(labels[:-1]) + f", or {labels[-1]}"
+        return f"Answer format: one letter only ({label_text})."
     if style == "letter_plus_text":
         return "Answer format: letter plus option text, e.g. A) option text."
     return "Answer format: answer text only, no option letter."
@@ -467,12 +536,40 @@ def _grounding_time_range_before(card: Dict, current_chunk: int) -> str:
     return f"{int(tr_start)}-{int(tr_end)}"
 
 
+def _hld_recall_query_for(card: Dict, current_chunk: int) -> Dict:
+    """Recall query for HLD/Unable cases.
+
+    HLD recall is an evidence check, not a search for the answer value. The
+    query includes the requested target plus broad scene anchors so retrieval can
+    return representative historical observations for verifying absence.
+    """
+    time_range = _grounding_time_range_before(card, current_chunk)
+    if not time_range:
+        end_s = max(0, int(current_chunk * AGENT_CHUNK_SEC))
+        time_range = f"0-{end_s}" if end_s > 0 else ""
+    banned = {
+        "what", "which", "where", "when", "color", "material", "many",
+        "video", "unable", "answer", "option", "did", "leave", "close",
+        "open", "before", "after",
+    }
+    target_terms = [t for t in _tokens(card.get("question", "")) if t not in banned]
+    terms = (target_terms[:3] + ["visible", "objects", "scene"])[:5]
+    return {"query": " ".join(terms), "time_range": time_range}
+
+
 def _recall_query_for(card: Dict, current_chunk: int) -> Dict:
     """Build recall_query (synchronous fast path).
 
     Returns card.recall_query if pre-generated, else heuristic.
     """
-    if card.get("recall_query") and _recall_query_available(card["recall_query"], current_chunk):
+    if _is_unanswerable_card(card):
+        return _hld_recall_query_for(card, current_chunk)
+    if (
+        card.get("question_type") != "multi_emit"
+        and card.get("recall_query")
+        and _recall_query_available(card["recall_query"], current_chunk)
+        and not _recall_query_leaks_answer(card, card["recall_query"])
+    ):
         return card["recall_query"]
     time_range = _grounding_time_range_before(card, current_chunk)
     q = card.get("question", "")
@@ -491,10 +588,16 @@ def _repair_recall_query_for_response(
     placements with support in the past and outside the visual window. This
     helper repairs stale LLM/cache query ranges by rebuilding from support.
     """
-    if _recall_query_available(query, current_chunk):
+    if (
+        _recall_query_available(query, current_chunk)
+        and not _recall_query_leaks_answer(card, query)
+    ):
         return query
     repaired = _recall_query_for(card, current_chunk)
-    if _recall_query_available(repaired, current_chunk):
+    if (
+        _recall_query_available(repaired, current_chunk)
+        and not _recall_query_leaks_answer(card, repaired)
+    ):
         return repaired
     return {}
 
@@ -518,9 +621,18 @@ def _recall_wait_query_for(card: Dict, chunk_idx: int) -> Dict:
 async def _recall_query_via_llm(card: Dict, client, video_id: str,
                                   chunk_idx: int) -> Dict:
     """397B-driven recall_query. Caches result on card so we don't re-call."""
-    if card.get("recall_query") and _recall_query_available(card["recall_query"], chunk_idx):
+    if card.get("question_type") == "multi_emit":
+        # Cumulative/status multi-emit recall depends on the current probe
+        # chunk. A card-level cached teacher query can be too narrow for later
+        # probes, so use the deterministic current-chunk range.
+        return _recall_query_for(card, chunk_idx)
+    if (
+        card.get("recall_query")
+        and _recall_query_available(card["recall_query"], chunk_idx)
+        and not _recall_query_leaks_answer(card, card["recall_query"])
+    ):
         return card["recall_query"]
-    prompt = recall_query_prompt(card)
+    prompt = recall_query_prompt(card, current_chunk=chunk_idx, mode="answer")
     cfg = PASS_CONFIG.get("pass3c_recall_query", PASS_CONFIG.get("pass3c", {}))
     fallback_tr = _grounding_time_range_before(card, chunk_idx)
     try:
@@ -535,7 +647,10 @@ async def _recall_query_via_llm(card: Dict, client, video_id: str,
         logger.warning(f"[{video_id}] 3c recall_query LLM failed: {exc}")
         return _recall_query_for(card, chunk_idx)
     rq = parse_recall_query_response(raw or "", fallback_time_range=fallback_tr)
-    if not _recall_query_available(rq, chunk_idx):
+    if (
+        not _recall_query_available(rq, chunk_idx)
+        or _recall_query_leaks_answer(card, rq)
+    ):
         return _recall_query_for(card, chunk_idx)
     card["recall_query"] = rq      # cache for re-use within trajectory
     return rq
@@ -574,14 +689,6 @@ def _parse_json_candidates(raw: str) -> List[Dict]:
     return []
 
 
-def _parse_json_object(raw: str) -> Dict:
-    """Parse one JSON object, accepting a single-element list wrapper."""
-    candidates = _parse_json_candidates(raw)
-    if candidates:
-        return candidates[0]
-    return {}
-
-
 def _history_evidence_lines(
     evidence_by_chunk: Dict[int, Dict],
     card: Dict,
@@ -599,6 +706,7 @@ def _history_evidence_lines(
     """
     visual_start = compute_visual_window_start(int(current_chunk))
     original_support = set(_support_chunks_before(card, int(current_chunk)))
+    memory_tokens = set(_tokens(memory_text)) if memory_text else set()
     scored = []
     for ci, cap in evidence_by_chunk.items():
         if ci < 0 or ci >= visual_start:
@@ -616,7 +724,11 @@ def _history_evidence_lines(
             score += 2
         score += min(len(text) // 160, 4)
         if memory_text:
-            novelty = 1.0 - _memory_overlap_score(text, memory_text)
+            novelty = 1.0 - _memory_overlap_score(
+                text,
+                memory_text,
+                memory_tokens=memory_tokens,
+            )
             score += int(max(0.0, novelty) * 24)
         scored.append((score, ci, text))
     scored = sorted(scored, key=lambda x: (-x[0], x[1]))[:max_lines]
@@ -638,8 +750,8 @@ def _recall_hardening_prompt(
     options_doc = ""
     if answer_form == "multiple_choice":
         options_doc = """
-  "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
-  "correct_option": "A" | "B" | "C" | "D","""
+  "options": ["A) ...", "B) ...", "..."],  # 2-5 options; default to 4, add "E) ..." only when useful
+  "correct_option": "A" | "B" | "C" | "D" | "E","""
     prev = f"\nPrevious rejected candidate reason: {previous_error}\n" if previous_error else ""
     return f"""You are repairing ONE selected recall training slot.
 
@@ -680,6 +792,18 @@ Rules:
   or any correct-option text. If the question asks for exact OCR/number/color/
   state/count, query for the surrounding object/action/location instead of
   that target value. Use neutral anchors from the question/event.
+- Use compact closed-form video-QA wording. Prefer short, user-facing questions
+  with natural event anchors such as before/after/while/when rather than
+  internal chunks or long setup text.
+- Keep most replacement cards answerable by one clear historical visual fact,
+  but allow hard exploratory cases when historical_evidence supports them:
+  separated clues, before/after state, object tracking, OCR, or evidence
+  insufficiency boundaries.
+- For multiple-choice replacements, options must be the same semantic type and
+  similarly specific. Use plausible close distractors from historical_evidence,
+  visually similar objects/actions, before/after states, or OCR-like snippets.
+  Avoid random choices, all/none-of-the-above, length giveaways, and synonyms
+  of the correct answer.
 
 Output ONLY a JSON array of {RECALL_HARDEN_CANDIDATES_PER_ATTEMPT} distinct
 candidate objects, best candidate first:
@@ -739,7 +863,7 @@ def _candidate_to_recall_card(
     if answer_form == "multiple_choice":
         options = list(candidate.get("options") or [])
         correct = str(candidate.get("correct_option") or "").strip().upper()
-        if len(options) != 4 or correct not in {"A", "B", "C", "D"}:
+        if len(options) not in MC_OPTION_COUNTS or correct not in MC_OPTION_LETTERS[:len(options)]:
             return {}
         relabelled = [
             f"{chr(65 + i)}) {_strip_option_label(str(opt)).strip()}"
@@ -994,10 +1118,11 @@ async def _harden_selected_recall_slots(
         "recall_slots": 0,
         "already_hard": 0,
         "hardened": 0,
-        "unanswerable_memory_direct": 0,
+        "unanswerable_recall_kept": 0,
         "downgraded_memory_direct": 0,
         "failed": 0,
     }
+    hardening_jobs = []
     for placement in placements:
         if placement.mechanism != "recall_demo":
             continue
@@ -1006,23 +1131,61 @@ async def _harden_selected_recall_slots(
             continue
         stats["recall_slots"] += 1
         if _is_unanswerable_card(card):
+            response_chunks = [
+                int(c) for c, (kind, _value) in placement.chunk_actions.items()
+                if kind == "response"
+            ]
+            if response_chunks:
+                rq = _recall_query_for(card, max(response_chunks))
+                if _recall_query_available(rq, max(response_chunks)):
+                    card["recall_query"] = rq
+                    placement.recall_need = "hld_absence_evidence_check"
+                    stats["unanswerable_recall_kept"] += 1
+                    continue
             _downgrade_recall_to_memory_direct(
                 placement,
                 card,
-                reason="unanswerable_no_recall",
+                reason="unanswerable_invalid_recall_query",
             )
-            stats["unanswerable_memory_direct"] += 1
+            stats["downgraded_memory_direct"] += 1
             continue
         before_ask = int(placement.ask_chunk)
         before_chunks = sorted(int(c) for c in placement.chunk_actions.keys())
-        new_card, changed, reason = await _harden_one_recall_slot(
-            card=card,
-            placement=placement,
-            rollout=rollout,
-            evidence_by_chunk=evidence_by_chunk,
-            client=client,
-            video_id=video_id,
+        hardening_jobs.append((
+            placement,
+            card,
+            before_ask,
+            before_chunks,
+            _harden_one_recall_slot(
+                card=card,
+                placement=placement,
+                rollout=rollout,
+                evidence_by_chunk=evidence_by_chunk,
+                client=client,
+                video_id=video_id,
+            ),
+        ))
+
+    if hardening_jobs:
+        hardening_results = await asyncio.gather(
+            *(job[4] for job in hardening_jobs),
+            return_exceptions=True,
         )
+    else:
+        hardening_results = []
+
+    for (placement, card, before_ask, before_chunks, _task), result in zip(
+        hardening_jobs,
+        hardening_results,
+    ):
+        if isinstance(result, Exception):
+            new_card, changed, reason = (
+                card,
+                False,
+                f"hardening_exception:{result}",
+            )
+        else:
+            new_card, changed, reason = result
         after_chunks = sorted(int(c) for c in placement.chunk_actions.keys())
         if int(placement.ask_chunk) != before_ask or after_chunks != before_chunks:
             raise RuntimeError(
@@ -1128,6 +1291,7 @@ def _recall_result_for(
         grounding = _support_chunks(card)
     else:
         grounding = _support_chunks_before(card, int(current_chunk))
+    absence_check = _is_unanswerable_card(card)
     if noise_kind == "not_yet":
         archive = _archive_before_now()
         retrieved = bm25_retrieve(
@@ -1209,6 +1373,13 @@ def _recall_result_for(
             "time": "",
         }
     tr_text = recall_time_string_for_chunks(chunks)
+    if absence_check:
+        text_content = text_content or (
+            f"Retrieved {len(chunks) * FRAMES_PER_CHUNK} historical frames "
+            f"from t={tr_text}s for an absence/insufficient-evidence check. "
+            "The retrieved evidence should be used to decide whether the "
+            "active query is genuinely unanswerable."
+        )
     return {
         "source": "historical_frames",
         "text_content": text_content or (
@@ -1216,6 +1387,7 @@ def _recall_result_for(
         ),
         "returned_chunks": chunks,
         "time": tr_text,
+        **({"result_kind": "absence_check"} if absence_check else {}),
     }
 
 
@@ -1248,8 +1420,8 @@ def _silent_sample(
     """
     if sample_subtype == "recall+silent":
         raise ValueError(
-            "recall+silent is disabled in production trajectories; every "
-            "question must have a grounded answer."
+            "recall+silent must be rendered by _recall_silent_multiturn_sample, "
+            "not _silent_sample."
         )
     sample_type = "silent"
     output_text = build_assistant_content_v12(
@@ -1377,7 +1549,7 @@ def _recall_response_sample(
     chunk_idx: int, think: str, response: str, queries: List[Dict],
     recall_query: Dict, recall_result: Dict,
     trajectory_id: str, card_id: str, sequence_type: str,
-    user_input: str = "",
+    user_input: str = "", recall_reason: str = "",
 ) -> Dict:
     """Multi-turn recall sample (v12 protocol).
 
@@ -1387,7 +1559,9 @@ def _recall_response_sample(
       assistant → final answer
     """
     turn1 = build_assistant_content_v12(
-        think=_recall_action_think(think, final_action="response"),
+        think=_recall_action_think(
+            think, final_action="response", reason=recall_reason
+        ),
         kind="recall",
         recall_query=recall_query,
     )
@@ -1420,7 +1594,7 @@ def _recall_silent_multiturn_sample(
     chunk_idx: int, think: str, queries: List[Dict],
     recall_query: Dict, recall_result: Dict,
     trajectory_id: str, card_id: str, sequence_type: str,
-    user_input: str = "",
+    user_input: str = "", recall_reason: str = "",
 ) -> Dict:
     """Recall followed by an empty answer while the query remains open.
 
@@ -1435,7 +1609,9 @@ def _recall_silent_multiturn_sample(
       assistant → think + empty <answer>          ← turn2: wait, query stays open
     """
     turn1 = build_assistant_content_v12(
-        think=_recall_action_think(think, final_action="silent"),
+        think=_recall_action_think(
+            think, final_action="silent", reason=recall_reason
+        ),
         kind="recall",
         recall_query=recall_query,
     )
@@ -1538,7 +1714,9 @@ async def generate_trajectory_samples(
         if (card or {}).get("answer_form") == "multiple_choice":
             style = _mc_answer_style_for_card(card, video_id)
             card["answer_style"] = style
-            card["answer_instruction"] = _mc_answer_instruction(style)
+            card["answer_instruction"] = _mc_answer_instruction(
+                style, options=card.get("options") or []
+            )
 
     await _harden_selected_recall_slots(
         placements=placements,
@@ -1622,7 +1800,7 @@ async def generate_trajectory_samples(
         # format_queries_block (queries_state carries options + answer_form;
         # active MC queries render an "Options: A) ... B) ..." line).
         # Putting options ALSO in user_input was duplicating ~30 tokens
-        # per ask (model saw the same A-D list twice — once in query state
+        # per ask (model saw the same option list twice: once in query state
         # and once in <user_input>). user_input now carries just the
         # question text, parity with non-MC asks.
         user_input = ""
@@ -1657,6 +1835,7 @@ async def generate_trajectory_samples(
                 sequence_type=sequence_type, user_input=user_input,
             ))
         elif ds.sample_kind == "recall+silent":
+            recall_reason = str((ds.extra or {}).get("recall_reason", ""))
             # Wait-state recall must not use the card's grounding_frames:
             # those point to the future answer chunk and would leak timing.
             rq = _recall_wait_query_for(card or {}, c)
@@ -1678,7 +1857,7 @@ async def generate_trajectory_samples(
             raw.append(_recall_silent_multiturn_sample(
                 c, _think_for_chunk(rollout, c), queries_state,
                 rq, rr, traj_id, card_id or "", sequence_type,
-                user_input=user_input,
+                user_input=user_input, recall_reason=recall_reason,
             ))
             # Do not append an answer or close the query. recall+silent is a
             # wait state; a later response/recall+response sample must answer.
@@ -1701,10 +1880,21 @@ async def generate_trajectory_samples(
                 chunk_idx=c, text=resp, status=status,
             )
         elif ds.sample_kind == "recall+response":
+            recall_reason = str((ds.extra or {}).get("recall_reason", ""))
             if client is not None:
                 resp = await _response_text_via_llm(
                     card or {}, ds.response_text, client, video_id, c)
-                rq = await _recall_query_via_llm(card or {}, client, video_id, c)
+                if recall_reason == "memory_text_needs_visual_verification":
+                    # These slots are created deterministically from selected
+                    # memory_direct hard-visual questions. The point is to
+                    # verify historical visual evidence rather than rewrite
+                    # the card, so avoid an extra teacher call and use the
+                    # support-grounded query/range.
+                    rq = _recall_query_for(card or {}, c)
+                else:
+                    rq = await _recall_query_via_llm(
+                        card or {}, client, video_id, c
+                    )
             else:
                 resp = _response_text_for(card or {}, ds.response_text)
                 rq = _recall_query_for(card or {}, c)
@@ -1730,6 +1920,7 @@ async def generate_trajectory_samples(
             raw.append(_recall_response_sample(
                 c, _think_for_chunk(rollout, c), resp, queries_state,
                 rq, rr, traj_id, card_id, sequence_type, user_input=user_input,
+                recall_reason=recall_reason,
             ))
             status = (
                 "answered" if c >= open_until_by_card.get(card_id, c)

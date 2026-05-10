@@ -32,7 +32,7 @@
 #   GPU_MEM_UTIL    — vLLM gpu_memory_utilization (0.55 — leave room for FSDP)
 #   MM_CACHE_GB     — vLLM CPU mm processor cache GB (auto: 512 on this box)
 #   FRAME_PROTOCOL  — video_meta. Must match SFT/eval.
-#   THINKSTREAM_RENDER_LAYOUT — timeline_video_imagepad.
+#   THINKSTREAM_RENDER_LAYOUT — standard_query_last.
 #   IMAGE_MIN_PIXELS / IMAGE_MAX_PIXELS — optional runtime image resize bounds.
 #   LIMIT_IMAGES    — vLLM limit_mm_per_prompt.image for timestamped frames (64)
 #   LIMIT_VIDEOS    — vLLM limit_mm_per_prompt.video for video_meta blocks (2)
@@ -132,9 +132,16 @@ MAX_STEPS=${MAX_STEPS:-}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-video_meta}}"
-THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-timeline_video_imagepad}"
-if [[ "${FRAME_PROTOCOL}" != "video_meta" || "${THINKSTREAM_RENDER_LAYOUT}" != "timeline_video_imagepad" ]]; then
-    echo "ERROR: canonical RL uses FRAME_PROTOCOL=video_meta THINKSTREAM_RENDER_LAYOUT=timeline_video_imagepad" >&2
+THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard_query_last}"
+case "${THINKSTREAM_RENDER_LAYOUT}" in
+    standard_query_last) ;;
+    *)
+        echo "ERROR: unsupported THINKSTREAM_RENDER_LAYOUT=${THINKSTREAM_RENDER_LAYOUT}" >&2
+        exit 2
+        ;;
+esac
+if [[ "${FRAME_PROTOCOL}" != "video_meta" ]]; then
+    echo "ERROR: canonical RL uses FRAME_PROTOCOL=video_meta" >&2
     echo "       got FRAME_PROTOCOL=${FRAME_PROTOCOL} THINKSTREAM_RENDER_LAYOUT=${THINKSTREAM_RENDER_LAYOUT}" >&2
     exit 2
 fi
@@ -335,6 +342,7 @@ export THINKSTREAM_RECURRENT_MODE
 export THINKSTREAM_HOME="${PROJECT_DIR}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
 export THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT}"
+export THINKSTREAM_MEMORY_POSITION="${THINKSTREAM_MEMORY_POSITION:-before_visual}"
 if [[ -n "${IMAGE_MIN_PIXELS}" ]]; then
     export IMAGE_MIN_PIXELS
 fi

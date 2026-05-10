@@ -435,14 +435,11 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
     # ── User content ───────────────────────────────────────────────────
     user_content = []
 
-    if inp.get("user_input"):
-        # Canonical user_input wrapper. For archived compress rows that still
-        # store a bare <compress_trigger/>, this keeps the wrapper minimal;
-        # compression rules are supplied by the compression system prompt.
-        user_input_block = format_user_input_block(
-            inp["user_input"],
-            inter_chunk=inter_chunk,
-        )
+    user_input_block = format_user_input_block(
+        inp.get("user_input", ""),
+        inter_chunk=inter_chunk,
+    )
+    if user_input_block:
         user_content.append({
             "type": "text",
             "text": user_input_block.lstrip("\n"),
@@ -473,7 +470,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         "start": vw["video_start"],
         "end": vw["video_end"],
         "frames": vw["frames"],
-        "current_time": [current_start, current_end],
+        "current_time": current_start,
     })
     user_content.append({
         "type": "text",
@@ -1063,10 +1060,9 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
         )
     messages = _resolve_video_paths(sample["messages"], base_path)
 
-    # Current pass5 timeline-imagepad messages are normalized above from
-    # type=video/image-pad carrier to type=image before processor ingestion,
-    # so no video_metadata is needed for them. Keep this only for legacy/raw
-    # video fallback rows that still contain type="video".
+    # Current pass5 messages carry explicit video_metadata in type="video"
+    # blocks. Keep this fallback for raw rows that still contain video items
+    # without metadata.
     video_metadata = []
     has_video_meta = True
     for msg in messages:

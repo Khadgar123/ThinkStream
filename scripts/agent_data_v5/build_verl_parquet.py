@@ -296,6 +296,7 @@ def _iter_rows(
                 options = list(q.get("options") or [])
                 correct_option = q.get("correct_option", "")
                 ask_chunks = list(q.get("ask_chunks") or [])
+                answer_chunks = list(q.get("answer_chunks") or [])
 
                 # ── Per-question gold_action_per_chunk (P1.9 fix).
                 # The trajectory-level gold_action carries actions for
@@ -304,14 +305,17 @@ def _iter_rows(
                 # answerable range should be scored — otherwise question A's
                 # rollout gets penalised for not emitting question B's
                 # response at chunk where question B was supposed to fire.
-                # Strategy: keep gold_action ONLY for chunks within
-                # [min(ask_chunks), max(ask_chunks)] (the question's
-                # answerable window); for chunks outside that range we
-                # treat the gold as "silent" so off-question chunks
-                # don't penalise correct silent behaviour.
+                # Strategy: keep gold_action ONLY for chunks within this
+                # question's live window: from ask_chunk through its last
+                # expected answer chunk. For forward/wait cards, answer_chunks
+                # can be much later than ask_chunks; clipping only to ask_chunks
+                # would erase the true response action and train the model to
+                # stay silent at the answer time.
                 q_gold_action: Dict[str, str] = {}
-                if ask_chunks:
-                    q_lo, q_hi = min(ask_chunks), max(ask_chunks)
+                window_marks = ask_chunks + answer_chunks
+                if window_marks:
+                    q_lo = min(ask_chunks or window_marks)
+                    q_hi = max(answer_chunks or ask_chunks or window_marks)
                     for ck, gold in (gold_action or {}).items():
                         try:
                             ck_int = int(ck)
@@ -346,7 +350,7 @@ def _iter_rows(
                     "answer_instruction": q.get("answer_instruction", ""),
                     "gold_answer": gold_answer,
                     "answer_form": answer_form,
-                    "answer_chunks": list(q.get("answer_chunks") or []),
+                    "answer_chunks": answer_chunks,
                     "per_emit_answers": list(q.get("per_emit_answers") or []),
                     "ask_chunks": ask_chunks,
                     "gold_action_per_chunk": q_gold_action,
@@ -365,7 +369,7 @@ def _iter_rows(
                         "correct_option": correct_option,
                         "answer_instruction": q.get("answer_instruction", ""),
                         "support_chunks": list(q.get("support_chunks") or []),
-                        "answer_chunks": list(q.get("answer_chunks") or []),
+                        "answer_chunks": answer_chunks,
                         "per_emit_answers": list(q.get("per_emit_answers") or []),
                         "render_layout": render_layout,
                         **student_cache,
@@ -380,10 +384,16 @@ def _iter_rows(
                             "options": options,
                             "correct_option": correct_option,
                             "ask_chunks": ask_chunks,
-                            "answer_chunks": list(q.get("answer_chunks") or []),
+                            "answer_chunks": answer_chunks,
                             "per_emit_answers": list(q.get("per_emit_answers") or []),
-                            "visible_start_chunk": min(ask_chunks) if ask_chunks else None,
-                            "visible_end_chunk":   max(ask_chunks) if ask_chunks else None,
+                            "visible_start_chunk": (
+                                min(ask_chunks) if ask_chunks else
+                                (min(answer_chunks) if answer_chunks else None)
+                            ),
+                            "visible_end_chunk": (
+                                max(answer_chunks) if answer_chunks else
+                                (max(ask_chunks) if ask_chunks else None)
+                            ),
                             "gold_action_per_chunk": q_gold_action,
                         }, ensure_ascii=False),
                         "style": "thinkstream_v12",
@@ -549,14 +559,14 @@ def main() -> int:
         choices=["video_meta"],
         help=(
             "Visual protocol used by the RL rollout loop. The supported "
-            "project entry uses video_meta plus timeline_video_imagepad."
+            "project entry uses video_meta plus the selected render layout."
         ),
     )
     ap.add_argument(
         "--render-layout",
-        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "timeline_video_imagepad"),
-        choices=["timeline_video_imagepad"],
-        help="Canonical prompt layout used by SFT, RL, and eval.",
+        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard_query_last"),
+        choices=["standard_query_last"],
+        help="Prompt layout used by SFT, RL, and eval.",
     )
     ap.add_argument(
         "--include-student-cache",

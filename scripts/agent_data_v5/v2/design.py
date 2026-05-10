@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import random
 from dataclasses import dataclass, field
+import os
 import re
 from typing import Dict, Iterable, List, Literal, Optional, Tuple
 
@@ -31,7 +32,29 @@ VISUAL_WINDOW_CHUNKS = 16        # frames still in visual prompt
 RECENT_THINKS_HORIZON = 60       # ~4000 tok / 70 tok-per-think — pre-compress horizon
 RECALL_OK_RATE = 0.95            # pure-oracle recall demo
 RECALL_NOISY_RATE = 0.05         # oracle ⊕ distractor frames
-RECALL_FAILURE_RATE = 0.0        # main data never creates no-answer questions
+RECALL_WAIT_PROBE_MAX = 3        # max recall+silent probes inside one wait
+RECALL_WAIT_MIN_LEAD = 6         # do not recall immediately for very short waits
+RECALL_MULTI_WAIT_PROBE_MAX = 2  # recall+silent probes while cumulative questions remain open
+MEMORY_DIRECT_RECALL_PROBE_RATE = float(
+    os.environ.get("THINKSTREAM_MEMORY_DIRECT_RECALL_PROBE_RATE", "0.55")
+)
+MEMORY_DIRECT_RECALL_FAMILY_RATE = {
+    # Exact visual evidence is much better than text memory for these OVO
+    # weaknesses: OCR, spatial/temporal relations, object relation/state,
+    # action recognition, future/held state, and cross-event reasoning.
+    "C1": 0.85,
+    "STU1": 0.70,
+    "OJR1": 0.70,
+    "ACR1": 0.65,
+    "CR7": 0.60,
+    "F6": 0.60,
+    "CR5": 0.60,
+    "CR4": 0.58,
+    "CR1": 0.55,
+    "CR2": 0.50,
+    "M1": 0.50,
+    "HLD1": 0.45,
+}
 
 # ── ask placement: STRATIFIED tier ranges (3 difficulty bands per profile) ──
 # Each profile picks one band per placement; multi-placement profiles
@@ -40,8 +63,8 @@ RECALL_FAILURE_RATE = 0.0        # main data never creates no-answer questions
 #
 # Forward stratification (silent_then_response lead time):
 SE_LEAD_SHORT  = (4, 10)            # quick wait — easier to maintain pending
-SE_LEAD_MEDIUM = (10, 18)           # standard
 SE_LEAD_LONG   = (18, 32)           # long wait — hard, tests pending persistence
+SE_LEAD_OVO_CRR = ((10, 24), (24, 64), (64, 120))  # OVO CRR clue delays
 #
 # Real-time / direct fresh stratification (gap from emit):
 SE_FRESH_TRIVIAL = (0, 2)            # ask at evidence — trivial
@@ -56,8 +79,17 @@ SE_RECALL_DEEP   = (VISUAL_WINDOW_CHUNKS + RECENT_THINKS_HORIZON + 1, 999)      
 # multi_emit ask runway before first emit
 ME_LEAD_RANGE = (2, 8)
 MAX_MULTI_EMIT_ACTIVE_SPAN = 16
-MAX_MULTI_EMIT_RESPONSES = 4
-RECALL_TARGET_FRACTION = 0.90
+MAX_MULTI_EMIT_RESPONSES = 5
+MAX_REC_EMIT_RESPONSES = 5
+STATUS_FAR_AFTER_MIN_GAP = int(os.environ.get(
+    "THINKSTREAM_STATUS_FAR_AFTER_MIN_GAP",
+    str(VISUAL_WINDOW_CHUNKS + 1),
+))
+STATUS_FAR_AFTER_MAX_GAP = int(os.environ.get(
+    "THINKSTREAM_STATUS_FAR_AFTER_MAX_GAP",
+    "80",
+))
+RECALL_TARGET_FRACTION = 0.65
 
 # Families whose answers often require multi-frame temporal/causal reasoning
 # or fine visual verification. Exact text memory can still answer some of
@@ -65,7 +97,7 @@ RECALL_TARGET_FRACTION = 0.90
 # as recall candidates rather than collapsing them to memory_direct.
 HARD_RECALL_FAMILIES = {
     "CR1", "CR2", "CR4", "CR5", "M1",
-    "C1", "STU1", "OJR1", "CR7",
+    "C1", "STU1", "OJR1", "CR7", "ACR1", "F6", "HLD1",
 }
 SIMPLE_MEMORY_FAMILIES = {
     "N1", "P1", "R1", "CR3", "ACR1", "HLD1",
@@ -73,21 +105,36 @@ SIMPLE_MEMORY_FAMILIES = {
 
 # Production trajectory caps (config.py is the source of truth for max cap)
 MAX_QUESTIONS_PER_TRAJECTORY = CONFIG_MAX_QUESTIONS_PER_TRAJECTORY
-MIN_QUESTIONS_PER_TRAJECTORY = 6     # floor for very short videos
+MIN_QUESTIONS_PER_TRAJECTORY = 8     # floor for very short videos
 MAX_TRAJECTORIES_PER_VIDEO = 1
 AGENT_CHUNK_SEC = 1                  # seconds per chunk
+MIN_QUESTION_ASK_GAP_CHUNKS = int(os.environ.get("THINKSTREAM_MIN_QUESTION_ASK_GAP_CHUNKS", "4"))
+SHORT_VIDEO_ASK_GAP_CHUNKS = int(os.environ.get("THINKSTREAM_SHORT_VIDEO_ASK_GAP_CHUNKS", "3"))
+LONG_VIDEO_ASK_GAP_CHUNKS = int(os.environ.get("THINKSTREAM_LONG_VIDEO_ASK_GAP_CHUNKS", "4"))
+LONG_VIDEO_ASK_GAP_AT_CHUNKS = int(os.environ.get("THINKSTREAM_LONG_VIDEO_ASK_GAP_AT_CHUNKS", "180"))
+SPREAD_SCORE_DENOM = 8.0
+SPREAD_SCORE_CAP = 3.0
 
 def adaptive_q_count(num_chunks: int) -> int:
-    """Question count scales with video length, ~1 question per 12s.
+    """Question count scales with video length, ~1 question per 10s.
 
-    Short videos (≤60 chunks): 6-7 questions  (q-interval ~10s)
-    Medium (60-120): 8-10 questions             (q-interval ~12s)
-    Long (120-200): 10-12 questions             (q-interval ~15s)
-    Very long (200+): 12-14 questions           (q-interval ~17s)
+    Short videos (≤60 chunks): 8 questions       (q-interval ~7s)
+    Medium (60-120): 8-12 questions              (q-interval ~10s)
+    Long (120-200): 12-20 questions              (q-interval ~10-12s)
+    Very long (200+): 20 questions cap           (q-interval varies)
     """
     target = max(MIN_QUESTIONS_PER_TRAJECTORY,
-                 min(MAX_QUESTIONS_PER_TRAJECTORY, num_chunks // 12))
+                 min(MAX_QUESTIONS_PER_TRAJECTORY, num_chunks // 10))
     return target
+
+
+def question_ask_gap_floor(num_chunks: int) -> int:
+    """Minimum spacing between independent user questions on one timeline."""
+    if num_chunks < 64:
+        return SHORT_VIDEO_ASK_GAP_CHUNKS
+    if num_chunks >= LONG_VIDEO_ASK_GAP_AT_CHUNKS:
+        return LONG_VIDEO_ASK_GAP_CHUNKS
+    return MIN_QUESTION_ASK_GAP_CHUNKS
 
 # ── OVOBench-aligned family→profile mapping ─────────────────────────
 #   backward  : evidence in past, often compressed → recall_demo dominant
@@ -99,12 +146,14 @@ PLACEMENT_PROFILE = {
     "CR5": "backward", "N1":  "backward", "P1":  "backward",
     "HLD1": "backward", "M1":  "backward",
     # forward (anticipation / wait)
-    "E2":  "forward",  "F6":  "forward",
+    "E2":  "forward",
     # realtime (immediate)
     "CR3": "realtime", "CR7": "realtime", "R1":  "realtime",
     "ACR1": "realtime", "STU1": "realtime", "OJR1": "realtime",
     "F5":  "realtime", "C1":  "realtime",
     "PN1": "realtime",
+    "F6":  "realtime",
+    "CRR1": "realtime",
     # v12.13 (P1-7): F7 moved forward → realtime. New F7 is OVO SSR-style
     # multi_emit Yes/No across [change-K, change+K]; not "wait then answer".
     "F7":  "realtime",
@@ -119,14 +168,25 @@ MULTI_EMIT_ADOPT_RATE = 0.5
 # let selection/overlap constraints decide whether the card fits each video.
 F7_ADOPT_RATE = 0.6
 
+# CRR1 is the OVO-CRR-like repeated probe around a clue/event becoming true.
+# Keep it below every-video generation because each selected card can occupy a
+# long active span and would otherwise squeeze out regular QA slots.
+CRR1_ADOPT_RATE = 0.45
+
 # Rare benchmark-aligned families can lose greedy selection because their
 # active span is longer (F7) or because recall slots are already saturated
 # (HLD1). Boosting selection, not generation volume, keeps the card pool
 # balanced while making selected trajectories carry the intended coverage.
 FAMILY_SELECTION_BOOST = {
     "F7": 6.0,     # target SSR-like status rows at roughly OVO scale
-    "HLD1": -1.0,  # explicit negatives are valuable, but should not dominate
-    "C1": 2.0,     # MC OCR should survive selection
+    "F5": 5.0,     # REC-style cumulative counting otherwise loses to recall
+    "CRR1": 5.0,   # clue-before/after multi-probe status
+    "CR5": 4.0,    # CRR-style clue waits should survive selection
+    "OJR1": 6.0,   # OVO has a large object-joint-reasoning slice
+    "STU1": 6.0,   # state transition understanding is under-selected
+    "HLD1": 4.0,   # explicit negative/holdout questions are OVO-heavy
+    "C1": 4.0,     # MC OCR should survive selection
+    "ACR1": 2.5,   # action/causal reasoning should stay near OVO scale
 }
 
 # Keep HLD / "Unable to answer" abstention negatives near the previous
@@ -140,8 +200,8 @@ HLD_ABSTENTION_RESERVE_PERCENT = 84
 #   - chunks with state_changes/new entities: keep at higher rate (richer)
 #   - empty chunks: keep at lower rate (trivial)
 # Net keep ≈ PATROL_KEEP_RATE_AVG.
-PATROL_KEEP_RATE_RICH = 0.50     # chunk has state_change / new entity
-PATROL_KEEP_RATE_EMPTY = 0.20    # chunk is purely background / static
+PATROL_KEEP_RATE_RICH = 0.32     # chunk has state_change / new entity
+PATROL_KEEP_RATE_EMPTY = 0.08    # chunk is purely background / static
 
 # Question type literal
 QuestionType = Literal["single_emit", "multi_emit"]
@@ -183,7 +243,7 @@ class Card:
     recall_query: Optional[Dict] = None  # {"query": str, "time_range": [int, int]}
     # MC-specific:
     options: Optional[List[str]] = None  # ["A) ...", "B) ...", ...]
-    correct_option: Optional[str] = None  # "A" | "B" | "C" | "D"
+    correct_option: Optional[str] = None  # "A" | "B" | ... matching options
 
 
 @dataclass
@@ -202,6 +262,9 @@ class Placement:
     # silent_then_response waits are plain silent turns; answer support is in
     # the future, so a recall call cannot be the minimal action.
     recall_at: Dict[int, str] = field(default_factory=dict)
+    # Optional explanation label for recall_at chunks. This is used only to
+    # shape the recall tool-call think text; it does not affect gold timing.
+    recall_reason_at: Dict[int, str] = field(default_factory=dict)
 
 
 # ---------------------------------------------------------------------------
@@ -397,16 +460,22 @@ def place_single_emit(card: Card, num_chunks: int, rng: random.Random) -> List[P
         ))
 
     profile = PLACEMENT_PROFILE.get(card.family, "realtime")
-    if profile == "forward" or card.family in {"CR2", "CR5", "F6", "E2"}:
+    if profile == "forward" or card.family in {"CR2", "CR5", "E2"}:
         # Keep explicit wait/silent supervision for naturally temporal
         # families without making every static attribute question a future
         # prediction prompt.
-        for band in (SE_LEAD_SHORT, SE_LEAD_LONG):
+        lead_bands = [SE_LEAD_SHORT, SE_LEAD_LONG]
+        if card.family == "CR5":
+            lead_bands.extend(SE_LEAD_OVO_CRR)
+        for band in lead_bands:
             ask_forward = _ask_from_band(emit, band, num_chunks, rng, sign=-1)
             if ask_forward is not None:
                 placements.append(_make_placement(
                     card, ask_forward, num_chunks, "silent_then_response",
-                    difficulty_mode="future_wait",
+                    difficulty_mode=(
+                        "ovo_crr_wait" if card.family == "CR5" and band in SE_LEAD_OVO_CRR
+                        else "future_wait"
+                    ),
                     recall_need="future_not_available",
                 ))
         if not any(p.mechanism == "silent_then_response" for p in placements):
@@ -433,18 +502,61 @@ def place_single_emit(card: Card, num_chunks: int, rng: random.Random) -> List[P
 def _select_multi_emit_subset(card: Card) -> List[GoldEmit]:
     """Pick a compact local subset for one active multi-answer episode."""
     emits = sorted(card.gold_emits, key=lambda e: e.chunk)
-    if card.family == "F7":
+    if card.family == "F5":
+        if len(emits) <= MAX_REC_EMIT_RESPONSES:
+            return emits
+        idxs = {
+            round(i * (len(emits) - 1) / (MAX_REC_EMIT_RESPONSES - 1))
+            for i in range(MAX_REC_EMIT_RESPONSES)
+        }
+        return [emits[i] for i in sorted(idxs)]
+
+    if card.family in {"F7", "CRR1"}:
         first_yes_idx = next(
             (i for i, e in enumerate(emits)
              if str(e.value).strip().lower() == "yes"),
             None,
         )
         if first_yes_idx is not None and first_yes_idx > 0:
-            start = max(0, first_yes_idx - 2)
-            end = min(len(emits), start + MAX_MULTI_EMIT_RESPONSES)
-            if end <= first_yes_idx:
-                end = min(len(emits), first_yes_idx + 1)
-            subset = emits[start:end]
+            first_yes = emits[first_yes_idx]
+            no_before = [
+                e for e in emits[:first_yes_idx]
+                if str(e.value).strip().lower() == "no"
+            ][-2:]
+            yes_after = [
+                e for e in emits[first_yes_idx + 1:]
+                if str(e.value).strip().lower() == "yes"
+            ]
+            far_yes = next(
+                (
+                    e for e in yes_after
+                    if STATUS_FAR_AFTER_MIN_GAP <= e.chunk - first_yes.chunk <= STATUS_FAR_AFTER_MAX_GAP
+                ),
+                None,
+            )
+            if far_yes is not None:
+                middle_yes = next(
+                    (
+                        e for e in yes_after
+                        if e.chunk < far_yes.chunk
+                        and e.chunk - first_yes.chunk <= VISUAL_WINDOW_CHUNKS
+                    ),
+                    None,
+                )
+                subset = no_before + [first_yes]
+                if middle_yes is not None:
+                    subset.append(middle_yes)
+                subset.append(far_yes)
+                subset = sorted(
+                    {int(e.chunk): e for e in subset}.values(),
+                    key=lambda e: e.chunk,
+                )[:MAX_MULTI_EMIT_RESPONSES]
+            else:
+                start = max(0, first_yes_idx - 2)
+                end = min(len(emits), start + MAX_MULTI_EMIT_RESPONSES)
+                if end <= first_yes_idx:
+                    end = min(len(emits), first_yes_idx + 1)
+                subset = emits[start:end]
             vals = {str(e.value).strip().lower() for e in subset}
             if {"no", "yes"}.issubset(vals):
                 return subset
@@ -484,8 +596,21 @@ def place_multi_emit(card: Card, num_chunks: int, rng: random.Random) -> List[Pl
         return []
     first = min(e.chunk for e in emits)
     last = max(e.chunk for e in emits)
-    lead = _randint_safe(rng, ME_LEAD_RANGE[0], min(ME_LEAD_RANGE[1], first))
-    ask = max(0, first - lead)
+    difficulty_mode = "multi_emit"
+    if card.family == "F5":
+        # OVO REC asks the cumulative counting question from the beginning and
+        # probes later. Keep the active query open from c0 instead of asking a
+        # few seconds before the first counted occurrence.
+        ask = 0
+        difficulty_mode = "ovo_rec_cumulative"
+    elif card.family in {"F7", "CRR1"}:
+        # Status probes are immediate Yes/No checks at probe time, not a
+        # persistent wait-before-first-answer question.
+        ask = first
+        difficulty_mode = "status_probe"
+    else:
+        lead = _randint_safe(rng, ME_LEAD_RANGE[0], min(ME_LEAD_RANGE[1], first))
+        ask = max(0, first - lead)
     emit_by_chunk = {e.chunk: e.value for e in emits}
     end = min(num_chunks - 1, last + 1)
     actions: Dict[int, Tuple[GoldKind, str]] = {}
@@ -498,6 +623,7 @@ def place_multi_emit(card: Card, num_chunks: int, rng: random.Random) -> List[Pl
         card_id=card.card_id,
         ask_chunk=ask,
         mechanism="multi_emit",
+        difficulty_mode=difficulty_mode,
         chunk_actions=actions,
     )]
 
@@ -517,7 +643,7 @@ _STOPWORDS = {
 
 
 def _strip_mc_label(text: str) -> str:
-    return re.sub(r"^\s*[A-D][\).]\s*", "", str(text or "")).strip()
+    return re.sub(r"^\s*(?:\([A-Z]\)|[A-Z][\).:])\s*", "", str(text or "")).strip()
 
 
 def _card_answer_text(card: Card) -> str:
@@ -577,12 +703,12 @@ def _answer_terms_present(card: Card, text: str) -> bool:
 def _correct_option_text(card: Card) -> str:
     correct = str(card.correct_option or "").strip().upper()
     options = list(card.options or [])
-    if correct not in {"A", "B", "C", "D"} or len(options) != 4:
+    if len(correct) != 1 or correct < "A" or correct > "Z" or not options:
         return ""
     idx = ord(correct) - ord("A")
     if idx < 0 or idx >= len(options):
         return ""
-    return re.sub(r"^\s*[A-D][\).]\s*", "", str(options[idx])).strip()
+    return _strip_mc_label(str(options[idx]))
 
 
 def _is_unanswerable_card(card: Card) -> bool:
@@ -623,16 +749,6 @@ def refine_placements_with_evidence(
     refined: List[Placement] = []
     for p in placements:
         if p.mechanism != "recall_demo":
-            refined.append(p)
-            continue
-
-        if _is_unanswerable_card(card):
-            # HLD/abstention cards teach "answer Unable to answer" from the
-            # visible memory/query state. They are not successful historical
-            # recall demonstrations and must not count toward recall density.
-            p.mechanism = "memory_direct"
-            p.difficulty_mode = "unanswerable_memory_direct"
-            p.recall_need = "unanswerable_no_recall"
             refined.append(p)
             continue
 
@@ -775,11 +891,12 @@ def select_trajectory(
       +2 unseen mechanism
       +1 unseen answer_form
       +1 unseen card (one placement per card max)
-      +spread: distance to nearest already-picked ask_chunk / 10 (cap 1.5)
+      +spread: distance to nearest already-picked ask_chunk / 8 (cap 3.0)
 
     Strict constraints:
       - at most ONE placement per card_id
       - at most ONE placement per family per trajectory
+      - independent ask chunks must satisfy the video-length ask-gap floor
       - no overlapping placement chunks. This enforces a single active
         question at a time; multi-answer supervision is allowed only inside
         one multi_emit question, never as competing questions on the same
@@ -803,11 +920,14 @@ def select_trajectory(
     seen_cards: set = set()
     used_chunks: set = set()
     used_ask: List[int] = []
+    ask_gap_floor = question_ask_gap_floor(num_chunks)
 
     def feasible(p: Placement, card: Card) -> bool:
         if card.card_id in seen_cards:
             return False
         if card.family in seen_families:
+            return False
+        if used_ask and min(abs(int(p.ask_chunk) - x) for x in used_ask) < ask_gap_floor:
             return False
         return not (_placement_chunks(p) & used_chunks)
 
@@ -833,9 +953,9 @@ def select_trajectory(
             s += 0.15
         if used_ask:
             min_dist = min(abs(p.ask_chunk - x) for x in used_ask)
-            s += min(min_dist / 10.0, 1.5)
+            s += min(min_dist / SPREAD_SCORE_DENOM, SPREAD_SCORE_CAP)
         else:
-            s += 1.5
+            s += SPREAD_SCORE_CAP
         # Long active spans are legitimate for one-question multi-answer
         # tasks, but they reduce the number of independent Q/A episodes
         # in a trajectory. Penalize them rather than banning them.
@@ -881,10 +1001,40 @@ def select_trajectory(
     # Recall is sparse in row count (one tool-turn row per recall question).
     # Select a floor before filling realtime/current questions so SFT/RL see
     # enough tool-use supervision without allowing overlapping pending queries.
-    # HLD / "Unable to answer" cards are abstention negatives, not recall
-    # success cases, so reserve one non-recall slot when such a card is
-    # available.
-    recall_capacity = max_q - 1 if reserve_unanswerable and max_q > 1 else max_q
+    # HLD / "Unable to answer" cards are recall-worthy abstention cases: the
+    # model should inspect history before choosing the Unable option.
+    if len(selected) < max_q:
+        if not take_best(lambda p, card: p.mechanism == "multi_emit" and card.family == "F5"):
+            if not take_best(lambda p, card: p.mechanism == "multi_emit" and card.family == "CRR1"):
+                take_best(lambda p, card: p.mechanism == "multi_emit" and card.family == "F7")
+    if len(selected) < max_q and max_q >= 10:
+        take_best(
+            lambda p, card: (
+                p.mechanism == "multi_emit"
+                and card.family in {"F5", "CRR1", "F7"}
+            )
+        )
+    if len(selected) < max_q:
+        if not take_best(
+            lambda p, card: (
+                p.mechanism == "silent_then_response"
+                and card.family == "CR5"
+                and p.difficulty_mode == "ovo_crr_wait"
+                and _placement_span_len(p) >= 25
+            )
+        ):
+            take_best(
+                lambda p, card: (
+                    p.mechanism == "silent_then_response"
+                    and card.family == "CR5"
+                    and p.difficulty_mode == "ovo_crr_wait"
+                )
+            )
+
+    if len(selected) < max_q:
+        take_best(lambda p, card: p.mechanism == "recall_demo" and _is_unanswerable_card(card))
+
+    recall_capacity = max_q
     target_recall = min(recall_capacity, _recall_floor(max_q))
     while (
         len(selected) < max_q
@@ -908,32 +1058,178 @@ def select_trajectory(
 # ---------------------------------------------------------------------------
 
 
-def assign_recall_noise(placements: List[Placement], rng: random.Random) -> None:
+def assign_recall_noise(
+    placements: List[Placement],
+    rng: random.Random,
+    cards_by_id: Optional[Dict[str, Card]] = None,
+) -> None:
     """Assign recall demonstrations without creating no-answer questions.
 
     Mutates placement.recall_at in place.
 
     - recall_demo: recall at the response chunk with oracle/noisy evidence.
-    - silent_then_response: no recall injection. The answer support is still
-      in the future, so the correct supervision is to keep the query open with
-      a silent turn until the later response chunk.
+    - silent_then_response: optional recall+silent probes during the wait.
+      These retrieve elapsed history and still keep the query open when the
+      answer is not available yet.
+    - F5 multi_emit: later cumulative count responses can recall previous
+      occurrences before answering from current+historical evidence; long
+      gaps before later occurrences can also recall history and stay silent
+      because the final cumulative answer is not complete yet.
+    - F7/CRR1 multi_emit: far-after-Yes probes may recall the event chunk when
+      it has left the visual window.
+    - memory_direct hard historical families: a sampled subset gets a recall
+      probe candidate. Pass3B rollout filtering still removes it when clean
+      memory already answers or when there is no real memory gap.
 
     Every selected question still has a grounded answer in the same
     trajectory. If failure-mode data is needed later, it should live in a
     separate diagnostic dataset, not in SFT/RL/eval training trajectories.
     """
+    def mark_response_recall(p: Placement, c: int, reason: str) -> None:
+        r = rng.random()
+        p.recall_at[int(c)] = "oracle" if r < RECALL_OK_RATE else "noisy"
+        p.recall_reason_at[int(c)] = reason
+
+    def schedule_wait_recalls(p: Placement) -> None:
+        response_chunks = sorted(
+            int(c) for c, (kind, _value) in p.chunk_actions.items()
+            if kind == "response"
+        )
+        if not response_chunks:
+            return
+        first_response = response_chunks[0]
+        lead = first_response - int(p.ask_chunk)
+        if lead < RECALL_WAIT_MIN_LEAD:
+            return
+        exact_candidates: List[Tuple[int, str]] = []
+        if lead >= RECENT_THINKS_HORIZON + RECALL_WAIT_MIN_LEAD:
+            exact_candidates.append((
+                int(p.ask_chunk) + RECENT_THINKS_HORIZON + 1,
+                "long_wait_history_check",
+            ))
+        if lead >= 36:
+            fractions = (0.25, 0.50, 0.75)
+        elif lead >= 16:
+            fractions = (0.33, 0.67)
+        else:
+            fractions = (0.50,)
+        reasons = ("memory_unclear", "related_history_check", "pre_answer_check")
+        chosen: List[int] = []
+        for c, reason in exact_candidates:
+            c = min(first_response - 1, max(int(p.ask_chunk) + 1, int(c)))
+            if c <= 0 or c in chosen:
+                continue
+            if p.chunk_actions.get(c, ("", ""))[0] != "silent":
+                continue
+            p.recall_at[c] = "not_yet"
+            p.recall_reason_at[c] = reason
+            chosen.append(c)
+        for i, frac in enumerate(fractions[:RECALL_WAIT_PROBE_MAX]):
+            c = int(p.ask_chunk) + max(2, round(lead * frac))
+            c = min(first_response - 1, max(int(p.ask_chunk) + 1, c))
+            if c <= 0 or c in chosen:
+                continue
+            if p.chunk_actions.get(c, ("", ""))[0] != "silent":
+                continue
+            p.recall_at[c] = "not_yet"
+            p.recall_reason_at[c] = reasons[min(i, len(reasons) - 1)]
+            chosen.append(c)
+
+    def response_needs_historical_recall(
+        card: Optional[Card],
+        c: int,
+    ) -> bool:
+        if card is None:
+            return False
+        support = []
+        for raw in card.grounding_frames or []:
+            try:
+                support.append(int(raw))
+            except (TypeError, ValueError):
+                continue
+        if not support:
+            return False
+        visual_start = max(0, int(c) - VISUAL_WINDOW_CHUNKS + 1)
+        return any(s < visual_start for s in support)
+
     for p in placements:
         if p.mechanism == "recall_demo":
             for c, (kind, _) in p.chunk_actions.items():
                 if kind != "response":
                     continue
-                r = rng.random()
-                if r < RECALL_OK_RATE:
-                    p.recall_at[c] = "oracle"
-                else:
-                    p.recall_at[c] = "noisy"
+                mark_response_recall(p, int(c), "historical_answer")
         elif p.mechanism == "silent_then_response":
-            continue
+            schedule_wait_recalls(p)
+            card = cards_by_id.get(p.card_id) if cards_by_id else None
+            for c, (kind, _value) in p.chunk_actions.items():
+                if kind != "response":
+                    continue
+                if response_needs_historical_recall(card, int(c)):
+                    mark_response_recall(
+                        p,
+                        int(c),
+                        "future_answer_historical_anchor",
+                    )
+        elif p.mechanism == "multi_emit":
+            response_chunks = sorted(
+                int(c) for c, (kind, _value) in p.chunk_actions.items()
+                if kind == "response"
+            )
+            if not response_chunks:
+                continue
+            if p.difficulty_mode == "ovo_rec_cumulative":
+                wait_added = 0
+                for prev_c, next_c in zip(response_chunks, response_chunks[1:]):
+                    lead = int(next_c) - int(prev_c)
+                    if lead < RECENT_THINKS_HORIZON + RECALL_WAIT_MIN_LEAD:
+                        continue
+                    c = max(
+                        int(prev_c) + RECENT_THINKS_HORIZON + 1,
+                        int(prev_c) + max(2, round(lead * 0.55)),
+                    )
+                    c = min(int(next_c) - 1, max(int(prev_c) + 1, c))
+                    if p.chunk_actions.get(c, ("", ""))[0] != "silent":
+                        continue
+                    p.recall_at[c] = "not_yet"
+                    p.recall_reason_at[c] = "cumulative_waiting_more_events"
+                    wait_added += 1
+                    if wait_added >= RECALL_MULTI_WAIT_PROBE_MAX:
+                        break
+                for c in response_chunks[1:]:
+                    mark_response_recall(p, c, "cumulative_history")
+            elif p.difficulty_mode == "status_probe":
+                yes_chunks = [
+                    c for c in response_chunks
+                    if str(p.chunk_actions[c][1]).strip().lower() == "yes"
+                ]
+                if not yes_chunks:
+                    continue
+                first_yes = min(yes_chunks)
+                for c in yes_chunks:
+                    if c - first_yes > VISUAL_WINDOW_CHUNKS:
+                        mark_response_recall(p, c, "status_history")
+        elif p.mechanism == "memory_direct" and cards_by_id:
+            card = cards_by_id.get(p.card_id)
+            if not card or card.family not in HARD_RECALL_FAMILIES:
+                continue
+            rate = MEMORY_DIRECT_RECALL_FAMILY_RATE.get(
+                card.family,
+                MEMORY_DIRECT_RECALL_PROBE_RATE,
+            )
+            if rng.random() >= rate:
+                continue
+            response_chunks = sorted(
+                int(c) for c, (kind, _value) in p.chunk_actions.items()
+                if kind == "response"
+            )
+            if not response_chunks:
+                continue
+            mark_response_recall(
+                p,
+                response_chunks[0],
+                "memory_text_needs_visual_verification",
+            )
+            p.recall_need = "memory_direct_visual_verification"
 
 
 # ---------------------------------------------------------------------------
@@ -975,6 +1271,7 @@ def render_placement(
                     mechanism=placement.mechanism,
                     recall_query=card.recall_query,
                     recall_result_kind="not_yet",
+                    extra={"recall_reason": placement.recall_reason_at.get(c, "")},
                 ))
                 continue
             samples.append(Sample(
@@ -987,7 +1284,7 @@ def render_placement(
             ))
             continue
         # response chunk
-        if placement.mechanism == "recall_demo" and c in placement.recall_at:
+        if c in placement.recall_at:
             rkind = placement.recall_at[c]
             if rkind == "failure":
                 raise ValueError(
@@ -1004,6 +1301,7 @@ def render_placement(
                 response_text=value,
                 recall_query=card.recall_query,
                 recall_result_kind=rkind,
+                extra={"recall_reason": placement.recall_reason_at.get(c, "")},
             ))
         else:
             samples.append(Sample(
@@ -1036,14 +1334,14 @@ def render_video_samples(
     """
     if rng is None:
         rng = random.Random(0)
-    per_chunk: Dict[int, List[Tuple[str, str, Placement, Card]]] = {}
+    per_chunk: Dict[int, List[Tuple[str, str, Placement, Card, Dict]]] = {}
     cards_by_id = {c.card_id: c for c in cards}
     for cid, plcs in placements_by_card.items():
         card = cards_by_id[cid]
         for p in plcs:
             for s in render_placement(card, p):
                 per_chunk.setdefault(s.chunk_idx, []).append(
-                    (s.sample_kind, s.response_text, p, card)
+                    (s.sample_kind, s.response_text, p, card, dict(s.extra or {}))
                 )
 
     PRIORITY = {
@@ -1110,14 +1408,14 @@ def render_video_samples(
         if len(candidates) > 1:
             owners = [
                 f"{card.card_id}@{p.ask_chunk}:{kind}"
-                for kind, _value, p, card in candidates
+                for kind, _value, p, card, _extra in candidates
             ]
             raise ValueError(
                 f"overlapping question placements at chunk {c}: "
                 + ", ".join(owners)
             )
         candidates.sort(key=lambda t: -PRIORITY[t[0]])
-        kind, value, p, card = candidates[0]
+        kind, value, p, card, extra = candidates[0]
         all_samples.append(Sample(
             chunk_idx=c,
             sample_kind=kind,
@@ -1128,6 +1426,7 @@ def render_video_samples(
             response_text=value,
             recall_query=card.recall_query if "recall" in kind else None,
             recall_result_kind=p.recall_at.get(c) if "recall" in kind else None,
+            extra=extra,
         ))
     return all_samples
 

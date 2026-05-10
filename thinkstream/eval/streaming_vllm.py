@@ -49,6 +49,7 @@ from thinkstream.data.agent_protocol import (
     tools_for_turn,
 )
 from thinkstream.model.agent_loop import (
+    COMPRESS_TOKEN_THRESHOLD,
     COMPRESS_RANGE_MIN,
     MemoryState,
     _parse_agent_output,
@@ -96,6 +97,7 @@ class _SampleRunner:
     # so caller can skip user_question on the same step.
     _last_trigger: bool = False
     _last_action: str = "unknown"
+    _last_compress_trigger_diagnostic: Dict[str, Any] = field(default_factory=dict)
     _last_compress_prefix_diagnostic: Dict[str, Any] = field(default_factory=dict)
     chunks_generated: int = 0
     question_at_chunk: Dict[int, str] = field(default_factory=dict)
@@ -182,6 +184,37 @@ def _resolve_chunk_frame_paths(
     return paths
 
 
+def _compress_trigger_diagnostic(memory: MemoryState) -> Dict[str, Any]:
+    tokens = int(memory.count_recent_tokens())
+    n_recent = len(memory.recent_thinks)
+    range_n = select_compress_range_by_tokens(
+        memory.recent_thinks,
+        token_count_fn=memory._token_count,
+    )
+    triggered = bool(
+        tokens >= COMPRESS_TOKEN_THRESHOLD
+        and n_recent >= COMPRESS_RANGE_MIN
+        and range_n > 0
+    )
+    if triggered:
+        reason = "triggered"
+    elif tokens < COMPRESS_TOKEN_THRESHOLD:
+        reason = "under_token_threshold"
+    elif n_recent < COMPRESS_RANGE_MIN:
+        reason = "under_min_thinks"
+    else:
+        reason = "no_selectable_range"
+    return {
+        "triggered": triggered,
+        "reason": reason,
+        "recent_tokens": tokens,
+        "token_threshold": int(COMPRESS_TOKEN_THRESHOLD),
+        "recent_thinks": n_recent,
+        "range_min": int(COMPRESS_RANGE_MIN),
+        "selected_range_n": int(range_n),
+    }
+
+
 def _maybe_compress_trigger(memory: MemoryState, chunk_idx: int) -> str:
     """Return <compress_trigger/> if memory threshold fires, else "".
 
@@ -192,17 +225,7 @@ def _maybe_compress_trigger(memory: MemoryState, chunk_idx: int) -> str:
     in the SFT input) and the eventual RL upgrade where the trigger
     itself is removed (model decides when AND what to compress).
     """
-    if not memory.should_compress():
-        return ""
-    # Still gate on range selection feasibility — if no contiguous range of
-    # min size can be found, don't emit the trigger (memory not actionable).
-    n = select_compress_range_by_tokens(
-        memory.recent_thinks,
-        token_count_fn=memory._token_count,
-    )
-    if n <= 0:
-        return ""
-    return "<compress_trigger/>"
+    return "<compress_trigger/>" if _compress_trigger_diagnostic(memory)["triggered"] else ""
 
 
 def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
@@ -242,7 +265,14 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
                 open_until=meta.get("open_until"),
             )
 
-    compress_trigger = _maybe_compress_trigger(runner.memory, chunk_idx)
+    runner._last_compress_trigger_diagnostic = _compress_trigger_diagnostic(
+        runner.memory
+    )
+    compress_trigger = (
+        "<compress_trigger/>"
+        if runner._last_compress_trigger_diagnostic.get("triggered")
+        else ""
+    )
     runner._last_trigger = bool(compress_trigger)
 
     if compress_trigger:
@@ -710,6 +740,7 @@ class _RolloutRunner:
     error: Optional[str] = None
     _last_turn_kind: str = "streaming"
     _last_trigger: bool = False
+    _last_compress_trigger_diagnostic: Dict[str, Any] = field(default_factory=dict)
     # Per-chunk results, shape matches grpo.py:736-758 contract.
     chunk_results: List[Dict] = field(default_factory=list)
     # v12.6 #15: trajectory schema support — each chunk may carry its own
@@ -849,6 +880,7 @@ def _apply_rollout_output(
     """
     chunk_idx = runner.current_chunk
     parsed = _parse_agent_output(output_text)
+    queries_before = deepcopy(getattr(runner.memory, "queries", []))
 
     action = parsed.get("action") or "unknown"
     action_error = action_space_error_for_turn(
@@ -899,6 +931,9 @@ def _apply_rollout_output(
             if getattr(runner, "_last_turn_kind", "streaming") == "compress"
             else {}
         ),
+        "compress_trigger_diagnostic": deepcopy(
+            getattr(runner, "_last_compress_trigger_diagnostic", {})
+        ),
         "action_space_error": parsed.get("action_space_error", ""),
         "invalid_action": parsed.get("invalid_action", ""),
         "generated_tokens": tokenizer.encode(output_text, add_special_tokens=False),
@@ -912,6 +947,13 @@ def _apply_rollout_output(
         "window_start": chunk_idx * int(AGENT_CHUNK_SEC),
         "window_end": (chunk_idx + 1) * int(AGENT_CHUNK_SEC),
         "step_messages": deepcopy(step_messages) if step_messages is not None else None,
+        # DAgger needs the state before the student action, even when a
+        # recall second pass later overwrites step_messages for RL loss replay.
+        "dagger_step_messages": deepcopy(step_messages) if step_messages is not None else None,
+        "turn_kind": getattr(runner, "_last_turn_kind", "streaming"),
+        "first_action": action,
+        "queries_before": queries_before,
+        "queries_after": deepcopy(getattr(runner.memory, "queries", [])),
     }
     runner.chunk_results.append(entry)
 
@@ -1343,6 +1385,9 @@ def streaming_vllm_rollout(
                                 recall_result.get("returned_chunks") or []
                             )
                             entry["recall_multiturn"] = True
+                            entry["queries_after"] = deepcopy(
+                                getattr(r.memory, "queries", [])
+                            )
                         except Exception as e:
                             r.error = f"recall_apply:{e}"
                         r.current_chunk += 1
@@ -1381,7 +1426,19 @@ def streaming_vllm_rollout(
                 # these (grpo.py:711-758); aligning here keeps both
                 # backends interchangeable.
                 "step_messages": [],
+                "dagger_step_messages": [],
                 "recall_first_pass_text": [],
+                "raw_outputs": [],
+                "actions": [],
+                "first_actions": [],
+                "turn_kinds": [],
+                "chunk_indices": [],
+                "compress_prefix_diagnostics": [],
+                "compress_trigger_diagnostics": [],
+                "action_space_errors": [],
+                "invalid_actions": [],
+                "queries_before": [],
+                "queries_after": [],
             }
             for g_idx in range(group_size):
                 if ci < len(per_gen_results[g_idx]):
@@ -1395,9 +1452,33 @@ def streaming_vllm_rollout(
                         list(cr_g["recall_returned_chunks"])
                     )
                     merged["step_messages"].append(cr_g.get("step_messages"))
+                    merged["dagger_step_messages"].append(
+                        cr_g.get("dagger_step_messages") or cr_g.get("step_messages")
+                    )
                     merged["recall_first_pass_text"].append(
                         cr_g.get("_recall_first_text", "")
                     )
+                    merged["raw_outputs"].append(cr_g.get("raw_output", ""))
+                    merged["actions"].append(cr_g.get("action", ""))
+                    merged["first_actions"].append(
+                        cr_g.get("_recall_first_action")
+                        or cr_g.get("first_action")
+                        or cr_g.get("action", "")
+                    )
+                    merged["turn_kinds"].append(cr_g.get("turn_kind", "streaming"))
+                    merged["chunk_indices"].append(int(cr_g.get("chunk_idx", ci)))
+                    merged["compress_prefix_diagnostics"].append(
+                        cr_g.get("compress_prefix_diagnostic") or {}
+                    )
+                    merged["compress_trigger_diagnostics"].append(
+                        cr_g.get("compress_trigger_diagnostic") or {}
+                    )
+                    merged["action_space_errors"].append(
+                        cr_g.get("action_space_error", "")
+                    )
+                    merged["invalid_actions"].append(cr_g.get("invalid_action", ""))
+                    merged["queries_before"].append(cr_g.get("queries_before") or [])
+                    merged["queries_after"].append(cr_g.get("queries_after") or [])
                 else:
                     # Pad: this gen finished early (response emitted past ask_chunk).
                     merged["generated_tokens"].append(_torch.tensor([], dtype=_torch.long))
@@ -1405,7 +1486,19 @@ def streaming_vllm_rollout(
                     merged["compress_budget"].append(0)
                     merged["recall_returned_chunks"].append([])
                     merged["step_messages"].append(None)
+                    merged["dagger_step_messages"].append(None)
                     merged["recall_first_pass_text"].append("")
+                    merged["raw_outputs"].append("")
+                    merged["actions"].append("")
+                    merged["first_actions"].append("")
+                    merged["turn_kinds"].append("")
+                    merged["chunk_indices"].append(-1)
+                    merged["compress_prefix_diagnostics"].append({})
+                    merged["compress_trigger_diagnostics"].append({})
+                    merged["action_space_errors"].append("")
+                    merged["invalid_actions"].append("")
+                    merged["queries_before"].append([])
+                    merged["queries_after"].append([])
             merged_chunk_results.append(merged)
 
         all_rollout_results.append({

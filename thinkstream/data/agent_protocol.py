@@ -65,9 +65,12 @@ def build_compress_trigger_user_input() -> str:
 
 
 def normalize_user_input_for_turn(user_input: str, *, inter_chunk: bool = False) -> str:
-    """Render legacy bare compress triggers as explicit compaction events."""
+    """Normalize user-side event markers for the current turn kind."""
     text = str(user_input or "")
-    if inter_chunk and _contains_compress_trigger(text):
+    if inter_chunk:
+        # Compression is system-triggered. The user-side payload should be the
+        # canonical boolean marker even if the caller forgot to pass it, or
+        # passed a legacy marker with extra attributes.
         return build_compress_trigger_user_input()
     return text
 
@@ -172,6 +175,16 @@ def recall_time_string_for_chunks(
     return f"{tr[0]}-{tr[1]}"
 
 
+PREFER_PATH_FRAME_INDEX_ENV = "THINKSTREAM_PREFER_PATH_FRAME_INDEX"
+
+
+def prefer_path_frame_index() -> bool:
+    value = os.environ.get(PREFER_PATH_FRAME_INDEX_ENV)
+    if value is None:
+        return True
+    return str(value).strip().lower() not in {"0", "false", "no", "off"}
+
+
 def build_recalled_frames_metadata(
     chunks: Optional[Sequence[Any]],
     frame_paths: Optional[Sequence[Any]] = None,
@@ -208,6 +221,7 @@ def infer_video_metadata(
     fps: Optional[float] = None,
     start_frame_index: int = 0,
     total_num_frames: Optional[int] = None,
+    prefer_path_indices: Optional[bool] = None,
 ) -> Dict:
     """Infer Qwen3-VL video metadata for pre-sampled frame lists.
 
@@ -220,10 +234,15 @@ def infer_video_metadata(
     eff_fps = float(fps or (FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)))
     frame_seq = list(frames) if frames is not None else []
     indices: List[int] = []
+    use_path_indices = (
+        prefer_path_frame_index()
+        if prefer_path_indices is None
+        else bool(prefer_path_indices)
+    )
 
     for offset, frame in enumerate(frame_seq):
         idx: Optional[int] = None
-        if isinstance(frame, (str, Path)):
+        if use_path_indices and isinstance(frame, (str, Path)):
             stem = Path(str(frame)).stem
             raw = stem[6:] if stem.startswith("frame_") else stem
             if raw.isdigit():
@@ -247,20 +266,41 @@ def infer_video_metadata(
     }
 
 
+def prompt_time_value(value: Any) -> Any:
+    """Return a compact JSON-safe time value for prompt metadata.
+
+    Chunk-level project times are integer seconds. Data files sometimes carry
+    them as floats (for example 12.0); rendering them as JSON integers avoids
+    teaching the model that chunk boundaries live at fractional times. True
+    sub-second frame timestamps are still carried only by frame metadata.
+    """
+    try:
+        num = float(value)
+    except (TypeError, ValueError):
+        return value
+    if num.is_integer():
+        return int(num)
+    return round(num, 3)
+
+
+def prompt_time_range(value: Any) -> Any:
+    if isinstance(value, (list, tuple)) and len(value) >= 2:
+        return [prompt_time_value(value[0]), prompt_time_value(value[1])]
+    return value
+
+
 FRAME_PROTOCOL_TS_IMAGE = "ts_image"
 FRAME_PROTOCOL_VIDEO_META = "video_meta"
 FRAME_PROTOCOL_ENV = "THINKSTREAM_FRAME_PROTOCOL"
 VALID_FRAME_PROTOCOLS = {FRAME_PROTOCOL_TS_IMAGE, FRAME_PROTOCOL_VIDEO_META}
 
-RENDER_LAYOUT_STANDARD = "standard"
-RENDER_LAYOUT_TIMELINE_VIDEO = "timeline_video"
-RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD = "timeline_video_imagepad"
+RENDER_LAYOUT_STANDARD_QUERY_LAST = "standard_query_last"
 RENDER_LAYOUT_ENV = "THINKSTREAM_RENDER_LAYOUT"
-VALID_RENDER_LAYOUTS = {
-    RENDER_LAYOUT_STANDARD,
-    RENDER_LAYOUT_TIMELINE_VIDEO,
-    RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
-}
+VALID_RENDER_LAYOUTS = {RENDER_LAYOUT_STANDARD_QUERY_LAST}
+
+MEMORY_POSITION_ENV = "THINKSTREAM_MEMORY_POSITION"
+MEMORY_POSITION_BEFORE_VISUAL = "before_visual"
+VALID_MEMORY_POSITIONS = {MEMORY_POSITION_BEFORE_VISUAL}
 
 
 def normalize_frame_protocol(frame_protocol: Optional[str] = None) -> str:
@@ -272,7 +312,7 @@ def normalize_frame_protocol(frame_protocol: Optional[str] = None) -> str:
     images or as a pre-sampled Qwen video block with metadata.
     """
     value = (frame_protocol or os.environ.get(FRAME_PROTOCOL_ENV)
-             or FRAME_PROTOCOL_TS_IMAGE)
+             or FRAME_PROTOCOL_VIDEO_META)
     value = str(value).strip().lower().replace("-", "_")
     aliases = {
         "timestamp_image": FRAME_PROTOCOL_TS_IMAGE,
@@ -298,22 +338,44 @@ def normalize_render_layout(render_layout: Optional[str] = None) -> str:
     value = (
         render_layout
         or os.environ.get(RENDER_LAYOUT_ENV)
-        or RENDER_LAYOUT_STANDARD
+        or RENDER_LAYOUT_STANDARD_QUERY_LAST
     )
     value = str(value).strip().lower().replace("-", "_")
     aliases = {
-        "block": RENDER_LAYOUT_STANDARD,
-        "legacy": RENDER_LAYOUT_STANDARD,
-        "timeline": RENDER_LAYOUT_TIMELINE_VIDEO,
-        "interleaved": RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
-        "timeline_imagepad": RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
-        "video_imagepad": RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
+        "query_last": RENDER_LAYOUT_STANDARD_QUERY_LAST,
+        "standard_querylast": RENDER_LAYOUT_STANDARD_QUERY_LAST,
     }
     value = aliases.get(value, value)
     if value not in VALID_RENDER_LAYOUTS:
         raise ValueError(
             f"Unsupported render layout {render_layout!r}; expected one of "
             f"{sorted(VALID_RENDER_LAYOUTS)}"
+        )
+    return value
+
+
+def normalize_memory_position(memory_position: Optional[str] = None) -> str:
+    """Return where text memory is rendered relative to the visual window.
+
+    This is an eval-time ablation knob. The default preserves the training
+    prompt contract; production SFT/RL launchers do not set this env var.
+    """
+    value = (
+        memory_position
+        or os.environ.get(MEMORY_POSITION_ENV)
+        or MEMORY_POSITION_BEFORE_VISUAL
+    )
+    value = str(value).strip().lower().replace("-", "_")
+    aliases = {
+        "before": MEMORY_POSITION_BEFORE_VISUAL,
+        "top": MEMORY_POSITION_BEFORE_VISUAL,
+        "memory_first": MEMORY_POSITION_BEFORE_VISUAL,
+    }
+    value = aliases.get(value, value)
+    if value not in VALID_MEMORY_POSITIONS:
+        raise ValueError(
+            f"Unsupported memory position {memory_position!r}; expected one of "
+            f"{sorted(VALID_MEMORY_POSITIONS)}"
         )
     return value
 
@@ -498,201 +560,6 @@ def append_visual_frames(
     )
 
 
-def append_imagepad_frame_list(
-    content: List[Dict],
-    frames: Sequence[Any],
-    *,
-    min_pixels: Optional[int] = None,
-    max_pixels: Optional[int] = None,
-) -> None:
-    """Append pre-extracted frames as independent image-pad items.
-
-    Pass5 may store these rows as ``type=video`` for dataset routing, but
-    runtime processors and vLLM consume the carrier as ordinary image items.
-    The surrounding timeline tags carry the temporal grouping.
-    """
-    for frame in frames or []:
-        item: Dict[str, Any] = {"type": "image", "image": frame}
-        if min_pixels is not None:
-            item["min_pixels"] = min_pixels
-        if max_pixels is not None:
-            item["max_pixels"] = max_pixels
-        content.append(item)
-
-
-def _group_frames_by_chunk(
-    frame_paths: Optional[Sequence[Any]],
-    *,
-    window_start: int,
-) -> Dict[int, List[Any]]:
-    grouped: Dict[int, List[Any]] = {}
-    for offset, path in enumerate(frame_paths or []):
-        chunk = int(window_start) + int(offset // FRAMES_PER_CHUNK)
-        grouped.setdefault(chunk, []).append(path)
-    return grouped
-
-
-def _coerce_timeline_think(item: Any) -> Optional[Dict[str, Any]]:
-    if isinstance(item, dict):
-        text = str(item.get("text") or item.get("observation") or item.get("obs") or "").strip()
-        if not text:
-            return None
-        try:
-            chunk = int(item.get("chunk"))
-        except (TypeError, ValueError):
-            chunk = None
-        time_text = str(item.get("time") or "").strip()
-        if chunk is None and time_text:
-            m = re.match(r"\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)", time_text)
-            if m:
-                chunk = int(float(m.group(1)) // float(AGENT_CHUNK_SEC))
-        if chunk is None:
-            return None
-        return {"chunk": chunk, "time": time_text, "text": text}
-    raw = str(item or "").strip()
-    if not raw:
-        return None
-    m = re.match(r"^\[(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\]\s*(.*)$", raw, re.DOTALL)
-    if m:
-        start = float(m.group(1))
-        end = float(m.group(2))
-        return {
-            "chunk": int(start // float(AGENT_CHUNK_SEC)),
-            "time": (
-                f"{int(start) if start.is_integer() else start}-"
-                f"{int(end) if end.is_integer() else end}"
-            ),
-            "text": m.group(3).strip(),
-        }
-    return {"chunk": 0, "time": "", "text": raw}
-
-
-def _segment_chunks(seg: Dict[str, Any]) -> List[int]:
-    out: List[int] = []
-    for raw in seg.get("source_chunks") or seg.get("chunks") or []:
-        try:
-            out.append(int(raw))
-        except (TypeError, ValueError):
-            continue
-    if out:
-        return sorted(set(out))
-    tr = seg.get("time_range") or []
-    if isinstance(tr, list) and len(tr) == 2:
-        try:
-            start = int(float(tr[0]) // float(AGENT_CHUNK_SEC))
-            end = int((float(tr[1]) - 1e-9) // float(AGENT_CHUNK_SEC))
-            return list(range(max(0, start), max(0, end) + 1))
-        except (TypeError, ValueError):
-            return []
-    return []
-
-
-def _format_timeline_summary(seg: Dict[str, Any]) -> str:
-    chunks = _segment_chunks(seg)
-    if chunks:
-        start = min(chunks) * AGENT_CHUNK_SEC
-        end = (max(chunks) + 1) * AGENT_CHUNK_SEC
-        time_range = f"{int(start)}-{int(end)}"
-    else:
-        tr = seg.get("time_range") or ["?", "?"]
-        time_range = f"{tr[0]}-{tr[1]}"
-    text = str(seg.get("text") or "").strip()
-    return "\n".join([
-        f"<SUMMARY time_range={json.dumps(time_range, ensure_ascii=False)}>",
-        text,
-        "</SUMMARY>",
-    ])
-
-
-def _format_timeline_memory_think(rec: Dict[str, Any]) -> str:
-    chunk = int(rec.get("chunk", 0) or 0)
-    time_text = str(rec.get("time") or "").strip()
-    if not time_text:
-        time_text = f"{int(chunk * AGENT_CHUNK_SEC)}"
-    elif "-" in time_text:
-        time_text = time_text.split("-", 1)[0].strip()
-    text = str(rec.get("text") or "").strip()
-    return f"<MEMORY_THINK time={json.dumps(time_text)}>{text}</MEMORY_THINK>"
-
-
-def append_timeline_visual_chunk(
-    content: List[Dict],
-    *,
-    frames: Sequence[Any],
-    chunk: int,
-    frame_protocol: Optional[str],
-    min_pixels: Optional[int],
-    max_pixels: Optional[int],
-    imagepad: bool,
-) -> None:
-    start = int(chunk * AGENT_CHUNK_SEC)
-    content.append({"type": "text", "text": f"\n<VISUAL_CHUNK time=\"{start}\">"})
-    if imagepad:
-        append_imagepad_frame_list(
-            content,
-            frames,
-            min_pixels=min_pixels,
-            max_pixels=max_pixels,
-        )
-    else:
-        append_visual_frames(
-            content,
-            frames,
-            frame_protocol=frame_protocol,
-            fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
-            start_frame_index=chunk * FRAMES_PER_CHUNK,
-            total_num_frames=(chunk + 1) * FRAMES_PER_CHUNK,
-            min_pixels=min_pixels,
-            max_pixels=max_pixels,
-        )
-    content.append({"type": "text", "text": "</VISUAL_CHUNK>"})
-
-
-def append_timeline_recalled_chunks(
-    content: List[Dict],
-    *,
-    recalled_frames: Dict[str, Any],
-    frame_protocol: Optional[str],
-    min_pixels: Optional[int],
-    max_pixels: Optional[int],
-    imagepad: bool,
-) -> None:
-    frame_paths = recalled_frames.get("frame_paths") or []
-    if not frame_paths:
-        return
-    tr0, tr1 = recalled_frames.get("time_range", [0, 0])
-    start_chunk = int(float(tr0) // float(AGENT_CHUNK_SEC))
-    grouped = _group_frames_by_chunk(frame_paths, window_start=start_chunk)
-    for chunk in sorted(grouped):
-        start = int(chunk * AGENT_CHUNK_SEC)
-        content.append({
-            "type": "text",
-            "text": f"\n<RECALLED_CHUNK time=\"{start}\">",
-        })
-        if imagepad:
-            append_imagepad_frame_list(
-                content,
-                grouped[chunk],
-                min_pixels=min_pixels,
-                max_pixels=max_pixels,
-            )
-        else:
-            append_visual_frames(
-                content,
-                grouped[chunk],
-                frame_protocol=frame_protocol,
-                fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
-                start_frame_index=chunk * FRAMES_PER_CHUNK,
-                total_num_frames=max(
-                    int(float(tr1) * FRAMES_PER_CHUNK),
-                    (chunk + 1) * FRAMES_PER_CHUNK,
-                ),
-                context_label="recalled frame",
-                min_pixels=min_pixels,
-                max_pixels=max_pixels,
-            )
-        content.append({"type": "text", "text": "</RECALLED_CHUNK>"})
-
 # ---------------------------------------------------------------------------
 # Memory Formatting
 # ---------------------------------------------------------------------------
@@ -700,21 +567,36 @@ def append_timeline_recalled_chunks(
 _RECENT_THINK_LINE_RE = re.compile(r"^\s*\[([^\]]+)\]\s*(.*)$", re.DOTALL)
 
 
-def _coerce_memory_think(item: Any) -> Dict[str, str]:
+def _memory_time_point(value: Any) -> Any:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    if "-" in text:
+        text = text.split("-", 1)[0].strip()
+    try:
+        numeric = float(text)
+        return int(numeric) if numeric.is_integer() else numeric
+    except ValueError:
+        return text
+
+
+def _coerce_memory_think(item: Any) -> Dict[str, Any]:
     """Normalize a recent-think memory item for tagged rendering."""
     if isinstance(item, str):
         m = _RECENT_THINK_LINE_RE.match(item)
         if m:
-            return {"time": m.group(1).strip(), "text": m.group(2).strip()}
+            return {
+                "time": _memory_time_point(m.group(1).strip()),
+                "text": m.group(2).strip(),
+            }
         return {"time": "", "text": item.strip()}
     if isinstance(item, dict):
         time_str = item.get(
             "time",
-            f'{item.get("chunk", 0) * AGENT_CHUNK_SEC}-'
-            f'{item.get("chunk", 0) * AGENT_CHUNK_SEC + AGENT_CHUNK_SEC}',
+            item.get("chunk", 0) * AGENT_CHUNK_SEC,
         )
         return {
-            "time": str(time_str),
+            "time": _memory_time_point(time_str),
             "text": str(item.get("text", item.get("obs", ""))).strip(),
         }
     return {"time": "", "text": str(item).strip()}
@@ -744,7 +626,7 @@ def format_memory_block(memory: Dict) -> str:
     compressed = memory.get("compressed_segments", memory.get("compressed", []))
     for seg in compressed:
         seg_json = json.dumps(
-            {"time_range": seg["time_range"], "text": seg["text"]},
+            {"time_range": prompt_time_range(seg["time_range"]), "text": seg["text"]},
             ensure_ascii=False,
         )
         parts.append(f"<compressed>{seg_json}</compressed>")
@@ -783,12 +665,11 @@ def build_recall_result_user_content(
     render_layout: Optional[str] = None,
 ) -> List[Dict]:
     """Build the second user payload after a recall tool call."""
-    layout = normalize_render_layout(render_layout)
-    imagepad = layout == RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD
+    normalize_render_layout(render_layout)
     user_content: List[Dict] = []
     if recalled_frames:
         rf_header = json.dumps({
-            "time_range": recalled_frames["time_range"],
+            "time_range": prompt_time_range(recalled_frames["time_range"]),
             "source": recalled_frames.get("source", "historical_frames"),
             "n_frames": recalled_frames.get("n_frames", 4),
         })
@@ -797,31 +678,18 @@ def build_recall_result_user_content(
             "text": f"<recalled_frames>{rf_header}</recalled_frames>",
         })
         if recalled_frames.get("frame_paths"):
-            if layout in {
-                RENDER_LAYOUT_TIMELINE_VIDEO,
-                RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
-            }:
-                append_timeline_recalled_chunks(
-                    user_content,
-                    recalled_frames=recalled_frames,
-                    frame_protocol=frame_protocol,
-                    min_pixels=min_pixels,
-                    max_pixels=max_pixels,
-                    imagepad=imagepad,
-                )
-            else:
-                tr_start, tr_end = recalled_frames["time_range"]
-                append_visual_frames(
-                    user_content,
-                    recalled_frames["frame_paths"],
-                    frame_protocol=frame_protocol,
-                    fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
-                    start_frame_index=int(float(tr_start)) * FRAMES_PER_CHUNK,
-                    total_num_frames=int(float(tr_end)) * FRAMES_PER_CHUNK,
-                    context_label="recalled frame",
-                    min_pixels=min_pixels,
-                    max_pixels=max_pixels,
-                )
+            tr_start, tr_end = recalled_frames["time_range"]
+            append_visual_frames(
+                user_content,
+                recalled_frames["frame_paths"],
+                frame_protocol=frame_protocol,
+                fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
+                start_frame_index=int(float(tr_start)) * FRAMES_PER_CHUNK,
+                total_num_frames=int(float(tr_end)) * FRAMES_PER_CHUNK,
+                context_label="recalled frame",
+                min_pixels=min_pixels,
+                max_pixels=max_pixels,
+            )
     if recall_result:
         rr_text = recall_result.get("text_content",
                                     recall_result.get("text", "")) or ""
@@ -874,7 +742,13 @@ def answer_format_instruction(
         if style == "text_only":
             return "Answer format: answer text only, no option letter."
         # Default and OvO-compatible style.
-        return "Answer format: one letter only (A, B, C, or D)."
+        n_opts = len(list(options or []))
+        letters = [chr(ord("A") + i) for i in range(max(2, min(n_opts or 4, 26)))]
+        if len(letters) == 1:
+            letter_text = letters[0]
+        else:
+            letter_text = ", ".join(letters[:-1]) + f", or {letters[-1]}"
+        return f"Answer format: one letter only ({letter_text})."
     if form == "binary":
         return "Answer format: a concise binary answer such as Yes or No."
     if form == "number":
@@ -1241,156 +1115,34 @@ def format_queries_block(
     return active_block + "\n" + response_block
 
 
-def _build_timeline_user_content(
-    memory_snapshot: Dict[str, Any],
-    *,
-    memory_text: str,
-    chunk_idx: int,
+def user_input_is_active_query_duplicate(
     user_input: str,
     queries: Optional[List[Dict]],
-    recalled_frames: Optional[Dict],
-    recall_result: Optional[Dict],
-    min_pixels: Optional[int],
-    max_pixels: Optional[int],
-    frame_paths: Optional[List[str]],
-    frame_protocol: Optional[str],
-    inter_chunk: bool,
-    render_layout: str,
-) -> List[Dict]:
-    content: List[Dict] = []
-    user_input_block = format_user_input_block(
-        user_input,
-        inter_chunk=inter_chunk,
-    ) if user_input else ""
-    prepend_user_input = bool(user_input_block) and user_input_should_prepend(
-        inter_chunk=inter_chunk,
-    )
-    if prepend_user_input:
-        content.append({"type": "text", "text": user_input_block.lstrip("\n")})
+    *,
+    inter_chunk: bool = False,
+) -> bool:
+    """Return whether user_input only repeats the rendered active question."""
+    if inter_chunk or not queries:
+        return False
+    text = normalize_user_input_for_turn(user_input, inter_chunk=False).strip()
+    if not text:
+        return False
+    selected = _select_queries_for_prompt(list(queries))
+    if not selected:
+        return False
+    q = max(
+        enumerate(selected),
+        key=lambda x: (_query_time_key(x[1]), x[0]),
+    )[1]
+    question = str(q.get("question", "")).strip()
+    if not question:
+        return False
 
-    compressed = list(
-        memory_snapshot.get(
-            "compressed_segments",
-            memory_snapshot.get("compressed", []),
-        ) or []
-    )
-    recent = [
-        rec for rec in (
-            _coerce_timeline_think(item)
-            for item in (
-                memory_snapshot.get(
-                    "recent_thinks",
-                    memory_snapshot.get("recent_observations", []),
-                ) or []
-            )
-        )
-        if rec is not None
-    ]
-    recent_by_chunk: Dict[int, List[Dict[str, Any]]] = {}
-    for rec in recent:
-        recent_by_chunk.setdefault(int(rec["chunk"]), []).append(rec)
+    def norm(value: str) -> str:
+        value = re.sub(r"^\s*(?:\[[^\]\n]+s\]\s*)?Q:\s*", "", value)
+        return " ".join(value.split()).strip().lower()
 
-    window_start = compute_visual_window_start(chunk_idx, VISUAL_WINDOW_CHUNKS)
-    visual_by_chunk: Dict[int, List[Any]] = {}
-    if frame_paths and not inter_chunk:
-        visual_by_chunk = _group_frames_by_chunk(
-            frame_paths,
-            window_start=window_start,
-        )
-
-    summary_by_chunk: Dict[int, List[str]] = {}
-    for seg in compressed:
-        if not isinstance(seg, dict):
-            continue
-        chunks = _segment_chunks(seg)
-        start_chunk = min(chunks) if chunks else 0
-        summary_by_chunk.setdefault(start_chunk, []).append(
-            _format_timeline_summary(seg)
-        )
-
-    timeline_chunks = sorted(
-        set(summary_by_chunk) | set(recent_by_chunk) | set(visual_by_chunk)
-    )
-    in_memory = False
-
-    def open_memory() -> None:
-        nonlocal in_memory
-        if not in_memory:
-            content.append({"type": "text", "text": "\n<memory>" if content else "<memory>"})
-            in_memory = True
-
-    def close_memory() -> None:
-        nonlocal in_memory
-        if in_memory:
-            content.append({"type": "text", "text": "\n</memory>"})
-            in_memory = False
-
-    if not timeline_chunks and memory_text.strip():
-        open_memory()
-        content.append({"type": "text", "text": f"\n{memory_text.strip()}"})
-
-    imagepad = render_layout == RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD
-    for chunk in timeline_chunks:
-        summaries = summary_by_chunk.get(chunk, [])
-        if summaries:
-            open_memory()
-            for capsule in summaries:
-                content.append({"type": "text", "text": f"\n{capsule}"})
-        if chunk in visual_by_chunk:
-            close_memory()
-            append_timeline_visual_chunk(
-                content,
-                frames=visual_by_chunk[chunk],
-                chunk=chunk,
-                frame_protocol=frame_protocol,
-                min_pixels=min_pixels,
-                max_pixels=max_pixels,
-                imagepad=imagepad,
-            )
-            if chunk < chunk_idx:
-                recs = recent_by_chunk.get(chunk, [])
-                if recs:
-                    open_memory()
-                    for rec in recs:
-                        content.append({
-                            "type": "text",
-                            "text": f"\n{_format_timeline_memory_think(rec)}",
-                        })
-        else:
-            recs = recent_by_chunk.get(chunk, [])
-            if recs:
-                open_memory()
-                for rec in recs:
-                    content.append({
-                        "type": "text",
-                        "text": f"\n{_format_timeline_memory_think(rec)}",
-                    })
-    close_memory()
-
-    if queries and not inter_chunk:
-        queries_text = format_queries_block(queries)
-        if queries_text:
-            content.append({"type": "text", "text": f"\n{queries_text}"})
-
-    if (recalled_frames or recall_result) and not inter_chunk:
-        recall_items = build_recall_result_user_content(
-            recalled_frames,
-            recall_result,
-            frame_protocol=frame_protocol,
-            min_pixels=min_pixels,
-            max_pixels=max_pixels,
-            render_layout=render_layout,
-        )
-        for i, item in enumerate(recall_items):
-            if i == 0 and content and item.get("type") == "text":
-                item = dict(item)
-                item["text"] = "\n" + str(item.get("text", ""))
-            content.append(item)
-
-    if user_input_block and not prepend_user_input:
-        content.append({"type": "text", "text": user_input_block})
-
-    return content
+    return norm(text) == norm(question)
 
 
 def build_user_content(
@@ -1416,20 +1168,18 @@ def build_user_content(
 ) -> List[Dict]:
     """Build the user content list for a single-step message.
 
-    Ordering:
-    <user_input> → <memory> → <active_query>/<response_history> (visual turns only) →
-    <visual_window> + frames → <recalled_frames> + frames → <recall_result>
+    Current ordering:
+    <user_input> → <memory> → <visual_window> + video_meta frames →
+    <active_query>/<response_history> → <recalled_frames> + frames →
+    <recall_result>.
 
-    Why this order: memory and the active-query state stay before the visual
-    window, while old closed Q&A is intentionally omitted. The fresh user event
-    is placed before memory so questions and memory-compaction triggers are not
-    buried behind long historical text. Visual window changes every chunk, so it
-    remains after the stable text zones.
+    The fresh user event stays at the front, historical text memory appears
+    before vision, and the active query/answer format appears after the visual
+    window so the model sees the latest evidence before the final task.
 
-    Pre-extracted frames are rendered by the late-bound frame protocol:
-    ``ts_image`` (frame-tag text + image items) or ``video_meta`` (one Qwen
-    video block with explicit metadata). All other text state is identical
-    across protocols.
+    Pre-extracted frames are rendered by the active frame protocol. The
+    supported production setting is ``video_meta``: one Qwen video block with
+    explicit frame metadata. All text state is shared across SFT/RL/eval.
 
     Args:
         memory_text: Pre-formatted memory block from format_memory_block().
@@ -1452,36 +1202,21 @@ def build_user_content(
                      is a text-memory action between visual timesteps.
     """
     layout = normalize_render_layout(render_layout)
-    if (
-        layout in {
-            RENDER_LAYOUT_TIMELINE_VIDEO,
-            RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD,
-        }
-        and (frame_paths or inter_chunk)
-        and memory_snapshot is not None
-    ):
-        return _build_timeline_user_content(
-            memory_snapshot,
-            memory_text=memory_text,
-            chunk_idx=chunk_idx,
-            user_input=user_input,
-            queries=queries,
-            recalled_frames=recalled_frames,
-            recall_result=recall_result,
-            min_pixels=min_pixels,
-            max_pixels=max_pixels,
-            frame_paths=frame_paths,
-            frame_protocol=frame_protocol,
-            inter_chunk=inter_chunk,
-            render_layout=layout,
-        )
-
     chunk_sec = AGENT_CHUNK_SEC
     user_content = []
+    effective_user_input = (
+        ""
+        if user_input_is_active_query_duplicate(
+            user_input,
+            queries,
+            inter_chunk=inter_chunk,
+        )
+        else user_input
+    )
     user_input_block = format_user_input_block(
-        user_input,
+        effective_user_input,
         inter_chunk=inter_chunk,
-    ) if user_input else ""
+    )
     prepend_user_input = bool(user_input_block) and user_input_should_prepend(
         inter_chunk=inter_chunk,
     )
@@ -1492,23 +1227,32 @@ def build_user_content(
             "text": user_input_block.lstrip("\n"),
         })
 
-    # ── Memory block ──
-    user_content.append({
-        "type": "text",
-        "text": f"\n<memory>\n{memory_text}\n</memory>" if user_content
-        else f"<memory>\n{memory_text}\n</memory>",
-    })
+    memory_position = normalize_memory_position()
+    query_last = layout == RENDER_LAYOUT_STANDARD_QUERY_LAST
 
-    # ── Active query + response history for that same query ──
-    # Inter-chunk compression is a system memory-pressure event, so omit
-    # queries to prevent the model from answering instead of compacting memory.
-    if queries and not inter_chunk:
-        queries_text = format_queries_block(queries)
-        if queries_text:
-            user_content.append({
-                "type": "text",
-                "text": f"\n{queries_text}",
-            })
+    def append_memory_block() -> None:
+        user_content.append({
+            "type": "text",
+            "text": f"\n<memory>\n{memory_text}\n</memory>" if user_content
+            else f"<memory>\n{memory_text}\n</memory>",
+        })
+
+    def append_queries_block() -> None:
+        # Inter-chunk compression is a system memory-pressure event, so omit
+        # queries to prevent the model from answering instead of compacting memory.
+        if queries and not inter_chunk:
+            queries_text = format_queries_block(queries)
+            if queries_text:
+                user_content.append({
+                    "type": "text",
+                    "text": f"\n{queries_text}",
+                })
+
+    if memory_position == MEMORY_POSITION_BEFORE_VISUAL:
+        append_memory_block()
+
+    if not query_last:
+        append_queries_block()
 
     # ── Visual window + protocol-selected frame carrier ──
     # Compression is between visual timesteps and should not condition on the
@@ -1522,10 +1266,10 @@ def build_user_content(
         n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
 
         vw_header = json.dumps({
-            "start": video_start,
-            "end": video_end,
+            "start": prompt_time_value(video_start),
+            "end": prompt_time_value(video_end),
             "frames": n_frames,
-            "current_time": [current_start, current_end],
+            "current_time": prompt_time_value(current_start),
         })
         user_content.append({
             "type": "text",
@@ -1548,16 +1292,19 @@ def build_user_content(
             user_content.append({
                 "type": "video",
                 "video": video_path,
-                "video_start": video_start,
-                "video_end": video_end,
+                "video_start": prompt_time_value(video_start),
+                "video_end": prompt_time_value(video_end),
                 "nframes": n_frames,
                 "min_pixels": min_pixels,
                 "max_pixels": max_pixels,
             })
+
+    if query_last:
+        append_queries_block()
     # ── Recalled frames (recall_response only) ──
     if recalled_frames and not inter_chunk:
         rf_header = json.dumps({
-            "time_range": recalled_frames["time_range"],
+            "time_range": prompt_time_range(recalled_frames["time_range"]),
             "source": recalled_frames.get("source", "historical_frames"),
             "n_frames": recalled_frames.get("n_frames", 4),
         })
@@ -1583,8 +1330,8 @@ def build_user_content(
             user_content.append({
                 "type": "video",
                 "video": video_path,
-                "video_start": recalled_frames["time_range"][0],
-                "video_end": recalled_frames["time_range"][1],
+                "video_start": prompt_time_value(recalled_frames["time_range"][0]),
+                "video_end": prompt_time_value(recalled_frames["time_range"][1]),
                 "nframes": recalled_frames.get("n_frames", 4),
                 "min_pixels": min_pixels,
                 "max_pixels": max_pixels,
@@ -1689,230 +1436,166 @@ def strip_chat_template_boundary_tokens(text: str) -> str:
 
 
 _FRAME_CARRIER_TS_PROMPT = (
-    "Each turn you receive: frame-tagged visual frames (recent 16s window) + "
-    "tagged memory state. Every image is preceded by a structural tag like "
-    "<frame ts=\"12.5\" role=\"latest chunk\" />; use these frame tags together "
-    "with <visual_window>.current_time to identify the current chunk. Frame "
-    "tags are routing metadata only: never copy or paraphrase any <frame .../> "
-    "tag, timestamp marker, role marker, or metadata line in your output. "
+    "Visual input is a recent sliding window. Each frame has a timestamp tag "
+    "such as <frame ts=\"12\" role=\"latest chunk\" />. Use "
+    "<visual_window>.current_time to identify the latest one-second chunk. "
+    "Earlier frames in the same window are visual context for previous or "
+    "within-window details, not proof of the current state. Frame tags are "
+    "routing metadata only: do not copy tags, timestamps, role markers, or "
+    "metadata lines into the output.\n\n"
 )
 
 _FRAME_CARRIER_VIDEO_META_PROMPT = (
-    "Each turn you receive: a pre-sampled video block (recent 16s window) + "
-    "tagged memory state. The video block uses Qwen video_metadata (fps, "
-    "frames_indices, total_num_frames) to carry frame timestamps; use those "
-    "timestamps together with <visual_window>.current_time to identify the "
-    "current chunk. Temporal metadata is routing metadata only: never copy or "
-    "paraphrase timestamp markers, frame indices, role markers, or metadata "
-    "lines in your output. "
-)
-
-_FRAME_CARRIER_TIMELINE_IMAGEPAD_PROMPT = (
-    "Each turn you receive: a time-ordered timeline with tagged memory "
-    "capsules and time-marked visual chunks. Each visual chunk contains "
-    "the pre-sampled image-pad frames for one second. Summary capsules "
-    "are historical memory at their covered time range; recalled evidence "
-    "is newly retrieved for the current decision but cites older time ranges. "
-    "Use the last visual chunk as the primary source for current observation. "
-    "Single-step visual and memory tags use time points, while multi-step "
-    "summaries and recalled evidence use time ranges. Timeline tags never "
-    "expose frame or chunk ids. Temporal metadata is routing metadata only: "
-    "never copy or paraphrase timestamp markers or metadata lines in your "
-    "output. "
-)
-
-_FRAME_CARRIER_TIMELINE_VIDEO_PROMPT = (
-    "Each turn you receive: a time-ordered timeline with tagged memory "
-    "capsules and one or more pre-sampled video blocks. Each video block uses "
-    "Qwen video_metadata (fps, frames_indices, total_num_frames) to carry "
-    "absolute frame timestamps. Summary capsules are historical memory at "
-    "their covered time range; recalled evidence is newly retrieved for the "
-    "current decision but cites older time ranges. Use the last visual chunk "
-    "as the primary source for current observation. Single-step visual and "
-    "memory tags use time points, while multi-step summaries and recalled "
-    "evidence use time ranges. Timeline tags never expose frame or chunk ids. "
-    "Temporal metadata is routing metadata only: never copy or paraphrase "
-    "timestamp markers or metadata lines in your output. "
+    "Visual input is one Qwen video block built from pre-extracted frames in a "
+    "recent sliding window. Qwen video_metadata carries frame timestamps. Use "
+    "<visual_window>.current_time to identify the latest one-second chunk. "
+    "Earlier frames in the same window are visual context for previous or "
+    "within-window details, not proof of the current state. Temporal metadata "
+    "is routing metadata only: do not copy timestamps, frame indices, role "
+    "markers, or metadata lines into the output.\n\n"
 )
 
 SYSTEM_PROMPT_V12_STREAMING = (
-    "[STREAMING_QA / RECALL-ELIGIBLE TURN]\n"
-    "You are a streaming video agent. You observe 1-second video chunks and "
-    "maintain memory. This is an ordinary streaming-video turn: decide whether "
-    "to answer the active query, stay silent, or call recall for historical "
-    "evidence. Memory compaction is a separate memory-maintenance mode with a "
-    "different system prompt and action space.\n\n"
+    "[STREAMING_QA / RECALL-ENCOURAGED TURN]\n"
+    "You are a streaming video agent. This is an ordinary QA turn, not a "
+    "memory-compression turn. Produce one parseable message: exactly one "
+    "<think> block followed by either one <answer> block or one recall "
+    "<tool_call> block.\n\n"
     f"{_FRAME_CARRIER_TS_PROMPT}"
-    "The user payload may also include <user_input> for a new question/event, "
-    "<active_query> for the one currently live question with its answer-format "
-    "instruction, <response_history> for answers already emitted for that same "
-    "active_query only, <recalled_frames> for historical visual evidence returned "
-    "by recall, and <recall_result> for historical text evidence returned by "
-    "recall. Closed questions and their old answers are not shown.\n\n"
-    "Ordinary streaming turns have exactly three terminal forms:\n"
-    "1. Recall tool: a recall <tool_call>. This is a tool request, not an "
-    "answer. After a <recall_result> is returned for a question, do not call "
-    "recall again for that same question.\n"
-    "2. Answer response: a non-empty <answer>response text</answer>. If "
-    "<active_query> is present, the response text belongs to that active_query "
-    "and must follow its answer-format instruction.\n"
-    "3. Silent answer: an empty <answer></answer>. It carries no response text "
-    "and does not add anything to <response_history>.\n\n"
-    "Recall decision policy:\n"
-    "- First decide the evidence source for <active_query>: answer only when "
-    "the current visual window or an already returned recall result contains "
-    "the required evidence; stay silent when the answer is a future event; "
-    "recall when the required evidence is likely historical and not visible "
-    "now.\n"
-    "- Use the recall tool when <active_query> cannot be answered from the "
-    "current <visual_window> or the already returned <recall_result>, but the "
-    "needed evidence may be in earlier video history.\n"
-    "- Use recall when the current frames are unclear, cropped, too late, or "
-    "do not visibly contain the requested historical object, action, OCR, "
-    "count, state, or attribute. Do not guess and do not answer from memory "
-    "alone in those cases.\n"
-    "- A single useful recall is preferable to guessing from stale memory when "
-    "historical evidence could materially improve the answer.\n"
-    "- Do not call recall when the answer is already visible in the current "
-    "visual window. Do not call recall repeatedly for the same active query "
-    "after a recall result has already been returned.\n\n"
-    "Do not emit the compress tool when this ordinary streaming prompt is the "
-    "active turn policy. Compression uses a separate system prompt.\n\n"
-    "Required output grammar for ordinary streaming turns:\n"
+    "Prompt order:\n"
+    "1. <user_input> gives the new external event, if any.\n"
+    "2. <memory> gives historical text state before the visual window. "
+    "<compressed>{...}</compressed> is older summary memory, and "
+    "<memory_think>{...}</memory_think> is previous per-chunk observation. "
+    "Memory helps orientation and recall planning, but is not enough by "
+    "itself for visual detail answers.\n"
+    "3. <visual_window>{...}</visual_window> and the following video frames "
+    "are the current visual evidence. The latest/current one-second chunk is "
+    "the evidence for what is happening now; earlier frames in the same window "
+    "are evidence only for previous or within-window details.\n"
+    "4. <active_query> appears after the visual window and is the only live "
+    "question. It contains the question, options when present, and the required "
+    "answer format. <response_history> contains prior valid answers for that "
+    "same live query only.\n"
+    "5. After recall, <recalled_frames> and <recall_result> are historical "
+    "evidence for the same active query.\n\n"
+    "Decision rules:\n"
+    "- Answer when <active_query> is present and the required evidence is "
+    "complete in the current visual input or in already returned recall "
+    "evidence. Follow the answer-format instruction exactly.\n"
+    "- Prefer recall when the active query needs earlier visual detail that is "
+    "not visible or is unclear in the current visual input, especially for "
+    "objects, actions, OCR, counts, colors, states, attributes, spatial "
+    "relations, cumulative answers, long-wait uncertainty, or HLD/Unable "
+    "absence checks. A single useful recall is better than guessing from memory.\n"
+    "- Prefer silent when there is no <active_query>, when the query asks for a "
+    "future event that has not appeared yet, when the next multi-event answer "
+    "is not due, or when evidence remains insufficient after recall.\n"
+    "- Avoid repeat recall after a recall result has already been returned for "
+    "the same active query; use the returned evidence to answer or stay silent.\n"
+    "- Avoid recall when the answer is already visible in the current visual "
+    "input.\n\n"
+    "Think rules:\n"
+    "- <think> should start with observable facts from the latest/current "
+    "chunk. Keep it short.\n"
+    "- After the current-chunk observation, add only a short decision clause: "
+    "answer, silent, or recall. If the decision depends on older visible or "
+    "recalled evidence, mention the source category only, not the historical "
+    "contents.\n"
+    "- Do not copy raw memory, recall text, frame metadata, options, or "
+    "previous answers into <think>.\n\n"
+    "Output grammar:\n"
     "- Every assistant message must be exactly one <think> block followed by "
-    "exactly one terminal block. Do not write any text outside these tags.\n"
-    "- Think block format:\n"
-    "  <think>40-100 tokens describing only observable facts in the current "
-    "chunk and the selected terminal form: recall tool vs answer response vs "
-    "silent answer. When selecting recall, explicitly state that the current "
-    "visible evidence is insufficient and that a historical window is being "
-    "recalled.</think>\n"
+    "exactly one terminal block. Do not write text outside these tags.\n"
     "- Recall tool format:\n"
     "  <tool_call>{\"name\":\"recall\",\"arguments\":{\"query\":\"3-5 keywords\",\"time_range\":\"start-end\"}}</tool_call>\n"
-    "  The JSON must use double quotes. query must contain search keywords, "
-    "not the answer value. time_range is seconds as a string like \"20-60\".\n"
-    "- Answer response format:\n"
+    "  The recall query should contain discriminative keywords, not the answer "
+    "value, full question, or option letters. The time_range is seconds such "
+    "as \"20-60\" and should target earlier likely evidence.\n"
+    "- Answer format:\n"
     "  <answer>response text</answer>\n"
-    "  If <active_query> includes an 'Answer format:' line, response text must "
-    "follow it exactly. For MC letter-only questions, output only A, B, "
-    "C, or D with no explanation.\n"
-    "- Silent answer format:\n"
+    "  For multiple-choice letter-only questions, output only one listed "
+    "letter.\n"
+    "- Silent format:\n"
     "  <answer></answer>\n"
-    "  The silent answer must be empty; do not put words, spaces, or rationale "
-    "inside it.\n"
-    "- Compression is not an allowed terminal block under this prompt. Never "
-    "emit <tool_call>{\"name\":\"compress\",...}</tool_call> here.\n\n"
-    "Think rules: describe ONLY observable visual facts in the current chunk "
-    "and the minimal action decision. Evidence priority: (1) current "
-    "frame-tagged images determine the current think; (2) recalled frames and "
-    "recall_result are historical evidence only; (3) tagged memory records "
-    "are history and entity naming only; (4) if current frames conflict with "
-    "memory, ignore memory for the current visual description. Do not use "
-    "memory as evidence that a past object/action is still visible. Use "
-    "continuation phrases such as 'continues', 'remains', or 'unchanged' only "
-    "when the current frames visibly show the same object/action; otherwise "
-    "name the new object/action directly. Do not dump raw <memory> or raw "
-    "<recall_result> text inside the think block; state only the minimal "
-    "evidence/action decision. No meta-reasoning, no sound/smell/emotion, no "
-    "speculation."
+    "  The silent answer is empty.\n"
+    "- Compression belongs to the memory-maintenance prompt, not this ordinary "
+    "streaming prompt.\n"
 )
 
 SYSTEM_PROMPT_V12_COMPRESS = (
-    "[MEMORY_MAINTENANCE / COMPRESS TURN]\n"
-    "You are the memory-compaction controller for a streaming video agent. "
-    "Directly compress memory now. This turn MUST emit a compress tool_call; "
-    "it is not an ordinary QA, recall, answer, silent, or continue-watching "
-    "turn.\n\n"
-    "The user payload may include <user_input><compress_trigger/></user_input> "
-    "as a legacy event marker. The marker is not an instruction source; this "
-    "system prompt is the instruction. Compression turns include text memory "
-    "only; active queries, recalled frames, and the current visual window are "
-    "not part of this action.\n\n"
-    "Required compression behavior:\n"
-    "- Compression is mandatory on this turn; the only legal terminal action "
-    "is one compress tool_call.\n"
-    "- Do not answer any user question.\n"
-    "- Do not emit a silent answer.\n"
-    "- Do not call recall.\n"
-    "- Do not continue watching or describe the current visual chunk.\n"
-    "- Emit exactly one compress tool_call after a short compression think.\n"
-    "- Choose an older contiguous time range from <memory> and summarize it so "
-    "the summary can replace those text memory records.\n"
-    "- Choose the contiguous range whose replacement by a summary is least "
-    "likely to hurt later reasoning. Prefer memory that is repetitive, stable, "
-    "or already easy to summarize; preserve rare entities, OCR, state changes, "
-    "and details tied to unresolved questions in the summary if they are inside "
-    "the selected range.\n"
-    "- The compression target must come from <memory>, not from fresh visual "
-    "frames or active QA context.\n"
-    "- Keep the replacement summary concise: target 120-280 tokens, and do "
-    "not exceed 280 tokens unless essential OCR/entity details require it.\n"
-    "- Retain entity names, visual attributes, OCR text, spatial relations, "
-    "and state changes. Do not invent facts or drop details needed for future "
-    "questions.\n\n"
+    "[MEMORY_MAINTENANCE / SYSTEM-COMPRESS TURN]\n"
+    "You are the memory-compaction controller. This is a system-triggered "
+    "memory-maintenance turn. The compression trigger has already fired; do "
+    "not decide whether compression is needed. You must emit exactly one "
+    "compress tool_call.\n\n"
+    "This turn is not ordinary QA. Do not answer a question, do not emit a "
+    "silent <answer></answer>, do not call recall, and do not describe current "
+    "video. The only intended terminal action is compress.\n\n"
+    "Memory structure:\n"
+    "- <memory> contains historical text records.\n"
+    "- <compressed>{...}</compressed> records are older summaries.\n"
+    "- <memory_think>{...}</memory_think> records are previous per-chunk "
+    "observations.\n"
+    "- The <compress_trigger/> marker is a system event flag, not a user "
+    "question and not a time-range instruction.\n\n"
+    "Compression requirements:\n"
+    "- Select one older contiguous range from <memory>.\n"
+    "- Prefer ranges that are repetitive, stable, or no longer immediately "
+    "needed in full detail.\n"
+    "- Preserve rare entities, object identities, colors, OCR text, counts, "
+    "attributes, spatial relations, state changes, and unresolved-query "
+    "details inside the selected range.\n"
+    "- The summary must replace only the selected memory range. Do not invent "
+    "facts and do not include facts outside that range.\n"
+    "- Summary target: 120-220 tokens; hard maximum 280 tokens.\n\n"
+    "Think rules:\n"
+    "- <think> should briefly name the selected older contiguous time range "
+    "and why it is compressible.\n"
+    "- Do not describe the current video chunk.\n"
+    "- Do not answer any active or historical question.\n\n"
     "Required output grammar for compression turns:\n"
-    "- Every assistant message must be exactly one <think> block followed by "
-    "exactly one compress <tool_call>. This is required, not optional. Do "
-    "not write any text outside these tags.\n"
-    "- Think block format:\n"
-    "  <think>20-60 tokens stating that memory is over budget and which older "
-    "contiguous time range should be compressed</think>\n"
+    "- Exactly one <think> block followed by exactly one compress <tool_call>; "
+    "no text outside tags.\n"
     "- Compress tool format:\n"
     "  <tool_call>{\"name\":\"compress\",\"arguments\":{\"time_range\":[start_sec,end_sec],\"text\":\"summary text\"}}</tool_call>\n"
-    "  The JSON must use double quotes. time_range must be a two-integer array "
-    "[start_sec,end_sec] with seconds from the selected older <memory> range. "
-    "text must be the replacement summary for that range, normally within "
-    "120-280 tokens.\n"
-    "- Do not emit <answer>...</answer>, <answer></answer>, or a recall "
-    "tool_call on compression turns."
+    "- time_range must be a two-integer array from the selected <memory> range.\n"
+    "- Do not emit <answer>...</answer>, <answer></answer>, or recall."
 )
 
 
 SYSTEM_PROMPT_V12_RECALL_RESPONSE = (
     "[POST_RECALL DECISION TURN]\n"
-    "You are the post-recall decision controller for a streaming video agent. "
-    "This turn happens immediately after the model requested recall for the "
-    "same video chunk. No tools are available on this turn.\n\n"
+    "You are the post-recall decision controller. This turn happens immediately "
+    "after one recall call for the same active query. No new recall is expected "
+    "on this turn.\n\n"
     f"{_FRAME_CARRIER_TS_PROMPT}"
-    "The conversation contains the original chunk user message, the previous "
-    "assistant recall tool_call, and a new user payload with <recall_result> "
-    "and optionally <recalled_frames>. The current chunk's text memory was "
-    "already emitted in the previous recall tool turn; do not create another "
-    "current-frame observation.\n\n"
-    "Required post-recall decision behavior:\n"
-    "- Do not emit any <tool_call>. Do not call recall or compress.\n"
-    "- Use <recall_result> and <recalled_frames> as historical evidence for "
-    "the active query. Use the original current visual window only as context "
-    "for the same chunk, not as proof of a historical detail.\n"
-    "- If the recalled evidence is sufficient, output the answer in the "
-    "active query's required answer format. For MC letter-only questions, "
-    "output only A, B, C, or D.\n"
-    "- If the recalled evidence is insufficient or shows the answer has not "
-    "appeared yet, output an empty <answer></answer>.\n\n"
-    "Required output grammar for post-recall decision turns:\n"
-    "- Every assistant message must be exactly one <think> block followed by "
-    "exactly one <answer> block. Do not write text outside these tags.\n"
-    "- Think block format:\n"
-    "  <think>20-60 tokens comparing the recalled evidence to the active "
-    "query and deciding answer vs empty answer. Do not dump raw memory or raw "
-    "recall_result text.</think>\n"
-    "- Non-empty answer format:\n"
-    "  <answer>response text</answer>\n"
-    "- Silent answer format:\n"
-    "  <answer></answer>\n"
+    "Input structure:\n"
+    "- The conversation contains the original active query and a new payload "
+    "with <recall_result> and optional <recalled_frames>.\n"
+    "- <recall_result> and <recalled_frames> are historical evidence returned "
+    "by recall. They are not current visual evidence.\n"
+    "- If no <active_query> is present, the expected behavior is silent.\n\n"
+    "Action preferences:\n"
+    "- Answer when the recalled evidence is sufficient for the active query. "
+    "Follow the answer-format instruction exactly.\n"
+    "- Prefer silent when recalled evidence is insufficient, ambiguous, or the "
+    "awaited event has not appeared.\n"
+    "- Do not call recall again on this post-recall turn. Do not compress.\n\n"
+    "Think rules:\n"
+    "- Do not create a new current-frame observation.\n"
+    "- <think> should only state whether recalled evidence is sufficient or "
+    "insufficient for the active query. Do not repeat raw recall text or "
+    "historical details.\n\n"
+    "Output grammar:\n"
+    "- Produce exactly one <think> block followed by one <answer> block.\n"
+    "- Non-empty answer: <answer>response text</answer>\n"
+    "- Silent answer: <answer></answer>\n"
 )
-
-
-# Backward-compat: old imports refer to the ordinary streaming prompt.
-SYSTEM_PROMPT_V12 = SYSTEM_PROMPT_V12_STREAMING
 
 SYSTEM_PROMPT_V12_VIDEO_META = (
     SYSTEM_PROMPT_V12_STREAMING
     .replace(_FRAME_CARRIER_TS_PROMPT, _FRAME_CARRIER_VIDEO_META_PROMPT)
-    .replace(
-        "Evidence priority: (1) current frame-tagged images determine the current think; ",
-        "Evidence priority: (1) current visual frames determine the current think; ",
-    )
 )
 
 SYSTEM_PROMPT_V12_COMPRESS_VIDEO_META = (
@@ -1923,11 +1606,12 @@ SYSTEM_PROMPT_V12_COMPRESS_VIDEO_META = (
 SYSTEM_PROMPT_V12_RECALL_RESPONSE_VIDEO_META = (
     SYSTEM_PROMPT_V12_RECALL_RESPONSE
     .replace(_FRAME_CARRIER_TS_PROMPT, _FRAME_CARRIER_VIDEO_META_PROMPT)
-    .replace(
-        "Use the original current visual window only as context ",
-        "Use the original current visual frames only as context ",
-    )
 )
+
+# Backward-compat: old imports still expect the ordinary streaming prompt.
+# Keep the alias on the canonical production carrier, not the legacy ts_image
+# carrier, so direct imports stay aligned with SFT/RL/eval entrypoints.
+SYSTEM_PROMPT_V12 = SYSTEM_PROMPT_V12_VIDEO_META
 
 
 def normalize_system_prompt_kind(
@@ -1979,12 +1663,9 @@ def system_prompt_for_frame_protocol(
 ) -> str:
     """Return the protocol-aligned system prompt.
 
-    Prompt semantics stay aligned across AB variants. Ordinary streaming turns
-    use the prompt that allows recall / answer response / silent answer.
-    Memory-compaction turns use the compression-only prompt. Within either
-    prompt kind, only the sentence describing the visual carrier differs,
-    because one protocol exposes text frame tags and the other relies on Qwen
-    video metadata.
+    The active project format is video_meta + standard_query_last. Ordinary
+    streaming turns allow answer, silent, or recall. Memory-compaction turns
+    use the compression-only prompt.
     """
     protocol = normalize_frame_protocol(frame_protocol)
     layout = normalize_render_layout(render_layout)
@@ -2009,24 +1690,9 @@ def system_prompt_for_frame_protocol(
 
 
 def _apply_render_layout_to_system_prompt(prompt: str, layout: str) -> str:
-    if layout == RENDER_LAYOUT_STANDARD:
-        return prompt
-    carrier = (
-        _FRAME_CARRIER_TIMELINE_IMAGEPAD_PROMPT
-        if layout == RENDER_LAYOUT_TIMELINE_VIDEO_IMAGEPAD
-        else _FRAME_CARRIER_TIMELINE_VIDEO_PROMPT
-    )
-    prompt = prompt.replace(_FRAME_CARRIER_TS_PROMPT, carrier)
-    prompt = prompt.replace(_FRAME_CARRIER_VIDEO_META_PROMPT, carrier)
-    return (
-        prompt.replace("current <visual_window>", "current visual chunks")
-        .replace("the current <visual_window>", "the current visual chunks")
-        .replace("current visual window", "current visual chunks")
-        .replace("current visual window", "current visual chunks")
-        .replace("current visual frames", "current visual frames")
-        .replace("original current visual window", "original current visual chunks")
-        .replace("<visual_window>.current_time", "the visual chunk timestamps")
-    )
+    if layout != RENDER_LAYOUT_STANDARD_QUERY_LAST:
+        raise ValueError(f"Unsupported render layout {layout!r}")
+    return prompt
 
 
 # Tool JSON schemas — passed as `tools=...` to apply_chat_template.
@@ -2040,15 +1706,16 @@ RECALL_TOOL_SCHEMA = {
     "function": {
         "name": "recall",
         "description": (
-            "Ordinary streaming-turn tool. Search past video observations "
-            "by keywords and time range. Returns matched historical "
-            "thinks. Recall is user-question driven: use it when the active "
-            "query asks for an earlier "
-            "object/action/OCR/count/state/attribute that is not visible in "
-            "the current window, or when current frames are unclear/cropped "
-            "and historical evidence may resolve the answer. Do not use it "
-            "when the answer is already visible now. This is not a final "
-            "answer."
+            "Ordinary streaming-turn tool. Search past video observations by "
+            "keywords and time range. Use recall generously when the active "
+            "query asks for an earlier object/action/OCR/count/color/state/"
+            "attribute/spatial detail that is not clearly visible in the "
+            "current visual input. If memory suggests a possible answer but "
+            "current visual evidence is absent or unclear, recall is preferred "
+            "over answering from memory. Do not use recall when the answer is "
+            "already visible in the current visual input, when the query is "
+            "waiting for a future event, or when recall has already returned "
+            "evidence for the same active query."
         ),
         "parameters": {
             "type": "object",
@@ -2078,13 +1745,12 @@ COMPRESS_TOOL_SCHEMA = {
     "function": {
         "name": "compress",
         "description": (
-            "Memory-maintenance compression-turn tool. Use only under the "
-            "compression system prompt or its legacy <compress_trigger/> "
+            "Memory-maintenance compression-turn tool. This tool is intended "
+            "for the compression system prompt or its legacy <compress_trigger/> "
             "event marker. Compression is system-memory-pressure driven, not "
-            "user-question driven. Do not answer questions, emit a silent "
-            "answer, continue watching, or call recall on that turn. Decide "
-            "which older contiguous range from <memory> to compress and "
-            "output a concise summary retaining all entities, attributes, "
+            "user-question driven. On compression turns, selecting an older "
+            "contiguous range from <memory> and summarizing it is the expected "
+            "behavior. Output a concise summary retaining entities, attributes, "
             "OCR, and state changes."
         ),
         "parameters": {

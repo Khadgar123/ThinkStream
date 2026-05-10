@@ -31,13 +31,27 @@ from .pipeline import (
 logger = logging.getLogger(__name__)
 
 
-def _extract_one(video: Dict, frames_root: Path, fps: int) -> Tuple[Dict, Dict]:
+def _extract_one(
+    video: Dict,
+    frames_root: Path,
+    fps: int,
+    tail_policy: str,
+) -> Tuple[Dict, Dict]:
     vid = str(video["video_id"])
     frames = extract_frames(
         str(video["video_path"]),
         frames_root / vid,
         fps=fps,
+        frames_per_chunk=FRAMES_PER_CHUNK,
+        tail_policy=tail_policy,
     )
+    norm_path = frames_root / vid / ".frame_norm.json"
+    norm = {}
+    if norm_path.exists():
+        try:
+            norm = json.loads(norm_path.read_text())
+        except Exception:
+            norm = {}
     num_chunks = len(frames) // FRAMES_PER_CHUNK
     status = {
         "video_id": vid,
@@ -45,6 +59,10 @@ def _extract_one(video: Dict, frames_root: Path, fps: int) -> Tuple[Dict, Dict]:
         "n_frames": len(frames),
         "num_chunks": num_chunks,
         "fps": fps,
+        "frames_per_chunk": FRAMES_PER_CHUNK,
+        "frame_tail_policy": norm.get("tail_policy", "drop"),
+        "dropped_tail_frames": norm.get("dropped_tail_frames", []),
+        "padded_tail_frames": norm.get("padded_tail_frames", []),
         "ok": num_chunks > 0,
     }
     out_video = dict(video)
@@ -58,6 +76,7 @@ def preextract(
     num_videos: int,
     workers: int,
     fps: int,
+    tail_policy: str,
 ) -> Dict:
     ensure_dirs()
     AUDIT_DIR.mkdir(parents=True, exist_ok=True)
@@ -80,7 +99,7 @@ def preextract(
     statuses: List[Dict] = []
     with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
         future_map = {
-            pool.submit(_extract_one, video, frames_root, fps): video
+            pool.submit(_extract_one, video, frames_root, fps, tail_policy): video
             for video in videos
         }
         for i, fut in enumerate(as_completed(future_map), 1):
@@ -122,6 +141,7 @@ def preextract(
         "total_frames": sum(int(s.get("n_frames") or 0) for s in statuses),
         "fps": fps,
         "frames_per_chunk": FRAMES_PER_CHUNK,
+        "frame_tail_policy": tail_policy,
         "workers": workers,
     }
     (AUDIT_DIR / "frame_extraction_summary.json").write_text(
@@ -147,6 +167,15 @@ def main() -> None:
     parser.add_argument("--num-videos", type=int, default=500)
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--fps", type=int, default=FPS)
+    parser.add_argument(
+        "--tail-policy",
+        choices=["drop", "pad_duplicate", "keep"],
+        default="drop",
+        help="How to handle extracted tail frames that cannot form a full "
+             "FRAMES_PER_CHUNK chunk. drop preserves timestamp correctness; "
+             "pad_duplicate keeps the partial tail by duplicating the last "
+             "frame; keep leaves the raw odd count.",
+    )
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -158,6 +187,7 @@ def main() -> None:
         num_videos=args.num_videos,
         workers=args.workers,
         fps=args.fps,
+        tail_policy=args.tail_policy,
     )
 
 

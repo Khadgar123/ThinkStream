@@ -133,7 +133,11 @@ def simulate_one_video(
     for p in trajectory_placements:
         selected_pbc.setdefault(p.card_id, []).append(p)
 
-    assign_recall_noise(trajectory_placements, rng)
+    assign_recall_noise(
+        trajectory_placements,
+        rng,
+        cards_by_id={c.card_id: c for c in cards},
+    )
     # NEW: pass evidence (for patrol stratification) + compression events
     samples = render_video_samples(
         cards, selected_pbc, num_chunks,
@@ -195,10 +199,10 @@ def aggregate(results: List[Dict]) -> Dict:
     total_mc = sum(mc_correct.values())
     out["mc_balance"] = {
         "total_mc_cards": total_mc,
-        "by_correct_option": {k: mc_correct.get(k, 0) for k in ["A", "B", "C", "D"]},
+        "by_correct_option": {k: mc_correct.get(k, 0) for k in ["A", "B", "C", "D", "E"]},
         "by_correct_option_pct": {
             k: round(mc_correct.get(k, 0) / max(total_mc, 1) * 100, 1)
-            for k in ["A", "B", "C", "D"]
+            for k in ["A", "B", "C", "D", "E"]
         },
     }
 
@@ -553,14 +557,15 @@ def print_report(agg: Dict, n_videos: int) -> None:
     print(f"2. MULTIPLE-CHOICE BALANCE  ({mc['total_mc_cards']} MC cards)")
     print("─" * 76)
     if mc["total_mc_cards"]:
-        for letter in ["A", "B", "C", "D"]:
+        for letter in ["A", "B", "C", "D", "E"]:
             n = mc["by_correct_option"][letter]
             pct = mc["by_correct_option_pct"][letter]
             bar = "█" * int(pct / 2)
             print(f"  Correct = {letter}: {n:4d}  {pct:5.1f}%  {bar}")
-        diff_pct = max(mc["by_correct_option_pct"].values()) - min(mc["by_correct_option_pct"].values())
+        core_pcts = [mc["by_correct_option_pct"][k] for k in ["A", "B", "C", "D"]]
+        diff_pct = max(core_pcts) - min(core_pcts)
         verdict = "BALANCED" if diff_pct <= 5.0 else "MILDLY SKEWED" if diff_pct <= 10 else "IMBALANCED"
-        print(f"  → max-min spread: {diff_pct:.1f}pp ({verdict}; ideal: each ≈ 25%)")
+        print(f"  → A-D max-min spread: {diff_pct:.1f}pp ({verdict}; E is rare OVO-style)")
     else:
         print("  (no MC cards generated)")
 

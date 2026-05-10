@@ -23,6 +23,10 @@ from typing import Any, Dict, List, Optional
 logger = logging.getLogger(__name__)
 
 
+class TruncatedCompletionError(RuntimeError):
+    """Raised when the server stops generation because max_tokens was hit."""
+
+
 @dataclass
 class RequestStats:
     total: int = 0
@@ -203,7 +207,17 @@ class VLLMClient:
         resp = await client.post("/chat/completions", json=body)
         resp.raise_for_status()
         data = resp.json()
-        msg = data["choices"][0]["message"]
+        choice = data["choices"][0]
+        finish_reason = choice.get("finish_reason")
+        if finish_reason == "length":
+            usage = data.get("usage") or {}
+            raise TruncatedCompletionError(
+                f"{request_id}: finish_reason=length "
+                f"max_tokens={max_tokens} "
+                f"prompt_tokens={usage.get('prompt_tokens', 0)} "
+                f"completion_tokens={usage.get('completion_tokens', 0)}"
+            )
+        msg = choice["message"]
         content = msg.get("content") or ""
         # vLLM without --reasoning-parser can put thinking in "reasoning" and
         # leave content null. Only use that fallback when the caller did not
@@ -270,6 +284,11 @@ class VLLMClient:
                             )
                         return result
                     except Exception as e:
+                        if isinstance(e, TruncatedCompletionError):
+                            self.stats.failed += 1
+                            self.stats.errors.append(f"{request_id}: {e}")
+                            logger.error("raw-call truncated [%s]: %s", request_id, e)
+                            raise
                         logger.warning(
                             "raw-call attempt %d failed [%s]: %s",
                             attempt + 1, request_id, e,
@@ -292,7 +311,17 @@ class VLLMClient:
                         temperature=temperature,
                     )
                     response = await client.chat.completions.create(**create_kwargs)
-                    msg = response.choices[0].message
+                    choice = response.choices[0]
+                    finish_reason = getattr(choice, "finish_reason", None)
+                    if finish_reason == "length":
+                        usage = response.usage
+                        raise TruncatedCompletionError(
+                            f"{request_id}: finish_reason=length "
+                            f"max_tokens={max_tokens} "
+                            f"prompt_tokens={getattr(usage, 'prompt_tokens', 0) if usage else 0} "
+                            f"completion_tokens={getattr(usage, 'completion_tokens', 0) if usage else 0}"
+                        )
+                    msg = choice.message
                     result = getattr(msg, "content", None) or ""
                     # Fallback when vLLM reasoning-parser is absent
                     if not result:
@@ -314,6 +343,11 @@ class VLLMClient:
                         )
                     return result
                 except Exception as exc:
+                    if isinstance(exc, TruncatedCompletionError):
+                        self.stats.failed += 1
+                        self.stats.errors.append(f"{request_id}: {exc}")
+                        logger.error("Request %s truncated: %s", request_id, exc)
+                        raise
                     if attempt < max_retries - 1:
                         wait = 2 ** attempt
                         logger.warning(

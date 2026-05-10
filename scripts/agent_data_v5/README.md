@@ -69,7 +69,7 @@ python -m scripts.agent_data_v5.build_verl_parquet \
 Train/eval with the same protocol end to end:
 
 ```bash
-# Pass45 emits only rendered/video_meta_timeline_video_imagepad.
+# Pass45 emits rendered/video_meta_standard_query_last by default.
 THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
 bash scripts/run_sft_rl.sh
 
@@ -80,8 +80,8 @@ bash scripts/eval/ovo/run_sft_full.sh \
   --frames_root data/agent_v5/batch2/frames
 ```
 
-The old `ts_image` and standard-layout AB paths are archived; current
-SFT/RL/eval launchers intentionally use `video_meta_timeline_video_imagepad`.
+The old `ts_image` paths are archived. Current SFT/RL/eval launchers use
+`video_meta_standard_query_last`.
 
 `v2/` is the current pass3 design implementation, not a deprecated folder.
 It owns the card taxonomy, placement rules, and LLM prompts used by

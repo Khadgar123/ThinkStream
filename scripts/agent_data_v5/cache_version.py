@@ -117,6 +117,52 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        asks for the contiguous range whose replacement least hurts later
     #        reasoning rather than hard-coding rollout-specific age windows.
     #        Regenerate pass5 rendered messages and RL/eval parquet prompts.
+    #   v12.60 (2026-05-10): pass3a teacher prompts use full pass1/pass1b
+    #        timeline context and stricter MC/question-form constraints;
+    #        pass3b schedules/filters only memory-novel recall slots while
+    #        preserving card gold answer chunks; pass3c renders recall-silent
+    #        reasons; pass5 balances pending/post-answer/no-question silence
+    #        and keeps open multi-emit intervals as pending.
+    #   v12.61 (2026-05-10): pass3B trajectory selection adds a hard minimum
+    #        ask gap, strengthens temporal spread scoring, and lets very long
+    #        videos select up to 20 questions without densifying short videos.
+    #   v12.62 (2026-05-10): pass3a prompts push OVO-heavy STU/OJR/OCR-style
+    #        cards toward event-anchored fine visual details that survive later
+    #        recall placement; pass3B boosts OVO-heavy family selection and
+    #        keeps hard memory-direct recall probes behind an opt-in filter
+    #        experiment for dirty-memory studies.
+    #   v12.63 (2026-05-10): pass3a asks OVO-heavy OJR/STU/ACR families for
+    #        two diverse candidates per video and explicitly pairs current-style
+    #        cards with event-anchored historical-detail cards when possible.
+    #   v12.64 (2026-05-10): pass3a prompts add OVO weak-case guidance for
+    #        HLD, OCR, CR1/CR2/CR4/CR5, F7, and CRR1. pass3b preserves
+    #        existing F7/CRR1 far-after Yes probes when available instead of
+    #        raising status-card sampling rates.
+    #   v12.65 (2026-05-10): pass3a adds benchmark-like but not
+    #        benchmark-specific question/style guidance: compact user wording,
+    #        varied temporal anchors, hard same-type MC options, and a small
+    #        exploratory mix of multi-clue / before-after / insufficient-evidence
+    #        questions.
+    #   v12.66 (2026-05-10): pass3a evidence prompts compact over the full
+    #        video instead of prefix-truncating long timelines; pass3c recall
+    #        hardening uses the same compact question/option style constraints
+    #        and parallelizes selected hardening calls per trajectory.
+    #   v12.67 (2026-05-10): pass3 context estimates are updated from a
+    #        batch1-8 prompt audit, and pass3c teacher output caps are
+    #        right-sized for response, recall-query, and recall-hardening calls.
+    #   v12.68 (2026-05-10): pass3b preserves HLD/Unable recall evidence
+    #        checks instead of dropping them on BM25/memory-overlap filters;
+    #        pass3c rejects answer-leaking recall_query payloads; MC rebalance
+    #        validates every answer/options rewrite before final files are
+    #        accepted.
+    #   v12.69 (2026-05-10): pass3e requires recall_result text and returned
+    #        historical chunks for every recall sample; pass5 hard-fails if
+    #        active_query/options/answer-format are missing or rendered more
+    #        than once in final messages.
+    #   v12.70 (2026-05-10): compression samples remove raw visual/query/recall
+    #        payloads from input so SFT, RL, and eval see the same text-only
+    #        memory-maintenance boundary. Ordinary visual turns intentionally
+    #        keep text memory even when recent/current visual chunks overlap.
     #   v12.48 (2026-05-07): pass3b reserves one non-recall HLD/abstention
     #        slot when available, so HLD keeps a reasonable family share
     #        without being counted as successful recall supervision.
@@ -232,11 +278,11 @@ STAGE_VERSIONS: Dict[str, str] = {
     "1a": "v12.25",
     "1b": "v12.25",
     "2":  "v12.35",
-    "3a": "v12.44",
-    "3b": "v12.49",
-    "3c": "v12.55",
-    "4":  "v12.58",  # canonical key — verification/final split render
-    "5":  "v12.59",  # pass5_messages render version
+    "3a": "v12.70",
+    "3b": "v12.70",
+    "3c": "v12.70",
+    "4":  "v12.70",  # canonical key — verification/final split render
+    "5":  "v12.70",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

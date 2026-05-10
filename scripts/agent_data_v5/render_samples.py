@@ -6,7 +6,7 @@ Produces: Complete SFT samples with input + output fields
 
 This is the bridge between data construction (Pass 3) and SFT training.
 Each sample gets a full `input` structure that pass5_messages.py renders
-into the canonical timestamped-image ShareGPT messages.
+into the canonical video_meta + query-last ShareGPT messages.
 
 Called after Pass 3-C raw sample generation and before Pass 3-E verification.
 """
@@ -28,7 +28,6 @@ from .config import (
     compute_visual_window_start,
 )
 from thinkstream.data.agent_protocol import (
-    SYSTEM_PROMPT_V12,
     build_recalled_frames_metadata,
     select_recall_chunks,
     system_prompt_for_frame_protocol,
@@ -36,18 +35,19 @@ from thinkstream.data.agent_protocol import (
 
 logger = logging.getLogger(__name__)
 
-_OPTION_LABEL_RE = re.compile(r"^\s*([A-D])[\).]\s*(.*)\s*$", re.DOTALL)
+OPTION_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+_OPTION_LABEL_RE = re.compile(r"^\s*(?:\(([A-Z])\)|([A-Z])[\).:])\s*(.*)\s*$", re.DOTALL)
 
 
 def _strip_option_label(text: str) -> str:
     m = _OPTION_LABEL_RE.match(str(text or ""))
-    return (m.group(2) if m else str(text or "")).strip()
+    return (m.group(3) if m else str(text or "")).strip()
 
 
 def _mc_correct_letter_text(card: Dict) -> tuple[str, str]:
     options = list(card.get("options") or [])
     correct = str(card.get("correct_option") or "").strip().upper()
-    if correct in {"A", "B", "C", "D"} and len(options) == 4:
+    if correct in OPTION_LETTERS[:len(options)]:
         idx = ord(correct) - ord("A")
         if 0 <= idx < len(options):
             return correct, _strip_option_label(options[idx])
@@ -93,7 +93,7 @@ def _get_system_prompt(prompt_type: str, *, inter_chunk: bool = False) -> str:
         return system_prompt_for_frame_protocol(prompt_kind="compress")
     if str(prompt_type or "").lower() in {"recall_response", "recall_answer", "post_recall"}:
         return system_prompt_for_frame_protocol(prompt_kind="post_recall")
-    return SYSTEM_PROMPT_V12
+    return system_prompt_for_frame_protocol()
 
 
 def _build_visual_window(
@@ -174,7 +174,7 @@ def _build_queries_input(queries_state: List[Dict]) -> List[Dict]:
     queries can render their choices in the active-query block. forward
     response chunks fire AFTER ask (no fresh user_input), so the model
     only sees the active Q in query state — without options it cannot
-    choose A-D meaningfully.
+    choose from the listed options meaningfully.
     """
     result = []
     for q in queries_state:
@@ -267,21 +267,26 @@ def render_sample(
     snapshot = snapshots.get(chunk_idx) or snapshots.get(str(chunk_idx)) or {}
 
     # Build input structure
+    inter_chunk = sample.get("action") == "compress"
     recall_result = sample.get("recall_result")
     inp = {
         "system": _get_system_prompt(
             prompt_type,
-            inter_chunk=sample.get("action") == "compress",
+            inter_chunk=inter_chunk,
         ),
-        "visual_window": _build_visual_window(chunk_idx, num_chunks, video_path),
         "memory": _build_memory_from_snapshot(snapshot),
-        "queries": _build_queries_input(sample.get("queries", [])),
         "user_input": sample.get("user_input", ""),
-        "recall_result": recall_result,
     }
-    rf = _build_recalled_frames(recall_result, all_frame_paths)
-    if rf is not None:
-        inp["recalled_frames"] = rf
+    rf = None
+    if not inter_chunk:
+        inp.update({
+            "visual_window": _build_visual_window(chunk_idx, num_chunks, video_path),
+            "queries": _build_queries_input(sample.get("queries", [])),
+            "recall_result": recall_result,
+        })
+        rf = _build_recalled_frames(recall_result, all_frame_paths)
+        if rf is not None:
+            inp["recalled_frames"] = rf
 
     # For compress samples, remember the gold compressed-chunks set so
     # RL/eval can score the model's <summary> time_range against the
@@ -436,9 +441,9 @@ def render_sample(
     # Keep recall tool results at the row top-level as well as inside
     # input. RL/eval utilities may consume rendered flat/trajectory rows
     # directly, while pass5 consumes input.* to inject the actual media.
-    if recall_result is not None:
+    if not inter_chunk and recall_result is not None:
         rendered["recall_result"] = recall_result
-    if rf is not None:
+    if not inter_chunk and rf is not None:
         rendered["recalled_frames"] = rf
 
     # Propagate v12-specific multi-turn fields so pass4 can render them.

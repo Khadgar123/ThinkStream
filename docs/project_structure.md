@@ -125,4 +125,4 @@ a supported training entrypoint.
 
 Use `scripts/eval/ovo/run_sft_full.sh`, `scripts/eval/ovo/run_rl_full.sh`, and
 `scripts/eval/ovo/run_base.sh`. The active streaming eval engines share the
-canonical `video_meta_timeline_video_imagepad` prompt contract with SFT/RL.
+canonical `video_meta_standard_query_last` prompt contract with SFT/RL.

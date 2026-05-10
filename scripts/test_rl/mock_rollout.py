@@ -233,11 +233,15 @@ def prompt_consistency_check(trajectory: Dict[str, Any]) -> Dict[str, Any]:
             if required not in q:
                 issues.append(f"questions[{q['card_id']}] missing {required}")
         if q.get("answer_form") == "multiple_choice":
-            if not q.get("options") or len(q["options"]) != 4:
+            if not q.get("options") or len(q["options"]) not in {2, 3, 4, 5}:
                 issues.append(
                     f"MC question {q['card_id']} has bad options: {q.get('options')}"
                 )
-            if q.get("correct_option") not in {"A", "B", "C", "D"}:
+            valid = {
+                chr(ord("A") + i)
+                for i in range(min(len(q.get("options") or []), 26))
+            }
+            if q.get("correct_option") not in valid:
                 issues.append(
                     f"MC question {q['card_id']} bad correct_option: {q.get('correct_option')}"
                 )

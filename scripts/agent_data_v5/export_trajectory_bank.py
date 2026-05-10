@@ -288,6 +288,14 @@ def _trajectory_stats(
     gold_actions = Counter(s.get("action", "?") for s in samples)
     families = Counter(q.get("family", "") for q in questions if q.get("family"))
     availability = Counter(q.get("availability", "") for q in questions if q.get("availability"))
+    question_types = Counter(
+        q.get("question_type", "") for q in questions if q.get("question_type")
+    )
+    answer_forms = Counter(
+        q.get("answer_form", "") for q in questions if q.get("answer_form")
+    )
+    categories = Counter(q.get("category", "") for q in questions if q.get("category"))
+    skills = Counter(q.get("skill", "") for q in questions if q.get("skill"))
     ask_chunks = sorted(
         int(q.get("ask_chunk"))
         for q in questions
@@ -310,6 +318,10 @@ def _trajectory_stats(
         "has_multiple_compressions": n_compress > 1,
         "families": dict(families),
         "availability": dict(availability),
+        "question_types": dict(question_types),
+        "answer_forms": dict(answer_forms),
+        "categories": dict(categories),
+        "skills": dict(skills),
         "sample_types": dict(actions),
         "gold_actions": dict(gold_actions),
         "ask_chunk_interval": _interval_stats(ask_chunks),
@@ -437,10 +449,22 @@ def _video_stats(stats_rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     for vid, rows in sorted(by_video.items()):
         families = Counter()
         availability = Counter()
+        question_types = Counter()
+        answer_forms = Counter()
+        categories = Counter()
+        skills = Counter()
+        sample_types = Counter()
+        gold_actions = Counter()
         splits = Counter()
         for r in rows:
             families.update(r.get("families") or {})
             availability.update(r.get("availability") or {})
+            question_types.update(r.get("question_types") or {})
+            answer_forms.update(r.get("answer_forms") or {})
+            categories.update(r.get("categories") or {})
+            skills.update(r.get("skills") or {})
+            sample_types.update(r.get("sample_types") or {})
+            gold_actions.update(r.get("gold_actions") or {})
             splits[r.get("split", "")] += 1
         n_compress = sum(int(r.get("n_compress_events", 0)) for r in rows)
         out.append({
@@ -457,6 +481,12 @@ def _video_stats(stats_rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "has_multiple_compressions": n_compress > 1,
             "families": dict(families),
             "availability": dict(availability),
+            "question_types": dict(question_types),
+            "answer_forms": dict(answer_forms),
+            "categories": dict(categories),
+            "skills": dict(skills),
+            "sample_types": dict(sample_types),
+            "gold_actions": dict(gold_actions),
             "trajectory_paths": [r.get("bank_path", "") for r in rows],
         })
     return out
@@ -474,11 +504,19 @@ def _manifest(
 ) -> Dict[str, Any]:
     families = Counter()
     availability = Counter()
+    question_types = Counter()
+    answer_forms = Counter()
+    categories = Counter()
+    skills = Counter()
     sample_types = Counter()
     gold_actions = Counter()
     for row in stats_rows:
         families.update(row.get("families") or {})
         availability.update(row.get("availability") or {})
+        question_types.update(row.get("question_types") or {})
+        answer_forms.update(row.get("answer_forms") or {})
+        categories.update(row.get("categories") or {})
+        skills.update(row.get("skills") or {})
         sample_types.update(row.get("sample_types") or {})
         gold_actions.update(row.get("gold_actions") or {})
     return {
@@ -501,6 +539,10 @@ def _manifest(
         },
         "families": dict(families),
         "availability": dict(availability),
+        "question_types": dict(question_types),
+        "answer_forms": dict(answer_forms),
+        "categories": dict(categories),
+        "skills": dict(skills),
         "sample_types": dict(sample_types),
         "gold_actions": dict(gold_actions),
         "files": {

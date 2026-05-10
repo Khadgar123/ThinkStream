@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -36,11 +37,22 @@ from .v2.llm_prompts import (
 
 logger = logging.getLogger(__name__)
 
-_OPTION_LABEL_RE = re.compile(r"^\s*[A-D][\).]\s*")
+MC_OPTION_LETTERS = "ABCDE"
+MC_OPTION_COUNTS = {2, 3, 4, 5}
+_OPTION_LABEL_RE = re.compile(r"^\s*(?:\([A-E]\)|[A-E][\).:])\s*")
 _TEXT_TOKEN_RE = re.compile(r"[a-z0-9]+")
 _INTERNAL_TIME_REF_RE = re.compile(
     r"(?i)(?:\bchunks?\s*c?\d+\b|\bc\d+\b|\bframes?\s*\d+\b|"
     r"\bt\s*=\s*\d+|\baround\s+chunk\b|\bat\s+chunk\b)"
+)
+_QUESTION_RENDERING_LEAK_RE = re.compile(
+    r"(?is)(?:"
+    r"\boptions?\s*:"
+    r"|(?:^|\n)\s*(?:\([A-E]\)|[A-E][\).:])\s+\S+"
+    r"|\banswer\s+(?:with|using|in|only)\b"
+    r"|\breturn\s+(?:only\s+)?(?:the\s+)?(?:letter|answer|yes|no)\b"
+    r"|\b(?:choose|select)\s+(?:one|from|the\s+correct|the\s+best)\b"
+    r")"
 )
 
 
@@ -52,6 +64,12 @@ PASS3A_TARGETS_BY_FAMILY = {
     # OVO OCR is ~9%; one C1 per video landed at ~4.8% in batch3.
     # Ask the teacher/fallback for two OCR cards when the video has enough text.
     "C1": 2,
+    # OVO-heavy MC skills. The selector still keeps at most one placement per
+    # family in a trajectory, but extra candidates give pass3B a better chance
+    # to choose an event-anchored historical/detail card that can become recall.
+    "OJR1": 2,
+    "STU1": 2,
+    "ACR1": 2,
 }
 
 
@@ -85,8 +103,9 @@ def _evidence_text(cap: Dict) -> str:
 def _mc_correct_text(card: Dict) -> str:
     opts = card.get("options") or []
     co = str(card.get("correct_option") or "").strip().upper()
-    if co in {"A", "B", "C", "D"} and isinstance(opts, list) and len(opts) == 4:
-        return _strip_option_label(str(opts[ord(co) - ord("A")])).strip()
+    if isinstance(opts, list) and len(opts) in MC_OPTION_COUNTS:
+        if co in MC_OPTION_LETTERS[:len(opts)]:
+            return _strip_option_label(str(opts[ord(co) - ord("A")])).strip()
     return ""
 
 
@@ -101,7 +120,7 @@ def _normalize_hld1_unable_slot(card: Dict) -> None:
     if card.get("family") != "HLD1" or card.get("answer_form") != "multiple_choice":
         return
     opts = list(card.get("options") or [])
-    if len(opts) != 4:
+    if len(opts) not in MC_OPTION_COUNTS:
         return
     unable_idx = None
     for i, opt in enumerate(opts):
@@ -112,7 +131,7 @@ def _normalize_hld1_unable_slot(card: Dict) -> None:
         return
 
     key = str(card.get("card_id") or card.get("question") or "")
-    target_idx = stable_mod(key, "HLD1_UNABLE_POS", modulo=4)
+    target_idx = stable_mod(key, "HLD1_UNABLE_POS", modulo=len(opts))
     if unable_idx != target_idx:
         unable_opt = opts.pop(unable_idx)
         opts.insert(target_idx, unable_opt)
@@ -130,16 +149,18 @@ def _normalize_non_hld_mc_slot(card: Dict) -> None:
         return
     opts = list(card.get("options") or [])
     co = str(card.get("correct_option") or "").strip().upper()
-    if len(opts) != 4 or co not in {"A", "B", "C", "D"}:
+    if len(opts) not in MC_OPTION_COUNTS or co not in MC_OPTION_LETTERS[:len(opts)]:
         return
 
     texts = [_strip_option_label(str(o)) for o in opts]
-    if any(not t for t in texts) or len(set(texts)) != 4:
+    if any(not t for t in texts) or len(set(texts)) != len(opts):
         return
     correct_text = texts[ord(co) - ord("A")]
     distractors = [t for i, t in enumerate(texts) if i != ord(co) - ord("A")]
     key = str(card.get("card_id") or card.get("question") or "")
-    target_idx = stable_mod(key, str(card.get("family") or ""), "MC_CORRECT_POS", modulo=4)
+    target_idx = stable_mod(
+        key, str(card.get("family") or ""), "MC_CORRECT_POS", modulo=len(opts)
+    )
     distractors = sorted(
         distractors,
         key=lambda t: stable_mod(key, str(card.get("family") or ""), "MC_DISTRACTOR", t, modulo=2**31),
@@ -147,7 +168,7 @@ def _normalize_non_hld_mc_slot(card: Dict) -> None:
 
     ordered: List[str] = []
     it = iter(distractors)
-    for i in range(4):
+    for i in range(len(opts)):
         ordered.append(correct_text if i == target_idx else next(it))
     card["options"] = _relabel_mc_options(ordered)
     card["correct_option"] = chr(65 + target_idx)
@@ -172,7 +193,10 @@ def _normalize_card_in_place(card: Dict) -> None:
         co = str(card.get("correct_option") or "").strip().upper()
         if correct_text:
             card["canonical_answer"] = correct_text
-            if card.get("question_type") == "single_emit" and co in {"A", "B", "C", "D"}:
+            if (
+                card.get("question_type") == "single_emit"
+                and co in MC_OPTION_LETTERS[:len(card.get("options") or [])]
+            ):
                 emits = card.get("gold_emits") or []
                 if emits:
                     emits[0]["value"] = co
@@ -348,8 +372,12 @@ async def _generate_via_llm(
                 enable_thinking=enable_thinking,
             )
         except Exception as exc:
-            logger.warning(f"[{video_id}] 3a {family}: LLM call failed: {exc}")
-            raw = None
+            if exc.__class__.__name__ == "TruncatedCompletionError":
+                logger.warning(f"[{video_id}] 3a {family}: LLM output truncated; using heuristic fallback: {exc}")
+                raw = None
+            else:
+                logger.warning(f"[{video_id}] 3a {family}: LLM call failed: {exc}")
+                raw = None
         cards = parse_card_response(raw or "", family) if raw else []
         if not cards:
             # Fallback to heuristic for this family
@@ -449,7 +477,7 @@ def _verify_card_layers(card: Dict, ev_by_chunk: Dict[int, Dict]) -> str:
 
     Layer 1 — schema sanity:
       - has card_id, family, question, answer_form, gold_emits / canonical_answer
-      - MC: options is list of length 4; correct_option in {A,B,C,D};
+      - MC: options is list of length 2-5; correct_option matches an option;
             options match the correct_option index
       - binary: gold_emits values in {Yes, No, yes, no}
       - number: gold_emits values are digit strings
@@ -469,6 +497,8 @@ def _verify_card_layers(card: Dict, ev_by_chunk: Dict[int, Dict]) -> str:
         return "schema_question_too_short"
     if _INTERNAL_TIME_REF_RE.search(q):
         return "schema_question_internal_time_ref"
+    if _QUESTION_RENDERING_LEAK_RE.search(q):
+        return "schema_question_contains_options_or_answer_format"
     family = str(card.get("family") or "")
     af = card.get("answer_form", "")
     emits = card.get("gold_emits") or []
@@ -477,16 +507,16 @@ def _verify_card_layers(card: Dict, ev_by_chunk: Dict[int, Dict]) -> str:
 
     if family in {"HLD1", "C1", "ACR1", "STU1", "OJR1"} and af != "multiple_choice":
         return f"schema_{family.lower()}_must_be_mc"
-    if family == "F7" and card.get("question_type") != "multi_emit":
-        return "schema_f7_not_multi_emit"
+    if family in {"F7", "CRR1"} and card.get("question_type") != "multi_emit":
+        return "schema_status_not_multi_emit"
 
     correct_option_text = ""
     if af == "multiple_choice":
         opts = card.get("options") or []
-        if not isinstance(opts, list) or len(opts) != 4:
-            return "schema_mc_options_not_4"
+        if not isinstance(opts, list) or len(opts) not in MC_OPTION_COUNTS:
+            return "schema_mc_options_bad_count"
         co = card.get("correct_option", "")
-        if co not in {"A", "B", "C", "D"}:
+        if co not in MC_OPTION_LETTERS[:len(opts)]:
             return "schema_mc_bad_correct_letter"
         # The option at the correct letter's index should match canonical_answer
         # (or contain it). Skip exact match — pass3a may format options as
@@ -505,7 +535,7 @@ def _verify_card_layers(card: Dict, ev_by_chunk: Dict[int, Dict]) -> str:
                 return "schema_hld1_missing_unable_option"
             if (
                 canonical_raw
-                and canonical_raw.upper() not in {"A", "B", "C", "D"}
+                and canonical_raw.upper() not in set(MC_OPTION_LETTERS)
                 and "unable to answer" not in canonical_raw.lower()
             ):
                 return "schema_hld1_bad_canonical"
@@ -526,7 +556,7 @@ def _verify_card_layers(card: Dict, ev_by_chunk: Dict[int, Dict]) -> str:
         if len(chunks) < 2:
             return "schema_multi_emit_single_chunk"
 
-    if family == "F7":
+    if family in {"F7", "CRR1"}:
         ordered = sorted(
             (int(e.get("chunk", -1)), str(e.get("value", "")).strip().lower())
             for e in emits
@@ -534,7 +564,7 @@ def _verify_card_layers(card: Dict, ev_by_chunk: Dict[int, Dict]) -> str:
         )
         vals = {v for _c, v in ordered}
         if not {"no", "yes"}.issubset(vals):
-            return "schema_f7_missing_no_yes"
+            return "schema_status_missing_no_yes"
         seen_yes = False
         first_yes = None
         for c, v in ordered:
@@ -543,9 +573,9 @@ def _verify_card_layers(card: Dict, ev_by_chunk: Dict[int, Dict]) -> str:
                 if first_yes is None:
                     first_yes = c
             elif v == "no" and seen_yes:
-                return "schema_f7_non_monotonic"
+                return "schema_status_non_monotonic"
         if first_yes is None or not any(v == "no" and c < first_yes for c, v in ordered):
-            return "schema_f7_no_before_yes"
+            return "schema_status_no_before_yes"
 
     grounding = card.get("grounding_frames") or []
     if not grounding:
@@ -626,7 +656,8 @@ def save_cards(video_id: str, cards: List[Dict],
 def load_cards(video_id: str,
                cards_dir: Path = TASK_CARDS_DIR) -> Optional[List[Dict]]:
     from .cache_version import stage_version_ok
-    if not stage_version_ok("3a"):
+    allow_partial = os.environ.get("THINKSTREAM_ALLOW_PARTIAL_PASS3A_CACHE", "").lower() in {"1", "true", "yes", "on"}
+    if not allow_partial and not stage_version_ok("3a"):
         return None
     p = cards_dir / f"{video_id}.json"
     if not p.exists():

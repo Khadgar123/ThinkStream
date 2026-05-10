@@ -4,10 +4,10 @@ Canonical SFT inputs are pass5 LLaMA-Factory/DeepEyes-style ShareGPT
 `*_messages.jsonl` files. Canonical RL inputs are verl parquets built from
 `*_trajectories.jsonl` by scripts/agent_data_v5/build_verl_parquet.py.
 
-The registry intentionally exposes only the current interleaved
-`video_meta + timeline_video_imagepad` message/trajectory datasets. Archived
-flat phase/category datasets were removed from the training surface so SFT,
-RL, and eval cannot silently mix incompatible prompt layouts.
+The registry intentionally exposes only the current rendered
+`video_meta + standard_query_last` message/trajectory datasets. Flat
+phase/category datasets stay outside the training surface so SFT, RL, and eval
+cannot silently mix incompatible prompt layouts.
 """
 
 import os
@@ -69,8 +69,8 @@ def _agent_path(filename: str) -> str:
 DATASET_REGISTRY = {
     # ─── Production ─────────────────────────────────────────────────
     # SFT trainer ingests pass5 `*_messages.jsonl` rows. Each row is one
-    # chunk/action snapshot rendered in the same interleaved prompt contract
-    # used by RL rollout and OVO eval.
+    # chunk/action snapshot rendered in the same prompt contract used by RL
+    # rollout and OVO eval.
     "stream_agent_sft": {
         "annotation_path": _agent_path("train_sft_messages.jsonl"),
         "data_path": "./",

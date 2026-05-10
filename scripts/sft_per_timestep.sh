@@ -40,13 +40,12 @@
 #               - Generated batch root. Default: data/agent_v5.
 #   THINKSTREAM_FINAL_DIR
 #               - Optional rendered messages dir. If unset this script uses
-#                 rendered/video_meta_timeline_video_imagepad.
+#                 rendered/video_meta_standard_query_last.
 #   FRAME_PROTOCOL / THINKSTREAM_FRAME_PROTOCOL
 #               - video_meta. SFT/RL/eval intentionally share one canonical
-#                 interleaved video/image-pad protocol.
+#                 video_meta protocol.
 #   THINKSTREAM_RENDER_LAYOUT
-#               - timeline_video_imagepad. Older standard block layouts are
-#                 kept only inside low-level renderers for archived data reads.
+#               - standard_query_last.
 #   INCLUDE_FAILED_VERIFICATION
 #               - False drops verifier-failed samples for the main cold-start
 #                 SFT path. Override to True only for robustness/continuity
@@ -125,9 +124,16 @@ if [[ "${AGENT_DATA_ROOT}" == */final ]]; then
     AGENT_DATA_ROOT="$(dirname "${AGENT_DATA_ROOT}")"
 fi
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-video_meta}}"
-THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-timeline_video_imagepad}"
-if [[ "${FRAME_PROTOCOL}" != "video_meta" || "${THINKSTREAM_RENDER_LAYOUT}" != "timeline_video_imagepad" ]]; then
-    echo "ERROR: canonical SFT uses FRAME_PROTOCOL=video_meta THINKSTREAM_RENDER_LAYOUT=timeline_video_imagepad" >&2
+THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard_query_last}"
+case "${THINKSTREAM_RENDER_LAYOUT}" in
+    standard_query_last) ;;
+    *)
+        echo "ERROR: unsupported THINKSTREAM_RENDER_LAYOUT=${THINKSTREAM_RENDER_LAYOUT}" >&2
+        exit 2
+        ;;
+esac
+if [[ "${FRAME_PROTOCOL}" != "video_meta" ]]; then
+    echo "ERROR: canonical SFT uses FRAME_PROTOCOL=video_meta" >&2
     echo "       got FRAME_PROTOCOL=${FRAME_PROTOCOL} THINKSTREAM_RENDER_LAYOUT=${THINKSTREAM_RENDER_LAYOUT}" >&2
     exit 2
 fi
@@ -148,6 +154,8 @@ COMPRESS_CLOSE_TAIL_TOKENS="${COMPRESS_CLOSE_TAIL_TOKENS:-24}"
 GROUP_BY_MODALITY="${GROUP_BY_MODALITY:-1}"
 export THINKSTREAM_GROUP_BY_MODALITY="${GROUP_BY_MODALITY}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
+export THINKSTREAM_RENDER_LAYOUT
+export THINKSTREAM_MEMORY_POSITION="${THINKSTREAM_MEMORY_POSITION:-before_visual}"
 IMAGE_MIN_PIXELS="${IMAGE_MIN_PIXELS:-${MIN_PIXELS:-}}"
 IMAGE_MAX_PIXELS="${IMAGE_MAX_PIXELS:-${MAX_PIXELS:-}}"
 image_pixel_args=""
@@ -231,7 +239,7 @@ case $PHASE in
         ;;
     mixed|1|2|C1)
         # v12.6: legacy PHASEs (mixed, 1, 2, C1) are gated. They pointed at
-        # archived flat datasets that do not use the current interleaved
+        # archived flat datasets that do not use the current rendered
         # messages contract. Use PHASE=sft on the canonical messages dataset.
         echo "ERROR: PHASE=$PHASE is archived in v12.6."
         echo "  Legacy phases pointed at flat *_full.jsonl datasets (no"
