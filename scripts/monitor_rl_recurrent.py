@@ -52,6 +52,18 @@ def _pct(num: float, den: float) -> str:
     return f"{100.0 * num / den:.1f}%"
 
 
+def _counter_pct(counter: Counter, *, limit: int = 12) -> str:
+    total = sum(counter.values())
+    if total <= 0:
+        return "none"
+    parts = []
+    for key, value in counter.most_common(limit):
+        parts.append(f"{key}={value}({_pct(value, total)})")
+    if len(counter) > limit:
+        parts.append(f"other_keys={len(counter) - limit}")
+    return " ".join(parts)
+
+
 def _norm_text(value: Any) -> str:
     text = "" if value is None else str(value)
     text = text.strip().lower()
@@ -133,6 +145,35 @@ def _question_answer_chunks(question: dict[str, Any]) -> list[int]:
         return sorted(set(chunks))
     ask = _question_ask(question)
     return [ask] if ask >= 0 else []
+
+
+def _question_wait_bucket(question: dict[str, Any]) -> str:
+    if str(question.get("question_type") or "") == "multi_emit":
+        return "multi_emit"
+    ask = _question_ask(question)
+    answers = _question_answer_chunks(question)
+    if ask < 0 or not answers:
+        return "unknown"
+    wait = min(answers) - ask
+    if wait <= 0:
+        return "immediate"
+    if wait <= 5:
+        return "wait_1_5"
+    if wait <= 30:
+        return "wait_6_30"
+    return "wait_gt_30"
+
+
+def _question_evidence_bucket(question: dict[str, Any]) -> str:
+    ask = _question_ask(question)
+    support = _question_support(question)
+    if ask < 0 or not support:
+        return "unknown"
+    if max(support) < ask:
+        return "history_only"
+    if min(support) < ask <= max(support):
+        return "history_to_current"
+    return "current_or_future"
 
 
 def _range_to_chunks(time_range: Any) -> set[int]:
@@ -270,6 +311,8 @@ def _turn_tool_args(turn: dict[str, Any]) -> dict[str, Any]:
 def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
     c = Counter()
     by_form = defaultdict(Counter)
+    by_family = defaultdict(Counter)
+    question_mix = defaultdict(Counter)
     recall_support_jaccards: list[float] = []
     recall_support_coverages: list[float] = []
     recall_range_lens: list[int] = []
@@ -469,12 +512,29 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
         for idx, q in enumerate(questions):
             key = _question_key(q, idx)
             form = str(q.get("answer_form") or "unknown")
+            family = str(q.get("family") or "unknown")
+            qtype = str(q.get("question_type") or "unknown")
+            availability = str(q.get("availability") or "unknown")
+            options = _safe_list(q.get("options"))
             c["questions"] += 1
             by_form[form]["questions"] += 1
+            by_family[family]["questions"] += 1
+            question_mix["family"][family] += 1
+            question_mix["answer_form"][form] += 1
+            question_mix["question_type"][qtype] += 1
+            question_mix["availability"][availability] += 1
+            question_mix["wait_bucket"][_question_wait_bucket(q)] += 1
+            question_mix["evidence_bucket"][_question_evidence_bucket(q)] += 1
+            if form == "multiple_choice":
+                question_mix["mc_option_count"][str(len(options))] += 1
+                question_mix["mc_correct_option"][
+                    str(q.get("correct_option") or "unknown")
+                ] += 1
             events = answer_by_q.get(key, [])
             answered = bool(events)
             c["answered_questions"] += int(answered)
             by_form[form]["answered"] += int(answered)
+            by_family[family]["answered"] += int(answered)
             correct = False
             for ev in events:
                 text = str(ev.get("text") or "")
@@ -487,6 +547,7 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
                     correct = True
             c["correct_questions"] += int(correct)
             by_form[form]["correct"] += int(correct)
+            by_family[family]["correct"] += int(correct)
             bucket = q_with_prior_recall if q_recall_before_answer.get(key) else q_without_prior_recall
             bucket["questions"] += 1
             bucket["answered"] += int(answered)
@@ -503,6 +564,8 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "counts": c,
         "by_form": by_form,
+        "by_family": by_family,
+        "question_mix": question_mix,
         "reward_mean": mean(reward_scores) if reward_scores else 0.0,
         "chunk_units_mean": mean(chunk_unit_counts) if chunk_unit_counts else 0.0,
         "turn_rows_mean": mean(turn_row_counts) if turn_row_counts else 0.0,
@@ -575,11 +638,23 @@ def print_report(train_steps: list[dict[str, float]], audit_rows: list[dict[str,
         f"correct={c['correct_questions']} ({_pct(c['correct_questions'], c['questions'])}) "
         f"correct/answered={_pct(c['correct_questions'], c['answered_questions'])}"
     )
+    mix = s["question_mix"]
+    print("question_mix:")
+    for key in (
+        "answer_form",
+        "question_type",
+        "wait_bucket",
+        "evidence_bucket",
+        "mc_option_count",
+        "availability",
+    ):
+        print(f"  {key}: {_counter_pct(mix.get(key, Counter()))}")
+    print(f"  top_family: {_counter_pct(mix.get('family', Counter()), limit=16)}")
     print(
         f"recall_turns={c['recall_turns']} traj_with_recall={c['traj_with_recall']} "
         f"({_pct(c['traj_with_recall'], c['records'])}) "
         f"recall/question={c['recall_turns'] / max(1, c['questions']):.3f} "
-        f"gold_recall_chunks={c['gold_recall_chunks']}"
+        f"teacher_recall_chunks={c['gold_recall_chunks']}"
     )
     print(
         f"recall_runtime_ok={_pct(s['recall_runtime_ok'], s['recall_total'])} "
@@ -642,6 +717,18 @@ def print_report(train_steps: list[dict[str, float]], audit_rows: list[dict[str,
         for form, bc in sorted(s["by_form"].items()):
             print(
                 f"  {form}: n={bc['questions']} answered={_pct(bc['answered'], bc['questions'])} "
+                f"correct={_pct(bc['correct'], bc['questions'])} "
+                f"correct/answered={_pct(bc['correct'], bc['answered'])}"
+            )
+    if s["by_family"]:
+        print("\nby family (top 20):")
+        rows = sorted(
+            s["by_family"].items(),
+            key=lambda kv: (-kv[1]["questions"], str(kv[0])),
+        )[:20]
+        for family, bc in rows:
+            print(
+                f"  {family}: n={bc['questions']} "
                 f"correct={_pct(bc['correct'], bc['questions'])} "
                 f"correct/answered={_pct(bc['correct'], bc['answered'])}"
             )

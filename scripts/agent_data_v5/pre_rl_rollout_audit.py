@@ -67,13 +67,17 @@ def _trajectory_for_rollout(traj: Dict[str, Any]) -> Dict[str, Any]:
 def _parse_agent_output(text: str) -> Dict[str, Any]:
     parsed = parse_agent_output_v12(text or "")
     kind = parsed.get("kind") or "unknown"
+    common = {
+        "think": parsed.get("think", ""),
+        "format_error": parsed.get("format_error"),
+    }
     payload: Dict[str, Any] = {}
     if kind == "answer":
         response = str(parsed.get("answer") or "")
         return {
             "action": "response" if response.strip() else "silent",
-            "think": parsed.get("think", ""),
             "payload": {"response": response},
+            **common,
         }
     if kind in {"recall", "compress"}:
         tool_call = parsed.get("tool_call") or {}
@@ -82,8 +86,8 @@ def _parse_agent_output(text: str) -> Dict[str, Any]:
             payload = {"query": args}
         else:
             payload = {"summary": args}
-        return {"action": kind, "think": parsed.get("think", ""), "payload": payload}
-    return {"action": kind, "think": parsed.get("think", ""), "payload": {}}
+        return {"action": kind, "payload": payload, **common}
+    return {"action": kind, "payload": {}, **common}
 
 
 def _write_json(path: Path, obj: Any) -> None:
@@ -167,6 +171,83 @@ def _question_deadline(q: Dict[str, Any]) -> int:
         return max(chunks)
     _question, ask = _question_key(q)
     return ask
+
+
+def _question_answer_chunks(q: Dict[str, Any]) -> List[int]:
+    chunks = []
+    for x in q.get("answer_chunks") or []:
+        try:
+            chunks.append(int(x))
+        except (TypeError, ValueError):
+            continue
+    if chunks:
+        return sorted(set(chunks))
+    _question, ask = _question_key(q)
+    return [ask] if ask >= 0 else []
+
+
+def _question_support_chunks(q: Dict[str, Any]) -> List[int]:
+    chunks = []
+    for x in q.get("support_chunks") or []:
+        try:
+            chunks.append(int(x))
+        except (TypeError, ValueError):
+            continue
+    return sorted(set(x for x in chunks if x >= 0))
+
+
+def _question_wait_bucket(q: Dict[str, Any]) -> str:
+    if str(q.get("question_type") or "") == "multi_emit":
+        return "multi_emit"
+    _question, ask = _question_key(q)
+    answers = _question_answer_chunks(q)
+    if ask < 0 or not answers:
+        return "unknown"
+    wait = min(answers) - ask
+    if wait <= 0:
+        return "immediate"
+    if wait <= 5:
+        return "wait_1_5"
+    if wait <= 30:
+        return "wait_6_30"
+    return "wait_gt_30"
+
+
+def _question_evidence_bucket(q: Dict[str, Any]) -> str:
+    _question, ask = _question_key(q)
+    support = _question_support_chunks(q)
+    if ask < 0 or not support:
+        return "unknown"
+    if max(support) < ask:
+        return "history_only"
+    if min(support) < ask <= max(support):
+        return "history_to_current"
+    return "current_or_future"
+
+
+def _record_question_mix(
+    questions: List[Dict[str, Any]],
+    nested: Dict[str, Counter],
+    *,
+    scale: int,
+) -> None:
+    for q in questions:
+        answer_form = str(q.get("answer_form") or "unknown")
+        family = str(q.get("family") or "unknown")
+        qtype = str(q.get("question_type") or "unknown")
+        availability = str(q.get("availability") or "unknown")
+        options = list(q.get("options") or [])
+        nested["question_family"][family] += scale
+        nested["question_answer_form"][answer_form] += scale
+        nested["question_type"][qtype] += scale
+        nested["question_availability"][availability] += scale
+        nested["question_wait_bucket"][_question_wait_bucket(q)] += scale
+        nested["question_evidence_bucket"][_question_evidence_bucket(q)] += scale
+        if answer_form == "multiple_choice":
+            nested["question_mc_option_count"][str(len(options))] += scale
+            nested["question_mc_correct_option"][
+                str(q.get("correct_option") or "unknown")
+            ] += scale
 
 
 def _recall_relation_to_questions(chunk: int, questions: List[Dict[str, Any]]) -> str:
@@ -283,6 +364,7 @@ def _summarize_rollout(
     stats["videos"] += 1
     stats["questions"] += len(questions) * max(group_size, 1)
     stats["rollout_groups"] += max(group_size, 1)
+    _record_question_mix(questions, nested, scale=max(group_size, 1))
     stats["offline_gold_compress_chunks"] += (
         sum(1 for v in gold_action.values() if str(v) == "compress")
         * max(group_size, 1)
@@ -764,6 +846,16 @@ def main() -> None:
             "support_hit_rate": _rate(stats["recall_support_hits"], stats["recall_events"]),
             "relation": _counter_dict(nested["recall_relation"]),
             "per_question_hist": _counter_dict(nested["recall_per_question"]),
+        },
+        "question_mix": {
+            "families": _counter_dict(nested["question_family"]),
+            "answer_forms": _counter_dict(nested["question_answer_form"]),
+            "question_types": _counter_dict(nested["question_type"]),
+            "availability": _counter_dict(nested["question_availability"]),
+            "wait_buckets": _counter_dict(nested["question_wait_bucket"]),
+            "evidence_buckets": _counter_dict(nested["question_evidence_bucket"]),
+            "mc_option_counts": _counter_dict(nested["question_mc_option_count"]),
+            "mc_correct_options": _counter_dict(nested["question_mc_correct_option"]),
         },
         "format_runtime": {
             "format_errors": int(stats["format_errors"]),
