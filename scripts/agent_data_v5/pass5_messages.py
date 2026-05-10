@@ -38,6 +38,7 @@ import json
 import logging
 import os
 import re
+from collections import Counter
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
@@ -129,6 +130,12 @@ SFT_SILENT_TO_ACTIVE_RATIO = 0.90
 SFT_PENDING_SILENT_FRACTION = 0.55
 SFT_POST_ANSWER_SILENT_FRACTION = 0.25
 SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO = 0.35
+SFT_PENDING_TEMPORAL_FLOORS = {
+    "ask_edge": 0.32,
+    "answer_edge": 0.25,
+    "near_ask": 0.08,
+    "near_answer": 0.12,
+}
 
 
 # ---------------------------------------------------------------------------
@@ -1454,6 +1461,83 @@ def _choose_ranked(items: List[tuple[int, Dict]], n: int) -> List[tuple[int, Dic
     return sorted(items, key=lambda x: _sample_rank(x[1], x[0]))[:n]
 
 
+def _int_list(value: Any) -> List[int]:
+    if value is None:
+        return []
+    if hasattr(value, "tolist"):
+        value = value.tolist()
+    if not isinstance(value, (list, tuple)):
+        value = [value]
+    out: List[int] = []
+    for item in value:
+        try:
+            out.append(int(item))
+        except (TypeError, ValueError):
+            continue
+    return out
+
+
+def _answer_chunks_from_metadata(meta: Dict[str, Any]) -> List[int]:
+    chunks: List[int] = []
+    chunks.extend(_int_list(meta.get("answer_chunks")))
+    chunks.extend(_int_list(meta.get("expected_answer_chunks")))
+    for item in meta.get("per_emit_answers") or []:
+        if not isinstance(item, dict):
+            continue
+        try:
+            chunks.append(int(item.get("chunk")))
+        except (TypeError, ValueError):
+            continue
+    return sorted(set(c for c in chunks if c >= 0))
+
+
+def _pending_silent_temporal_bucket(sample: Dict) -> str:
+    """Locate a pending silent row within its query waiting interval."""
+    if _silent_role(sample) != "pending_question":
+        return "none"
+    meta = sample.get("metadata") or {}
+    try:
+        chunk_idx = int(sample.get("chunk_idx"))
+    except (TypeError, ValueError):
+        return "unknown"
+    try:
+        ask_chunk = int(meta.get("ask_chunk"))
+    except (TypeError, ValueError):
+        ask_chunk = None
+
+    future_answers = [
+        c for c in _answer_chunks_from_metadata(meta)
+        if c >= chunk_idx
+    ]
+    next_answer = min(future_answers) if future_answers else None
+    distance_to_answer = (
+        next_answer - chunk_idx if next_answer is not None else None
+    )
+
+    if ask_chunk is not None:
+        distance_from_ask = chunk_idx - ask_chunk
+        if 0 <= distance_from_ask <= 1:
+            return "ask_edge"
+    if distance_to_answer is not None and 0 <= distance_to_answer <= 1:
+        return "answer_edge"
+    if ask_chunk is not None and 2 <= chunk_idx - ask_chunk <= 3:
+        return "near_ask"
+    if distance_to_answer is not None and 2 <= distance_to_answer <= 3:
+        return "near_answer"
+    if ask_chunk is None and distance_to_answer is None:
+        return "unknown"
+    return "middle"
+
+
+def _silent_diversity_weight(sample: Dict) -> int:
+    bucket = _pending_silent_temporal_bucket(sample)
+    if bucket in {"ask_edge", "answer_edge"}:
+        return 4
+    if bucket in {"near_ask", "near_answer"}:
+        return 2
+    return 1
+
+
 def _silent_diversity_key(sample: Dict) -> str:
     role = _silent_role(sample)
     meta = sample.get("metadata") or {}
@@ -1482,7 +1566,8 @@ def _silent_diversity_key(sample: Dict) -> str:
             subtype = "immediate_boundary_wait"
         else:
             subtype = availability or "pending"
-        return f"{role}|{subtype}|{family}|{answer_form}|{question_type}"
+        temporal = _pending_silent_temporal_bucket(sample)
+        return f"{role}|{subtype}|{family}|{answer_form}|{question_type}|{temporal}"
 
     if role == "post_answer":
         return f"{role}|{family}|{answer_form}|{question_type}"
@@ -1501,25 +1586,67 @@ def _choose_diverse_silent(
         by_key.setdefault(_silent_diversity_key(item[1]), []).append(item)
     for key in by_key:
         by_key[key] = _choose_ranked(by_key[key], len(by_key[key]))
+    key_weights = {
+        key: max(_silent_diversity_weight(sample) for _idx, sample in bucket)
+        for key, bucket in by_key.items()
+    }
 
     selected: List[tuple[int, Dict]] = []
     cursors = {key: 0 for key in by_key}
-    keys = sorted(by_key, key=lambda k: (-len(by_key[k]), k))
+    keys = sorted(by_key, key=lambda k: (-key_weights[k], -len(by_key[k]), k))
     while len(selected) < n:
         progressed = False
         for key in keys:
-            cur = cursors[key]
-            bucket = by_key[key]
-            if cur >= len(bucket):
-                continue
-            selected.append(bucket[cur])
-            cursors[key] += 1
-            progressed = True
+            for _ in range(max(1, key_weights[key])):
+                cur = cursors[key]
+                bucket = by_key[key]
+                if cur >= len(bucket):
+                    break
+                selected.append(bucket[cur])
+                cursors[key] += 1
+                progressed = True
+                if len(selected) >= n:
+                    break
             if len(selected) >= n:
                 break
         if not progressed:
             break
     return selected
+
+
+def _choose_pending_silent(
+    items: List[tuple[int, Dict]],
+    n: int,
+) -> List[tuple[int, Dict]]:
+    if n <= 0 or not items:
+        return []
+    by_temporal: Dict[str, List[tuple[int, Dict]]] = {}
+    for item in items:
+        by_temporal.setdefault(
+            _pending_silent_temporal_bucket(item[1]),
+            [],
+        ).append(item)
+
+    selected: List[tuple[int, Dict]] = []
+    used: set[int] = set()
+    for bucket, ratio in SFT_PENDING_TEMPORAL_FLOORS.items():
+        bucket_items = by_temporal.get(bucket, [])
+        target = min(len(bucket_items), int(n * ratio))
+        if target <= 0:
+            continue
+        picked = _choose_diverse_silent(bucket_items, target)
+        selected.extend(picked)
+        used.update(i for i, _s in picked)
+
+    if len(selected) < n:
+        remaining = [
+            (i, s) for i, s in items
+            if i not in used
+        ]
+        selected.extend(
+            _choose_diverse_silent(remaining, n - len(selected))
+        )
+    return selected[:n]
 
 
 def _is_multi_emit_response(sample: Dict) -> bool:
@@ -1638,7 +1765,7 @@ def balance_sft_samples(samples: List[Dict]) -> tuple[List[Dict], Dict[str, int]
         int(target_silent * SFT_POST_ANSWER_SILENT_FRACTION),
     )
     kept_silent = (
-        _choose_diverse_silent(pending_silent, target_pending)
+        _choose_pending_silent(pending_silent, target_pending)
         + _choose_diverse_silent(post_answer_silent, target_post_answer)
     )
     remaining = target_silent - len(kept_silent)
@@ -1660,7 +1787,15 @@ def balance_sft_samples(samples: List[Dict]) -> tuple[List[Dict], Dict[str, int]
         raise RuntimeError("SFT balancing must not drop recall samples")
     if sum(1 for s in out if s.get("sample_type") == "compress") != len(compress_rows):
         raise RuntimeError("SFT balancing must not drop compress samples")
-    return out, {
+    pending_temporal_before = Counter(
+        _pending_silent_temporal_bucket(s) for _i, s in pending_silent
+    )
+    pending_temporal_kept = Counter(
+        _pending_silent_temporal_bucket(s)
+        for _i, s in kept_silent
+        if _silent_role(s) == "pending_question"
+    )
+    stats = {
         "before": len(samples),
         "after": len(out),
         "active_kept": len(active),
@@ -1686,6 +1821,14 @@ def balance_sft_samples(samples: List[Dict]) -> tuple[List[Dict], Dict[str, int]
             1 for _i, s in kept_silent if _silent_role(s) == "no_question"
         ),
     }
+    for bucket in ("ask_edge", "answer_edge", "near_ask", "near_answer", "middle", "unknown"):
+        stats[f"pending_silent_{bucket}_before"] = int(
+            pending_temporal_before.get(bucket, 0)
+        )
+        stats[f"pending_silent_{bucket}_kept"] = int(
+            pending_temporal_kept.get(bucket, 0)
+        )
+    return out, stats
 
 
 def convert(
