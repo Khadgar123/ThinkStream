@@ -620,13 +620,25 @@ def _coerce_memory_think(item: Any) -> Dict[str, Any]:
             }
         return {"time": "", "text": item.strip()}
     if isinstance(item, dict):
+        text = str(item.get("text", item.get("obs", ""))).strip()
+        tr = item.get("time_range")
+        chunks = item.get("chunks") or []
+        use_range = bool(item.get("range_merged")) or (
+            isinstance(chunks, list) and len(chunks) > 1
+        )
+        if use_range and isinstance(tr, (list, tuple)) and len(tr) >= 2:
+            tr = prompt_time_range(tr)
+            return {
+                "time": f"{tr[0]}-{tr[1]}",
+                "text": text,
+            }
         time_str = item.get(
             "time",
             item.get("chunk", 0) * AGENT_CHUNK_SEC,
         )
         return {
             "time": _memory_time_point(time_str),
-            "text": str(item.get("text", item.get("obs", ""))).strip(),
+            "text": text,
         }
     return {"time": "", "text": str(item).strip()}
 

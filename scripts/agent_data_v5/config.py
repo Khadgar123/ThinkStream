@@ -373,10 +373,9 @@ PASS_CONTEXT_ESTIMATES = {
     "pass1a": {"input": 3_000, "output": 5_000, "thinking": 0},
     # v12.5 (2026-04-30): input 3_000 → 16_000. Empirical measurement on 87
     # batch1 videos: avg 13,776 tokens, median 13,432, max 30,927.
-    # v12.72: long batch4 videos can legitimately need >32K visible output
-    # if the model repeats every entity desc. The prompt now omits singleton
-    # entity groups, but keep the estimate conservative for 65K servers.
-    "pass1b": {"input": 16_000, "output": 16_000, "thinking": 0},  # text-only
+    # v12.72: pass1b outputs short e<N> ids for merged entity groups instead
+    # of copying full desc text, so visible output should stay well under 16K.
+    "pass1b": {"input": 16_000, "output": 8_000, "thinking": 0},  # text-only
     # v12.12 (2026-05-02): RUNTIME profile ~235 tok/frame × 32 = 7,520 visual.
     # + system 500 + template 200 + memory ≤4000 + queries 400 + recall ≤1320
     # + pad 300 ≈ 14,240 input worst-case (with recall). Use 13,500 as a
@@ -477,14 +476,12 @@ PASS_CONFIG = {
         "concurrent": 1024,
     },
     "pass1b": {
-        # v12.72 (2026-05-10): 32K was an artificial visible-output cap, not
-        # a GPU/card limit. On the 8-card 65K server, long batch4 videos can
-        # have ~26K prompt tokens, so raising this lets _safe_max_tokens use
-        # the remaining context instead of truncating at 32K. A lower bound in
-        # pass1b_enrich.py falls back to deterministic state-change detection
-        # if a 32K server has too little completion room.
+        # v12.72 (2026-05-10): pass1b emits short e<N> refs, not full descs.
+        # 24K is still generous but avoids wasting tens of thousands of tokens
+        # on malformed over-long entity dumps; _safe_max_tokens further caps it
+        # by real tokenizer-estimated remaining context.
         # concurrent=1024: unified cap with pass1a/2 for max throughput.
-        "max_tokens": _env_int("THINKSTREAM_PASS1B_MAX_TOKENS", 49152),
+        "max_tokens": _env_int("THINKSTREAM_PASS1B_MAX_TOKENS", 24576),
         "min_completion_tokens": _env_int("THINKSTREAM_PASS1B_MIN_COMPLETION_TOKENS", 4096),
         "temperature": 0.3,
         "thinking": False,

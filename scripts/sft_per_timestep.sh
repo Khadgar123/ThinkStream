@@ -33,6 +33,14 @@
 #   EVAL_N      - Subsample size for in-loop eval (PHASE=sft, default 300).
 #                 Set 0 to evaluate the full eval dataset.
 #   EVAL_BSZ    - Per-device eval batch size (PHASE=sft, default = BSZ)
+#   EVAL_BALANCE_STRATEGY
+#               - none (default) | loss_class | loss_class_silent_diverse.
+#                 When EVAL_N > 0, chooses a deterministic balanced eval
+#                 subset for checkpoint selection. The silent-diverse mode
+#                 stratifies silent rows using the pass5 pending/post/no-query
+#                 and ask/answer boundary buckets.
+#   EVAL_BALANCE_TARGET_RATIOS / EVAL_BALANCE_SEED
+#               - Optional eval class ratios and deterministic seed.
 #   MAX_STEPS   - Optional optimizer-step cap for very large batches
 #   SAVE_LIMIT  - Max retained checkpoints (PHASE=sft, default 0 = no rolling
 #                 deletion; 8B + zero-3 checkpoints can be ~30-50GB each)
@@ -198,6 +206,9 @@ case $PHASE in
         datasets=${DATASETS:-stream_agent_sft}
         eval_datasets=${EVAL_DATASETS:-stream_agent_val}
         eval_n=${EVAL_N:-300}
+        eval_balance_strategy=${EVAL_BALANCE_STRATEGY:-none}
+        eval_balance_target_ratios=${EVAL_BALANCE_TARGET_RATIOS:-}
+        eval_balance_seed=${EVAL_BALANCE_SEED:-0}
         # v12.x: keep the default exposure conservative; exact steps scale
         # with the current batch size. Override with EPOCHS=N or MAX_STEPS=N.
         lr=${LR:-2e-5}; epochs=${EPOCHS:-2}
@@ -218,6 +229,11 @@ case $PHASE in
             --greater_is_better False"
         if [[ "${eval_n}" != "0" ]]; then
             extra_args="${extra_args} --eval_max_samples ${eval_n}"
+            extra_args="${extra_args} --eval_balance_strategy ${eval_balance_strategy}"
+            extra_args="${extra_args} --eval_balance_seed ${eval_balance_seed}"
+            if [[ -n "${eval_balance_target_ratios}" ]]; then
+                extra_args="${extra_args} --eval_balance_target_ratios ${eval_balance_target_ratios}"
+            fi
         fi
         # v12.6: --protocol_version flag removed from DataArguments (v12 is
         # now the only supported protocol — see thinkstream/sft/argument.py).
@@ -278,6 +294,8 @@ echo "Max sample tokens: ${MAX_SAMPLE_TOKENS}"
 echo "Torch empty cache steps: ${TORCH_EMPTY_CACHE_STEPS}"
 echo "Class loss target ratios: ${CLASS_LOSS_TARGET_RATIOS:-none}"
 echo "Class loss alpha: ${CLASS_LOSS_ALPHA}"
+echo "Eval balance strategy: ${EVAL_BALANCE_STRATEGY:-none}"
+echo "Eval balance target ratios: ${EVAL_BALANCE_TARGET_RATIOS:-equal-present}"
 echo "Compress token weighting: ${COMPRESS_TOKEN_WEIGHTING} structure=${COMPRESS_STRUCTURE_TOKEN_WEIGHT} body=${COMPRESS_BODY_TOKEN_WEIGHT} close=${COMPRESS_CLOSE_TOKEN_WEIGHT} tail=${COMPRESS_CLOSE_TAIL_TOKENS}"
 echo "Group by modality: ${GROUP_BY_MODALITY}"
 echo "Image pixels: ${IMAGE_MIN_PIXELS:-default} .. ${IMAGE_MAX_PIXELS:-default}"

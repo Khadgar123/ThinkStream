@@ -95,6 +95,8 @@ Linking rules:
 - Output only real merged groups with at least two descs. Omit descriptions
   that do not clearly merge with another input description; the pipeline will
   assign them deterministic local ids.
+- In "descs", output the short e<N> ids only. Do not copy full descriptions.
+- Hard limits: at most 200 entity_groups; at most 300 state_changes.
 - Use stable descriptive ids: person_chef_1, pot_silver_1, etc.
 
 TASK 2 — State change detection. Below is a per-chunk action/entity summary.
@@ -111,8 +113,8 @@ State-change rules:
 Output a SINGLE JSON object with both fields:
 {{
   "entity_groups": [
-    {{"id": "person_chef_1", "descs": ["...", "..."]}},
-    {{"id": "pot_silver_1",  "descs": ["..."]}}
+    {{"id": "person_chef_1", "descs": ["e3", "e17", "e42"]}},
+    {{"id": "pot_silver_1",  "descs": ["e9", "e33"]}}
   ],
   "state_changes": [
     {{"chunk": 3, "change": "started pouring oil into pot"}},
@@ -220,6 +222,7 @@ async def run_pass1b(
 
     desc_to_id: Dict[str, str] = {}
     state_changes_applied = False
+    short_to_desc = {short: desc for desc, short in desc_to_short.items()}
 
     if raw:
         parsed = _parse_combined_json(raw)
@@ -229,8 +232,11 @@ async def run_pass1b(
                 if not isinstance(group, dict):
                     continue
                 gid = group.get("id", "unknown")
-                for desc in group.get("descs", []) or []:
-                    desc_to_id[desc] = gid
+                for desc_ref in group.get("descs", []) or []:
+                    desc_key = str(desc_ref).strip()
+                    desc = short_to_desc.get(desc_key, desc_key)
+                    if desc in desc_chunks:
+                        desc_to_id[desc] = gid
             # State changes
             chunk_map = {cap.get("chunk_idx", i): cap
                          for i, cap in enumerate(enriched)}

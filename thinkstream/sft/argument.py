@@ -43,6 +43,29 @@ class DataArguments:
             "all val samples."
         },
     )
+    eval_balance_strategy: str = field(
+        default="none",
+        metadata={
+            "help": "Eval subsampling strategy when eval_max_samples is set. "
+            "'none' keeps the historical Random(0) sample. "
+            "'loss_class' balances eval rows across loss_class buckets. "
+            "'loss_class_silent_diverse' also stratifies silent rows using "
+            "the pass5-style pending/post-answer/no-question and temporal "
+            "boundary buckets."
+        },
+    )
+    eval_balance_target_ratios: Optional[str] = field(
+        default=None,
+        metadata={
+            "help": "Optional comma-separated eval class target ratios, e.g. "
+            "'silent=0.2,response=0.2,recall=0.2,post_recall=0.2,compress=0.2'. "
+            "If unset, present loss_class buckets are sampled equally."
+        },
+    )
+    eval_balance_seed: int = field(
+        default=0,
+        metadata={"help": "Deterministic seed for balanced eval subsampling."},
+    )
     model_type: str = field(default="qwen2.5vl")
 
     # Image

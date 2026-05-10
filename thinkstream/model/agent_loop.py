@@ -14,6 +14,7 @@ import json
 import logging
 import os
 from copy import deepcopy
+from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Callable, Dict, List, Optional
 
@@ -129,6 +130,84 @@ def select_compress_range_by_tokens(
     return cap
 
 
+def _env_bool(name: str, default: bool = False) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    return str(raw).strip().lower() not in {"0", "false", "no", "off", ""}
+
+
+def _env_float(name: str, default: float) -> float:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    try:
+        return float(raw)
+    except (TypeError, ValueError):
+        return default
+
+
+def _norm_for_memory_similarity(text: str) -> str:
+    return " ".join(str(text or "").lower().split())
+
+
+def _think_similarity(a: str, b: str) -> float:
+    left = _norm_for_memory_similarity(a)
+    right = _norm_for_memory_similarity(b)
+    if not left or not right:
+        return 0.0
+    return SequenceMatcher(None, left, right).ratio()
+
+
+def _contiguous_groups(chunks: List[int]) -> List[List[int]]:
+    if not chunks:
+        return []
+    uniq = sorted(set(int(c) for c in chunks))
+    groups: List[List[int]] = [[uniq[0]]]
+    for c in uniq[1:]:
+        if c == groups[-1][-1] + 1:
+            groups[-1].append(c)
+        else:
+            groups.append([c])
+    return groups
+
+
+def _memory_item_chunks(item: Dict) -> List[int]:
+    raw_chunks = item.get("chunks")
+    if raw_chunks is None:
+        raw_chunks = item.get("source_chunks")
+    if raw_chunks is not None:
+        out: List[int] = []
+        for c in raw_chunks:
+            try:
+                out.append(int(c))
+            except (TypeError, ValueError):
+                continue
+        if out:
+            return sorted(set(out))
+    try:
+        return [int(item["chunk"])]
+    except (KeyError, TypeError, ValueError):
+        return []
+
+
+def _set_memory_item_chunks(item: Dict, chunks: List[int]) -> Dict:
+    chunks = sorted(set(int(c) for c in chunks))
+    if not chunks:
+        return item
+    item["chunk"] = chunks[0]
+    item["chunks"] = chunks
+    start = chunks[0] * AGENT_CHUNK_SEC
+    end = (chunks[-1] + 1) * AGENT_CHUNK_SEC
+    item["time"] = f"{int(start)}-{int(end)}"
+    item["time_range"] = [int(start), int(end)]
+    if len(chunks) > 1:
+        item["range_merged"] = True
+    else:
+        item.pop("range_merged", None)
+    return item
+
+
 # ---------------------------------------------------------------------------
 # Memory State (mirrors pass2_rollout.py:MemoryState)
 # ---------------------------------------------------------------------------
@@ -141,11 +220,27 @@ class MemoryState:
     Text memory covers LONGER time than visual window.
     """
 
-    def __init__(self, tokenizer=None):
+    def __init__(
+        self,
+        tokenizer=None,
+        *,
+        merge_similar_thinks: Optional[bool] = None,
+        merge_similarity_threshold: Optional[float] = None,
+    ):
         self.compressed_segments: List[Dict] = []
         self.recent_thinks: List[Dict] = []
         self._retrieval_archive: List[Dict] = []
         self._tokenizer = tokenizer
+        self.merge_similar_thinks = (
+            _env_bool("THINKSTREAM_MEMORY_MERGE_SIMILAR_THINKS", False)
+            if merge_similar_thinks is None
+            else bool(merge_similar_thinks)
+        )
+        self.merge_similarity_threshold = (
+            _env_float("THINKSTREAM_MEMORY_MERGE_SIM_THRESHOLD", 0.96)
+            if merge_similarity_threshold is None
+            else float(merge_similarity_threshold)
+        )
 
     @property
     def retrieval_archive(self) -> List[Dict]:
@@ -169,17 +264,91 @@ class MemoryState:
             "visual_window_start": max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1),
         }
 
-    def add_think(self, chunk_idx: int, think_text: str):
-        """Add think to memory immediately."""
+    def add_think(self, chunk_idx: int, think_text: str) -> Optional[Dict]:
+        """Add think to memory immediately.
+
+        Returns a diagnostic event when the new think is merged into the
+        previous visible memory item. Raw per-chunk archive entries are still
+        appended before any visible-memory merge.
+        """
         time_start = chunk_idx * AGENT_CHUNK_SEC
         time_end = time_start + AGENT_CHUNK_SEC
         item = {
             "chunk": chunk_idx,
+            "chunks": [chunk_idx],
             "time": f"{int(time_start)}-{int(time_end)}",
+            "time_range": [int(time_start), int(time_end)],
             "text": think_text,
         }
+        self._retrieval_archive.append(dict(item))
+        if self.merge_similar_thinks and self.recent_thinks:
+            prev = self.recent_thinks[-1]
+            prev_chunks = _memory_item_chunks(prev)
+            if prev_chunks and max(prev_chunks) + 1 == int(chunk_idx):
+                prev_text = str(prev.get("text", ""))
+                prev_chunks_before = list(prev_chunks)
+                prev_range_before = [
+                    int(prev_chunks_before[0] * AGENT_CHUNK_SEC),
+                    int((prev_chunks_before[-1] + 1) * AGENT_CHUNK_SEC),
+                ]
+                similarity = _think_similarity(prev_text, think_text)
+                if similarity >= self.merge_similarity_threshold:
+                    merged = _memory_item_chunks(prev) + [int(chunk_idx)]
+                    _set_memory_item_chunks(prev, merged)
+                    prev["merged_similar_count"] = (
+                        int(prev.get("merged_similar_count", 1) or 1) + 1
+                    )
+                    prev["last_merge_similarity"] = round(float(similarity), 6)
+                    merged_range = [
+                        int(merged[0] * AGENT_CHUNK_SEC),
+                        int((merged[-1] + 1) * AGENT_CHUNK_SEC),
+                    ]
+                    return {
+                        "merged": True,
+                        "reason": "adjacent_similarity",
+                        "reason_detail": (
+                            "previous visible memory_think is contiguous and "
+                            "text similarity is above threshold"
+                        ),
+                        "similarity": round(float(similarity), 6),
+                        "threshold": round(float(self.merge_similarity_threshold), 6),
+                        "chunk_idx": int(chunk_idx),
+                        "chunk_time_range": [int(time_start), int(time_end)],
+                        "original_think": think_text,
+                        "previous_text": prev_text,
+                        "previous_chunks_before": prev_chunks_before,
+                        "previous_time_range_before": prev_range_before,
+                        "merged_chunks_after": sorted(set(int(c) for c in merged)),
+                        "merged_time_range_after": merged_range,
+                        "merged_duration_sec_after": int(merged_range[1] - merged_range[0]),
+                        "merged_chunk_count_after": len(set(int(c) for c in merged)),
+                    }
         self.recent_thinks.append(item)
-        self._retrieval_archive.append(item)
+        return None
+
+    def chunks_for_items(self, items: List[Dict]) -> List[int]:
+        chunks: List[int] = []
+        for item in items:
+            chunks.extend(_memory_item_chunks(item))
+        return sorted(set(chunks))
+
+    def chunks_in_time_range(self, time_range) -> List[int]:
+        tr_start = tr_end = None
+        if isinstance(time_range, list) and len(time_range) == 2:
+            try:
+                tr_start, tr_end = int(time_range[0]), int(time_range[1])
+            except (TypeError, ValueError):
+                tr_start = tr_end = None
+        if tr_start is None or tr_end is None:
+            return []
+        selected: List[int] = []
+        for item in self.recent_thinks:
+            for c in _memory_item_chunks(item):
+                chunk_start = int(c * AGENT_CHUNK_SEC)
+                chunk_end = int(chunk_start + AGENT_CHUNK_SEC)
+                if tr_start <= chunk_start and chunk_end <= tr_end:
+                    selected.append(int(c))
+        return sorted(set(selected))
 
     def _token_count(self, item: Dict) -> int:
         """Count tokens in a single recent_think entry."""
@@ -243,23 +412,26 @@ class MemoryState:
 
         chunk_set = set(int(c) for c in (compressed_chunks or []))
         if tr_start is not None and tr_end is not None:
-            for t in self.recent_thinks:
-                chunk_start = int(t["chunk"] * AGENT_CHUNK_SEC)
-                chunk_end = int(chunk_start + AGENT_CHUNK_SEC)
-                if tr_start <= chunk_start and chunk_end <= tr_end:
-                    chunk_set.add(int(t["chunk"]))
+            chunk_set.update(self.chunks_in_time_range([tr_start, tr_end]))
 
         if chunk_set:
             source_chunks.update(chunk_set)
-            self.recent_thinks = [
-                t for t in self.recent_thinks if int(t["chunk"]) not in chunk_set
-            ]
+            kept_recent: List[Dict] = []
+            for t in self.recent_thinks:
+                chunks = _memory_item_chunks(t)
+                remaining = [c for c in chunks if int(c) not in chunk_set]
+                if len(remaining) == len(chunks):
+                    kept_recent.append(t)
+                    continue
+                for group in _contiguous_groups(remaining):
+                    kept_recent.append(_set_memory_item_chunks(dict(t), group))
+            self.recent_thinks = kept_recent
         else:
             n = select_compress_range_by_tokens(
                 self.recent_thinks,
                 token_count_fn=self._token_count,
             )
-            source_chunks.update(int(t["chunk"]) for t in self.recent_thinks[:n])
+            source_chunks.update(self.chunks_for_items(self.recent_thinks[:n]))
             self.recent_thinks = self.recent_thinks[n:] if n > 0 else self.recent_thinks
         if self._tokenizer and isinstance(summary.get("text"), str):
             ids = self._tokenizer.encode(summary["text"], add_special_tokens=False)
@@ -1063,7 +1235,7 @@ class StreamingAgentLoop:
             )
             oldest = self.memory.recent_thinks[:n_to_compress] if n_to_compress > 0 else []
             if oldest:
-                chunks = [t["chunk"] for t in oldest]
+                chunks = self.memory.chunks_for_items(oldest)
                 # v12.12 (2026-05-02): trigger carries NO range. Model must
                 # derive the range from <memory> contents and emit it inside
                 # the assistant tool_call. Range comparison for telemetry /
@@ -1188,13 +1360,9 @@ class StreamingAgentLoop:
             summary = parsed["payload"].get("summary", {})
             if summary and "time_range" in summary:
                 # Determine which chunks were compressed from time_range
-                tr = summary["time_range"]
-                compressed_chunks = []
-                for t in self.memory.recent_thinks:
-                    chunk_start = t["chunk"] * AGENT_CHUNK_SEC
-                    chunk_end = chunk_start + AGENT_CHUNK_SEC
-                    if chunk_start >= tr[0] and chunk_end <= tr[1]:
-                        compressed_chunks.append(t["chunk"])
+                compressed_chunks = self.memory.chunks_in_time_range(
+                    summary["time_range"]
+                )
                 self.memory.compress(summary, compressed_chunks=compressed_chunks)
 
         elif parsed["action"] == "recall":

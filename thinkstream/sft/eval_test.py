@@ -9,6 +9,7 @@ Usage:
 
 import os
 import sys
+import json
 from pathlib import Path
 
 import torch
@@ -40,6 +41,7 @@ class EvalArguments:
     dataset: str = field(default="stream_agent_test")
     batch_size: int = field(default=8)
     max_samples: int = field(default=None)
+    metrics_json: str = field(default="")
 
 
 def rank0_print(*args):
@@ -102,7 +104,6 @@ def main():
 
     # Override training args for eval-only
     training_args.per_device_eval_batch_size = eval_args.batch_size
-    training_args.dataloader_num_workers = 4
 
     trainer = WeightedSFTTrainer(
         model=model,
@@ -116,9 +117,13 @@ def main():
     metrics = trainer.evaluate()
 
     if not torch.distributed.is_initialized() or torch.distributed.get_rank() == 0:
+        if eval_args.metrics_json:
+            out = Path(eval_args.metrics_json)
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.write_text(json.dumps(metrics, indent=2, sort_keys=True) + "\n")
         print("\n=== Test Set Evaluation Results ===")
         for key in sorted(metrics.keys()):
-            if key.startswith("eval/"):
+            if key == "eval_loss" or key.startswith("eval/"):
                 val = metrics[key]
                 if isinstance(val, float):
                     print(f"  {key}: {val:.4f}")

@@ -214,6 +214,9 @@ def _compress_trigger_diagnostic(memory: MemoryState) -> Dict[str, Any]:
         "recent_thinks": n_recent,
         "range_min": int(COMPRESS_RANGE_MIN),
         "selected_range_n": int(range_n),
+        "selected_range_chunks": memory.chunks_for_items(
+            memory.recent_thinks[:range_n]
+        ) if range_n > 0 else [],
     }
 
 
@@ -338,17 +341,16 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> str:
         and action != "compress"
         and getattr(runner, "_last_turn_kind", "streaming") != "compress"
     ):
-        runner.memory.add_think(chunk_idx, parsed["think"])
+        merge_event = runner.memory.add_think(chunk_idx, parsed["think"])
+        runner._last_memory_merge_event = merge_event
+    else:
+        runner._last_memory_merge_event = None
     if action == "compress":
         summary = parsed["payload"].get("summary", {})
         if summary and "time_range" in summary:
-            tr = summary["time_range"]
-            compressed_chunks = []
-            for t in runner.memory.recent_thinks:
-                cs = t["chunk"] * AGENT_CHUNK_SEC
-                ce = cs + AGENT_CHUNK_SEC
-                if cs >= tr[0] and ce <= tr[1]:
-                    compressed_chunks.append(t["chunk"])
+            compressed_chunks = runner.memory.chunks_in_time_range(
+                summary["time_range"]
+            )
             runner.memory.compress(summary, compressed_chunks=compressed_chunks)
     elif action == "response":
         answer_text = parsed["payload"].get("response", "")
@@ -883,6 +885,7 @@ def _apply_rollout_output(
     chunk_idx = runner.current_chunk
     parsed = _parse_agent_output(output_text)
     queries_before = deepcopy(getattr(runner.memory, "queries", []))
+    memory_merge_event = None
 
     action = parsed.get("action") or "unknown"
     action_error = action_space_error_for_turn(
@@ -898,17 +901,16 @@ def _apply_rollout_output(
         and action != "compress"
         and getattr(runner, "_last_turn_kind", "streaming") != "compress"
     ):
-        runner.memory.add_think(chunk_idx, parsed["think"])
+        memory_merge_event = runner.memory.add_think(chunk_idx, parsed["think"])
+        if memory_merge_event:
+            memory_merge_event = deepcopy(memory_merge_event)
+            memory_merge_event["raw_output"] = output_text
     if action == "compress":
         summary = parsed.get("payload", {}).get("summary", {})
         if summary and "time_range" in summary:
-            tr = summary["time_range"]
-            compressed_chunks = []
-            for t in runner.memory.recent_thinks:
-                cs = t["chunk"] * AGENT_CHUNK_SEC
-                ce = cs + AGENT_CHUNK_SEC
-                if cs >= tr[0] and ce <= tr[1]:
-                    compressed_chunks.append(t["chunk"])
+            compressed_chunks = runner.memory.chunks_in_time_range(
+                summary["time_range"]
+            )
             runner.memory.compress(summary, compressed_chunks=compressed_chunks)
     elif action == "response":
         answer_text = parsed.get("payload", {}).get("response", "")
@@ -956,6 +958,7 @@ def _apply_rollout_output(
         "first_action": action,
         "queries_before": queries_before,
         "queries_after": deepcopy(getattr(runner.memory, "queries", [])),
+        "memory_merge_event": memory_merge_event,
     }
     runner.chunk_results.append(entry)
 
@@ -983,6 +986,8 @@ def streaming_vllm_rollout(
     enable_recall: bool = True,
     frame_protocol: Optional[str] = None,
     render_layout: Optional[str] = None,
+    memory_merge_similar_thinks: Optional[bool] = None,
+    memory_merge_similarity_threshold: Optional[float] = None,
 ) -> List[Dict]:
     """vLLM-batched RL rollout matching grpo.py:617-803 output contract.
 
@@ -1097,7 +1102,11 @@ def streaming_vllm_rollout(
                 query=question,
                 ask_chunk=ask_chunk,
                 max_chunks=max_chunks_this,
-                memory=MemoryState(tokenizer=tokenizer),
+                memory=MemoryState(
+                    tokenizer=tokenizer,
+                    merge_similar_thinks=memory_merge_similar_thinks,
+                    merge_similarity_threshold=memory_merge_similarity_threshold,
+                ),
                 frames_root=frames_root,
                 video_root=video_root,
                 min_pixels=min_pixels,
@@ -1450,6 +1459,7 @@ def streaming_vllm_rollout(
                 "invalid_actions": [],
                 "queries_before": [],
                 "queries_after": [],
+                "memory_merge_events": [],
             }
             for g_idx in range(group_size):
                 if ci < len(per_gen_results[g_idx]):
@@ -1490,6 +1500,9 @@ def streaming_vllm_rollout(
                     merged["invalid_actions"].append(cr_g.get("invalid_action", ""))
                     merged["queries_before"].append(cr_g.get("queries_before") or [])
                     merged["queries_after"].append(cr_g.get("queries_after") or [])
+                    merged["memory_merge_events"].append(
+                        cr_g.get("memory_merge_event")
+                    )
                 else:
                     # Pad: this gen finished early (response emitted past ask_chunk).
                     merged["generated_tokens"].append(_torch.tensor([], dtype=_torch.long))
@@ -1510,6 +1523,7 @@ def streaming_vllm_rollout(
                     merged["invalid_actions"].append("")
                     merged["queries_before"].append([])
                     merged["queries_after"].append([])
+                    merged["memory_merge_events"].append(None)
             merged_chunk_results.append(merged)
 
         all_rollout_results.append({

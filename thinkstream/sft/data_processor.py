@@ -18,6 +18,7 @@ import os
 import random
 import logging
 import time
+import hashlib
 from collections import Counter
 from dataclasses import dataclass
 from typing import Dict, Optional, Sequence, List, Any, Tuple
@@ -238,6 +239,406 @@ def _assign_class_loss_weights(samples: List[Dict], data_args) -> None:
         "target:",
         {k: round(ratios.get(k, counts[k] / total), 4) for k in sorted(counts)},
     )
+
+
+def _sample_rank_for_eval(sample: Dict, idx: int, seed: int = 0) -> str:
+    key = "|".join([
+        str(seed),
+        str(sample.get("video_id") or (sample.get("metadata") or {}).get("video_id") or ""),
+        str(sample.get("trajectory_id") or ""),
+        str(sample.get("sample_id") or ""),
+        str(sample.get("chunk_idx") or ""),
+        str(idx),
+    ])
+    return hashlib.sha1(key.encode("utf-8")).hexdigest()
+
+
+def _message_sample_type(sample: Dict) -> str:
+    meta = sample.get("metadata") or {}
+    return str(sample.get("sample_type") or meta.get("sample_type") or "")
+
+
+def _message_chunk_idx(sample: Dict) -> Optional[int]:
+    meta = sample.get("metadata") or {}
+    for value in (sample.get("chunk_idx"), meta.get("chunk_idx")):
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            continue
+    return None
+
+
+def _int_list(value: Any) -> List[int]:
+    if value is None:
+        return []
+    if hasattr(value, "tolist"):
+        value = value.tolist()
+    if not isinstance(value, (list, tuple)):
+        value = [value]
+    out: List[int] = []
+    for item in value:
+        try:
+            out.append(int(item))
+        except (TypeError, ValueError):
+            continue
+    return out
+
+
+def _answer_chunks_from_metadata(meta: Dict[str, Any]) -> List[int]:
+    chunks: List[int] = []
+    chunks.extend(_int_list(meta.get("answer_chunks")))
+    chunks.extend(_int_list(meta.get("expected_answer_chunks")))
+    for item in meta.get("per_emit_answers") or []:
+        if not isinstance(item, dict):
+            continue
+        try:
+            chunks.append(int(item.get("chunk")))
+        except (TypeError, ValueError):
+            continue
+    return sorted(set(c for c in chunks if c >= 0))
+
+
+def _eval_silent_role(sample: Dict) -> str:
+    """Pass5-style silent subtype for eval balancing.
+
+    Rendered message rows no longer carry the full pass3 query objects, so this
+    mirrors pass5 when possible and falls back to metadata timing fields.
+    """
+    if _sample_loss_class(sample) != "silent" and _message_sample_type(sample) != "silent":
+        return ""
+
+    meta = sample.get("metadata") or {}
+    queries = list(sample.get("queries") or meta.get("queries") or [])
+    card_id = str(sample.get("card_id") or meta.get("card_id") or "")
+    if queries:
+        related = [
+            q for q in queries
+            if not card_id or str(q.get("card_id") or "") == card_id
+        ] or queries
+        if any(str(q.get("status", "")).lower() in {"open", "pending", "active"}
+               for q in related):
+            return "pending_question"
+        if any(q.get("answers") for q in related):
+            return "post_answer"
+
+    if not (card_id or meta.get("question")):
+        return "no_question"
+
+    chunk_idx = _message_chunk_idx(sample)
+    answer_chunks = _answer_chunks_from_metadata(meta)
+    if chunk_idx is not None and answer_chunks:
+        if any(c >= chunk_idx for c in answer_chunks):
+            return "pending_question"
+        return "post_answer"
+    return "pending_question"
+
+
+def _eval_pending_silent_temporal_bucket(sample: Dict) -> str:
+    if _eval_silent_role(sample) != "pending_question":
+        return "none"
+    meta = sample.get("metadata") or {}
+    chunk_idx = _message_chunk_idx(sample)
+    if chunk_idx is None:
+        return "unknown"
+    try:
+        ask_chunk = int(meta.get("ask_chunk"))
+    except (TypeError, ValueError):
+        ask_chunk = None
+
+    future_answers = [
+        c for c in _answer_chunks_from_metadata(meta)
+        if c >= chunk_idx
+    ]
+    next_answer = min(future_answers) if future_answers else None
+    distance_to_answer = (
+        next_answer - chunk_idx if next_answer is not None else None
+    )
+
+    if ask_chunk is not None:
+        distance_from_ask = chunk_idx - ask_chunk
+        if 0 <= distance_from_ask <= 1:
+            return "ask_edge"
+    if distance_to_answer is not None and 0 <= distance_to_answer <= 1:
+        return "answer_edge"
+    if ask_chunk is not None and 2 <= chunk_idx - ask_chunk <= 3:
+        return "near_ask"
+    if distance_to_answer is not None and 2 <= distance_to_answer <= 3:
+        return "near_answer"
+    if ask_chunk is None and distance_to_answer is None:
+        return "unknown"
+    return "middle"
+
+
+def _eval_silent_diversity_weight(sample: Dict) -> int:
+    bucket = _eval_pending_silent_temporal_bucket(sample)
+    if bucket in {"ask_edge", "answer_edge"}:
+        return 4
+    if bucket in {"near_ask", "near_answer"}:
+        return 2
+    return 1
+
+
+def _eval_silent_diversity_key(sample: Dict) -> str:
+    role = _eval_silent_role(sample)
+    meta = sample.get("metadata") or {}
+    family = str(meta.get("family") or "none")
+    answer_form = str(meta.get("answer_form") or "none")
+    availability = str(
+        meta.get("availability")
+        or sample.get("sequence_type")
+        or "none"
+    )
+    question_type = str(meta.get("question_type") or "single_emit")
+    base_role = str(sample.get("base_role") or meta.get("base_role") or "")
+
+    if role == "pending_question":
+        if base_role == "recall_wait_no_history":
+            subtype = "recall_wait_no_history"
+        elif availability == "event_watch":
+            subtype = "future_event_wait"
+        elif availability == "multi_response" or question_type == "multi_emit":
+            subtype = "multi_emit_wait"
+        elif availability == "recall_success":
+            subtype = "recall_answer_pending"
+        elif availability == "memory_response":
+            subtype = "memory_answer_pending"
+        elif availability == "immediate_response":
+            subtype = "immediate_boundary_wait"
+        else:
+            subtype = availability or "pending"
+        temporal = _eval_pending_silent_temporal_bucket(sample)
+        return f"{role}|{subtype}|{family}|{answer_form}|{question_type}|{temporal}"
+
+    if role == "post_answer":
+        return f"{role}|{family}|{answer_form}|{question_type}"
+    return f"{role or 'unknown'}|{base_role or 'patrol'}"
+
+
+def _choose_ranked_eval(
+    items: List[Tuple[int, Dict]],
+    n: int,
+    *,
+    seed: int,
+) -> List[Tuple[int, Dict]]:
+    if n <= 0:
+        return []
+    return sorted(items, key=lambda x: _sample_rank_for_eval(x[1], x[0], seed))[:n]
+
+
+def _choose_diverse_eval_silent(
+    items: List[Tuple[int, Dict]],
+    n: int,
+    *,
+    seed: int,
+) -> List[Tuple[int, Dict]]:
+    if n <= 0 or not items:
+        return []
+    by_key: Dict[str, List[Tuple[int, Dict]]] = {}
+    for item in items:
+        by_key.setdefault(_eval_silent_diversity_key(item[1]), []).append(item)
+    for key in by_key:
+        by_key[key] = _choose_ranked_eval(by_key[key], len(by_key[key]), seed=seed)
+    key_weights = {
+        key: max(_eval_silent_diversity_weight(sample) for _idx, sample in bucket)
+        for key, bucket in by_key.items()
+    }
+
+    selected: List[Tuple[int, Dict]] = []
+    cursors = {key: 0 for key in by_key}
+    keys = sorted(by_key, key=lambda k: (-key_weights[k], -len(by_key[k]), k))
+    while len(selected) < n:
+        progressed = False
+        for key in keys:
+            for _ in range(max(1, key_weights[key])):
+                cur = cursors[key]
+                bucket = by_key[key]
+                if cur >= len(bucket):
+                    break
+                selected.append(bucket[cur])
+                cursors[key] += 1
+                progressed = True
+                if len(selected) >= n:
+                    break
+            if len(selected) >= n:
+                break
+        if not progressed:
+            break
+    return selected
+
+
+def _choose_eval_pending_silent(
+    items: List[Tuple[int, Dict]],
+    n: int,
+    *,
+    seed: int,
+) -> List[Tuple[int, Dict]]:
+    if n <= 0 or not items:
+        return []
+    temporal_floors = {
+        "ask_edge": 0.32,
+        "answer_edge": 0.25,
+        "near_ask": 0.08,
+        "near_answer": 0.12,
+    }
+    by_temporal: Dict[str, List[Tuple[int, Dict]]] = {}
+    for item in items:
+        by_temporal.setdefault(
+            _eval_pending_silent_temporal_bucket(item[1]),
+            [],
+        ).append(item)
+
+    selected: List[Tuple[int, Dict]] = []
+    used: set[int] = set()
+    for bucket, ratio in temporal_floors.items():
+        bucket_items = by_temporal.get(bucket, [])
+        target = min(len(bucket_items), int(n * ratio))
+        if target <= 0:
+            continue
+        picked = _choose_diverse_eval_silent(bucket_items, target, seed=seed)
+        selected.extend(picked)
+        used.update(i for i, _s in picked)
+
+    if len(selected) < n:
+        remaining = [(i, s) for i, s in items if i not in used]
+        selected.extend(
+            _choose_diverse_eval_silent(remaining, n - len(selected), seed=seed)
+        )
+    return selected[:n]
+
+
+def _choose_eval_silent(
+    items: List[Tuple[int, Dict]],
+    n: int,
+    *,
+    seed: int,
+    diverse: bool,
+) -> List[Tuple[int, Dict]]:
+    if n <= 0 or not items:
+        return []
+    if not diverse:
+        return _choose_ranked_eval(items, n, seed=seed)
+
+    pending = [(i, s) for i, s in items if _eval_silent_role(s) == "pending_question"]
+    post_answer = [(i, s) for i, s in items if _eval_silent_role(s) == "post_answer"]
+    base = [(i, s) for i, s in items if _eval_silent_role(s) == "no_question"]
+    target_pending = min(len(pending), int(n * 0.55))
+    target_post = min(len(post_answer), int(n * 0.25))
+    selected = (
+        _choose_eval_pending_silent(pending, target_pending, seed=seed)
+        + _choose_diverse_eval_silent(post_answer, target_post, seed=seed)
+    )
+    used = {i for i, _s in selected}
+    remaining_n = n - len(selected)
+    if remaining_n > 0:
+        selected.extend(_choose_diverse_eval_silent(base, remaining_n, seed=seed))
+        used = {i for i, _s in selected}
+    if len(selected) < n:
+        rest = [
+            (i, s) for bucket in (pending, post_answer, base)
+            for i, s in bucket
+            if i not in used
+        ]
+        selected.extend(_choose_diverse_eval_silent(rest, n - len(selected), seed=seed))
+    return selected[:n]
+
+
+def _allocate_eval_quotas(
+    counts: Counter,
+    total: int,
+    ratios: Dict[str, float],
+) -> Dict[str, int]:
+    classes = [k for k, n in counts.items() if n > 0]
+    if not classes or total <= 0:
+        return {}
+    if not ratios:
+        ratios = {k: 1.0 / len(classes) for k in classes}
+    else:
+        # Keep unspecified present classes from being silently excluded.
+        missing = [k for k in classes if k not in ratios]
+        if missing:
+            leftover = max(0.0, 1.0 - sum(ratios.values()))
+            share = leftover / len(missing) if leftover > 0 else 0.0
+            ratios = {**ratios, **{k: share for k in missing}}
+    desired = {k: total * float(ratios.get(k, 0.0)) for k in classes}
+    quotas = {k: min(counts[k], int(desired[k])) for k in classes}
+    remaining = min(total, sum(counts.values())) - sum(quotas.values())
+    while remaining > 0:
+        candidates = [
+            k for k in classes
+            if quotas[k] < counts[k]
+        ]
+        if not candidates:
+            break
+        candidates.sort(
+            key=lambda k: (
+                desired.get(k, 0.0) - quotas[k],
+                counts[k] - quotas[k],
+                k,
+            ),
+            reverse=True,
+        )
+        quotas[candidates[0]] += 1
+        remaining -= 1
+    return quotas
+
+
+def _subsample_eval_balanced(
+    samples: List[Dict],
+    max_samples: int,
+    data_args,
+) -> List[Dict]:
+    strategy = str(getattr(data_args, "eval_balance_strategy", "none") or "none").lower()
+    if strategy in {"", "none", "random"}:
+        rng = random.Random(int(getattr(data_args, "eval_balance_seed", 0) or 0))
+        return rng.sample(samples, max_samples)
+    if strategy not in {"loss_class", "loss_class_silent_diverse"}:
+        raise ValueError(
+            "eval_balance_strategy must be one of: none, random, "
+            "loss_class, loss_class_silent_diverse"
+        )
+
+    seed = int(getattr(data_args, "eval_balance_seed", 0) or 0)
+    by_class: Dict[str, List[Tuple[int, Dict]]] = {}
+    for idx, sample in enumerate(samples):
+        by_class.setdefault(_sample_loss_class(sample), []).append((idx, sample))
+    counts = Counter({k: len(v) for k, v in by_class.items()})
+    ratios = _parse_ratio_spec(getattr(data_args, "eval_balance_target_ratios", None))
+    quotas = _allocate_eval_quotas(counts, max_samples, ratios)
+
+    selected: List[Tuple[int, Dict]] = []
+    for cls in sorted(quotas):
+        items = by_class.get(cls, [])
+        if cls == "silent":
+            picked = _choose_eval_silent(
+                items,
+                quotas[cls],
+                seed=seed,
+                diverse=(strategy == "loss_class_silent_diverse"),
+            )
+        else:
+            picked = _choose_ranked_eval(items, quotas[cls], seed=seed)
+        selected.extend(picked)
+    selected.sort(key=lambda x: x[0])
+    out = [sample for _idx, sample in selected]
+
+    silent_roles = Counter(_eval_silent_role(s) for s in out if _sample_loss_class(s) == "silent")
+    pending_temporal = Counter(
+        _eval_pending_silent_temporal_bucket(s)
+        for s in out
+        if _sample_loss_class(s) == "silent" and _eval_silent_role(s) == "pending_question"
+    )
+    rank0_print(
+        f"  Balanced eval set to {len(out)} using strategy={strategy}",
+        "class_counts:",
+        dict(sorted(Counter(_sample_loss_class(s) for s in out).items())),
+        "source_counts:",
+        dict(sorted(counts.items())),
+        "silent_roles:",
+        dict(sorted((k or 'unknown', v) for k, v in silent_roles.items())),
+        "pending_temporal:",
+        dict(sorted(pending_temporal.items())),
+    )
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -1412,12 +1813,14 @@ class PerTimestepDataset(Dataset):
                 s["_unique_rate"] = len(set(texts)) / len(texts)
 
         # Optional eval-side cap: keep in-loop eval fast on large val pools.
-        # Deterministic subsample (seeded RNG) so train logs stay comparable
-        # across runs.
+        # Deterministic subsample so train logs stay comparable across runs.
+        # By default this preserves the historical Random(0) natural sample.
+        # When eval_balance_strategy is set, use a class-balanced subset for
+        # checkpoint selection while keeping full/natural eval available by
+        # setting eval_balance_strategy=none or eval_max_samples=0.
         if max_samples is not None and max_samples > 0 and len(all_samples) > max_samples:
-            rng = random.Random(0)
-            all_samples = rng.sample(all_samples, max_samples)
-            rank0_print(f"  Subsampled eval set to {max_samples}")
+            all_samples = _subsample_eval_balanced(all_samples, max_samples, data_args)
+            rank0_print(f"  Subsampled eval set to {len(all_samples)}")
 
         _assign_class_loss_weights(all_samples, data_args)
 

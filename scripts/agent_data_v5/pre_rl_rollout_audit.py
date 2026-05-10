@@ -347,6 +347,7 @@ def _summarize_rollout(
     stats: Counter,
     nested: Dict[str, Counter],
     badcases: Dict[str, List[Dict[str, Any]]],
+    memory_merge_events: List[Dict[str, Any]],
     per_kind_limit: int,
     stable_threshold: float,
 ) -> None:
@@ -385,6 +386,7 @@ def _summarize_rollout(
             prefix_diags = cr.get("compress_prefix_diagnostics") or []
             action_errors = cr.get("action_space_errors") or []
             chunk_indices = cr.get("chunk_indices") or []
+            merge_events = cr.get("memory_merge_events") or []
 
             if gen_idx >= len(actions):
                 continue
@@ -398,6 +400,37 @@ def _summarize_rollout(
             stats["steps"] += 1
             nested["actions"][action] += 1
             nested["first_actions"][first_action] += 1
+            merge_event = (
+                merge_events[gen_idx]
+                if gen_idx < len(merge_events) and isinstance(merge_events[gen_idx], dict)
+                else None
+            )
+            if merge_event:
+                event_row = {
+                    "video_id": video_id,
+                    "gen_idx": gen_idx,
+                    "chunk": chunk,
+                    "action": action,
+                    **merge_event,
+                }
+                memory_merge_events.append(event_row)
+                stats["memory_merge_events"] += 1
+                nested["memory_merge_reason"][str(merge_event.get("reason") or "unknown")] += 1
+                duration = int(merge_event.get("merged_duration_sec_after") or 0)
+                count_after = int(merge_event.get("merged_chunk_count_after") or 0)
+                stats["memory_merge_duration_sec_sum"] += duration
+                stats["memory_merge_chunk_count_after_sum"] += count_after
+                stats["memory_merge_max_duration_sec"] = max(
+                    int(stats["memory_merge_max_duration_sec"]),
+                    duration,
+                )
+                nested["memory_merge_duration_sec_after"][str(duration)] += 1
+                _append_bad(
+                    badcases,
+                    "memory_merge",
+                    event_row,
+                    per_kind_limit=per_kind_limit,
+                )
             if gen_idx < len(action_errors) and action_errors[gen_idx]:
                 stats["action_space_errors"] += 1
                 _append_bad(
@@ -679,6 +712,7 @@ def main() -> None:
     p.add_argument("--ckpt", required=True)
     p.add_argument("--out", required=True, help="summary json output path")
     p.add_argument("--badcase-out", default="")
+    p.add_argument("--memory-merge-events-out", default="")
     p.add_argument("--limit-videos", type=int, default=0)
     p.add_argument("--num-shards", type=int, default=1)
     p.add_argument("--shard-index", type=int, default=0)
@@ -703,11 +737,26 @@ def main() -> None:
     p.add_argument("--disable-recall", action="store_true")
     p.add_argument("--badcases-per-kind", type=int, default=50)
     p.add_argument("--stable-think-threshold", type=float, default=0.92)
+    p.add_argument(
+        "--memory-merge-similar-thinks",
+        action="store_true",
+        help=(
+            "Rollout ablation: if a new think is very similar to the last "
+            "visible memory_think, merge it into that record's time_range "
+            "while preserving raw per-chunk archive entries for recall."
+        ),
+    )
+    p.add_argument("--memory-merge-threshold", type=float, default=0.96)
     args = p.parse_args()
 
     source = Path(args.source)
     out = Path(args.out)
     badcase_out = Path(args.badcase_out) if args.badcase_out else out.with_suffix(".badcases.jsonl")
+    memory_merge_events_out = (
+        Path(args.memory_merge_events_out)
+        if args.memory_merge_events_out
+        else out.with_suffix(".memory_merge_events.jsonl")
+    )
     scheme_root = source.parent.parent if source.parent.name == "final" else source.parent
     frames_root = Path(args.frames_root) if args.frames_root else scheme_root / "frames"
 
@@ -746,6 +795,7 @@ def main() -> None:
     stats: Counter = Counter()
     nested: Dict[str, Counter] = defaultdict(Counter)
     badcases: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    memory_merge_events: List[Dict[str, Any]] = []
     t0 = time.time()
 
     for start in range(0, len(trajectories), args.rollout_batch_size):
@@ -782,6 +832,8 @@ def main() -> None:
             enable_recall=not args.disable_recall,
             frame_protocol="video_meta",
             render_layout="standard_query_last",
+            memory_merge_similar_thinks=args.memory_merge_similar_thinks,
+            memory_merge_similarity_threshold=args.memory_merge_threshold,
         )
         for source_traj, result in zip(batch, rollout_results):
             _summarize_rollout(
@@ -790,6 +842,7 @@ def main() -> None:
                 stats=stats,
                 nested=nested,
                 badcases=badcases,
+                memory_merge_events=memory_merge_events,
                 per_kind_limit=args.badcases_per_kind,
                 stable_threshold=args.stable_think_threshold,
             )
@@ -808,6 +861,8 @@ def main() -> None:
             "min_pixels": args.min_pixels,
             "max_pixels": args.max_pixels,
             "recall_enabled": not args.disable_recall,
+            "memory_merge_similar_thinks": bool(args.memory_merge_similar_thinks),
+            "memory_merge_threshold": args.memory_merge_threshold,
         },
         "speed": {
             "elapsed_sec": elapsed,
@@ -873,6 +928,24 @@ def main() -> None:
             ),
             "trigger_source": "runtime_memory_threshold",
         },
+        "memory_merge": {
+            "events": int(stats["memory_merge_events"]),
+            "event_rate_per_step": _rate(stats["memory_merge_events"], stats["steps"]),
+            "threshold": args.memory_merge_threshold,
+            "enabled": bool(args.memory_merge_similar_thinks),
+            "avg_duration_sec_after": _rate(
+                stats["memory_merge_duration_sec_sum"],
+                stats["memory_merge_events"],
+            ),
+            "avg_chunk_count_after": _rate(
+                stats["memory_merge_chunk_count_after_sum"],
+                stats["memory_merge_events"],
+            ),
+            "max_duration_sec_after": int(stats["memory_merge_max_duration_sec"]),
+            "reasons": _counter_dict(nested["memory_merge_reason"]),
+            "duration_sec_after": _counter_dict(nested["memory_merge_duration_sec_after"]),
+            "events_path": str(memory_merge_events_out),
+        },
         "stable_think": {
             "pairs": int(stats["think_pairs"]),
             "stable_pairs": int(stats["stable_think_pairs"]),
@@ -906,13 +979,19 @@ def main() -> None:
         for kind, rows in sorted(badcases.items()):
             for row in rows:
                 f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    memory_merge_events_out.parent.mkdir(parents=True, exist_ok=True)
+    with memory_merge_events_out.open("w", encoding="utf-8") as f:
+        for row in memory_merge_events:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
     print(json.dumps({
         "out": str(out),
         "badcase_out": str(badcase_out),
+        "memory_merge_events_out": str(memory_merge_events_out),
         "answer_acc": summary["answer"]["acc_completion"],
         "action_acc": summary["action"]["gold_acc"],
         "recall_support_hit": summary["recall"]["support_hit_rate"],
         "compress_success": summary["compression"]["success_rate"],
+        "memory_merge_events": summary["memory_merge"]["events"],
         "stable_pair_rate": summary["stable_think"]["stable_pair_rate"],
         "steps_per_sec": summary["speed"]["steps_per_sec"],
     }, ensure_ascii=False, indent=2))
