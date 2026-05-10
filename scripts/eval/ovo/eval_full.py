@@ -1136,6 +1136,28 @@ def _support_hit(chunks, intervals: Optional[List[Tuple[int, int]]]):
     return False
 
 
+def _query_range_chunks(time_range) -> List[int]:
+    if not time_range:
+        return []
+    start = end = None
+    if isinstance(time_range, str):
+        m = re.fullmatch(r"\s*([0-9]+(?:\.[0-9]+)?)\s*-\s*([0-9]+(?:\.[0-9]+)?)\s*", time_range)
+        if m:
+            start = float(m.group(1))
+            end = float(m.group(2))
+    elif isinstance(time_range, (list, tuple)) and len(time_range) >= 2:
+        try:
+            start = float(time_range[0])
+            end = float(time_range[1])
+        except (TypeError, ValueError):
+            start = end = None
+    if start is None or end is None or end <= start:
+        return []
+    lo = max(0, int(start // AGENT_CHUNK_SEC))
+    hi = max(lo, int((end + AGENT_CHUNK_SEC - 1e-6) // AGENT_CHUNK_SEC) - 1)
+    return list(range(lo, hi + 1))
+
+
 def _normalise_think(text: str) -> str:
     text = re.sub(r"<[^>]+>", " ", str(text or "").lower())
     text = re.sub(r"\d+(?:\.\d+)?", " ", text)
@@ -1247,6 +1269,16 @@ def telemetry_summary(
         1 for e in recalls
         if _support_hit(e.get("returned_chunks", []), support_intervals)
     )
+    recall_query_range_hits = sum(
+        1 for e in recalls
+        if _support_hit(_query_range_chunks(e.get("query_time_range")), support_intervals)
+    )
+    recall_range_lens = [
+        len(_query_range_chunks(e.get("query_time_range"))) for e in recalls
+    ]
+    recall_return_lens = [
+        len(e.get("returned_chunks") or []) for e in recalls
+    ]
     action_hist = defaultdict(int)
     for r in steps:
         action_hist[str(r.get("final_action") or r.get("action") or "unknown")] += 1
@@ -1267,6 +1299,12 @@ def telemetry_summary(
         ),
         "n_recall_support_hits": recall_hits,
         "recall_support_hit_rate": _pct(recall_hits, len(recalls)),
+        "n_recall_query_range_support_hits": recall_query_range_hits,
+        "recall_query_range_support_hit_rate": _pct(
+            recall_query_range_hits, len(recalls)
+        ),
+        "recall_query_range_len_mean": _mean(recall_range_lens),
+        "recall_returned_len_mean": _mean(recall_return_lens),
         "recall_events": recalls[:50],
         "n_compress_events": len(compresses),
         "n_compress_succeeded": sum(
@@ -1329,6 +1367,7 @@ def merge_telemetry_summaries(items: List[Dict]) -> Dict:
         "n_recall_events",
         "n_recall_returned_nonempty",
         "n_recall_support_hits",
+        "n_recall_query_range_support_hits",
         "n_compress_events",
         "n_compress_succeeded",
         "n_compress_system_trigger_rule_checked",
@@ -1351,6 +1390,9 @@ def merge_telemetry_summaries(items: List[Dict]) -> Dict:
     out["action_histogram"] = dict(hist)
     out["recall_support_hit_rate"] = _pct(
         out["n_recall_support_hits"], out["n_recall_events"]
+    )
+    out["recall_query_range_support_hit_rate"] = _pct(
+        out["n_recall_query_range_support_hits"], out["n_recall_events"]
     )
     out["compress_success_rate"] = _pct(
         out["n_compress_succeeded"], out["n_compress_events"]
@@ -1500,6 +1542,13 @@ def attach_probe_recall_fields(
         _support_hit(e.get("returned_chunks", []), support_intervals)
         for e in events
     )
+    probe["recall_query_range_hit_before_response"] = any(
+        _support_hit(_query_range_chunks(e.get("query_time_range")), support_intervals)
+        for e in events
+    )
+    probe["recall_returned_hit_before_response"] = probe[
+        "recall_support_hit_before_response"
+    ]
     return probe
 
 
@@ -2455,6 +2504,10 @@ def aggregate(results):
                                     "type1_n": 0, "type1_strict": 0, "type1_lenient": 0,
                                     "with_recall_n": 0, "with_recall_correct": 0,
                                     "without_recall_n": 0, "without_recall_correct": 0,
+                                    "with_query_range_hit_recall_n": 0,
+                                    "with_query_range_hit_recall_correct": 0,
+                                    "with_returned_hit_recall_n": 0,
+                                    "with_returned_hit_recall_correct": 0,
                                     "no_early_correct": 0,
                                     "no_late_correct": 0,
                                     "on_time_correct": 0,
@@ -2465,9 +2518,11 @@ def aggregate(results):
                                     "response_early_n": 0,
                                     "response_late_n": 0,
                                     "n_recall_events": 0, "n_recall_support_hits": 0,
+                                    "n_recall_query_range_support_hits": 0,
                                     "n_recall_returned_nonempty": 0,
                                     "n_recall_before_response": 0,
                                     "n_recall_support_hit_before_response": 0,
+                                    "n_recall_query_range_hit_before_response": 0,
                                     "n_compress_events": 0, "n_compress_succeeded": 0,
                                     "n_compress_system_trigger_rule_checked": 0,
                                     "n_compress_system_trigger_rule_ok": 0,
@@ -2491,6 +2546,9 @@ def aggregate(results):
         by_task[task]["n_recall_events"] += int(telemetry.get("n_recall_events", 0) or 0)
         by_task[task]["n_recall_support_hits"] += int(
             telemetry.get("n_recall_support_hits", 0) or 0
+        )
+        by_task[task]["n_recall_query_range_support_hits"] += int(
+            telemetry.get("n_recall_query_range_support_hits", 0) or 0
         )
         by_task[task]["n_recall_returned_nonempty"] += int(
             telemetry.get("n_recall_returned_nonempty", 0) or 0
@@ -2580,6 +2638,12 @@ def aggregate(results):
                 )
                 if p.get("recall_support_hit_before_response"):
                     by_task[task]["n_recall_support_hit_before_response"] += 1
+                    by_task[task]["with_returned_hit_recall_n"] += 1
+                    by_task[task]["with_returned_hit_recall_correct"] += correct
+                if p.get("recall_query_range_hit_before_response"):
+                    by_task[task]["n_recall_query_range_hit_before_response"] += 1
+                    by_task[task]["with_query_range_hit_recall_n"] += 1
+                    by_task[task]["with_query_range_hit_recall_correct"] += correct
             else:
                 by_task[task]["without_recall_n"] += 1
                 by_task[task]["without_recall_correct"] += correct
@@ -2658,13 +2722,29 @@ def aggregate(results):
                 v["n_recall_returned_nonempty"], v["n_recall_events"]
             ),
             "recall_support_hit_rate": _pct(v["n_recall_support_hits"], v["n_recall_events"]),
+            "recall_query_range_support_hit_rate": _pct(
+                v["n_recall_query_range_support_hits"], v["n_recall_events"]
+            ),
             "recall_before_response_rate": _pct(v["with_recall_n"], v["n"]),
             "recall_before_response_support_hit_rate": _pct(
                 v["n_recall_support_hit_before_response"], v["with_recall_n"]
             ),
+            "recall_before_response_query_range_hit_rate": _pct(
+                v["n_recall_query_range_hit_before_response"], v["with_recall_n"]
+            ),
             "n_recall_before_response": v["n_recall_before_response"],
             "acc_with_recall": _pct(v["with_recall_correct"], v["with_recall_n"]),
             "n_with_recall": v["with_recall_n"],
+            "acc_with_query_range_hit_recall": _pct(
+                v["with_query_range_hit_recall_correct"],
+                v["with_query_range_hit_recall_n"],
+            ),
+            "n_with_query_range_hit_recall": v["with_query_range_hit_recall_n"],
+            "acc_with_returned_hit_recall": _pct(
+                v["with_returned_hit_recall_correct"],
+                v["with_returned_hit_recall_n"],
+            ),
+            "n_with_returned_hit_recall": v["with_returned_hit_recall_n"],
             "acc_without_recall": _pct(v["without_recall_correct"], v["without_recall_n"]),
             "n_without_recall": v["without_recall_n"],
             "acc_content": _pct(v["correct"], v["n"]),
@@ -2733,9 +2813,15 @@ def aggregate(results):
             "on_time_correct", "response_missing_n", "response_early_n",
             "response_late_n", "with_recall_n", "with_recall_correct",
             "without_recall_n", "without_recall_correct",
+            "with_query_range_hit_recall_n",
+            "with_query_range_hit_recall_correct",
+            "with_returned_hit_recall_n",
+            "with_returned_hit_recall_correct",
             "n_recall_events", "n_recall_returned_nonempty",
-            "n_recall_support_hits", "n_recall_before_response",
-            "n_recall_support_hit_before_response", "n_compress_events",
+            "n_recall_support_hits", "n_recall_query_range_support_hits",
+            "n_recall_before_response",
+            "n_recall_support_hit_before_response",
+            "n_recall_query_range_hit_before_response", "n_compress_events",
             "n_compress_succeeded", "n_compress_system_trigger_rule_checked",
             "n_compress_system_trigger_rule_ok",
             "n_compress_system_range_rule_checked",
@@ -2783,11 +2869,26 @@ def aggregate(results):
                 total["n_recall_returned_nonempty"], total["n_recall_events"]
             ),
             "support_hit_rate": _pct(total["n_recall_support_hits"], total["n_recall_events"]),
+            "query_range_support_hit_rate": _pct(
+                total["n_recall_query_range_support_hits"], total["n_recall_events"]
+            ),
             "before_response_rate": _pct(total["with_recall_n"], total["n"]),
             "before_response_support_hit_rate": _pct(
                 total["n_recall_support_hit_before_response"], total["with_recall_n"]
             ),
+            "before_response_query_range_hit_rate": _pct(
+                total["n_recall_query_range_hit_before_response"],
+                total["with_recall_n"],
+            ),
             "acc_with_recall": _pct(total["with_recall_correct"], total["with_recall_n"]),
+            "acc_with_query_range_hit_recall": _pct(
+                total["with_query_range_hit_recall_correct"],
+                total["with_query_range_hit_recall_n"],
+            ),
+            "acc_with_returned_hit_recall": _pct(
+                total["with_returned_hit_recall_correct"],
+                total["with_returned_hit_recall_n"],
+            ),
             "acc_without_recall": _pct(
                 total["without_recall_correct"], total["without_recall_n"]
             ),
@@ -2934,9 +3035,12 @@ def print_report(agg):
     runtime = health.get("format_runtime") or {}
     print(f"Health recall: events={recall.get('events', 0)} "
           f"per_step={recall.get('events_per_step', 0.0):.3f} "
-          f"support_hit={recall.get('support_hit_rate', 0.0):.3f} "
+          f"query_range_hit={recall.get('query_range_support_hit_rate', 0.0):.3f} "
+          f"returned_hit={recall.get('support_hit_rate', 0.0):.3f} "
           f"acc_with/without={recall.get('acc_with_recall', 0.0):.3f}/"
-          f"{recall.get('acc_without_recall', 0.0):.3f}")
+          f"{recall.get('acc_without_recall', 0.0):.3f} "
+          f"acc_range_hit={recall.get('acc_with_query_range_hit_recall', 0.0):.3f} "
+          f"acc_returned_hit={recall.get('acc_with_returned_hit_recall', 0.0):.3f}")
     print(f"Health compression: events={compression.get('events', 0)} "
           f"success={compression.get('success_rate', 0.0):.3f} "
           f"system_calc_ok={compression.get('system_calc_ok_rate', 0.0):.3f}")

@@ -126,6 +126,15 @@ def _question_answer_deadline(question: dict[str, Any]) -> int:
     return max(chunks) if chunks else _question_ask(question)
 
 
+def _question_answer_chunks(question: dict[str, Any]) -> list[int]:
+    chunks = [_safe_int(x) for x in _safe_list(question.get("answer_chunks"))]
+    chunks = [x for x in chunks if x >= 0]
+    if chunks:
+        return sorted(set(chunks))
+    ask = _question_ask(question)
+    return [ask] if ask >= 0 else []
+
+
 def _range_to_chunks(time_range: Any) -> set[int]:
     start = end = None
     if isinstance(time_range, str):
@@ -141,6 +150,55 @@ def _range_to_chunks(time_range: Any) -> set[int]:
     lo = max(0, int(math.floor(start)))
     hi = max(lo, int(math.ceil(end)) - 1)
     return set(range(lo, hi + 1))
+
+
+def _chunks_from_value(value: Any) -> set[int]:
+    chunks = set()
+    for item in _safe_list(value):
+        iv = _safe_int(item)
+        if iv >= 0:
+            chunks.add(iv)
+    return chunks
+
+
+def _set_iou(a: set[int], b: set[int]) -> float:
+    if not a and not b:
+        return 0.0
+    return len(a & b) / max(1, len(a | b))
+
+
+def _first_counted_answer_chunk(events: list[dict[str, Any]]) -> int | None:
+    chunks = []
+    for ev in events:
+        if ev.get("counts_for_completion") is False:
+            continue
+        iv = _safe_int(ev.get("chunk"))
+        if iv >= 0:
+            chunks.append(iv)
+    return min(chunks) if chunks else None
+
+
+def _recall_relation_to_questions(chunk: int, questions: list[dict[str, Any]]) -> str:
+    ask_chunks = [_question_ask(q) for q in questions]
+    ask_chunks = [x for x in ask_chunks if x >= 0]
+    if not ask_chunks:
+        return "no_question"
+    if chunk < min(ask_chunks):
+        return "before_first_question"
+
+    active = []
+    for q in questions:
+        ask = _question_ask(q)
+        deadline = _question_answer_deadline(q)
+        if ask >= 0 and ask <= chunk <= deadline:
+            active.append(q)
+    if active:
+        return "pending_after_question"
+
+    future_asks = [x for x in ask_chunks if x > chunk]
+    if future_asks:
+        return "between_questions"
+    return "after_all_questions"
 
 
 def _load_jsonl_tail(path: Path, limit: int | None) -> list[dict[str, Any]]:
@@ -215,17 +273,24 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
     recall_support_jaccards: list[float] = []
     recall_support_coverages: list[float] = []
     recall_range_lens: list[int] = []
+    recall_returned_lens: list[int] = []
+    compress_range_ious: list[float] = []
     recall_active_support_hits = 0
     recall_any_support_hits = 0
+    recall_returned_active_support_hits = 0
+    recall_returned_any_support_hits = 0
     recall_runtime_ok = 0
+    recall_range_parse_ok = 0
     recall_total = 0
     q_with_prior_recall = Counter()
     q_without_prior_recall = Counter()
-    q_with_support_recall = Counter()
+    q_with_range_hit_recall = Counter()
+    q_with_return_hit_recall = Counter()
     reward_scores: list[float] = []
     chunk_unit_counts: list[int] = []
     turn_row_counts: list[int] = []
     unique_event_chunk_counts: list[int] = []
+    relation_counts = Counter()
 
     for row in rows:
         c["records"] += 1
@@ -268,10 +333,12 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
             turn_kind = str(turn.get("turn_kind") or "")
             format_error = str(turn.get("format_error") or "").strip()
             action_error = str(turn.get("action_space_error") or "").strip()
+            if turn.get("hit_max_tokens"):
+                c["hit_max_token_turns"] += 1
+            if turn.get("json_parse_error") or "json" in format_error.lower():
+                c["json_parse_errors"] += 1
             if format_error:
                 c["format_errors"] += 1
-                if "json" in format_error.lower():
-                    c["json_parse_errors"] += 1
             if action_error:
                 c["action_space_errors"] += 1
             if kind == "unknown":
@@ -290,6 +357,9 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
         c["compress_turns"] += len(compress_turns)
         c["traj_with_recall"] += int(bool(recall_turns))
         c["traj_with_compress"] += int(bool(compress_turns))
+        c["budget_abort_events"] += len(_safe_list(row.get("budget_abort_events")))
+        if isinstance(counts, dict):
+            c["budget_abort_count_field"] += _safe_int(counts.get("budget_aborts"), 0)
 
         for turn in compress_turns:
             if str(turn.get("kind") or "") == "compress":
@@ -298,10 +368,31 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 c["compress_parse_ok"] += 1
             if turn.get("time_range_runtime_ok") is True:
                 c["compress_time_ok"] += 1
+            if str(turn.get("turn_kind") or "") == "compress":
+                c["compress_system_required"] += 1
+                if str(turn.get("kind") or "") == "compress":
+                    c["compress_system_response"] += 1
+            expected_chunks = _chunks_from_value(turn.get("expected_compressed_chunks"))
+            emitted_chunks = _range_to_chunks(
+                turn.get("emitted_time_range")
+                if turn.get("emitted_time_range") is not None
+                else _turn_tool_args(turn).get("time_range")
+            )
+            if expected_chunks:
+                c["compress_expected_range_checked"] += 1
+                if emitted_chunks:
+                    c["compress_emitted_range_parse_ok"] += 1
+                    iou = _set_iou(expected_chunks, emitted_chunks)
+                    compress_range_ious.append(iou)
+                    if expected_chunks <= emitted_chunks:
+                        c["compress_expected_cover_ok"] += 1
+                    if iou >= 0.5:
+                        c["compress_range_iou_ge_50"] += 1
 
         question_by_key = {_question_key(q, i): q for i, q in enumerate(questions)}
         q_recall_before_answer: dict[str, bool] = {k: False for k in question_by_key}
-        q_support_recall_before_answer: dict[str, bool] = {k: False for k in question_by_key}
+        q_range_hit_before_answer: dict[str, bool] = {k: False for k in question_by_key}
+        q_return_hit_before_answer: dict[str, bool] = {k: False for k in question_by_key}
 
         for turn in recall_turns:
             recall_total += 1
@@ -309,16 +400,38 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 recall_runtime_ok += 1
             event_chunk = _safe_int(turn.get("event_chunk"), _safe_int(turn.get("video_chunk")))
             args = _turn_tool_args(turn)
-            chunks = _range_to_chunks(args.get("time_range"))
+            query_range = (
+                turn.get("query_time_range")
+                if turn.get("query_time_range") is not None
+                else args.get("time_range")
+            )
+            chunks = _range_to_chunks(query_range)
+            if chunks:
+                recall_range_parse_ok += 1
             recall_range_lens.append(len(chunks))
+            returned_chunks = _chunks_from_value(turn.get("returned_chunks"))
+            recall_returned_lens.append(len(returned_chunks))
+            if returned_chunks:
+                c["recall_returned_nonempty"] += 1
+            relation = _recall_relation_to_questions(event_chunk, questions)
+            relation_counts[relation] += 1
+            if relation == "pending_after_question":
+                c["recall_during_active_query"] += 1
+            if relation in {"between_questions", "after_all_questions"}:
+                c["recall_after_or_between_questions"] += 1
+
             active_questions = []
             for idx, q in enumerate(questions):
                 ask = _question_ask(q)
-                deadline = _question_answer_deadline(q)
-                if ask >= 0 and ask <= event_chunk <= max(deadline, event_chunk):
+                events = answer_by_q.get(_question_key(q, idx), [])
+                first_answer_chunk = _first_counted_answer_chunk(events)
+                cutoff = (
+                    first_answer_chunk
+                    if first_answer_chunk is not None
+                    else _question_answer_deadline(q)
+                )
+                if ask >= 0 and ask <= event_chunk <= cutoff:
                     active_questions.append((idx, q))
-            if not active_questions:
-                active_questions = list(enumerate(questions))
 
             active_support = set()
             any_support = set()
@@ -329,8 +442,18 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
             active_hit = bool(chunks & active_support) if chunks and active_support else False
             any_hit = bool(chunks & any_support) if chunks and any_support else False
+            returned_active_hit = (
+                bool(returned_chunks & active_support)
+                if returned_chunks and active_support else False
+            )
+            returned_any_hit = (
+                bool(returned_chunks & any_support)
+                if returned_chunks and any_support else False
+            )
             recall_active_support_hits += int(active_hit)
             recall_any_support_hits += int(any_hit)
+            recall_returned_active_support_hits += int(returned_active_hit)
+            recall_returned_any_support_hits += int(returned_any_hit)
             if chunks and active_support:
                 recall_support_jaccards.append(len(chunks & active_support) / len(chunks | active_support))
                 recall_support_coverages.append(len(chunks & active_support) / max(1, len(active_support)))
@@ -339,7 +462,9 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 key = _question_key(q, idx)
                 q_recall_before_answer[key] = True
                 if active_hit:
-                    q_support_recall_before_answer[key] = True
+                    q_range_hit_before_answer[key] = True
+                if returned_active_hit:
+                    q_return_hit_before_answer[key] = True
 
         for idx, q in enumerate(questions):
             key = _question_key(q, idx)
@@ -366,10 +491,14 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
             bucket["questions"] += 1
             bucket["answered"] += int(answered)
             bucket["correct"] += int(correct)
-            if q_support_recall_before_answer.get(key):
-                q_with_support_recall["questions"] += 1
-                q_with_support_recall["answered"] += int(answered)
-                q_with_support_recall["correct"] += int(correct)
+            if q_range_hit_before_answer.get(key):
+                q_with_range_hit_recall["questions"] += 1
+                q_with_range_hit_recall["answered"] += int(answered)
+                q_with_range_hit_recall["correct"] += int(correct)
+            if q_return_hit_before_answer.get(key):
+                q_with_return_hit_recall["questions"] += 1
+                q_with_return_hit_recall["answered"] += int(answered)
+                q_with_return_hit_recall["correct"] += int(correct)
 
     return {
         "counts": c,
@@ -380,14 +509,21 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "unique_event_chunks_mean": mean(unique_event_chunk_counts) if unique_event_chunk_counts else 0.0,
         "recall_total": recall_total,
         "recall_runtime_ok": recall_runtime_ok,
+        "recall_range_parse_ok": recall_range_parse_ok,
         "recall_active_support_hits": recall_active_support_hits,
         "recall_any_support_hits": recall_any_support_hits,
+        "recall_returned_active_support_hits": recall_returned_active_support_hits,
+        "recall_returned_any_support_hits": recall_returned_any_support_hits,
         "recall_range_len_mean": mean(recall_range_lens) if recall_range_lens else 0.0,
+        "recall_returned_len_mean": mean(recall_returned_lens) if recall_returned_lens else 0.0,
         "recall_support_jaccard_mean": mean(recall_support_jaccards) if recall_support_jaccards else 0.0,
         "recall_support_coverage_mean": mean(recall_support_coverages) if recall_support_coverages else 0.0,
+        "compress_range_iou_mean": mean(compress_range_ious) if compress_range_ious else 0.0,
+        "recall_relation_counts": relation_counts,
         "q_with_prior_recall": q_with_prior_recall,
         "q_without_prior_recall": q_without_prior_recall,
-        "q_with_support_recall": q_with_support_recall,
+        "q_with_range_hit_recall": q_with_range_hit_recall,
+        "q_with_return_hit_recall": q_with_return_hit_recall,
     }
 
 
@@ -447,16 +583,25 @@ def print_report(train_steps: list[dict[str, float]], audit_rows: list[dict[str,
     )
     print(
         f"recall_runtime_ok={_pct(s['recall_runtime_ok'], s['recall_total'])} "
-        f"support_hit_active={_pct(s['recall_active_support_hits'], s['recall_total'])} "
-        f"support_hit_any={_pct(s['recall_any_support_hits'], s['recall_total'])} "
+        f"range_parse_ok={_pct(s['recall_range_parse_ok'], s['recall_total'])} "
+        f"query_range_hit_active={_pct(s['recall_active_support_hits'], s['recall_total'])} "
+        f"returned_hit_active={_pct(s['recall_returned_active_support_hits'], s['recall_total'])} "
+        f"returned_hit_any={_pct(s['recall_returned_any_support_hits'], s['recall_total'])} "
         f"range_len_mean={s['recall_range_len_mean']:.1f} "
+        f"returned_len_mean={s['recall_returned_len_mean']:.1f} "
         f"support_jaccard_mean={s['recall_support_jaccard_mean']:.3f} "
         f"support_coverage_mean={s['recall_support_coverage_mean']:.3f}"
     )
+    if s["recall_relation_counts"]:
+        relation_str = " ".join(
+            f"{k}={v}" for k, v in sorted(s["recall_relation_counts"].items())
+        )
+        print(f"recall_relation: {relation_str}")
 
     for label, bucket in [
         ("q_with_prior_recall", s["q_with_prior_recall"]),
-        ("q_with_support_recall", s["q_with_support_recall"]),
+        ("q_with_range_hit_recall", s["q_with_range_hit_recall"]),
+        ("q_with_return_hit_recall", s["q_with_return_hit_recall"]),
         ("q_without_prior_recall", s["q_without_prior_recall"]),
     ]:
         print(
@@ -474,15 +619,21 @@ def print_report(train_steps: list[dict[str, float]], audit_rows: list[dict[str,
 
     print(
         f"compress_turns={c['compress_turns']} traj_with_compress={c['traj_with_compress']} "
+        f"system_required={c['compress_system_required']} "
+        f"system_response={_pct(c['compress_system_response'], c['compress_system_required'])} "
         f"kind_ok={_pct(c['compress_kind_ok'], c['compress_turns'])} "
         f"parse_ok={_pct(c['compress_parse_ok'], c['compress_turns'])} "
-        f"time_ok={_pct(c['compress_time_ok'], c['compress_turns'])}"
+        f"time_ok={_pct(c['compress_time_ok'], c['compress_turns'])} "
+        f"range_iou_mean={s['compress_range_iou_mean']:.3f} "
+        f"range_cover={_pct(c['compress_expected_cover_ok'], c['compress_expected_range_checked'])}"
     )
     print(
         f"parse/action health: turns={c['turns']} format_errors={c['format_errors']} "
         f"({_pct(c['format_errors'], c['turns'])}) action_space_errors={c['action_space_errors']} "
         f"({_pct(c['action_space_errors'], c['turns'])}) unknown_turns={c['unknown_turns']} "
         f"json_parse_errors={c['json_parse_errors']} "
+        f"hit_max_tokens={c['hit_max_token_turns']} "
+        f"budget_aborts={c['budget_abort_events'] or c['budget_abort_count_field']} "
         f"post_recall_errors={c['post_recall_parse_errors']}/{c['post_recall_turns']}"
     )
 

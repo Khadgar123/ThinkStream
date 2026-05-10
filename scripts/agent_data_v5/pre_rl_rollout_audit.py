@@ -156,6 +156,38 @@ def _question_key(q: Dict[str, Any]) -> Tuple[str, int]:
     return question, ask
 
 
+def _question_deadline(q: Dict[str, Any]) -> int:
+    chunks = []
+    for x in q.get("answer_chunks") or []:
+        try:
+            chunks.append(int(x))
+        except (TypeError, ValueError):
+            continue
+    if chunks:
+        return max(chunks)
+    _question, ask = _question_key(q)
+    return ask
+
+
+def _recall_relation_to_questions(chunk: int, questions: List[Dict[str, Any]]) -> str:
+    asks = []
+    for q in questions:
+        _question, ask = _question_key(q)
+        if ask >= 0:
+            asks.append(ask)
+    if not asks:
+        return "no_question"
+    if chunk < min(asks):
+        return "before_first_question"
+    for q in questions:
+        _question, ask = _question_key(q)
+        if ask >= 0 and ask <= chunk <= _question_deadline(q):
+            return "pending_after_question"
+    if any(a > chunk for a in asks):
+        return "between_questions"
+    return "after_all_questions"
+
+
 def _match_query_state(source_q: Dict[str, Any], query_states: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
     question, ask = _question_key(source_q)
     candidates = [
@@ -301,6 +333,10 @@ def _summarize_rollout(
                 )
 
             parsed = _parse_agent_output(raw)
+            if parsed.get("format_error"):
+                stats["format_errors"] += 1
+                if "json" in str(parsed.get("format_error") or "").lower():
+                    stats["json_parse_errors"] += 1
             think = str(parsed.get("think") or "")
             if think:
                 thinks.append((chunk, think))
@@ -373,6 +409,9 @@ def _summarize_rollout(
 
             if first_action == "recall":
                 stats["recall_events"] += 1
+                nested["recall_relation"][
+                    _recall_relation_to_questions(chunk, questions)
+                ] += 1
                 q_before = cr.get("queries_before") or []
                 active_question = ""
                 if gen_idx < len(q_before) and q_before[gen_idx]:
@@ -380,6 +419,8 @@ def _summarize_rollout(
                     active_question = str(active.get("question") or "")
                 source_q = q_by_text.get(active_question)
                 ret = returned[gen_idx] if gen_idx < len(returned) else []
+                if ret:
+                    stats["recall_returned_nonempty"] += 1
                 if source_q:
                     recall_by_question[str(source_q.get("card_id") or active_question)] += 1
                     support = [int(x) for x in source_q.get("support_chunks") or [] if str(x).lstrip("-").isdigit()]
@@ -717,8 +758,17 @@ def main() -> None:
         "recall": {
             "events": int(stats["recall_events"]),
             "events_per_question": _rate(stats["recall_events"], stats["questions"]),
+            "return_nonempty_rate": _rate(
+                stats["recall_returned_nonempty"], stats["recall_events"]
+            ),
             "support_hit_rate": _rate(stats["recall_support_hits"], stats["recall_events"]),
+            "relation": _counter_dict(nested["recall_relation"]),
             "per_question_hist": _counter_dict(nested["recall_per_question"]),
+        },
+        "format_runtime": {
+            "format_errors": int(stats["format_errors"]),
+            "json_parse_errors": int(stats["json_parse_errors"]),
+            "action_space_errors": int(stats["action_space_errors"]),
         },
         "compression": {
             "system_required": int(stats["system_compress_required"]),

@@ -1159,6 +1159,16 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
     action_errors = _safe_list(extra.get("ts_chunk_action_space_errors"))
     video_indices = _safe_list(extra.get("ts_chunk_video_indices"))
     event_indices = _safe_list(extra.get("ts_chunk_event_indices"))
+    prompt_lens = _safe_list(extra.get("ts_chunk_prompt_lens"))
+    response_lens = _safe_list(extra.get("ts_chunk_response_lens"))
+    max_tokens = _safe_list(extra.get("ts_chunk_max_tokens"))
+    hit_max_tokens = _safe_list(extra.get("ts_chunk_hit_max_tokens"))
+    stop_reasons = _safe_list(extra.get("ts_chunk_stop_reasons"))
+    recall_query_ranges = _safe_list(extra.get("ts_recall_query_ranges"))
+    recall_returned_chunks = _safe_list(extra.get("ts_recall_returned_chunks"))
+    recall_result_sources = _safe_list(extra.get("ts_recall_result_sources"))
+    compress_expected_chunks = _safe_list(extra.get("ts_compress_expected_chunks"))
+    compress_emitted_ranges = _safe_list(extra.get("ts_compress_emitted_ranges"))
     max_turns = _env_int("THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_TURNS", 240)
 
     out: List[Dict[str, Any]] = []
@@ -1184,6 +1194,15 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
             "event_chunk": event_indices[i] if i < len(event_indices) else None,
             "action_space_error": action_errors[i] if i < len(action_errors) else "",
             "format_error": parsed.get("format_error"),
+            "json_parse_error": (
+                bool(parsed.get("format_error"))
+                and "json" in str(parsed.get("format_error") or "").lower()
+            ),
+            "prompt_len": prompt_lens[i] if i < len(prompt_lens) else None,
+            "response_len": response_lens[i] if i < len(response_lens) else None,
+            "max_tokens": max_tokens[i] if i < len(max_tokens) else None,
+            "hit_max_tokens": bool(hit_max_tokens[i]) if i < len(hit_max_tokens) else False,
+            "stop_reason": stop_reasons[i] if i < len(stop_reasons) else "",
             "think": _short_text(parsed.get("think") or "", 360),
             "assistant_text": _short_text(text, 1000),
         }
@@ -1199,6 +1218,29 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
                 args,
                 current_chunk=_turn_current_chunk(extra, i),
             )
+            if kind == "recall":
+                item["query_time_range"] = (
+                    recall_query_ranges[i] if i < len(recall_query_ranges)
+                    else args.get("time_range", "")
+                )
+                item["returned_chunks"] = _jsonable(
+                    recall_returned_chunks[i]
+                    if i < len(recall_returned_chunks) else []
+                )
+                item["recall_result_source"] = (
+                    recall_result_sources[i]
+                    if i < len(recall_result_sources) else ""
+                )
+            elif kind == "compress":
+                item["expected_compressed_chunks"] = _jsonable(
+                    compress_expected_chunks[i]
+                    if i < len(compress_expected_chunks) else []
+                )
+                item["emitted_time_range"] = _jsonable(
+                    compress_emitted_ranges[i]
+                    if i < len(compress_emitted_ranges)
+                    else args.get("time_range")
+                )
         out.append(item)
     if len(texts) > max_turns:
         out.append({"truncated_turns": len(texts) - max_turns})
@@ -1251,6 +1293,21 @@ def _audit_reasons(result: Dict[str, float], extra: Dict[str, Any]) -> List[str]
         reasons.append("recall_spam")
     if n_compress > _env_float("THINKSTREAM_RL_AUDIT_COMPRESS_SPAM", 8.0):
         reasons.append("compress_spam")
+    if _safe_list(extra.get("ts_budget_abort_events")):
+        reasons.append("budget_abort")
+    if any(bool(x) for x in _safe_list(extra.get("ts_chunk_hit_max_tokens"))):
+        reasons.append("hit_max_tokens")
+
+    for raw in _safe_list(extra.get("ts_chunk_asst_texts")):
+        parsed = {}
+        try:
+            from thinkstream.data.agent_protocol import parse_agent_output_v12
+            parsed = parse_agent_output_v12(str(raw or ""))
+        except Exception:  # noqa: BLE001
+            parsed = {}
+        if "json" in str(parsed.get("format_error") or "").lower():
+            reasons.append("json_parse_error")
+            break
 
     # Keep stable order while removing duplicates.
     seen: set[str] = set()
@@ -1338,6 +1395,11 @@ def _maybe_audit_rl_rollout(
             "chunks_with_frames": extra.get("ts_chunks_with_frames"),
             "chunks_text_only": extra.get("ts_chunks_text_only"),
             "chunks_compress_inter": extra.get("ts_chunks_compress_inter"),
+            "budget_aborts": len(_safe_list(extra.get("ts_budget_abort_events"))),
+            "hit_max_token_turns": sum(
+                1 for x in _safe_list(extra.get("ts_chunk_hit_max_tokens"))
+                if bool(x)
+            ),
             "action_index": extra.get("ts_action_index"),
             "n_actions_in_traj": extra.get("ts_n_actions_in_traj"),
             "action_is_final": extra.get("ts_action_is_final"),
@@ -1349,6 +1411,9 @@ def _maybe_audit_rl_rollout(
         "questions": _summarize_questions_for_audit(questions or []),
         "per_q_answers": _jsonable(_safe_list(extra.get("ts_per_q_answers"))),
         "turns": _summarize_turns_for_audit(extra, solution_str),
+        "budget_abort_events": _jsonable(
+            _safe_list(extra.get("ts_budget_abort_events"))[:20]
+        ),
         "solution": _short_text(solution_str, max_solution_chars),
         "ground_truth": _jsonable(_coerce_ground_truth(ground_truth)),
     }

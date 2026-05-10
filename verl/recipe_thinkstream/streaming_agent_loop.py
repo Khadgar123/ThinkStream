@@ -1050,6 +1050,17 @@ def _register_streaming_agent_loop():
             chunk_turn_kinds: List[str] = []
             chunk_action_space_errors: List[str] = []
             chunk_asst_texts: List[str] = []
+            chunk_prompt_lens: List[int] = []
+            chunk_response_lens: List[int] = []
+            chunk_max_tokens: List[int] = []
+            chunk_hit_max_tokens: List[bool] = []
+            chunk_stop_reasons: List[str] = []
+            chunk_recall_query_ranges: List[Any] = []
+            chunk_recall_returned_chunks: List[List[int]] = []
+            chunk_recall_result_sources: List[str] = []
+            chunk_compress_expected_chunks: List[List[int]] = []
+            chunk_compress_emitted_ranges: List[Any] = []
+            budget_abort_events: List[Dict[str, Any]] = []
             # P1.7 fix (post-review 2026-05-01): chunk_kinds/spans/texts
             # are appended on EVERY assistant turn including inter-chunk
             # compress turns. Without a parallel video-chunk-index list,
@@ -1291,6 +1302,14 @@ def _register_streaming_agent_loop():
                     # generation cap here, not the stitched response buffer.
                     remaining_context = self.max_model_len - len(chunk_prompt_ids)
                     if remaining_context <= 0:
+                        budget_abort_events.append({
+                            "chunk": int(chunk_idx),
+                            "turn_kind": turn_kind,
+                            "reason": "prompt_exceeds_max_model_len",
+                            "prompt_len": int(len(chunk_prompt_ids)),
+                            "max_model_len": int(self.max_model_len),
+                            "remaining_context": int(remaining_context),
+                        })
                         inner_aborted = True
                         break
                     # post_recall swaps in a different turn-local system
@@ -1305,6 +1324,13 @@ def _register_streaming_agent_loop():
                     )
                     user_block_len = len(chunk_prompt_ids) - effective_last_prompt_len
                     if user_block_len < 0:
+                        budget_abort_events.append({
+                            "chunk": int(chunk_idx),
+                            "turn_kind": turn_kind,
+                            "reason": "negative_user_block_len",
+                            "prompt_len": int(len(chunk_prompt_ids)),
+                            "last_prompt_len": int(effective_last_prompt_len),
+                        })
                         inner_aborted = True
                         break
                     if self.recurrent_mode == "recurrent":
@@ -1334,6 +1360,14 @@ def _register_streaming_agent_loop():
                         remaining_response,
                     )
                     if max_tokens_this_turn <= 0:
+                        budget_abort_events.append({
+                            "chunk": int(chunk_idx),
+                            "turn_kind": turn_kind,
+                            "reason": "no_response_budget",
+                            "prompt_len": int(len(chunk_prompt_ids)),
+                            "remaining_context": int(remaining_context),
+                            "remaining_response": int(remaining_response),
+                        })
                         inner_aborted = True
                         break
 
@@ -1361,6 +1395,13 @@ def _register_streaming_agent_loop():
                         )
                     assistant_ids = list(output.token_ids)
                     if not assistant_ids:
+                        budget_abort_events.append({
+                            "chunk": int(chunk_idx),
+                            "turn_kind": turn_kind,
+                            "reason": "empty_generation",
+                            "prompt_len": int(len(chunk_prompt_ids)),
+                            "max_tokens": int(max_tokens_this_turn),
+                        })
                         inner_aborted = True
                         break
 
@@ -1409,6 +1450,13 @@ def _register_streaming_agent_loop():
                     # -1 for compress (system inter-chunk turn).
                     chunk_video_indices.append(-1 if inter_chunk else chunk_idx)
                     chunk_event_indices.append(chunk_idx)
+                    chunk_prompt_lens.append(int(len(chunk_prompt_ids)))
+                    chunk_response_lens.append(int(len(assistant_ids)))
+                    chunk_max_tokens.append(int(max_tokens_this_turn))
+                    chunk_hit_max_tokens.append(
+                        len(assistant_ids) >= int(max_tokens_this_turn)
+                    )
+                    chunk_stop_reasons.append(str(output.stop_reason or ""))
 
                     if visual_injected:
                         accumulated_images.extend(chunk_images)
@@ -1437,10 +1485,33 @@ def _register_streaming_agent_loop():
                         parsed["action_space_error"] = action_error
                         parsed["invalid_kind"] = kind
                         kind = "invalid"
+                    tool_args = (
+                        (parsed.get("tool_call") or {}).get("arguments") or {}
+                    )
                     chunk_kinds.append(kind)
                     chunk_turn_kinds.append(turn_kind)
                     chunk_action_space_errors.append(action_error)
                     chunk_asst_texts.append(response_text)
+                    if kind == "recall":
+                        chunk_recall_query_ranges.append(
+                            tool_args.get("time_range", "")
+                        )
+                    else:
+                        chunk_recall_query_ranges.append("")
+                    chunk_recall_returned_chunks.append([])
+                    chunk_recall_result_sources.append("")
+                    if inter_chunk and compress_range is not None:
+                        chunk_compress_expected_chunks.append(
+                            list(range(int(compress_range[0]), int(compress_range[1]) + 1))
+                        )
+                    else:
+                        chunk_compress_expected_chunks.append([])
+                    if kind == "compress":
+                        chunk_compress_emitted_ranges.append(
+                            tool_args.get("time_range")
+                        )
+                    else:
+                        chunk_compress_emitted_ranges.append(None)
 
                     # ── Decide: stay in chunk for shape-B recall multi-
                     # turn, or break out and advance chunk_idx.
@@ -1449,9 +1520,19 @@ def _register_streaming_agent_loop():
                         and not inter_chunk
                         and recall_rounds_this_chunk < self.max_recall_per_chunk
                     ):
-                        args = (parsed.get("tool_call") or {}).get("arguments") or {}
+                        args = tool_args
                         recall_payload = await self._execute_recall(
                             args, state, video_path=video_path,
+                        )
+                        recall_result = recall_payload.get("recall_result") or {}
+                        chunk_recall_returned_chunks[-1] = [
+                            int(x) for x in (
+                                recall_result.get("returned_chunks") or []
+                            )
+                            if isinstance(x, (int, float))
+                        ]
+                        chunk_recall_result_sources[-1] = str(
+                            recall_result.get("source") or ""
                         )
                         # Bookkeep on state (accounting only — no truncation).
                         try:
@@ -1483,11 +1564,21 @@ def _register_streaming_agent_loop():
                     if kind == "recall" and recall_rounds_this_chunk >= self.max_recall_per_chunk:
                         # Exhausted recall budget within this chunk —
                         # legacy fallback: deliver result on next chunk.
-                        args = (parsed.get("tool_call") or {}).get("arguments") or {}
+                        args = tool_args
                         recall_payload = await self._execute_recall(
                             args, state, video_path=video_path,
                         )
                         recall_result_for_next = recall_payload.get("recall_result")
+                        recall_result = recall_result_for_next or {}
+                        chunk_recall_returned_chunks[-1] = [
+                            int(x) for x in (
+                                recall_result.get("returned_chunks") or []
+                            )
+                            if isinstance(x, (int, float))
+                        ]
+                        chunk_recall_result_sources[-1] = str(
+                            recall_result.get("source") or ""
+                        )
                     break
 
                 if inner_aborted and num_assistant_turns == 0:
@@ -1710,6 +1801,17 @@ def _register_streaming_agent_loop():
                 "ts_chunk_asst_texts": chunk_asst_texts,
                 "ts_chunk_video_indices": chunk_video_indices,
                 "ts_chunk_event_indices": chunk_event_indices,
+                "ts_chunk_prompt_lens": chunk_prompt_lens,
+                "ts_chunk_response_lens": chunk_response_lens,
+                "ts_chunk_max_tokens": chunk_max_tokens,
+                "ts_chunk_hit_max_tokens": chunk_hit_max_tokens,
+                "ts_chunk_stop_reasons": chunk_stop_reasons,
+                "ts_budget_abort_events": budget_abort_events,
+                "ts_recall_query_ranges": chunk_recall_query_ranges,
+                "ts_recall_returned_chunks": chunk_recall_returned_chunks,
+                "ts_recall_result_sources": chunk_recall_result_sources,
+                "ts_compress_expected_chunks": chunk_compress_expected_chunks,
+                "ts_compress_emitted_ranges": chunk_compress_emitted_ranges,
                 "ts_per_q_answer_chunk": list(per_q_answer_chunk),
                 "ts_per_q_answer_text": list(per_q_answer_text),
                 "ts_per_q_answers": per_q_answers,
