@@ -34,10 +34,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 CANONICAL_FRAME_PROTOCOL = "video_meta"
-CANONICAL_RENDER_LAYOUT = os.environ.get(
-    "THINKSTREAM_RENDER_LAYOUT",
-    "standard_query_last",
-)
+CANONICAL_RENDER_LAYOUT = "standard_query_last"
 CANONICAL_RENDER_DIRNAME = f"{CANONICAL_FRAME_PROTOCOL}_{CANONICAL_RENDER_LAYOUT}"
 SUPPORTED_RENDER_LAYOUTS = ["standard_query_last"]
 

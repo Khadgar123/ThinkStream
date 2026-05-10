@@ -29,6 +29,8 @@ from .config import (
 )
 from thinkstream.data.agent_protocol import (
     build_recalled_frames_metadata,
+    build_recall_result_metadata,
+    canonical_answer_instruction,
     select_recall_chunks,
     system_prompt_for_frame_protocol,
 )
@@ -47,7 +49,7 @@ def _strip_option_label(text: str) -> str:
 def _mc_correct_letter_text(card: Dict) -> tuple[str, str]:
     options = list(card.get("options") or [])
     correct = str(card.get("correct_option") or "").strip().upper()
-    if correct in OPTION_LETTERS[:len(options)]:
+    if len(correct) == 1 and correct in OPTION_LETTERS[:len(options)]:
         idx = ord(correct) - ord("A")
         if 0 <= idx < len(options):
             return correct, _strip_option_label(options[idx])
@@ -178,6 +180,7 @@ def _build_queries_input(queries_state: List[Dict]) -> List[Dict]:
     """
     result = []
     for q in queries_state:
+        instruction = canonical_answer_instruction(q)
         result.append({
             "card_id": q.get("card_id", ""),
             "question": q.get("question", ""),
@@ -188,7 +191,7 @@ def _build_queries_input(queries_state: List[Dict]) -> List[Dict]:
             "accepted_answers": list(q.get("accepted_answers") or []),
             "answer_form": q.get("answer_form", ""),
             "answer_style": q.get("answer_style", ""),
-            "answer_instruction": q.get("answer_instruction", ""),
+            "answer_instruction": instruction or q.get("answer_instruction", ""),
             "ask_time": q.get("ask_time", 0),
             "open_until": q.get("open_until", q.get("ask_time", 0)),
             "status": q.get("status", ""),
@@ -206,9 +209,9 @@ def _build_recalled_frames(
     Mirrors the inference-time logic in agent_loop.step (recall branch):
     given returned_chunks from a successful retrieval, derive the
     contiguous time_range, frame count, and per-chunk frame_paths so the
-    SFT sample renders <recalled_frames> + actual video frames — not
-    text-only. Without this, SFT trains on the recall_result text alone
-    and inference's frame injection becomes OOD.
+    SFT sample renders <recalled_frames> + actual video frames. The companion
+    <recall_result> is metadata-only, so answer supervision cannot rely on
+    retrieved text snippets.
 
     Returns None only for invalid/empty results. Both recall_response and
     recall_silent should carry frames when retrieval returns historical chunks.
@@ -252,9 +255,8 @@ def render_sample(
     earlier in the pipeline). When provided, recall_response samples get
     `recalled_frames.frame_paths` populated so the SFT loader feeds actual
     historical frames into the model — matching what inference does. If
-    omitted, recall_response samples render text-only recall (legacy
-    behaviour, retained for back-compat with callers that don't have the
-    frame list).
+    omitted, recall_response samples carry metadata-only recall_result and no
+    textual evidence; callers should provide frames for answerable recall rows.
 
     Returns a complete sample with `input` + `output` + `metadata` fields.
     """
@@ -269,6 +271,7 @@ def render_sample(
     # Build input structure
     inter_chunk = sample.get("action") == "compress"
     recall_result = sample.get("recall_result")
+    model_visible_recall_result = None
     inp = {
         "system": _get_system_prompt(
             prompt_type,
@@ -282,11 +285,16 @@ def render_sample(
         inp.update({
             "visual_window": _build_visual_window(chunk_idx, num_chunks, video_path),
             "queries": _build_queries_input(sample.get("queries", [])),
-            "recall_result": recall_result,
         })
         rf = _build_recalled_frames(recall_result, all_frame_paths)
         if rf is not None:
             inp["recalled_frames"] = rf
+        if recall_result is not None:
+            model_visible_recall_result = build_recall_result_metadata(
+                recall_result,
+                rf,
+            )
+            inp["recall_result"] = model_visible_recall_result
 
     # For compress samples, remember the gold compressed-chunks set so
     # RL/eval can score the model's <summary> time_range against the
@@ -348,6 +356,16 @@ def render_sample(
     correct_letter, correct_answer_text = _mc_correct_letter_text(card)
     if card.get("answer_form") == "multiple_choice" and correct_answer_text:
         canonical = correct_answer_text
+    answer_style = sample.get("answer_style", card.get("answer_style", ""))
+    instruction_source = dict(card)
+    instruction_source["answer_style"] = answer_style
+    if sample.get("answer_instruction"):
+        instruction_source["answer_instruction"] = sample.get("answer_instruction")
+    answer_instruction = (
+        canonical_answer_instruction(instruction_source)
+        or sample.get("answer_instruction")
+        or card.get("answer_instruction", "")
+    )
 
     metadata = {
         "gold_action": sample.get("action", "silent"),
@@ -363,10 +381,8 @@ def render_sample(
         # answer (signal that it's a multi-probe pre-event chunk).
         "canonical_answer": canonical,
         "answer_form": card.get("answer_form", ""),
-        "answer_style": sample.get("answer_style", card.get("answer_style", "")),
-        "answer_instruction": sample.get(
-            "answer_instruction", card.get("answer_instruction", "")
-        ),
+        "answer_style": answer_style,
+        "answer_instruction": answer_instruction,
         "question_type": card.get("question_type", ""),
         "family": card.get("family", ""),
         "family_name": card.get("family_name", ""),
@@ -441,8 +457,8 @@ def render_sample(
     # Keep recall tool results at the row top-level as well as inside
     # input. RL/eval utilities may consume rendered flat/trajectory rows
     # directly, while pass5 consumes input.* to inject the actual media.
-    if not inter_chunk and recall_result is not None:
-        rendered["recall_result"] = recall_result
+    if not inter_chunk and model_visible_recall_result is not None:
+        rendered["recall_result"] = model_visible_recall_result
     if not inter_chunk and rf is not None:
         rendered["recalled_frames"] = rf
 

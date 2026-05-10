@@ -36,25 +36,35 @@ RECALL_WAIT_PROBE_MAX = 3        # max recall+silent probes inside one wait
 RECALL_WAIT_MIN_LEAD = 6         # do not recall immediately for very short waits
 RECALL_MULTI_WAIT_PROBE_MAX = 2  # recall+silent probes while cumulative questions remain open
 MEMORY_DIRECT_RECALL_PROBE_RATE = float(
-    os.environ.get("THINKSTREAM_MEMORY_DIRECT_RECALL_PROBE_RATE", "0.55")
+    os.environ.get("THINKSTREAM_MEMORY_DIRECT_RECALL_PROBE_RATE", "0.80")
 )
 MEMORY_DIRECT_RECALL_FAMILY_RATE = {
     # Exact visual evidence is much better than text memory for these OVO
     # weaknesses: OCR, spatial/temporal relations, object relation/state,
     # action recognition, future/held state, and cross-event reasoning.
-    "C1": 0.85,
-    "STU1": 0.70,
-    "OJR1": 0.70,
-    "ACR1": 0.65,
-    "CR7": 0.60,
-    "F6": 0.60,
-    "CR5": 0.60,
-    "CR4": 0.58,
-    "CR1": 0.55,
-    "CR2": 0.50,
-    "M1": 0.50,
-    "HLD1": 0.45,
+    "C1": 0.95,
+    "STU1": 0.90,
+    "OJR1": 0.90,
+    "ACR1": 0.88,
+    "CR7": 0.85,
+    "F6": 0.85,
+    "CR5": 0.85,
+    "CR4": 0.85,
+    "CR1": 0.82,
+    "CR2": 0.80,
+    "M1": 0.80,
+    "HLD1": 0.90,
 }
+
+# Keep enough non-MCQ questions for active responding generalization. Do not
+# turn ordinary perception/backward-tracing families into open-form questions
+# just to hit a ratio; non-MCQ pressure should mainly come from F5/REC counting,
+# F7/SSR status, and CRR1/CRR status-over-time, with small exploratory support
+# from M1/PN1 when feasible.
+NON_MCQ_TARGET_FRACTION = float(
+    os.environ.get("THINKSTREAM_NON_MCQ_TARGET_FRACTION", "0.30")
+)
+NON_MCQ_MIN_QUESTIONS = int(os.environ.get("THINKSTREAM_NON_MCQ_MIN_QUESTIONS", "3"))
 
 # ── ask placement: STRATIFIED tier ranges (3 difficulty bands per profile) ──
 # Each profile picks one band per placement; multi-placement profiles
@@ -162,25 +172,29 @@ PLACEMENT_PROFILE = {
 # Multi_emit families adoption rate per video (each tossed independently).
 # Lower → fewer videos carry narration/counting → multi_emit % drops.
 MULTI_EMIT_ADOPT_RATE = 0.5
+F5_ADOPT_RATE = float(os.environ.get("THINKSTREAM_F5_ADOPT_RATE", "0.95"))
+PN1_ADOPT_RATE = float(os.environ.get("THINKSTREAM_PN1_ADOPT_RATE", "0.20"))
 
 # F7/SSR should be present, but not every video should carry a progress-status
 # card. Batch3 landed below OVO SSR scale, so use a higher adoption rate and
 # let selection/overlap constraints decide whether the card fits each video.
-F7_ADOPT_RATE = 0.6
+F7_ADOPT_RATE = 1.0
 
 # CRR1 is the OVO-CRR-like repeated probe around a clue/event becoming true.
 # Keep it below every-video generation because each selected card can occupy a
 # long active span and would otherwise squeeze out regular QA slots.
-CRR1_ADOPT_RATE = 0.45
+CRR1_ADOPT_RATE = 1.0
 
 # Rare benchmark-aligned families can lose greedy selection because their
 # active span is longer (F7) or because recall slots are already saturated
 # (HLD1). Boosting selection, not generation volume, keeps the card pool
 # balanced while making selected trajectories carry the intended coverage.
 FAMILY_SELECTION_BOOST = {
-    "F7": 6.0,     # target SSR-like status rows at roughly OVO scale
-    "F5": 5.0,     # REC-style cumulative counting otherwise loses to recall
-    "CRR1": 5.0,   # clue-before/after multi-probe status
+    "F7": 10.0,    # target SSR-like status rows at roughly OVO scale
+    "F5": 6.0,     # REC-style cumulative counting otherwise loses to recall
+    "CRR1": 9.0,   # clue-before/after multi-probe status
+    "PN1": 2.0,    # exploratory live narration should stay small
+    "M1": 2.0,     # summary/history support, not the main non-MCQ source
     "CR5": 4.0,    # CRR-style clue waits should survive selection
     "OJR1": 6.0,   # OVO has a large object-joint-reasoning slice
     "STU1": 6.0,   # state transition understanding is under-selected
@@ -922,6 +936,20 @@ def select_trajectory(
     used_ask: List[int] = []
     ask_gap_floor = question_ask_gap_floor(num_chunks)
 
+    def non_mcq_selected() -> int:
+        return sum(
+            1
+            for p in selected
+            if cards_by_id.get(p.card_id)
+            and cards_by_id[p.card_id].answer_form != "multiple_choice"
+        )
+
+    def non_mcq_floor() -> int:
+        if max_q <= 0:
+            return 0
+        by_fraction = int(max_q * NON_MCQ_TARGET_FRACTION + 0.999)
+        return min(max_q, max(NON_MCQ_MIN_QUESTIONS, by_fraction))
+
     def feasible(p: Placement, card: Card) -> bool:
         if card.card_id in seen_cards:
             return False
@@ -1014,6 +1042,22 @@ def select_trajectory(
                 and card.family in {"F5", "CRR1", "F7"}
             )
         )
+    if len(selected) < max_q and max_q >= 12:
+        take_best(
+            lambda p, card: (
+                p.mechanism == "multi_emit"
+                and card.family in {"CRR1", "F7"}
+            )
+        )
+    if len(selected) < max_q and max_q >= 8:
+        take_best(lambda _p, card: card.family in {"M1", "PN1"})
+    target_non_mcq = non_mcq_floor()
+    while (
+        len(selected) < max_q
+        and non_mcq_selected() < target_non_mcq
+        and take_best(lambda _p, card: card.answer_form != "multiple_choice")
+    ):
+        pass
     if len(selected) < max_q:
         if not take_best(
             lambda p, card: (

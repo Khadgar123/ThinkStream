@@ -70,6 +70,12 @@ PASS3A_TARGETS_BY_FAMILY = {
     "OJR1": 2,
     "STU1": 2,
     "ACR1": 2,
+    # Active-responding non-MCQ families need extra candidates because their
+    # placements are often longer and lose to compact MC cards. The selector
+    # still keeps at most one placement per family in each trajectory.
+    "F5": 2,
+    "F7": 2,
+    "CRR1": 2,
 }
 
 
@@ -656,8 +662,10 @@ def save_cards(video_id: str, cards: List[Dict],
 def load_cards(video_id: str,
                cards_dir: Path = TASK_CARDS_DIR) -> Optional[List[Dict]]:
     from .cache_version import stage_version_ok
-    allow_partial = os.environ.get("THINKSTREAM_ALLOW_PARTIAL_PASS3A_CACHE", "").lower() in {"1", "true", "yes", "on"}
-    if not allow_partial and not stage_version_ok("3a"):
+    truthy = {"1", "true", "yes", "on"}
+    allow_partial = os.environ.get("THINKSTREAM_ALLOW_PARTIAL_PASS3A_CACHE", "").lower() in truthy
+    allow_stale = os.environ.get("THINKSTREAM_ALLOW_STALE_PASS3_CACHE", "").lower() in truthy
+    if not (allow_partial or allow_stale) and not stage_version_ok("3a"):
         return None
     p = cards_dir / f"{video_id}.json"
     if not p.exists():

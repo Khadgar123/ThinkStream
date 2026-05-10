@@ -80,6 +80,8 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 
+from thinkstream.data.agent_protocol import canonical_answer_instruction
+
 logger = logging.getLogger(__name__)
 
 # Batch isolation: use the same root resolver as the pass pipeline.
@@ -259,6 +261,9 @@ def _build_trajectory_record(
         accepted_answers = list(meta.get("accepted_answers") or [])
         if meta.get("answer_form") != "multiple_choice":
             accepted_answers = [question_gold] if question_gold else []
+        answer_instruction = canonical_answer_instruction(meta) or meta.get(
+            "answer_instruction", ""
+        )
 
         questions.append({
             "card_id": cid,
@@ -271,7 +276,7 @@ def _build_trajectory_record(
             "correct_answer_text": meta.get("correct_answer_text", ""),
             "accepted_answers": accepted_answers,
             "answer_style": meta.get("answer_style", ""),
-            "answer_instruction": meta.get("answer_instruction", ""),
+            "answer_instruction": answer_instruction,
             "canonical_answer": canonical_answer,
             "answer_form": meta.get("answer_form", ""),
             "question_type": meta.get("question_type", ""),
@@ -354,6 +359,9 @@ def _build_trajectory_record(
         first,
     )
     lf_meta = legacy_first_card.get("metadata") or {}
+    lf_answer_instruction = canonical_answer_instruction(lf_meta) or lf_meta.get(
+        "answer_instruction", ""
+    )
 
     return {
         "video_id": video_id,
@@ -377,7 +385,7 @@ def _build_trajectory_record(
             "correct_answer_text": lf_meta.get("correct_answer_text", ""),
             "accepted_answers": lf_meta.get("accepted_answers", []),
             "answer_style": lf_meta.get("answer_style", ""),
-            "answer_instruction": lf_meta.get("answer_instruction", ""),
+            "answer_instruction": lf_answer_instruction,
             "canonical_answer": lf_meta.get("canonical_answer", ""),
             "answer_form": lf_meta.get("answer_form", ""),
             "question_type": lf_meta.get("question_type", ""),

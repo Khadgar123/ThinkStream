@@ -336,20 +336,11 @@ def _resolve_frame_paths(paths: List[str], base_path: Path) -> List[str]:
 def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]:
     """v12.0: Build messages for the official Qwen tool-call protocol.
 
-    DEPRECATED (v12.11 audit-5 P1 #3, 2026-05-01): the canonical builder is
-    now ``scripts/agent_data_v5/pass5_messages.py:build_messages``, which is
-    used by the main pipeline (`pass5_messages.py:convert`). This function
-    diverged in two ways and is kept only for legacy eval/debug paths:
-        - emits role="tool" (Qwen3-VL chat_template renders this as a
-          separate observation block) instead of pass5's role="user" with
-          inline <recall_result> tags. Train/infer drift if a SFT run
-          happens to use this builder.
-        - tool payload is raw recall_result JSON (pass5 wraps it in
-          <recall_result>...</recall_result> so the model can parse the
-          end of the observation deterministically).
-    Default v12.11+ SFT goes through pass5 messages → this builder is not
-    on the hot path. New code should call the pass5 path. Removing this
-    function is queued for v12.12.
+    DEPRECATED: the canonical builder is now
+    ``scripts/agent_data_v5/pass5_messages.py:build_messages``, which is used
+    by the main pipeline (`pass5_messages.py:convert`). This function is kept
+    only for legacy eval/debug paths and mirrors the current pass5 contract as
+    closely as possible.
 
     Three sample shapes handled (controlled by pass3c-emitted fields):
 
@@ -360,7 +351,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
        Two assistant turns sandwiching a tool turn. Messages =
          [system, user (chunk visual+memory+query),
           assistant (tool_call recall),
-          tool (recall_result),
+          user (recalled_frames + metadata-only recall_result),
           assistant (final answer)]
        This implements the within-one-chunk agentic cycle (think→recall→
        result→think→answer) per docs/v12.0_protocol_migration_design.md §1.
@@ -373,8 +364,8 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
     Differences from v11 (build_per_timestep_messages):
     - SYSTEM_PROMPT_V12 (concise; <tools> block rendered by chat_template
       via tools= parameter at apply time).
-    - recall_result moved from user-inline text to a dedicated 'tool' role
-      message in shape B (matches Qwen3-VL chat_template tool branch which
+    - recall_result is metadata-only; historical frames carry recall evidence.
+      Shape-B recall uses a dedicated 'tool' role message (matches Qwen3-VL chat_template tool branch which
       nests <tool_response> inside the <|im_start|>user wrapper).
     """
     # v12.6: import canonical chunk_sec via agent_protocol (which already
@@ -388,7 +379,11 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         AGENT_CHUNK_SEC,
         FRAMES_PER_CHUNK,
         append_visual_frames,
+        build_recall_result_metadata,
+        format_queries_block,
         normalize_frame_protocol,
+        prompt_time_range,
+        prompt_time_value,
         system_prompt_for_frame_protocol,
     )
 
@@ -401,6 +396,16 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         sample.get("sample_type") == "recall"
         and "v12_assistant_turn_1" in sample
     )
+    sample_type = str(sample.get("sample_type") or "").strip().lower()
+    explicit_post_recall = sample_type in {
+        "post_recall",
+        "recall_response",
+        "recall_answer",
+    }
+    legacy_post_recall = (
+        explicit_post_recall
+        or (bool(inp.get("recall_result")) and not is_recall_multiturn and sample_type != "recall")
+    )
 
     messages = [
         {
@@ -412,12 +417,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                     prompt_kind=(
                         "post_recall"
                         if (
-                            sample.get("sample_type") == "recall_response"
-                            or sample.get("sample_type") == "post_recall"
-                            or (
-                                inp.get("recall_result")
-                                and not is_recall_multiturn
-                            )
+                            legacy_post_recall
                         )
                         else None
                     ),
@@ -434,6 +434,65 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
 
     # ── User content ───────────────────────────────────────────────────
     user_content = []
+
+    if legacy_post_recall and not is_recall_multiturn and not inter_chunk:
+        queries_text = format_queries_block(inp.get("queries", []))
+        if queries_text:
+            user_content.append({"type": "text", "text": queries_text})
+
+        rf = inp.get("recalled_frames") or {}
+        if rf:
+            rf_header = json.dumps({
+                "time_range": prompt_time_range(rf["time_range"]),
+                "source": rf.get("source", "historical_frames"),
+                "n_frames": rf["n_frames"],
+            })
+            user_content.append({
+                "type": "text",
+                "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
+            })
+            if "frame_paths" in rf:
+                paths = _resolve_frame_paths(rf["frame_paths"], base_path)
+                try:
+                    from scripts.agent_data_v5.config import (
+                        RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                    )
+                except ImportError:
+                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+                start_frame = int(round(float(rf["time_range"][0]) / chunk_sec)) * FRAMES_PER_CHUNK
+                total_frames = int(round(float(rf["time_range"][1]) / chunk_sec)) * FRAMES_PER_CHUNK
+                append_visual_frames(
+                    user_content,
+                    paths,
+                    frame_protocol=frame_protocol,
+                    fps=float(FRAMES_PER_CHUNK / chunk_sec),
+                    start_frame_index=start_frame,
+                    total_num_frames=total_frames,
+                    context_label="recalled frame",
+                    min_pixels=_RTKW["min_pixels"],
+                    max_pixels=_RTKW["max_pixels"],
+                )
+            elif video_path and not require_pre:
+                user_content.append({
+                    "type": "video", "video": video_path,
+                    "video_start": prompt_time_value(rf["time_range"][0]),
+                    "video_end": prompt_time_value(rf["time_range"][1]),
+                })
+
+        rr_json = json.dumps(
+            build_recall_result_metadata(inp.get("recall_result") or {}, rf),
+            ensure_ascii=False,
+        )
+        user_content.append({
+            "type": "text",
+            "text": f"\n<recall_result>{rr_json}</recall_result>",
+        })
+        messages.append({"role": "user", "content": user_content})
+        messages.append({
+            "role": "assistant",
+            "content": [{"type": "text", "text": sample.get("output", "")}],
+        })
+        return messages
 
     user_input_block = format_user_input_block(
         inp.get("user_input", ""),
@@ -454,13 +513,13 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         else f"<memory>\n{memory_text}\n</memory>",
     })
 
-    # Active query plus response history for that same query.
-    queries = inp.get("queries", [])
-    if queries and not inter_chunk:
-        from thinkstream.data.agent_protocol import format_queries_block
-        queries_text = format_queries_block(queries)
-        if queries_text:
-            user_content.append({"type": "text", "text": f"\n{queries_text}"})
+    if inter_chunk:
+        messages.append({"role": "user", "content": user_content})
+        messages.append({
+            "role": "assistant",
+            "content": [{"type": "text", "text": sample.get("output", "")}],
+        })
+        return messages
 
     # Visual window + frames.
     vw = inp["visual_window"]
@@ -558,6 +617,14 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
             f"frame_paths nor frame_indices."
         )
 
+    # Active query plus response history for that same query. Query-last is the
+    # canonical layout used by pass5/runtime/eval.
+    queries = inp.get("queries", [])
+    if queries:
+        queries_text = format_queries_block(queries)
+        if queries_text:
+            user_content.append({"type": "text", "text": f"\n{queries_text}"})
+
     # Recalled frames stay in the FIRST user message ONLY for non-multi-turn
     # recall samples (legacy single-turn recall_response). For multi-turn
     # recall (shape B), recalled_frames are part of the tool turn payload
@@ -601,15 +668,14 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                 "video_end": rf["time_range"][1],
             })
 
-    # Legacy (non-multi-turn) recall_result fallback. Multi-turn recall
-    # samples render recall_result via the tool role below.
+    # Legacy (non-multi-turn) recall_result fallback. Model-visible recall
+    # result is metadata only; visual evidence comes from recalled frames.
     if inp.get("recall_result") and not is_recall_multiturn and not inter_chunk:
         rr = inp["recall_result"]
-        rr_json = json.dumps({
-            "source": rr.get("source", ""),
-            "time": rr.get("time", ""),
-            "text": rr.get("text_content", rr.get("text", "")),
-        }, ensure_ascii=False)
+        rr_json = json.dumps(
+            build_recall_result_metadata(rr, inp.get("recalled_frames")),
+            ensure_ascii=False,
+        )
         user_content.append({
             "type": "text",
             "text": f"\n<recall_result>{rr_json}</recall_result>",
@@ -625,16 +691,11 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
             "content": [{"type": "text", "text": sample["v12_assistant_turn_1"]}],
         })
 
-        # Tool turn — recall_result wrapped in <tool_response> tags. The
+        # Tool turn — historical frames plus metadata-only recall_result. The
         # Qwen3-VL chat_template renders this nested under <|im_start|>user
         # but loss-masked at training time (assistant span only contributes).
         rr = sample.get("recall_result") or {}
-        rr_json = json.dumps({
-            "source": rr.get("source", ""),
-            "time": rr.get("time", ""),
-            "text": rr.get("text_content", rr.get("text", "")),
-        }, ensure_ascii=False)
-        tool_payload = [{"type": "text", "text": rr_json}]
+        tool_payload = []
 
         # If the recall returned historical frames, attach them inside the
         # tool turn payload — model sees them as part of the tool response.
@@ -676,7 +737,15 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
                     "video_start": rf["time_range"][0],
                     "video_end": rf["time_range"][1],
                 })
-        messages.append({"role": "tool", "content": tool_payload})
+        rr_json = json.dumps(
+            build_recall_result_metadata(rr, rf),
+            ensure_ascii=False,
+        )
+        tool_payload.append({
+            "type": "text",
+            "text": f"<recall_result>{rr_json}</recall_result>",
+        })
+        messages.append({"role": "user", "content": tool_payload})
 
         messages.append({
             "role": "assistant",

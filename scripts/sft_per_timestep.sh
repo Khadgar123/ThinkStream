@@ -140,12 +140,16 @@ fi
 INCLUDE_FAILED_VERIFICATION="${INCLUDE_FAILED_VERIFICATION:-False}"
 MAX_SAMPLE_TOKENS="${MAX_SAMPLE_TOKENS:-16384}"
 TORCH_EMPTY_CACHE_STEPS="${TORCH_EMPTY_CACHE_STEPS:-0}"
-# Macro action balance: silent/response/recall/compress = 0.25 each.
+# v12.73+: pass5 physically balances SFT messages first, so class loss
+# weighting is only a mild residual correction. Do not keep the old equal
+# macro-action target here: it would up-weight compress from ~8-10% observed
+# to 25% effective after sampling has already been balanced.
+#
 # Recall is split into tool-call and post-recall no-tools answer rows in pass5,
-# so the two recall subtypes share the 0.25 macro bucket.
-CLASS_LOSS_TARGET_RATIOS="${CLASS_LOSS_TARGET_RATIOS:-silent=0.25,response=0.25,recall=0.125,post_recall=0.125,compress=0.25}"
-CLASS_LOSS_ALPHA="${CLASS_LOSS_ALPHA:-1.0}"
-CLASS_LOSS_MAX_WEIGHT="${CLASS_LOSS_MAX_WEIGHT:-8.0}"
+# so the two recall subtypes share the recall macro bucket.
+CLASS_LOSS_TARGET_RATIOS="${CLASS_LOSS_TARGET_RATIOS:-silent=0.35,response=0.25,recall=0.125,post_recall=0.125,compress=0.15}"
+CLASS_LOSS_ALPHA="${CLASS_LOSS_ALPHA:-0.5}"
+CLASS_LOSS_MAX_WEIGHT="${CLASS_LOSS_MAX_WEIGHT:-4.0}"
 COMPRESS_TOKEN_WEIGHTING="${COMPRESS_TOKEN_WEIGHTING:-True}"
 COMPRESS_STRUCTURE_TOKEN_WEIGHT="${COMPRESS_STRUCTURE_TOKEN_WEIGHT:-2.0}"
 COMPRESS_BODY_TOKEN_WEIGHT="${COMPRESS_BODY_TOKEN_WEIGHT:-0.35}"

@@ -115,14 +115,6 @@ def _target_for_style(style: str, options: List[str], correct_option: str) -> st
 
 
 def _style_for_obj(obj: Dict[str, Any]) -> str:
-    style = str(obj.get("answer_style") or "").strip().lower()
-    if style in {"letter_only", "letter_plus_text", "text_only"}:
-        return style
-    instruction = str(obj.get("answer_instruction") or "").strip().lower()
-    if "answer text only" in instruction:
-        return "text_only"
-    if "letter plus option text" in instruction:
-        return "letter_plus_text"
     return "letter_only"
 
 
@@ -321,7 +313,12 @@ def build_mapping(final_dir: Path) -> Dict[Tuple[str, str, str], Dict[str, Any]]
     return mapping
 
 
-def _lookup(mapping: Dict[Tuple[str, str, str], Dict[str, Any]], video_id: str, obj: Dict[str, Any]):
+def _lookup(
+    mapping: Dict[Tuple[str, str, str], Dict[str, Any]],
+    video_id: str,
+    obj: Dict[str, Any],
+    by_video_question: Dict[Tuple[str, str], Dict[str, Any]] | None = None,
+):
     card_id = str(obj.get("card_id") or "")
     question = str(obj.get("question", ""))
     if card_id:
@@ -334,6 +331,8 @@ def _lookup(mapping: Dict[Tuple[str, str, str], Dict[str, Any]], video_id: str, 
     # question text only when it is unique for this video; otherwise different
     # cards with identical wording can receive each other's option order.
     q = str(obj.get("question", ""))
+    if by_video_question is not None:
+        return by_video_question.get((str(video_id or ""), q))
     matches = [
         value
         for (vid, _cid, mapped_question), value in mapping.items()
@@ -342,8 +341,13 @@ def _lookup(mapping: Dict[Tuple[str, str, str], Dict[str, Any]], video_id: str, 
     return matches[0] if len(matches) == 1 else None
 
 
-def _patch_question(mapping: Dict[Tuple[str, str, str], Dict[str, Any]], video_id: str, obj: Dict[str, Any]) -> bool:
-    hit = _lookup(mapping, video_id, obj)
+def _patch_question(
+    mapping: Dict[Tuple[str, str, str], Dict[str, Any]],
+    video_id: str,
+    obj: Dict[str, Any],
+    by_video_question: Dict[Tuple[str, str], Dict[str, Any]] | None = None,
+) -> bool:
+    hit = _lookup(mapping, video_id, obj, by_video_question)
     if not hit:
         return False
     obj["options"] = list(hit["options"])
@@ -456,11 +460,12 @@ def _query_text_errors(
 
 def _validate_question_obj(
     mapping: Dict[Tuple[str, str, str], Dict[str, Any]],
+    by_video_question: Dict[Tuple[str, str], Dict[str, Any]],
     video_id: str,
     obj: Dict[str, Any],
     location: str,
 ) -> List[str]:
-    hit = _lookup(mapping, video_id, obj)
+    hit = _lookup(mapping, video_id, obj, by_video_question)
     if not hit:
         return []
     errors: List[str] = []
@@ -537,18 +542,18 @@ def _validate_row(
     row_hit = None
     metadata = row.get("metadata")
     if isinstance(metadata, dict):
-        row_hit = _lookup(mapping, video_id, metadata)
-        errors.extend(_validate_question_obj(mapping, video_id, metadata, f"{location}.metadata"))
+        row_hit = _lookup(mapping, video_id, metadata, by_video_question)
+        errors.extend(_validate_question_obj(mapping, by_video_question, video_id, metadata, f"{location}.metadata"))
 
     for i, q in enumerate(row.get("questions") or []):
         if isinstance(q, dict):
-            errors.extend(_validate_question_obj(mapping, video_id, q, f"{location}.questions[{i}]"))
+            errors.extend(_validate_question_obj(mapping, by_video_question, video_id, q, f"{location}.questions[{i}]"))
 
     input_obj = row.get("input")
     if isinstance(input_obj, dict):
         for i, q in enumerate(input_obj.get("queries") or []):
             if isinstance(q, dict):
-                errors.extend(_validate_question_obj(mapping, video_id, q, f"{location}.input.queries[{i}]"))
+                errors.extend(_validate_question_obj(mapping, by_video_question, video_id, q, f"{location}.input.queries[{i}]"))
 
     if row_hit:
         target = _target_for_style(
@@ -629,15 +634,15 @@ def patch_row(
 
     if isinstance(row.get("questions"), list):
         for q in row.get("questions") or []:
-            changed += int(_patch_question(mapping, video_id, q))
+            changed += int(_patch_question(mapping, video_id, q, by_video_question))
 
     metadata = row.get("metadata")
     if isinstance(metadata, dict):
         if row.get("card_id") and not metadata.get("card_id"):
             metadata["card_id"] = row.get("card_id")
             changed += 1
-        row_hit = _lookup(mapping, video_id, metadata)
-        changed += int(_patch_question(mapping, video_id, metadata))
+        row_hit = _lookup(mapping, video_id, metadata, by_video_question)
+        changed += int(_patch_question(mapping, video_id, metadata, by_video_question))
         if row_hit:
             target = _target_for_style(
                 _style_for_obj(metadata),
@@ -655,7 +660,7 @@ def patch_row(
     if isinstance(input_obj, dict):
         for q in input_obj.get("queries") or []:
             if isinstance(q, dict):
-                changed += int(_patch_question(mapping, video_id, q))
+                changed += int(_patch_question(mapping, video_id, q, by_video_question))
 
     if isinstance(row.get("samples"), list):
         for sample in row.get("samples") or []:

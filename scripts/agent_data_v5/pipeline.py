@@ -23,9 +23,9 @@ import json
 import logging
 import os
 import random
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from .progress import ProgressTracker
 from .stable_hash import stable_seed
@@ -48,10 +48,7 @@ from .config import (
 logger = logging.getLogger(__name__)
 
 CANONICAL_FRAME_PROTOCOL = "video_meta"
-CANONICAL_RENDER_LAYOUT = os.environ.get(
-    "THINKSTREAM_RENDER_LAYOUT",
-    "standard_query_last",
-)
+CANONICAL_RENDER_LAYOUT = "standard_query_last"
 CANONICAL_RENDER_DIRNAME = f"{CANONICAL_FRAME_PROTOCOL}_{CANONICAL_RENDER_LAYOUT}"
 
 
@@ -82,6 +79,152 @@ def _require_stage_cache(
 def _require_nonempty(label: str, items) -> None:
     if not items:
         raise RuntimeError(f"{label}: empty output; aborting to avoid bad final data")
+
+
+_SPLIT_BALANCE_WEIGHTS = {
+    "questions": 1.0,
+    "non_mcq_questions": 4.0,
+    "recall_questions": 4.0,
+    "multi_questions": 2.5,
+    "compress_rows": 3.0,
+    "response_rows": 1.5,
+    "recall_rows": 2.0,
+    "silent_rows": 0.25,
+}
+
+
+def _video_split_profiles(samples: List[Dict]) -> Dict[str, Counter]:
+    """Build per-video profiles for split balancing from flat pass3c samples."""
+    profiles: Dict[str, Counter] = defaultdict(Counter)
+    seen_questions: Dict[str, set] = defaultdict(set)
+    recall_questions: Dict[str, set] = defaultdict(set)
+
+    for s in samples:
+        vid = str(s.get("video_id") or "")
+        if not vid:
+            continue
+        action = str(s.get("sample_type") or s.get("action") or "")
+        if action:
+            profiles[vid][f"{action}_rows"] += 1
+
+        meta = s.get("metadata") or {}
+        card_id = str(s.get("card_id") or meta.get("card_id") or "")
+        if not card_id:
+            continue
+        qkey = (str(s.get("trajectory_id") or ""), card_id)
+        if action == "recall":
+            recall_questions[vid].add(qkey)
+        if qkey in seen_questions[vid]:
+            continue
+        seen_questions[vid].add(qkey)
+
+        answer_form = str(meta.get("answer_form") or "")
+        question_type = str(meta.get("question_type") or "")
+        availability = str(meta.get("availability") or "")
+        family = str(meta.get("family") or "")
+        profiles[vid]["questions"] += 1
+        profiles[vid][f"form:{answer_form or 'unknown'}"] += 1
+        profiles[vid][f"family:{family or 'unknown'}"] += 1
+        if answer_form != "multiple_choice":
+            profiles[vid]["non_mcq_questions"] += 1
+        if question_type == "multi_emit" or availability == "multi_response":
+            profiles[vid]["multi_questions"] += 1
+
+    for vid, qkeys in recall_questions.items():
+        profiles[vid]["recall_questions"] = len(qkeys)
+    return profiles
+
+
+def _balanced_video_buckets(
+    video_ids: List[str],
+    samples: List[Dict],
+    *,
+    seed: int,
+) -> Tuple[Dict[str, set], Dict[str, Dict[str, float]]]:
+    """Split videos while balancing question/action profiles across splits."""
+    n = len(video_ids)
+    train_end = int(n * 0.70)
+    val_end = int(n * 0.85)
+    sft_target = int(train_end * 0.50)
+    targets = {
+        "train_sft": sft_target,
+        "train_rl": train_end - sft_target,
+        "val": val_end - train_end,
+        "test": n - val_end,
+    }
+    profiles = _video_split_profiles(samples)
+    global_profile = Counter()
+    for vid in video_ids:
+        global_profile.update(profiles.get(vid, Counter()))
+
+    rng = random.Random(seed)
+    order = list(video_ids)
+    rng.shuffle(order)
+
+    def profile_weight(vid: str) -> float:
+        p = profiles.get(vid, Counter())
+        return (
+            p.get("questions", 0)
+            + 2.0 * p.get("non_mcq_questions", 0)
+            + 2.0 * p.get("recall_questions", 0)
+            + 1.5 * p.get("multi_questions", 0)
+            + 0.5 * p.get("compress_rows", 0)
+        )
+
+    order.sort(key=profile_weight, reverse=True)
+
+    buckets: Dict[str, List[str]] = {name: [] for name in targets}
+    bucket_profiles: Dict[str, Counter] = {name: Counter() for name in targets}
+    target_profiles = {
+        name: Counter({
+            feat: global_profile.get(feat, 0) * (size / max(n, 1))
+            for feat in _SPLIT_BALANCE_WEIGHTS
+        })
+        for name, size in targets.items()
+    }
+
+    def score(bucket: str, vid: str) -> float:
+        projected = bucket_profiles[bucket] + profiles.get(vid, Counter())
+        target = target_profiles[bucket]
+        err = 0.0
+        for feat, weight in _SPLIT_BALANCE_WEIGHTS.items():
+            denom = max(float(target.get(feat, 0.0)), 1.0)
+            diff = float(projected.get(feat, 0.0)) - float(target.get(feat, 0.0))
+            err += weight * (diff / denom) ** 2
+        fill = (len(buckets[bucket]) + 1) / max(targets[bucket], 1)
+        return err + 0.10 * fill
+
+    for vid in order:
+        candidates = [
+            name for name, size in targets.items()
+            if len(buckets[name]) < size
+        ]
+        if not candidates:
+            break
+        best = min(candidates, key=lambda name: (score(name, vid), name))
+        buckets[best].append(vid)
+        bucket_profiles[best].update(profiles.get(vid, Counter()))
+
+    audit: Dict[str, Dict[str, float]] = {}
+    for name, vids in buckets.items():
+        p = bucket_profiles[name]
+        q = max(float(p.get("questions", 0)), 1.0)
+        rows = max(float(
+            p.get("silent_rows", 0)
+            + p.get("response_rows", 0)
+            + p.get("recall_rows", 0)
+            + p.get("compress_rows", 0)
+        ), 1.0)
+        audit[name] = {
+            "videos": float(len(vids)),
+            "questions": float(p.get("questions", 0)),
+            "non_mcq_question_pct": round(p.get("non_mcq_questions", 0) / q * 100, 2),
+            "recall_question_pct": round(p.get("recall_questions", 0) / q * 100, 2),
+            "multi_question_pct": round(p.get("multi_questions", 0) / q * 100, 2),
+            "recall_row_pct": round(p.get("recall_rows", 0) / rows * 100, 2),
+            "compress_row_pct": round(p.get("compress_rows", 0) / rows * 100, 2),
+        }
+    return {name: set(vs) for name, vs in buckets.items()}, audit
 
 
 def _write_quality_audit(path: Path, label: str) -> None:
@@ -1276,6 +1419,23 @@ async def run_pipeline(
 
     logger.info(f"Rendered {len(rendered_samples)} samples from {len(raw_by_vid)} videos")
     _require_nonempty("RENDER samples", rendered_samples)
+    rendered_vids = {
+        str(s.get("video_id") or "")
+        for s in rendered_samples
+        if s.get("video_id")
+    }
+    missing_render_vids = [
+        vid for vid in sorted(raw_by_vid)
+        if vid and vid not in rendered_vids
+    ]
+    if missing_render_vids:
+        preview = ", ".join(missing_render_vids[:10])
+        suffix = "..." if len(missing_render_vids) > 10 else ""
+        raise RuntimeError(
+            "RENDER produced no samples for "
+            f"{len(missing_render_vids)}/{len(raw_by_vid)} videos: "
+            f"{preview}{suffix}"
+        )
 
     # =================================================================
     # PASS 3-E: Verify + TAG (no drops — preserves trajectory continuity)
@@ -1514,22 +1674,17 @@ async def run_pipeline(
     # reproducible.
     video_ids = sorted({s.get("video_id", "") for s in passed_samples})
     video_ids = [v for v in video_ids if v]
-    random.seed(seed)
-    random.shuffle(video_ids)
-    n = len(video_ids)
-    train_end = int(n * 0.70)
-    val_end = int(n * 0.85)
-    train_vids = set(video_ids[:train_end])
-    val_vids = set(video_ids[train_end:val_end])
-    test_vids = set(video_ids[val_end:])
-
-    # Sub-split train 50/50 into SFT and RL (was 80/20). v12 needs RL parity
-    # because GRPO trajectory-level credit assignment needs ≥150 unique
-    # prompt groups. With G=8 rollouts, that's 1200+ samples minimum.
-    train_vid_list = video_ids[:train_end]
-    sft_split = int(len(train_vid_list) * 0.50)
-    sft_train_vids = set(train_vid_list[:sft_split])
-    rl_train_vids = set(train_vid_list[sft_split:])
+    split_buckets, split_balance_audit = _balanced_video_buckets(
+        video_ids,
+        passed_samples,
+        seed=seed,
+    )
+    sft_train_vids = split_buckets["train_sft"]
+    rl_train_vids = split_buckets["train_rl"]
+    val_vids = split_buckets["val"]
+    test_vids = split_buckets["test"]
+    train_vids = sft_train_vids | rl_train_vids
+    logger.info("Split balance audit: %s", split_balance_audit)
     assert sft_train_vids.isdisjoint(rl_train_vids), \
         "SFT and RL train video sets must be disjoint"
 
@@ -1558,10 +1713,17 @@ async def run_pipeline(
             first_traj = traj_ids[0]
             # Keep samples from first trajectory + ALL silent samples without
             # a trajectory_id (base silents preserve the silent-decision
-            # eval signal).
+            # eval signal). Never thin recall/compress rows: tool-use and
+            # memory-maintenance boundary cases are too sparse to discard.
             for s in vsamps:
                 tid = s.get("trajectory_id", "")
-                if not tid or tid == first_traj or s.get("sequence_type") == "base":
+                sample_type = str(s.get("sample_type") or s.get("action") or "")
+                if (
+                    not tid
+                    or tid == first_traj
+                    or s.get("sequence_type") == "base"
+                    or sample_type in {"recall", "compress"}
+                ):
                     kept.append(s)
         return kept
 
@@ -1612,6 +1774,7 @@ async def run_pipeline(
     stats["phase_counts"] = dict(phase_counts)
     stats["legacy_phase_files_emitted"] = False
     stats["split_by_video"] = True
+    stats["split_balance_audit"] = split_balance_audit
     stats["global_family_distribution"] = global_families
     stats["global_category_distribution"] = global_categories
     stats["global_sequence_type_distribution"] = global_seq_types

@@ -215,6 +215,35 @@ def build_recalled_frames_metadata(
     return out
 
 
+def build_recall_result_metadata(
+    recall_result: Optional[Dict[str, Any]] = None,
+    recalled_frames: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    """Return the model-visible <recall_result> metadata only.
+
+    The retriever may keep text_content/text internally for debugging and hit
+    attribution, but the agent prompt must not expose retrieved textual
+    summaries as evidence. The post-recall answer should be grounded in
+    <recalled_frames> visual evidence plus this routing metadata.
+    """
+    rr = dict(recall_result or {})
+    returned_chunks = select_recall_chunks(rr.get("returned_chunks") or [])
+    out: Dict[str, Any] = {
+        "source": rr.get("source", ""),
+        "time": rr.get("time", ""),
+        "returned_chunks": returned_chunks,
+        "status": rr.get("status", "ok" if returned_chunks else "empty"),
+    }
+    if recalled_frames:
+        out["time_range"] = prompt_time_range(recalled_frames.get("time_range"))
+        out["n_frames"] = recalled_frames.get("n_frames", 0)
+    else:
+        tr = recall_time_range_for_chunks(returned_chunks)
+        if tr:
+            out["time_range"] = prompt_time_range(tr)
+    return out
+
+
 def infer_video_metadata(
     frames: Sequence[Any],
     *,
@@ -581,7 +610,7 @@ def _memory_time_point(value: Any) -> Any:
 
 
 def _coerce_memory_think(item: Any) -> Dict[str, Any]:
-    """Normalize a recent-think memory item for tagged rendering."""
+    """Normalize an archived chunk observation for tagged rendering."""
     if isinstance(item, str):
         m = _RECENT_THINK_LINE_RE.match(item)
         if m:
@@ -631,7 +660,7 @@ def format_memory_block(memory: Dict) -> str:
         )
         parts.append(f"<compressed>{seg_json}</compressed>")
 
-    # Recent thinks. Render as tagged JSON records rather than prose lines so
+    # Archived chunk observations. Render as tagged JSON records rather than prose lines so
     # the model treats them as archival memory, not a continuation template.
     recent = memory.get("recent_thinks", memory.get("recent_observations", []))
     for item in recent:
@@ -691,15 +720,10 @@ def build_recall_result_user_content(
                 max_pixels=max_pixels,
             )
     if recall_result:
-        rr_text = recall_result.get("text_content",
-                                    recall_result.get("text", "")) or ""
-        if len(rr_text) > RECALL_TEXT_MAX_CHARS:
-            rr_text = rr_text[:RECALL_TEXT_MAX_CHARS] + "..."
-        rr_json = json.dumps({
-            "source": recall_result.get("source", ""),
-            "time": recall_result.get("time", ""),
-            "text": rr_text,
-        }, ensure_ascii=False)
+        rr_json = json.dumps(
+            build_recall_result_metadata(recall_result, recalled_frames),
+            ensure_ascii=False,
+        )
         user_content.append({
             "type": "text",
             "text": f"<recall_result>{rr_json}</recall_result>",
@@ -713,7 +737,8 @@ def build_recall_result_user_content(
 #     sees the current active question plus answer history for that same query.
 #   - QUERIES_HISTORY_CAP is a defensive bound for unexpected concurrent open
 #     queries. Production pass3 enforces one active question at a time.
-#   - RECALL_TEXT_MAX_CHARS=1600 ≈ 4 × THINK_TOKENS.max(100 tok × ~4 char)
+#   - RECALL_TEXT_MAX_CHARS is legacy/no-op for prompts; recall_result is
+#     metadata-only and recalled_frames carry visual evidence.
 # These are upper-bound guards; SFT samples normally have a single active query.
 # The "32k" eval profile (scripts/eval/eval_profiles.py) loosens further.
 QUERY_HISTORY_POLICY = "recent_k"
@@ -758,6 +783,36 @@ def answer_format_instruction(
     if form == "descriptive":
         return "Answer format: a short natural-language answer."
     return ""
+
+
+def canonical_answer_instruction(question: Dict[str, Any]) -> str:
+    """Return the canonical model-visible answer-format instruction.
+
+    Older generated rows may carry stale MC instructions such as A-D after a
+    later pass expands options to A-E. For MC questions the structured options
+    are the source of truth; the stored text is only used to infer legacy style.
+    """
+    if not isinstance(question, dict):
+        return ""
+    answer_form = str(question.get("answer_form") or "").strip()
+    answer_style = str(question.get("answer_style") or "").strip()
+    provided = str(question.get("answer_instruction") or "").strip()
+
+    if answer_form.lower() != "multiple_choice":
+        return provided or answer_format_instruction(
+            answer_form,
+            answer_style=answer_style,
+            options=question.get("options") or [],
+        )
+
+    return answer_format_instruction(
+        "multiple_choice",
+        # Keep MCQ surface protocol uniform across generated data, SFT, RL,
+        # and eval. The semantic matcher still accepts text/letter+text for
+        # robustness, but prompts should always ask for the official letter.
+        answer_style="letter_only",
+        options=question.get("options") or [],
+    )
 
 
 def _env_int(name: str, default: int) -> int:
@@ -1085,13 +1140,7 @@ def format_queries_block(
         active_lines.append(
             f"{prefix} Options: {opts}" if prefix else f"Options: {opts}"
         )
-    instruction = (q.get("answer_instruction") or "").strip()
-    if not instruction:
-        instruction = answer_format_instruction(
-            q.get("answer_form", ""),
-            answer_style=q.get("answer_style", ""),
-            options=q.get("options") or [],
-        )
+    instruction = canonical_answer_instruction(q)
     if instruction:
         active_lines.append(f"{prefix} {instruction}" if prefix else instruction)
 
@@ -1168,10 +1217,9 @@ def build_user_content(
 ) -> List[Dict]:
     """Build the user content list for a single-step message.
 
-    Current ordering:
+    Ordinary streaming ordering:
     <user_input> → <memory> → <visual_window> + video_meta frames →
-    <active_query>/<response_history> → <recalled_frames> + frames →
-    <recall_result>.
+    <active_query>/<response_history>.
 
     The fresh user event stays at the front, historical text memory appears
     before vision, and the active query/answer format appears after the visual
@@ -1200,6 +1248,11 @@ def build_user_content(
         inter_chunk: Memory-compaction turn. Queries, recalled frames, and the
                      current visual sliding window are suppressed; compression
                      is a text-memory action between visual timesteps.
+
+    Note:
+        Post-recall turns should call build_recall_result_user_content() instead
+        of this helper. They contain historical recalled frames only and no
+        current visual window.
     """
     layout = normalize_render_layout(render_layout)
     chunk_sec = AGENT_CHUNK_SEC
@@ -1337,22 +1390,15 @@ def build_user_content(
                 "max_pixels": max_pixels,
             })
 
-    # ── Recall result (recall_response only) ──
-    # v9.4.2: cap recall text_content at RECALL_TEXT_MAX_CHARS. Default
-    # 800 (~200 tok) matches the 16k profile; 32k profile bumps to 3000
-    # via eval_profiles.apply_profile(). Top-4 retrieved thinks naturally
-    # stack to 200-480 tokens; the cap catches pathological retrievals
-    # where individual thinks were unusually long.
+    # ── Recall result metadata (recall_response only) ──
+    # Model-visible recall payload is visual-only: <recalled_frames> carries
+    # historical frames, while <recall_result> carries routing metadata. Do not
+    # expose retrieved text_content/text as answer evidence.
     if recall_result and not inter_chunk:
-        rr_text = recall_result.get("text_content",
-                                    recall_result.get("text", "")) or ""
-        if len(rr_text) > RECALL_TEXT_MAX_CHARS:
-            rr_text = rr_text[:RECALL_TEXT_MAX_CHARS] + "…"
-        rr_json = json.dumps({
-            "source": recall_result.get("source", ""),
-            "time": recall_result.get("time", ""),
-            "text": rr_text,
-        }, ensure_ascii=False)
+        rr_json = json.dumps(
+            build_recall_result_metadata(recall_result, recalled_frames),
+            ensure_ascii=False,
+        )
         user_content.append({
             "type": "text",
             "text": f"\n<recall_result>{rr_json}</recall_result>",
@@ -1456,137 +1502,131 @@ _FRAME_CARRIER_VIDEO_META_PROMPT = (
 )
 
 SYSTEM_PROMPT_V12_STREAMING = (
-    "[STREAMING_QA / RECALL-ENCOURAGED TURN]\n"
-    "You are a streaming video agent. This is an ordinary QA turn, not a "
-    "memory-compression turn. Produce one parseable message: exactly one "
-    "<think> block followed by either one <answer> block or one recall "
-    "<tool_call> block.\n\n"
+    "[STREAMING_QA / CURRENT-FIRST / RECALL-ALLOWED]\n"
+    "This is an ordinary streaming video QA turn, not a compression turn. "
+    "Output exactly one <think> block followed by exactly one terminal block: "
+    "<answer>...</answer> or a recall <tool_call>...</tool_call>.\n\n"
     f"{_FRAME_CARRIER_TS_PROMPT}"
-    "Prompt order:\n"
-    "1. <user_input> gives the new external event, if any.\n"
-    "2. <memory> gives historical text state before the visual window. "
-    "<compressed>{...}</compressed> is older summary memory, and "
-    "<memory_think>{...}</memory_think> is previous per-chunk observation. "
-    "Memory helps orientation and recall planning, but is not enough by "
-    "itself for visual detail answers.\n"
-    "3. <visual_window>{...}</visual_window> and the following video frames "
-    "are the current visual evidence. The latest/current one-second chunk is "
-    "the evidence for what is happening now; earlier frames in the same window "
-    "are evidence only for previous or within-window details.\n"
-    "4. <active_query> appears after the visual window and is the only live "
-    "question. It contains the question, options when present, and the required "
-    "answer format. <response_history> contains prior valid answers for that "
-    "same live query only.\n"
-    "5. After recall, <recalled_frames> and <recall_result> are historical "
-    "evidence for the same active query.\n\n"
-    "Decision rules:\n"
-    "- Answer when <active_query> is present and the required evidence is "
-    "complete in the current visual input or in already returned recall "
-    "evidence. Follow the answer-format instruction exactly.\n"
-    "- Prefer recall when the active query needs earlier visual detail that is "
-    "not visible or is unclear in the current visual input, especially for "
-    "objects, actions, OCR, counts, colors, states, attributes, spatial "
-    "relations, cumulative answers, long-wait uncertainty, or HLD/Unable "
-    "absence checks. A single useful recall is better than guessing from memory.\n"
-    "- Prefer silent when there is no <active_query>, when the query asks for a "
-    "future event that has not appeared yet, when the next multi-event answer "
-    "is not due, or when evidence remains insufficient after recall.\n"
-    "- Avoid repeat recall after a recall result has already been returned for "
-    "the same active query; use the returned evidence to answer or stay silent.\n"
-    "- Avoid recall when the answer is already visible in the current visual "
-    "input.\n\n"
-    "Think rules:\n"
-    "- <think> should start with observable facts from the latest/current "
-    "chunk. Keep it short.\n"
-    "- After the current-chunk observation, add only a short decision clause: "
-    "answer, silent, or recall. If the decision depends on older visible or "
-    "recalled evidence, mention the source category only, not the historical "
-    "contents.\n"
-    "- Do not copy raw memory, recall text, frame metadata, options, or "
-    "previous answers into <think>.\n\n"
+    "Priority rules:\n"
+    "1. Start <think> with observable facts from the latest/current video chunk only.\n"
+    "2. Answer only when the active query's required evidence is available in "
+    "the current visual input or returned recall frames.\n"
+    "3. Use recall when earlier visual detail is needed and is not sufficiently "
+    "available in the current input.\n"
+    "4. Follow the output grammar exactly.\n\n"
+    "Input meaning:\n"
+    "- <memory> and <compressed> are historical text state for orientation and "
+    "recall planning, not final visual proof.\n"
+    "- <memory_think>{...}</memory_think> records are archived chunk observations; "
+    "do not copy or continue them.\n"
+    "- The video block is ordered by time. The latest/current chunk is the last "
+    "one-second slice; <visual_window>.current_time is its start second.\n"
+    "- <active_query> is the only live question and gives the required answer "
+    "format. <response_history> contains prior valid answers for that same "
+    "active query only.\n\n"
+    "Think rule:\n"
+    "- The first sentence of <think> must describe only what is visible in the "
+    "latest/current chunk.\n"
+    "- Then briefly connect it to memory or recall evidence if needed.\n"
+    "- Do not copy raw memory, metadata, options, prior answers, or recall "
+    "metadata.\n"
+    "- Avoid repeating unchanged generic observations from previous chunks.\n\n"
+    "Answer or silent:\n"
+    "- If there is no <active_query>, output <answer></answer>.\n"
+    "- If the needed event or evidence has not appeared yet, output "
+    "<answer></answer>.\n"
+    "- For repeated or multi-event queries, answer only for a new required "
+    "event; do not re-emit old answers.\n"
+    "- Follow <active_query>'s answer format exactly. If it says letter-only, "
+    "output one listed letter only.\n"
+    "- For absence or Unable-style queries, answer only when the required "
+    "horizon is reached or recall frames support it; otherwise stay silent.\n\n"
+    "Recall:\n"
+    "- Recall only historical evidence. The time_range end must be <= "
+    "<visual_window>.current_time.\n"
+    "- Use recall for earlier objects, actions, OCR, counts, colors, states, "
+    "attributes, spatial relations, temporal order, causal clues, cumulative "
+    "events, or absence checks.\n"
+    "- Prefer a narrow range inferred from memory/compressed/archived "
+    "observations. Use a wider earlier range only if needed.\n"
+    "- If current visual evidence is sufficient, answer instead of recall.\n"
+    "- Do not issue repeated recall for the same active query after recall "
+    "evidence has already returned.\n\n"
+    "Recall arguments:\n"
+    "- query: 3-6 discriminative keywords using entities, objects, actions, OCR "
+    "text, colors, counts, or spatial/temporal terms.\n"
+    "- Do not use the full question, option letters, or guessed answer values.\n"
+    "- time_range: seconds formatted \"start-end\", historical only.\n\n"
     "Output grammar:\n"
-    "- Every assistant message must be exactly one <think> block followed by "
-    "exactly one terminal block. Do not write text outside these tags.\n"
-    "- Recall tool format:\n"
-    "  <tool_call>{\"name\":\"recall\",\"arguments\":{\"query\":\"3-5 keywords\",\"time_range\":\"start-end\"}}</tool_call>\n"
-    "  The recall query should contain discriminative keywords, not the answer "
-    "value, full question, or option letters. The time_range is seconds such "
-    "as \"20-60\" and should target earlier likely evidence.\n"
-    "- Answer format:\n"
-    "  <answer>response text</answer>\n"
-    "  For multiple-choice letter-only questions, output only one listed "
-    "letter.\n"
-    "- Silent format:\n"
-    "  <answer></answer>\n"
-    "  The silent answer is empty.\n"
-    "- Compression belongs to the memory-maintenance prompt, not this ordinary "
-    "streaming prompt.\n"
+    "- Answer: <answer>response text</answer>\n"
+    "- Silent: <answer></answer>\n"
+    "- Recall: <tool_call>{\"name\":\"recall\",\"arguments\":{\"query\":\"keywords\",\"time_range\":\"start-end\"}}</tool_call>\n"
+    "- No text outside <think> and the terminal block.\n"
 )
 
 SYSTEM_PROMPT_V12_COMPRESS = (
-    "[MEMORY_MAINTENANCE / SYSTEM-COMPRESS TURN]\n"
-    "You are the memory-compaction controller. This is a system-triggered "
-    "memory-maintenance turn. The compression trigger has already fired; do "
-    "not decide whether compression is needed. You must emit exactly one "
-    "compress tool_call.\n\n"
-    "This turn is not ordinary QA. Do not answer a question, do not emit a "
-    "silent <answer></answer>, do not call recall, and do not describe current "
-    "video. The only intended terminal action is compress.\n\n"
-    "Memory structure:\n"
-    "- <memory> contains historical text records.\n"
-    "- <compressed>{...}</compressed> records are older summaries.\n"
-    "- <memory_think>{...}</memory_think> records are previous per-chunk "
-    "observations.\n"
-    "- The <compress_trigger/> marker is a system event flag, not a user "
-    "question and not a time-range instruction.\n\n"
-    "Compression requirements:\n"
-    "- Select one older contiguous range from <memory>.\n"
-    "- Prefer ranges that are repetitive, stable, or no longer immediately "
-    "needed in full detail.\n"
-    "- Preserve rare entities, object identities, colors, OCR text, counts, "
-    "attributes, spatial relations, state changes, and unresolved-query "
-    "details inside the selected range.\n"
-    "- The summary must replace only the selected memory range. Do not invent "
-    "facts and do not include facts outside that range.\n"
-    "- Summary target: 120-220 tokens; hard maximum 280 tokens.\n\n"
-    "Think rules:\n"
-    "- <think> should briefly name the selected older contiguous time range "
-    "and why it is compressible.\n"
-    "- Do not describe the current video chunk.\n"
-    "- Do not answer any active or historical question.\n\n"
-    "Required output grammar for compression turns:\n"
-    "- Exactly one <think> block followed by exactly one compress <tool_call>; "
-    "no text outside tags.\n"
-    "- Compress tool format:\n"
-    "  <tool_call>{\"name\":\"compress\",\"arguments\":{\"time_range\":[start_sec,end_sec],\"text\":\"summary text\"}}</tool_call>\n"
-    "- time_range must be a two-integer array from the selected <memory> range.\n"
-    "- Do not emit <answer>...</answer>, <answer></answer>, or recall."
+    "[MEMORY_MAINTENANCE / FORCED_COMPRESS]\n"
+    "This is a system-triggered memory compression turn. Compression is already "
+    "required. Output exactly one <think> block followed by exactly one compress "
+    "<tool_call>. No answer. No silent answer. No recall.\n\n"
+    "Input:\n"
+    "- <compress_trigger/> is a boolean system event marker. It is not a user "
+    "request, not a question, and not a time-range instruction.\n"
+    "- <memory> contains historical text state.\n"
+    "- <compressed> records are older summaries and should normally be kept as "
+    "context, not recompressed.\n"
+    "- <memory_think> records are archived chunk observations.\n"
+    "- There is no current visual task on this turn.\n\n"
+    "Select range:\n"
+    "- Choose one older contiguous range from uncompressed archived observations "
+    "inside <memory>.\n"
+    "- Optimize for minimal information loss: choose a span whose unique facts "
+    "can be preserved well in a short summary.\n"
+    "- Prefer repetitive, stable, or already-resolved observations that no "
+    "longer need full wording.\n"
+    "- Avoid the newest observations, unresolved active-query evidence, rare "
+    "exact OCR/count details, or details needed for immediate QA.\n"
+    "- Do not choose disjoint ranges. Do not include facts outside the selected "
+    "range.\n\n"
+    "Summary constraints:\n"
+    "- The summary replaces only the selected range.\n"
+    "- Preserve entities, object identities, colors, OCR text, counts, "
+    "attributes, spatial relations, state changes, temporal order, "
+    "absence/negative evidence, and unresolved-query details.\n"
+    "- Do not invent facts. Do not add uncertainty unless it exists in the "
+    "selected range.\n"
+    "- Target 90-160 tokens; hard maximum 220 tokens.\n\n"
+    "Think rule:\n"
+    "- <think> should only state the selected time range and why it is safely "
+    "compressible.\n"
+    "- Do not describe current video. Do not answer any question.\n\n"
+    "Required output:\n"
+    "<think>selected range and compression reason</think>"
+    "<tool_call>{\"name\":\"compress\",\"arguments\":{\"time_range\":[start_sec,end_sec],\"text\":\"summary text\"}}</tool_call>\n"
 )
 
 
 SYSTEM_PROMPT_V12_RECALL_RESPONSE = (
-    "[POST_RECALL DECISION TURN]\n"
-    "You are the post-recall decision controller. This turn happens immediately "
-    "after one recall call for the same active query. No new recall is expected "
-    "on this turn.\n\n"
-    f"{_FRAME_CARRIER_TS_PROMPT}"
-    "Input structure:\n"
-    "- The conversation contains the original active query and a new payload "
-    "with <recall_result> and optional <recalled_frames>.\n"
-    "- <recall_result> and <recalled_frames> are historical evidence returned "
-    "by recall. They are not current visual evidence.\n"
-    "- If no <active_query> is present, the expected behavior is silent.\n\n"
-    "Action preferences:\n"
-    "- Answer when the recalled evidence is sufficient for the active query. "
+    "[POST_RECALL / HISTORICAL-FRAMES ONLY]\n"
+    "This turn contains recall evidence only. No new current video chunk is "
+    "provided. Do not create a current-frame observation.\n\n"
+    "Input:\n"
+    "- <recalled_frames> and the following frames are historical visual evidence "
+    "returned by recall.\n"
+    "- <recall_result> is retrieval metadata only. It is not evidence text and "
+    "must not be used to infer the answer.\n"
+    "- The original <active_query> remains the only live question.\n\n"
+    "Decision:\n"
+    "- Answer when the recalled frames are sufficient for the active query. "
     "Follow the answer-format instruction exactly.\n"
-    "- Prefer silent when recalled evidence is insufficient, ambiguous, or the "
-    "awaited event has not appeared.\n"
-    "- Do not call recall again on this post-recall turn. Do not compress.\n\n"
-    "Think rules:\n"
-    "- Do not create a new current-frame observation.\n"
-    "- <think> should only state whether recalled evidence is sufficient or "
-    "insufficient for the active query. Do not repeat raw recall text or "
-    "historical details.\n\n"
+    "- If recalled frames are insufficient or ambiguous, output "
+    "<answer></answer>, unless the active query explicitly allows an "
+    "Unable/Unknown answer.\n"
+    "- Do not call recall again. Do not call compress.\n\n"
+    "Think rule:\n"
+    "- <think> should only state whether the recalled visual evidence is "
+    "sufficient or insufficient for the active query.\n"
+    "- Do not mention or summarize recall metadata as evidence.\n\n"
     "Output grammar:\n"
     "- Produce exactly one <think> block followed by one <answer> block.\n"
     "- Non-empty answer: <answer>response text</answer>\n"
@@ -1712,10 +1752,10 @@ RECALL_TOOL_SCHEMA = {
             "attribute/spatial detail that is not clearly visible in the "
             "current visual input. If memory suggests a possible answer but "
             "current visual evidence is absent or unclear, recall is preferred "
-            "over answering from memory. Do not use recall when the answer is "
-            "already visible in the current visual input, when the query is "
-            "waiting for a future event, or when recall has already returned "
-            "evidence for the same active query."
+            "over answering from memory. If the current visual input is already "
+            "sufficient, answer instead of recall. Do not use recall when the "
+            "query is waiting for a future event, or when recall has already "
+            "returned evidence for the same active query."
         ),
         "parameters": {
             "type": "object",
@@ -1723,15 +1763,18 @@ RECALL_TOOL_SCHEMA = {
                 "query": {
                     "type": "string",
                     "description": (
-                        "3-5 discriminative keywords (entity names + attributes). "
-                        "No answer values. Example: 'red apron chef pot'."
+                        "3-6 discriminative keywords (entity/object/action/OCR/"
+                        "color/count/spatial terms). No full question, option "
+                        "letters, or guessed answer values. Example: "
+                        "'red apron chef pot'."
                     ),
                 },
                 "time_range": {
                     "type": "string",
                     "description": (
                         "Time range in seconds, format 'start-end'. "
-                        "Example: '20-60'. Constrains search to this window."
+                        "Example: '20-60'. Historical-only search window; "
+                        "end should be <= the current visual time."
                     ),
                 },
             },
@@ -1772,7 +1815,7 @@ COMPRESS_TOOL_SCHEMA = {
                     "description": (
                         "The summary text. Retain entity names, visual "
                         "attributes, OCR text, and state changes. Target "
-                        "120-280 tokens."
+                        "90-160 tokens; hard maximum 220 tokens."
                     ),
                 },
             },

@@ -251,6 +251,39 @@ def _refine_selected_recall_with_rollout(
                 stats["kept_hld_absence"] = stats.get("kept_hld_absence", 0) + 1
                 continue
 
+            recall_reason = str(p.recall_reason_at.get(int(c), "") or "")
+            multi_event_history_probe = (
+                p.mechanism in {"multi_emit", "silent_then_response"}
+                and recall_reason in {
+                    "cumulative_history",
+                    "status_history",
+                    "future_answer_historical_anchor",
+                }
+            )
+            if multi_event_history_probe:
+                support = set(_support_chunks_before(card, int(c)))
+                if support and not (support & set(chunks)):
+                    rr = _recall_result_for(
+                        card,
+                        rollout,
+                        kind,
+                        current_chunk=int(c),
+                        recall_query=rq,
+                    )
+                    try:
+                        rr_chunks = {int(x) for x in rr.get("returned_chunks") or []}
+                    except (TypeError, ValueError):
+                        rr_chunks = set()
+                    if not rr_chunks or not (support & rr_chunks):
+                        stats["dropped_empty_history"] += 1
+                        drop_slot(p, int(c), "support_not_retrievable")
+                        continue
+                p.recall_reason_at[int(c)] = recall_reason or "multi_event_history"
+                stats["kept_multi_event_history"] = (
+                    stats.get("kept_multi_event_history", 0) + 1
+                )
+                continue
+
             memory_text = _memory_text_for_chunk(rollout, int(c))
             context_text = _current_context_text_for_chunk(
                 rollout,
@@ -298,8 +331,13 @@ def _refine_selected_recall_with_rollout(
                 p.recall_reason_at.get(int(c), "") or "memory_gap_historical_evidence"
             )
             if visual_verification_probe:
+                p.mechanism = "recall_demo"
+                p.difficulty_mode = "visual_verification_recall"
                 stats["kept_visual_verification"] = (
                     stats.get("kept_visual_verification", 0) + 1
+                )
+                stats["promoted_visual_verification_recall"] = (
+                    stats.get("promoted_visual_verification_recall", 0) + 1
                 )
             else:
                 stats["kept_memory_gap"] += 1
@@ -463,7 +501,8 @@ def save_placements(video_id: str, data: Dict,
 def load_placements(video_id: str,
                     placements_dir: Path = PLACEMENTS_DIR) -> Optional[Dict]:
     from .cache_version import stage_version_ok
-    if not stage_version_ok("3b"):
+    allow_stale = os.environ.get("THINKSTREAM_ALLOW_STALE_PASS3_CACHE", "").lower() in {"1", "true", "yes", "on"}
+    if not allow_stale and not stage_version_ok("3b"):
         return None
     p = placements_dir / f"{video_id}.json"
     if not p.exists():

@@ -54,6 +54,73 @@ def test_shared_renderer_query_last_and_integer_times():
     assert vw["current_time"] == 3
 
 
+def test_recall_result_is_metadata_only_in_shared_renderer():
+    content = build_user_content(
+        "",
+        chunk_idx=12,
+        video_path="/unused.mp4",
+        queries=[{
+            "question": "What text was on the sign?",
+            "answer_form": "open",
+            "answer_instruction": "Answer format: a concise exact phrase.",
+            "ask_time": 12,
+            "answers": [],
+        }],
+        recalled_frames={
+            "time_range": [4, 6],
+            "source": "historical_frames",
+            "n_frames": 4,
+            "frame_paths": [f"frame_{i:06d}.jpg" for i in range(9, 13)],
+        },
+        recall_result={
+            "source": "historical_frames",
+            "time": "4-6",
+            "text_content": "leaking textual answer",
+            "text": "another leaking textual answer",
+            "returned_chunks": [4, 5],
+        },
+        frame_paths=[f"frame_{i:06d}.jpg" for i in range(17, 25)],
+        frame_protocol="video_meta",
+        render_layout="standard_query_last",
+    )
+    text = _join_user_text(content)
+    assert "<recalled_frames>" in text
+    assert "<recall_result>" in text
+    assert "returned_chunks" in text
+    assert "leaking textual answer" not in text
+    assert '"text"' not in text
+
+
+def test_runtime_post_recall_has_no_current_visual_window():
+    messages = build_single_step_messages(
+        {"compressed_segments": [], "recent_thinks": []},
+        12,
+        "/unused.mp4",
+        recalled_frames={
+            "time_range": [4, 6],
+            "source": "historical_frames",
+            "n_frames": 4,
+            "frame_paths": [f"frame_{i:06d}.jpg" for i in range(9, 13)],
+        },
+        recall_result={
+            "source": "historical_frames",
+            "time": "4-6",
+            "text_content": "leaking textual answer",
+            "returned_chunks": [4, 5],
+        },
+        frame_protocol="video_meta",
+        render_layout="standard_query_last",
+    )
+    system_text = messages[0]["content"][0]["text"]
+    user_text = _join_user_text(messages[1]["content"])
+    assert "[POST_RECALL / HISTORICAL-FRAMES ONLY]" in system_text
+    assert "<visual_window>" not in user_text
+    assert "<active_query>" not in user_text
+    assert "<recalled_frames>" in user_text
+    assert "<recall_result>" in user_text
+    assert "leaking textual answer" not in user_text
+
+
 def test_pass5_and_runtime_builders_match_query_last_contract(tmp_path: Path):
     frame_dir = tmp_path / "data" / "agent_v5" / "frames" / "vid0"
     frame_dir.mkdir(parents=True)
@@ -142,3 +209,58 @@ def test_query_lifecycle_records_early_on_time_and_late_answers():
 
     rendered = format_queries_block([q])
     assert rendered == ""
+
+
+def test_pass5_answer_contract_rejects_wrong_mc_response():
+    from scripts.agent_data_v5.pass5_messages import (
+        QueryRenderContractError,
+        validate_answer_render_contract,
+    )
+
+    sample = {
+        "sample_id": "bad-mcq",
+        "sample_type": "response",
+        "action": "response",
+        "chunk_idx": 5,
+        "metadata": {
+            "question": "Which color?",
+            "answer_form": "multiple_choice",
+            "answer_style": "letter_only",
+            "answer_instruction": "Answer format: one letter only (A, B, C, or D).",
+            "options": ["A) red", "B) blue", "C) green", "D) yellow"],
+            "correct_option": "B",
+            "gold_answer": "blue",
+            "canonical_answer": "blue",
+        },
+    }
+    messages = [
+        {"role": "assistant", "content": [{"type": "text", "text": "<think>x</think><answer>A</answer>"}]},
+    ]
+    try:
+        validate_answer_render_contract(sample, messages)
+    except QueryRenderContractError:
+        pass
+    else:
+        raise AssertionError("wrong MC response should fail pass5 answer contract")
+
+
+def test_pass5_query_contract_uses_e_option_in_answer_format():
+    from scripts.agent_data_v5.pass5_messages import validate_query_render_contract
+    from thinkstream.data.agent_protocol import format_queries_block
+
+    q = {
+        "question": "Which object appears?",
+        "ask_time": 3,
+        "status": "open",
+        "options": ["A) brush", "B) spoon", "C) cup", "D) book", "E) plate"],
+        "answer_form": "multiple_choice",
+        "answer_style": "letter_only",
+        "answer_instruction": "Answer format: one letter only (A, B, C, or D).",
+        "answers": [],
+    }
+    text = format_queries_block([q])
+    assert "A, B, C, D, or E" in text
+    validate_query_render_contract(
+        {"sample_id": "mcq-e", "input": {"queries": [q]}},
+        [{"role": "user", "content": [{"type": "text", "text": text}]}],
+    )

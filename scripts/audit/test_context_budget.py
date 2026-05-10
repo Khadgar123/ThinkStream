@@ -82,7 +82,7 @@ def build_worst_case_sample(*, with_recall: bool, inter_chunk: bool) -> Dict:
       - 5 summaries × 280 tok each (saturate compressed memory)
       - recent_thinks tokens at trigger threshold 0.8 × 4000 = 3200
       - 4 active queries (max in MAX_ACTIVE_QUERIES)
-      - if with_recall: 4 recalled frames + max-length recall_result text
+      - if with_recall: 4 recalled frames + metadata-only recall_result
     """
     chunk_idx = 100
     # Build saturated memory: 5 summaries + recent_thinks at trigger
@@ -154,8 +154,7 @@ def build_worst_case_sample(*, with_recall: bool, inter_chunk: bool) -> Dict:
     }
 
     if with_recall and not inter_chunk:
-        # Worst-case recall: 4 frames + max-length text (RECALL_TEXT_MAX_CHARS=800)
-        from thinkstream.data.agent_protocol import RECALL_TEXT_MAX_CHARS
+        # Worst-case recall: 4 frames + metadata-only recall_result.
         inp["recalled_frames"] = {
             "time_range": [10, 14],
             "n_frames": 4,
@@ -165,7 +164,7 @@ def build_worst_case_sample(*, with_recall: bool, inter_chunk: bool) -> Dict:
         inp["recall_result"] = {
             "source": "historical",
             "time": "10-14",
-            "text_content": "x " * (RECALL_TEXT_MAX_CHARS // 2),
+            "returned_chunks": [10, 11, 12, 13],
         }
 
     sample = {

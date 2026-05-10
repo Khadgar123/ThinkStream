@@ -18,9 +18,11 @@ from ..stable_hash import stable_mod, stable_seed
 from .design import (
     CRR1_ADOPT_RATE,
     Card,
+    F5_ADOPT_RATE,
     F7_ADOPT_RATE,
     GoldEmit,
     MULTI_EMIT_ADOPT_RATE,
+    PN1_ADOPT_RATE,
 )
 
 MC_OPTION_LETTERS = "ABCDE"
@@ -693,10 +695,11 @@ def generate_cards(evidence: List[Dict], video_id: str, seed: int = 42) -> List[
         cards += gen_crr_event_status(evidence, video_id)  # CRR-like before/after probes
     cards += gen_ocr(evidence, video_id)                 # MC OCR (realtime)
     cards += gen_m1_summary(evidence, video_id)          # descriptive (backward)
-    # Multi_emit / narration — adopt only in MULTI_EMIT_ADOPT_RATE of videos
-    # to bring multi_emit % of placements into target ~5% range.
-    if rng.random() < MULTI_EMIT_ADOPT_RATE:
+    # Active-responding non-MCQ: keep REC/counting common, but narration
+    # exploratory and small. MULTI_EMIT_ADOPT_RATE remains as the legacy
+    # fallback default if explicit env rates are unset.
+    if rng.random() < (F5_ADOPT_RATE or MULTI_EMIT_ADOPT_RATE):
         cards += gen_f5_counting(evidence, video_id)     # number multi_emit
-    if rng.random() < MULTI_EMIT_ADOPT_RATE:
+    if rng.random() < (PN1_ADOPT_RATE or MULTI_EMIT_ADOPT_RATE):
         cards += gen_pn1_narration(evidence, video_id)   # narration multi_emit
     return cards

@@ -219,7 +219,6 @@ def _recall_events(traj: Dict[str, Any]) -> List[Dict[str, Any]]:
             "query": q,
             "returned_chunks": list(rr.get("returned_chunks") or []),
             "result_time": rr.get("time", ""),
-            "result_text": rr.get("text_content", ""),
             "answer": _extract_answer(
                 s.get("v12_assistant_turn_2") or s.get("output") or ""
             ),
@@ -383,6 +382,9 @@ def export_bank(
         raise FileNotFoundError(f"rollout dir not found: {rollout_dir}")
 
     traj_out_dir = out_dir / "trajectories"
+    if traj_out_dir.exists():
+        for old_path in traj_out_dir.glob("*.json"):
+            old_path.unlink()
     stats_rows: List[Dict[str, Any]] = []
     records_written = 0
     skipped_missing_rollout = 0

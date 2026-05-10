@@ -4,10 +4,11 @@ Reads pass4 outputs and emits one row per sample in the multi-turn messages
 format used by LLaMA-Factory / DeepEyesV2 / VST. Each row is a stand-alone
 training sample matching fresh-KV-per-chunk inference: every sample's
 user.content carries the full state for ordinary visual turns (user_input +
-memory + queries + visual_window + recalled_frames) so the model trains under
+memory + visual_window + active_query; recalled frames are only in the recall
+tool-response turn) so the model trains under
 the exact same input distribution it sees at inference.
 
-Three sample shapes preserved (canonical pass/SFT/RL/eval timestamped-image protocol):
+Three sample shapes preserved (canonical pass/SFT/RL/eval video_meta protocol):
   A. Single-turn       (silent / response / lonely recall / inter-chunk compress)
   B. Multi-turn recall (recall_query → tool turn → final answer, within one chunk)
   C. Inter-chunk compress (system inserts <compress_trigger> before memory,
@@ -50,6 +51,8 @@ from thinkstream.data.agent_protocol import (
     format_user_input_block,
     append_visual_frames,
     build_recalled_frames_metadata,
+    build_recall_result_metadata,
+    canonical_answer_instruction,
     normalize_frame_protocol,
     prompt_time_range,
     prompt_time_value,
@@ -122,7 +125,7 @@ SPLITS = [
 # which must keep a complete replay timeline. Keep all high-information
 # actions, then downsample low-information patrol silence so SFT still learns
 # silence without drowning recall/compress/answer actions.
-SFT_SILENT_TO_ACTIVE_RATIO = 1.25
+SFT_SILENT_TO_ACTIVE_RATIO = 0.90
 SFT_PENDING_SILENT_FRACTION = 0.55
 SFT_POST_ANSWER_SILENT_FRACTION = 0.25
 SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO = 0.35
@@ -305,18 +308,7 @@ def _per_emit_target(question: Dict[str, Any], chunk_idx: Any) -> str:
 
 
 def _mc_target_for_question(question: Dict[str, Any], chunk_idx: Any) -> str:
-    per_emit = _per_emit_target(question, chunk_idx)
-    if per_emit:
-        return per_emit
     letter, text = _mc_letter_text(question)
-    style = str(question.get("answer_style") or "").strip().lower()
-    instruction = str(question.get("answer_instruction") or "").strip().lower()
-    if style == "letter_only" or "one letter only" in instruction:
-        return letter
-    if style == "text_only":
-        return text
-    if letter and text:
-        return f"{letter}) {text}"
     return letter or text
 
 
@@ -418,6 +410,16 @@ def build_messages(
         sample.get("sample_type") == "recall"
         and "v12_assistant_turn_1" in sample
     )
+    sample_type = str(sample.get("sample_type") or "").strip().lower()
+    explicit_post_recall = sample_type in {
+        "post_recall",
+        "recall_response",
+        "recall_answer",
+    }
+    legacy_post_recall = (
+        explicit_post_recall
+        or (bool(inp.get("recall_result")) and not is_recall_multiturn and sample_type != "recall")
+    )
 
     messages: List[Dict] = [
         {
@@ -429,12 +431,7 @@ def build_messages(
                     prompt_kind=(
                         "post_recall"
                         if (
-                            sample.get("sample_type") == "recall_response"
-                            or sample.get("sample_type") == "post_recall"
-                            or (
-                                inp.get("recall_result")
-                                and not is_recall_multiturn
-                            )
+                            legacy_post_recall
                         )
                         else None
                     ),
@@ -450,6 +447,72 @@ def build_messages(
         video_path = str(base_path / video_path)
 
     user_content: List[Dict] = []
+
+    # ── Legacy standalone post-recall row ──────────────────────────────
+    # Canonical recall samples are shape B:
+    #   user(current chunk + active_query) → assistant(recall) →
+    #   user(recalled frames + metadata) → assistant(answer)
+    # Older pass3 rows can already be the final post-recall answer without
+    # the first two turns. In that case render only the active query plus
+    # recall evidence; never add a fresh current visual window under the
+    # post-recall system prompt.
+    if legacy_post_recall and not is_recall_multiturn and not inter_chunk:
+        queries = inp.get("queries", [])
+        qt = format_queries_block(queries)
+        if qt:
+            user_content.append({"type": "text", "text": qt})
+
+        rf = _normalise_recalled_frames(inp, chunk_sec) or inp.get("recalled_frames")
+        if rf:
+            rf_header = json.dumps({
+                "time_range": prompt_time_range(rf["time_range"]),
+                "source": rf.get("source", "historical_frames"),
+                "n_frames": rf["n_frames"],
+            })
+            user_content.append({
+                "type": "text",
+                "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
+            })
+            if "frame_paths" in rf:
+                tr0, tr1 = rf["time_range"]
+                try:
+                    from scripts.agent_data_v5.config import (
+                        RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+                    )
+                except ImportError:
+                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+                append_visual_frames(
+                    user_content,
+                    _resolve_paths(rf["frame_paths"], base_path, data_dir),
+                    frame_protocol=frame_protocol,
+                    fps=float(FRAMES_PER_CHUNK / chunk_sec),
+                    start_frame_index=int(tr0 * FRAMES_PER_CHUNK),
+                    total_num_frames=int(tr1 * FRAMES_PER_CHUNK),
+                    context_label="recalled frame",
+                    min_pixels=_RTKW["min_pixels"],
+                    max_pixels=_RTKW["max_pixels"],
+                )
+            elif video_path:
+                user_content.append({
+                    "type": "video", "video": video_path,
+                    "video_start": prompt_time_value(rf["time_range"][0]),
+                    "video_end": prompt_time_value(rf["time_range"][1]),
+                })
+
+        rr_json = json.dumps(
+            build_recall_result_metadata(inp.get("recall_result") or {}, rf),
+            ensure_ascii=False,
+        )
+        user_content.append({
+            "type": "text",
+            "text": f"\n<recall_result>{rr_json}</recall_result>",
+        })
+        messages.append({"role": "user", "content": user_content})
+        messages.append({
+            "role": "assistant",
+            "content": [{"type": "text", "text": _normalise_assistant_output(sample)}],
+        })
+        return messages
 
     # ── User input first ───────────────────────────────────────────────
     raw_user_input = inp.get("user_input", "")
@@ -614,14 +677,16 @@ def build_messages(
                 "video_end": prompt_time_value(rf["time_range"][1]),
             })
 
-    # ── Legacy single-turn recall_result (text only, no tool turn) ──────
+    # ── Legacy single-turn recall_result metadata (no text evidence) ────
     if inp.get("recall_result") and not is_recall_multiturn and not inter_chunk:
         rr = inp["recall_result"]
-        rr_json = json.dumps({
-            "source": rr.get("source", ""),
-            "time": rr.get("time", ""),
-            "text": rr.get("text_content", rr.get("text", "")),
-        }, ensure_ascii=False)
+        rr_json = json.dumps(
+            build_recall_result_metadata(
+                rr,
+                _normalise_recalled_frames(inp, chunk_sec),
+            ),
+            ensure_ascii=False,
+        )
         user_content.append({
             "type": "text",
             "text": f"\n<recall_result>{rr_json}</recall_result>",
@@ -644,11 +709,6 @@ def build_messages(
         # raw recall_result JSON FIRST, then frames — train/infer drift
         # for shape-B recall second-turn answer training.
         rr = sample.get("recall_result") or inp.get("recall_result") or {}
-        rr_json = json.dumps({
-            "source": rr.get("source", ""),
-            "time": rr.get("time", ""),
-            "text": rr.get("text_content", rr.get("text", "")),
-        }, ensure_ascii=False)
         tool_payload: List[Dict] = []
 
         rf = _normalise_recalled_frames(inp, chunk_sec)
@@ -692,9 +752,12 @@ def build_messages(
                     "video_end": prompt_time_value(rf["time_range"][1]),
                 })
 
-        # v12.11 audit-5 P0 #1: append <recall_result> AFTER frames so the
-        # token stream matches runtime: [<recalled_frames>{...}, video,
-        # <recall_result>{...}</recall_result>].
+        # Append metadata-only <recall_result> AFTER frames. Retrieved text is
+        # intentionally hidden from the model; the visual frames are evidence.
+        rr_json = json.dumps(
+            build_recall_result_metadata(rr, rf),
+            ensure_ascii=False,
+        )
         tool_payload.append({
             "type": "text",
             "text": f"<recall_result>{rr_json}</recall_result>",
@@ -782,6 +845,11 @@ def _iter_trajectories(path: Path) -> Iterable[Dict]:
                         if key in q:
                             value = q.get(key)
                             meta[key] = list(value) if isinstance(value, list) else value
+                    if q.get("answer_form") == "multiple_choice":
+                        meta["answer_style"] = "letter_only"
+                    instruction = canonical_answer_instruction(meta)
+                    if instruction:
+                        meta["answer_instruction"] = instruction
                     if q.get("answer_form") == "multiple_choice":
                         _letter, correct_text = _mc_letter_text(q)
                         meta["correct_answer_text"] = correct_text
@@ -1026,6 +1094,13 @@ def _normalise_ws(text: str) -> str:
     return " ".join(str(text or "").split())
 
 
+def _answer_format_body(instruction: str) -> str:
+    text = str(instruction or "").strip()
+    if text.lower().startswith("answer format:"):
+        text = text.split(":", 1)[1].strip()
+    return text
+
+
 def validate_query_render_contract(sample: Dict, messages: List[Dict]) -> None:
     """Hard-check active_query rendering in final ShareGPT messages.
 
@@ -1110,6 +1185,18 @@ def validate_query_render_contract(sample: Dict, messages: List[Dict]) -> None:
                 f"sample={sample_id}: MC active_query must render exactly one "
                 "non-empty Answer format line"
             )
+        expected_instruction = _answer_format_body(
+            canonical_answer_instruction(expected_query)
+        )
+        if (
+            expected_instruction
+            and _normalise_ws(answer_format_lines[0])
+            != _normalise_ws(expected_instruction)
+        ):
+            raise QueryRenderContractError(
+                f"sample={sample_id}: rendered Answer format mismatch: "
+                f"{answer_format_lines[0]!r} != {expected_instruction!r}"
+            )
     else:
         if option_lines:
             raise QueryRenderContractError(
@@ -1120,6 +1207,128 @@ def validate_query_render_contract(sample: Dict, messages: List[Dict]) -> None:
                 f"sample={sample_id}: active_query answer_form={answer_form!r} "
                 "requires one non-empty Answer format line"
             )
+
+
+def _assistant_answer_blocks(messages: List[Dict]) -> List[str]:
+    out: List[str] = []
+    for msg in messages or []:
+        if msg.get("role") != "assistant":
+            continue
+        content = msg.get("content", "")
+        if isinstance(content, list):
+            text = "".join(
+                str(item.get("text") or "")
+                for item in content
+                if isinstance(item, dict)
+            )
+        else:
+            text = str(content or "")
+        out.extend(m.group(1).strip() for m in ANSWER_BLOCK_RE.finditer(text))
+    return out
+
+
+def validate_answer_render_contract(sample: Dict, messages: List[Dict]) -> None:
+    """Hard-check response targets against the structured question metadata.
+
+    Query rendering can be correct while the supervised response is still wrong
+    because a pass moved options/correct_option/gold_answer out of sync. This
+    check fails pass5 instead of emitting an SFT row whose answer would receive
+    zero reward under the shared RL/eval matcher.
+    """
+    answers = _assistant_answer_blocks(messages)
+    nonempty = [a for a in answers if a.strip()]
+    sample_type = str(sample.get("sample_type") or "")
+    action = str(sample.get("action") or sample_type or "")
+    sample_id = sample.get("sample_id") or sample.get("trajectory_id") or "?"
+
+    if sample_type == "silent" or action == "silent":
+        if nonempty:
+            raise QueryRenderContractError(
+                f"sample={sample_id}: silent row rendered non-empty answer {nonempty[:1]!r}"
+            )
+        return
+
+    if not nonempty:
+        if sample_type == "response" or action == "response":
+            raise QueryRenderContractError(
+                f"sample={sample_id}: response row rendered empty/no <answer>"
+            )
+        return
+
+    if len(nonempty) > 1:
+        raise QueryRenderContractError(
+            f"sample={sample_id}: rendered multiple non-empty answers {nonempty!r}"
+        )
+
+    q = sample.get("_trajectory_question") or sample.get("metadata") or {}
+    if not q:
+        # Background rows should not answer. If they did, fail loudly.
+        raise QueryRenderContractError(
+            f"sample={sample_id}: non-empty answer without question metadata"
+        )
+
+    answer = nonempty[0]
+    answer_form = str(q.get("answer_form") or "").strip()
+    options = [str(x) for x in q.get("options") or [] if str(x).strip()]
+    correct_option = q.get("correct_option", "")
+
+    if answer_form == "multiple_choice":
+        letter, correct_text = _mc_letter_text(q)
+        if not options:
+            raise QueryRenderContractError(
+                f"sample={sample_id}: MC response has no options in metadata"
+            )
+        if letter:
+            idx = OPTION_LETTERS.index(letter)
+            if idx >= len(options):
+                raise QueryRenderContractError(
+                    f"sample={sample_id}: correct_option={letter!r} outside "
+                    f"options len={len(options)}"
+                )
+            option_text = _strip_option_label(options[idx])
+            if correct_text and _normalise_ws(correct_text) != _normalise_ws(option_text):
+                raise QueryRenderContractError(
+                    f"sample={sample_id}: correct answer text mismatch: "
+                    f"{correct_text!r} != option[{letter}] {option_text!r}"
+                )
+        target = _mc_target_for_question(q, sample.get("chunk_idx"))
+        if target and _normalise_ws(answer) != _normalise_ws(target):
+            raise QueryRenderContractError(
+                f"sample={sample_id}: MC SFT answer mismatch: {answer!r} != {target!r}"
+            )
+
+    gold = (
+        _per_emit_target(q, sample.get("chunk_idx"))
+        or str(q.get("sft_answer") or "").strip()
+        or str(q.get("gold_answer") or "").strip()
+        or str(q.get("canonical_answer") or "").strip()
+        or str(q.get("correct_answer_text") or "").strip()
+    )
+    if not gold:
+        raise QueryRenderContractError(
+            f"sample={sample_id}: non-empty answer {answer!r} has empty gold target"
+        )
+
+    try:
+        from thinkstream.trainer.outcome_match import score_outcome_by_form
+    except Exception as exc:
+        raise QueryRenderContractError(
+            f"sample={sample_id}: cannot import shared outcome matcher: {exc}"
+        ) from exc
+
+    score = score_outcome_by_form(
+        answer,
+        options=options,
+        correct_option=correct_option,
+        gold_answer=gold,
+        answer_form=answer_form,
+    )
+    if score < 1.0:
+        raise QueryRenderContractError(
+            f"sample={sample_id}: rendered answer would score 0 under shared "
+            f"matcher: answer={answer!r}, gold={gold!r}, "
+            f"answer_form={answer_form!r}, correct_option={correct_option!r}"
+        )
 
 
 def build_sft_rows(
@@ -1245,6 +1454,73 @@ def _choose_ranked(items: List[tuple[int, Dict]], n: int) -> List[tuple[int, Dic
     return sorted(items, key=lambda x: _sample_rank(x[1], x[0]))[:n]
 
 
+def _silent_diversity_key(sample: Dict) -> str:
+    role = _silent_role(sample)
+    meta = sample.get("metadata") or {}
+    family = str(meta.get("family") or "none")
+    availability = str(
+        meta.get("availability")
+        or sample.get("sequence_type")
+        or "none"
+    )
+    question_type = str(meta.get("question_type") or "single_emit")
+    base_role = str(sample.get("base_role") or "")
+
+    if role == "pending_question":
+        if base_role == "recall_wait_no_history":
+            subtype = "recall_wait_no_history"
+        elif availability == "event_watch":
+            subtype = "future_event_wait"
+        elif availability == "multi_response" or question_type == "multi_emit":
+            subtype = "multi_emit_wait"
+        elif availability == "recall_success":
+            subtype = "recall_answer_pending"
+        elif availability == "memory_response":
+            subtype = "memory_answer_pending"
+        elif availability == "immediate_response":
+            subtype = "immediate_boundary_wait"
+        else:
+            subtype = availability or "pending"
+        return f"{role}|{subtype}|{family}"
+
+    if role == "post_answer":
+        return f"{role}|{family}"
+    return f"{role}|{base_role or 'patrol'}"
+
+
+def _choose_diverse_silent(
+    items: List[tuple[int, Dict]],
+    n: int,
+) -> List[tuple[int, Dict]]:
+    """Deterministically sample silent rows while preserving boundary variety."""
+    if n <= 0 or not items:
+        return []
+    by_key: Dict[str, List[tuple[int, Dict]]] = {}
+    for item in items:
+        by_key.setdefault(_silent_diversity_key(item[1]), []).append(item)
+    for key in by_key:
+        by_key[key] = _choose_ranked(by_key[key], len(by_key[key]))
+
+    selected: List[tuple[int, Dict]] = []
+    cursors = {key: 0 for key in by_key}
+    keys = sorted(by_key, key=lambda k: (-len(by_key[k]), k))
+    while len(selected) < n:
+        progressed = False
+        for key in keys:
+            cur = cursors[key]
+            bucket = by_key[key]
+            if cur >= len(bucket):
+                continue
+            selected.append(bucket[cur])
+            cursors[key] += 1
+            progressed = True
+            if len(selected) >= n:
+                break
+        if not progressed:
+            break
+    return selected
+
+
 def _is_multi_emit_response(sample: Dict) -> bool:
     if sample.get("sample_type") != "response":
         return False
@@ -1296,7 +1572,7 @@ def balance_sft_samples(samples: List[Dict]) -> tuple[List[Dict], Dict[str, int]
       - keep every recall / compress row;
       - keep ordinary response rows;
       - cap multi-emit response rows so F5/PN1 do not dominate SFT;
-      - keep enough silent rows to make silent roughly 55-60% of SFT;
+      - keep enough silent rows to make silent roughly 40-45% of SFT;
       - prefer pending-query and post-answer silent rows over patrol/background
         rows so SFT learns answer timing boundaries instead of just idle chunks.
     """
@@ -1357,12 +1633,12 @@ def balance_sft_samples(samples: List[Dict]) -> tuple[List[Dict], Dict[str, int]
         int(target_silent * SFT_POST_ANSWER_SILENT_FRACTION),
     )
     kept_silent = (
-        _choose_ranked(pending_silent, target_pending)
-        + _choose_ranked(post_answer_silent, target_post_answer)
+        _choose_diverse_silent(pending_silent, target_pending)
+        + _choose_diverse_silent(post_answer_silent, target_post_answer)
     )
     remaining = target_silent - len(kept_silent)
     if remaining > 0:
-        kept_silent.extend(_choose_ranked(base_silent, remaining))
+        kept_silent.extend(_choose_diverse_silent(base_silent, remaining))
     if len(kept_silent) < target_silent:
         used = {i for i, _s in kept_silent}
         rest = [
@@ -1370,11 +1646,15 @@ def balance_sft_samples(samples: List[Dict]) -> tuple[List[Dict], Dict[str, int]
             for i, s in bucket
             if i not in used
         ]
-        kept_silent.extend(_choose_ranked(rest, target_silent - len(kept_silent)))
+        kept_silent.extend(_choose_diverse_silent(rest, target_silent - len(kept_silent)))
 
     selected = active + kept_silent
     selected.sort(key=lambda x: x[0])
     out = [s for _i, s in selected]
+    if sum(1 for s in out if s.get("sample_type") == "recall") != len(recall_rows):
+        raise RuntimeError("SFT balancing must not drop recall samples")
+    if sum(1 for s in out if s.get("sample_type") == "compress") != len(compress_rows):
+        raise RuntimeError("SFT balancing must not drop compress samples")
     return out, {
         "before": len(samples),
         "after": len(out),
@@ -1442,6 +1722,7 @@ def convert(
                     render_layout=render_layout,
                 )
                 validate_query_render_contract(sample, messages)
+                validate_answer_render_contract(sample, messages)
             except QueryRenderContractError:
                 raise
             except (KeyError, ValueError) as exc:
@@ -1530,7 +1811,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--render-layout",
-        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", RENDER_LAYOUT_QUERY_LAST),
+        default=RENDER_LAYOUT_QUERY_LAST,
         choices=[RENDER_LAYOUT_QUERY_LAST],
         help=(
             "Prompt layout. standard_query_last keeps memory before visual and "

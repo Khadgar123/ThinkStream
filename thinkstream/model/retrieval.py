@@ -4,8 +4,9 @@ Two implementations, both matching the same callable signature
 expected by agent_loop's `retrieve_fn` slot:
 
   retriever(query: Dict, archive: List[Dict]) -> Dict
-      Same signature as bm25_retrieve in agent_loop.py — returns a
-      recall_result dict with text_content / returned_chunks / time.
+      Same signature as bm25_retrieve in agent_loop.py. The retriever may
+      return internal text_content for debugging, but prompt rendering exposes
+      only metadata plus recalled visual frames.
 
   retriever.index_chunk(chunk_idx, video_path, think_text) -> None
       Optional indexing hook called by agent_loop after each chunk's

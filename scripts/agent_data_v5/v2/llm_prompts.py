@@ -10,6 +10,7 @@ caller (pass3a_cards.py / pass3c_samples.py) wraps them into a vLLM request.
 from __future__ import annotations
 
 import json
+import re
 from typing import Dict, List
 
 
@@ -181,6 +182,13 @@ QUESTION_TYPE_BY_FAMILY = {f: ("multi_emit" if f in ("F5", "F7", "CRR1", "PN1") 
                            for f in FAMILY_RULES}
 
 
+ANSWER_FORM_VARIANTS = {
+    # Keep perception/backward tracing families in their benchmark-like MCQ
+    # form. Non-MCQ pressure should mainly come from active responding:
+    # F5/REC counting, F7/SSR status, and CRR1/CRR status-over-time.
+}
+
+
 FAMILY_EXTRA_RULES = {
     "HLD1": """
 - HLD1 is an explicit negative/unanswerable card.
@@ -219,6 +227,8 @@ FAMILY_EXTRA_RULES = {
 - If you cannot construct a safe unanswerable card, output an empty JSON list.""",
     "F7": """
 - F7 must be multi-time status.
+- The user-facing question should look like a natural status check:
+  "Has/Did/Is ... yet/by now?" It should not mention options or answer format.
 - gold_emits MUST contain at least one "No" before the change chunk and at least one "Yes" at/after it.
 - Values must be monotonic over time: No ... No, then Yes ... Yes; never Yes before No.
 - If the timeline permits, include one later Yes probe after the change has
@@ -229,8 +239,9 @@ FAMILY_EXTRA_RULES = {
     "CRR1": """
 - CRR1 is a multi-probe event-status card.
 - Ask whether a concrete event has happened yet. The event description may be
-  in the question, but the answer values must be only "No" before the event is
-  evidenced and "Yes" at/after the evidence chunk.
+  in the question, but the wording should still be a compact status check:
+  "Has/Did ... yet/by now?" Answer values must be only "No" before the event
+  is evidenced and "Yes" at/after the evidence chunk.
 - gold_emits MUST contain at least one No before the event and at least one Yes
   after it. Use 3-5 probe chunks, not every chunk in a long range.
 - If the timeline permits, include one later Yes probe after the event has
@@ -239,6 +250,13 @@ FAMILY_EXTRA_RULES = {
   progress questions.
 - Choose events with enough earlier context that the No probes are meaningful.
 - grounding_frames should include the event chunk that changes the status.""",
+    "F5": """
+- F5 should be phrased as cumulative repeated-action counting:
+  "How many times has ... happened by now?" or "How many ... have appeared so far?"
+- The counted unit must be visually repeatable and unambiguous. Do not count
+  vague activity, camera cuts, or inferred intent.
+- gold_emits values must be digit strings and should update only at meaningful
+  occurrence chunks, not at every frame.""",
     "F6": """
 - F6 is immediate future prediction from current cues, not wait-until-the-future.
 - The question should ask what is likely to happen next or what state will
@@ -570,16 +588,30 @@ def card_generation_prompt(
     """
     rule = FAMILY_RULES[family]
     qtype = QUESTION_TYPE_BY_FAMILY[family]
+    allowed_answer_forms = ANSWER_FORM_VARIANTS.get(
+        family,
+        (str(rule["answer_form"]),),
+    )
+    answer_form_doc = (
+        str(rule["answer_form"])
+        if len(allowed_answer_forms) == 1
+        else "one of " + ", ".join(allowed_answer_forms)
+    )
+    answer_form_schema = (
+        f'"{allowed_answer_forms[0]}"'
+        if len(allowed_answer_forms) == 1
+        else " | ".join(f'"{x}"' for x in allowed_answer_forms)
+    )
 
     evidence_text = _format_evidence_timeline(evidence)
     generation_guidance = _generation_guidance(rule, qtype).strip()
     style_guidance = _question_style_guidance(rule, qtype).strip()
 
     options_block = ""
-    if rule["answer_form"] == "multiple_choice":
+    if "multiple_choice" in allowed_answer_forms:
         options_block = """
-  "options": ["A) ...", "B) ...", "..."],                # 2-5 plausible options; 4 by default, 5 allowed with "E) ..."
-  "correct_option": "A" | "B" | "C" | "D" | "E",          # the gold letter"""
+  "options": ["A) ...", "B) ...", "..."],                # required only when answer_form == "multiple_choice"; 2-5 plausible options
+  "correct_option": "A" | "B" | "C" | "D" | "E",          # required only when answer_form == "multiple_choice"; the gold letter"""
 
     if qtype == "multi_emit":
         emits_doc = ('"gold_emits": [{"chunk": int, "value": str}, ...],   '
@@ -595,7 +627,7 @@ def card_generation_prompt(
 
 Family: {family}  ({rule["intent"]})
 Category: {rule["category"]} / {rule["family_name"]}
-Answer form: {rule["answer_form"]}
+Answer form: {answer_form_doc}
 Question type: {qtype}
 
 Evidence timeline from pass1/pass1b (per-chunk visible_entities + facts + spatial + ocr + state_changes + think):
@@ -609,7 +641,7 @@ Produce {target_n} card(s) as a JSON list. Each card schema:
 {{
   "family": "{family}",
   "question": "...",                                     # bare natural-language question only
-  "answer_form": "{rule['answer_form']}",
+  "answer_form": {answer_form_schema},
   "canonical_answer": "...",                              # the final/correct answer text{options_block}
   {emits_doc}
   "grounding_frames": [int, ...]                         # MINIMAL set of chunk indices needed to verify the answer
@@ -658,6 +690,10 @@ Rules:
 - For number: canonical_answer is a digit string.
 - For short_exact: canonical_answer is ≤ 4 words.
 - For descriptive: canonical_answer is 1-3 sentences grounded in evidence.
+- If multiple answer forms are allowed and you produce more than one card,
+  include at least one non-multiple-choice card when the evidence supports a
+  concise literal or descriptive answer. Keep MC cards benchmark-like; keep
+  non-MCQ cards natural and answerable without options.
 {family_extra}
 
 Output ONLY a JSON list, no commentary:"""
@@ -763,6 +799,31 @@ Output JSON ONLY (one line):
 # ---------------------------------------------------------------------------
 
 
+_CHUNK_INT_RE = re.compile(r"-?\d+")
+
+
+def _coerce_chunk_int(value) -> int | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value if value >= 0 else None
+    if isinstance(value, float):
+        return int(value) if value.is_integer() and value >= 0 else None
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        chunk = int(text)
+        return chunk if chunk >= 0 else None
+    except ValueError:
+        pass
+    match = _CHUNK_INT_RE.search(text)
+    if not match:
+        return None
+    chunk = int(match.group(0))
+    return chunk if chunk >= 0 else None
+
+
 def parse_card_response(raw: str, family: str) -> List[Dict]:
     """Best-effort parse a 397B response into a list of v2 card dicts.
 
@@ -814,12 +875,19 @@ def parse_card_response(raw: str, family: str) -> List[Dict]:
         norm_emits = []
         for e in emits:
             if isinstance(e, dict) and "chunk" in e and "value" in e:
-                norm_emits.append({"chunk": int(e["chunk"]),
-                                    "value": str(e["value"])})
+                chunk = _coerce_chunk_int(e["chunk"])
+                if chunk is None:
+                    continue
+                norm_emits.append({"chunk": chunk, "value": str(e["value"])})
         if not norm_emits:
             continue
         c["gold_emits"] = norm_emits
-        c["grounding_frames"] = [int(g) for g in (c.get("grounding_frames") or [])]
+        grounding_frames = []
+        for g in c.get("grounding_frames") or []:
+            chunk = _coerce_chunk_int(g)
+            if chunk is not None:
+                grounding_frames.append(chunk)
+        c["grounding_frames"] = grounding_frames
         c.setdefault("canonical_answer",
                      norm_emits[-1]["value"] if norm_emits else "")
         c["question_type"] = QUESTION_TYPE_BY_FAMILY.get(family, "single_emit")

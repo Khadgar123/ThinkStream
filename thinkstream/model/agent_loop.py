@@ -23,8 +23,10 @@ from thinkstream.data.agent_protocol import (
     RECALL_RETURN_CHUNKS,
     VISUAL_WINDOW_CHUNKS,
     build_recalled_frames_metadata,
+    build_recall_result_metadata,
     build_recall_result_user_content,
     build_user_content,
+    canonical_answer_instruction,
     format_memory_block,
     normalize_frame_protocol,
     normalize_render_layout,
@@ -304,6 +306,16 @@ class MemoryState:
             self._queries = []
         expected_chunks = list(answer_chunks or [])
         expected_emits = list(per_emit_answers or [])
+        answer_instruction = (
+            canonical_answer_instruction({
+                "answer_form": answer_form or "",
+                "answer_style": answer_style or "",
+                "answer_instruction": answer_instruction or "",
+                "options": list(options or []),
+            })
+            or answer_instruction
+            or ""
+        )
         for q in reversed(self._queries):
             status = str(q.get("status", "")).strip().lower()
             if q.get("question") == question and status in {"open", "pending", "active"}:
@@ -412,22 +424,35 @@ def build_single_step_messages(
     """
     layout = normalize_render_layout(render_layout)
     memory_text = format_memory_block(snapshot)
-    user_content = build_user_content(
-        memory_text,
-        chunk_idx,
-        video_path,
-        user_input=user_input,
-        queries=queries,
-        recalled_frames=recalled_frames,
-        recall_result=recall_result,
-        min_pixels=min_pixels,
-        max_pixels=max_pixels,
-        frame_paths=frame_paths,
-        frame_protocol=frame_protocol,
-        inter_chunk=inter_chunk,
-        memory_snapshot=snapshot,
-        render_layout=layout,
-    )
+    post_recall = bool(recall_result or recalled_frames) and not inter_chunk
+    if post_recall:
+        # A post-recall turn has no new current chunk. It contains only the
+        # historical visual evidence returned by recall plus routing metadata.
+        user_content = build_recall_result_user_content(
+            recalled_frames,
+            recall_result,
+            frame_protocol=frame_protocol,
+            min_pixels=min_pixels,
+            max_pixels=max_pixels,
+            render_layout=layout,
+        )
+    else:
+        user_content = build_user_content(
+            memory_text,
+            chunk_idx,
+            video_path,
+            user_input=user_input,
+            queries=queries,
+            recalled_frames=None,
+            recall_result=None,
+            min_pixels=min_pixels,
+            max_pixels=max_pixels,
+            frame_paths=frame_paths,
+            frame_protocol=frame_protocol,
+            inter_chunk=inter_chunk,
+            memory_snapshot=snapshot,
+            render_layout=layout,
+        )
 
     return [
         {
@@ -436,11 +461,7 @@ def build_single_step_messages(
                 "type": "text",
                 "text": system_prompt_for_frame_protocol(
                     frame_protocol,
-                    prompt_kind=(
-                        "post_recall"
-                        if (recall_result or recalled_frames)
-                        else None
-                    ),
+                    prompt_kind=("post_recall" if post_recall else None),
                     inter_chunk=inter_chunk,
                     render_layout=layout,
                 ),
@@ -568,7 +589,8 @@ def bm25_retrieve(
     Honours `query["time_range"]` when present (filters archive to chunks
     overlapping that window); falls back to full archive on missing /
     malformed range. Uses rank_bm25 if available, else keyword overlap.
-    Returns recall_result dict with text_content and returned_chunks.
+    Returns an internal retrieval dict with text_content and returned_chunks.
+    Runtime prompt rendering strips text_content and exposes metadata only.
     """
     query_text = query.get("query", "")
     if not query_text.strip() or not archive:
@@ -1184,16 +1206,16 @@ class StreamingAgentLoop:
                     if self.memory_mode in {"no_recall", "none"}
                     else self.memory.retrieval_archive
                 )
-                recall_result = self.retriever(query, recall_archive)
+                raw_recall_result = self.retriever(query, recall_archive)
                 returned_chunks = select_recall_chunks(
-                    recall_result.get("returned_chunks", [])
+                    raw_recall_result.get("returned_chunks", [])
                 )
-                recall_result["returned_chunks"] = returned_chunks
+                raw_recall_result["returned_chunks"] = returned_chunks
 
                 # Build recalled_frames info (including frame_paths so we
                 # don't fallback to full-video decoding in recall_response).
                 recalled_frames = None
-                if returned_chunks and recall_result.get("source") == "historical_frames":
+                if returned_chunks and raw_recall_result.get("source") == "historical_frames":
                     rf_paths = []
                     frame_chunks = []
                     # Build recalled frame_paths by resolving per-chunk frames
@@ -1230,6 +1252,10 @@ class StreamingAgentLoop:
                         chunk_sec=AGENT_CHUNK_SEC,
                         frames_per_chunk=FRAMES_PER_CHUNK,
                     )
+                recall_result = build_recall_result_metadata(
+                    raw_recall_result,
+                    recalled_frames,
+                )
 
                 # v12.6 fix: build true multi-turn recall prompt matching
                 # SFT shape B (pass5_messages.py:212-260).

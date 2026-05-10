@@ -39,7 +39,7 @@ from .llm_prompts import family_taxonomy
 from .simulate import load_evidence, num_chunks_from
 
 
-SFT_SILENT_TO_ACTIVE_RATIO = 1.25
+SFT_SILENT_TO_ACTIVE_RATIO = 0.90
 SFT_PENDING_SILENT_FRACTION = 0.55
 SFT_POST_ANSWER_SILENT_FRACTION = 0.25
 SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO = 0.35

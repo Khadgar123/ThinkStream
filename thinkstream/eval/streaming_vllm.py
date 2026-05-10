@@ -39,7 +39,9 @@ from thinkstream.data.agent_protocol import (
     VISUAL_WINDOW_CHUNKS,
     action_space_error_for_turn,
     build_recalled_frames_metadata,
+    build_recall_result_metadata,
     build_recall_result_user_content,
+    canonical_answer_instruction,
     diagnose_compress_output_v12,
     normalize_frame_protocol,
     normalize_render_layout,
@@ -1044,8 +1046,13 @@ def streaming_vllm_rollout(
                 meta = {
                     "options": list(q.get("options") or []),
                     "answer_form": q.get("answer_form", ""),
-                    "answer_style": q.get("answer_style", ""),
-                    "answer_instruction": q.get("answer_instruction", ""),
+                    "answer_style": (
+                        "letter_only"
+                        if q.get("answer_form") == "multiple_choice"
+                        else q.get("answer_style", "")
+                    ),
+                    "answer_instruction": canonical_answer_instruction(q)
+                    or q.get("answer_instruction", ""),
                     "answer_chunks": list(q.get("answer_chunks") or []),
                     "per_emit_answers": list(q.get("per_emit_answers") or []),
                 }
@@ -1235,16 +1242,16 @@ def streaming_vllm_rollout(
                         if r.current_chunk >= r.max_chunks:
                             r.done = True
                         continue
-                    recall_result = r.retriever(query, r.memory.retrieval_archive)
+                    raw_recall_result = r.retriever(query, r.memory.retrieval_archive)
                     returned_chunks = select_recall_chunks(
-                        recall_result.get("returned_chunks", [])
+                        raw_recall_result.get("returned_chunks", [])
                     )
-                    recall_result["returned_chunks"] = returned_chunks
+                    raw_recall_result["returned_chunks"] = returned_chunks
                     r.chunk_results[-1]["recall_returned_chunks"] = list(returned_chunks)
 
                     # Build recalled_frames metadata (matching shape B in pass5)
                     recalled_frames = None
-                    if returned_chunks and recall_result.get("source") == "historical_frames":
+                    if returned_chunks and raw_recall_result.get("source") == "historical_frames":
                         rf_paths: List[str] = []
                         frame_chunks: List[int] = []
                         for rc in returned_chunks:
@@ -1260,6 +1267,10 @@ def streaming_vllm_rollout(
                             chunk_sec=AGENT_CHUNK_SEC,
                             frames_per_chunk=FRAMES_PER_CHUNK,
                         )
+                    recall_result = build_recall_result_metadata(
+                        raw_recall_result,
+                        recalled_frames,
+                    )
 
                     # Multi-turn message construction: original prompt +
                     # assistant(first_text) + user(tool result + frames)

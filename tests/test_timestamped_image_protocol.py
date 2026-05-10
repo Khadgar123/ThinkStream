@@ -213,7 +213,7 @@ def test_pass5_compress_messages_use_compress_system_prompt():
         item.get("text", "") for item in messages[1]["content"]
         if item.get("type") == "text"
     )
-    assert "memory-compaction controller" in system_text
+    assert "[MEMORY_MAINTENANCE / FORCED_COMPRESS]" in system_text
     assert "<queries>" not in user_text
     assert "<active_query>" not in user_text
     assert "<visual_window>" not in user_text
@@ -311,23 +311,22 @@ def test_protocol_prompts_and_query_answer_format_are_explicit():
     compress_prompt = system_prompt_for_frame_protocol("ts_image", inter_chunk=True)
     assert "Each frame has a timestamp tag" in ts_prompt
     assert "Qwen video block" in vm_prompt
-    assert "Answer format:" in ts_prompt
-    assert "Answer format:" in vm_prompt
-    assert "Recall tool format:" in ts_prompt
-    assert "Silent format:" in ts_prompt
+    assert "answer format" in ts_prompt
+    assert "answer format" in vm_prompt
+    assert "Recall arguments:" in ts_prompt
+    assert "Silent: <answer></answer>" in ts_prompt
     assert "<active_query>" in ts_prompt
     assert "<response_history>" in ts_prompt
     assert "Output grammar:" in ts_prompt
     assert "{\"name\":\"recall\",\"arguments\":{\"query\"" in ts_prompt
     assert "<answer>response text</answer>" in ts_prompt
-    assert "The silent answer is empty" in ts_prompt
-    assert "Compression belongs to the memory-maintenance prompt" in ts_prompt
-    assert "memory-compaction controller" in compress_prompt
-    assert "do not call recall" in compress_prompt
-    assert "Required output grammar for compression turns:" in compress_prompt
+    assert "This is an ordinary streaming video QA turn" in ts_prompt
+    assert "[MEMORY_MAINTENANCE / FORCED_COMPRESS]" in compress_prompt
+    assert "No recall" in compress_prompt
+    assert "Required output:" in compress_prompt
     assert "<tool_call>{\"name\":\"compress\"" in compress_prompt
-    assert "time_range must be a two-integer array" in compress_prompt
-    assert "Do not emit <answer>...</answer>" in compress_prompt
+    assert "\"time_range\":[start_sec,end_sec]" in compress_prompt
+    assert "No answer. No silent answer." in compress_prompt
 
     assert answer_format_instruction("number") == (
         "Answer format: a number only, no explanation."
@@ -400,21 +399,24 @@ def test_inter_chunk_compress_omits_visual_and_queries_like_sft_messages():
     assert "<memory_compaction>" not in joined
 
 
-def test_query_renderer_keeps_mc_answer_instruction():
+def test_query_renderer_canonicalizes_mc_answer_instruction_from_options():
     from thinkstream.data.agent_protocol import format_queries_block
     text = format_queries_block([{
         "question": "Which object appears?",
         "ask_time": 3,
-        "options": ["A) brush", "B) spoon", "C) cup", "D) book"],
+        "options": ["A) brush", "B) spoon", "C) cup", "D) book", "E) plate"],
         "answer_form": "multiple_choice",
         "answer_style": "letter_only",
+        # Legacy stale text from an earlier four-option render pass. The
+        # renderer must use structured options as the source of truth.
         "answer_instruction": "Answer format: one letter only (A, B, C, or D).",
         "answers": [],
     }])
     assert "<active_query>" in text
     assert "<response_history>" in text
-    assert "Options: A) brush B) spoon C) cup D) book" in text
-    assert "Answer format: one letter only" in text
+    assert "Options: A) brush B) spoon C) cup D) book E) plate" in text
+    assert "Answer format: one letter only (A, B, C, D, or E)." in text
+    assert "Answer format: one letter only (A, B, C, or D)." not in text
 
 
 def test_query_renderer_hides_closed_history_after_answer():

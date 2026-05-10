@@ -43,7 +43,7 @@ class ThinkStreamRLDataset(Dataset):
         annotation_path: str,
         *,
         max_questions_per_traj: int = 5,
-        frame_protocol: str = "ts_image",
+        frame_protocol: str = "video_meta",
         render_layout: Optional[str] = None,
     ):
         self.path = Path(annotation_path)

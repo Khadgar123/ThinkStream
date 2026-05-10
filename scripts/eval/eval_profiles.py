@@ -1,7 +1,7 @@
 """Eval-time context profiles — 16k (default / SFT-aligned) vs 32k (extended).
 
 The two profiles differ ONLY in eval-side caps that don't affect model
-distribution: model_max_length, queries-history cap, recall text cap,
+distribution: model_max_length, queries-history cap, recall metadata cap,
 max_new_tokens. They do NOT change SFT-baked constants
 (VISUAL_WINDOW_CHUNKS=16, RECENT_THINKS_TOKEN_BUDGET=4000,
 COMPRESS_TOKEN_THRESHOLD=3200, MAX_COMPRESSED_SEGMENTS=5,
@@ -29,7 +29,7 @@ Per-profile token-budget breakdown (worst-case at the most-loaded chunk):
                       |              |              | SFT-baked.
     queries           |  3 × ~50=150 |  3 × ~50=150 | EVAL-SIDE: capped in
                       |              |              | format_queries_block.
-    recall_result     |  ~400        |  ~750        | EVAL-SIDE: char cap.
+    recall_result     |  ~80         |  ~80         | Metadata only.
     user_input        |   ~50        |   ~50        |
     assistant output  |  256         |  512         | EVAL-SIDE max_new_tokens.
     ------------------|--------------|--------------|----------------------------
@@ -55,10 +55,10 @@ Recall behaviour (BOTH profiles):
   - Model emits <action>recall</action><query>{"query":"...","time_range":"..."}</query>.
   - Retriever (BM25 or hybrid) searches the FULL retrieval_archive (raw
     thinks, never compressed) for top-4 best matches.
-  - Returns a recall_result with text_content (≤RECALL_TEXT_MAX_CHARS
-    chars after eval-side truncation).
-  - Model gets a follow-up turn with <recall_result>...</recall_result>
-    in the user content and emits its final response.
+  - Returns historical frames plus metadata-only recall_result
+    (source/time/returned_chunks/status).
+  - Model gets a follow-up turn with <recalled_frames> visual evidence and
+    <recall_result> metadata, then emits its final response.
 
 When to use which profile:
 
@@ -86,7 +86,8 @@ EVAL_PROFILES: Dict[str, Dict] = {
         "model_max_length": 16384,
         # v12.5: 128 → 256 (longer answers possible under 4000-tok memory)
         "max_new_tokens_default": 256,
-        # agent_protocol caps (aligned to SFT distribution upper bounds)
+        # agent_protocol caps. recall_text_max_chars is legacy/no-op now that
+        # recall_result is metadata-only.
         "query_history_policy": "recent_k",
         "queries_history_cap": 3,
         "recall_text_max_chars": 1600,
@@ -136,7 +137,7 @@ def describe_profile(name: str) -> str:
     return (f"profile={name}: max_len={cfg['model_max_length']}, "
             f"query_policy={cfg.get('query_history_policy', 'recent_k')}, "
             f"queries_cap={cfg['queries_history_cap']}, "
-            f"recall_chars={cfg['recall_text_max_chars']}, "
+            f"recall_metadata_only=True, "
             f"max_new_tokens={cfg['max_new_tokens_default']} | "
             f"~{cfg['subtotal_tokens_estimate']} tok subtotal, "
             f"~{cfg['headroom_tokens_estimate']} tok headroom")

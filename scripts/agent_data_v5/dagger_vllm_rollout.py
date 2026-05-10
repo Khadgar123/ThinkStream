@@ -32,6 +32,7 @@ from scripts.agent_data_v5.pass5_messages import (
 from scripts.eval.processor_loader import load_processor_for_checkpoint
 from thinkstream.data.agent_protocol import (
     build_recall_result_user_content,
+    canonical_answer_instruction,
     normalize_frame_protocol,
     normalize_render_layout,
     query_is_complete,
@@ -153,6 +154,11 @@ def _patch_sample_from_question(
         if key in q:
             value = q.get(key)
             meta[key] = list(value) if isinstance(value, list) else value
+    if q.get("answer_form") == "multiple_choice":
+        meta["answer_style"] = "letter_only"
+    instruction = canonical_answer_instruction(meta)
+    if instruction:
+        meta["answer_instruction"] = instruction
     if q.get("answer_form") == "multiple_choice":
         _letter, correct_text = _mc_letter_text(q)
         meta["correct_answer_text"] = correct_text
@@ -569,7 +575,7 @@ def main() -> None:
     parser.add_argument("--frame-protocol", default="video_meta", choices=["video_meta"])
     parser.add_argument(
         "--render-layout",
-        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard_query_last"),
+        default="standard_query_last",
         choices=["standard_query_last"],
     )
     parser.add_argument("--disable-recall", action="store_true")

@@ -121,9 +121,18 @@ def match_mcq_answer(
 
     # Strategy 1: leading-letter match.
     leading = ma.lstrip("([").lstrip()
+    # Legacy/generated edge case: a MCQ row may carry only correct_option
+    # without the full options list. Letter matching must still work so old
+    # rows do not fall through to descriptive matching.
+    if options:
+        n_valid_letters = len(options)
+    elif correct_idx is not None and correct_idx >= 0:
+        n_valid_letters = correct_idx + 1
+    else:
+        n_valid_letters = 0
     valid_letters = {
         chr(ord("a") + i)
-        for i in range(min(max(len(options), 0), 26))
+        for i in range(min(max(n_valid_letters, 0), 26))
     }
     if leading and correct_letter and leading[0] in valid_letters:
         if len(leading) == 1 or not leading[1].isalpha():

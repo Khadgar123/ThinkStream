@@ -93,7 +93,9 @@ from thinkstream.data.agent_protocol import (
     VISUAL_WINDOW_CHUNKS,
     action_space_error_for_turn,
     build_recalled_frames_metadata,
+    build_recall_result_metadata,
     build_recall_result_user_content,
+    canonical_answer_instruction,
     normalize_frame_protocol,
     normalize_memory_position,
     normalize_render_layout,
@@ -321,6 +323,7 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None,
                 schema = "with_time_range" if isinstance(q, dict) and q.get("time_range") \
                     else "keyword_only"
                 recall_result = result.get("recall_result") or {}
+                recall_metadata_chars = len(json.dumps(recall_result, ensure_ascii=False))
                 telemetry.setdefault("recall_events", []).append({
                     "chunk": chunk_idx,
                     "returned_chunks": list(result.get("recall_returned_chunks", [])),
@@ -329,9 +332,8 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None,
                     "query_time_range": q.get("time_range", "") if isinstance(q, dict) else "",
                     "source": recall_result.get("source", ""),
                     "result_time": recall_result.get("time", ""),
-                    "result_text_chars": len(
-                        str(recall_result.get("text_content") or recall_result.get("text") or "")
-                    ),
+                    "result_metadata_chars": recall_metadata_chars,
+                    "result_text_chars": 0,
                 })
             # Per-step extras (always recorded if available)
             if result.get("prompt_text_token_count") is not None:
@@ -450,7 +452,6 @@ class NullRetriever:
         return {
             "source": "failure",
             "time": "",
-            "text_content": "No matching results found.",
             "returned_chunks": [],
         }
 
@@ -746,12 +747,15 @@ class _VllmAgentRunner:
             )
             if not already:
                 meta = self.ask_meta.get(chunk_idx) or {}
+                instruction = canonical_answer_instruction(meta) or meta.get(
+                    "answer_instruction"
+                )
                 self.memory.add_query(
                     user_question, ask_time,
                     options=meta.get("options"),
                     answer_form=meta.get("answer_form"),
                     answer_style=meta.get("answer_style"),
-                    answer_instruction=meta.get("answer_instruction"),
+                    answer_instruction=instruction,
                     answer_chunks=meta.get("answer_chunks"),
                     per_emit_answers=meta.get("per_emit_answers"),
                     open_until=meta.get("open_until"),
@@ -890,14 +894,13 @@ class _VllmAgentRunner:
             if self.memory_mode in {"no_recall", "none"}
             else self.memory.retrieval_archive
         )
-        recall_result = self.retriever(query, archive)
-        returned = select_recall_chunks(recall_result.get("returned_chunks", []))
-        recall_result["returned_chunks"] = returned
-        result["recall_result"] = recall_result
+        raw_recall_result = self.retriever(query, archive)
+        returned = select_recall_chunks(raw_recall_result.get("returned_chunks", []))
+        raw_recall_result["returned_chunks"] = returned
         result["recall_returned_chunks"] = returned
 
         recalled_frames = None
-        if returned and recall_result.get("source") == "historical_frames":
+        if returned and raw_recall_result.get("source") == "historical_frames":
             rf_paths: List[str] = []
             frame_chunks: List[int] = []
             for rc in returned:
@@ -913,6 +916,11 @@ class _VllmAgentRunner:
                 chunk_sec=AGENT_CHUNK_SEC,
                 frames_per_chunk=FRAMES_PER_CHUNK,
             )
+        recall_result = build_recall_result_metadata(
+            raw_recall_result,
+            recalled_frames,
+        )
+        result["recall_result"] = recall_result
 
         recall_messages = deepcopy(self.last_messages or [])
         if recall_messages and recall_messages[0].get("role") == "system":
@@ -1049,6 +1057,7 @@ def _record_vllm_step_telemetry(
             else "keyword_only"
         )
         recall_result = result.get("recall_result") or {}
+        recall_metadata_chars = len(json.dumps(recall_result, ensure_ascii=False))
         telemetry.setdefault("recall_events", []).append({
             "chunk": chunk_idx,
             "returned_chunks": list(result.get("recall_returned_chunks", [])),
@@ -1057,9 +1066,8 @@ def _record_vllm_step_telemetry(
             "query_time_range": q.get("time_range", "") if isinstance(q, dict) else "",
             "source": recall_result.get("source", ""),
             "result_time": recall_result.get("time", ""),
-            "result_text_chars": len(str(
-                recall_result.get("text_content") or recall_result.get("text") or ""
-            )),
+            "result_metadata_chars": recall_metadata_chars,
+            "result_text_chars": 0,
         })
     if result.get("prompt_text_token_count") is not None:
         telemetry.setdefault("prompt_tokens_per_step", []).append(
@@ -3021,7 +3029,7 @@ def main():
     p.add_argument(
         "--render-layout",
         dest="render_layout",
-        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard_query_last"),
+        default="standard_query_last",
         choices=["standard_query_last"],
         help="Prompt layout. Production SFT/RL wrappers default to "
              "standard_query_last.",
@@ -3072,7 +3080,7 @@ def main():
     p.add_argument("--queries-history-cap", type=int, default=None,
                    help="Override query history cap after applying profile.")
     p.add_argument("--recall_text_max_chars", type=int, default=None,
-                   help="Override eval-side recall_result text character cap.")
+                   help="Legacy no-op for model prompts; recall_result is metadata-only.")
     p.add_argument("--recent_thinks_token_budget", type=int, default=None,
                    help="Override inference memory recent_thinks token budget; "
                         "the compression trigger remains 80%% of this value.")
@@ -3142,7 +3150,7 @@ def main():
             f"recent_tokens={_agent_loop.RECENT_THINKS_TOKEN_BUDGET}, "
             f"compress_threshold={_agent_loop.COMPRESS_TOKEN_THRESHOLD}, "
             f"summary_tokens={_agent_loop.SUMMARY_TOKENS_MAX}, "
-            f"recall_chars={agent_protocol.RECALL_TEXT_MAX_CHARS}",
+            "recall_metadata_only=True",
             flush=True,
         )
     print(f"agent_ablation: compress_mode={args.compress_mode}, "

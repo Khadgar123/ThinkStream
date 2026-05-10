@@ -1245,13 +1245,6 @@ def verify_recall_evidence_reachable(sample: Dict, rollout: Dict = None) -> Tupl
         return False, "recall_result_missing"
     if recall_result.get("source") != "historical_frames":
         return False, f"recall_result_bad_source:{recall_result.get('source')}"
-    text_content = str(
-        recall_result.get("text_content")
-        or recall_result.get("text")
-        or ""
-    ).strip()
-    if not text_content:
-        return False, "recall_result_empty_text"
     if isinstance(recall_result, dict):
         tr = recall_result.get("time", "")
         if tr:

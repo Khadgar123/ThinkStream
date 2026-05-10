@@ -107,9 +107,9 @@ def check_protocol(a: Audit):
     a.check("SYSTEM_PROMPT uses canonical video_meta carrier",
             "Qwen video block" in sp and "video_metadata carries frame timestamps" in sp)
     a.check("SYSTEM_PROMPT uses query-last order",
-            "<active_query> appears after the visual window" in sp)
+            "<active_query>" in sp and "latest/current chunk" in sp)
     a.check("COMPRESS prompt is separated",
-            "memory-compaction controller" in cp and "do not call recall" in cp)
+            "[MEMORY_MAINTENANCE / FORCED_COMPRESS]" in cp and "No recall" in cp)
     a.check("SYSTEM_PROMPT does NOT mention '2-second'", "2-second" not in sp)
     a.check("SYSTEM_PROMPT does NOT mention '24s'", "24s window" not in sp)
     mem_text = ap.format_memory_block({
@@ -325,14 +325,14 @@ def check_rl_verl(a: Audit):
         txt = cfg.read_text()
         a.check("verl uses custom ThinkStream agent loop",
                 "thinkstream_streaming_agent" in txt)
-        a.check("verl sets vLLM image limit for timestamped frames",
-                "limit_images: 64" in txt)
+        a.check("verl sets vLLM visual prompt limits",
+                "limit_images: 64" in txt and "limit_videos: 2" in txt)
         a.check("verl reward path = recipe_thinkstream/thinkstream.py",
                 'path: "recipe_thinkstream/thinkstream.py"' in txt)
     if loop.exists():
         txt = loop.read_text()
-        a.check("verl rollout appends protocol visual frames",
-                "append_visual_frames" in txt)
+        a.check("verl rollout uses shared visual/user renderer",
+                "build_user_content" in txt and "frame_protocol" in txt)
     if run.exists():
         txt = run.read_text()
         a.check("verl launcher resolves THINKSTREAM_DATA_ROOT",

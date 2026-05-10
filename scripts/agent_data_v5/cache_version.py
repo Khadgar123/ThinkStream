@@ -155,14 +155,26 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        pass3c rejects answer-leaking recall_query payloads; MC rebalance
     #        validates every answer/options rewrite before final files are
     #        accepted.
-    #   v12.69 (2026-05-10): pass3e requires recall_result text and returned
-    #        historical chunks for every recall sample; pass5 hard-fails if
+    #   v12.69 (2026-05-10): pass3e requires returned historical chunks for
+    #        every recall sample; pass5 hard-fails if
     #        active_query/options/answer-format are missing or rendered more
     #        than once in final messages.
     #   v12.70 (2026-05-10): compression samples remove raw visual/query/recall
     #        payloads from input so SFT, RL, and eval see the same text-only
     #        memory-maintenance boundary. Ordinary visual turns intentionally
     #        keep text memory even when recent/current visual chunks overlap.
+    #   v12.71 (2026-05-10): recall_result becomes metadata-only in rendered
+    #        samples/messages; recalled_frames carry the visual evidence.
+    #   v12.72 (2026-05-10): pass3 raises non-HLD visual-verification recall
+    #        probes, promotes kept memory-direct visual checks into recall_demo,
+    #        preserves multi-event history recall despite text-memory overlap,
+    #        and pass5 lowers SFT patrol-silent sampling so recall/compress rows
+    #        are not drowned by ordinary silent chunks.
+    #   v12.73 (2026-05-10): pass3 adds a soft non-MCQ trajectory floor focused
+    #        on active-responding REC/SSR/CRR-style F5/F7/CRR1 questions;
+    #        final video splits are profile-balanced across SFT/RL/val/test;
+    #        SFT silent downsampling preserves boundary subtypes/families and
+    #        never drops recall/compress rows.
     #   v12.48 (2026-05-07): pass3b reserves one non-recall HLD/abstention
     #        slot when available, so HLD keeps a reasonable family share
     #        without being counted as successful recall supervision.
@@ -278,11 +290,11 @@ STAGE_VERSIONS: Dict[str, str] = {
     "1a": "v12.25",
     "1b": "v12.25",
     "2":  "v12.35",
-    "3a": "v12.70",
-    "3b": "v12.70",
-    "3c": "v12.70",
-    "4":  "v12.70",  # canonical key — verification/final split render
-    "5":  "v12.70",  # pass5_messages render version
+    "3a": "v12.73",
+    "3b": "v12.73",
+    "3c": "v12.73",
+    "4":  "v12.73",  # canonical key — verification/final split render
+    "5":  "v12.73",  # pass5_messages render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

@@ -676,11 +676,11 @@ Rules:
 
 Output JSON only:"""
 
-OBSERVATION_PROMPT = """You are a streaming video agent generating a think note for one current 1-second chunk.
+OBSERVATION_PROMPT = """You are a streaming video agent generating an observation note for one current 1-second chunk.
 
 CURRENT TASK FIRST: inspect the timestamp-tagged image list for the sliding visual window t={window_start}-{window_end}s. The latest target chunk is ONLY t={start}-{end}s ({current_frame_count} frames) and is the primary evidence.
 
-History ledger below is archival memory for naming only. It may describe older frames and must not be copied if the latest frames differ. It contains tagged records such as <memory_think>{{"time": "...", "text": "..."}}</memory_think> or <compressed>{{"time_range": [...], "text": "..."}}</compressed>; each `text` field is stale history wording, not current evidence.
+History ledger below is archival memory for naming only. It may describe older frames and must not be copied if the latest frames differ. It contains tagged records such as <memory_think>{{"time": "...", "text": "..."}}</memory_think> for archived chunk observations or <compressed>{{"time_range": [...], "text": "..."}}</compressed> for older summaries; each `text` field is stale history wording, not current evidence.
 <history_ledger>
 {recent_thinks}
 </history_ledger>
@@ -712,7 +712,7 @@ Rules:
 
 Output one paragraph:"""
 
-OBSERVATION_REPAIR_PROMPT = """You are correcting a streaming video think note for one current chunk.
+OBSERVATION_REPAIR_PROMPT = """You are correcting a streaming video observation note for one current chunk.
 
 Recent history ledger (tagged stale records; use only for naming, never for current evidence):
 {recent_thinks}
@@ -752,7 +752,7 @@ Tagged observations to compress:
 
 Rules:
 - Use coarse time sub-ranges: [X-Y]
-- Read <memory_think>{{"time": "...", "text": "..."}}</memory_think> as one raw chunk observation
+- Read <memory_think>{{"time": "...", "text": "..."}}</memory_think> as one archived chunk observation
 - Read <compressed>{{"time_range": [...], "text": "..."}}</compressed> as an older summary
 - Keep ALL entities with their appearance descriptions
 - Keep ALL OCR content verbatim

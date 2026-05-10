@@ -71,6 +71,19 @@ def test_training_scheme_builds_full_and_segment_rl_inputs():
     assert "train_rl_multi_q_segment_cache.parquet" in scheme
     assert "include_student_cache=include_student_cache" in scheme
     assert "balanced keeps family/recall/compress ratios" in scheme
+    parquet = _text("scripts/agent_data_v5/build_verl_parquet.py")
+    assert 'prompt = [{"role": "system", "content": system_prompt}]' in parquet
+
+
+def test_pre_rl_rollout_audit_uses_fast_canonical_path():
+    audit = _text("scripts/agent_data_v5/pre_rl_rollout_audit.py")
+
+    assert "streaming_vllm_rollout" in audit
+    assert 'frame_protocol="video_meta"' in audit
+    assert 'render_layout="standard_query_last"' in audit
+    assert "rollout_batch_size" in audit
+    assert "badcase_out" in audit
+    assert "stable_think" in audit
 
 
 def main() -> None:
@@ -79,6 +92,7 @@ def main() -> None:
         test_sft_rl_eval_use_canonical_prompt_contract,
         test_rl_defaults_use_multi_trajectory_recurrent_update,
         test_training_scheme_builds_full_and_segment_rl_inputs,
+        test_pre_rl_rollout_audit_uses_fast_canonical_path,
     ]
     for test in tests:
         test()

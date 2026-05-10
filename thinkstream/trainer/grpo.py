@@ -149,6 +149,7 @@ from thinkstream.data.stream_data_processor import (
 from thinkstream.data.agent_protocol import (
     SYSTEM_PROMPT_V12,
     AGENT_CHUNK_SEC as AGENT_CHUNK_SEC_RUNTIME,
+    canonical_answer_instruction,
 )
 from thinkstream.model.patch import build_video_block_mask
 from thinkstream.model import MODEL_CLS, get_text_config, DEFAULT_VIDEO_FLEX_WINDOW_SIZE
@@ -581,8 +582,13 @@ def rollout(
                 q_meta = {
                     "options": list(q.get("options") or []),
                     "answer_form": q.get("answer_form", ""),
-                    "answer_style": q.get("answer_style", ""),
-                    "answer_instruction": q.get("answer_instruction", ""),
+                    "answer_style": (
+                        "letter_only"
+                        if q.get("answer_form") == "multiple_choice"
+                        else q.get("answer_style", "")
+                    ),
+                    "answer_instruction": canonical_answer_instruction(q)
+                    or q.get("answer_instruction", ""),
                     "answer_chunks": list(q.get("answer_chunks") or []),
                     "per_emit_answers": list(q.get("per_emit_answers") or []),
                 }

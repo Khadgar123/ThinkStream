@@ -50,6 +50,7 @@ if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
 from thinkstream.data.agent_protocol import (  # noqa: E402
+    canonical_answer_instruction,
     normalize_frame_protocol,
     normalize_render_layout,
     system_prompt_for_frame_protocol,
@@ -76,6 +77,16 @@ def _extend_chunk_candidates_from_list(out: List[int], values: Any) -> None:
         iv = _safe_int(value)
         if iv is not None and iv >= 0:
             out.append(iv)
+
+
+def _canonical_instruction(q: Dict[str, Any]) -> str:
+    return canonical_answer_instruction(q) or str(q.get("answer_instruction") or "")
+
+
+def _canonical_answer_style(q: Dict[str, Any]) -> str:
+    if str(q.get("answer_form") or "").strip() == "multiple_choice":
+        return "letter_only"
+    return str(q.get("answer_style") or "")
 
 
 def _infer_n_chunks(traj: Dict[str, Any]) -> int:
@@ -332,10 +343,10 @@ def _iter_rows(
                     # No ask_chunks → treat as no actionable supervision.
                     q_gold_action = {ck: "silent" for ck in (gold_action or {}).keys()}
 
-                prompt = [
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": question},
-                ]
+                # The streaming agent loop injects the live question at
+                # ask_chunk. Keep the seed prompt system-only so RL does not
+                # see a duplicate static user turn that SFT/eval never see.
+                prompt = [{"role": "system", "content": system_prompt}]
 
                 yield {
                     "prompt": prompt,
@@ -346,8 +357,8 @@ def _iter_rows(
                     "correct_option": correct_option,
                     "correct_answer_text": q.get("correct_answer_text", ""),
                     "accepted_answers": list(q.get("accepted_answers") or []),
-                    "answer_style": q.get("answer_style", ""),
-                    "answer_instruction": q.get("answer_instruction", ""),
+                    "answer_style": _canonical_answer_style(q),
+                    "answer_instruction": _canonical_instruction(q),
                     "gold_answer": gold_answer,
                     "answer_form": answer_form,
                     "answer_chunks": answer_chunks,
@@ -367,7 +378,7 @@ def _iter_rows(
                         "ours_unique": bool(q.get("ours_unique", False)),
                         "options": options,
                         "correct_option": correct_option,
-                        "answer_instruction": q.get("answer_instruction", ""),
+                        "answer_instruction": _canonical_instruction(q),
                         "support_chunks": list(q.get("support_chunks") or []),
                         "answer_chunks": answer_chunks,
                         "per_emit_answers": list(q.get("per_emit_answers") or []),
@@ -477,8 +488,8 @@ def _iter_rows_multi_q(
                     "correct_option": q.get("correct_option", ""),
                     "correct_answer_text": q.get("correct_answer_text", ""),
                     "accepted_answers": list(q.get("accepted_answers") or []),
-                    "answer_style": q.get("answer_style", ""),
-                    "answer_instruction": q.get("answer_instruction", ""),
+                    "answer_style": _canonical_answer_style(q),
+                    "answer_instruction": _canonical_instruction(q),
                     "gold_answer": q.get("gold_answer", ""),
                     "answer_form": q.get("answer_form", ""),
                     "ask_chunk": int(q.get("ask_chunk", -1)),
@@ -492,18 +503,10 @@ def _iter_rows_multi_q(
                     "ours_unique": bool(q.get("ours_unique", False)),
                 })
 
-            # System-level prompt only — actual question text is injected
-            # by the agent loop at each ask_chunk. Streamed multi-Q agent
-            # gets a generic role description here, not a single question.
-            prompt = [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": (
-                    "You are a streaming-video agent. You will receive video "
-                    "frames in chunks and question events at specific time "
-                    "points. Maintain a memory of what you observe and track "
-                    "the currently active question state."
-                )},
-            ]
+            # System-level seed prompt only. Actual question text/options are
+            # injected by the agent loop at each ask_chunk and then rendered as
+            # <active_query> after the visual window, matching pass5/SFT/eval.
+            prompt = [{"role": "system", "content": system_prompt}]
 
             yield {
                 "prompt": prompt,
@@ -564,7 +567,7 @@ def main() -> int:
     )
     ap.add_argument(
         "--render-layout",
-        default=os.environ.get("THINKSTREAM_RENDER_LAYOUT", "standard_query_last"),
+        default="standard_query_last",
         choices=["standard_query_last"],
         help="Prompt layout used by SFT, RL, and eval.",
     )

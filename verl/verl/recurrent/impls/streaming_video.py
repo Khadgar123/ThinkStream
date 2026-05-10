@@ -53,6 +53,7 @@ from verl.trainer.ppo.ray_trainer import _timer
 from thinkstream.data.agent_protocol import (
     RECALL_RETURN_CHUNKS,
     build_recalled_frames_metadata,
+    build_recall_result_metadata,
     recall_time_string_for_chunks,
     select_recall_chunks,
     append_timestamped_image_list,
@@ -340,11 +341,10 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
             mm_payload = {
                 "images": list(recalled_frames["frame_paths"]),
             }
-        rr_json = json.dumps({
-            "source": recall_result.get("source", "failure"),
-            "time": recall_result.get("time", ""),
-            "text": recall_result.get("text_content", recall_result.get("text", "")),
-        }, ensure_ascii=False)
+        rr_json = json.dumps(
+            build_recall_result_metadata(recall_result, recalled_frames),
+            ensure_ascii=False,
+        )
         content.append({
             "type": "text",
             "text": (
@@ -713,7 +713,7 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
             frames_per_chunk=self.config.frames_per_chunk,
         ) if recalled_paths else None
         success = bool(selected_chunks) or bool(text_hit)
-        recall_result = {
+        raw_recall_result = {
             "source": "historical_frames" if recalled_paths else (
                 "memory" if success else "failure"
             ),
@@ -724,6 +724,10 @@ class AsyncStreamingVideoAgent(AsyncRAgent):
                 selected_chunks, chunk_sec=self.config.chunk_sec
             ),
         }
+        recall_result = build_recall_result_metadata(
+            raw_recall_result,
+            recalled_frames,
+        )
         return {"recall_result": recall_result, "recalled_frames": recalled_frames}
 
 

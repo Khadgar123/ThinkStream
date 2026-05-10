@@ -305,7 +305,7 @@ def _retrieve_from_memory(
     top_k: int = RECALL_RETURN_CHUNKS,
     chunk_sec: float = 1.0,
 ) -> Dict[str, Any]:
-    """Return a recall_result dict (source/time/text) for inline JSON
+    """Return a legacy recall_result dict used internally before metadata-only
     serialisation as <recall_result>...</recall_result> on the NEXT chunk's
     user message. (True intra-chunk multi-turn recall — assistant tool_call
     → user/tool recall_result+frames → assistant answer — is deferred.)
@@ -417,6 +417,7 @@ def _register_streaming_agent_loop():
     from thinkstream.data.agent_protocol import (  # type: ignore
         action_space_error_for_turn,
         append_query_answer_with_timing,
+        build_recall_result_metadata,
         build_user_content,
         build_recall_result_user_content,
         normalize_frame_protocol,
@@ -626,7 +627,8 @@ def _register_streaming_agent_loop():
             Mirrors the shared SFT/runtime layout in
             thinkstream.data.agent_protocol.build_user_content EXACTLY:
               <user_input> → <memory> → <visual_window> + video_meta frames →
-              <active_query> + <response_history> → <recall_result> → ...
+              <active_query> + <response_history> →
+              <recalled_frames> + visual evidence → <recall_result> metadata
 
             Distribution alignment is the hard constraint. Per-frame ViT
             re-encoding cost is handled by vLLM's mm_processor_cache
@@ -677,8 +679,8 @@ def _register_streaming_agent_loop():
 
             Returns a dict matching what SFT pass5_messages.py:280-380 expects:
               {
-                "recall_result": {source, text_content, returned_chunks, time}
-                                 — same shape as pass3c_samples._recall_result_for
+                "recall_result": {source, returned_chunks, time, status}
+                                 — metadata-only model-visible result
                 "recalled_frames": {time_range, source, n_frames, frame_paths}
                                    or None on retrieval failure / no frames
                                    — same shape as pass3c rendering input
@@ -745,13 +747,10 @@ def _register_streaming_agent_loop():
                 text_result.get("time", "") or ""
             )
             success = bool(selected_chunks) or bool(text_result.get("text"))
-            recall_result = {
+            raw_recall_result = {
                 "source": "historical_frames" if recalled_frame_paths else (
                     text_result.get("source", "memory") if success else "failure"
                 ),
-                # SFT (pass3c) stores under `text_content`; pass5 reads with
-                # text_content fallback to `text`. Provide BOTH keys so
-                # downstream renderers don't care which one they read.
                 "text_content": text_result.get("text", "")
                                 if success else "No matching results found.",
                 "text": text_result.get("text", "")
@@ -765,6 +764,10 @@ def _register_streaming_agent_loop():
                 chunk_sec=self.chunk_sec,
                 frames_per_chunk=self.frames_per_chunk,
             ) if recalled_frame_paths else None
+            recall_result = build_recall_result_metadata(
+                raw_recall_result,
+                recalled_frames,
+            )
             return {
                 "recall_result": recall_result,
                 "recalled_frames": recalled_frames,
@@ -779,7 +782,7 @@ def _register_streaming_agent_loop():
             audit P0 fix order is the SFT contract):
               1. <recalled_frames>{json header}</recalled_frames> text
               2. protocol visual frames anchored to historical chunk timestamps
-              3. <recall_result>{json}</recall_result> text
+              3. <recall_result>{json}</recall_result> metadata
 
             We use role="user" (not "tool") to match pass5's DeepEyesV2
             ShareGPT alignment — the chat_template renders both as
@@ -1161,7 +1164,11 @@ def _register_streaming_agent_loop():
                                 "question": q_obj.get("question", ""),
                                 "options": list(q_obj.get("options") or []),
                                 "answer_form": q_obj.get("answer_form", ""),
-                                "answer_style": q_obj.get("answer_style", ""),
+                                "answer_style": (
+                                    "letter_only"
+                                    if q_obj.get("answer_form") == "multiple_choice"
+                                    else q_obj.get("answer_style", "")
+                                ),
                                 "answer_instruction": q_obj.get("answer_instruction", ""),
                                 "answer_chunks": ans_chunks_int,
                                 "per_emit_answers": list(q_obj.get("per_emit_answers") or []),

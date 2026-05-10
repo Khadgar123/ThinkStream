@@ -16,6 +16,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
 import random
 import re
 import unicodedata
@@ -334,7 +335,11 @@ def _mc_correct_letter_text(card: Dict, fallback: str = "") -> tuple[str, str]:
     """Return (correct_letter, correct_option_text) for an MC card."""
     options = list(card.get("options") or [])
     correct = str(card.get("correct_option") or "").strip().upper()
-    if len(options) in MC_OPTION_COUNTS and correct in MC_OPTION_LETTERS[:len(options)]:
+    if (
+        len(options) in MC_OPTION_COUNTS
+        and len(correct) == 1
+        and correct in MC_OPTION_LETTERS[:len(options)]
+    ):
         idx = ord(correct) - ord("A")
         if 0 <= idx < len(options):
             text = _strip_option_label(options[idx])
@@ -347,23 +352,13 @@ def _mc_correct_letter_text(card: Dict, fallback: str = "") -> tuple[str, str]:
 
 
 def _mc_answer_style_for_card(card: Dict, video_id: str = "") -> str:
-    """Stable MC target-format mixture.
+    """Project-wide MC target format.
 
-    SFT needs to learn OvO-compatible letter-only answering, but not only
-    that format. The split is intentionally card-stable so all response /
-    recall samples for the same question use one protocol:
-      60% letter_only, 25% letter_plus_text, 15% text_only.
+    Keep MCQ prompts and SFT targets in the same OvO-compatible form across
+    data construction, SFT, RL rollout, and eval. The scorer remains liberal,
+    but generated supervision should be a single option letter.
     """
-    explicit = str(card.get("answer_style") or "").strip()
-    if explicit in MC_ANSWER_STYLES:
-        return explicit
-    bucket = stable_mod(video_id, card.get("card_id", ""), card.get("question", ""),
-                        modulo=100)
-    if bucket < 60:
-        return "letter_only"
-    if bucket < 85:
-        return "letter_plus_text"
-    return "text_only"
+    return "letter_only"
 
 
 def _mc_answer_instruction(style: str, options: Optional[List[str]] = None) -> str:
@@ -863,7 +858,11 @@ def _candidate_to_recall_card(
     if answer_form == "multiple_choice":
         options = list(candidate.get("options") or [])
         correct = str(candidate.get("correct_option") or "").strip().upper()
-        if len(options) not in MC_OPTION_COUNTS or correct not in MC_OPTION_LETTERS[:len(options)]:
+        if (
+            len(options) not in MC_OPTION_COUNTS
+            or len(correct) != 1
+            or correct not in MC_OPTION_LETTERS[:len(options)]
+        ):
             return {}
         relabelled = [
             f"{chr(65 + i)}) {_strip_option_label(str(opt)).strip()}"
@@ -1983,7 +1982,8 @@ def save_samples(video_id: str, samples: List[Dict],
 def load_samples(video_id: str,
                  samples_dir: Path = SAMPLES_3C_DIR) -> Optional[List[Dict]]:
     from .cache_version import stage_version_ok
-    if not stage_version_ok("3c"):
+    allow_stale = os.environ.get("THINKSTREAM_ALLOW_STALE_PASS3_CACHE", "").lower() in {"1", "true", "yes", "on"}
+    if not allow_stale and not stage_version_ok("3c"):
         return None
     p = samples_dir / f"{video_id}.json"
     if not p.exists():
