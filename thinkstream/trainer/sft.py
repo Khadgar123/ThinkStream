@@ -335,7 +335,7 @@ def init_processor(
              # self-closing form actually emitted by pass3c / agent_loop /
              # streaming_vllm. The old `<compress_trigger>` and
              # `</compress_trigger>` open/close tokens never matched the
-             # actual data (which was always `<compress_trigger range='...'/>`,
+             # historical data (which was range-tagged before v12.12 and is
              # now `<compress_trigger/>`), so BPE was tokenizing the trigger
              # into fragments. Single self-closing token = atomic system
              # signal the model can recognize cleanly.

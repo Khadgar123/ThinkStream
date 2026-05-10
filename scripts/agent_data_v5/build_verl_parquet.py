@@ -19,7 +19,8 @@ the recipe expects:
     gold_answer         str
     answer_form         str
     ask_chunks          List[int]
-    gold_action_per_chunk  Dict[str,str]
+    gold_action_per_chunk  Dict[str,str]     # no offline "compress" targets
+    offline_compress_chunks List[int]        # diagnostics only
     n_chunks            int
     extra_info          Dict                 # passthrough metadata
     reward_model        Dict                 # verl convention: {"ground_truth": str, "style": str}
@@ -37,7 +38,7 @@ import gzip
 import os
 import sys
 from pathlib import Path
-from typing import Any, Dict, Iterator, List
+from typing import Any, Dict, Iterator, List, Tuple
 
 # verl/recipe expects pyarrow for parquet round-trip; pandas is a thin shim.
 import pandas as pd
@@ -87,6 +88,30 @@ def _canonical_answer_style(q: Dict[str, Any]) -> str:
     if str(q.get("answer_form") or "").strip() == "multiple_choice":
         return "letter_only"
     return str(q.get("answer_style") or "")
+
+
+def _rl_gold_actions_and_offline_compress(
+    gold_action: Dict[str, Any],
+) -> Tuple[Dict[str, str], List[int]]:
+    """Return RL action targets plus offline compress diagnostics.
+
+    Compression is a system memory-pressure event in RL/eval. It must be
+    triggered from live memory state, not from pass2/pass3 offline
+    ``gold_action_per_chunk`` labels. Keep those offline positions only as
+    diagnostics so future reward/audit code cannot accidentally train compress
+    timing from gold labels.
+    """
+    sanitized: Dict[str, str] = {}
+    offline_compress: List[int] = []
+    for key, value in (gold_action or {}).items():
+        action = str(value or "")
+        if action == "compress":
+            iv = _safe_int(key)
+            if iv is not None and iv >= 0:
+                offline_compress.append(iv)
+            continue
+        sanitized[str(key)] = action
+    return sanitized, sorted(set(offline_compress))
 
 
 def _infer_n_chunks(traj: Dict[str, Any]) -> int:
@@ -288,7 +313,10 @@ def _iter_rows(
                 continue
             video_id = traj.get("video_id") or traj.get("trajectory_id") or ""
             video_path = traj.get("video_path", "")
-            gold_action = traj.get("gold_action_per_chunk", {}) or {}
+            raw_gold_action = traj.get("gold_action_per_chunk", {}) or {}
+            gold_action, offline_compress_chunks = (
+                _rl_gold_actions_and_offline_compress(raw_gold_action)
+            )
             n_chunks = _infer_n_chunks(traj)
             questions = (traj.get("questions") or [])[:max_questions_per_traj]
             student_cache = (
@@ -322,6 +350,9 @@ def _iter_rows(
                 # can be much later than ask_chunks; clipping only to ask_chunks
                 # would erase the true response action and train the model to
                 # stay silent at the answer time.
+                # Offline compress labels have already been removed from
+                # gold_action. Runtime compression is triggered by the live
+                # memory budget, not by per-question gold targets.
                 q_gold_action: Dict[str, str] = {}
                 window_marks = ask_chunks + answer_chunks
                 if window_marks:
@@ -382,6 +413,8 @@ def _iter_rows(
                         "support_chunks": list(q.get("support_chunks") or []),
                         "answer_chunks": answer_chunks,
                         "per_emit_answers": list(q.get("per_emit_answers") or []),
+                        "offline_compress_chunks": offline_compress_chunks,
+                        "compress_trigger_source": "runtime_memory_threshold",
                         "render_layout": render_layout,
                         **student_cache,
                     },
@@ -406,6 +439,8 @@ def _iter_rows(
                                 (max(ask_chunks) if ask_chunks else None)
                             ),
                             "gold_action_per_chunk": q_gold_action,
+                            "offline_compress_chunks": offline_compress_chunks,
+                            "compress_trigger_source": "runtime_memory_threshold",
                         }, ensure_ascii=False),
                         "style": "thinkstream_v12",
                     },
@@ -436,10 +471,11 @@ def _iter_rows_multi_q(
       questions: List[Dict] — full pass4 question list (card_id, family,
                               ask_chunk, options, correct_option,
                               gold_answer, answer_form, per_emit_answers, ...)
-      gold_action_per_chunk: Dict[str, str] — full per-chunk gold action map
-                                              (NOT clipped to one question's window)
+      gold_action_per_chunk: Dict[str, str] — full per-chunk action-shaping map
+                                              with offline compress labels removed
+      offline_compress_chunks: List[int] — pass2/pass3 compress positions for audits only
       reward_model.ground_truth: JSON-encoded list of per-question targets
-                                 + the full gold_action map.
+                                 + the sanitized action map.
 
     The streaming agent loop reads `extra_info.questions` and injects each
     question's text into <user_input> at its `ask_chunk`; compute_score
@@ -460,7 +496,10 @@ def _iter_rows_multi_q(
                 continue
             video_id = traj.get("video_id") or traj.get("trajectory_id") or ""
             video_path = traj.get("video_path", "")
-            gold_action = traj.get("gold_action_per_chunk", {}) or {}
+            raw_gold_action = traj.get("gold_action_per_chunk", {}) or {}
+            gold_action, offline_compress_chunks = (
+                _rl_gold_actions_and_offline_compress(raw_gold_action)
+            )
             n_chunks = _infer_n_chunks(traj)
             questions = (traj.get("questions") or [])[:max_questions_per_traj]
             student_cache = (
@@ -519,6 +558,8 @@ def _iter_rows_multi_q(
                     "video_id": video_id,
                     "questions": q_targets,
                     "gold_action_per_chunk": gold_action,
+                    "offline_compress_chunks": offline_compress_chunks,
+                    "compress_trigger_source": "runtime_memory_threshold",
                     "all_ask_chunks": sorted(set(all_ask_chunks)),
                     "render_layout": render_layout,
                     **student_cache,
@@ -527,6 +568,8 @@ def _iter_rows_multi_q(
                     "ground_truth": json.dumps({
                         "questions": q_targets,
                         "gold_action_per_chunk": gold_action,
+                        "offline_compress_chunks": offline_compress_chunks,
+                        "compress_trigger_source": "runtime_memory_threshold",
                     }, ensure_ascii=False),
                     "style": "thinkstream_v12_multi_q",
                 },

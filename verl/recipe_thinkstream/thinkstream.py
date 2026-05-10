@@ -923,6 +923,8 @@ def _per_chunk_action_avg(
             # Offline compress labels mark where pass2/eval happened to
             # compact memory. In RL the trigger is derived from the live
             # memory state, so these labels are not active policy targets.
+            # Kept for legacy parquet only; new parquet strips them from
+            # gold_action_per_chunk and stores offline_compress_chunks.
             continue
 
         if gold_action in {"recall", "recall_silent"}:

@@ -251,6 +251,10 @@ def _summarize_rollout(
     stats["videos"] += 1
     stats["questions"] += len(questions) * max(group_size, 1)
     stats["rollout_groups"] += max(group_size, 1)
+    stats["offline_gold_compress_chunks"] += (
+        sum(1 for v in gold_action.values() if str(v) == "compress")
+        * max(group_size, 1)
+    )
 
     for gen_idx in range(max(group_size, 1)):
         final_queries = _last_queries_for_gen(chunk_results, gen_idx)
@@ -338,7 +342,13 @@ def _summarize_rollout(
                 continue
 
             expected_action = gold_action.get(chunk, "")
-            if expected_action and expected_action != "compress":
+            if expected_action == "compress":
+                # Offline pass2/pass3 compress labels are diagnostics only.
+                # Runtime compression should already have been counted above
+                # through the system trigger diagnostic; do not include these
+                # labels in action-gold accuracy.
+                stats["offline_gold_compress_action_rows_skipped"] += 1
+            elif expected_action:
                 actual_for_gold = "recall" if first_action == "recall" else action
                 stats["action_gold_total"] += 1
                 nested["action_gold_total_by_type"][expected_action] += 1
@@ -715,6 +725,11 @@ def main() -> None:
             "success_rate": _rate(stats["system_compress_success"], stats["system_compress_required"]),
             "failure_rate": _rate(stats["system_compress_failure"], stats["system_compress_required"]),
             "failure_reasons": _counter_dict(nested["compress_failure_reason"]),
+            "offline_gold_compress_chunks": int(stats["offline_gold_compress_chunks"]),
+            "offline_gold_action_rows_skipped": int(
+                stats["offline_gold_compress_action_rows_skipped"]
+            ),
+            "trigger_source": "runtime_memory_threshold",
         },
         "stable_think": {
             "pairs": int(stats["think_pairs"]),

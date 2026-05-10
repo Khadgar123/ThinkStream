@@ -39,12 +39,12 @@ Per-profile token-budget breakdown (worst-case at the most-loaded chunk):
 
 Compression behaviour (BOTH profiles, since the trigger is SFT-baked):
 
-  - recent_thinks accumulates → at 480 tokens AND ≥4 thinks, system
-    fires <compress_trigger range=t_start-t_end/> with the OLDEST 4
-    thinks' time range.
-  - Model writes <action>compress</action><summary>{...}</summary>.
-  - Those 4 thinks are removed from recent_thinks, replaced by a
-    summary segment (truncated at 200 tok) appended to compressed_segments.
+  - recent_thinks accumulates until the runtime memory budget fires.
+  - The system injects a bare <compress_trigger/>. The trigger is a boolean
+    memory-pressure event, not a gold action label and not a range hint.
+  - Model writes a compress tool_call with its selected time_range and summary.
+  - The selected thinks are removed from recent_thinks, replaced by a
+    summary segment appended to compressed_segments.
   - When compressed_segments > 5, the OLDEST TWO are merged into one
     segment (also capped at 200 tok). This means after 5+ compress
     events, the earliest segment may represent 8+, 16+, 32+ original

@@ -1061,8 +1061,9 @@ def _register_streaming_agent_loop():
             chunk_video_indices: List[int] = []
             # Actual video cursor at the time of each assistant turn. For
             # inter-chunk compression this is the chunk that will be retried
-            # after compression succeeds, so reward code can credit the
-            # compress decision against gold_action_per_chunk[chunk_idx].
+            # after compression succeeds. Reward/audit code can correlate the
+            # system event with runtime state, but must not treat offline
+            # gold_action_per_chunk["compress"] labels as the trigger.
             chunk_event_indices: List[int] = []
 
             # multi_modal_data accumulator: one (tensor, metadata) per
