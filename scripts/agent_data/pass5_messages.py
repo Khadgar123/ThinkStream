@@ -54,6 +54,7 @@ from thinkstream.data.agent_protocol import (
     build_recalled_frames_metadata,
     build_recall_result_metadata,
     canonical_answer_instruction,
+    is_inter_chunk,
     normalize_frame_protocol,
     prompt_time_range,
     prompt_time_value,
@@ -412,7 +413,7 @@ def build_messages(
     inp = sample["input"]
     chunk_idx = sample["chunk_idx"]
     chunk_sec = AGENT_CHUNK_SEC
-    inter_chunk = bool(sample.get("inter_chunk", False))
+    inter_chunk = is_inter_chunk(sample)
     is_recall_multiturn = (
         sample.get("sample_type") == "recall"
         and "v12_assistant_turn_1" in sample
@@ -877,7 +878,7 @@ def _emit_row(sample: Dict, messages: List[Dict], *, frame_protocol: str) -> Dic
     # but keeps all samples in the trajectory; the consumer (SFT loader)
     # is responsible for the actual drop policy.
     verification = sample.get("verification") or {}
-    tool_schema_mode = "compress" if sample.get("inter_chunk") else "streaming"
+    tool_schema_mode = "compress" if is_inter_chunk(sample) else "streaming"
     return {
         "trajectory_id": sample.get("trajectory_id", ""),
         "video_id": sample.get("video_id", ""),
@@ -886,7 +887,7 @@ def _emit_row(sample: Dict, messages: List[Dict], *, frame_protocol: str) -> Dic
         "sample_type": sample.get("sample_type", ""),
         "sample_id": sample.get("sample_id", ""),
         "frame_protocol": frame_protocol,
-        "inter_chunk": bool(sample.get("inter_chunk", False)),
+        "inter_chunk": is_inter_chunk(sample),
         "tool_schema_mode": tool_schema_mode,
         "messages": messages,
         "videos": None,
@@ -1116,7 +1117,7 @@ def validate_query_render_contract(sample: Dict, messages: List[Dict]) -> None:
     once after pass4/pass5/rebalance transformations.
     """
     inp = sample.get("input") or {}
-    inter_chunk = bool(sample.get("inter_chunk", False))
+    inter_chunk = is_inter_chunk(sample)
     queries = list(inp.get("queries") or [])
     expected_query = None if inter_chunk else _selected_open_query(queries)
     user_text = _message_text(messages, roles={"user"})
@@ -1392,7 +1393,7 @@ def build_sft_rows(
     if _is_post_recall_single_turn(sample):
         tool_schema_mode = "post_recall"
         sft_subtype = "post_recall"
-    elif sample.get("inter_chunk"):
+    elif is_inter_chunk(sample):
         tool_schema_mode = "compress"
         sft_subtype = str(sample.get("sample_type") or "")
     else:
