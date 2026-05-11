@@ -8,7 +8,7 @@ def test_agent_data_root_env_resolution(monkeypatch):
     monkeypatch.delenv("AGENT_DATA_DIR", raising=False)
     monkeypatch.delenv("THINKSTREAM_BATCH", raising=False)
 
-    import scripts.agent_data_v5.config as config
+    import scripts.agent_data.config as config
 
     config = importlib.reload(config)
     assert config.DATA_ROOT.name == "batch_test"
@@ -23,7 +23,7 @@ def test_agent_data_root_batch_shorthand(monkeypatch):
     monkeypatch.delenv("AGENT_DATA_DIR", raising=False)
     monkeypatch.setenv("THINKSTREAM_BATCH", "batch_short")
 
-    import scripts.agent_data_v5.config as config
+    import scripts.agent_data.config as config
 
     config = importlib.reload(config)
     assert config.DATA_ROOT == config.PROJECT_ROOT / "data" / "agent_v5" / "batch_short"
@@ -65,8 +65,8 @@ def test_pipeline_explicit_video_list_writes_batch_manifest(monkeypatch, tmp_pat
     )
     monkeypatch.setenv("THINKSTREAM_DATA_ROOT", str(root))
 
-    import scripts.agent_data_v5.config as config
-    import scripts.agent_data_v5.pipeline as pipeline
+    import scripts.agent_data.config as config
+    import scripts.agent_data.pipeline as pipeline
 
     importlib.reload(config)
     pipeline = importlib.reload(pipeline)

@@ -5,7 +5,7 @@ SFT eval, and OVOBench / our_val eval adapters. Keeping all three in
 sync prevents the classic train/eval reward gap (RL rewards "Yes." but
 eval judges it wrong because the eval-side matcher requires exact "yes").
 
-5 answer_form variants (matches scripts/agent_data_v5/pass3a_cards.py):
+5 answer_form variants (matches scripts/agent_data/pass3a_cards.py):
 
     multiple_choice  → match_mcq_answer       letter / text / gold fallback
     binary           → match_binary           polarity (yes/no/true/false, +zh)
@@ -24,7 +24,7 @@ Usage in eval:
         score_outcome_by_form, match_mcq_answer,
     )
 
-Usage in RL reward (verl/recipe_thinkstream/thinkstream.py):
+Usage in RL reward (thinkstream/rl/thinkstream.py):
     Re-exports under the leading-underscore names for backward compat.
 """
 from __future__ import annotations
@@ -298,7 +298,7 @@ def score_outcome_by_form(
       - descriptive (default)          → match_descriptive
 
     Anti-hacking: empty answer → 0; len > 1000 chars → 0
-    (mirrors v12_rewards.compute_outcome_reward_v12 conventions).
+    (mirrors v12_rewards.compute_outcome_reward conventions).
     """
     if not model_answer or not str(model_answer).strip():
         return 0.0

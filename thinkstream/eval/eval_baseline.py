@@ -241,8 +241,8 @@ def load_offline_model(
     model_path: str,
     local_rank: int = 0,
     model_type: str = "qwen3vl",
-    min_pixels: int = 130_000,
-    max_pixels: int = 220_000,
+    min_pixels: int = 256 * 28 * 28,
+    max_pixels: int = 512 * 28 * 28,
 ):
     """Load a vanilla HF VLM (no streaming patches) for offline evaluation."""
     if model_type not in BASELINE_MODEL_CLS:
@@ -334,8 +334,8 @@ def add_offline_args(parser):
     )
     parser.add_argument("--max_new_tokens", type=int, default=30)
     parser.add_argument("--max_frames", type=int, default=64)
-    parser.add_argument("--min_pixels", type=int, default=130_000)
-    parser.add_argument("--max_pixels", type=int, default=220_000)
+    parser.add_argument("--min_pixels", type=int, default=256 * 28 * 28)
+    parser.add_argument("--max_pixels", type=int, default=512 * 28 * 28)
     parser.add_argument(
         "--frame_protocol",
         type=str,
@@ -358,8 +358,8 @@ def offline_predict_mcq(
     question_postfix: str = "\nAnswer with a single letter.",
     max_new_tokens: int = 30,
     max_frames: int = 64,
-    min_pixels: int = 130_000,
-    max_pixels: int = 220_000,
+    min_pixels: int = 256 * 28 * 28,
+    max_pixels: int = 512 * 28 * 28,
     rank: int = 0,
     world_size: int = 1,
     sample: int = None,

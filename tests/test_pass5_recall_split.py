@@ -11,7 +11,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts.agent_data_v5.pass5_messages import build_sft_rows  # noqa: E402
+from scripts.agent_data.pass5_messages import build_sft_rows  # noqa: E402
 from thinkstream.sft.data_processor import _select_loss_assistant_spans  # noqa: E402
 
 
@@ -66,7 +66,7 @@ def test_select_loss_assistant_spans_supports_last_only():
 
 def test_rl_compress_turn_is_text_only_in_source():
     root = Path(__file__).resolve().parents[1]
-    src = (root / "verl/recipe_thinkstream/streaming_agent_loop.py").read_text()
+    src = (root / "thinkstream/rl/streaming_agent_loop.py").read_text()
     build_start = src.index("def _build_chunk_user_content(")
     visual_start = src.index("# ── Visual window header", build_start)
     inter_chunk_return = src.index("if inter_chunk:\n                return content", build_start)

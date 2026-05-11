@@ -943,12 +943,12 @@ class TestPromptTemplates:
     """Test that prompt templates render correctly."""
 
     def test_all_families_have_prompts(self):
-        from scripts.agent_data_v5.pass3a_cards import FAMILY_PROMPTS
+        from scripts.agent_data.pass3a_cards import FAMILY_PROMPTS
         for f in FAMILY_TARGETS:
             assert f in FAMILY_PROMPTS, f"No prompt for family {f}"
 
     def test_format_renders_all_templates(self):
-        from scripts.agent_data_v5.pass3a_cards import FAMILY_PROMPTS
+        from scripts.agent_data.pass3a_cards import FAMILY_PROMPTS
         for f, tmpl in FAMILY_PROMPTS.items():
             rendered = tmpl.format(n=3, evidence="test evidence line")
             assert "test evidence line" in rendered, f"{f} evidence not rendered"
@@ -957,7 +957,7 @@ class TestPromptTemplates:
             assert "{evidence}" not in rendered, f"{f} has unrendered {{evidence}}"
 
     def test_output_schema_present(self):
-        from scripts.agent_data_v5.pass3a_cards import FAMILY_PROMPTS
+        from scripts.agent_data.pass3a_cards import FAMILY_PROMPTS
         for f, tmpl in FAMILY_PROMPTS.items():
             rendered = tmpl.format(n=1, evidence="x")
             assert "canonical_answer" in rendered, f"{f} missing schema fields"
@@ -965,7 +965,7 @@ class TestPromptTemplates:
             assert "visibility_type" in rendered, f"{f} missing visibility_type"
 
     def test_entity_rule_present(self):
-        from scripts.agent_data_v5.pass3a_cards import FAMILY_PROMPTS
+        from scripts.agent_data.pass3a_cards import FAMILY_PROMPTS
         for f, tmpl in FAMILY_PROMPTS.items():
             rendered = tmpl.format(n=1, evidence="x")
             assert "NEVER by ID" in rendered, f"{f} missing entity ID rule"
@@ -1109,7 +1109,7 @@ class TestVerifyCards:
         resp = json.dumps({"valid": True, "support_chunks": [8],
                            "visibility_type": "transient", "canonical_answer": "4.99"})
         client = MockClient({"test_verify_v_F1_001": resp})
-        from scripts.agent_data_v5.pass3a_cards import verify_cards
+        from scripts.agent_data.pass3a_cards import verify_cards
         result = await verify_cards("test", cards, evidence, client)
         assert len(result) == 1
         assert result[0]["_verified"] is True
@@ -1123,7 +1123,7 @@ class TestVerifyCards:
         evidence = _make_evidence()
         resp = json.dumps({"valid": False})
         client = MockClient({"test_verify_v_F1_001": resp})
-        from scripts.agent_data_v5.pass3a_cards import verify_cards
+        from scripts.agent_data.pass3a_cards import verify_cards
         result = await verify_cards("test", cards, evidence, client)
         assert len(result) == 0
 
@@ -1137,7 +1137,7 @@ class TestVerifyCards:
         resp = json.dumps({"valid": True, "support_chunks": [8, 16],
                            "visibility_type": "transient", "canonical_answer": "4.99"})
         client = MockClient({"test_verify_v_F1_001": resp})
-        from scripts.agent_data_v5.pass3a_cards import verify_cards
+        from scripts.agent_data.pass3a_cards import verify_cards
         result = await verify_cards("test", cards, evidence, client)
         assert result[0]["support_chunks"] == [8, 16]
 
@@ -1151,13 +1151,13 @@ class TestVerifyCards:
         resp = json.dumps({"valid": True, "support_chunks": [8],
                            "visibility_type": "persistent", "canonical_answer": "4.99"})
         client = MockClient({"test_verify_v_F1_001": resp})
-        from scripts.agent_data_v5.pass3a_cards import verify_cards
+        from scripts.agent_data.pass3a_cards import verify_cards
         result = await verify_cards("test", cards, evidence, client)
         assert result[0]["visibility_type"] == "persistent"
 
     @pytest.mark.asyncio
     async def test_empty_cards_returns_empty(self):
-        from scripts.agent_data_v5.pass3a_cards import verify_cards
+        from scripts.agent_data.pass3a_cards import verify_cards
         client = MockClient()
         result = await verify_cards("test", [], [], client)
         assert result == []
@@ -1167,7 +1167,7 @@ class TestVerifyCards:
         cards = [{"card_id": "v_F1_001", "question": "Test?",
                   "canonical_answer": "X", "answer_form": "short_exact",
                   "support_chunks": [], "visibility_type": "transient"}]
-        from scripts.agent_data_v5.pass3a_cards import verify_cards
+        from scripts.agent_data.pass3a_cards import verify_cards
         client = MockClient()
         result = await verify_cards("test", cards, [], client)
         assert len(result) == 0
@@ -1186,7 +1186,7 @@ class TestVerifyCards:
                 "canonical_answer": card["canonical_answer"],
             })
         client = MockClient(responses)
-        from scripts.agent_data_v5.pass3a_cards import verify_cards
+        from scripts.agent_data.pass3a_cards import verify_cards
         result = await verify_cards("test", cards, evidence, client)
         # Each card should generate exactly one call
         assert len(client._calls) == 5
@@ -1204,7 +1204,7 @@ class TestVisibilityCheck:
 
     @pytest.mark.asyncio
     async def test_answerable_returns_true(self):
-        from scripts.agent_data_v5.pass3b_placement import _check_visibility_one
+        from scripts.agent_data.pass3b_placement import _check_visibility_one
         snapshot = {
             "recent_thinks": [{"time": "20-22", "text": "Person in red apron chopping onions."}],
             "compressed_segments": [],
@@ -1217,7 +1217,7 @@ class TestVisibilityCheck:
 
     @pytest.mark.asyncio
     async def test_not_answerable_returns_false(self):
-        from scripts.agent_data_v5.pass3b_placement import _check_visibility_one
+        from scripts.agent_data.pass3b_placement import _check_visibility_one
         snapshot = {
             "recent_thinks": [{"time": "40-42", "text": "Empty kitchen counter."}],
             "compressed_segments": [],
@@ -1230,7 +1230,7 @@ class TestVisibilityCheck:
 
     @pytest.mark.asyncio
     async def test_api_failure_returns_false(self):
-        from scripts.agent_data_v5.pass3b_placement import _check_visibility_one
+        from scripts.agent_data.pass3b_placement import _check_visibility_one
         snapshot = {"recent_thinks": [], "compressed_segments": []}
         card = {"card_id": "c1", "question": "Test?", "canonical_answer": "X"}
         client = MockClient({})  # no response
@@ -1240,7 +1240,7 @@ class TestVisibilityCheck:
     @pytest.mark.asyncio
     async def test_compute_placements_with_client(self):
         """compute_all_placements with client should use LLM for history chunks."""
-        from scripts.agent_data_v5.pass3b_placement import compute_all_placements
+        from scripts.agent_data.pass3b_placement import compute_all_placements
         rollout = _make_rollout()
         evidence = _make_evidence()
         cards = [{"card_id": "c1", "family": "F1", "question": "What price?",
@@ -1264,7 +1264,7 @@ class TestVisibilityCheck:
     @pytest.mark.asyncio
     async def test_compute_placements_without_client_fallback(self):
         """Without client, should fall back to keyword-based retention."""
-        from scripts.agent_data_v5.pass3b_placement import compute_all_placements
+        from scripts.agent_data.pass3b_placement import compute_all_placements
         rollout = _make_rollout()
         evidence = _make_evidence()
         cards = [{"card_id": "c1", "family": "F1", "question": "What price?",
@@ -1278,7 +1278,7 @@ class TestVisibilityCheck:
     @pytest.mark.asyncio
     async def test_persistent_cards_skip_llm(self):
         """Persistent cards use pure math, no LLM calls needed."""
-        from scripts.agent_data_v5.pass3b_placement import compute_all_placements
+        from scripts.agent_data.pass3b_placement import compute_all_placements
         rollout = _make_rollout()
         evidence = _make_evidence()
         cards = [{"card_id": "c1", "family": "F2", "question": "Apron color?",
@@ -1298,25 +1298,25 @@ class TestPendingLifetime:
     """Test MAX_ACTIVE_QUERIES enforcement in trajectory grouping."""
 
     def test_resolution_chunk_immediate(self):
-        from scripts.agent_data_v5.pass3b_placement import _resolution_chunk
+        from scripts.agent_data.pass3b_placement import _resolution_chunk
         p = {"ask_chunk": 10, "sequence_type": "immediate_response",
              "key_chunks": {"ask": 10, "post_silent": 11}}
         assert _resolution_chunk(p) == 10  # resolved immediately
 
     def test_resolution_chunk_event_watch(self):
-        from scripts.agent_data_v5.pass3b_placement import _resolution_chunk
+        from scripts.agent_data.pass3b_placement import _resolution_chunk
         p = {"ask_chunk": 5, "sequence_type": "event_watch",
              "key_chunks": {"ask": 5, "trigger": 20, "post_silent": 21}}
         assert _resolution_chunk(p) == 20  # resolved at trigger
 
     def test_resolution_chunk_recall_fail(self):
-        from scripts.agent_data_v5.pass3b_placement import _resolution_chunk
+        from scripts.agent_data.pass3b_placement import _resolution_chunk
         p = {"ask_chunk": 10, "sequence_type": "recall_fail_then_found",
              "key_chunks": {"ask": 10, "found_response": 25, "post_silent": 26}}
         assert _resolution_chunk(p) == 25  # resolved when found
 
     def test_count_pending_at(self):
-        from scripts.agent_data_v5.pass3b_placement import _count_pending_at
+        from scripts.agent_data.pass3b_placement import _count_pending_at
         group = [
             {"ask_chunk": 5, "sequence_type": "event_watch",
              "key_chunks": {"ask": 5, "trigger": 20}},
@@ -1332,7 +1332,7 @@ class TestPendingLifetime:
 
     def test_two_event_watches_blocked(self):
         """Two overlapping event_watches should not be in same trajectory."""
-        from scripts.agent_data_v5.pass3b_placement import _count_pending_at
+        from scripts.agent_data.pass3b_placement import _count_pending_at
         group = [
             {"ask_chunk": 5, "sequence_type": "event_watch",
              "key_chunks": {"ask": 5, "trigger": 30}},
@@ -1346,7 +1346,7 @@ class TestPendingLifetime:
 
     def test_trajectory_respects_max_active(self):
         """plan_trajectories should not group placements that exceed MAX_ACTIVE_QUERIES."""
-        from scripts.agent_data_v5.pass3b_placement import plan_trajectories, _count_pending_at
+        from scripts.agent_data.pass3b_placement import plan_trajectories, _count_pending_at
         # Create 3 event_watch placements with overlapping pending windows
         cards = [
             {"card_id": f"ew_{i}", "family": "E2", "question": f"Q{i}?",
@@ -1382,7 +1382,7 @@ class TestFamilyCoverage:
 
     def test_backfill_missing_families(self):
         """If initial selection misses families, backfill should add them."""
-        from scripts.agent_data_v5.pass3b_placement import plan_trajectories
+        from scripts.agent_data.pass3b_placement import plan_trajectories
         # Create placements heavily biased toward F2
         cards = [
             {"card_id": f"f2_{i}", "family": "F2",
@@ -1422,7 +1422,7 @@ class TestFamilyCoverage:
 
     def test_coverage_with_single_family_video(self):
         """Video with only one family should not crash, just warn."""
-        from scripts.agent_data_v5.pass3b_placement import plan_trajectories
+        from scripts.agent_data.pass3b_placement import plan_trajectories
         cards = [{"card_id": "f2_0", "family": "F2",
                   "question": "Q?", "canonical_answer": "Yes",
                   "answer_form": "binary", "support_chunks": [5]}]
@@ -1442,7 +1442,7 @@ class TestForkThink:
     @pytest.mark.asyncio
     async def test_no_queries_returns_base(self):
         """With no active queries, fork think returns base think unchanged."""
-        from scripts.agent_data_v5.pass3c_samples import _generate_fork_think
+        from scripts.agent_data.pass3c_samples import _generate_fork_think
         client = MockClient({})
         result = await _generate_fork_think(
             "Person chopping onions.", [], client, "vid", 10)
@@ -1452,7 +1452,7 @@ class TestForkThink:
     @pytest.mark.asyncio
     async def test_all_answered_returns_base(self):
         """With all queries answered, returns base think unchanged."""
-        from scripts.agent_data_v5.pass3c_samples import _generate_fork_think
+        from scripts.agent_data.pass3c_samples import _generate_fork_think
         queries = [{"question": "Color?", "ask_time": 10,
                      "answers": [{"text": "Red", "time": 12}]}]
         client = MockClient({})
@@ -1464,7 +1464,7 @@ class TestForkThink:
     @pytest.mark.asyncio
     async def test_pending_query_calls_api(self):
         """With pending queries, should call API to rewrite think."""
-        from scripts.agent_data_v5.pass3c_samples import _generate_fork_think
+        from scripts.agent_data.pass3c_samples import _generate_fork_think
         queries = [{"question": "Is apron red?", "ask_time": 10, "answers": []}]
         rewritten = "Person in red apron chopping. Red apron visible on the person."
         client = MockClient({"vid_fthink_15": rewritten})
@@ -1476,7 +1476,7 @@ class TestForkThink:
     @pytest.mark.asyncio
     async def test_api_failure_returns_base(self):
         """API failure falls back to base think."""
-        from scripts.agent_data_v5.pass3c_samples import _generate_fork_think
+        from scripts.agent_data.pass3c_samples import _generate_fork_think
         queries = [{"question": "Q?", "ask_time": 10, "answers": []}]
         client = MockClient({})  # no response
         result = await _generate_fork_think(
@@ -1490,7 +1490,7 @@ class TestRecallThink:
     @pytest.mark.asyncio
     async def test_generates_real_analysis(self):
         """Should call API to generate real analysis, not hardcoded string."""
-        from scripts.agent_data_v5.pass3c_samples import _generate_recall_think
+        from scripts.agent_data.pass3c_samples import _generate_recall_think
         card = {"question": "What price?", "canonical_answer": "4.99"}
         recall_result = {"source": "historical_frames",
                          "text_content": "[10-12] Price tag shows $4.99"}
@@ -1504,7 +1504,7 @@ class TestRecallThink:
     @pytest.mark.asyncio
     async def test_failure_recall_generates_analysis(self):
         """Failed recall should also get real analysis."""
-        from scripts.agent_data_v5.pass3c_samples import _generate_recall_think
+        from scripts.agent_data.pass3c_samples import _generate_recall_think
         card = {"question": "What price?", "canonical_answer": "4.99"}
         recall_result = {"source": "failure",
                          "text_content": "No matching results found."}
@@ -1517,7 +1517,7 @@ class TestRecallThink:
     @pytest.mark.asyncio
     async def test_api_failure_falls_back(self):
         """API failure should produce a reasonable fallback."""
-        from scripts.agent_data_v5.pass3c_samples import _generate_recall_think
+        from scripts.agent_data.pass3c_samples import _generate_recall_think
         card = {"question": "Q?"}
         recall_result = {"source": "failure", "text_content": "No results."}
         client = MockClient({})
@@ -1530,7 +1530,7 @@ class TestFormatSnapshotText:
     """Test snapshot text formatting for LLM prompt."""
 
     def test_with_recent_thinks(self):
-        from scripts.agent_data_v5.pass3b_placement import _format_snapshot_text
+        from scripts.agent_data.pass3b_placement import _format_snapshot_text
         snapshot = {
             "recent_thinks": [
                 {"time": "10-12", "text": "Person chopping onions."},
@@ -1544,7 +1544,7 @@ class TestFormatSnapshotText:
         assert compressed == "(empty)"
 
     def test_with_compressed_segments(self):
-        from scripts.agent_data_v5.pass3b_placement import _format_snapshot_text
+        from scripts.agent_data.pass3b_placement import _format_snapshot_text
         snapshot = {
             "recent_thinks": [],
             "compressed_segments": [
@@ -1556,7 +1556,7 @@ class TestFormatSnapshotText:
         assert "prepared ingredients" in compressed
 
     def test_empty_snapshot(self):
-        from scripts.agent_data_v5.pass3b_placement import _format_snapshot_text
+        from scripts.agent_data.pass3b_placement import _format_snapshot_text
         snapshot = {"recent_thinks": [], "compressed_segments": []}
         recent, compressed = _format_snapshot_text(snapshot)
         assert recent == "(empty)"

@@ -1,4 +1,4 @@
-from scripts.agent_data_v5.pass2_rollout import (
+from scripts.agent_data.pass2_rollout import (
     MemoryState,
     _is_repair_better,
     _safe_max_tokens_for_pass2,
@@ -8,9 +8,9 @@ from scripts.agent_data_v5.pass2_rollout import (
     run_pass2_single_video,
     should_repair_observation,
 )
-from scripts.agent_data_v5.config import FRAMES_PER_CHUNK, VISUAL_TOKENS_PER_FRAME_RUNTIME
-from scripts.agent_data_v5.audit_pass2_stale import audit_rollouts
-from scripts.agent_data_v5.cache_version import STAGE_VERSIONS
+from scripts.agent_data.config import FRAMES_PER_CHUNK, VISUAL_TOKENS_PER_FRAME_RUNTIME
+from scripts.agent_data.audit_pass2_stale import audit_rollouts
+from scripts.agent_data.cache_version import STAGE_VERSIONS
 
 
 def test_pass2_observation_uses_timestamped_image_window(tmp_path):

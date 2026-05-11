@@ -37,7 +37,7 @@ def _ast_check_dispatch():
     """Static check: streaming_agent_loop has the dispatch + per-action
     tracking we need."""
     import ast
-    src = open(PROJECT_ROOT / "verl/recipe_thinkstream/streaming_agent_loop.py").read()
+    src = open(PROJECT_ROOT / "thinkstream/rl/streaming_agent_loop.py").read()
     tree = ast.parse(src)
 
     # 1. recurrent_mode env-driven flag set in __init__
@@ -84,7 +84,7 @@ def main() -> int:
     # Also verify run script knows the env var
     print()
     print("═══ Launch script env var documentation ═══")
-    src = open(PROJECT_ROOT / "verl/recipe_thinkstream/run_thinkstream_grpo.sh").read()
+    src = open(PROJECT_ROOT / "thinkstream/rl/run_thinkstream_grpo.sh").read()
     has_recurrent_doc = "RECURRENT" in src or "THINKSTREAM_RECURRENT_MODE" in src
     if has_recurrent_doc:
         print("  ✓ launch script documents THINKSTREAM_RECURRENT_MODE")
@@ -94,7 +94,7 @@ def main() -> int:
     print()
     print("═══ Backward compat: default mode = stitched ═══")
     # Open the source and check default value branch in __init__
-    src = open(PROJECT_ROOT / "verl/recipe_thinkstream/streaming_agent_loop.py").read()
+    src = open(PROJECT_ROOT / "thinkstream/rl/streaming_agent_loop.py").read()
     # The default literal "stitched" must appear in the env getter
     assert 'os.environ.get("THINKSTREAM_RECURRENT_MODE", "stitched")' in src, (
         "default mode is not 'stitched' — backward compat broken"
@@ -108,7 +108,7 @@ def main() -> int:
     print("Activation (when ready to start v12.14 production):")
     print("  THINKSTREAM_RECURRENT_MODE=recurrent \\")
     print("  MULTI_Q=1 THINKSTREAM_MAX_RECALL_PER_CHUNK=1 \\")
-    print("  bash verl/recipe_thinkstream/run_thinkstream_grpo.sh")
+    print("  bash thinkstream/rl/run_thinkstream_grpo.sh")
     print()
     print("With this env set:")
     print("  1. streaming_agent_loop.run() returns list[AgentLoopOutput] per traj")

@@ -1,0 +1,16 @@
+# verl agent_loop registry overrides for ThinkStream.
+#
+# Points the registry key `thinkstream_streaming_agent` (set by our
+# CustomRLHFDataset on every row) at the streaming chunk-level loop in
+# thinkstream/rl/streaming_agent_loop.py.
+#
+# Why the dir is named thinkstream/rl/ and NOT thinkstream/:
+#   With launcher PYTHONPATH=${VERL_DIR}:${PROJECT_DIR}, having a dir
+#   named "thinkstream" inside verl/ would shadow the real ThinkStream
+#   Python package (ThinkStream/thinkstream/), breaking
+#   `from thinkstream.trainer.rewards import ...` lookups in both
+#   the reward fn and the agent loop. The rename eliminates the collision.
+#
+# Loaded via rollout.agent.agent_loop_config_path in thinkstream_grpo.yaml.
+- name: thinkstream_streaming_agent
+  _target_: thinkstream/rl.streaming_agent_loop.make_thinkstream_streaming_agent_loop

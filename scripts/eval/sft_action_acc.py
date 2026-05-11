@@ -37,14 +37,14 @@ from thinkstream.sft.data_processor import (
     _resolve_video_paths,
     update_processor_pixels,
 )
-from thinkstream.sft.argument import DataArguments
-from scripts.agent_data_v5.pass5_messages import (
+from thinkstream.sft.args import DataArguments
+from scripts.agent_data.pass5_messages import (
     build_messages as build_per_timestep_messages,
 )
 from thinkstream.data.agent_protocol import (
     normalize_frame_protocol,
     normalize_render_layout,
-    parse_agent_output_v12,
+    parse_agent_output,
     tools_for_turn,
 )
 from scripts.eval.processor_loader import load_processor_for_checkpoint
@@ -84,7 +84,7 @@ def _tool_mode_for_prompt(sample, messages):
     mode = sample.get("tool_schema_mode")
     if mode:
         return str(mode)
-    if sample.get("v12_inter_chunk"):
+    if sample.get("inter_chunk"):
         return "compress"
     if any(m.get("role") == "assistant" for m in messages) and "<recall_result>" in _messages_text(messages):
         return "recall_response"
@@ -93,7 +93,7 @@ def _tool_mode_for_prompt(sample, messages):
 
 def parse_output(text: str) -> dict:
     """Extract the v12 terminal action from generated text."""
-    parsed = parse_agent_output_v12(text)
+    parsed = parse_agent_output(text)
     kind = parsed.get("kind")
     if kind == "answer":
         action = "response" if (parsed.get("answer_text") or "").strip() else "silent"

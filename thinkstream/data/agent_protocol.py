@@ -2,9 +2,9 @@
 
 This module is the single source of truth for the agent's input/output format.
 Used by:
-- Data construction (scripts/agent_data_v5/pass2_rollout.py / pass5_messages.py)
+- Data construction (scripts/agent_data/pass2_rollout.py / pass5_messages.py)
 - SFT training (thinkstream/sft/data_processor.py)
-- RL rollout (verl/recipe_thinkstream/streaming_agent_loop.py)
+- RL rollout (thinkstream/rl/streaming_agent_loop.py)
 - Inference (thinkstream/model/agent_loop.py)
 
 Any change to the protocol format MUST be made here to guarantee
@@ -21,11 +21,11 @@ from typing import Any, Callable, Dict, List, Optional, Sequence
 # Constants (canonical values, importable by all consumers)
 # ---------------------------------------------------------------------------
 
-# v12.5: canonical values now live in scripts/agent_data_v5/config.py.
+# v12.5: canonical values now live in scripts/agent_data/config.py.
 # Kept here as fallbacks when that import isn't available (deployed inference
 # environments without the data-construction package).
 try:
-    from scripts.agent_data_v5.config import (
+    from scripts.agent_data.config import (
         AGENT_CHUNK_SEC,
         VISUAL_WINDOW_CHUNKS,
         FRAMES_PER_CHUNK,
@@ -1215,12 +1215,12 @@ def build_user_content(
     queries: Optional[List[Dict]] = None,
     recalled_frames: Optional[Dict] = None,
     recall_result: Optional[Dict] = None,
-    # v12.12 (2026-05-02): defaults aligned to RUNTIME_MM_PROCESSOR_KWARGS in
-    # scripts.agent_data_v5.config — Qwen3-VL smart_resize bounds for the
-    # student/runtime profile. SFT/RL/Eval/deploy ALL use these values; pass1a
-    # uses HIRES (set explicitly via mm_processor_kwargs at request level).
-    min_pixels: int = 130_000,
-    max_pixels: int = 220_000,
+    # Streaming-runtime profile, ViT-patch-aligned. Same values as
+    # ``schema.DEFAULT_VIDEO_{MIN,MAX}_PIXELS`` and ``sft.args.video_*_pixels``.
+    # SFT/RL/Eval/deploy unified; pass1a uses HIRES (set explicitly via
+    # mm_processor_kwargs at request level).
+    min_pixels: int = 256 * 28 * 28,   # 200,704
+    max_pixels: int = 512 * 28 * 28,   # 401,408
     frame_paths: Optional[List[str]] = None,
     frame_protocol: Optional[str] = None,
     inter_chunk: bool = False,
@@ -1269,6 +1269,17 @@ def build_user_content(
     layout = normalize_render_layout(render_layout)
     chunk_sec = AGENT_CHUNK_SEC
     user_content = []
+
+    # Compression turns must carry the ``<stage:compress>`` marker so the
+    # unified system prompt's hard rule ("ONLY callable when the user message
+    # contains <stage:compress>") is satisfied. Without this, the RL rollout
+    # path produces user content that never enables compress and the model
+    # refuses to emit the tool call. The marker is a short text item placed
+    # at the very front of the user message so it is visible regardless of
+    # downstream layout choices.
+    if inter_chunk:
+        user_content.append({"type": "text", "text": "<stage:compress>\n"})
+
     effective_user_input = (
         ""
         if user_input_is_active_query_duplicate(
@@ -1493,177 +1504,46 @@ def strip_chat_template_boundary_tokens(text: str) -> str:
     return text
 
 
-_FRAME_CARRIER_TS_PROMPT = (
-    "Visual input is a recent sliding window. Each frame has a timestamp tag "
-    "such as <frame ts=\"12\" role=\"latest chunk\" />. Use "
-    "<visual_window>.current_time to identify the latest one-second chunk. "
-    "Earlier frames in the same window are visual context for previous or "
-    "within-window details, not proof of the current state. Frame tags are "
-    "routing metadata only: do not copy tags, timestamps, role markers, or "
-    "metadata lines into the output.\n\n"
-)
 
-_FRAME_CARRIER_VIDEO_META_PROMPT = (
-    "Visual input is one Qwen video block built from pre-extracted frames in a "
-    "recent sliding window. Qwen video_metadata carries frame timestamps. Use "
-    "<visual_window>.current_time to identify the latest one-second chunk. "
-    "Earlier frames in the same window are visual context for previous or "
-    "within-window details, not proof of the current state. Temporal metadata "
-    "is routing metadata only: do not copy timestamps, frame indices, role "
-    "markers, or metadata lines into the output.\n\n"
-)
+# ---------------------------------------------------------------------------
+# System prompt + sample-field helpers
+# ---------------------------------------------------------------------------
+#
+# The canonical streaming system prompt lives in ``thinkstream.data.schema``.
+# Stage transitions (streaming / compress / post-recall) are signalled via
+# user-side ``<stage:...>`` markers in the message content, not by selecting
+# a different prompt.
 
-SYSTEM_PROMPT_V12_STREAMING = (
-    "[STREAMING_QA / CURRENT-FIRST / RECALL-ALLOWED]\n"
-    "This is an ordinary streaming video QA turn, not a compression turn. "
-    "Output exactly one <think> block followed by exactly one terminal block: "
-    "<answer>...</answer> or a recall <tool_call>...</tool_call>.\n\n"
-    f"{_FRAME_CARRIER_TS_PROMPT}"
-    "Priority rules:\n"
-    "1. Start <think> with observable facts from the latest/current video chunk only.\n"
-    "2. Answer only when the active query's required evidence is available in "
-    "the current visual input or returned recall frames.\n"
-    "3. Use recall when earlier visual detail is needed and is not sufficiently "
-    "available in the current input.\n"
-    "4. Follow the output grammar exactly.\n\n"
-    "Input meaning:\n"
-    "- <memory> and <compressed> are historical text state for orientation and "
-    "recall planning, not final visual proof.\n"
-    "- <memory_think>{...}</memory_think> records are archived chunk observations; "
-    "do not copy or continue them.\n"
-    "- The video block is ordered by time. The latest/current chunk is the last "
-    "one-second slice; <visual_window>.current_time is its start second.\n"
-    "- <active_query> is the only live question and gives the required answer "
-    "format. <response_history> contains prior valid answers for that same "
-    "active query only.\n\n"
-    "Think rule:\n"
-    "- The first sentence of <think> must describe only what is visible in the "
-    "latest/current chunk.\n"
-    "- Then briefly connect it to memory or recall evidence if needed.\n"
-    "- Do not copy raw memory, metadata, options, prior answers, or recall "
-    "metadata.\n"
-    "- Avoid repeating unchanged generic observations from previous chunks.\n\n"
-    "Answer or silent:\n"
-    "- If there is no <active_query>, output <answer></answer>.\n"
-    "- If the needed event or evidence has not appeared yet, output "
-    "<answer></answer>.\n"
-    "- For repeated or multi-event queries, answer only for a new required "
-    "event; do not re-emit old answers.\n"
-    "- Follow <active_query>'s answer format exactly. If it says letter-only, "
-    "output one listed letter only.\n"
-    "- For absence or Unable-style queries, answer only when the required "
-    "horizon is reached or recall frames support it; otherwise stay silent.\n\n"
-    "Recall:\n"
-    "- Recall only historical evidence. The time_range end must be <= "
-    "<visual_window>.current_time.\n"
-    "- Use recall for earlier objects, actions, OCR, counts, colors, states, "
-    "attributes, spatial relations, temporal order, causal clues, cumulative "
-    "events, or absence checks.\n"
-    "- Prefer a narrow range inferred from memory/compressed/archived "
-    "observations. Use a wider earlier range only if needed.\n"
-    "- If current visual evidence is sufficient, answer instead of recall.\n"
-    "- Do not issue repeated recall for the same active query after recall "
-    "evidence has already returned.\n\n"
-    "Recall arguments:\n"
-    "- query: 3-6 discriminative keywords using entities, objects, actions, OCR "
-    "text, colors, counts, or spatial/temporal terms.\n"
-    "- Do not use the full question, option letters, or guessed answer values.\n"
-    "- time_range: seconds formatted \"start-end\", historical only.\n\n"
-    "Output grammar:\n"
-    "- Answer: <answer>response text</answer>\n"
-    "- Silent: <answer></answer>\n"
-    "- Recall: <tool_call>{\"name\":\"recall\",\"arguments\":{\"query\":\"keywords\",\"time_range\":\"start-end\"}}</tool_call>\n"
-    "- No text outside <think> and the terminal block.\n"
-)
-
-SYSTEM_PROMPT_V12_COMPRESS = (
-    "[MEMORY_MAINTENANCE / FORCED_COMPRESS]\n"
-    "This is a system-triggered memory compression turn. Compression is already "
-    "required. Output exactly one <think> block followed by exactly one compress "
-    "<tool_call>. No answer. No silent answer. No recall.\n\n"
-    "Input:\n"
-    "- <compress_trigger/> is a boolean system event marker. It is not a user "
-    "request, not a question, and not a time-range instruction.\n"
-    "- <memory> contains historical text state.\n"
-    "- <compressed> records are older summaries and should normally be kept as "
-    "context, not recompressed.\n"
-    "- <memory_think> records are archived chunk observations.\n"
-    "- There is no current visual task on this turn.\n\n"
-    "Select range:\n"
-    "- Choose one older contiguous range from uncompressed archived observations "
-    "inside <memory>.\n"
-    "- Optimize for minimal information loss: choose a span whose unique facts "
-    "can be preserved well in a short summary.\n"
-    "- Prefer repetitive, stable, or already-resolved observations that no "
-    "longer need full wording.\n"
-    "- Avoid the newest observations, unresolved active-query evidence, rare "
-    "exact OCR/count details, or details needed for immediate QA.\n"
-    "- Do not choose disjoint ranges. Do not include facts outside the selected "
-    "range.\n\n"
-    "Summary constraints:\n"
-    "- The summary replaces only the selected range.\n"
-    "- Preserve entities, object identities, colors, OCR text, counts, "
-    "attributes, spatial relations, state changes, temporal order, "
-    "absence/negative evidence, and unresolved-query details.\n"
-    "- Do not invent facts. Do not add uncertainty unless it exists in the "
-    "selected range.\n"
-    "- Target 90-160 tokens; hard maximum 220 tokens.\n\n"
-    "Think rule:\n"
-    "- <think> should only state the selected time range and why it is safely "
-    "compressible.\n"
-    "- Do not describe current video. Do not answer any question.\n\n"
-    "Required output:\n"
-    "<think>selected range and compression reason</think>"
-    "<tool_call>{\"name\":\"compress\",\"arguments\":{\"time_range\":[start_sec,end_sec],\"text\":\"summary text\"}}</tool_call>\n"
+from thinkstream.data.schema import (  # noqa: E402
+    SYSTEM_PROMPT,
 )
 
 
-SYSTEM_PROMPT_V12_RECALL_RESPONSE = (
-    "[POST_RECALL / HISTORICAL-FRAMES ONLY]\n"
-    "This turn contains recall evidence only. No new current video chunk is "
-    "provided. Do not create a current-frame observation.\n\n"
-    "Input:\n"
-    "- <recalled_frames> and the following frames are historical visual evidence "
-    "returned by recall.\n"
-    "- <recall_result> is retrieval metadata only. It is not evidence text and "
-    "must not be used to infer the answer.\n"
-    "- The original <active_query> remains the only live question.\n\n"
-    "Decision:\n"
-    "- Answer when the recalled frames are sufficient for the active query. "
-    "Follow the answer-format instruction exactly.\n"
-    "- If recalled frames are insufficient or ambiguous, output "
-    "<answer></answer>, unless the active query explicitly allows an "
-    "Unable/Unknown answer.\n"
-    "- Do not call recall again. Do not call compress.\n\n"
-    "Think rule:\n"
-    "- <think> should only state whether the recalled visual evidence is "
-    "sufficient or insufficient for the active query.\n"
-    "- Do not mention or summarize recall metadata as evidence.\n\n"
-    "Output grammar:\n"
-    "- Produce exactly one <think> block followed by one <answer> block.\n"
-    "- Non-empty answer: <answer>response text</answer>\n"
-    "- Silent answer: <answer></answer>\n"
-)
+# Canonical sample-dict field for "inter-chunk compress turn" — read sites
+# should use :func:`is_inter_chunk` to also accept the legacy name from older
+# data files. New write sites use the canonical key directly.
+INTER_CHUNK_FIELD = "inter_chunk"
+LEGACY_INTER_CHUNK_FIELD = "v12_inter_chunk"
 
-SYSTEM_PROMPT_V12_VIDEO_META = (
-    SYSTEM_PROMPT_V12_STREAMING
-    .replace(_FRAME_CARRIER_TS_PROMPT, _FRAME_CARRIER_VIDEO_META_PROMPT)
-)
 
-SYSTEM_PROMPT_V12_COMPRESS_VIDEO_META = (
-    SYSTEM_PROMPT_V12_COMPRESS
-    .replace(_FRAME_CARRIER_TS_PROMPT, _FRAME_CARRIER_VIDEO_META_PROMPT)
-)
+def is_inter_chunk(sample: Dict) -> bool:
+    """Return ``True`` if a sample dict is an inter-chunk compress turn.
 
-SYSTEM_PROMPT_V12_RECALL_RESPONSE_VIDEO_META = (
-    SYSTEM_PROMPT_V12_RECALL_RESPONSE
-    .replace(_FRAME_CARRIER_TS_PROMPT, _FRAME_CARRIER_VIDEO_META_PROMPT)
-)
+    Checks the canonical ``inter_chunk`` field first, then falls back to the
+    legacy ``v12_inter_chunk`` for compatibility with trajectory JSONL files
+    generated before the field rename.
+    """
+    if not isinstance(sample, dict):
+        return False
+    value = sample.get(INTER_CHUNK_FIELD)
+    if value is None:
+        value = sample.get(LEGACY_INTER_CHUNK_FIELD)
+    return bool(value)
 
-# Backward-compat: old imports still expect the ordinary streaming prompt.
-# Keep the alias on the canonical production carrier, not the legacy ts_image
-# carrier, so direct imports stay aligned with SFT/RL/eval entrypoints.
-SYSTEM_PROMPT_V12 = SYSTEM_PROMPT_V12_VIDEO_META
+
+def get_canonical_system_prompt() -> str:
+    """Return the canonical streaming system prompt."""
+    return SYSTEM_PROMPT
 
 
 def normalize_system_prompt_kind(
@@ -1713,32 +1593,15 @@ def system_prompt_for_frame_protocol(
     inter_chunk: bool = False,
     render_layout: Optional[str] = None,
 ) -> str:
-    """Return the protocol-aligned system prompt.
+    """Return the canonical streaming system prompt.
 
-    The active project format is video_meta + standard_query_last. Ordinary
-    streaming turns allow answer, silent, or recall. Memory-compaction turns
-    use the compression-only prompt.
+    Signature retained for backward compatibility with existing call sites
+    that pass ``frame_protocol`` / ``prompt_kind`` / ``inter_chunk``; those
+    arguments are now ignored because stage transitions are signalled via
+    user-side ``<stage:...>`` markers, not by selecting a different prompt.
     """
-    protocol = normalize_frame_protocol(frame_protocol)
     layout = normalize_render_layout(render_layout)
-    kind = normalize_system_prompt_kind(prompt_kind, inter_chunk=inter_chunk)
-    if kind == "recall_response":
-        if protocol == FRAME_PROTOCOL_VIDEO_META:
-            prompt = SYSTEM_PROMPT_V12_RECALL_RESPONSE_VIDEO_META
-        else:
-            prompt = SYSTEM_PROMPT_V12_RECALL_RESPONSE
-        return _apply_render_layout_to_system_prompt(prompt, layout)
-    if protocol == FRAME_PROTOCOL_VIDEO_META:
-        if kind == "compress":
-            prompt = SYSTEM_PROMPT_V12_COMPRESS_VIDEO_META
-        else:
-            prompt = SYSTEM_PROMPT_V12_VIDEO_META
-        return _apply_render_layout_to_system_prompt(prompt, layout)
-    if kind == "compress":
-        prompt = SYSTEM_PROMPT_V12_COMPRESS
-    else:
-        prompt = SYSTEM_PROMPT_V12_STREAMING
-    return _apply_render_layout_to_system_prompt(prompt, layout)
+    return _apply_render_layout_to_system_prompt(SYSTEM_PROMPT, layout)
 
 
 def _apply_render_layout_to_system_prompt(prompt: str, layout: str) -> str:
@@ -1747,94 +1610,20 @@ def _apply_render_layout_to_system_prompt(prompt: str, layout: str) -> str:
     return prompt
 
 
-# Tool JSON schemas — passed as `tools=...` to apply_chat_template.
-# Format follows OpenAI function-calling spec, recognized by Qwen2.5/3-VL's
-# chat template which auto-renders <tools>...</tools> in the system prompt.
-#
-# Keep the per-tool dictionaries separate so callers can expose the action
-# space that is valid for the current turn instead of always showing both tools.
-RECALL_TOOL_SCHEMA = {
-    "type": "function",
-    "function": {
-        "name": "recall",
-        "description": (
-            "Ordinary streaming-turn tool. Search past video observations by "
-            "keywords and time range. Use recall generously when the active "
-            "query asks for an earlier object/action/OCR/count/color/state/"
-            "attribute/spatial detail that is not clearly visible in the "
-            "current visual input. If memory suggests a possible answer but "
-            "current visual evidence is absent or unclear, recall is preferred "
-            "over answering from memory. If the current visual input is already "
-            "sufficient, answer instead of recall. Do not use recall when the "
-            "query is waiting for a future event, or when recall has already "
-            "returned evidence for the same active query."
-        ),
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "query": {
-                    "type": "string",
-                    "description": (
-                        "3-6 discriminative keywords (entity/object/action/OCR/"
-                        "color/count/spatial terms). No full question, option "
-                        "letters, or guessed answer values. Example: "
-                        "'red apron chef pot'."
-                    ),
-                },
-                "time_range": {
-                    "type": "string",
-                    "description": (
-                        "Time range in seconds, format 'start-end'. "
-                        "Example: '20-60'. Historical-only search window; "
-                        "end should be <= the current visual time."
-                    ),
-                },
-            },
-            "required": ["query", "time_range"],
-        },
-    },
-}
+# Tool JSON schemas — passed as ``tools=...`` to apply_chat_template.
+# Single source of truth is :func:`thinkstream.data.schema.build_tools_schema`;
+# we re-export the per-tool dicts here so legacy call sites that want only
+# the recall tool (or only the compress tool) can still pick one out of the
+# pair. Both SFT data rendering and RL rollout system prompts see the same
+# tool descriptions this way — no drift.
+from thinkstream.data.schema import build_tools_schema as _build_tools_schema  # noqa: E402
 
-COMPRESS_TOOL_SCHEMA = {
-    "type": "function",
-    "function": {
-        "name": "compress",
-        "description": (
-            "Memory-maintenance compression-turn tool. This tool is intended "
-            "for the compression system prompt or its legacy <compress_trigger/> "
-            "event marker. Compression is system-memory-pressure driven, not "
-            "user-question driven. On compression turns, selecting an older "
-            "contiguous range from <memory> and summarizing it is the expected "
-            "behavior. Output a concise summary retaining entities, attributes, "
-            "OCR, and state changes."
-        ),
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "time_range": {
-                    "type": "array",
-                    "items": {"type": "integer"},
-                    "minItems": 2,
-                    "maxItems": 2,
-                    "description": (
-                        "[start_sec, end_sec] of the range to summarize. "
-                        "You select this range from contiguous <memory> "
-                        "contents under memory pressure."
-                    ),
-                },
-                "text": {
-                    "type": "string",
-                    "description": (
-                        "The summary text. Retain entity names, visual "
-                        "attributes, OCR text, and state changes. Target "
-                        "90-160 tokens; hard maximum 220 tokens."
-                    ),
-                },
-            },
-            "required": ["time_range", "text"],
-        },
-    },
-}
+_RECALL_TOOL_SCHEMA, _COMPRESS_TOOL_SCHEMA = _build_tools_schema(
+    include_recall=True, include_compress=True
+)
+RECALL_TOOL_SCHEMA = _RECALL_TOOL_SCHEMA
+COMPRESS_TOOL_SCHEMA = _COMPRESS_TOOL_SCHEMA
+del _RECALL_TOOL_SCHEMA, _COMPRESS_TOOL_SCHEMA
 
 # Back-compat name for old call sites. New code should use tools_for_turn().
 TOOLS_SCHEMA = [RECALL_TOOL_SCHEMA, COMPRESS_TOOL_SCHEMA]
@@ -1960,7 +1749,7 @@ def action_space_error_for_turn(
     return f"action_not_allowed:{action or 'unknown'}@{kind};allowed={allowed}"
 
 
-def build_assistant_content_v12(
+def build_assistant_content(
     *,
     think: str,
     kind: str,                    # "answer" | "recall" | "compress"
@@ -2017,26 +1806,46 @@ def build_assistant_content_v12(
     return "".join(parts)
 
 
-_RECALL_TOOL_TIME_RANGE_RE = re.compile(
+# Legacy "start-end" string form (pass3 / older training data). Kept ONLY as
+# a backward-compat fallback for old SFT data that emitted the string form;
+# new code emits the canonical two-int array form.
+_LEGACY_RECALL_TIME_RANGE_RE = re.compile(
     r"^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$"
 )
 
 
 def _validate_recall_tool_args(args: Any) -> Optional[str]:
+    """Validate recall tool_call arguments.
+
+    Canonical form (aligned with compress): ``time_range: [start, end]``
+    (two non-negative numbers, end > start). The legacy ``"start-end"``
+    string form is still accepted for backward compatibility with pass3
+    samples generated before the type unification.
+    """
     if not isinstance(args, dict):
         return "recall arguments must be an object"
     query = args.get("query")
     if not isinstance(query, str) or not query.strip():
         return "recall query must be a non-empty string"
     time_range = args.get("time_range")
-    if not isinstance(time_range, str):
-        return "recall time_range must be a start-end string"
-    m = _RECALL_TOOL_TIME_RANGE_RE.fullmatch(time_range)
-    if not m:
-        return "recall time_range must match start-end"
-    if float(m.group(2)) <= float(m.group(1)):
-        return "recall time_range end must be greater than start"
-    return None
+    if isinstance(time_range, list):
+        if (
+            len(time_range) != 2
+            or not all(isinstance(v, (int, float)) for v in time_range)
+        ):
+            return "recall time_range must be a two-number array [start, end]"
+        if float(time_range[1]) <= float(time_range[0]):
+            return "recall time_range end must be greater than start"
+        return None
+    # Legacy string fallback.
+    if isinstance(time_range, str):
+        m = _LEGACY_RECALL_TIME_RANGE_RE.fullmatch(time_range)
+        if not m:
+            return "recall time_range must be a [start, end] array (legacy 'start-end' string also accepted)"
+        if float(m.group(2)) <= float(m.group(1)):
+            return "recall time_range end must be greater than start"
+        return None
+    return "recall time_range must be a two-number array [start, end]"
 
 
 def _validate_compress_tool_args(args: Any) -> Optional[str]:
@@ -2199,7 +2008,7 @@ def _scan_json_prefix_state(text: str) -> Dict[str, Any]:
     }
 
 
-def diagnose_compress_output_v12(output_text: str) -> Dict[str, Any]:
+def diagnose_compress_output(output_text: str) -> Dict[str, Any]:
     """Diagnose partial compress tool-call structure.
 
     Strict parsing deliberately fails when generation is truncated before
@@ -2329,7 +2138,7 @@ def diagnose_compress_output_v12(output_text: str) -> Dict[str, Any]:
     }
 
 
-def parse_agent_output_v12(
+def parse_agent_output(
     output_text: str,
     *,
     allow_bare_answer: bool = False,

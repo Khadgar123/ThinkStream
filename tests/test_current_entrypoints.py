@@ -50,7 +50,7 @@ def test_sft_rl_eval_use_canonical_prompt_contract():
 def test_rl_defaults_use_multi_trajectory_recurrent_update():
     rl = _text("scripts/grpo_train_verl.sh")
     run = _text("scripts/run_sft_rl.sh")
-    recipe = _text("verl/recipe_thinkstream/run_thinkstream_grpo.sh")
+    recipe = _text("thinkstream/rl/run_thinkstream_grpo.sh")
 
     for text in (rl, recipe):
         assert 'THINKSTREAM_RECURRENT_MODE="${THINKSTREAM_RECURRENT_MODE:-recurrent}"' in text
@@ -64,19 +64,19 @@ def test_rl_defaults_use_multi_trajectory_recurrent_update():
 
 
 def test_training_scheme_builds_full_and_segment_rl_inputs():
-    scheme = _text("scripts/agent_data_v5/make_training_scheme.py")
+    scheme = _text("scripts/agent_data/make_training_scheme.py")
 
     assert "_link_rollouts_for_selected" in scheme
     assert "train_rl_multi_q.parquet" in scheme
     assert "train_rl_multi_q_segment_cache.parquet" in scheme
     assert "include_student_cache=include_student_cache" in scheme
     assert "balanced keeps family/recall/compress ratios" in scheme
-    parquet = _text("scripts/agent_data_v5/build_verl_parquet.py")
+    parquet = _text("scripts/agent_data/build_verl_parquet.py")
     assert 'prompt = [{"role": "system", "content": system_prompt}]' in parquet
 
 
 def test_pre_rl_rollout_audit_uses_fast_canonical_path():
-    audit = _text("scripts/agent_data_v5/pre_rl_rollout_audit.py")
+    audit = _text("scripts/agent_data/pre_rl_rollout_audit.py")
 
     assert "streaming_vllm_rollout" in audit
     assert 'frame_protocol="video_meta"' in audit

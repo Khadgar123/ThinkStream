@@ -103,9 +103,9 @@ def check_chat_template(data_dir: Path, tokenizer_name: str) -> bool:
         print(f"  ⚠ tokenizer load failed ({e}); skipping")
         return True
 
-    from thinkstream.data.agent_protocol import TOOLS_SCHEMA, SYSTEM_PROMPT_V12
+    from thinkstream.data.agent_protocol import TOOLS_SCHEMA, get_canonical_system_prompt
     msgs = [
-        {"role": "system", "content": SYSTEM_PROMPT_V12},
+        {"role": "system", "content": get_canonical_system_prompt()},
         {"role": "user", "content": "test"},
         {"role": "assistant", "content": "<answer>x</answer>"},
     ]

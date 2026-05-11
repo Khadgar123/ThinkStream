@@ -1,7 +1,7 @@
 """Per-timestep agent SFT data processor.
 
 Based on Qwen3-VL official finetune data processing, adapted to the
-LLaMA-Factory/DeepEyes ShareGPT messages format emitted by pass5. Each sample
+ShareGPT messages format emitted by pass5. Each sample
 is one inference-step snapshot with assistant-span CE labels only.
 
 Key differences from standard VLM SFT:
@@ -30,7 +30,7 @@ from torch.utils.data import Dataset
 import transformers
 
 from .data_list import data_list
-from .rope2d import get_rope_index_25, get_rope_index_3
+from thinkstream.data.rope2d import get_rope_index_25, get_rope_index_3
 
 IGNORE_INDEX = -100
 
@@ -734,11 +734,11 @@ def _resolve_frame_paths(paths: List[str], base_path: Path) -> List[str]:
     return out
 
 
-def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]:
+def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
     """v12.0: Build messages for the official Qwen tool-call protocol.
 
     DEPRECATED: the canonical builder is now
-    ``scripts/agent_data_v5/pass5_messages.py:build_messages``, which is used
+    ``scripts/agent_data/pass5_messages.py:build_messages``, which is used
     by the main pipeline (`pass5_messages.py:convert`). This function is kept
     only for legacy eval/debug paths and mirrors the current pass5 contract as
     closely as possible.
@@ -757,22 +757,22 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
        This implements the within-one-chunk agentic cycle (think→recall→
        result→think→answer) per docs/v12.0_protocol_migration_design.md §1.
 
-    C. Inter-chunk compress (v12_inter_chunk=True):
+    C. Inter-chunk compress (inter_chunk=True):
        The user_input compress trigger is rendered before memory, and the
        prompt omits visual_window/images/videos because compression is a
        text-memory action between visual timesteps.
 
     Differences from v11 (build_per_timestep_messages):
-    - SYSTEM_PROMPT_V12 (concise; <tools> block rendered by chat_template
+    - SYSTEM_PROMPT (concise; <tools> block rendered by chat_template
       via tools= parameter at apply time).
     - recall_result is metadata-only; historical frames carry recall evidence.
       Shape-B recall uses a dedicated 'tool' role message (matches Qwen3-VL chat_template tool branch which
       nests <tool_response> inside the <|im_start|>user wrapper).
     """
     # v12.6: import canonical chunk_sec via agent_protocol (which already
-    # falls back gracefully when scripts.agent_data_v5.config isn't on the
+    # falls back gracefully when scripts.agent_data.config isn't on the
     # path — e.g. inference container). Earlier the direct
-    # `from scripts.agent_data_v5.config import AGENT_CHUNK_SEC` would raise
+    # `from scripts.agent_data.config import AGENT_CHUNK_SEC` would raise
     # ModuleNotFoundError when training was launched outside the project
     # root. Going through agent_protocol routes through the same fallback
     # chain SFT/eval/RL all use.
@@ -782,6 +782,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         append_visual_frames,
         build_recall_result_metadata,
         format_queries_block,
+        is_inter_chunk,
         normalize_frame_protocol,
         prompt_time_range,
         prompt_time_value,
@@ -792,7 +793,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
     chunk_idx = sample["chunk_idx"]
     chunk_sec = float(AGENT_CHUNK_SEC)
     frame_protocol = normalize_frame_protocol(sample.get("frame_protocol"))
-    inter_chunk = bool(sample.get("v12_inter_chunk", False))
+    inter_chunk = is_inter_chunk(sample)
     is_recall_multiturn = (
         sample.get("sample_type") == "recall"
         and "v12_assistant_turn_1" in sample
@@ -855,11 +856,11 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
             if "frame_paths" in rf:
                 paths = _resolve_frame_paths(rf["frame_paths"], base_path)
                 try:
-                    from scripts.agent_data_v5.config import (
+                    from scripts.agent_data.config import (
                         RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                     )
                 except ImportError:
-                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+                    _RTKW = {"min_pixels": 256 * 28 * 28, "max_pixels": 512 * 28 * 28}
                 start_frame = int(round(float(rf["time_range"][0]) / chunk_sec)) * FRAMES_PER_CHUNK
                 total_frames = int(round(float(rf["time_range"][1]) / chunk_sec)) * FRAMES_PER_CHUNK
                 append_visual_frames(
@@ -943,7 +944,7 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         vid = sample.get("video_id", "")
         if vid:
             try:
-                from scripts.agent_data_v5.config import (
+                from scripts.agent_data.config import (
                     DATA_ROOT as _DATA_ROOT,
                     PROJECT_ROOT as _PROJECT_ROOT,
                     VISUAL_WINDOW_CHUNKS as _VWC,
@@ -983,11 +984,11 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
     if "frame_paths" in vw:
         paths = _resolve_frame_paths(vw["frame_paths"], base_path)
         try:
-            from scripts.agent_data_v5.config import (
+            from scripts.agent_data.config import (
                 RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
             )
         except ImportError:
-            _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+            _RTKW = {"min_pixels": 256 * 28 * 28, "max_pixels": 512 * 28 * 28}
         start_frame = int(round(float(vw["video_start"]) / chunk_sec)) * FRAMES_PER_CHUNK
         total_frames = int(round(float(vw["video_end"]) / chunk_sec)) * FRAMES_PER_CHUNK
         append_visual_frames(
@@ -1044,11 +1045,11 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         if "frame_paths" in rf:
             paths = _resolve_frame_paths(rf["frame_paths"], base_path)
             try:
-                from scripts.agent_data_v5.config import (
+                from scripts.agent_data.config import (
                     RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                 )
             except ImportError:
-                _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+                _RTKW = {"min_pixels": 256 * 28 * 28, "max_pixels": 512 * 28 * 28}
             start_frame = int(round(float(rf["time_range"][0]) / chunk_sec)) * FRAMES_PER_CHUNK
             total_frames = int(round(float(rf["time_range"][1]) / chunk_sec)) * FRAMES_PER_CHUNK
             append_visual_frames(
@@ -1114,11 +1115,11 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
             if "frame_paths" in rf:
                 paths = _resolve_frame_paths(rf["frame_paths"], base_path)
                 try:
-                    from scripts.agent_data_v5.config import (
+                    from scripts.agent_data.config import (
                         RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                     )
                 except ImportError:
-                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+                    _RTKW = {"min_pixels": 256 * 28 * 28, "max_pixels": 512 * 28 * 28}
                 start_frame = int(round(float(rf["time_range"][0]) / chunk_sec)) * FRAMES_PER_CHUNK
                 total_frames = int(round(float(rf["time_range"][1]) / chunk_sec)) * FRAMES_PER_CHUNK
                 append_visual_frames(
@@ -1525,7 +1526,7 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
     if "messages" not in sample:
         raise ValueError(
             f"Sample {sample.get('sample_id', '?')}: missing 'messages' key. "
-            f"Run scripts/agent_data_v5/pass5_messages.py to convert "
+            f"Run scripts/agent_data/pass5_messages.py to convert "
             f"input/output samples to ShareGPT messages format."
         )
     messages = _resolve_video_paths(sample["messages"], base_path)
@@ -1549,11 +1550,10 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
                 else:
                     has_video_meta = False
 
-    from thinkstream.data.agent_protocol import tools_for_turn
-    tool_mode = sample.get("tool_schema_mode")
-    if tool_mode is None:
-        tool_mode = "compress" if sample.get("v12_inter_chunk") else "streaming"
-    tools = tools_for_turn(str(tool_mode))
+    # Tool schema: the row carries its own tools list. The pass5 renderer
+    # decides which tools each trajectory needs (recall, compress, or both)
+    # and writes the list inline.
+    tools = sample.get("tools")
     template_kwargs = dict(
         tokenize=True, return_dict=True, return_tensors="pt",
         do_sample_frames=False,  # frame_paths are already the exact frames to use
@@ -1595,17 +1595,25 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
                 pos = ans_end
         pos += 1
 
-    # v12 allows 1 (silent/response/compress/recall_query) or 2
-    # (post_recall full prefix) assistant turns per row. Rows can opt into
-    # a narrower label mask through loss_assistant_turns, e.g. pass5
-    # post_recall rows use "last" so the previous recall tool_call is
-    # context, not a second target under a no-tools schema.
-    if len(assistant_spans) not in {1, 2}:
+    # Per-chunk rows carry 1 (silent/response/compress/recall_query) or 2
+    # (post_recall full prefix) assistant turns. Trajectory rows
+    # (``trajectory_type`` set by pass5) carry N turns covering all chunks
+    # between two compress boundaries. Rows can opt into a narrower label
+    # mask through ``loss_assistant_turns`` — e.g. pass5 post_recall rows
+    # use ``"last"`` so the previous recall tool_call is context, not a
+    # second target under a no-tools schema.
+    is_trajectory_row = bool(sample.get("trajectory_type"))
+    if not is_trajectory_row and len(assistant_spans) not in {1, 2}:
         sid = sample.get("sample_id") or sample.get("trajectory_id") or "?"
         raise ValueError(
             f"Sample {sid}: expected 1 or 2 assistant turn(s), "
             f"found {len(assistant_spans)}. 1 turn for "
             f"silent/response/compress; 2 turns for recall multi-turn."
+        )
+    if is_trajectory_row and len(assistant_spans) == 0:
+        sid = sample.get("sample_id") or sample.get("trajectory_id") or "?"
+        raise ValueError(
+            f"Trajectory row {sid}: no assistant turns found in messages."
         )
 
     loss_spec = sample.get("loss_assistant_turns")
@@ -1630,12 +1638,25 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
             }
         else:
             compress_token_weighting = bool(raw_enabled)
-        if compress_token_weighting:
-            # Always attach a token_loss_weight tensor when the feature is
-            # enabled. Mixed batches would otherwise drop token weights if only
-            # compress rows carried the key.
+        action_class_mode = str(
+            getattr(data_args, "action_class_loss_mode", "none") or "none"
+        ).strip().lower()
+        if compress_token_weighting or action_class_mode == "inverse_freq":
+            # Always attach a token_loss_weight tensor when any weighting is
+            # enabled. Mixed batches would otherwise drop token weights if
+            # only some rows carried the key.
             token_loss_weight = torch.ones_like(labels, dtype=torch.float32)
-            if loss_class == "compress":
+            # Per-chunk compress rows: apply compress redistribution to the
+            # single (or last) assistant span. Trajectory rows have N turns
+            # of mixed classes; per-span class detection isn't wired yet, so
+            # we skip the compress-specific token weighting for trajectory
+            # rows and let action_class_loss balance compress against other
+            # classes via inverse-frequency weights instead.
+            if (
+                not is_trajectory_row
+                and compress_token_weighting
+                and loss_class == "compress"
+            ):
                 compress_weight_diag = _apply_compress_token_loss_weights(
                     token_loss_weight=token_loss_weight,
                     input_ids=input_ids,
@@ -1646,6 +1667,39 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
                     tokenizer=processor.tokenizer,
                     data_args=data_args,
                 )
+            if action_class_mode == "inverse_freq":
+                # inverse-frequency-weighted: multiply class-balanced weight on top of any
+                # existing compress redistribution. Per-token, not per-sample.
+                #
+                # Anchors come from two sources:
+                #   1. Single-token action ids (<silent>, <response>, ...)
+                #   2. Tool-name BPE spans inside <tool_call> JSON body
+                #      ("compress", "recall"). First span token is the anchor.
+                from thinkstream.sft.losses import (
+                    compute_inverse_frequency_weights,
+                    resolve_action_token_ids,
+                    resolve_tool_call_marker_ids,
+                    resolve_tool_name_token_sequences,
+                )
+                action_ids = resolve_action_token_ids(processor.tokenizer)
+                tool_seqs = resolve_tool_name_token_sequences(processor.tokenizer)
+                tc_open_ids, tc_close_ids = resolve_tool_call_marker_ids(
+                    processor.tokenizer
+                )
+                class_weight = compute_inverse_frequency_weights(
+                    labels=labels,
+                    action_token_ids=action_ids,
+                    tool_name_sequences=tool_seqs,
+                    ignore_index=IGNORE_INDEX,
+                    floor_weight=float(getattr(data_args, "action_class_weight_floor", 0.05)),
+                    ceil_weight=float(getattr(data_args, "action_class_weight_ceil", 20.0)),
+                    tool_call_open_ids=tc_open_ids,
+                    tool_call_close_ids=tc_close_ids,
+                )
+                # Compose with existing weights multiplicatively. This keeps
+                # compress-internal structure/body/close emphasis intact while
+                # adding cross-class balance on the action keyword positions.
+                token_loss_weight = token_loss_weight * class_weight
             full_result["token_loss_weight"] = token_loss_weight
 
     full_result["labels"] = labels
@@ -1751,13 +1805,17 @@ class PerTimestepDataset(Dataset):
             rank0_print(
                 f"  Dropped {empty_dropped} samples — they had no 'messages' "
                 f"key or no assistant turn. If this is a flat-format dataset, "
-                f"convert via:  python -m scripts.agent_data_v5.pass5_messages"
+                f"convert via:  python -m scripts.agent_data.pass5_messages"
             )
 
-        # Main cold-start SFT uses strict clean rows. Keep tagged verifier
-        # failures only when the caller explicitly opts into a
-        # robustness/continuity ablation.
-        include_failed = getattr(data_args, "include_failed_verification", False)
+        # Default policy (DataArguments.include_failed_verification=True):
+        # pass3e only TAGS verifier failures, pass4 carries them through, and
+        # the trainer keeps the full trajectory so a verifier-failed turn
+        # only loses CE weight via token_loss_weight (collator). Drop only
+        # when an ablation explicitly opts into strict cold-start.
+        # Fallback default mirrors DataArguments.include_failed_verification
+        # — keep failures unless the caller proves they want strict filtering.
+        include_failed = getattr(data_args, "include_failed_verification", True)
         if not include_failed:
             before = len(all_samples)
             all_samples = [
@@ -1768,7 +1826,7 @@ class PerTimestepDataset(Dataset):
             if failed_dropped > 0:
                 rank0_print(
                     f"  Dropped {failed_dropped} verification-failed samples "
-                    f"(include_failed_verification=True keeps them)."
+                    f"(include_failed_verification=False; set =True to keep)."
                 )
 
         # Estimate num_tokens for every sample (used for length-based filtering
@@ -1964,9 +2022,40 @@ class PerTimestepDataCollator:
 
     Adds per-sample loss weights (sft_engineering.md §5.2).
     Does NOT truncate — overlong samples filtered in Dataset init (P0-4).
+
+    Emits ``video_mask`` ([B, L] bool, True where the input is a
+    ``<|video_pad|>`` token) so the patched lce_forward can build the
+    sliding-window FlexAttention block mask. The mask is data-side: it
+    activates only when ``attn_implementation="streaming_attention"`` is
+    in use (otherwise the model forward ignores ``video_mask`` entirely),
+    so emitting it unconditionally is safe.
     """
 
     tokenizer: transformers.PreTrainedTokenizer
+    emit_video_mask: bool = False
+    _video_token_id: Optional[int] = None
+
+    def __post_init__(self):
+        # Resolve once at collator construction. Qwen3-VL uses ``<|video_pad|>``
+        # for the per-frame placeholder token; rope2d.py hardcodes 151656 as a
+        # known constant, but tokenizer lookup keeps us safe against future
+        # vocab shifts. Only consumed when ``emit_video_mask=True`` —
+        # streaming_attention path needs it; standard / flash_attention_2
+        # paths reject unknown kwargs.
+        if self.emit_video_mask:
+            try:
+                tid = self.tokenizer.convert_tokens_to_ids("<|video_pad|>")
+                self._video_token_id = (
+                    int(tid) if tid is not None and tid >= 0 else None
+                )
+            except Exception:
+                self._video_token_id = None
+            if self._video_token_id is None:
+                logging.warning(
+                    "PerTimestepDataCollator(emit_video_mask=True): could not "
+                    "resolve <|video_pad|> token id; video_mask will not be "
+                    "emitted. streaming_attention will fall back to causal."
+                )
 
     def __call__(self, instances: Sequence[Dict]) -> Dict[str, torch.Tensor]:
         input_ids, labels, position_ids = tuple(
@@ -2019,6 +2108,12 @@ class PerTimestepDataCollator:
             "attention_mask": input_ids.ne(self.tokenizer.pad_token_id),
             "position_ids": position_ids,
         }
+        if self.emit_video_mask and self._video_token_id is not None:
+            # bool tensor; same shape as input_ids. Consumed by the patched
+            # qwen3_vl.lce_forward → build_video_block_mask. Emitted only
+            # when streaming_attention is wired so non-flex forward paths
+            # (which reject unknown kwargs) stay happy.
+            batch["video_mask"] = input_ids == self._video_token_id
         if token_loss_weight is not None:
             batch["token_loss_weight"] = token_loss_weight
 
@@ -2067,13 +2162,20 @@ class PerTimestepDataCollator:
 
 # ---------------------------------------------------------------------------
 
-def make_per_timestep_data_module(processor, data_args) -> Dict:
+def make_per_timestep_data_module(
+    processor, data_args, *, emit_video_mask: bool = False,
+) -> Dict:
     """Create dataset + collator for per-timestep agent SFT.
 
     Builds an eval_dataset when DataArguments.eval_dataset_use is set —
     typically `stream_agent_val` (held-out video-disjoint pool). The HF
     Trainer then runs eval on this every --eval_steps to surface
     overfitting in real time.
+
+    ``emit_video_mask`` is set by train.py when
+    ``attn_implementation="streaming_attention"`` so the collator emits a
+    per-token bool tensor identifying ``<|video_pad|>`` tokens for the
+    FlexAttention block-mask builder.
     """
     train_dataset = PerTimestepDataset(processor, data_args)
 
@@ -2088,7 +2190,9 @@ def make_per_timestep_data_module(processor, data_args) -> Dict:
             max_samples=getattr(data_args, "eval_max_samples", None),
         )
 
-    collator = PerTimestepDataCollator(processor.tokenizer)
+    collator = PerTimestepDataCollator(
+        processor.tokenizer, emit_video_mask=emit_video_mask,
+    )
 
     return {
         "train_dataset": train_dataset,

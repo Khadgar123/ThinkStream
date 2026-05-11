@@ -16,7 +16,7 @@ pytestmark = pytest.mark.skip(
 # v12.5: imports gated so the module loads even when v11 names are gone
 # (they were deleted but the module body still mentions them under skip).
 try:
-    from scripts.agent_data_v5.config import (
+    from scripts.agent_data.config import (
         AGENT_CHUNK_SEC,
         VISUAL_WINDOW_CHUNKS,
         COMPRESS_TOKEN_THRESHOLD,
@@ -695,7 +695,7 @@ class TestAgentLoopConsistency:
 
     def test_memory_state_identical(self):
         try:
-            from thinkstream.model.agent_loop import MemoryState as InferenceMemory
+            from thinkstream.models.agent_loop import MemoryState as InferenceMemory
         except ImportError:
             pytest.skip("transformers not available in this env")
 
@@ -720,7 +720,7 @@ class TestAgentLoopConsistency:
 
     def test_compression_identical(self):
         try:
-            from thinkstream.model.agent_loop import MemoryState as InferenceMemory
+            from thinkstream.models.agent_loop import MemoryState as InferenceMemory
         except ImportError:
             pytest.skip("transformers not available in this env")
 
@@ -745,7 +745,7 @@ class TestAgentLoopConsistency:
     def test_format_memory_block_identical(self):
         """Same snapshot → same formatted memory text (shared protocol)."""
         try:
-            from thinkstream.model.agent_loop import MemoryState as InferenceMemory
+            from thinkstream.models.agent_loop import MemoryState as InferenceMemory
         except ImportError:
             pytest.skip("transformers not available in this env")
 
@@ -770,7 +770,7 @@ class TestPromptTemplates:
     """Test that prompt templates can be formatted without errors."""
 
     def test_compress_prompt_all_placeholders(self):
-        from scripts.agent_data_v5.config import COMPRESS_PROMPT
+        from scripts.agent_data.config import COMPRESS_PROMPT
         # Should not raise KeyError. v12.12: visual_context dropped.
         result = COMPRESS_PROMPT.format(
             observations_text="[0-2] Chef stirs.",
@@ -783,12 +783,12 @@ class TestPromptTemplates:
     def test_compress_prompt_text_only(self):
         # v12.12: compress is text-only to match student inter-chunk shape C.
         # Verify the template no longer mentions video frames.
-        from scripts.agent_data_v5.config import COMPRESS_PROMPT
+        from scripts.agent_data.config import COMPRESS_PROMPT
         assert "{visual_context}" not in COMPRESS_PROMPT
         assert "video frames" not in COMPRESS_PROMPT.lower()
 
     def test_task_question_prompt(self):
-        from scripts.agent_data_v5.config import TASK_QUESTION_PROMPT
+        from scripts.agent_data.config import TASK_QUESTION_PROMPT
         result = TASK_QUESTION_PROMPT.format(
             entity="chef_1",
             attributes="red apron",
@@ -799,7 +799,7 @@ class TestPromptTemplates:
         assert "chef_1" in result
 
     def test_response_prompt(self):
-        from scripts.agent_data_v5.config import RESPONSE_PROMPT
+        from scripts.agent_data.config import RESPONSE_PROMPT
         result = RESPONSE_PROMPT.format(
             question="How much salt?",
             evidence="Chef added one teaspoon.",
@@ -810,7 +810,7 @@ class TestPromptTemplates:
         assert "How much salt" in result
 
     def test_recall_query_prompt(self):
-        from scripts.agent_data_v5.config import RECALL_QUERY_PROMPT
+        from scripts.agent_data.config import RECALL_QUERY_PROMPT
         result = RECALL_QUERY_PROMPT.format(
             question="What happened?",
             visible_context="[0-2] Chef started.",

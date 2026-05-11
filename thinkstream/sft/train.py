@@ -35,7 +35,12 @@ sys.path.insert(0, str(project_root))
 
 from thinkstream.sft.trainer import WeightedSFTTrainer
 from thinkstream.sft.data_processor import make_per_timestep_data_module
-from thinkstream.sft.argument import ModelArguments, DataArguments, TrainingArguments
+from thinkstream.sft.args import ModelArguments, DataArguments, TrainingArguments
+# Patch lce_forward to accept video_mask and build the FlexAttention
+# block mask (no-op when attn_implementation != "streaming_attention").
+# Importing the module triggers the patch.
+from thinkstream.models import patch as _ts_models_patch  # noqa: F401
+from thinkstream.models.streaming_attention import register_streaming_attention
 
 local_rank = None
 
@@ -107,6 +112,11 @@ def train(attn_implementation="flash_attention_2"):
         "THINKSTREAM_ATTN_IMPLEMENTATION",
         attn_implementation,
     )
+    # Register the FlexAttention "streaming_attention" backend before model
+    # construction so HF can resolve it if the caller selects it. The
+    # backend is only ATTACHED when the model's AttentionInterface routes
+    # to it (i.e. the user passed attn_implementation="streaming_attention").
+    register_streaming_attention()
     name_lower = model_args.model_name_or_path.lower()
     model_basename = Path(model_args.model_name_or_path.rstrip("/")).name.lower()
     model_config = transformers.AutoConfig.from_pretrained(
@@ -165,6 +175,20 @@ def train(attn_implementation="flash_attention_2"):
     rank0_print(f"Model: {model_args.model_name_or_path} ({model.__class__.__name__})")
     rank0_print(f"Model type: {data_args.model_type}")
     rank0_print(f"Attention: {attn_implementation}")
+
+    # Video sliding-window size for streaming_attention. Aligns with
+    # SLIDING_WINDOW_CHUNKS in pass5_splitter so SFT mask matches the
+    # runtime engine's KV-eviction window. Stored on text config so the
+    # patched lce_forward can read it via model.config.video_flex_window_size.
+    if attn_implementation == "streaming_attention":
+        # Imported lazily to avoid circular deps and keep the data-only
+        # construction path lightweight.
+        from scripts.agent_data.pass5_splitter import SLIDING_WINDOW_CHUNKS
+        window_size = int(
+            os.environ.get("THINKSTREAM_VIDEO_FLEX_WINDOW_SIZE", SLIDING_WINDOW_CHUNKS)
+        )
+        model.config.video_flex_window_size = window_size
+        rank0_print(f"video_flex_window_size: {window_size}")
 
     # ── Processor ──
     # v12: Qwen3-VL official tool protocol. Agent tags stay as plain text
@@ -244,7 +268,11 @@ def train(attn_implementation="flash_attention_2"):
             model.model.print_trainable_parameters()
 
     # ── Data module ──
-    data_module = make_per_timestep_data_module(processor, data_args)
+    data_module = make_per_timestep_data_module(
+        processor,
+        data_args,
+        emit_video_mask=(attn_implementation == "streaming_attention"),
+    )
 
     rank0_print(f"Train samples: {len(data_module['train_dataset'])}")
     if data_module.get("eval_dataset") is not None:
@@ -257,6 +285,10 @@ def train(attn_implementation="flash_attention_2"):
         args=training_args,
         **data_module,
     )
+    # Stash data_args so trainer.compute_loss can read action_class_loss_mode
+    # and friends (DataArguments fields). HF Trainer doesn't pass DataArguments
+    # in by default; this is the conventional escape hatch.
+    trainer.data_args = data_args
     trainer.add_callback(ProcessorSaveCallback(processor))
 
     if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):

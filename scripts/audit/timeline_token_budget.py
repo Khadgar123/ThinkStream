@@ -133,7 +133,7 @@ def main() -> None:
     args = ap.parse_args()
 
     from scripts.eval.processor_loader import load_processor_for_checkpoint
-    from thinkstream.sft.argument import DataArguments
+    from thinkstream.sft.args import DataArguments
     from thinkstream.sft.data_processor import preprocess_per_timestep, update_processor_pixels
 
     processor = load_processor_for_checkpoint(args.processor)

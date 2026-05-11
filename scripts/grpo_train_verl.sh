@@ -5,7 +5,7 @@
 # has been retired to avoid train/eval drift and duplicate reward logic.
 #
 # verl is vendored at ThinkStream/verl/ (a customized fork of
-# verl-project/verl with our recipe at verl/recipe_thinkstream/). We do NOT
+# verl-project/verl with our recipe at thinkstream/rl/). We do NOT
 # `pip install verl`; instead we run it in-place via PYTHONPATH so that
 # (a) recipe edits take effect without reinstall and (b) verl can import
 # `thinkstream.*` from the parent ThinkStream checkout.
@@ -62,7 +62,7 @@
 #   ROLLOUT_BACKEND — rollout backend: vllm | sglang | hf (vllm).
 #   TRAIN_PARQUET / VAL_PARQUET — verl parquets. If unset, we auto-build
 #                  from data/agent_v5/final/*.jsonl via
-#                  scripts/agent_data_v5/build_verl_parquet.py.
+#                  scripts/agent_data/build_verl_parquet.py.
 #   THINKSTREAM_DATA_ROOT / AGENT_DATA_DIR — generated batch root
 #                  (default: data/agent_v5). final/ and frames/ are
 #                  resolved underneath this root.
@@ -172,7 +172,7 @@ esac
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 VERL_DIR="${PROJECT_DIR}/verl"
-RECIPE_DIR="${VERL_DIR}/recipe_thinkstream/configs"
+RECIPE_DIR="${VERL_DIR}/thinkstream/rl/configs"
 RECIPE_NAME="thinkstream_grpo"
 PARENT_DIR="$(dirname "${PROJECT_DIR}")"
 if [[ -z "${THINKSTREAM_ENV:-}" ]]; then
@@ -238,14 +238,14 @@ fi
 
 if [[ ! -f "${TRAIN_PARQUET}" ]]; then
     echo "Building train parquet from ${TRAIN_JSONL}…  (multi_q=${MULTI_Q})"
-    "${PYTHON_BIN}" "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
+    "${PYTHON_BIN}" "${PROJECT_DIR}/scripts/agent_data/build_verl_parquet.py" \
         --jsonl "${TRAIN_JSONL}" --out "${TRAIN_PARQUET}" \
         --frame-protocol "${FRAME_PROTOCOL}" \
         --render-layout "${THINKSTREAM_RENDER_LAYOUT}" ${MULTI_Q_FLAG} "${STUDENT_CACHE_FLAG[@]}"
 fi
 if [[ ! -f "${VAL_PARQUET}" ]]; then
     echo "Building val parquet from ${VAL_JSONL}…  (multi_q=${MULTI_Q})"
-    "${PYTHON_BIN}" "${PROJECT_DIR}/scripts/agent_data_v5/build_verl_parquet.py" \
+    "${PYTHON_BIN}" "${PROJECT_DIR}/scripts/agent_data/build_verl_parquet.py" \
         --jsonl "${VAL_JSONL}" --out "${VAL_PARQUET}" \
         --frame-protocol "${FRAME_PROTOCOL}" \
         --render-layout "${THINKSTREAM_RENDER_LAYOUT}" ${MULTI_Q_FLAG} "${STUDENT_CACHE_FLAG[@]}"
@@ -311,12 +311,12 @@ echo "FSDP opt offload:   ${OPTIMIZER_OFFLOAD}"
 echo "================================="
 
 # verl uses Ray; let it handle multi-GPU orchestration.
-# We pass per-flag overrides on top of verl/recipe_thinkstream/configs/thinkstream_grpo.yaml.
+# We pass per-flag overrides on top of thinkstream/rl/configs/thinkstream_grpo.yaml.
 #
 # PYTHONPATH ordering matters:
 #   ${VERL_DIR}     — vendored verl python package (in-place, no pip install)
 #   ${PROJECT_DIR}  — ThinkStream package, so reward fn can import
-#                     thinkstream.trainer.v12_rewards
+#                     thinkstream.trainer.rewards
 export PYTHONPATH="${VERL_DIR}:${PROJECT_DIR}:${PYTHONPATH:-}"
 export PYTHON_BIN
 export THINKSTREAM_ENV
@@ -383,4 +383,4 @@ if [[ -n "${MAX_STEPS}" ]]; then
 fi
 
 cd "${VERL_DIR}"
-bash recipe_thinkstream/run_thinkstream_grpo.sh
+bash thinkstream/rl/run_thinkstream_grpo.sh

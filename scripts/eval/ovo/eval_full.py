@@ -74,7 +74,7 @@ sys.path.insert(0, str(ROOT))
 import torch
 from transformers import AutoProcessor, AutoTokenizer
 
-from thinkstream.model.agent_loop import (
+from thinkstream.models.agent_loop import (
     COMPRESS_RANGE_MIN,
     COMPRESS_RANGE_MAX,
     COMPRESS_TOKEN_THRESHOLD,
@@ -87,7 +87,7 @@ from thinkstream.model.agent_loop import (
     make_generate_fn,
     select_compress_range_by_tokens,
 )
-from thinkstream.model.retrieval import make_retriever
+from thinkstream.models.retrieval import make_retriever
 from thinkstream.data.agent_protocol import (
     FRAMES_PER_CHUNK,
     VISUAL_WINDOW_CHUNKS,
@@ -107,7 +107,7 @@ from thinkstream.eval.prompt_contract import (
     build_plain_mcq_prompt,
     build_streaming_query_meta,
 )
-from thinkstream.sft.argument import DataArguments
+from thinkstream.sft.args import DataArguments
 from thinkstream.sft.data_processor import (
     update_processor_pixels,
 )
@@ -297,7 +297,7 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None,
         if telemetry is not None:
             ct = result.get("compress_telemetry")
             if ct:
-                from thinkstream.model.agent_loop import COMPRESS_RANGE_MIN
+                from thinkstream.models.agent_loop import COMPRESS_RANGE_MIN
                 compressed_chunks = ct.get("compressed_chunks") or []
                 telemetry.setdefault("compress_events", []).append({
                     "chunk": chunk_idx,
@@ -610,7 +610,7 @@ def _clone_retriever(template):
     # BM25Retriever is stateless; using a fresh factory avoids sharing any
     # accidental future state. If construction fails, fall back to template.
     try:
-        from thinkstream.model.retrieval import BM25Retriever
+        from thinkstream.models.retrieval import BM25Retriever
         if isinstance(template, BM25Retriever):
             return BM25Retriever(max_results=getattr(template, "max_results", 4))
     except Exception:
@@ -3229,7 +3229,7 @@ def main():
         profile_cfg = dict(profile_cfg)
         profile_cfg["recall_text_max_chars"] = agent_protocol.RECALL_TEXT_MAX_CHARS
     if args.recent_thinks_token_budget is not None:
-        import thinkstream.model.agent_loop as _agent_loop
+        import thinkstream.models.agent_loop as _agent_loop
         global RECENT_THINKS_TOKEN_BUDGET, COMPRESS_TOKEN_THRESHOLD
         RECENT_THINKS_TOKEN_BUDGET = max(1, int(args.recent_thinks_token_budget))
         _agent_loop.RECENT_THINKS_TOKEN_BUDGET = RECENT_THINKS_TOKEN_BUDGET
@@ -3238,7 +3238,7 @@ def main():
         )
         COMPRESS_TOKEN_THRESHOLD = _agent_loop.COMPRESS_TOKEN_THRESHOLD
     if args.summary_tokens_max is not None:
-        import thinkstream.model.agent_loop as _agent_loop
+        import thinkstream.models.agent_loop as _agent_loop
         _agent_loop.SUMMARY_TOKENS_MAX = max(1, int(args.summary_tokens_max))
     print(describe_profile(args.profile))
     print(f"query_history: policy={agent_protocol.QUERY_HISTORY_POLICY}, "
@@ -3248,7 +3248,7 @@ def main():
         or args.summary_tokens_max is not None
         or args.recall_text_max_chars is not None
     ):
-        import thinkstream.model.agent_loop as _agent_loop
+        import thinkstream.models.agent_loop as _agent_loop
         print(
             "memory_budget_override: "
             f"recent_tokens={_agent_loop.RECENT_THINKS_TOKEN_BUDGET}, "
@@ -3525,7 +3525,7 @@ def main():
             "recent_thinks_token_budget": RECENT_THINKS_TOKEN_BUDGET,
             "compress_token_threshold": COMPRESS_TOKEN_THRESHOLD,
             "summary_tokens_max": (
-                __import__("thinkstream.model.agent_loop", fromlist=["SUMMARY_TOKENS_MAX"])
+                __import__("thinkstream.models.agent_loop", fromlist=["SUMMARY_TOKENS_MAX"])
                 .SUMMARY_TOKENS_MAX
             ),
             "tasks_evaluated": sorted(by_task.keys()),

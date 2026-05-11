@@ -1,9 +1,9 @@
 import json
 from pathlib import Path
 
-from scripts.agent_data_v5.pass5_messages import build_messages
+from scripts.agent_data.pass5_messages import build_messages
 from thinkstream.data.agent_protocol import build_user_content, format_queries_block
-from thinkstream.model.agent_loop import MemoryState, build_single_step_messages
+from thinkstream.models.agent_loop import MemoryState, build_single_step_messages
 
 
 def _join_user_text(content):
@@ -212,7 +212,7 @@ def test_query_lifecycle_records_early_on_time_and_late_answers():
 
 
 def test_pass5_answer_contract_rejects_wrong_mc_response():
-    from scripts.agent_data_v5.pass5_messages import (
+    from scripts.agent_data.pass5_messages import (
         QueryRenderContractError,
         validate_answer_render_contract,
     )
@@ -245,7 +245,7 @@ def test_pass5_answer_contract_rejects_wrong_mc_response():
 
 
 def test_pass5_query_contract_uses_e_option_in_answer_format():
-    from scripts.agent_data_v5.pass5_messages import validate_query_render_contract
+    from scripts.agent_data.pass5_messages import validate_query_render_contract
     from thinkstream.data.agent_protocol import format_queries_block
 
     q = {

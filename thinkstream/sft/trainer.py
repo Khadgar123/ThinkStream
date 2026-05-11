@@ -157,6 +157,39 @@ def expected_v12_kind_for_eval(
     return "unknown"
 
 
+def _assert_logits_have_grad(logits, mode: str) -> None:
+    """Fail loud when Liger fused linear-CE is silently active.
+
+    Both ``inverse_freq`` and ``focal`` action-class modes need to read the
+    forward-pass logits with grad (to compute per-token weighted CE / focal
+    modulation). Liger replaces the lm_head + CE with a fused kernel that
+    consumes hidden states and emits a scalar loss, so ``outputs.logits``
+    arrives as either ``None`` or a detached tensor — the override path
+    would silently fall back to a constant loss and stop training.
+    """
+    if logits is None:
+        raise RuntimeError(
+            f"action_class_loss_mode={mode!r} requires forward-pass logits "
+            "with grad, but model.forward returned outputs.logits=None. "
+            "This usually means Liger fused linear-CE is enabled. Disable "
+            "the fused kernel (e.g. unset USE_LIGER / set "
+            "use_liger_kernel=False) or switch action_class_loss_mode to "
+            "'none'."
+        )
+    if not torch.is_tensor(logits):
+        raise RuntimeError(
+            f"action_class_loss_mode={mode!r}: outputs.logits is not a "
+            f"tensor (got {type(logits).__name__}). Check fused-CE config."
+        )
+    if not logits.requires_grad:
+        raise RuntimeError(
+            f"action_class_loss_mode={mode!r}: outputs.logits has "
+            "requires_grad=False; the fused linear-CE kernel detached "
+            "logits before this point. Disable the fused kernel or switch "
+            "action_class_loss_mode to 'none'."
+        )
+
+
 # ---------------------------------------------------------------------------
 # Assistant-span SFT Trainer
 # ---------------------------------------------------------------------------
@@ -291,10 +324,36 @@ class WeightedSFTTrainer(Trainer):
         per_sample_loss_for_audit = None
 
         if self.model.training and inputs.get("labels") is not None:
-            per_sample_loss_for_audit = self._per_sample_ce_loss(
-                outputs.logits,
-                inputs["labels"],
-                token_loss_weight=token_loss_weight,
+            action_class_mode = self._get_action_class_mode()
+            if action_class_mode in {"inverse_freq", "focal"}:
+                # Both modes require explicit logits + per-token weighting and
+                # therefore cannot coexist with Liger fused linear-CE (which
+                # consumes hidden states directly and never materialises
+                # logits with grad). Fail loud at the entry of the override
+                # path so a misconfigured run does not silently degrade.
+                _assert_logits_have_grad(outputs.logits, action_class_mode)
+            if action_class_mode == "focal":
+                # focal-modulation focal loss replaces the per-sample CE path.
+                per_sample_loss_for_audit = self._per_sample_focal_loss(
+                    outputs.logits,
+                    inputs["labels"],
+                    token_loss_weight=token_loss_weight,
+                )
+            else:
+                # Default CE path; if action_class_mode == 'inverse_freq',
+                # the data collator already multiplied class weights into
+                # token_loss_weight, so we just pass it through.
+                per_sample_loss_for_audit = self._per_sample_ce_loss(
+                    outputs.logits,
+                    inputs["labels"],
+                    token_loss_weight=token_loss_weight,
+                )
+            # When action_class_mode != 'none' but sample_weights is not
+            # provided, override outputs.loss with our weighted per-sample
+            # mean so the actual update reflects the class balancing.
+            override_outputs_loss = (
+                action_class_mode in {"inverse_freq", "focal"}
+                and (sample_weights is None or sample_weights.numel() == 0)
             )
             if sample_weights is not None and sample_weights.numel() > 0:
                 weights = sample_weights.to(
@@ -305,6 +364,9 @@ class WeightedSFTTrainer(Trainer):
                     loss = (
                         per_sample_loss_for_audit * weights
                     ).sum() / weights.sum().clamp_min(1e-6)
+            elif override_outputs_loss:
+                # Equal weight across samples; just mean.
+                loss = per_sample_loss_for_audit.mean()
 
         # ── Eval-time accuracy accumulation (teacher-forced argmax) ──
         # Done before audit because audit guard requires model.training=True
@@ -388,6 +450,119 @@ class WeightedSFTTrainer(Trainer):
                 f.write(json.dumps(row, ensure_ascii=False) + "\n")
         except Exception:
             pass
+
+    def _get_action_class_mode(self) -> str:
+        """Read DataArguments.action_class_loss_mode (stashed in train.py).
+
+        Returns 'none' if data_args is missing so legacy training without the
+        flag is unaffected.
+        """
+        data_args = getattr(self, "data_args", None)
+        if data_args is None:
+            return "none"
+        mode = getattr(data_args, "action_class_loss_mode", "none")
+        if mode is None:
+            return "none"
+        return str(mode).strip().lower()
+
+    def _per_sample_focal_loss(self, logits, labels, token_loss_weight=None):
+        """focal-modulation focal loss aggregated per sample.
+
+        Drop-in replacement for _per_sample_ce_loss when
+        action_class_loss_mode == 'focal'.
+
+        Important: this path materializes the full log_softmax over vocab,
+        so it is NOT compatible with Liger fused linear CE. The compute_loss
+        entry hardens this via :func:`_assert_logits_have_grad`; callers
+        invoking this method directly must provide logits with grad.
+
+        Aggregation note (intentional, mirrors _per_sample_ce_loss):
+            - numerator: sum(focal * alpha * nll * extra_w) per sample
+            - denominator: sum(extra_w) if extra_w given else valid-token
+              count per sample
+            The focal/alpha factors do NOT enter the denominator, so this is
+            not a pure weighted average. The denominator pattern matches the
+            CE path so the audit-loss column is directly comparable across
+            modes. Kept deliberately; do not "fix" without updating the CE
+            path in parallel.
+        """
+        from thinkstream.sft.losses import (
+            focal_loss_per_token,
+            resolve_action_token_ids,
+            resolve_tool_call_marker_ids,
+            resolve_tool_name_token_sequences,
+        )
+
+        shift_logits = logits[..., :-1, :].contiguous()
+        shift_labels = labels[..., 1:].contiguous()
+        valid = shift_labels.ne(IGNORE_INDEX)
+        if not valid.any():
+            return torch.zeros(
+                labels.size(0),
+                device=logits.device,
+                dtype=logits.dtype,
+            )
+
+        data_args = getattr(self, "data_args", None)
+        gamma = float(getattr(data_args, "action_class_focal_gamma", 2.0) or 0.0)
+        auto_alpha = bool(getattr(data_args, "action_class_focal_auto_alpha", True))
+
+        # Resolve action token ids. The tokenizer lives on processing_class
+        # in newer HF Trainer; fall back to tokenizer attribute for older.
+        tokenizer = getattr(self, "processing_class", None) or getattr(
+            self, "tokenizer", None
+        )
+        if tokenizer is None:
+            raise RuntimeError(
+                "focal action-class loss requires a tokenizer; trainer "
+                "exposed neither processing_class nor tokenizer."
+            )
+        action_ids = resolve_action_token_ids(tokenizer)
+        tool_seqs = resolve_tool_name_token_sequences(tokenizer)
+        tc_open_ids, tc_close_ids = resolve_tool_call_marker_ids(tokenizer)
+
+        # Compose existing token_loss_weight (e.g. compress structure/body/close)
+        # with focal modulation by passing as extra_token_weight.
+        extra_w = None
+        if token_loss_weight is not None:
+            extra_w = token_loss_weight[..., 1:].to(
+                device=shift_logits.device,
+                dtype=shift_logits.dtype,
+            )
+
+        flat_loss = focal_loss_per_token(
+            logits=shift_logits,
+            labels=shift_labels,
+            action_token_ids=action_ids,
+            tool_name_sequences=tool_seqs,
+            gamma=gamma,
+            auto_alpha=auto_alpha,
+            ignore_index=IGNORE_INDEX,
+            extra_token_weight=extra_w,
+            tool_call_open_ids=tc_open_ids,
+            tool_call_close_ids=tc_close_ids,
+        )
+
+        # Aggregate per sample with the same denominator pattern as the CE path
+        # so the audit loss column is directly comparable across modes.
+        batch, seq_len_shift = shift_labels.shape
+        sample_index = (
+            torch.arange(batch, device=flat_loss.device)
+            .unsqueeze(-1)
+            .expand(-1, seq_len_shift)
+            .reshape(-1)
+        )
+        flat_valid = valid.reshape(-1)
+        flat_weight = torch.where(
+            flat_valid,
+            extra_w.reshape(-1) if extra_w is not None else torch.ones_like(flat_loss),
+            torch.zeros_like(flat_loss),
+        )
+        loss_sum = torch.zeros(batch, device=flat_loss.device, dtype=flat_loss.dtype)
+        denom = torch.zeros(batch, device=flat_loss.device, dtype=flat_loss.dtype)
+        loss_sum = loss_sum.scatter_add(0, sample_index, flat_loss)
+        denom = denom.scatter_add(0, sample_index, flat_weight)
+        return loss_sum / denom.clamp_min(1.0)
 
     def _per_sample_ce_loss(self, logits, labels, token_loss_weight=None):
         """Mean assistant-token CE per sample.
@@ -673,8 +848,8 @@ class WeightedSFTTrainer(Trainer):
         except Exception:
             return
 
-        from thinkstream.data.agent_protocol import parse_agent_output_v12
-        parsed = parse_agent_output_v12(decoded)
+        from thinkstream.data.agent_protocol import parse_agent_output
+        parsed = parse_agent_output(decoded)
         observed_kind = parsed.get("kind", "unknown")
         format_valid = parsed.get("format_error") is None
 
@@ -697,8 +872,8 @@ class WeightedSFTTrainer(Trainer):
         )
 
         try:
-            from thinkstream.data.agent_protocol import diagnose_compress_output_v12
-            compress_diag = diagnose_compress_output_v12(decoded)
+            from thinkstream.data.agent_protocol import diagnose_compress_output
+            compress_diag = diagnose_compress_output(decoded)
         except Exception:
             compress_diag = {}
         compress_emit_like = bool(compress_diag.get("front_prefix_ok"))

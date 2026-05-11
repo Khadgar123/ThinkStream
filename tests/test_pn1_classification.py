@@ -12,7 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts.agent_data_v5.pass3a_cards import (
+from scripts.agent_data.pass3a_cards import (
     FAMILY_FORCE_ATTEMPT,
     FAMILY_TARGETS,
     RETENTION_CLASS,

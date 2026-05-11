@@ -182,7 +182,7 @@ if [[ -z "${THINKSTREAM_FINAL_DIR:-}" ]]; then
 fi
 if [[ ! -d "${THINKSTREAM_FINAL_DIR}" && "${DRY_RUN:-0}" != "1" ]]; then
     echo "ERROR: rendered SFT dir not found: ${THINKSTREAM_FINAL_DIR}" >&2
-    echo "       build it with scripts/agent_data_v5/make_training_scheme.py or pipeline pass45." >&2
+    echo "       build it with scripts/agent_data/make_training_scheme.py or pipeline pass45." >&2
     exit 2
 fi
 
@@ -236,7 +236,7 @@ case $PHASE in
             fi
         fi
         # v12.6: --protocol_version flag removed from DataArguments (v12 is
-        # now the only supported protocol — see thinkstream/sft/argument.py).
+        # now the only supported protocol — see thinkstream/sft/args.py).
         if [ -n "${RESUME_FROM_CHECKPOINT:-}" ]; then
             extra_args="${extra_args} --resume_from_checkpoint ${RESUME_FROM_CHECKPOINT}"
         fi
@@ -266,7 +266,7 @@ case $PHASE in
         echo "  'messages' key); preprocess_per_timestep now requires"
         echo "  messages format. To run an ablation:"
         echo "    1) Convert the flat dataset:"
-        echo "       python -m scripts.agent_data_v5.pass5_messages \\"
+        echo "       python -m scripts.agent_data.pass5_messages \\"
         echo "         --input flat --final-dir <dir>"
         echo "    2) Add a stream_agent_<name> entry in"
         echo "       thinkstream/sft/data_list.py pointing at the .messages.jsonl"

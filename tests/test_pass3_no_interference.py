@@ -5,7 +5,7 @@ import asyncio
 
 import pytest
 
-from scripts.agent_data_v5.v2.design import (
+from scripts.agent_data.placement.design import (
     Card,
     GoldEmit,
     Placement,
@@ -159,7 +159,7 @@ def test_forward_question_waits_without_nonterminal_recall():
 
 
 def test_recall_silent_query_does_not_leak_future_grounding_range():
-    from scripts.agent_data_v5.pass3c_samples import generate_trajectory_samples
+    from scripts.agent_data.pass3c_samples import generate_trajectory_samples
 
     card = {
         "card_id": "f0",
@@ -239,7 +239,7 @@ def test_recall_failure_injection_is_rejected():
 
 
 def test_card_with_canonical_but_no_gold_emit_is_rejected():
-    from scripts.agent_data_v5.pass3a_cards import _verify_card_layers
+    from scripts.agent_data.pass3a_cards import _verify_card_layers
 
     card = {
         "card_id": "c0",
@@ -255,7 +255,7 @@ def test_card_with_canonical_but_no_gold_emit_is_rejected():
 
 
 def test_hld1_rejects_supported_concrete_option():
-    from scripts.agent_data_v5.pass3a_cards import _verify_card_layers
+    from scripts.agent_data.pass3a_cards import _verify_card_layers
 
     card = {
         "card_id": "h0",
@@ -282,8 +282,8 @@ def test_hld1_rejects_supported_concrete_option():
 
 
 def test_hld1_prompt_asks_for_diverse_ovo_negatives():
-    from scripts.agent_data_v5.pass3a_cards import PASS3A_TARGETS_BY_FAMILY
-    from scripts.agent_data_v5.v2.llm_prompts import card_generation_prompt
+    from scripts.agent_data.pass3a_cards import PASS3A_TARGETS_BY_FAMILY
+    from scripts.agent_data.placement.llm_prompts import card_generation_prompt
 
     prompt = card_generation_prompt(
         "HLD1",
@@ -311,7 +311,7 @@ def test_hld1_prompt_asks_for_diverse_ovo_negatives():
 
 
 def test_hld1_unable_option_slot_is_stably_normalized():
-    from scripts.agent_data_v5.pass3a_cards import _normalize_card_in_place
+    from scripts.agent_data.pass3a_cards import _normalize_card_in_place
 
     positions = set()
     for i in range(16):
@@ -339,7 +339,7 @@ def test_hld1_unable_option_slot_is_stably_normalized():
 
 
 def test_non_hld_mc_correct_option_slot_is_stably_normalized():
-    from scripts.agent_data_v5.pass3a_cards import _normalize_card_in_place
+    from scripts.agent_data.pass3a_cards import _normalize_card_in_place
 
     positions = set()
     for i in range(24):

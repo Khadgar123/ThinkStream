@@ -44,7 +44,7 @@ logger = logging.getLogger("ctx_budget")
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from scripts.agent_data_v5.config import (  # noqa: E402
+from scripts.agent_data.config import (  # noqa: E402
     RUNTIME_MM_PROCESSOR_KWARGS,
     HIRES_MM_PROCESSOR_KWARGS,
     VISUAL_TOKENS_PER_FRAME_RUNTIME,
@@ -182,7 +182,7 @@ def build_worst_case_sample(*, with_recall: bool, inter_chunk: bool) -> Dict:
             "<think>The person is examining the bowl carefully.</think>"
             "<answer>They appear to be inspecting it before use.</answer>"
         ),
-        "v12_inter_chunk": inter_chunk,
+        "inter_chunk": inter_chunk,
     }
     return sample
 
@@ -203,7 +203,7 @@ def layer1_sft_side(processor_path: str) -> None:
         print("   Skipping Layer 1.")
         return
 
-    from scripts.agent_data_v5.pass5_messages import build_messages
+    from scripts.agent_data.pass5_messages import build_messages
     from PIL import Image
     import numpy as np
 

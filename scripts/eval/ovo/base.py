@@ -55,7 +55,7 @@ try:
 except Exception:
     process_vision_info = None
 
-from thinkstream.sft.argument import DataArguments
+from thinkstream.sft.args import DataArguments
 from thinkstream.sft.data_processor import update_processor_pixels
 from scripts.eval.ovo.eval_full import (
     RT_TASKS, BT_TASKS, FT_TASKS, ALL_TASKS,

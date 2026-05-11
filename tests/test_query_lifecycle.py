@@ -1,5 +1,5 @@
 from thinkstream.data.agent_protocol import format_queries_block
-from thinkstream.model.agent_loop import MemoryState
+from thinkstream.models.agent_loop import MemoryState
 
 
 def test_new_query_replaces_previous_open_query():

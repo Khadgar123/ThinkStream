@@ -1,4 +1,4 @@
-from scripts.agent_data_v5.rebalance_mc_options import patch_row
+from scripts.agent_data.rebalance_mc_options import patch_row
 
 
 def _mapping():

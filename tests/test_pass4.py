@@ -78,7 +78,7 @@ def test_no_empty_trajectory():
 
 
 def test_recall_failure_is_rejected_not_emitted():
-    from scripts.agent_data_v5.pass4 import _build_trajectory_record
+    from scripts.agent_data.pass4 import _build_trajectory_record
 
     samples = [
         {
@@ -103,7 +103,7 @@ def test_recall_failure_is_rejected_not_emitted():
 
 
 def test_recall_silent_wait_state_requires_later_answer():
-    from scripts.agent_data_v5.pass4 import _build_trajectory_record
+    from scripts.agent_data.pass4 import _build_trajectory_record
 
     meta = {
         "gold_answer": "red cup",

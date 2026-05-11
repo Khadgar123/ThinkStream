@@ -1,6 +1,6 @@
 """Pass3a even-stride sampling test.
 
-Verifies the bug fix in scripts/agent_data_v5/pass3a_cards.py
+Verifies the bug fix in scripts/agent_data/pass3a_cards.py
 (_format_evidence_for_prompt) — the previous `chunk_indices[:10]` truncation
 caused 62.9% of card support_chunks to fall in the first 20% of videos.
 After fix, sampled chunks span the FULL chunk_indices range.
@@ -13,7 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts.agent_data_v5.pass3a_cards import (
+from scripts.agent_data.pass3a_cards import (
     _format_evidence_for_prompt,
     _EV_PROMPT_MAX_CHUNKS,
 )

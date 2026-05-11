@@ -1,0 +1,189 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thinkstream"
+version = "0.1.0"
+description = "Streaming video reasoning with Watch-Think-Speak — multi-turn dialogue, sliding-window KV, agentic tool calls."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+keywords = [
+    "streaming-video",
+    "video-llm",
+    "multimodal",
+    "reinforcement-learning",
+    "agent",
+    "qwen-vl",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Core runtime deps. Versions tracked in requirements.txt for reproducible
+# training; pyproject ranges are kept loose so the package remains installable
+# in user environments that pin a different patch.
+dependencies = [
+    # PyTorch stack
+    "torch>=2.4.0",
+    "torchvision>=0.19.0",
+    # HuggingFace stack
+    "transformers>=4.50,<5.0",
+    "accelerate>=1.0.0",
+    "datasets>=2.16.0",
+    "peft>=0.10.0",
+    # Multimodal IO
+    "qwen-vl-utils>=0.0.10",
+    "pillow>=10.0.0",
+    "opencv-python-headless>=4.8.0",
+    "av>=12.0.0",
+    # Data ops
+    "pandas>=2.0.0",
+    "pyarrow>=15.0.0",
+    "numpy>=1.24.0",
+    # Logging / config
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# GPU-specific kernels. Many require matching CUDA / PyTorch combos and ship
+# wheels from custom index URLs; users should consult upstream install docs.
+gpu = [
+    "flash-attn>=2.5.0",
+    "flashinfer-python>=0.1.0",
+    "liger-kernel>=0.4.0",
+    "torchcodec>=0.5.0",
+    "deepspeed>=0.14.0",
+    "triton>=2.3.0",
+]
+
+# RL training: verl trainer + vllm rollout + Ray dispatch + wandb.
+# verl is not yet on PyPI for the version we depend on (0.4 + custom recipe
+# hooks); install from source: ``git clone git@github.com:volcengine/verl.git``
+# and ``pip install -e verl``.
+rl = [
+    "vllm>=0.6.0",
+    "ray>=2.40.0",
+    "wandb>=0.18.0",
+]
+
+# Development: lint / type-check / test.
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.4.0",
+    "mypy>=1.8",
+    "pre-commit>=3.0",
+]
+
+# Combined: everything for full training + RL.
+all = [
+    "thinkstream[gpu]",
+    "thinkstream[rl]",
+    "thinkstream[dev]",
+]
+
+[project.scripts]
+# Entry points are commented out until the script modules expose a typed
+# main() function. Wire them in during the scripts/ reorganization (Wave D).
+# thinkstream-sft = "thinkstream.sft.train:main"
+# thinkstream-rl = "thinkstream.rl.train:main"
+# thinkstream-eval = "thinkstream.eval.streaming:main"
+# thinkstream-prepare-data = "thinkstream.data.pipeline:main"
+
+[project.urls]
+Homepage = "https://github.com/casia-iva-lab/ThinkStream"
+Repository = "https://github.com/casia-iva-lab/ThinkStream"
+Paper = "https://arxiv.org/abs/2603.12938"
+
+# ─────────────────────────────────────────────────────────────────────
+# Package discovery
+# ─────────────────────────────────────────────────────────────────────
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["thinkstream*"]
+exclude = [
+    "tests*",
+    "scripts*",
+    "docs*",
+    "verl*",
+    "DeepEyes*",
+    "IterResearch*",
+    "LLaMA-Factory*",
+    "MemAgent*",
+    "Qwen*",
+    "ReMemR1*",
+    "streaming-vlm*",
+    "Streamo*",
+    "Think_While_Watching*",
+    "VST*",
+    "ThinkStream-CASIA*",
+]
+
+# ─────────────────────────────────────────────────────────────────────
+# Tooling configuration
+# ─────────────────────────────────────────────────────────────────────
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = [
+    "thinkstream/_legacy/**",
+    "verl/**",
+    "scripts/agent_data_pipeline/**",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "F",  # pyflakes
+    "I",  # isort
+    "W",  # pycodestyle warnings
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501",  # line length handled by formatter
+    "B008",  # function call in default argument (FastAPI-style is fine)
+]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.10"
+warn_unused_ignores = true
+warn_redundant_casts = true
+ignore_missing_imports = true
+exclude = [
+    "verl/",
+    "scripts/agent_data_pipeline/",
+    "build/",
+    "dist/",
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--import-mode=importlib",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]

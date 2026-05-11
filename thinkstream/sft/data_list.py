@@ -1,8 +1,8 @@
 """Dataset registry for ThinkStream SFT/eval data.
 
-Canonical SFT inputs are pass5 LLaMA-Factory/DeepEyes-style ShareGPT
+Canonical SFT inputs are pass5 ShareGPT
 `*_messages.jsonl` files. Canonical RL inputs are verl parquets built from
-`*_trajectories.jsonl` by scripts/agent_data_v5/build_verl_parquet.py.
+`*_trajectories.jsonl` by scripts/agent_data/build_verl_parquet.py.
 
 The registry intentionally exposes only the current rendered
 `video_meta + standard_query_last` message/trajectory datasets. Flat
@@ -96,6 +96,31 @@ DATASET_REGISTRY = {
     },
     "stream_agent_test_traj": {
         "annotation_path": _agent_path("test_trajectories.jsonl"),
+        "data_path": "./",
+    },
+
+    # ─── Multi-turn trajectory SFT (pass5 trajectory renderer) ──────
+    # Each row is one trajectory (between two compress events) carrying a
+    # full multi-turn ``messages`` list + inline ``tools`` schema. Consumed
+    # by the same WeightedSFTTrainer; ``preprocess_per_timestep`` detects
+    # ``trajectory_type`` and relaxes the per-row assistant-turn count.
+    # Produced by ``scripts.agent_data.pass5.convert_dir(...)``; pipeline
+    # opts in via env ``THINKSTREAM_RUN_PASS5_TRAJECTORY=1``.
+    "stream_agent_trajectory_train": {
+        # pass4 emits ``train_sft_trajectories.jsonl`` for the SFT split (its
+        # canonical naming is ``<split>_trajectories.jsonl`` with split
+        # ``train_sft``). pass5.convert_dir strips ``_trajectories`` →
+        # ``train_sft_trajectory.jsonl``. Do NOT shorten to
+        # ``train_trajectory.jsonl`` — that file is never produced.
+        "annotation_path": _agent_path("train_sft_trajectory.jsonl"),
+        "data_path": "./",
+    },
+    "stream_agent_trajectory_val": {
+        "annotation_path": _agent_path("val_trajectory.jsonl"),
+        "data_path": "./",
+    },
+    "stream_agent_trajectory_test": {
+        "annotation_path": _agent_path("test_trajectory.jsonl"),
         "data_path": "./",
     },
 }

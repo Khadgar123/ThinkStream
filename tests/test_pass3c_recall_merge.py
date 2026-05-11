@@ -1,6 +1,6 @@
 """Regression test for pass3c v12.5 recall-pair merge bug.
 
-The bug: `_merge_recall_pairs_v12` was called inside `generate_base_samples`,
+The bug: `_merge_recall_pairs` was called inside `generate_base_samples`,
 which never contains recall pairs (those live in `generate_trajectory_samples`).
 Result: 0 multi-turn samples produced despite v12 protocol claiming support
 for them. Fixed by moving the merge to `generate_trajectory_samples`'
@@ -22,7 +22,7 @@ os.environ.setdefault("THINKSTREAM_PROTOCOL", "v12")
 def test_merge_pairs_collapses_recall_at_same_chunk():
     """Two samples (recall_query + recall_response) at same (traj, card,
     chunk) → one merged sample with v12_assistant_turn_1/2."""
-    from scripts.agent_data_v5.pass3c_samples import _merge_recall_pairs_v12
+    from scripts.agent_data.pass3c_samples import _merge_recall_pairs
     samples = [
         {"sample_type": "recall_query", "trajectory_id": "t0",
          "card_id": "c1", "chunk_idx": 5, "output": "<tool_call>...</tool_call>"},
@@ -32,7 +32,7 @@ def test_merge_pairs_collapses_recall_at_same_chunk():
         {"sample_type": "silent", "trajectory_id": "t0",
          "card_id": "c1", "chunk_idx": 0, "output": "<answer></answer>"},
     ]
-    merged = _merge_recall_pairs_v12(samples)
+    merged = _merge_recall_pairs(samples)
     # 1 silent (untouched) + 1 merged "recall" (was 2)
     assert len(merged) == 2, f"expected 2 samples after merge, got {len(merged)}"
     recall_samples = [s for s in merged if s["sample_type"] == "recall"]
@@ -47,14 +47,14 @@ def test_merge_pairs_collapses_recall_at_same_chunk():
 
 def test_merge_handles_recall_silent():
     """recall_query + recall_silent → merged with empty answer."""
-    from scripts.agent_data_v5.pass3c_samples import _merge_recall_pairs_v12
+    from scripts.agent_data.pass3c_samples import _merge_recall_pairs
     samples = [
         {"sample_type": "recall_query", "trajectory_id": "t0",
          "card_id": "c1", "chunk_idx": 5, "output": "<tool_call>...</tool_call>"},
         {"sample_type": "recall_silent", "trajectory_id": "t0",
          "card_id": "c1", "chunk_idx": 5, "output": "<answer></answer>"},
     ]
-    merged = _merge_recall_pairs_v12(samples)
+    merged = _merge_recall_pairs(samples)
     assert len(merged) == 1
     r = merged[0]
     assert r["sample_type"] == "recall"
@@ -66,12 +66,12 @@ def test_merge_handles_recall_silent():
 def test_merge_unpaired_recall_response_promoted():
     """Lonely recall_response (no recall_query at same chunk) → promoted to
     plain response."""
-    from scripts.agent_data_v5.pass3c_samples import _merge_recall_pairs_v12
+    from scripts.agent_data.pass3c_samples import _merge_recall_pairs
     samples = [
         {"sample_type": "recall_response", "trajectory_id": "t0",
          "card_id": "c1", "chunk_idx": 5, "output": "<answer>red</answer>"},
     ]
-    merged = _merge_recall_pairs_v12(samples)
+    merged = _merge_recall_pairs(samples)
     assert len(merged) == 1
     assert merged[0]["sample_type"] == "response"
     print("  PASS lonely recall_response promoted to 'response'")
@@ -81,7 +81,7 @@ def test_call_site_is_in_generate_trajectory_samples():
     """AST: ensure the merge call lives in generate_trajectory_samples,
     NOT in generate_base_samples (which would be a no-op)."""
     import ast
-    src = Path(__file__).resolve().parents[1] / "scripts" / "agent_data_v5" / "pass3c_samples.py"
+    src = Path(__file__).resolve().parents[1] / "scripts" / "agent_data" / "pass3c_samples.py"
     tree = ast.parse(src.read_text())
 
     fn_calling_merge = []
@@ -91,13 +91,13 @@ def test_call_site_is_in_generate_trajectory_samples():
         for sub in ast.walk(node):
             if isinstance(sub, ast.Call):
                 f = sub.func
-                if isinstance(f, ast.Name) and f.id == "_merge_recall_pairs_v12":
+                if isinstance(f, ast.Name) and f.id == "_merge_recall_pairs":
                     fn_calling_merge.append(node.name)
                     break
 
     # generate_base_samples MUST NOT call merge (no-op)
     assert "generate_base_samples" not in fn_calling_merge, (
-        "REGRESSION: _merge_recall_pairs_v12 still called from "
+        "REGRESSION: _merge_recall_pairs still called from "
         "generate_base_samples (where there are no recall pairs)"
     )
     # generate_trajectory_samples MUST call merge

@@ -20,8 +20,8 @@ import torch.distributed as dist
 import tqdm
 from torch.utils.data import Dataset, DataLoader, Sampler
 from transformers import AutoProcessor
-from thinkstream.model import MODEL_CLS, DEFAULT_VIDEO_FLEX_WINDOW_SIZE, get_text_config
-from thinkstream.model.inference import (
+from thinkstream.models import MODEL_CLS, DEFAULT_VIDEO_FLEX_WINDOW_SIZE, get_text_config
+from thinkstream.models.inference import (
     StreamingWindowInferenceEngine,
     streaming_video_chat,
 )
@@ -331,7 +331,7 @@ def mcq_predict_agent_loop(
     Ensures eval uses EXACTLY the same input format as SFT training:
     video-first layout, <memory> tags, <visual_window> tags, etc.
     """
-    from thinkstream.model.agent_loop import (
+    from thinkstream.models.agent_loop import (
         StreamingAgentLoop,
         make_generate_fn,
         AGENT_CHUNK_SEC,

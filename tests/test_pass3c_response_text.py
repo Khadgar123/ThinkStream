@@ -2,7 +2,7 @@
 
 import asyncio
 
-from scripts.agent_data_v5.pass3c_samples import (
+from scripts.agent_data.pass3c_samples import (
     _response_text_for,
     _response_text_via_llm,
 )

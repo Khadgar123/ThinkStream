@@ -33,7 +33,7 @@ python -m scripts.test_rl.verl_dataset_check \
 echo
 
 echo "═══ Step 4: Multi-Q parquet + compute_score round-trip ═══"
-python -m scripts.agent_data_v5.build_verl_parquet \
+python -m scripts.agent_data.build_verl_parquet \
     --jsonl "$OUT/synthetic_trajectories.jsonl" \
     --out "$OUT/synthetic_multi_q.parquet" \
     --multi_q

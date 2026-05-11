@@ -430,11 +430,11 @@ def preload_video(
 IGNORE_INDEX = -100
 FRAMES_PER_CHUNK = 2
 DEFAULT_MAX_CHUNKS = 120
-# v12.12 (2026-05-02): align with RUNTIME profile (130k/220k). Old values
-# (200704/401408) were inflating per-frame visual tokens beyond what SFT
-# was trained on, creating SFT-vs-inference visual distribution drift.
-DEFAULT_INFERENCE_MIN_PIXELS = 130_000
-DEFAULT_INFERENCE_MAX_PIXELS = 220_000
+# Streaming-runtime profile, ViT-patch-aligned. Same values as
+# ``schema.DEFAULT_VIDEO_{MIN,MAX}_PIXELS``, ``sft.args.video_*_pixels``, and
+# ``agent_protocol.build_user_content`` defaults. SFT/RL/Eval/deploy unified.
+DEFAULT_INFERENCE_MIN_PIXELS = 256 * 28 * 28   # 200,704
+DEFAULT_INFERENCE_MAX_PIXELS = 512 * 28 * 28   # 401,408
 
 
 def build_video_meta(

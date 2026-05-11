@@ -31,7 +31,7 @@ from thinkstream.sft.data_processor import (
     PerTimestepDataset,
     PerTimestepDataCollator,
 )
-from thinkstream.sft.argument import ModelArguments, DataArguments, TrainingArguments
+from thinkstream.sft.args import ModelArguments, DataArguments, TrainingArguments
 from dataclasses import dataclass, field
 
 

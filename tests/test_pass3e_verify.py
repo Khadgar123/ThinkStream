@@ -62,7 +62,7 @@ def _make_minimal_v12_sample(chunk_idx, sample_type, video_id="vid_test",
 
 def test_tag_samples_returns_all_input():
     """No samples dropped — tag_samples returns same count as input."""
-    from scripts.agent_data_v5.pass3e_verify import tag_samples
+    from scripts.agent_data.pass3e_verify import tag_samples
 
     inputs = [
         _make_minimal_v12_sample(0, "silent"),
@@ -80,7 +80,7 @@ def test_tag_samples_returns_all_input():
 
 def test_tag_samples_attaches_verification():
     """Every output sample must carry a verification dict."""
-    from scripts.agent_data_v5.pass3e_verify import tag_samples
+    from scripts.agent_data.pass3e_verify import tag_samples
 
     inputs = [
         _make_minimal_v12_sample(0, "silent"),
@@ -97,7 +97,7 @@ def test_tag_samples_attaches_verification():
 def test_tag_samples_keeps_failures_with_reasons():
     """A sample that fails verification must remain in the list, with
     verification.passed=False AND a non-empty fail_reasons list."""
-    from scripts.agent_data_v5.pass3e_verify import tag_samples
+    from scripts.agent_data.pass3e_verify import tag_samples
 
     bad_sample = _make_minimal_v12_sample(5, "response", gold_answer="answer")
     # Force a failure: empty think will trigger format/grounding check
@@ -118,7 +118,7 @@ def test_tag_samples_keeps_failures_with_reasons():
 
 def test_filter_samples_still_drops_legacy():
     """Backward-compat: legacy filter_samples still drops failures."""
-    from scripts.agent_data_v5.pass3e_verify import filter_samples
+    from scripts.agent_data.pass3e_verify import filter_samples
 
     bad_sample = _make_minimal_v12_sample(5, "response", gold_answer="answer")
     bad_sample["output"] = "no tags at all"
@@ -132,7 +132,7 @@ def test_filter_samples_still_drops_legacy():
 def test_aggregate_stats_pass_rate():
     """Stats still report correct pass/fail breakdown even when nothing
     is dropped — total stays the same as input count."""
-    from scripts.agent_data_v5.pass3e_verify import tag_samples
+    from scripts.agent_data.pass3e_verify import tag_samples
 
     inputs = [_make_minimal_v12_sample(i, "silent") for i in range(5)]
     out, stats = tag_samples(inputs)

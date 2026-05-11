@@ -19,8 +19,8 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.agent_data_v5.pass3a_cards import FAMILY_TARGETS
-from scripts.agent_data_v5.pass3d_select import FAMILY_TO_OVO, OVO_TASK_QUOTA
+from scripts.agent_data.pass3a_cards import FAMILY_TARGETS
+from scripts.agent_data.pass3d_select import FAMILY_TO_OVO, OVO_TASK_QUOTA
 
 
 # Expected distribution targets (used to flag anomalies).

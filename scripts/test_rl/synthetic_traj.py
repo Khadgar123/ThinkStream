@@ -55,7 +55,7 @@ logger = logging.getLogger(__name__)
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from scripts.agent_data_v5.config import (  # noqa: E402
+from scripts.agent_data.config import (  # noqa: E402
     AGENT_CHUNK_SEC, FRAMES_PER_CHUNK,
 )
 
@@ -149,7 +149,7 @@ def _build_per_chunk_samples(
             "trajectory_id": trajectory_id,
             "video_id": video_id,
             "video_path": video_path,
-            "v12_inter_chunk": False,
+            "inter_chunk": False,
             "input": {
                 "memory": {"compressed_segments": [], "recent_thinks": []},
                 "queries": [],

@@ -42,7 +42,7 @@ from thinkstream.data.agent_protocol import (
     build_recall_result_metadata,
     build_recall_result_user_content,
     canonical_answer_instruction,
-    diagnose_compress_output_v12,
+    diagnose_compress_output,
     normalize_frame_protocol,
     normalize_render_layout,
     query_is_complete,
@@ -50,7 +50,7 @@ from thinkstream.data.agent_protocol import (
     system_prompt_for_frame_protocol,
     tools_for_turn,
 )
-from thinkstream.model.agent_loop import (
+from thinkstream.models.agent_loop import (
     COMPRESS_TOKEN_THRESHOLD,
     COMPRESS_RANGE_MIN,
     MemoryState,
@@ -332,7 +332,7 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> str:
         action = "invalid"
     runner._last_action = action
     runner._last_compress_prefix_diagnostic = (
-        diagnose_compress_output_v12(output_text)
+        diagnose_compress_output(output_text)
         if getattr(runner, "_last_turn_kind", "streaming") == "compress"
         else {}
     )
@@ -488,8 +488,8 @@ def streaming_predict_mcq_vllm(
     compress_max_new_tokens: int = 512,
     frames_per_chunk: int = 8,
     max_chunks: int = 30,
-    min_pixels: int = 130_000,
-    max_pixels: int = 220_000,
+    min_pixels: int = 256 * 28 * 28,
+    max_pixels: int = 512 * 28 * 28,
     frames_root: Optional[str] = None,
     video_root: Optional[str] = None,
     temperature: float = 0.0,
@@ -931,7 +931,7 @@ def _apply_rollout_output(
         "payload": parsed.get("payload", {}),
         "raw_output": output_text,
         "compress_prefix_diagnostic": (
-            diagnose_compress_output_v12(output_text)
+            diagnose_compress_output(output_text)
             if getattr(runner, "_last_turn_kind", "streaming") == "compress"
             else {}
         ),
@@ -974,8 +974,8 @@ def streaming_vllm_rollout(
     compress_max_new_tokens: int = 512,
     rollout_max_chunks: int = 30,
     rollout_extra_chunks: int = 5,
-    min_pixels: int = 130_000,
-    max_pixels: int = 220_000,
+    min_pixels: int = 256 * 28 * 28,
+    max_pixels: int = 512 * 28 * 28,
     temperature: float = 1.0,
     top_p: float = 0.95,
     top_k: int = 50,
@@ -1018,7 +1018,7 @@ def streaming_vllm_rollout(
     # Default budget pulled from agent_loop's RECENT_THINKS_TOKEN_BUDGET to
     # match the SFT/eval value without forcing callers to pass it.
     if compress_budget is None:
-        from thinkstream.model.agent_loop import RECENT_THINKS_TOKEN_BUDGET
+        from thinkstream.models.agent_loop import RECENT_THINKS_TOKEN_BUDGET
         compress_budget = RECENT_THINKS_TOKEN_BUDGET
     frame_protocol = normalize_frame_protocol(frame_protocol)
     render_layout = normalize_render_layout(render_layout)
@@ -1092,7 +1092,7 @@ def streaming_vllm_rollout(
             # its own retriever index. Only built if enable_recall=True.
             runner_retriever = None
             if enable_recall:
-                from thinkstream.model.retrieval import BM25Retriever
+                from thinkstream.models.retrieval import BM25Retriever
                 runner_retriever = BM25Retriever()
             runners.append(_RolloutRunner(
                 sample_idx=s_idx,

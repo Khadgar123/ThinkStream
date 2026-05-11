@@ -13,4 +13,4 @@ cd "${ROOT}"
 
 PYTHON_BIN="${PYTHON_BIN:-python}"
 
-exec "${PYTHON_BIN}" -m scripts.agent_data_v5.make_training_scheme "$@"
+exec "${PYTHON_BIN}" -m scripts.agent_data.make_training_scheme "$@"

@@ -1,27 +1,101 @@
+# ─────────────────────────────────────────────────────────────────────
+# Python build artifacts
+# ─────────────────────────────────────────────────────────────────────
 **/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ─────────────────────────────────────────────────────────────────────
+# Virtual envs / package managers
+# ─────────────────────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+.python-version
+
+# ─────────────────────────────────────────────────────────────────────
+# OS / editor / dev tooling
+# ─────────────────────────────────────────────────────────────────────
+.DS_Store
 **/.DS_Store
-data/agent/frames/
-data/agent_v5/
-data/agent_v5_batch1/
-data/agent_v5_test/frames/
-data/agent_v5_test/*.json
-data/video_catalog_30s_plus.csv
-data/video_catalog_lite.csv
-ThinkStream_Presentation.pptx
-generate_ppt.js
-~$*
+.vscode/
+.idea/
 .claude/
+*.swp
+*.swo
+*~
+~$*
+
+# ─────────────────────────────────────────────────────────────────────
+# Logs / runtime
+# ─────────────────────────────────────────────────────────────────────
 *.log
 logs/
-output/
-outputs/
+wandb/
+runs/
+tensorboard/
 .runtime/
 .rt/
-wandb/
-data/agent_v5_current_backup/
+
+# ─────────────────────────────────────────────────────────────────────
+# Training data + run artifacts (machine-local; do not commit)
+# ─────────────────────────────────────────────────────────────────────
+data/
+outputs/
+output/
 pretrained/
+checkpoints/
+ckpts/
+*.pt
+*.bin
+*.safetensors
+batch*_frames.tar.gz
+
+# ─────────────────────────────────────────────────────────────────────
+# Vendored reference projects (cloned for code reuse; not part of source)
+# Code we adapted lives inside thinkstream/ directly. verl is an external
+# pip dependency (install from source: github.com/volcengine/verl).
+# ─────────────────────────────────────────────────────────────────────
+verl/
+DeepEyes/
+IterResearch/
+LLaMA-Factory/
+MemAgent/
+Qwen-Agent/
+Qwen3/
+Qwen3-VL/
+ReMemR1/
+streaming-vlm/
+Streamo/
+Think_While_Watching/
+VST/
+ThinkStream-CASIA/
+
+# ─────────────────────────────────────────────────────────────────────
+# Workspace artifacts (moved to ../thinkstream-workspace/)
+# Re-listed here so accidental re-creation in the working tree gets ignored.
+# ─────────────────────────────────────────────────────────────────────
+paper/
+slides/
+skills/
+evidence/
 ablation_results/
+references/
+recipe/
+
+# ─────────────────────────────────────────────────────────────────────
+# Project misc
+# ─────────────────────────────────────────────────────────────────────
+*.pptx
+generate_ppt.js
 projects/
 third_party/
-batch1_frames.tar.gz
-data/test_rl/

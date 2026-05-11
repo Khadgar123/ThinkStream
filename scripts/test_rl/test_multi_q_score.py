@@ -2,7 +2,7 @@
 
 Loads a multi-Q parquet (built with `build_verl_parquet --multi_q`) and
 exercises the OVOBench-aligned multi-Q scoring path in
-verl/recipe_thinkstream/thinkstream.py:compute_score.
+thinkstream/rl/thinkstream.py:compute_score.
 
 Coverage:
   - All-correct rollout → outcome 1.0
@@ -27,7 +27,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 def _load_compute_score():
     spec = importlib.util.spec_from_file_location(
         "rt_thinkstream",
-        PROJECT_ROOT / "verl" / "recipe_thinkstream" / "thinkstream.py",
+        PROJECT_ROOT / "verl" / "thinkstream/rl" / "thinkstream.py",
     )
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)

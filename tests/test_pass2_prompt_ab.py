@@ -1,11 +1,11 @@
-from scripts.agent_data_v5.pass2_prompt_ab import (
+from scripts.agent_data.pass2_prompt_ab import (
     VariantSpec,
     _serialize_memory,
     build_variant_repair_request,
     build_variant_observation_request,
     select_repair_heavy_videos,
 )
-from scripts.agent_data_v5.pass2_rollout import MemoryState
+from scripts.agent_data.pass2_rollout import MemoryState
 
 
 def _seed_memory() -> MemoryState:
