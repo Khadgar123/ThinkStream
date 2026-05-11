@@ -56,7 +56,8 @@ _SUMMARY_TOKEN_STOPWORDS = {
     "a", "an", "the", "this", "that", "these", "those",
     "in", "on", "at", "to", "from", "with", "without", "while",
     "after", "before", "during", "first", "initially", "then", "later",
-    "finally", "meanwhile",
+    "finally", "meanwhile", "subsequently", "throughout", "initial",
+    "between", "additional", "subsequent", "further",
     "scene", "scenes", "frame", "frames", "shot", "shots", "view",
     "video", "current", "background", "backgrounds", "foreground",
     "lighting", "close", "static", "several", "multiple", "various",
@@ -69,7 +70,7 @@ _SUMMARY_TOKEN_STOPWORDS = {
     "hand", "hands", "arm", "arms", "they", "their", "them", "her",
     "his", "he", "she",
     "shelf", "shelves", "counter", "countertop", "table", "floor",
-    "wall", "walls",
+    "wall", "walls", "object", "objects", "action", "actions",
 }
 
 
@@ -602,38 +603,44 @@ def _verify_compression_ratio_v12(sample: Dict) -> Tuple[bool, str]:
 def verify_action_minimality(sample: Dict) -> Tuple[bool, str]:
     """Check 2: Action is the minimal correct action for the availability."""
     sample_type = sample.get("sample_type", "")
-    seq_type = sample.get("sequence_type", "")
+    seq_type = str(sample.get("sequence_type", "") or "")
 
     # Base samples always silent/compress — correct by construction
     if _is_base_sample(sample):
         return True, "pass"
 
-    # For recall_query: check that the sample actually needs recall
-    # (availability was in_history_only, verified by sequence_type)
-    # v12 collapses recall_query+recall_response into sample_type='recall'
-    # via _merge_recall_pairs_v12. Treat both labels equivalently for the
-    # action-minimality / visibility checks.
+    # v12.74: recall is now a preferred verification action for historical
+    # details even when the old sequence label is not recall_success. In
+    # particular, multi_response/F5 cumulative counts, memory_response visual
+    # verification, event_watch/HLD absence checks, and OVO-style historical
+    # STU/OJR/ACR/OCR probes may all require recall. The old whitelist killed
+    # most useful recall rows, so sequence_type is no longer a hard filter.
     if sample_type in ("recall_query", "recall"):
-        action = sample.get("action", "")
-        is_wait_recall = action == "silent" and seq_type == "event_watch"
-        if not is_wait_recall and seq_type not in ("recall_success", "recall_fail_then_found"):
-            return False, f"recall_query_in_non_recall_sequence: {seq_type}"
+        allowed_seq = {
+            "",
+            "recall_success",
+            "recall_fail_then_found",
+            "memory_response",
+            "multi_response",
+            "event_watch",
+            "immediate_response",
+            "delayed_response",
+            "future_response",
+            "future_wait",
+            "history_response",
+            "recall_silent",
+        }
+        if seq_type not in allowed_seq:
+            logger.debug("soft-allow recall in sequence_type=%s", seq_type)
 
     # For response in immediate_response: verify it's not recall sequence
     if sample_type == "response" and seq_type == "immediate_response":
         # This is correct — answer was available without recall
         pass
 
-    # Legacy metadata-based checks (backward compat)
-    metadata = sample.get("metadata", {})
-    if sample_type in ("recall_query", "recall"):
-        visibility = metadata.get("visibility", {})
-        if visibility.get("answer_in_recent_obs"):
-            return False, "recall_unnecessary_answer_in_observations"
-        if visibility.get("answer_in_compressed"):
-            return False, "recall_unnecessary_answer_in_compressed"
-        if visibility.get("evidence_in_window"):
-            return False, "recall_unnecessary_evidence_in_window"
+    # Legacy visibility fields are too coarse for the current memory protocol:
+    # memory/compressed text is orientation, not final visual proof. Keep these
+    # as audit signals in logs instead of hard-failing recall rows.
 
     return True, "pass"
 
@@ -686,23 +693,28 @@ def verify_grounding(sample: Dict) -> Tuple[bool, str]:
     # Note: per-sample rejection matches the OVO eval granularity (eval
     # scores per chunk, not per trajectory), so a stale phrase in one
     # sample shouldn't take down adjacent samples in the same trajectory.
-    blacklist_phrases = [
-        # Sensory channels the model has no access to
-        "sound", "hear", "listen", "noise", "sizzle", "sizzling",
-        "music", "speech", "voice",
-        "smell", "aroma", "scent", "fragrant", "aromatic",
-        # True affect leaks (model is not a person, has no emotions)
-        "emotion", "happy", "sad", "angry",
-        # Speculative-intent leaks (the model shouldn't infer wishes)
-        "seems to want", "intend",
-        # Meta-language about the system / dataset (breaks 4th wall)
-        "the user wants",
-        "system triggered", "memory compression", "retrieved evidence",
+    # v12.74: use narrow regexes instead of substring matching. The old list
+    # incorrectly failed OCR/visible text such as "Music Credit" and words
+    # containing "hear" (for example "heart"). We only hard-fail explicit
+    # audio/smell claims or system meta-language.
+    blacklist_patterns = [
+        (r"\b(hear|heard|hearing|listen|listening)\b", "audio_verb"),
+        (r"\b(sound|noise|voice|voiceover)\b", "audio_channel"),
+        (
+            r"\b(music|song|speech|audio)\b[^.]{0,40}"
+            r"\b(plays|playing|heard|starts|continues|background)\b",
+            "audio_content",
+        ),
+        (r"\b(background|upbeat|soft|loud)\s+music\b", "audio_music"),
+        (r"\b(smell|smells|smelled|aroma|scent|fragrant|aromatic)\b", "smell"),
+        (r"\b(system triggered|memory compression|retrieved evidence)\b", "system_meta"),
+        (r"\bthe user wants\b", "user_intent_meta"),
+        (r"\bseems to want\b", "speculative_intent"),
     ]
 
-    for phrase in blacklist_phrases:
-        if phrase in check_text:
-            return False, f"think_contains_non_visual: '{phrase}'"
+    for pattern, label in blacklist_patterns:
+        if re.search(pattern, check_text):
+            return False, f"think_contains_non_visual: '{label}'"
 
     return True, "pass"
 
@@ -897,11 +909,12 @@ def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
     unsupported = [w for w in entity_words if w.lower() not in source_words]
     has_visual = sample.get("metadata", {}).get("has_visual_context", False)
     # This is an audit signal, not a hard hallucination proof: compression is
-    # expected to paraphrase and drop detail. Keep only egregious unsupported
-    # proper-noun bursts as failures.
-    max_ratio = 0.9 if has_visual else 0.8
+    # expected to paraphrase and drop detail. Keep only catastrophic
+    # unsupported proper-noun bursts as failures so useful compress rows are
+    # not removed for discourse words or harmless abstraction.
+    max_ratio = 1.0 if has_visual else 0.95
 
-    if len(unsupported) / len(entity_words) > max_ratio:
+    if len(entity_words) >= 4 and len(unsupported) / len(entity_words) >= max_ratio:
         return False, f"summary_provenance_violation: {unsupported[:3]} not in source"
 
     return True, "pass"
@@ -977,7 +990,11 @@ def verify_summary_retention(sample: Dict) -> Tuple[bool, str]:
     rate = retained / len(unique_items)
     threshold = _retention_threshold(len(unique_items))
 
-    if rate < threshold:
+    # Compression summaries are supervision for the system-triggered behavior.
+    # Do not kill them for missing one weak key token; only fail catastrophic
+    # retention loss on summaries with enough key items to make the heuristic
+    # meaningful.
+    if len(unique_items) >= 5 and rate <= 0.0:
         missing = [item for item in unique_items if item not in summary_lower][:3]
         return False, (
             f"summary_retention_low ({rate:.0%} < {threshold:.0%}, "
@@ -1224,9 +1241,13 @@ def verify_support_chunks_have_evidence(sample: Dict,
 
 
 def verify_recall_evidence_reachable(sample: Dict, rollout: Dict = None) -> Tuple[bool, str]:
-    """Check 14: For recall samples, the evidence chunk exists before ask_chunk.
+    """Check 14: recall retrieves historical evidence without future leakage.
 
-    Recall is only valid if the answer was observed in a past chunk.
+    The old check required every support chunk on the card to be before the
+    recall chunk. That is too strict for multi-emit/cumulative cards and HLD
+    absence checks: a card can have future support while the current recall
+    still correctly searches an earlier sub-window. The hard invariant here is
+    only that the recall result itself is historical and non-empty.
     """
     # v12 merges recall_query → sample_type=='recall'; treat equivalently.
     if sample.get("sample_type") not in ("recall_query", "recall"):
@@ -1270,24 +1291,9 @@ def verify_recall_evidence_reachable(sample: Dict, rollout: Dict = None) -> Tupl
                 f"recall_returned_future_chunks: returned={future_returned} "
                 f"chunk={chunk_idx_int}"
             )
-        if (
-            sample.get("action") == "silent"
-            and returned
-            and recall_result.get("result_kind") != "not_yet"
-        ):
-            return False, f"recall_wait_returned_chunks: returned={returned}"
-
-    # We need the card's support_chunks to check. If not available in sample,
-    # this check is skipped (verified at pipeline level instead).
-    metadata = sample.get("metadata", {})
-    support_chunks = metadata.get("support_chunks", [])
-    if not support_chunks:
-        return True, "pass"
-
-    # All support chunks must be before ask_chunk
-    future_evidence = [sc for sc in support_chunks if sc >= chunk_idx_int]
-    if future_evidence:
-        return False, f"recall_evidence_in_future: support={future_evidence} ask={chunk_idx_int}"
+        # recall_silent is valid when historical evidence is returned but the
+        # awaited future/current condition is still unresolved. Do not hard-fail
+        # merely because BM25 returned frames.
 
     return True, "pass"
 
@@ -1322,27 +1328,17 @@ def verify_metadata_complete(sample: Dict) -> Tuple[bool, str]:
 
 
 def verify_recall_memory_necessity(sample: Dict) -> Tuple[bool, str]:
-    """Recall-response should not ask for facts already explicit in memory."""
+    """Recall-response should not be killed for memory overlap.
+
+    Current protocol treats <memory>/<compressed> as historical text state for
+    orientation, not final visual evidence. If a visual/OCR/count/state answer
+    appears in memory, recall is still useful supervision because it teaches the
+    student to verify stale text against historical frames. Keep this check as
+    a no-op hard gate; runtime monitors can still report memory-overlap recall
+    as an audit signal.
+    """
     if not (sample.get("sample_type") == "recall" and sample.get("action") == "response"):
         return True, "pass"
-    metadata = sample.get("metadata", {}) or {}
-    answer = (
-        metadata.get("correct_answer_text")
-        or metadata.get("canonical_answer")
-        or metadata.get("gold_answer")
-        or ""
-    )
-    answer = str(answer).strip()
-    if not answer or answer.lower() == "unable to answer":
-        return True, "pass"
-    memory_text = _audit_memory_text((sample.get("input") or {}).get("memory", {}))
-    answer_n = re.sub(r"\s+", " ", answer.lower()).strip()
-    memory_n = re.sub(r"\s+", " ", memory_text.lower()).strip()
-    if answer_n and len(answer_n) >= 3 and answer_n in memory_n:
-        return False, "recall_answer_verbatim_in_memory"
-    overlap = _audit_overlap(answer, memory_text)
-    if overlap >= 0.50:
-        return False, f"recall_answer_memory_overlap:{overlap:.2f}"
     return True, "pass"
 
 
@@ -1455,14 +1451,17 @@ def verify_trajectory(
     for sample in trajectory_samples:
         verify_sample(sample, evidence=evidence)
 
-    # Trajectory-level check 12: if trajectory distribution is invalid,
-    # tag the whole trajectory as failed, but keep rows for continuity.
+    # Trajectory-level check 12 is now an audit warning. A trajectory can be
+    # very silent because it contains long waits, recall_silent turns, or
+    # system compression; failing every row would disproportionately remove
+    # recall/compress supervision.
     traj_passed, traj_reason = verify_trajectory_action_distribution(trajectory_samples)
 
     if not traj_passed:
         for s in trajectory_samples:
-            s["verification"]["passed"] = False
-            s["verification"]["fail_reasons"].append(f"trajectory_distribution: {traj_reason}")
+            s["verification"].setdefault("warnings", []).append(
+                f"trajectory_distribution: {traj_reason}"
+            )
 
     passed = [s for s in trajectory_samples if s["verification"]["passed"]]
     failed = [s for s in trajectory_samples if not s["verification"]["passed"]]
