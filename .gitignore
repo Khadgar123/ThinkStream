@@ -49,7 +49,14 @@ tensorboard/
 # ─────────────────────────────────────────────────────────────────────
 # Training data + run artifacts (machine-local; do not commit)
 # ─────────────────────────────────────────────────────────────────────
-data/
+# Anchor at repo root only — un-anchored ``data/`` matches any nested
+# ``data/`` directory, including the Python package ``thinkstream/data/``
+# (which silently swallowed thinkstream/data/schema.py during ``git add -A``).
+/data/
+# Safety belt: even if a future un-anchored rule sneaks back in, never
+# ignore the thinkstream package's data submodule.
+!thinkstream/data/
+!thinkstream/data/**
 outputs/
 output/
 pretrained/
