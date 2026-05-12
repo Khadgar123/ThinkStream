@@ -235,17 +235,21 @@ def _build_trajectory_record(
             if isinstance(e, dict) and e.get("chunk") is not None
         })
         missing_answer_chunks = sorted(set(expected_answer_chunks) - set(answer_chunks))
+        question_fail_reasons: List[str] = []
         if not answer_chunks:
-            raise ValueError(
-                f"[{video_id}/{trajectory_id}] card {cid} has no answer "
-                "chunk. Production trajectories must not contain no-answer "
-                "questions; regenerate pass3b/pass3c with recall failures disabled."
+            question_fail_reasons.append(
+                "pass4:no_answer_chunk"
             )
         if missing_answer_chunks:
-            raise ValueError(
-                f"[{video_id}/{trajectory_id}] card {cid} is missing expected "
-                f"answer chunks {missing_answer_chunks}; expected="
-                f"{expected_answer_chunks}, observed={answer_chunks}."
+            question_fail_reasons.append(
+                "pass4:missing_expected_answer_chunks="
+                f"{missing_answer_chunks}"
+            )
+        if question_fail_reasons:
+            logger.warning(
+                f"[{video_id}/{trajectory_id}] card {cid} marked invalid "
+                f"but kept in trajectory: {question_fail_reasons}; "
+                f"expected={expected_answer_chunks}, observed={answer_chunks}"
             )
         if canonical_ask < 0 and answer_chunks:
             # Fallback for legacy trajectories without ask_chunk metadata
@@ -308,6 +312,10 @@ def _build_trajectory_record(
             # (e.g., F5 counting: "1" at first event, "2" at second, ...).
             # Reward iterates this list in lockstep with answer_chunks.
             "per_emit_answers": per_emit_answers,
+            "verification": {
+                "passed": not question_fail_reasons,
+                "fail_reasons": question_fail_reasons,
+            },
         })
 
     # ── v12.4: per-chunk gold_action map ──

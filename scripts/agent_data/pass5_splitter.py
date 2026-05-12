@@ -26,6 +26,7 @@ import json
 import re
 from typing import Callable, Dict, List, Optional, Tuple
 
+from thinkstream.data.agent_protocol import is_inter_chunk as sample_is_inter_chunk
 from thinkstream.data.schema import (
     ACTION_COMPRESS_SELECT,
     ACTION_COMPRESS_SUMMARY,
@@ -277,7 +278,7 @@ def translate_sample_to_turn(
     """
     chunk_idx = int(sample.get("chunk_idx", 0))
     sample_type = sample.get("sample_type", ACTION_SILENT)
-    is_inter_chunk = bool(sample.get("inter_chunk", False))
+    is_inter_chunk = sample_is_inter_chunk(sample)
 
     if is_inter_chunk:
         # Compress trigger — no video, stage marker injected.
@@ -312,7 +313,7 @@ def translate_sample_to_turn(
 def is_compress_sample(sample: Dict) -> bool:
     return (
         sample.get("sample_type") == "compress"
-        or sample.get("inter_chunk") is True
+        or sample_is_inter_chunk(sample)
     )
 
 

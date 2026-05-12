@@ -47,6 +47,20 @@ def _resolve_final_dir() -> Path:
 _AGENT_DATA_DIR = _resolve_final_dir()
 
 
+def _agent_batch_root() -> Path:
+    """Return the generated batch root that owns final/rendered outputs."""
+    p = _AGENT_DATA_DIR
+    if p.name == "final":
+        return p.parent
+    if p.parent.name == "rendered":
+        return p.parents[1]
+    return p
+
+
+def _agent_frames_root() -> str:
+    return str(_agent_batch_root() / "frames")
+
+
 def _agent_path(filename: str) -> str:
     """Resolve a final/-relative filename to a full path.
 
@@ -113,15 +127,15 @@ DATASET_REGISTRY = {
         # ``train_sft_trajectory.jsonl``. Do NOT shorten to
         # ``train_trajectory.jsonl`` — that file is never produced.
         "annotation_path": _agent_path("train_sft_trajectory.jsonl"),
-        "data_path": "./",
+        "data_path": _agent_frames_root(),
     },
     "stream_agent_trajectory_val": {
         "annotation_path": _agent_path("val_trajectory.jsonl"),
-        "data_path": "./",
+        "data_path": _agent_frames_root(),
     },
     "stream_agent_trajectory_test": {
         "annotation_path": _agent_path("test_trajectory.jsonl"),
-        "data_path": "./",
+        "data_path": _agent_frames_root(),
     },
 }
 

@@ -93,6 +93,24 @@ def test_parse_recall_tool_call():
     print("[OK] parse_recall_tool_call")
 
 
+def test_legacy_v12_inter_chunk_is_compress_boundary():
+    sample = {
+        "chunk_idx": 7,
+        "sample_type": "silent",
+        "v12_inter_chunk": True,
+        "output": (
+            "<think>compress</think>"
+            '<tool_call>{"name":"compress","arguments":'
+            '{"time_range":[0,6],"text":"summary"}}</tool_call>'
+        ),
+    }
+    assert is_compress_sample(sample)
+    turn = translate_sample_to_turn(sample, {}, _dummy_frame_resolver)
+    assert turn.user.stage_marker == STAGE_COMPRESS_MARKER
+    assert turn.user.frame_paths == []
+    print("[OK] legacy_v12_inter_chunk_is_compress_boundary")
+
+
 def test_parse_malformed_tool_call_falls_back_to_silent():
     text = "<think>x</think><tool_call>not json</tool_call>"
     spec = parse_assistant_output_to_spec(text, chunk_idx=0)

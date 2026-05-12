@@ -902,6 +902,17 @@ def _emit_row(sample: Dict, messages: List[Dict], *, frame_protocol: str) -> Dic
     }
 
 
+def _mark_render_contract_failure(sample: Dict[str, Any], reason: str) -> None:
+    """Tag a sample with a non-destructive render-contract failure."""
+    verification = dict(sample.get("verification") or {})
+    reasons = list(verification.get("fail_reasons") or [])
+    if reason not in reasons:
+        reasons.append(reason)
+    verification["passed"] = False
+    verification["fail_reasons"] = reasons
+    sample["verification"] = verification
+
+
 def _with_sft_turn_policy(
     row: Dict[str, Any],
     *,
@@ -1846,7 +1857,7 @@ def convert(
 ) -> Dict[str, int]:
     data_dir = data_dir or DEFAULT_DATA_DIR
     iter_fn = _iter_trajectories if is_trajectory else _iter_flat
-    counts = {"ok": 0, "failed": 0}
+    counts = {"ok": 0, "failed": 0, "marked": 0}
     by_type: Dict[str, int] = {}
     balance_stats: Dict[str, int] = {}
     sample_iter: Iterable[Dict]
@@ -1870,16 +1881,25 @@ def convert(
                     frame_protocol=frame_protocol,
                     render_layout=render_layout,
                 )
-                validate_query_render_contract(sample, messages)
-                validate_answer_render_contract(sample, messages)
-            except QueryRenderContractError:
-                raise
             except (KeyError, ValueError) as exc:
                 counts["failed"] += 1
                 if counts["failed"] <= 5:
                     sid = sample.get("sample_id") or sample.get("trajectory_id") or i
                     logger.warning(f"[{src.name}] sample {sid} skipped: {exc}")
                 continue
+
+            marked = False
+            for validator in (
+                validate_query_render_contract,
+                validate_answer_render_contract,
+            ):
+                try:
+                    validator(sample, messages)
+                except QueryRenderContractError as exc:
+                    _mark_render_contract_failure(sample, str(exc))
+                    marked = True
+            if marked:
+                counts["marked"] += 1
 
             for row in build_sft_rows(
                 sample,
@@ -2026,7 +2046,8 @@ def main() -> None:
                          frame_protocol=frame_protocol,
                          render_layout=render_layout)
         logger.info(
-            f"  ok={counts['ok']} failed={counts['failed']} by_type={counts['by_type']}"
+            f"  ok={counts['ok']} failed={counts['failed']} "
+            f"marked={counts.get('marked', 0)} by_type={counts['by_type']}"
         )
         if counts.get("balance"):
             logger.info(f"  SFT balance: {counts['balance']}")

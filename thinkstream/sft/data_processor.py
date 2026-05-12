@@ -1167,6 +1167,19 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
 # Preprocessing: messages → model inputs with label masking
 # ---------------------------------------------------------------------------
 
+def _resolve_media_path(value, base_path: Path):
+    if isinstance(value, str) and value and not Path(value).is_absolute():
+        return str(base_path / value)
+    if isinstance(value, list):
+        return [
+            str(base_path / v)
+            if isinstance(v, str) and v and not Path(v).is_absolute()
+            else v
+            for v in value
+        ]
+    return value
+
+
 def _resolve_video_paths(messages: List[Dict], base_path: Path) -> List[Dict]:
     """Resolve relative media paths in messages to absolute paths."""
     resolved = []
@@ -1180,14 +1193,14 @@ def _resolve_video_paths(messages: List[Dict], base_path: Path) -> List[Dict]:
                     continue
                 if "video" in item:
                     item = dict(item)
-                    vp = item.get("video", "")
-                    if isinstance(vp, str) and vp and not Path(vp).is_absolute():
-                        item["video"] = str(base_path / vp)
+                    item["video"] = _resolve_media_path(
+                        item.get("video", ""), base_path,
+                    )
                 if "image" in item:
                     item = dict(item)
-                    ip = item.get("image", "")
-                    if isinstance(ip, str) and ip and not Path(ip).is_absolute():
-                        item["image"] = str(base_path / ip)
+                    item["image"] = _resolve_media_path(
+                        item.get("image", ""), base_path,
+                    )
                 if (
                     item.get("type") == "video"
                     and item.get("visual_carrier") == "image_pad"
