@@ -21,7 +21,11 @@
 #
 # Optional env (defaults in [...]):
 #   N_GPUS_PER_NODE [8] / NNODES [1]
-#   GEN_TP [2]              vLLM tensor_model_parallel_size
+#   GEN_TP [1 for streaming, 2 for vLLM]
+#                           tensor parallel size. The true-KV HF backend is
+#                           one local rollout model per GPU, so keep this at
+#                           1 to use all 8 cards as independent trajectory
+#                           servers.
 #   GROUP_SIZE [8]          GRPO group size
 #   BATCH_SIZE [4]          videos per step
 #   PPO_MINI_BS [BATCH_SIZE]
@@ -114,7 +118,14 @@ fi
 
 N_GPUS_PER_NODE=${N_GPUS_PER_NODE:-8}
 NNODES=${NNODES:-1}
-GEN_TP=${GEN_TP:-2}
+ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-streaming}
+if [[ -z "${GEN_TP:-}" ]]; then
+    if [[ "${ROLLOUT_BACKEND}" == "streaming" ]]; then
+        GEN_TP=1
+    else
+        GEN_TP=2
+    fi
+fi
 GROUP_SIZE=${GROUP_SIZE:-8}
 BATCH_SIZE=${BATCH_SIZE:-4}
 PPO_MINI_BS=${PPO_MINI_BS:-${BATCH_SIZE}}
@@ -214,7 +225,6 @@ OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
 FREEZE_VISION_TOWER=${FREEZE_VISION_TOWER:-true}
 PPO_MAX_TOKEN_LEN_PER_GPU=${PPO_MAX_TOKEN_LEN_PER_GPU:-65536}
 LOG_PROB_MAX_TOKEN_LEN_PER_GPU=${LOG_PROB_MAX_TOKEN_LEN_PER_GPU:-65536}
-ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-streaming}
 MAX_STEPS=${MAX_STEPS:-}
 DATA_SHUFFLE=${DATA_SHUFFLE:-true}
 DATALOADER_NUM_WORKERS=${DATALOADER_NUM_WORKERS:-0}

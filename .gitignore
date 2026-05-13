@@ -69,10 +69,10 @@ batch*_frames.tar.gz
 
 # ─────────────────────────────────────────────────────────────────────
 # Vendored reference projects (cloned for code reuse; not part of source)
-# Code we adapted lives inside thinkstream/ directly. verl is an external
-# pip dependency (install from source: github.com/volcengine/verl).
+# Code we adapted lives inside thinkstream/ directly. The customized Verl
+# runtime is vendored in ./verl/ and tracked as part of this repository so RL
+# does not depend on an external checkout.
 # ─────────────────────────────────────────────────────────────────────
-verl/
 DeepEyes/
 IterResearch/
 LLaMA-Factory/

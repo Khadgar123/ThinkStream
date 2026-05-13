@@ -2115,6 +2115,13 @@ def _register_streaming_agent_loop():
                             metrics=metrics,
                             extra_fields=ext,
                         ))
+                release_streaming_session = getattr(
+                    self.server_manager, "release_streaming_session", None
+                )
+                if release_streaming_session is not None:
+                    maybe_awaitable = release_streaming_session(request_id)
+                    if hasattr(maybe_awaitable, "__await__"):
+                        await maybe_awaitable
                 return outputs
 
             # ──────────────────────────────────────────────────────
@@ -2140,6 +2147,13 @@ def _register_streaming_agent_loop():
                 extra_fields={},
             )
             output_obj.extra_fields.update(common_extras)
+            release_streaming_session = getattr(
+                self.server_manager, "release_streaming_session", None
+            )
+            if release_streaming_session is not None:
+                maybe_awaitable = release_streaming_session(request_id)
+                if hasattr(maybe_awaitable, "__await__"):
+                    await maybe_awaitable
             return output_obj
 
     # Manual registration with factory-function target so hydra can locate it.

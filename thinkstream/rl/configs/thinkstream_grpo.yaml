@@ -81,10 +81,10 @@ actor_rollout_ref:
     log_prob_use_dynamic_bsz: True
     log_prob_max_token_len_per_gpu: 49152
   rollout:
-    name: vllm
+    name: streaming
     mode: async
     n: 8
-    tensor_model_parallel_size: 2
+    tensor_model_parallel_size: 1
     gpu_memory_utilization: 0.55
     max_num_batched_tokens: 32768
     # ThinkStream supports two late-bound visual carriers for the same
