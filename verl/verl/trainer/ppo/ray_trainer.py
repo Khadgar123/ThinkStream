@@ -66,6 +66,7 @@ from verl.utils.debug import marked_timer
 from verl.utils.import_utils import load_class_from_fqn
 from verl.utils.metric import reduce_metrics
 from verl.utils.py_functional import rename_dict
+from verl.recurrent.utils import compute_1D_grpo_advantage, final_batch
 from verl.utils.rollout_skip import RolloutSkip
 from verl.utils.seqlen_balancing import calculate_workload, get_seqlen_balanced_partitions, log_seqlen_unbalance
 from verl.utils.torch_functional import masked_mean
@@ -132,6 +133,73 @@ def compute_response_mask(data: DataProto):
     response_length = responses.size(1)
     attention_mask = data.batch["attention_mask"]
     return attention_mask[:, -response_length:]
+
+
+def _is_recurrent_rollout_batch(data: DataProto) -> bool:
+    return (
+        data.batch is not None
+        and "sample_index" in data.batch.keys()
+        and "final_mask" in data.batch.keys()
+    )
+
+
+def _attach_recurrent_original_fields(gen_batch_output: DataProto, original_batch: DataProto) -> DataProto:
+    """Attach original non-tensor fields to expanded recurrent action rows."""
+
+    sample_index = gen_batch_output.batch["sample_index"].long()
+    sample_index_np = sample_index.detach().cpu().numpy().astype(np.int64)
+    if sample_index_np.size and sample_index_np.max() >= len(original_batch):
+        raise ValueError(
+            "recurrent sample_index points past original batch: "
+            f"max={sample_index_np.max()}, original_len={len(original_batch)}"
+        )
+    for key, value in original_batch.non_tensor_batch.items():
+        if key not in gen_batch_output.non_tensor_batch:
+            gen_batch_output.non_tensor_batch[key] = value[sample_index_np]
+    return gen_batch_output
+
+
+def _make_action_token_scores(batch: DataProto, trajectory_rewards: torch.Tensor) -> torch.Tensor:
+    """Place each trajectory scalar reward on each action row's final token."""
+
+    response_mask = batch.batch["response_mask"]
+    prompt_length = batch.batch["prompts"].size(1)
+    valid_response_length = batch.batch["attention_mask"][:, prompt_length:].sum(dim=1) - 1
+    valid_response_length = valid_response_length.clamp(min=0, max=response_mask.size(1) - 1).long()
+    sample_index = batch.batch["sample_index"].long().to(response_mask.device)
+    reward_scalar = trajectory_rewards.sum(dim=-1).to(response_mask.device, dtype=torch.float32)
+    token_scores = torch.zeros_like(response_mask, dtype=torch.float32)
+    rows = torch.arange(response_mask.size(0), device=response_mask.device)
+    token_scores[rows, valid_response_length.to(response_mask.device)] = reward_scalar[sample_index]
+    return token_scores * response_mask.to(dtype=torch.float32)
+
+
+def _attach_action_reward_extras(
+    batch: DataProto,
+    reward_extra_infos_dict: dict[str, Any],
+) -> dict[str, Any]:
+    """Broadcast trajectory-level reward metadata to action rows for logging."""
+
+    if not reward_extra_infos_dict:
+        return {}
+    sample_index_np = batch.batch["sample_index"].detach().cpu().numpy().astype(np.int64)
+    action_infos = {}
+    for key, value in reward_extra_infos_dict.items():
+        arr = np.asarray(value, dtype=object)
+        if len(arr) == 0:
+            continue
+        action_infos[key] = arr[sample_index_np]
+    batch.non_tensor_batch.update(action_infos)
+    return action_infos
+
+
+def _zero_padded_response_rows(batch: DataProto, pad_size: int) -> None:
+    if pad_size <= 0:
+        return
+    if "response_mask" in batch.batch.keys():
+        response_mask = batch.batch["response_mask"].clone()
+        response_mask[-pad_size:] = 0
+        batch.batch["response_mask"] = response_mask
 
 
 def compute_advantage(
@@ -567,18 +635,25 @@ class RayPPOTrainer:
             test_gen_batch_padded, pad_size = pad_dataproto_to_divisor(test_gen_batch, size_divisor)
             test_output_gen_batch_padded = self.async_rollout_manager.generate_sequences(test_gen_batch_padded)
 
-            if self.use_rm and "rm_scores" not in test_output_gen_batch_padded.batch.keys():
+            recurrent_val = _is_recurrent_rollout_batch(test_output_gen_batch_padded)
+            reward_target_padded = (
+                final_batch(test_output_gen_batch_padded)
+                if recurrent_val
+                else test_output_gen_batch_padded
+            )
+
+            if self.use_rm and "rm_scores" not in reward_target_padded.batch.keys():
                 # for colocate reward models, we need to sleep rollout model
                 # to spare GPU memory for reward model
                 self.checkpoint_manager.sleep_replicas()
-                batch_reward = self._compute_reward_colocate(test_output_gen_batch_padded)
-                test_output_gen_batch_padded = test_output_gen_batch_padded.union(batch_reward)
+                batch_reward = self._compute_reward_colocate(reward_target_padded)
+                reward_target_padded = reward_target_padded.union(batch_reward)
                 # wake up rollout model
                 # replace with wake_up method once supported
                 self.checkpoint_manager.update_weights(self.global_steps)
 
             # unpad
-            test_output_gen_batch = unpad_dataproto(test_output_gen_batch_padded, pad_size=pad_size)
+            test_output_gen_batch = unpad_dataproto(reward_target_padded, pad_size=pad_size)
 
             print("validation generation end")
 
@@ -587,7 +662,10 @@ class RayPPOTrainer:
             output_texts = [self.tokenizer.decode(ids, skip_special_tokens=True) for ids in output_ids]
             sample_outputs.extend(output_texts)
 
-            test_batch = test_batch.union(test_output_gen_batch)
+            if recurrent_val:
+                test_batch = test_output_gen_batch
+            else:
+                test_batch = test_batch.union(test_output_gen_batch)
             test_batch.meta_info["validate"] = True
 
             # Store original inputs
@@ -1409,8 +1487,25 @@ class RayPPOTrainer:
 
                             del rm_scores, gen_baseline_batch, gen_baseline_output
                     # repeat to align with repeated responses in rollout
-                    batch = batch.repeat(repeat_times=self.config.actor_rollout_ref.rollout.n, interleave=True)
-                    batch = batch.union(gen_batch_output)
+                    recurrent_rollout = _is_recurrent_rollout_batch(gen_batch_output)
+                    recurrent_reward_tensor = None
+                    recurrent_reward_index = None
+                    recurrent_pad_size = 0
+                    if recurrent_rollout:
+                        original_batch = batch.repeat(
+                            repeat_times=self.config.actor_rollout_ref.rollout.n,
+                            interleave=True,
+                        )
+                        if int(gen_batch_output.batch["final_mask"].sum().item()) != len(original_batch):
+                            raise ValueError(
+                                "recurrent rollout must emit exactly one final action per trajectory: "
+                                f"finals={int(gen_batch_output.batch['final_mask'].sum().item())}, "
+                                f"trajectories={len(original_batch)}"
+                            )
+                        batch = _attach_recurrent_original_fields(gen_batch_output, original_batch)
+                    else:
+                        batch = batch.repeat(repeat_times=self.config.actor_rollout_ref.rollout.n, interleave=True)
+                        batch = batch.union(gen_batch_output)
                     if self._should_compute_teacher_colocate(batch):
                         with marked_timer("teacher", timing_raw, color="cyan"):
                             batch_teacher = self._compute_teacher_colocate(batch)
@@ -1422,7 +1517,7 @@ class RayPPOTrainer:
                     # NOTE: This usually changes the order of data in the `batch`,
                     # which won't affect the advantage calculation (since it's based on uid),
                     # but might affect the loss calculation (due to the change of mini-batching).
-                    if self.config.trainer.balance_batch:
+                    if self.config.trainer.balance_batch and not recurrent_rollout:
                         self._balance_batch(batch, metrics=metrics)
 
                     # compute global_valid tokens
@@ -1436,12 +1531,52 @@ class RayPPOTrainer:
                     batch.meta_info["images_seqlens"] = images_seqlens_all
                     with marked_timer("reward", timing_raw, color="yellow"):
                         # compute reward model score
-                        if self.use_rm and "rm_scores" not in batch.batch.keys():
-                            batch_reward = self._compute_reward_colocate(batch)
-                            batch = batch.union(batch_reward)
+                        if recurrent_rollout:
+                            reward_batch = final_batch(batch)
+                            if self.use_rm and "rm_scores" not in reward_batch.batch.keys():
+                                batch_reward = self._compute_reward_colocate(reward_batch)
+                                reward_batch = reward_batch.union(batch_reward)
+                            if "rm_scores" not in reward_batch.batch.keys():
+                                raise ValueError(
+                                    "recurrent rollout requires rm_scores on final action rows"
+                                )
+                            reward_tensor, reward_extra_infos_dict = extract_reward(reward_batch)
+                            recurrent_reward_tensor = reward_tensor
+                            recurrent_reward_index = reward_batch.non_tensor_batch.get("uid")
+                            reward_extra_infos_dict = _attach_action_reward_extras(
+                                batch,
+                                reward_extra_infos_dict,
+                            )
 
-                        # extract reward_tensor and reward_extra_infos_dict for training
-                        reward_tensor, reward_extra_infos_dict = extract_reward(batch)
+                            batch, recurrent_pad_size = pad_dataproto_to_divisor(
+                                batch,
+                                self.actor_rollout_wg.world_size,
+                            )
+                            _zero_padded_response_rows(batch, recurrent_pad_size)
+                            if reward_extra_infos_dict:
+                                reward_extra_infos_dict = {
+                                    key: batch.non_tensor_batch[key]
+                                    for key in reward_extra_infos_dict
+                                    if key in batch.non_tensor_batch
+                                }
+                            batch.meta_info["global_token_num"] = torch.sum(
+                                batch.batch["attention_mask"], dim=-1
+                            ).tolist()
+                            images_seqlens_all = []
+                            for multi_modal_input in batch.non_tensor_batch.get("multi_modal_inputs", []):
+                                if not isinstance(multi_modal_input, dict):
+                                    continue
+                                if "image_grid_thw" not in multi_modal_input:
+                                    continue
+                                images_seqlens_all.extend(multi_modal_input["images_seqlens"].tolist())
+                            batch.meta_info["images_seqlens"] = images_seqlens_all
+                        else:
+                            if self.use_rm and "rm_scores" not in batch.batch.keys():
+                                batch_reward = self._compute_reward_colocate(batch)
+                                batch = batch.union(batch_reward)
+
+                            # extract reward_tensor and reward_extra_infos_dict for training
+                            reward_tensor, reward_extra_infos_dict = extract_reward(batch)
 
                     # Operating Mode Selection:
                     # - Bypass mode: Sets old_log_probs = rollout_log_probs (2 policies: π_rollout, π_θ)
@@ -1507,49 +1642,96 @@ class RayPPOTrainer:
                     with marked_timer("adv", timing_raw, color="brown"):
                         # we combine with rule-based rm
                         reward_extra_infos_dict: dict[str, list]
-                        batch.batch["token_level_scores"] = reward_tensor
+                        if recurrent_rollout:
+                            if self.config.algorithm.adv_estimator not in (AdvantageEstimator.GRPO, "grpo"):
+                                raise NotImplementedError(
+                                    "recurrent ThinkStream rollout currently supports GRPO only"
+                                )
+                            if self.config.algorithm.use_kl_in_reward:
+                                raise NotImplementedError(
+                                    "KL-in-reward is not implemented for recurrent rollout"
+                                )
+                            if recurrent_reward_tensor is None or recurrent_reward_index is None:
+                                raise ValueError("missing recurrent trajectory reward state")
 
-                        if reward_extra_infos_dict:
-                            batch.non_tensor_batch.update({k: np.array(v) for k, v in reward_extra_infos_dict.items()})
-
-                        # compute rewards. apply_kl_penalty if available
-                        if self.config.algorithm.use_kl_in_reward:
-                            batch, kl_metrics = apply_kl_penalty(
-                                batch, kl_ctrl=self.kl_ctrl_in_reward, kl_penalty=self.config.algorithm.kl_penalty
+                            batch.batch["token_level_scores"] = _make_action_token_scores(
+                                batch,
+                                recurrent_reward_tensor,
                             )
-                            metrics.update(kl_metrics)
-                        else:
                             batch.batch["token_level_rewards"] = batch.batch["token_level_scores"]
 
-                        # Compute rollout correction: IS weights, rejection sampling, and metrics
-                        # Only runs in decoupled mode (computes once per batch using stable π_old)
-                        # In bypass mode, this is skipped - actor computes metrics from evolving π_θ vs π_rollout
-                        if (
-                            rollout_corr_config is not None
-                            and "rollout_log_probs" in batch.batch
-                            and not bypass_recomputing_logprobs  # Only in decoupled mode
-                        ):
-                            from verl.trainer.ppo.rollout_corr_helper import compute_rollout_correction_and_add_to_batch
+                            norm_adv_by_std_in_grpo = self.config.algorithm.get(
+                                "norm_adv_by_std_in_grpo", True
+                            )
+                            adv_scalar = compute_1D_grpo_advantage(
+                                token_level_rewards=recurrent_reward_tensor,
+                                index=recurrent_reward_index,
+                                use_adv=norm_adv_by_std_in_grpo,
+                            )
+                            sample_index = batch.batch["sample_index"].long()
+                            adv_per_action = adv_scalar.to(sample_index.device)[sample_index]
+                            response_length = batch.batch["responses"].size(-1)
+                            response_mask = batch.batch["response_mask"]
+                            advantages = (
+                                adv_per_action.unsqueeze(-1).tile([1, response_length])
+                                * response_mask
+                            )
+                            batch.batch["advantages"] = advantages
+                            batch.batch["returns"] = advantages
+                            metrics["recurrent/expanded_rows"] = float(len(batch) - recurrent_pad_size)
+                            metrics["recurrent/pad_size"] = float(recurrent_pad_size)
+                            metrics["recurrent/n_trajectories"] = float(len(recurrent_reward_tensor))
+                            metrics["recurrent/avg_actions_per_traj"] = float(
+                                (len(batch) - recurrent_pad_size) / max(1, len(recurrent_reward_tensor))
+                            )
+                        else:
+                            batch.batch["token_level_scores"] = reward_tensor
 
-                            # Compute IS weights, apply rejection sampling, compute metrics
-                            batch, is_metrics = compute_rollout_correction_and_add_to_batch(batch, rollout_corr_config)
-                            # IS and off-policy metrics already have rollout_corr/ prefix
-                            metrics.update(is_metrics)
+                            if reward_extra_infos_dict:
+                                batch.non_tensor_batch.update(
+                                    {k: np.array(v) for k, v in reward_extra_infos_dict.items()}
+                                )
 
-                        # compute advantages, executed on the driver process
-                        norm_adv_by_std_in_grpo = self.config.algorithm.get(
-                            "norm_adv_by_std_in_grpo", True
-                        )  # GRPO adv normalization factor
+                            # compute rewards. apply_kl_penalty if available
+                            if self.config.algorithm.use_kl_in_reward:
+                                batch, kl_metrics = apply_kl_penalty(
+                                    batch, kl_ctrl=self.kl_ctrl_in_reward, kl_penalty=self.config.algorithm.kl_penalty
+                                )
+                                metrics.update(kl_metrics)
+                            else:
+                                batch.batch["token_level_rewards"] = batch.batch["token_level_scores"]
 
-                        batch = compute_advantage(
-                            batch,
-                            adv_estimator=self.config.algorithm.adv_estimator,
-                            gamma=self.config.algorithm.gamma,
-                            lam=self.config.algorithm.lam,
-                            num_repeat=self.config.actor_rollout_ref.rollout.n,
-                            norm_adv_by_std_in_grpo=norm_adv_by_std_in_grpo,
-                            config=self.config.algorithm,
-                        )
+                            # Compute rollout correction: IS weights, rejection sampling, and metrics
+                            # Only runs in decoupled mode (computes once per batch using stable π_old)
+                            # In bypass mode, this is skipped - actor computes metrics from evolving π_θ vs π_rollout
+                            if (
+                                rollout_corr_config is not None
+                                and "rollout_log_probs" in batch.batch
+                                and not bypass_recomputing_logprobs  # Only in decoupled mode
+                            ):
+                                from verl.trainer.ppo.rollout_corr_helper import (
+                                    compute_rollout_correction_and_add_to_batch,
+                                )
+
+                                # Compute IS weights, apply rejection sampling, compute metrics
+                                batch, is_metrics = compute_rollout_correction_and_add_to_batch(batch, rollout_corr_config)
+                                # IS and off-policy metrics already have rollout_corr/ prefix
+                                metrics.update(is_metrics)
+
+                            # compute advantages, executed on the driver process
+                            norm_adv_by_std_in_grpo = self.config.algorithm.get(
+                                "norm_adv_by_std_in_grpo", True
+                            )  # GRPO adv normalization factor
+
+                            batch = compute_advantage(
+                                batch,
+                                adv_estimator=self.config.algorithm.adv_estimator,
+                                gamma=self.config.algorithm.gamma,
+                                lam=self.config.algorithm.lam,
+                                num_repeat=self.config.actor_rollout_ref.rollout.n,
+                                norm_adv_by_std_in_grpo=norm_adv_by_std_in_grpo,
+                                config=self.config.algorithm,
+                            )
 
                     # update critic
                     if self.use_critic:

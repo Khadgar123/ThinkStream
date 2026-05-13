@@ -59,6 +59,8 @@ logger = logging.getLogger(__file__)
 logger.setLevel(os.getenv("VERL_LOGGING_LEVEL", "WARN"))
 
 DEFAULT_ROUTING_CACHE_SIZE = 10000
+_RECURRENT_SAMPLE_INDEX_KEY = "_verl_recurrent_sample_index"
+_RECURRENT_FINAL_MASK_KEY = "_verl_recurrent_final_mask"
 
 
 @ray.remote
@@ -451,7 +453,11 @@ class AgentLoopBase(ABC):
         return prompt_ids
 
     @abstractmethod
-    async def run(self, sampling_params: dict[str, Any], **kwargs) -> AgentLoopOutput:
+    async def run(
+        self,
+        sampling_params: dict[str, Any],
+        **kwargs,
+    ) -> AgentLoopOutput | list[AgentLoopOutput]:
         """Run agent loop to interact with LLM server and environment.
 
         Args:
@@ -459,7 +465,8 @@ class AgentLoopBase(ABC):
             **kwargs: dataset fields from `verl.utils.dataset.RLHFDataset`.
 
         Returns:
-            AgentLoopOutput: Agent loop output.
+            AgentLoopOutput or list[AgentLoopOutput]: one stitched trajectory
+            output, or one output per recurrent assistant action.
         """
         raise NotImplementedError
 
@@ -649,13 +656,40 @@ class AgentLoopWorker:
             kwargs = {k: v[i] for k, v in batch.non_tensor_batch.items()}
             tasks.append(
                 asyncio.create_task(
-                    self._run_agent_loop(sampling_params, trajectory_info[i], trace=trace_this_sample, **kwargs)
+                    self._run_agent_loop(
+                        sampling_params,
+                        trajectory_info[i],
+                        trace=trace_this_sample,
+                        _batch_row_index=i,
+                        **kwargs,
+                    )
                 )
             )
-        outputs = await asyncio.gather(*tasks)
+        raw_outputs = await asyncio.gather(*tasks)
+
+        outputs: list[_InternalAgentLoopOutput] = []
+        source_indices: list[int] = []
+        for source_idx, raw_output in enumerate(raw_outputs):
+            if isinstance(raw_output, list):
+                outputs.extend(raw_output)
+                source_indices.extend([source_idx] * len(raw_output))
+            else:
+                outputs.append(raw_output)
+                source_indices.append(source_idx)
+
+        if not outputs:
+            raise RuntimeError("agent loop returned no outputs")
+
+        output_non_tensor_batch = batch.non_tensor_batch
+        if len(outputs) != len(batch):
+            source_indices_np = np.asarray(source_indices, dtype=np.int64)
+            output_non_tensor_batch = {
+                key: val[source_indices_np]
+                for key, val in batch.non_tensor_batch.items()
+            }
 
         output = self._postprocess(
-            outputs, input_non_tensor_batch=batch.non_tensor_batch, validate=batch.meta_info.get("validate", False)
+            outputs, input_non_tensor_batch=output_non_tensor_batch, validate=batch.meta_info.get("validate", False)
         )
         return output
 
@@ -666,8 +700,9 @@ class AgentLoopWorker:
         *,
         agent_name: str,
         trace: bool = True,
+        _batch_row_index: int = -1,
         **kwargs,
-    ) -> _InternalAgentLoopOutput:
+    ) -> _InternalAgentLoopOutput | list[_InternalAgentLoopOutput]:
         with rollout_trace_attr(
             step=trajectory["step"],
             sample_index=trajectory["sample_index"],
@@ -690,10 +725,31 @@ class AgentLoopWorker:
                 dataset_cls=self.dataset_cls,
                 data_config=DictConfigWrap(self.config.data),
             )
-            output: AgentLoopOutput = await agent_loop.run(sampling_params, **kwargs)
+            output = await agent_loop.run(sampling_params, **kwargs)
+            if isinstance(output, list):
+                processed_outputs: list[_InternalAgentLoopOutput] = []
+                for action_idx, action_output in enumerate(output):
+                    is_final_action = action_idx == len(output) - 1
+                    processed = await self._agent_loop_postprocess(
+                        action_output,
+                        trajectory["validate"],
+                        compute_score=is_final_action,
+                        **kwargs,
+                    )
+                    processed.extra_fields[_RECURRENT_SAMPLE_INDEX_KEY] = int(_batch_row_index)
+                    processed.extra_fields[_RECURRENT_FINAL_MASK_KEY] = is_final_action
+                    processed_outputs.append(processed)
+                return processed_outputs
             return await self._agent_loop_postprocess(output, trajectory["validate"], **kwargs)
 
-    async def _agent_loop_postprocess(self, output, validate, **kwargs) -> _InternalAgentLoopOutput:
+    async def _agent_loop_postprocess(
+        self,
+        output,
+        validate,
+        *,
+        compute_score: bool = True,
+        **kwargs,
+    ) -> _InternalAgentLoopOutput:
         """Perform post-processing operations on the output of each individual agent loop."""
         output.extra_fields["raw_prompt"] = kwargs["raw_prompt"]
 
@@ -790,15 +846,16 @@ class AgentLoopWorker:
 
         multi_modal_inputs = self._compute_multi_modal_inputs(output, input_ids)
         position_ids = self._compute_position_ids(input_ids, attention_mask, multi_modal_inputs)
-        await self._compute_score(
-            output,
-            prompts=prompt_output["input_ids"],
-            responses=response_output["input_ids"],
-            attention_mask=attention_mask,
-            input_ids=input_ids,
-            position_ids=position_ids,
-            kwargs=kwargs,
-        )
+        if compute_score:
+            await self._compute_score(
+                output,
+                prompts=prompt_output["input_ids"],
+                responses=response_output["input_ids"],
+                attention_mask=attention_mask,
+                input_ids=input_ids,
+                position_ids=position_ids,
+                kwargs=kwargs,
+            )
         await self._compute_teacher_logprobs(
             output,
             prompt_ids=output.prompt_ids,
@@ -970,6 +1027,19 @@ class AgentLoopWorker:
         if inputs[0].teacher_logprobs is not None and inputs[0].teacher_ids is not None:
             optional_outputs["teacher_logprobs"] = torch.cat([input.teacher_logprobs for input in inputs], dim=0)
             optional_outputs["teacher_ids"] = torch.cat([input.teacher_ids for input in inputs], dim=0)
+        recurrent_sample_indices = [
+            input.extra_fields.get(_RECURRENT_SAMPLE_INDEX_KEY) for input in inputs
+        ]
+        recurrent_final_masks = [
+            input.extra_fields.get(_RECURRENT_FINAL_MASK_KEY) for input in inputs
+        ]
+        if all(value is not None for value in recurrent_sample_indices + recurrent_final_masks):
+            optional_outputs["sample_index"] = torch.tensor(
+                recurrent_sample_indices, dtype=torch.long
+            )
+            optional_outputs["final_mask"] = torch.tensor(
+                recurrent_final_masks, dtype=torch.bool
+            )
         batch = TensorDict(
             {
                 "prompts": prompt_ids,  # [bsz, prompt_length]
@@ -985,11 +1055,14 @@ class AgentLoopWorker:
         )
 
         scores = [input.reward_score for input in inputs]
-        if all(score is not None for score in scores):
+        if any(score is not None for score in scores):
             prompt_length = prompt_ids.size(1)
             response_length = attention_mask[:, prompt_length:].sum(dim=1) - 1
             rm_scores = torch.zeros_like(response_mask, dtype=torch.float32)
-            rm_scores[torch.arange(response_mask.size(0)), response_length] = torch.tensor(scores, dtype=torch.float32)
+            for row_idx, score in enumerate(scores):
+                if score is None:
+                    continue
+                rm_scores[row_idx, response_length[row_idx]] = float(score)
             batch["rm_scores"] = rm_scores
 
         non_tensor_batch = {
@@ -1000,9 +1073,15 @@ class AgentLoopWorker:
 
         # add reward_extra_info to non_tensor_batch
         reward_extra_infos = [input.extra_fields.get("reward_extra_info", {}) for input in inputs]
-        reward_extra_keys = list(reward_extra_infos[0].keys())
+        reward_extra_keys = []
+        seen_reward_extra_keys = set()
+        for info in reward_extra_infos:
+            for key in info.keys():
+                if key not in seen_reward_extra_keys:
+                    reward_extra_keys.append(key)
+                    seen_reward_extra_keys.add(key)
         for key in reward_extra_keys:
-            non_tensor_batch[key] = np.array([info[key] for info in reward_extra_infos])
+            non_tensor_batch[key] = np.array([info.get(key) for info in reward_extra_infos], dtype=object)
 
         # Add multi_modal_inputs to non_tensor_batch if any samples have them
         multi_modal_inputs_list = [input.multi_modal_inputs for input in inputs]

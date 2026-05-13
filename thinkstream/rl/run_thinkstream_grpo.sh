@@ -21,8 +21,7 @@
 #
 # Optional env (defaults in [...]):
 #   N_GPUS_PER_NODE [8] / NNODES [1]
-#   GEN_TP [1 for streaming, 2 for vLLM]
-#                           tensor parallel size. The true-KV HF backend is
+#   GEN_TP [1]              tensor parallel size. The true-KV HF backend is
 #                           one local rollout model per GPU, so keep this at
 #                           1 to use all 8 cards as independent trajectory
 #                           servers.
@@ -36,21 +35,21 @@
 #   MAX_PROMPT_LEN [16384]
 #   MAX_RESP_LEN [32768]    total stitched response buffer
 #   MAX_ACTION_TOKENS [256]
-#                           per-action streaming/recall vLLM generation cap
+#                           per-action streaming/recall generation cap
 #   MAX_COMPRESS_ACTION_TOKENS [512]
-#                           per-action compression vLLM generation cap
+#                           per-action compression generation cap
 #   MAX_TURNS [120]   (covers batch1 max=95 + headroom. Stitched ceiling
 #                       ~180; for 240+ chunks see
 #                       docs/v12.14_recurrent_design.md for the recurrent
 #                       path that lifts this to 600+ without OOM.)
 #   GPU_MEM_UTIL [0.55]
-#   MM_CACHE_GB [auto]       vLLM CPU mm processor cache GB
+#   MM_CACHE_GB [auto]       kept for legacy config compatibility
 #   THINKSTREAM_FRAME_PROTOCOL [video_meta]
 #   THINKSTREAM_RENDER_LAYOUT [standard_query_last]
 #   THINKSTREAM_RL_EPISODE_MODE [full] full | segment
 #   THINKSTREAM_RECURRENT_MODE [recurrent] recurrent | stitched
-#   LIMIT_IMAGES [64]       vLLM limit_mm_per_prompt.image for timestamped frames
-#   LIMIT_VIDEOS [2]        vLLM limit_mm_per_prompt.video for video_meta blocks
+#   LIMIT_IMAGES [64]       legacy multimodal prompt cap for timestamped frames
+#   LIMIT_VIDEOS [2]        legacy multimodal prompt cap for video_meta blocks
 #   PROJECT_NAME [thinkstream-v12]
 #   EXPERIMENT_NAME [grpo-v12.26-verl-$THINKSTREAM_FRAME_PROTOCOL]
 #   SAVE_DIR [./output/$EXPERIMENT_NAME]
@@ -78,8 +77,8 @@
 #                            ablation opts in.
 #   THINKSTREAM_ROLLOUT_ENGINE [streaming]
 #                            local HF/CASIA-style rollout backend with visual
-#                            KV eviction. Set vllm only as an explicit legacy
-#                            fallback.
+#                            KV eviction. Full-prompt/vLLM rollout is disabled
+#                            for correctness.
 
 set -xeuo pipefail
 
@@ -119,12 +118,17 @@ fi
 N_GPUS_PER_NODE=${N_GPUS_PER_NODE:-8}
 NNODES=${NNODES:-1}
 ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-streaming}
+if [[ "${ROLLOUT_BACKEND}" != "streaming" ]]; then
+    echo "ERROR: ThinkStream RL requires ROLLOUT_BACKEND=streaming for true-KV rollout." >&2
+    echo "       Full-prompt/vLLM rollout is disabled because recall KV deletion would be incorrect." >&2
+    exit 2
+fi
 if [[ -z "${GEN_TP:-}" ]]; then
-    if [[ "${ROLLOUT_BACKEND}" == "streaming" ]]; then
-        GEN_TP=1
-    else
-        GEN_TP=2
-    fi
+    GEN_TP=1
+fi
+if [[ "${GEN_TP}" != "1" ]]; then
+    echo "ERROR: streaming rollout runs one local HF model per GPU; set GEN_TP=1." >&2
+    exit 2
 fi
 GROUP_SIZE=${GROUP_SIZE:-8}
 BATCH_SIZE=${BATCH_SIZE:-4}
@@ -178,10 +182,8 @@ MAX_TURNS=${MAX_TURNS:-120}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
 LIMIT_IMAGES=${LIMIT_IMAGES:-64}
 LIMIT_VIDEOS=${LIMIT_VIDEOS:-2}
-# v12.13: vLLM mm_processor_cache_gb (CPU-side image preprocessor cache).
-# pass2's teacher run uses 512GB and gets 93.8% mm-cache hit on the same
-# streaming-video workload. Default auto-sizes from MemAvailable so 2TiB
-# H20 servers use 512GB while smaller/debug boxes stay conservative.
+# Legacy mm-cache size knob retained because the shared config schema still
+# accepts it. The true-KV streaming rollout does not depend on vLLM.
 auto_mm_cache_gb() {
     local avail_kb avail_gb
     avail_kb="$(awk '/MemAvailable:/ {print $2; exit}' /proc/meminfo 2>/dev/null || echo 0)"
@@ -255,6 +257,10 @@ export THINKSTREAM_RL_REWARD_PROFILE="${THINKSTREAM_RL_REWARD_PROFILE:-initial_o
 export THINKSTREAM_ENABLE_STEP_ACTION_REWARD="${THINKSTREAM_ENABLE_STEP_ACTION_REWARD:-0}"
 export THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD="${THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD:-0}"
 export THINKSTREAM_ROLLOUT_ENGINE="${THINKSTREAM_ROLLOUT_ENGINE:-streaming}"
+if [[ "${THINKSTREAM_ROLLOUT_ENGINE}" != "streaming" ]]; then
+    echo "ERROR: THINKSTREAM_ROLLOUT_ENGINE must be streaming." >&2
+    exit 2
+fi
 
 ROLLOUT_DATA_ARGS=()
 if [[ -n "${ROLLOUT_DATA_DIR}" ]]; then
@@ -269,35 +275,15 @@ export THINKSTREAM_FRAME_PROTOCOL
 export THINKSTREAM_RENDER_LAYOUT
 export THINKSTREAM_MEMORY_POSITION="${THINKSTREAM_MEMORY_POSITION:-before_visual}"
 export THINKSTREAM_FRAMES_PER_CHUNK="${THINKSTREAM_FRAMES_PER_CHUNK:-2}"
-export THINKSTREAM_VISUAL_WINDOW_CHUNKS="${THINKSTREAM_VISUAL_WINDOW_CHUNKS:-16}"
+# Match SFT and DEFAULT_VIDEO_FLEX_WINDOW_SIZE: 8 ordinary chunks × 2 frames.
+export THINKSTREAM_VISUAL_WINDOW_CHUNKS="${THINKSTREAM_VISUAL_WINDOW_CHUNKS:-8}"
 export THINKSTREAM_RECALL_STUB="${THINKSTREAM_RECALL_STUB:-(no relevant past observation found)}"
 export THINKSTREAM_MAX_TOKENS_PER_ACTION="${THINKSTREAM_MAX_TOKENS_PER_ACTION:-${MAX_ACTION_TOKENS}}"
 export THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION="${THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION:-${MAX_COMPRESS_ACTION_TOKENS}}"
 
-# v12.13 (2026-05-02): visual-window mode for vLLM prefix cache.
-# ─────────────────────────────────────────────────────────────────
-# IMPORTANT — SFT/RL must agree on this value, else rollout-time
-# visual context differs from training distribution.
-#
-#   sliding   — DEFAULT. window = [chunk-VWC+1 .. chunk]. Frame token
-#               IDs shift every chunk → ~0% visual prefix-cache hit.
-#               Use this if your SFT data was generated with the
-#               legacy `max(0, chunk-VWC+1)` window (i.e. without
-#               THINKSTREAM_VISUAL_WINDOW_MODE=expanding set when
-#               running pass2_rollout.py / pass5_messages.py).
-#
-#   expanding — window = [(chunk//VWC)*VWC .. chunk]. Frames append
-#               monotonically within a 16-chunk segment → ~94% (15/16)
-#               visual prefix-cache hit; cache resets at segment
-#               boundary. To use this:
-#                 1. Regenerate SFT data with THINKSTREAM_VISUAL_WINDOW_MODE=expanding
-#                    set during pass2_rollout.py + pass5_messages.py.
-#                 2. Verify SFT loss + eval are healthy under the new layout.
-#                 3. Then export THINKSTREAM_VISUAL_WINDOW_MODE=expanding
-#                    for the RL run.
-#               Without step 1+2 you'll have an SFT-RL distribution
-#               mismatch (RL rollout shows different frame windows
-#               than what the model trained on).
+# Compatibility knob retained for data renderers. In true-KV RL each ordinary
+# turn injects only the current 2-frame chunk; the physical visual window is
+# the engine's KV bookkeeping, not a repeated prompt-level frame window.
 export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding}"
 
 # v12.14 Option B (2026-05-03): rollout output mode.
@@ -305,7 +291,7 @@ export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding
 #                          stitched into one response. Matches all
 #                          versions ≤ v12.13. Use this for batch1
 #                          ≤120-chunk training.
-#   "recurrent" (EXPERIMENTAL) — one AgentLoopOutput per assistant action.
+#   "recurrent" — one AgentLoopOutput per assistant action.
 #                          AgentLoopWorker (verl/verl/experimental/
 #                          agent_loop/agent_loop.py Phase 1) flattens
 #                          across the batch tagging sample_index +
@@ -318,16 +304,11 @@ export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding
 #                          padded rows. Required for >180-chunk training
 #                          without OOM.
 #
-# EXPERIMENTAL — what's done, what's NOT:
-#   ✓ math + DataProto integration tests pass (test_phase4_*.py)
-#   ✗ NOT validated end-to-end on a real Ray/FSDP multi-GPU cluster
-#   ✗ format/spam reward only comes from final action's solution_str
-#     (NOT a stitched trajectory) — defensible compromise, see Phase 4d
-#     comment in ray_trainer.py
-#   ⚠ rollout.n must be ≥ 2 — n=1 collapses to singleton GRPO group
-#     (advantage = raw score, no normalization)
+# Reward is trajectory-level: score final trajectory text once, then broadcast
+# the resulting GRPO advantage to all action rows in that rollout. We do not
+# enable ReMemR1-style step/tool rewards in the default objective.
 #
-# Activation (full v12.14, EXPERIMENTAL — start with 2-GPU debug):
+# Activation:
 #   THINKSTREAM_RECURRENT_MODE=recurrent \
 #   MAX_RESP_LEN=4096 \                        # ← per-action cap, not stitched 32768
 #   MULTI_Q=1 THINKSTREAM_MAX_RECALL_PER_CHUNK=1 \
@@ -346,14 +327,6 @@ export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding
 export THINKSTREAM_RECURRENT_MODE
 export THINKSTREAM_RL_EPISODE_MODE="${THINKSTREAM_RL_EPISODE_MODE:-full}"
 export THINKSTREAM_MAX_RECALL_PER_CHUNK="${THINKSTREAM_MAX_RECALL_PER_CHUNK:-1}"
-
-# v12.13 P0: enable ReMemR1-style double-layer GRPO flags for telemetry and
-# compatibility. The retired thinkstream/train.py grpo path no longer runs;
-# verl's compute_score applies the same trajectory-scalar α-mix directly.
-export THINKSTREAM_USE_STATE_ADVANTAGE="${THINKSTREAM_USE_STATE_ADVANTAGE:-1}"
-export THINKSTREAM_ADVANTAGE_MODE="${THINKSTREAM_ADVANTAGE_MODE:-remem}"
-export THINKSTREAM_STATE_REWARD_MODE="${THINKSTREAM_STATE_REWARD_MODE:-format_action}"
-export THINKSTREAM_STATE_ADV_ALPHA="${THINKSTREAM_STATE_ADV_ALPHA:-0.7}"
 
 mkdir -p "${SAVE_DIR}"
 

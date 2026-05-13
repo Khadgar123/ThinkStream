@@ -79,36 +79,36 @@ def main() -> int:
     )
     print(f"  ✓ _run_agent_loop return annotation: {run_ret}")
 
-    # Test 3: generate_sequences flattens per_traj_outputs
+    # Test 3: generate_sequences flattens list outputs
     gen_seq = next(m for m in worker_cls.body
                    if isinstance(m, ast.AsyncFunctionDef) and m.name == "generate_sequences")
     gen_seq_src = ast.unparse(gen_seq)
-    assert "flat_outputs" in gen_seq_src and "flat_sample_index" in gen_seq_src and "flat_final_mask" in gen_seq_src
-    assert "per_traj_outputs" in gen_seq_src
-    assert "repeated_non_tensor_batch" in gen_seq_src
-    print(f"  ✓ generate_sequences flattens per_traj_outputs and repeats non_tensor_batch")
+    assert "raw_outputs" in gen_seq_src
+    assert "source_indices" in gen_seq_src
+    assert "output_non_tensor_batch" in gen_seq_src
+    print(f"  ✓ generate_sequences flattens list outputs and reindexes non_tensor_batch")
 
-    # Test 4: _postprocess accepts sample_index + final_mask kwargs
-    pp = next(m for m in worker_cls.body
-              if isinstance(m, ast.FunctionDef) and m.name == "_postprocess")
-    pp_args = [a.arg for a in pp.args.args] + [a.arg for a in pp.args.kwonlyargs]
-    assert "sample_index" in pp_args and "final_mask" in pp_args, (
-        f"_postprocess args = {pp_args}"
-    )
-    print(f"  ✓ _postprocess args include sample_index, final_mask")
+    # Test 4: _run_agent_loop tags recurrent rows in extra_fields
+    run_src = ast.unparse(_run)
+    assert "_RECURRENT_SAMPLE_INDEX_KEY" in run_src
+    assert "_RECURRENT_FINAL_MASK_KEY" in run_src
+    assert "compute_score=is_final_action" in run_src
+    print(f"  ✓ _run_agent_loop tags sample_index/final_mask and scores final rows only")
 
     # Test 5: batch dict includes sample_index + final_mask tensor fields
+    pp = next(m for m in worker_cls.body
+              if isinstance(m, ast.FunctionDef) and m.name == "_postprocess")
     pp_src = ast.unparse(pp)
     # Look for the literal string keys in the unparsed source (ast.unparse
     # may use single quotes), and the tensor calls
     assert "sample_index" in pp_src and "final_mask" in pp_src
-    assert "torch.tensor(sample_index" in pp_src and "torch.tensor(final_mask" in pp_src
+    assert "_RECURRENT_SAMPLE_INDEX_KEY" in pp_src
+    assert "_RECURRENT_FINAL_MASK_KEY" in pp_src
     print(f"  ✓ _postprocess emits sample_index + final_mask as batch tensors")
 
-    # Test 6: identity defaults preserve backward compat
-    assert "list(range(n))" in pp_src, "default sample_index = identity"
-    assert "[True] * n" in pp_src, "default final_mask = all True"
-    print(f"  ✓ defaults match legacy single-output behavior (identity / all-final)")
+    # Test 6: legacy single-output agents do not emit recurrent markers
+    assert "all(" in pp_src and "is not None" in pp_src
+    print(f"  ✓ legacy single-output agents remain unmarked and use the standard trainer path")
 
     # Test 7: Recurrent flattening math example (in code logic, not exercised
     # at runtime — agent_loop too heavy to instantiate in this env)
@@ -142,10 +142,9 @@ def main() -> int:
     print()
     print("✓ ALL OPTION B PHASE 1 STATIC CHECKS PASS")
     print()
-    print("Backward compat: legacy single-output agents → 1-element list →")
-    print("  sample_index = [traj_idx] (identity) and final_mask = [True].")
-    print("  Trainer reading these new tensor fields just sees identity →")
-    print("  stitched workflow unaffected.")
+    print("Backward compat: legacy single-output agents remain unmarked.")
+    print("  They do not emit sample_index/final_mask, so the trainer stays")
+    print("  on the standard non-recurrent path.")
     print()
     print("New recurrent: list[AgentLoopOutput] → flatten → per-action rows")
     print("  with sample_index pointing back to traj + final_mask only on")

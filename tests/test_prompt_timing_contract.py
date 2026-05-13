@@ -93,6 +93,13 @@ def test_shared_renderer_query_last_and_integer_times():
     assert isinstance(vw["end"], int)
     assert isinstance(vw["current_time"], int)
     assert vw["current_time"] == 3
+    videos = [item for item in content if item.get("type") == "video"]
+    assert len(videos) == 1
+    assert [Path(p).name for p in videos[0]["video"]] == [
+        "frame_000007.jpg",
+        "frame_000008.jpg",
+    ]
+    assert videos[0]["video_metadata"]["frames_indices"] == [6, 7]
 
 
 def test_recall_result_is_metadata_only_in_shared_renderer():

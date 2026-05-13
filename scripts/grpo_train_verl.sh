@@ -11,7 +11,7 @@
 # `thinkstream.*` from the parent ThinkStream checkout.
 #
 # verl assumes the SFT checkpoint is on disk (Hugging Face format). Run
-# scripts/sft_per_timestep.sh first; this script picks up the resulting
+# scripts/sft_trajectory.sh first; this script picks up the resulting
 # checkpoint via $LLM.
 #
 # Usage:
@@ -23,20 +23,20 @@
 # Optional env (defaults shown):
 #   NPROC           — GPUs per node (8)
 #   GROUP_SIZE      — GRPO group size G (8) — enough variance for GRPO
-#   MAXLEN          — max prompt length (16384) — vLLM context cap
+#   MAXLEN          — max prompt length (16384) — true-KV context cap
 #   MAX_NEW_TOKEN   — response buffer. Defaults to 4096 in recurrent mode
 #                     and 32768 in stitched mode.
-#   MAX_ACTION_TOKENS — per-action streaming/recall vLLM cap (256)
-#   MAX_COMPRESS_ACTION_TOKENS — per-action compression vLLM cap (512)
+#   MAX_ACTION_TOKENS — per-action streaming/recall generation cap (256)
+#   MAX_COMPRESS_ACTION_TOKENS — per-action compression generation cap (512)
 #   MAX_CHUNKS      — max turns per video (120 by default; use recurrent for 240+)
-#   GPU_MEM_UTIL    — vLLM gpu_memory_utilization (0.55 — leave room for FSDP)
-#   MM_CACHE_GB     — vLLM CPU mm processor cache GB (auto: 512 on this box)
+#   GPU_MEM_UTIL    — kept for verl config compatibility (0.55).
+#   MM_CACHE_GB     — kept for legacy config compatibility.
 #   FRAME_PROTOCOL  — video_meta. Must match SFT/eval.
 #   THINKSTREAM_RENDER_LAYOUT — standard_query_last.
 #   IMAGE_MIN_PIXELS / IMAGE_MAX_PIXELS — optional runtime image resize bounds.
-#   LIMIT_IMAGES    — vLLM limit_mm_per_prompt.image for timestamped frames (64)
-#   LIMIT_VIDEOS    — vLLM limit_mm_per_prompt.video for video_meta blocks (2)
-#   TP_SIZE         — tensor_parallel_size for vLLM rollout (2 on 8-GPU node)
+#   LIMIT_IMAGES    — legacy multimodal prompt cap for timestamped frames (64)
+#   LIMIT_VIDEOS    — legacy multimodal prompt cap for video_meta blocks (2)
+#   TP_SIZE         — streaming rollout tensor parallel size. Must be 1.
 #   BATCH_SIZE      — videos per training step (4)
 #   PPO_MINI_BS     — ppo_mini_batch_size in prompt units (default=BATCH_SIZE)
 #   LR              — learning rate (5e-7)
@@ -50,7 +50,7 @@
 #   FREEZE_VISION_TOWER — freeze Qwen VL vision tower during RL update (true).
 #   PPO_MAX_TOKEN_LEN_PER_GPU / LOG_PROB_MAX_TOKEN_LEN_PER_GPU
 #                  — dynamic micro-batch token budget (65536).
-#   RUNTIME_ROOT    — Ray/vLLM/HF/Triton cache root. Defaults to
+#   RUNTIME_ROOT    — Ray/HF/Triton cache root. Defaults to
 #                    .runtime/$RUN_NAME to keep /tmp from filling.
 #   THINKSTREAM_RECURRENT_MODE — recurrent | stitched. Recurrent is the
 #                    production default: rollout emits one action row at a
@@ -59,15 +59,24 @@
 #   THINKSTREAM_RL_EPISODE_MODE — full | segment. full preserves one
 #                    full-video trajectory per sample; segment uses student
 #                    prefix state when available for faster training windows.
-#   ROLLOUT_BACKEND — rollout backend: vllm | sglang | hf (vllm).
-#   TRAIN_PARQUET / VAL_PARQUET — verl parquets. If unset, we auto-build
-#                  from data/agent_v5/final/*.jsonl via
+#   THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE — offline_pass2_boundaries by
+#                    default. Uses annotated compact-memory trigger chunks
+#                    from parquet instead of runtime token counting.
+#   THINKSTREAM_RL_REWARD_PROFILE — initial_outcome_time_format_decision by
+#                    default: answer correctness + answer_decision + format.
+#                    Raw timing/silent_quality plus step/action/tool rewards
+#                    stay monitor-only unless explicitly enabled for an
+#                    ablation.
+#   THINKSTREAM_ROLLOUT_ENGINE — streaming. Full-prompt/vLLM rollout is not
+#                    supported because it breaks true-KV recall deletion.
+#   ROLLOUT_BACKEND — must be streaming.
+#   TRAIN_PARQUET / VAL_PARQUET — multi-Q trajectory verl parquets. If
+#                  unset, we auto-build from data/agent_v5/final/*.jsonl via
 #                  scripts/agent_data/build_verl_parquet.py.
 #   THINKSTREAM_DATA_ROOT / AGENT_DATA_DIR — generated batch root
 #                  (default: data/agent_v5). final/ and frames/ are
 #                  resolved underneath this root.
-#   MULTI_Q        — 1 by default: one video row with all questions.
-#                  Set 0 only for legacy single-question ablations.
+#   MULTI_Q        — must be 1: one video row with all questions.
 
 set -euo pipefail
 
@@ -123,7 +132,7 @@ if [[ -z "${MM_CACHE_GB}" ]]; then
 fi
 LIMIT_IMAGES=${LIMIT_IMAGES:-64}
 LIMIT_VIDEOS=${LIMIT_VIDEOS:-2}
-TP_SIZE=${TP_SIZE:-2}
+TP_SIZE=${TP_SIZE:-1}
 BATCH_SIZE=${BATCH_SIZE:-4}
 PPO_MINI_BS=${PPO_MINI_BS:-${BATCH_SIZE}}
 LR=${LR:-5e-7}
@@ -154,7 +163,25 @@ OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
 FREEZE_VISION_TOWER=${FREEZE_VISION_TOWER:-true}
 PPO_MAX_TOKEN_LEN_PER_GPU=${PPO_MAX_TOKEN_LEN_PER_GPU:-65536}
 LOG_PROB_MAX_TOKEN_LEN_PER_GPU=${LOG_PROB_MAX_TOKEN_LEN_PER_GPU:-65536}
-ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-vllm}
+ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-streaming}
+THINKSTREAM_ROLLOUT_ENGINE="${THINKSTREAM_ROLLOUT_ENGINE:-streaming}"
+if [[ "${ROLLOUT_BACKEND}" != "streaming" ]]; then
+    echo "ERROR: ThinkStream RL now requires ROLLOUT_BACKEND=streaming for true-KV rollout." >&2
+    echo "       Full-prompt/vLLM rollout is disabled because recall KV deletion would be incorrect." >&2
+    exit 2
+fi
+if [[ "${THINKSTREAM_ROLLOUT_ENGINE}" != "streaming" ]]; then
+    echo "ERROR: THINKSTREAM_ROLLOUT_ENGINE must be streaming." >&2
+    exit 2
+fi
+if [[ "${TP_SIZE}" != "1" ]]; then
+    echo "ERROR: streaming rollout runs one local HF model per GPU; set TP_SIZE=1." >&2
+    exit 2
+fi
+THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE="${THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE:-offline_pass2_boundaries}"
+THINKSTREAM_RL_REWARD_PROFILE="${THINKSTREAM_RL_REWARD_PROFILE:-initial_outcome_time_format_decision}"
+THINKSTREAM_ENABLE_STEP_ACTION_REWARD="${THINKSTREAM_ENABLE_STEP_ACTION_REWARD:-0}"
+THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD="${THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD:-0}"
 THINKSTREAM_RL_EPISODE_MODE="${THINKSTREAM_RL_EPISODE_MODE:-full}"
 case "${THINKSTREAM_RL_EPISODE_MODE}" in
     full|full_video|trajectory)
@@ -204,33 +231,26 @@ TRAIN_JSONL="${TRAIN_JSONL:-${AGENT_DATA_ROOT}/final/train_rl_trajectories.jsonl
 VAL_JSONL="${VAL_JSONL:-${AGENT_DATA_ROOT}/final/val_trajectories.jsonl}"
 MULTI_Q="${MULTI_Q:-1}"
 PARQUET_DIR="${PARQUET_DIR:-${AGENT_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}}"
-if [[ "${THINKSTREAM_RL_EPISODE_MODE}" == "segment" && "${MULTI_Q}" != "1" ]]; then
-    echo "ERROR: segment RL requires MULTI_Q=1 parquet rows so questions stay video-ordered." >&2
+if [[ "${MULTI_Q}" != "1" ]]; then
+    echo "ERROR: RL training now requires multi-Q trajectory parquet (MULTI_Q=1)." >&2
+    echo "       Legacy single-question parquet generation was retired from this launcher." >&2
     exit 2
 fi
 
 # verl's RLHFDataset reads parquet; auto-build from JSONL if user didn't
 # supply a parquet directly.
-if [[ "${MULTI_Q}" == "1" ]]; then
-    if [[ "${THINKSTREAM_RL_EPISODE_MODE}" == "segment" ]]; then
-        DEFAULT_TRAIN_PARQUET="${PARQUET_DIR}/train_rl_multi_q_segment_cache.parquet"
-        DEFAULT_VAL_PARQUET="${PARQUET_DIR}/val_rl_multi_q_segment_cache.parquet"
-    else
-        DEFAULT_TRAIN_PARQUET="${PARQUET_DIR}/train_rl_multi_q.parquet"
-        DEFAULT_VAL_PARQUET="${PARQUET_DIR}/val_rl_multi_q.parquet"
-    fi
+if [[ "${THINKSTREAM_RL_EPISODE_MODE}" == "segment" ]]; then
+    DEFAULT_TRAIN_PARQUET="${PARQUET_DIR}/train_rl_multi_q_segment_cache.parquet"
+    DEFAULT_VAL_PARQUET="${PARQUET_DIR}/val_rl_multi_q_segment_cache.parquet"
 else
-    DEFAULT_TRAIN_PARQUET="${PARQUET_DIR}/train_rl_single_q.parquet"
-    DEFAULT_VAL_PARQUET="${PARQUET_DIR}/val_rl_single_q.parquet"
+    DEFAULT_TRAIN_PARQUET="${PARQUET_DIR}/train_rl_multi_q.parquet"
+    DEFAULT_VAL_PARQUET="${PARQUET_DIR}/val_rl_multi_q.parquet"
 fi
 TRAIN_PARQUET="${TRAIN_PARQUET:-${DEFAULT_TRAIN_PARQUET}}"
 VAL_PARQUET="${VAL_PARQUET:-${DEFAULT_VAL_PARQUET}}"
 
 # MULTI_Q=1 → 1 video = 1 row, all questions co-evaluated (OVOBench-aligned).
-MULTI_Q_FLAG=""
-if [[ "${MULTI_Q}" == "1" ]]; then
-    MULTI_Q_FLAG="--multi_q"
-fi
+MULTI_Q_FLAG="--multi_q"
 STUDENT_CACHE_FLAG=()
 if [[ "${THINKSTREAM_RL_EPISODE_MODE}" == "segment" ]]; then
     STUDENT_CACHE_FLAG=(--include-student-cache)
@@ -254,7 +274,7 @@ fi
 mkdir -p "${OUTPUT_DIR}"
 mkdir -p "${RUNTIME_ROOT}"/{tmp,ray,hf,torch,triton,xdg}
 
-# Keep Ray spill files, vLLM processor cache metadata, and Triton/HF caches on
+# Keep Ray spill files and Triton/HF caches on
 # the project filesystem. Long recurrent rollouts can otherwise fill /tmp.
 export TMPDIR="${TMPDIR:-${RUNTIME_ROOT}/tmp}"
 export RUNTIME_ROOT
@@ -283,10 +303,13 @@ echo "Val parquet:       ${VAL_PARQUET}"
 echo "Multi-Q rows:      ${MULTI_Q}"
 echo "RL episode mode:   ${THINKSTREAM_RL_EPISODE_MODE}"
 echo "Recurrent mode:    ${THINKSTREAM_RECURRENT_MODE}"
+echo "Compress trigger:  ${THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE}"
+echo "Reward profile:    ${THINKSTREAM_RL_REWARD_PROFILE}"
 echo "Output:            ${OUTPUT_DIR}"
 echo "Runtime root:      ${RUNTIME_ROOT}"
 echo "GPUs:              ${NPROC}"
 echo "Rollout backend:   ${ROLLOUT_BACKEND}"
+echo "Rollout engine:    ${THINKSTREAM_ROLLOUT_ENGINE}"
 echo "TP size:           ${TP_SIZE}"
 echo "Group size G:      ${GROUP_SIZE}"
 echo "Max chunks:        ${MAX_CHUNKS}"
@@ -338,6 +361,11 @@ export THINKSTREAM_MAX_TOKENS_PER_ACTION="${MAX_ACTION_TOKENS}"
 export THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION="${MAX_COMPRESS_ACTION_TOKENS}"
 export THINKSTREAM_RL_EPISODE_MODE
 export THINKSTREAM_RECURRENT_MODE
+export THINKSTREAM_ROLLOUT_ENGINE
+export THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE
+export THINKSTREAM_RL_REWARD_PROFILE
+export THINKSTREAM_ENABLE_STEP_ACTION_REWARD
+export THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD
 
 export THINKSTREAM_HOME="${PROJECT_DIR}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"

@@ -8,54 +8,34 @@
 #
 # ThinkStream streaming-video agent loop for verl 0.4+.
 #
-# DESIGN — MemAgent-style sliding window with per-chunk independent generate:
+# DESIGN — MemAgent-style recurrent rollout with true KV:
 # ────────────────────────────────────────────────────────────────────────────
-# Each chunk is one INDEPENDENT vLLM generate request whose prompt is freshly
-# constructed every turn (mirrors SFT pass5_messages.py exactly):
+# Each ordinary video chunk appends one new chat user turn to an existing
+# KV stream. The rendered visual carrier contains only the current 1s chunk
+# (2 frames); StreamingWindowInferenceEngine owns the visual KV window and
+# evicts old video blocks CASIA-style:
 #
-#     prompt_chunk_N = [
+#     turn_chunk_N =
 #       <|im_start|>system\n{SYSTEM_PROMPT}\n<|im_end|>     ← common prefix
 #       <|im_start|>user\n{question}\n<|im_end|>                ← common prefix
 #       <|im_start|>user\n
 #         <memory>...</memory>
 #         <active_query>...</active_query> plus <response_history>...</response_history>
 #                                             (while a query is live)
-#         <visual_window>{header}</visual_window>               ← turn-specific
-#         {frame-tag text + image items for chunks[max(0,N-15)..N]}
+#         <visual_window>{current chunk header}</visual_window>
+#         {video_meta for current chunk's 2 frames}
 #         <user_input>...</user_input>     (question text or bare compress trigger)
 #       <|im_end|>
 #       <|im_start|>assistant\n
-#     ]
+#     ...
 #
 # CACHE BEHAVIOUR (v12.13, 2026-05-02):
 #   Two independent caches help streaming-video rollout. Each targets a
 #   different bottleneck.
 #
-#   1. vLLM mm_processor_cache (CPU, configured via
-#      engine_kwargs.vllm.mm_processor_cache_gb in run_thinkstream_grpo.sh):
-#        Caches (PIL load + smart_resize + ViT-friendly tensor) per
-#        (frame_path, min_pixels, max_pixels) key. Sliding window means
-#        any single frame reappears in N=visual_window_chunks consecutive
-#        chunks, so per-frame ViT prep is reused (N-1)/N ≈ 94% of the
-#        time. THIS IS THE PRIMARY OPTIMIZATION for our streaming-video
-#        workload — pass2 teacher rollout (--mm-processor-cache-gb 512)
-#        empirically gets 93.8% mm-cache hit rate. RL inherits the same
-#        mechanism as long as mm_processor_kwargs are byte-stable across
-#        chunks (v12.12's RUNTIME_MM_PROCESSOR_KWARGS guarantees that).
-#
-#   2. vLLM enable_prefix_caching (GPU, thinkstream_grpo.yaml):
-#        Reuses attention KV blocks for byte-identical prompt prefixes.
-#        Across two chunks of one trajectory, the [system + user_q]
-#        prefix (~600 tok) and SFT-aligned [<memory>'s leading thinks]
-#        are byte-identical, so prefix cache saves the prefill there.
-#        BUT the visual block (which dominates token count) is a
-#        cache MISS under sliding window because frame token IDs shift
-#        every chunk. We do NOT restructure the prompt to chase prefix-
-#        cache hits on visuals — that's mm_processor_cache's job.
-#
-#   The "expanding" visual-window mode below is an OPT-IN experiment for
-#   prefix-cache-on-visual workloads; default is "sliding" to preserve
-#   SFT-RL distribution alignment with the existing data.
+#   The rollout backend is the local HF/CASIA-style streaming engine, not
+#   full-prompt vLLM. Full re-prefill would repeatedly append old text and
+#   visual evidence under true KV, so it is disabled for RL correctness.
 #
 # PROMPT LAYOUT (must match SFT exactly — see
 # thinkstream/data/agent_protocol.py:213-214 build_user_content):
@@ -64,25 +44,17 @@
 #       system + user_q                        ← stable across chunks
 #       <memory>                               ← monotonic append; SFT-first
 #       (active_query + response_history)      ← optional while a query is live
-#       <visual_window header>                 ← {start, end, frames, current_time}
-#       frame-tag text + image items          ← sliding window (or expanding opt-in)
+#       <visual_window header>                 ← current chunk metadata
+#       video_meta frame block                 ← current 2 frames only
 #       <recall_result> (optional)             ← chunk-specific
 #       <user_input>                           ← question or bare compress trigger
 #     ]
 #
 # WINDOW MODE (THINKSTREAM_VISUAL_WINDOW_MODE):
-#   "sliding"  (default, matches SFT agent_protocol.py:275 and
-#               pass5_messages.py): window = [max(0, chunk-VWC+1) .. chunk].
-#               Frame token IDs shift left every chunk → 0% prefix-cache
-#               hit on visuals; mm_processor_cache reuses the per-frame
-#               ViT prep instead.
-#   "expanding" (opt-in, requires re-running pass2/pass5 with the same
-#                env var to keep SFT data in sync): window starts at the
-#                segment boundary (chunk // VWC × VWC) and grows to chunk.
-#                Within a segment frame IDs are byte-stable, so prefix
-#                cache hits the visual block ~94% (15/16). Boundary
-#                chunks lose recent visual context — re-verify SFT
-#                quality after switching.
+#   Retained for data compatibility. In true-KV RL the prompt renderer receives
+#   the resolved frame paths but build_user_content() consumes only the current
+#   chunk's final 2 paths; the physical visual window is maintained by
+#   StreamingWindowInferenceEngine.video_flex_window_size.
 #
 # SFT ALIGNMENT (the 5 things that must match pass5_messages.py):
 #   1. Frame paths use 1-indexed numbering: frame_{ci*FPC + fi + 1:06d}.jpg
@@ -613,10 +585,10 @@ def _register_streaming_agent_loop():
               <active_query> + <response_history> →
               <recalled_frames> + visual evidence → <recall_result> metadata
 
-            Distribution alignment is the hard constraint. Per-frame ViT
-            re-encoding cost is handled by vLLM's mm_processor_cache
-            (engine_kwargs.vllm.mm_processor_cache_gb in run_thinkstream_grpo.sh),
-            not by rearranging the text blocks.
+            Distribution alignment is the hard constraint. Do not rearrange
+            text or visual blocks to chase prefix-cache hits; the true-KV
+            engine receives only the current 2-frame video block here and
+            maintains the physical visual window itself.
             """
             if compress_trigger_range is not None:
                 user_input_text = "<compress_trigger/>"
@@ -1053,8 +1025,8 @@ def _register_streaming_agent_loop():
                 expected_n = max(1, len(expected))
                 return len(per_q_answers[q_idx]) >= expected_n
 
-            # ── Initial prompt: [system + user(question)]. Cached on vLLM
-            # side; never re-prefilled across chunks.
+            # ── Initial prompt: [system + user(question)]. Prefilled once
+            # per true-KV stream; ordinary chunks append only their delta.
             initial_messages = list(kwargs["raw_prompt"])
             initial_mm = await self.process_vision_info(initial_messages)
             initial_images: List[Any] = list(initial_mm.get("images") or [])
@@ -1371,27 +1343,29 @@ def _register_streaming_agent_loop():
 
                     turn_tools = tools_for_turn(turn_kind)
                     template_messages = chunk_messages
+                    prompt_images = (initial_images + template_images) if (
+                        turn_kind != "post_recall" and template_images
+                    ) else (
+                        template_images if template_images else (
+                            initial_images if (
+                                turn_kind != "post_recall" and initial_images
+                            ) else None
+                        )
+                    )
+                    prompt_videos = (initial_videos + template_videos) if (
+                        turn_kind != "post_recall" and template_videos
+                    ) else (
+                        template_videos if template_videos else (
+                            initial_videos if (
+                                turn_kind != "post_recall" and initial_videos
+                            ) else None
+                        )
+                    )
                     chunk_prompt_ids = await self.apply_chat_template(
                         template_messages,
                         tools=turn_tools,
-                        images=(initial_images + template_images) if (
-                            turn_kind != "post_recall" and template_images
-                        ) else (
-                            template_images if template_images else (
-                                initial_images if (
-                                    turn_kind != "post_recall" and initial_images
-                                ) else None
-                            )
-                        ),
-                        videos=(initial_videos + template_videos) if (
-                            turn_kind != "post_recall" and template_videos
-                        ) else (
-                            template_videos if template_videos else (
-                                initial_videos if (
-                                    turn_kind != "post_recall" and initial_videos
-                                ) else None
-                            )
-                        ),
+                        images=prompt_images,
+                        videos=prompt_videos,
                     )
 
                     # Prompt-budget guard (single-chunk + tool round can
@@ -1469,23 +1443,10 @@ def _register_streaming_agent_loop():
 
                     # ── Generate.
                     #
-                    # Two rollout backends. Selected at process start by env
-                    # ``THINKSTREAM_ROLLOUT_ENGINE``:
-                    #   "streaming" (default, GPU-only): incremental
-                    #     KV via :class:`StreamingRolloutEngine` —
-                    #     ``engine.generate_turn(input_ids=new_user_block,
-                    #     ...)`` appends to existing KV; at compress events
-                    #     the agent loop calls
-                    #     ``engine.begin_trajectory(keep_lengths=...,
-                    #     next_start_pos=...)`` to drop old chunks while
-                    #     keeping system+summary prefix. Each call returns
-                    #     per-token log_probs for PPO. Wiring requires a
-                    #     model-attached engine instance held by the worker
-                    #     (not by this AgentLoopBase), so the engine handle
-                    #     must come through ``self.server_manager`` or a
-                    #     sibling field. Tracked in Wave 3.4.
-                    #   "vllm" (legacy, explicit opt-in): re-prefill the full
-                    #     prompt every chunk through verl/vLLM.
+                    # True-KV rollout appends `new_prompt_ids` to the active
+                    # stream and returns per-token log_probs for PPO. Compress
+                    # turns are isolated text-only system events; recall
+                    # post-turns use the next-turn sidecar KV policy.
                     with simple_timer("generate_sequences", metrics):
                         output = await self._generate_action_tokens(
                             request_id=request_id,
@@ -1576,16 +1537,18 @@ def _register_streaming_agent_loop():
                         per_action_response_logprobs.append(list(output_log_probs_list))
                     else:
                         per_action_response_logprobs.append(None)
-                    # mm payload: stitched mode accumulates media globally;
-                    # recurrent mode needs per-action attribution. The active
-                    # frame protocol decides whether frames are images or
-                    # video blocks with metadata.
+                    # mm payload for actor logprob/replay must match the FULL
+                    # per-action prompt, not just the KV delta used by
+                    # generation. In post-recall turns that prompt contains the
+                    # current visual chunk plus recalled frames, while the
+                    # true-KV generation call still receives only the new tool
+                    # frames.
                     _ac_mm = None
-                    if chunk_videos:
-                        _ac_mm = {"videos": list(chunk_videos)}
-                    if chunk_images:
+                    if prompt_videos:
+                        _ac_mm = {"videos": list(prompt_videos)}
+                    if prompt_images:
                         _ac_mm = _ac_mm or {}
-                        _ac_mm["images"] = list(chunk_images)
+                        _ac_mm["images"] = list(prompt_images)
                     per_action_mm_data.append(_ac_mm)
                     if (
                         output_log_probs_list is not None

@@ -21,18 +21,18 @@ def test_dataset_registry_only_current_entries():
     from thinkstream.sft.data_list import DATASET_REGISTRY
 
     expected = {
-        "stream_agent_sft",
-        "stream_agent_val",
-        "stream_agent_test",
         "stream_agent_rl_traj",
         "stream_agent_val_traj",
         "stream_agent_test_traj",
+        "stream_agent_trajectory_train",
+        "stream_agent_trajectory_val",
+        "stream_agent_trajectory_test",
     }
     assert set(DATASET_REGISTRY) == expected
 
 
 def test_sft_rl_eval_use_canonical_prompt_contract():
-    sft = _text("scripts/sft_per_timestep.sh")
+    sft = _text("scripts/sft_trajectory.sh")
     rl = _text("scripts/grpo_train_verl.sh")
     ovo_sft = _text("scripts/eval/ovo/run_sft_full.sh")
     ovo_rl = _text("scripts/eval/ovo/run_rl_full.sh")
@@ -61,6 +61,9 @@ def test_rl_defaults_use_multi_trajectory_recurrent_update():
     assert "PPO_MAX_TOKEN_LEN_PER_GPU=${PPO_MAX_TOKEN_LEN_PER_GPU:-65536}" in rl
     assert "LOG_PROB_MAX_TOKEN_LEN_PER_GPU=${LOG_PROB_MAX_TOKEN_LEN_PER_GPU:-65536}" in rl
     assert "FREEZE_VISION_TOWER=${FREEZE_VISION_TOWER:-true}" in rl
+    assert "ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-streaming}" in rl
+    assert "TP_SIZE=${TP_SIZE:-1}" in rl
+    assert "GEN_TP=1" in recipe
 
 
 def test_training_scheme_builds_full_and_segment_rl_inputs():
