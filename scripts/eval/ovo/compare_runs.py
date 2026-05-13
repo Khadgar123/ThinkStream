@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Compact comparison table for OVO eval_full.py / base.py JSON outputs."""
+"""Compact comparison table for OVO recurrent/base JSON summaries."""
 import argparse
 import json
 from pathlib import Path
@@ -91,6 +91,18 @@ def _agent_diag(summary):
     }
 
 
+def _overall_value(summary):
+    overall = summary.get("overall", 0.0)
+    if isinstance(overall, dict):
+        return float(
+            overall.get("trajectory_mean_correct_question_weighted")
+            or overall.get("avg")
+            or overall.get("score_mean")
+            or 0.0
+        )
+    return float(overall or 0.0)
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("jsons", nargs="+")
@@ -105,7 +117,7 @@ def main():
         name = data.get("run_name") or Path(path).stem
         rows.append({
             "name": name,
-            "overall": summary.get("overall", 0.0),
+            "overall": _overall_value(summary),
             "rt": (cat.get("RT") or {}).get("avg", 0.0),
             "bt": (cat.get("BT") or {}).get("avg", 0.0),
             "ft": (cat.get("FT") or {}).get("avg", 0.0),

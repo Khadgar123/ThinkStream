@@ -45,15 +45,10 @@ binary answer, short exact phrase, or descriptive text.
 Build matching verl parquets from the same canonical trajectories:
 
 ```bash
-python -m scripts.agent_data_v5.build_verl_parquet \
+python -m scripts.agent_data.build_verl_parquet \
   --jsonl data/agent_v5/batch2/final/train_rl_trajectories.jsonl \
-  --out data/agent_v5/batch2/rendered/ts_image/train_rl_multi_q.parquet \
-  --multi_q --frame-protocol ts_image
-
-python -m scripts.agent_data_v5.build_verl_parquet \
-  --jsonl data/agent_v5/batch2/final/train_rl_trajectories.jsonl \
-  --out data/agent_v5/batch2/rendered/video_meta/train_rl_multi_q.parquet \
-  --multi_q --frame-protocol video_meta
+  --out data/agent_v5/batch2/rendered/video_meta_standard_query_last/train_rl_multi_q.parquet \
+  --multi_q --frame-protocol video_meta --render-layout standard_query_last
 ```
 
 Train/eval with the same protocol end to end:
@@ -66,12 +61,22 @@ bash scripts/run_sft_rl.sh
 bash scripts/eval/ovo/run_sft_full.sh \
   --ckpt output/agent-sft/checkpoint-... \
   --benchmark_json /path/to/ovo_bench_new.json \
-  --video_root /path/to/videos \
-  --frames_root data/agent_v5/batch2/frames
+  --frames_root /path/to/OVO-Bench/frames
 ```
 
-The old `ts_image` paths are archived. Current SFT/RL/eval launchers use
-`video_meta_standard_query_last`.
+Pre-RL trajectory monitoring should also use the same recurrent RL path:
+
+```bash
+bash scripts/agent_data/run_rl_recurrent_audit.sh \
+  --ckpt output/agent-sft/checkpoint-... \
+  --source data/agent_v5/batch2/rendered/video_meta_standard_query_last/val_rl_multi_q.parquet \
+  --frames-root data/agent_v5/batch2/frames \
+  --out-dir output/pre_rl_recurrent_audit
+```
+
+The old simulated/vLLM pre-RL audit is retired from current testing. Current
+SFT/RL/eval launchers use `video_meta_standard_query_last` and the true-KV
+recurrent AgentLoop.
 
 `v2/` is the current pass3 design implementation, not a deprecated folder.
 It owns the card taxonomy, placement rules, and LLM prompts used by

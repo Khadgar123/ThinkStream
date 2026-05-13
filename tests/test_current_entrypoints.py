@@ -37,14 +37,16 @@ def test_sft_rl_eval_use_canonical_prompt_contract():
     ovo_sft = _text("scripts/eval/ovo/run_sft_full.sh")
     ovo_rl = _text("scripts/eval/ovo/run_rl_full.sh")
 
-    for text in (sft, rl, ovo_sft, ovo_rl):
+    for text in (sft, rl):
         assert "video_meta" in text
         assert "standard_query_last" in text
 
     assert "canonical SFT uses FRAME_PROTOCOL=video_meta" in sft
     assert "canonical RL uses FRAME_PROTOCOL=video_meta" in rl
-    assert "canonical OVO" in ovo_sft
-    assert "canonical OVO" in ovo_rl
+    for text in (ovo_sft, ovo_rl):
+        assert "true-KV recurrent RL AgentLoop" in text
+        assert "run_rl_recurrent_eval.sh" in text
+        assert "eval_full.py" not in text
 
 
 def test_rl_defaults_use_multi_trajectory_recurrent_update():
@@ -78,22 +80,23 @@ def test_training_scheme_builds_full_and_segment_rl_inputs():
     assert 'prompt = [{"role": "system", "content": system_prompt}]' in parquet
 
 
-def test_pre_rl_rollout_audit_is_legacy_sidecar_not_canonical_rollout():
+def test_pre_rl_rollout_audit_uses_recurrent_agentloop_path():
     audit = _text("scripts/agent_data/pre_rl_rollout_audit.py")
+    run = _text("scripts/agent_data/run_rl_recurrent_audit.sh")
 
-    assert "Legacy fast pre-RL student rollout audit" in audit
-    assert "prefer building the same parquet rows" in audit
-    assert "streaming_vllm_rollout" in audit
-    assert 'frame_protocol="video_meta"' in audit
-    assert 'render_layout="standard_query_last"' in audit
-    assert "rollout_batch_size" in audit
-    assert "badcase_out" in audit
-    assert "stable_think" in audit
+    assert "run_rl_recurrent_audit.sh" in audit
+    assert "simulated/vLLM rollout" in audit
+    assert "streaming_vllm_rollout" not in audit
+    assert "VAL_ONLY=true" in run
+    assert "VALIDATION_DATA_DIR" in run
+    assert "bash scripts/grpo_train_verl.sh" in run
+    assert "summarize_rl_recurrent_validation.py" in run
 
 
 def test_ovo_rl_eval_builds_canonical_rollout_inputs():
     builder = _text("scripts/eval/ovo/build_rl_trajectories.py")
     run_recurrent = _text("scripts/eval/ovo/run_rl_recurrent_eval.sh")
+    sweep = _text("scripts/eval/ovo/run_agent_memory_sweep.sh")
     readme = _text("scripts/eval/ovo/README.md")
 
     assert "Render OVO-Bench into ThinkStream RL multi-Q trajectory rows" in builder
@@ -109,6 +112,9 @@ def test_ovo_rl_eval_builds_canonical_rollout_inputs():
     assert "VALIDATION_DATA_DIR" in run_recurrent
     assert "bash scripts/grpo_train_verl.sh" in run_recurrent
     assert 'MAX_CHUNKS="${MAX_CHUNKS:-2048}"' in run_recurrent
+    assert "summarize_rl_recurrent_validation.py" in run_recurrent
+    assert "retired for current testing" in sweep
+    assert "run_rl_recurrent_eval.sh" in sweep
 
 
 def test_verl_launcher_supports_validation_only_rollout():
@@ -142,7 +148,7 @@ def main() -> None:
         test_sft_rl_eval_use_canonical_prompt_contract,
         test_rl_defaults_use_multi_trajectory_recurrent_update,
         test_training_scheme_builds_full_and_segment_rl_inputs,
-        test_pre_rl_rollout_audit_is_legacy_sidecar_not_canonical_rollout,
+        test_pre_rl_rollout_audit_uses_recurrent_agentloop_path,
         test_ovo_rl_eval_builds_canonical_rollout_inputs,
         test_verl_launcher_supports_validation_only_rollout,
         test_verl_launcher_exposes_multinode_ray_address,

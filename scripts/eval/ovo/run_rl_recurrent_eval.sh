@@ -71,6 +71,7 @@ TRAJ_JSONL="${OUT_DIR}/input/ovo_trajectories.jsonl"
 PARQUET="${OUT_DIR}/input/ovo_rl_multi_q.parquet"
 SUMMARY_JSON="${OUT_DIR}/input/build_summary.json"
 VAL_DUMP_DIR="${OUT_DIR}/validation/generations"
+SUMMARY_OUT="${OUT_DIR}/summary.json"
 
 BUILD_ARGS=()
 if [[ -n "${TASKS}" ]]; then
@@ -138,8 +139,19 @@ export RUNTIME_ROOT="${RUNTIME_ROOT:-${OUT_DIR}/runtime}"
 
 bash scripts/grpo_train_verl.sh
 
+GEN_JSONL="${VAL_DUMP_DIR}/0.jsonl"
+if [[ -f "${GEN_JSONL}" ]]; then
+    "${PYTHON_BIN:-python}" scripts/audit/summarize_rl_recurrent_validation.py \
+        --generations "${GEN_JSONL}" \
+        --build-summary "${SUMMARY_JSON}" \
+        --out "${SUMMARY_OUT}"
+else
+    echo "WARNING: validation dump not found: ${GEN_JSONL}" >&2
+fi
+
 echo ""
 echo "Done."
 echo "  OVO RL parquet:        ${PARQUET}"
 echo "  Build summary:         ${SUMMARY_JSON}"
 echo "  Validation generations:${VAL_DUMP_DIR}/0.jsonl"
+echo "  Summary:               ${SUMMARY_OUT}"

@@ -5,6 +5,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.eval.ovo.build_rl_trajectories import build_trajectories  # noqa: E402
+from scripts.audit.summarize_rl_recurrent_validation import summarize  # noqa: E402
 from scripts.agent_data.build_verl_parquet import _iter_rows_multi_q  # noqa: E402
 from thinkstream.rl.streaming_agent_loop import _resolve_frame_dir  # noqa: E402
 
@@ -124,3 +125,37 @@ def test_rl_frame_resolver_supports_ovo_nested_frame_layout(tmp_path):
     frame_dir = tmp_path / "Ego4D" / "clips" / "abc"
     frame_dir.mkdir(parents=True)
     assert _resolve_frame_dir("Ego4D/clips/abc.mp4", str(tmp_path)) == frame_dir
+
+
+def test_recurrent_validation_summary_groups_ovo_tasks(tmp_path):
+    gt = {
+        "questions": [{
+            "ovo_task": "EPM",
+            "ovo_category": "BT",
+            "question": "Q?",
+            "answer_chunks": [4],
+            "gold_answer": "A",
+        }],
+    }
+    generations = tmp_path / "0.jsonl"
+    generations.write_text(
+        json.dumps({
+            "gts": json.dumps(gt),
+            "score": 0.8,
+            "outcome": 1.0,
+            "answer_decision": 0.9,
+            "format": 1.0,
+            "trajectory_mean_correct": 1.0,
+            "trajectory_all_correct": 1.0,
+            "n_questions": 1,
+            "n_answered": 1,
+        }) + "\n",
+        encoding="utf-8",
+    )
+
+    out = summarize(generations)
+
+    assert out["overall"]["questions"] == 1
+    assert out["by_task"]["EPM"]["trajectory_mean_correct_question_weighted"] == 1.0
+    assert out["category_task_macro"]["BT"] == 1.0
+    assert out["health"]["answer"]["answered_rate"] == 1.0
