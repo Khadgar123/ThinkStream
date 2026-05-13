@@ -153,6 +153,7 @@ def test_post_recall_marks_toolcall_and_tool_response_as_recall_kv():
     processor = _FakeProcessor(ids)
     out = preprocess_trajectory_sample(sample, processor)
     kv_mask = out["recall_kv_mask"][0].tolist()
+    query_mask = out["recall_query_mask"][0].tolist()
     labels = out["labels"][0]
 
     assert "tools" not in processor.last_kwargs
@@ -160,6 +161,10 @@ def test_post_recall_marks_toolcall_and_tool_response_as_recall_kv():
     for i in range(11, 22):
         expected[i] = True
     assert kv_mask == expected
+    expected_q = [False] * len(ids)
+    for i in range(11, 25):
+        expected_q[i] = True
+    assert query_mask == expected_q
     assert labels[11].item() == IGNORE_INDEX
     assert labels[22].item() == 70
 
@@ -208,12 +213,16 @@ def test_full_trajectory_recall_tool_response_marks_recall_kv():
     }
     out = preprocess_trajectory_sample(sample, _FakeProcessor(ids))
     kv_mask = out["recall_kv_mask"][0].tolist()
+    query_mask = out["recall_query_mask"][0].tolist()
     video_mask = out["recall_video_mask"][0].tolist()
 
     expected_kv = [False] * len(ids)
     for i in range(13, 26):
         expected_kv[i] = True
     assert kv_mask == expected_kv
+    assert query_mask[13] is True
+    assert query_mask[28] is True
+    assert query_mask[29] is False
     assert video_mask[19] is True
     assert video_mask[20] is True
     assert video_mask[32] is False

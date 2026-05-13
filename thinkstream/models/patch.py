@@ -35,6 +35,7 @@ def build_video_block_mask(
     attention_mask,
     recall_video_mask=None,
     recall_kv_mask=None,
+    recall_query_mask=None,
 ):
     """Create ``video_block_mask`` from ``video_mask`` and ``attention_mask``.
 
@@ -63,6 +64,11 @@ def build_video_block_mask(
         recall_kv_mask=(
             recall_kv_mask.contiguous()
             if recall_kv_mask is not None
+            else None
+        ),
+        recall_query_mask=(
+            recall_query_mask.contiguous()
+            if recall_query_mask is not None
             else None
         ),
     )
@@ -98,6 +104,7 @@ def _patch_text_model_forward_for_video_mask(cls):
         video_mask=None,
         recall_video_mask=None,
         recall_kv_mask=None,
+        recall_query_mask=None,
         **kwargs,
     ):
         if video_mask is not None and kwargs.get("video_block_mask") is None:
@@ -107,6 +114,7 @@ def _patch_text_model_forward_for_video_mask(cls):
                 attention_mask,
                 recall_video_mask=recall_video_mask,
                 recall_kv_mask=recall_kv_mask,
+                recall_query_mask=recall_query_mask,
             )
         return orig_forward(
             self,
@@ -141,6 +149,7 @@ def _lce_forward_qwen2_5_vl(
     video_mask=None,
     recall_video_mask=None,
     recall_kv_mask=None,
+    recall_query_mask=None,
     **kwargs,
 ):
     video_block_mask = build_video_block_mask(
@@ -149,6 +158,7 @@ def _lce_forward_qwen2_5_vl(
         attention_mask,
         recall_video_mask=recall_video_mask,
         recall_kv_mask=recall_kv_mask,
+        recall_query_mask=recall_query_mask,
     )
     return lce_forward_qwen2_5_vl(
         self,
@@ -167,6 +177,7 @@ def _lce_forward_qwen3_vl(
     video_mask=None,
     recall_video_mask=None,
     recall_kv_mask=None,
+    recall_query_mask=None,
     **kwargs,
 ):
     video_block_mask = build_video_block_mask(
@@ -175,6 +186,7 @@ def _lce_forward_qwen3_vl(
         attention_mask,
         recall_video_mask=recall_video_mask,
         recall_kv_mask=recall_kv_mask,
+        recall_query_mask=recall_query_mask,
     )
     return lce_forward_qwen3_vl(
         self,
@@ -304,6 +316,7 @@ def _grpo_lce_forward_common(
     video_mask=None,
     recall_video_mask=None,
     recall_kv_mask=None,
+    recall_query_mask=None,
     output_cls=None,
     add_second_per_grid_ts=False,
     **kwargs,
@@ -317,6 +330,7 @@ def _grpo_lce_forward_common(
         attention_mask,
         recall_video_mask=recall_video_mask,
         recall_kv_mask=recall_kv_mask,
+        recall_query_mask=recall_query_mask,
     )
 
     output_attentions = (
@@ -456,6 +470,7 @@ def grpo_lce_forward_qwen2_5_vl(
     video_mask=None,
     recall_video_mask=None,
     recall_kv_mask=None,
+    recall_query_mask=None,
     **kwargs,
 ):
     """GRPO-aware forward for Qwen2.5-VL (uses LigerFusedLinearGRPOLoss when advantages given)."""
@@ -490,6 +505,7 @@ def grpo_lce_forward_qwen2_5_vl(
         video_mask=video_mask,
         recall_video_mask=recall_video_mask,
         recall_kv_mask=recall_kv_mask,
+        recall_query_mask=recall_query_mask,
         output_cls=Qwen2_5_VLCausalLMOutputWithPast,
         add_second_per_grid_ts=True,
         **kwargs,
@@ -527,6 +543,7 @@ def grpo_lce_forward_qwen3vl(
     video_mask=None,
     recall_video_mask=None,
     recall_kv_mask=None,
+    recall_query_mask=None,
     **kwargs,
 ):
     """GRPO-aware forward for Qwen3-VL (uses LigerFusedLinearGRPOLoss when advantages given)."""
@@ -561,6 +578,7 @@ def grpo_lce_forward_qwen3vl(
         video_mask=video_mask,
         recall_video_mask=recall_video_mask,
         recall_kv_mask=recall_kv_mask,
+        recall_query_mask=recall_query_mask,
         output_cls=Qwen3VLCausalLMOutputWithPast,
         add_second_per_grid_ts=False,
         **kwargs,

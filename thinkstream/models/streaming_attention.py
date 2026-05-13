@@ -13,6 +13,7 @@ def generate_video_sliding_window_mask_mod(
     window_size_n,
     recall_video_mask=None,
     recall_kv_mask=None,
+    recall_query_mask=None,
 ):
     """
     Generates a mask_mod for flex_attention that handles:
@@ -31,6 +32,9 @@ def generate_video_sliding_window_mask_mod(
         recall_video_mask (Tensor): (B, L), True for recalled-frame video tokens.
         recall_kv_mask (Tensor): (B, L), True for any ephemeral recall evidence
             tokens. Defaults to recall_video_mask.
+        recall_query_mask (Tensor): (B, L), True for query positions allowed
+            to attend recall-sidecar KV. When omitted, sidecar visibility
+            falls back to the ordinary-video block id rule for compatibility.
     """
     B_limit = video_mask.shape[0]
     L_limit = video_mask.shape[1]
@@ -44,6 +48,10 @@ def generate_video_sliding_window_mask_mod(
         recall_kv_mask = recall_video_mask
     else:
         recall_kv_mask = recall_kv_mask.to(device=video_mask.device, dtype=torch.bool)
+    if recall_query_mask is not None:
+        recall_query_mask = recall_query_mask.to(
+            device=video_mask.device, dtype=torch.bool
+        )
     ordinary_video_mask = video_mask & (~recall_video_mask)
 
     # -------------------------------------------------------
@@ -79,15 +87,21 @@ def generate_video_sliding_window_mask_mod(
         k_is_video = video_mask[b_c, kv_idx_c]
         k_is_recall_kv = recall_kv_mask[b_c, kv_idx_c]
         k_is_ordinary_video = k_is_video & (~recall_video_mask[b_c, kv_idx_c])
+        if recall_query_mask is None:
+            q_allows_recall = torch.ones_like(k_is_recall_kv, dtype=torch.bool)
+        else:
+            q_allows_recall = recall_query_mask[b_c, q_idx_c]
         q_block = block_ids[b_c, q_idx_c]
         k_block = block_ids[b_c, kv_idx_c]
         diff = q_block - k_block
 
         # Ordinary video follows the sliding window. Recall-sidecar evidence is
-        # visible only until the next ordinary video block arrives, matching
-        # runtime deletion after the post-recall answer.
+        # visible only for the post-recall answer query span. The block-id
+        # guard remains so recalled frames do not advance the ordinary window.
         ordinary_is_in_window = (~k_is_ordinary_video) | (diff < window_size_n)
-        recall_is_visible = (~k_is_recall_kv) | (q_block == k_block)
+        recall_is_visible = (~k_is_recall_kv) | (
+            q_allows_recall & (q_block == k_block)
+        )
         is_in_window = ordinary_is_in_window & recall_is_visible
 
         # --- 6. Final Combination ---

@@ -200,6 +200,43 @@ def build_recall_video_mask_from_messages(
     return recall_mask.unsqueeze(0)
 
 
+def _post_recall_span_pairs(
+    *,
+    assistant_spans: Sequence[Tuple[int, int]],
+    sample: Dict,
+    messages: Optional[Sequence[Dict]] = None,
+) -> List[Tuple[int, int, int, int]]:
+    """Return recall-tool assistant spans paired with their answer spans."""
+    def _assistant_is_recall_tool(msg: Dict) -> bool:
+        for call in msg.get("tool_calls") or []:
+            fn = call.get("function") if isinstance(call, dict) else None
+            if isinstance(fn, dict) and str(fn.get("name") or "").strip() == "recall":
+                return True
+        text = _message_text_content(msg)
+        return "<tool_call>" in text and '"recall"' in text
+
+    pairs: List[Tuple[int, int, int, int]] = []
+    if messages is not None:
+        assistant_messages = [
+            msg for msg in messages
+            if str(msg.get("role") or "").strip().lower() == "assistant"
+        ]
+        n = min(len(assistant_messages), len(assistant_spans))
+        for idx in range(n - 1):
+            if _assistant_is_recall_tool(assistant_messages[idx]):
+                query_start, query_end = assistant_spans[idx]
+                final_start, final_end = assistant_spans[idx + 1]
+                pairs.append((query_start, query_end, final_start, final_end))
+        if pairs or _sample_loss_class(sample) != "post_recall":
+            return pairs
+
+    if _sample_loss_class(sample) == "post_recall" and len(assistant_spans) >= 2:
+        query_start, query_end = assistant_spans[-2]
+        final_start, final_end = assistant_spans[-1]
+        pairs.append((query_start, query_end, final_start, final_end))
+    return pairs
+
+
 def _add_post_recall_text_kv_mask(
     recall_kv_mask: torch.Tensor,
     *,
@@ -226,35 +263,36 @@ def _add_post_recall_text_kv_mask(
         recall_kv_mask[0, query_start:query_end] = True
         recall_kv_mask[0, query_end:final_start] = True
 
-    def _assistant_is_recall_tool(msg: Dict) -> bool:
-        for call in msg.get("tool_calls") or []:
-            fn = call.get("function") if isinstance(call, dict) else None
-            if isinstance(fn, dict) and str(fn.get("name") or "").strip() == "recall":
-                return True
-        text = _message_text_content(msg)
-        return "<tool_call>" in text and '"recall"' in text
-
-    if messages is not None:
-        assistant_messages = [
-            msg for msg in messages
-            if str(msg.get("role") or "").strip().lower() == "assistant"
-        ]
-        n = min(len(assistant_messages), len(assistant_spans))
-        marked = False
-        for idx in range(n - 1):
-            if _assistant_is_recall_tool(assistant_messages[idx]):
-                query_start, query_end = assistant_spans[idx]
-                final_start, _ = assistant_spans[idx + 1]
-                _mark(query_start, query_end, final_start)
-                marked = True
-        if marked or _sample_loss_class(sample) != "post_recall":
-            return recall_kv_mask
-
-    if _sample_loss_class(sample) == "post_recall" and len(assistant_spans) >= 2:
-        query_start, query_end = assistant_spans[-2]
-        final_start, _ = assistant_spans[-1]
+    for query_start, query_end, final_start, _final_end in _post_recall_span_pairs(
+        assistant_spans=assistant_spans,
+        sample=sample,
+        messages=messages,
+    ):
         _mark(query_start, query_end, final_start)
     return recall_kv_mask
+
+
+def _build_post_recall_query_mask(
+    input_ids: torch.Tensor,
+    *,
+    assistant_spans: Sequence[Tuple[int, int]],
+    sample: Dict,
+    messages: Optional[Sequence[Dict]] = None,
+) -> torch.Tensor:
+    """Mark query positions that may attend ephemeral recall-sidecar KV."""
+    recall_query_mask = torch.zeros_like(input_ids, dtype=torch.bool)
+    if recall_query_mask.ndim != 2 or recall_query_mask.shape[0] != 1:
+        return recall_query_mask
+    seq_len = int(recall_query_mask.shape[1])
+    for query_start, _query_end, _final_start, final_end in _post_recall_span_pairs(
+        assistant_spans=assistant_spans,
+        sample=sample,
+        messages=messages,
+    ):
+        start = max(0, min(int(query_start), seq_len))
+        end = max(start, min(int(final_end) + 1, seq_len))
+        recall_query_mask[0, start:end] = True
+    return recall_query_mask
 
 
 def _parse_ratio_spec(spec: Optional[str]) -> Dict[str, float]:
@@ -1444,6 +1482,12 @@ def preprocess_trajectory_sample(sample: Dict, processor, data_args=None) -> Dic
         sample=sample,
         messages=messages,
     )
+    recall_query_mask = _build_post_recall_query_mask(
+        input_ids,
+        assistant_spans=assistant_spans,
+        sample=sample,
+        messages=messages,
+    )
     if recall_video_mask is not None or bool(recall_kv_mask.any().item()):
         full_result["recall_video_mask"] = (
             recall_video_mask
@@ -1451,6 +1495,7 @@ def preprocess_trajectory_sample(sample: Dict, processor, data_args=None) -> Dic
             else torch.zeros_like(input_ids, dtype=torch.bool)
         )
         full_result["recall_kv_mask"] = recall_kv_mask
+        full_result["recall_query_mask"] = recall_query_mask
 
     # v12.11 P1.2 fix (2026-05-01): expose ALL assistant spans, not just the
     # first. Multi-turn recall samples have 2 assistant turns (tool_call +
@@ -1868,15 +1913,20 @@ class TrajectorySFTDataCollator:
             batch["video_mask"] = input_ids == self._video_token_id
             recall_masks = []
             recall_kv_masks = []
+            recall_query_masks = []
             for inst in instances:
                 rv = inst.get("recall_video_mask")
                 rk = inst.get("recall_kv_mask")
+                rq = inst.get("recall_query_mask")
                 if rv is None:
                     rv = torch.zeros_like(inst["input_ids"], dtype=torch.bool)
                 if rk is None:
                     rk = rv
+                if rq is None:
+                    rq = torch.ones_like(inst["input_ids"], dtype=torch.bool)
                 recall_masks.append(rv.squeeze(0).to(dtype=torch.bool))
                 recall_kv_masks.append(rk.squeeze(0).to(dtype=torch.bool))
+                recall_query_masks.append(rq.squeeze(0).to(dtype=torch.bool))
             batch["recall_video_mask"] = torch.nn.utils.rnn.pad_sequence(
                 recall_masks,
                 batch_first=True,
@@ -1884,6 +1934,11 @@ class TrajectorySFTDataCollator:
             )
             batch["recall_kv_mask"] = torch.nn.utils.rnn.pad_sequence(
                 recall_kv_masks,
+                batch_first=True,
+                padding_value=False,
+            )
+            batch["recall_query_mask"] = torch.nn.utils.rnn.pad_sequence(
+                recall_query_masks,
                 batch_first=True,
                 padding_value=False,
             )

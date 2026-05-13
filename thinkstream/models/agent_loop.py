@@ -588,6 +588,11 @@ class MemoryState:
                 if open_until is not None:
                     q["open_until"] = open_until
                 return
+        for q in self._queries:
+            status = str(q.get("status", "")).strip().lower()
+            if status in {"open", "pending", "active"}:
+                q["status"] = "replaced"
+                q["close_reason"] = "new_query"
         if open_until is None and expected_chunks:
             try:
                 open_until = max(int(x) for x in expected_chunks) * AGENT_CHUNK_SEC

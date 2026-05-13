@@ -116,11 +116,16 @@ def test_recall_video_mask_emitted_when_requested():
     ])
     assert "recall_video_mask" in batch
     assert "recall_kv_mask" in batch
+    assert "recall_query_mask" in batch
     assert batch["recall_video_mask"].tolist() == [
         [False, False, False, False, True, False],
         [False, False, False, False, False, False],
     ]
     assert torch.equal(batch["recall_kv_mask"], batch["recall_video_mask"])
+    assert batch["recall_query_mask"].tolist() == [
+        [True, True, True, True, True, True],
+        [True, True, True, True, False, False],
+    ]
     print("[OK] recall_video_mask_emitted_when_requested")
 
 

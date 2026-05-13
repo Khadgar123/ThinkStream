@@ -50,6 +50,33 @@ def test_recall_video_does_not_advance_ordinary_window():
     assert not _allowed(mask_mod, 9, 1)
 
 
+def test_recall_kv_requires_post_recall_query_span():
+    # Ordinary video block [1,2]. Recall-sidecar text [4,5] is visible to
+    # the immediate post-recall answer [6,7], then hidden from a later
+    # text-only compression/user turn [8,9] even though no new video arrived.
+    video = torch.tensor([[
+        False, True, True, False, False, False, False, False, False, False,
+    ]])
+    recall_kv = torch.tensor([[
+        False, False, False, False, True, True, False, False, False, False,
+    ]])
+    recall_q = torch.tensor([[
+        False, False, False, False, True, True, True, True, False, False,
+    ]])
+    attn = torch.ones_like(video, dtype=torch.bool)
+    mask_mod = generate_video_sliding_window_mask_mod(
+        video,
+        attn,
+        window_size_n=1,
+        recall_kv_mask=recall_kv,
+        recall_query_mask=recall_q,
+    )
+
+    assert _allowed(mask_mod, 7, 4)
+    assert not _allowed(mask_mod, 9, 4)
+
+
 if __name__ == "__main__":
     test_recall_video_does_not_advance_ordinary_window()
+    test_recall_kv_requires_post_recall_query_span()
     print("PASS test_streaming_attention_recall_mask")
