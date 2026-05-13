@@ -742,6 +742,39 @@ def test_rl_dataset_recovers_legacy_offline_compress_boundaries():
     )
 
 
+def test_rl_compress_output_transfers_student_memory_state():
+    from thinkstream.trainer.rollout import VideoTrajectoryState, default_update_state
+
+    state = VideoTrajectoryState(video_uid="video-a", chunk_idx=32)
+    state.compressed_summaries = [{"time_range": [0, 8], "text": "old teacher-ish memory"}]
+    state.recent_thinks = [
+        {"chunk": 28, "text": "student saw a red cup"},
+        {"chunk": 29, "text": "student saw the cup move"},
+    ]
+
+    student_output = (
+        "<think>Compact my visible notes before continuing.</think>"
+        "<MEM>\n"
+        "  <m t=\"0-7\">Student summary of the first scene.</m>\n"
+        "  <m t=\"8-15\">Student summary of the second scene.</m>\n"
+        "  <m t=\"16-23\">Student summary of the third scene.</m>\n"
+        "  <m t=\"24-31\">Student summary of the latest scene.</m>\n"
+        "</MEM>"
+    )
+
+    new_state = default_update_state(state, student_output, chunk_idx=32)
+
+    assert new_state.n_compress_calls == 1
+    assert [seg["text"] for seg in new_state.compressed_summaries] == [
+        "Student summary of the first scene.",
+        "Student summary of the second scene.",
+        "Student summary of the third scene.",
+        "Student summary of the latest scene.",
+    ]
+    assert new_state.recent_thinks == []
+    assert state.recent_thinks, "default_update_state must not mutate the caller state"
+
+
 def test_single_question_window_boundaries_and_scalar_chunks():
     ds = _single_q_dataset_stub()
 
@@ -922,6 +955,7 @@ if __name__ == "__main__":
     test_recipe_action_shaping_scores_system_compress_only()
     test_rl_episode_mode_segment_alias()
     test_rl_dataset_recovers_legacy_offline_compress_boundaries()
+    test_rl_compress_output_transfers_student_memory_state()
     test_single_question_window_boundaries_and_scalar_chunks()
     test_single_question_segment_uses_student_snapshot_or_rolls_from_zero()
     test_silent_quality_v12_complements_outcome()
