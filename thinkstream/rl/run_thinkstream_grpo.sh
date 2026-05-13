@@ -54,6 +54,8 @@
 #   EXPERIMENT_NAME [grpo-v12.26-verl-$THINKSTREAM_FRAME_PROTOCOL]
 #   SAVE_DIR [./output/$EXPERIMENT_NAME]
 #   SAVE_FREQ [50] / TEST_FREQ [25]
+#   VAL_ONLY [false] run validation via the RL AgentLoop and exit
+#   VALIDATION_DATA_DIR optional JSONL dump dir for validation generations
 #   PARAM_OFFLOAD [true] / OPTIMIZER_OFFLOAD [true]
 #   FREEZE_VISION_TOWER [true]
 #   PPO_MAX_TOKEN_LEN_PER_GPU / LOG_PROB_MAX_TOKEN_LEN_PER_GPU [65536]
@@ -221,6 +223,12 @@ EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v12.26-verl-${THINKSTREAM_FRAME_PROTOCOL
 SAVE_DIR=${SAVE_DIR:-./output/${EXPERIMENT_NAME}}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
+VAL_ONLY=${VAL_ONLY:-false}
+if [[ "${VAL_ONLY}" == "1" ]]; then
+    VAL_ONLY=true
+fi
+VAL_BEFORE_TRAIN=${VAL_BEFORE_TRAIN:-${VAL_ONLY}}
+VALIDATION_DATA_DIR=${VALIDATION_DATA_DIR:-}
 ROLLOUT_DATA_DIR=${ROLLOUT_DATA_DIR:-}
 PARAM_OFFLOAD=${PARAM_OFFLOAD:-true}
 OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
@@ -265,6 +273,10 @@ fi
 ROLLOUT_DATA_ARGS=()
 if [[ -n "${ROLLOUT_DATA_DIR}" ]]; then
     ROLLOUT_DATA_ARGS=(trainer.rollout_data_dir="${ROLLOUT_DATA_DIR}")
+fi
+VALIDATION_DATA_ARGS=()
+if [[ -n "${VALIDATION_DATA_DIR}" ]]; then
+    VALIDATION_DATA_ARGS=(+trainer.validation_data_dir="${VALIDATION_DATA_DIR}")
 fi
 
 # v12.13: ThinkStream-specific multi_turn config (verl's MultiTurnConfig
@@ -405,7 +417,8 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     reward.custom_reward_function.name=compute_score \
     trainer.critic_warmup=0 \
     trainer.logger='["console","wandb"]' \
-    trainer.val_before_train=False \
+    trainer.val_before_train=${VAL_BEFORE_TRAIN} \
+    +trainer.val_only=${VAL_ONLY} \
     trainer.n_gpus_per_node=${N_GPUS_PER_NODE} \
     trainer.nnodes=${NNODES} \
     trainer.save_freq=${SAVE_FREQ} \
@@ -413,6 +426,7 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     trainer.total_epochs=${EPOCHS} \
     "${TRAINING_STEPS_ARGS[@]}" \
     "${ROLLOUT_DATA_ARGS[@]}" \
+    "${VALIDATION_DATA_ARGS[@]}" \
     trainer.project_name=${PROJECT_NAME} \
     trainer.experiment_name=${EXPERIMENT_NAME} \
     trainer.default_local_dir=${SAVE_DIR} 2>&1 | tee "${SAVE_DIR}/train.log"

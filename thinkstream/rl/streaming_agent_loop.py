@@ -162,7 +162,13 @@ def _resolve_frame_dir(video_path: str, frames_root: str) -> Optional[Path]:
     if not root.exists():
         return None
     vp = Path(video_path)
-    candidates = [root / vp.stem, root / vp.with_suffix("").name]
+    # Batch frames normally live at frames/<video_stem>/, while OVO keeps the
+    # original relative layout, e.g. frames/Ego4D/clips/<video_stem>/.
+    candidates = [
+        root / vp.with_suffix(""),
+        root / vp.stem,
+        root / vp.with_suffix("").name,
+    ]
     for c in candidates:
         if c.exists() and c.is_dir():
             return c

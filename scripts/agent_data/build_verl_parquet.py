@@ -90,6 +90,25 @@ def _canonical_answer_style(q: Dict[str, Any]) -> str:
     return str(q.get("answer_style") or "")
 
 
+_QUESTION_OPTIONAL_KEYS = (
+    "open_until",
+    "ovo_task",
+    "ovo_category",
+    "ovo_sample_id",
+    "ovo_probe_index",
+    "ovo_probe_type",
+    "ovo_realtime",
+    "ovo_ask_time",
+    "ovo_clue_time",
+    "ovo_support_intervals",
+    "ovo_score_mode",
+)
+
+
+def _question_optional_payload(q: Dict[str, Any]) -> Dict[str, Any]:
+    return {key: q[key] for key in _QUESTION_OPTIONAL_KEYS if key in q}
+
+
 def _offline_compress_chunks_from_samples(traj: Dict[str, Any]) -> List[int]:
     """Extract compact-memory trigger chunks from canonical sample rows.
 
@@ -356,6 +375,8 @@ def _iter_rows(
             )
             n_chunks = _infer_n_chunks(traj)
             questions = (traj.get("questions") or [])[:max_questions_per_traj]
+            segment_start_chunk = _safe_int(traj.get("segment_start_chunk"))
+            segment_end_chunk = _safe_int(traj.get("segment_end_chunk"))
             student_cache = (
                 _student_cache_payload(traj, jsonl_path=jsonl_path, video_id=str(video_id))
                 if include_student_cache
@@ -432,6 +453,7 @@ def _iter_rows(
                     "answer_chunks": answer_chunks,
                     "per_emit_answers": list(q.get("per_emit_answers") or []),
                     "ask_chunks": ask_chunks,
+                    **_question_optional_payload(q),
                     "gold_action_per_chunk": q_gold_action,
                     "n_chunks": n_chunks,
                     "extra_info": {
@@ -453,6 +475,14 @@ def _iter_rows(
                         "offline_compress_chunks": offline_compress_chunks,
                         "compress_trigger_source": "offline_pass2_boundaries",
                         "render_layout": render_layout,
+                        **(
+                            {"segment_start_chunk": segment_start_chunk}
+                            if segment_start_chunk is not None else {}
+                        ),
+                        **(
+                            {"segment_end_chunk": segment_end_chunk}
+                            if segment_end_chunk is not None else {}
+                        ),
                         **student_cache,
                     },
                     # verl convention: reward_model.ground_truth is what the
@@ -467,6 +497,7 @@ def _iter_rows(
                             "ask_chunks": ask_chunks,
                             "answer_chunks": answer_chunks,
                             "per_emit_answers": list(q.get("per_emit_answers") or []),
+                            **_question_optional_payload(q),
                             "visible_start_chunk": (
                                 min(ask_chunks) if ask_chunks else
                                 (min(answer_chunks) if answer_chunks else None)
@@ -478,6 +509,14 @@ def _iter_rows(
                             "gold_action_per_chunk": q_gold_action,
                             "offline_compress_chunks": offline_compress_chunks,
                             "compress_trigger_source": "offline_pass2_boundaries",
+                            **(
+                                {"segment_start_chunk": segment_start_chunk}
+                                if segment_start_chunk is not None else {}
+                            ),
+                            **(
+                                {"segment_end_chunk": segment_end_chunk}
+                                if segment_end_chunk is not None else {}
+                            ),
                         }, ensure_ascii=False),
                         "style": "thinkstream_v12",
                     },
@@ -539,6 +578,8 @@ def _iter_rows_multi_q(
             )
             n_chunks = _infer_n_chunks(traj)
             questions = (traj.get("questions") or [])[:max_questions_per_traj]
+            segment_start_chunk = _safe_int(traj.get("segment_start_chunk"))
+            segment_end_chunk = _safe_int(traj.get("segment_end_chunk"))
             student_cache = (
                 _student_cache_payload(traj, jsonl_path=jsonl_path, video_id=str(video_id))
                 if include_student_cache
@@ -577,6 +618,7 @@ def _iter_rows_multi_q(
                     "category": q.get("category", ""),
                     "skill": q.get("skill", ""),
                     "ours_unique": bool(q.get("ours_unique", False)),
+                    **_question_optional_payload(q),
                 })
 
             # System-level seed prompt only. Actual question text/options are
@@ -599,6 +641,22 @@ def _iter_rows_multi_q(
                     "compress_trigger_source": "offline_pass2_boundaries",
                     "all_ask_chunks": sorted(set(all_ask_chunks)),
                     "render_layout": render_layout,
+                    **(
+                        {"segment_start_chunk": segment_start_chunk}
+                        if segment_start_chunk is not None else {}
+                    ),
+                    **(
+                        {"segment_end_chunk": segment_end_chunk}
+                        if segment_end_chunk is not None else {}
+                    ),
+                    **(
+                        {"source_video_path": traj.get("source_video_path")}
+                        if traj.get("source_video_path") else {}
+                    ),
+                    **(
+                        {"ovo_split_meta": traj.get("ovo_split_meta")}
+                        if traj.get("ovo_split_meta") else {}
+                    ),
                     **student_cache,
                 },
                 "reward_model": {
@@ -607,6 +665,14 @@ def _iter_rows_multi_q(
                         "gold_action_per_chunk": gold_action,
                         "offline_compress_chunks": offline_compress_chunks,
                         "compress_trigger_source": "offline_pass2_boundaries",
+                        **(
+                            {"segment_start_chunk": segment_start_chunk}
+                            if segment_start_chunk is not None else {}
+                        ),
+                        **(
+                            {"segment_end_chunk": segment_end_chunk}
+                            if segment_end_chunk is not None else {}
+                        ),
                     }, ensure_ascii=False),
                     "style": "thinkstream_v12_multi_q",
                 },

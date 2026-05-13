@@ -43,6 +43,8 @@
 #   EPOCHS          — total_epochs (1)
 #   SAVE_FREQ       — save every N steps (50)
 #   TEST_FREQ       — eval on val every N steps (25)
+#   VAL_ONLY        — run val_before_train through the RL AgentLoop and exit.
+#   VALIDATION_DATA_DIR — optional JSONL dump dir for validation generations.
 #   RUN_NAME        — wandb experiment name (grpo-v12.26-verl-$FRAME_PROTOCOL)
 #   WANDB_PROJECT   — wandb project (thinkstream-v12)
 #   PARAM_OFFLOAD   — FSDP offload params to CPU (true).
@@ -140,6 +142,12 @@ EPOCHS=${EPOCHS:-1}
 MAX_STEPS=${MAX_STEPS:-}
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
+VAL_ONLY=${VAL_ONLY:-false}
+if [[ "${VAL_ONLY}" == "1" ]]; then
+    VAL_ONLY=true
+fi
+VAL_BEFORE_TRAIN=${VAL_BEFORE_TRAIN:-${VAL_ONLY}}
+VALIDATION_DATA_DIR=${VALIDATION_DATA_DIR:-}
 FRAME_PROTOCOL="${FRAME_PROTOCOL:-${THINKSTREAM_FRAME_PROTOCOL:-video_meta}}"
 THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard_query_last}"
 case "${THINKSTREAM_RENDER_LAYOUT}" in
@@ -324,6 +332,8 @@ echo "Video limit:       ${LIMIT_VIDEOS}"
 echo "LR:                ${LR}"
 echo "Epochs:            ${EPOCHS}"
 echo "Max steps:         ${MAX_STEPS:-<epoch-based>}"
+echo "Val only:          ${VAL_ONLY}"
+[ -n "${VALIDATION_DATA_DIR}" ] && echo "Val dump dir:      ${VALIDATION_DATA_DIR}"
 echo "PPO mini bs:       ${PPO_MINI_BS}"
 echo "Batch size:        ${BATCH_SIZE}"
 echo "PPO max tok/GPU:   ${PPO_MAX_TOKEN_LEN_PER_GPU}"
@@ -400,6 +410,9 @@ export EXPERIMENT_NAME="${RUN_NAME}"
 export SAVE_DIR="${OUTPUT_DIR}"
 export SAVE_FREQ="${SAVE_FREQ}"
 export TEST_FREQ="${TEST_FREQ}"
+export VAL_ONLY="${VAL_ONLY}"
+export VAL_BEFORE_TRAIN="${VAL_BEFORE_TRAIN}"
+export VALIDATION_DATA_DIR="${VALIDATION_DATA_DIR}"
 export PARAM_OFFLOAD="${PARAM_OFFLOAD}"
 export OPTIMIZER_OFFLOAD="${OPTIMIZER_OFFLOAD}"
 export FREEZE_VISION_TOWER="${FREEZE_VISION_TOWER}"

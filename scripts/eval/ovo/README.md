@@ -36,6 +36,37 @@ bash scripts/eval/ovo/run_rl_full.sh \
 All ThinkStream eval wrappers use the same canonical prompt contract as SFT/RL:
 `FRAME_PROTOCOL=video_meta` and `RENDER_LAYOUT=standard_query_last`.
 
+For RL-path monitoring or OVO evaluation that must match training/test rollout,
+first render OVO into ThinkStream multi-Q trajectory rows and parquet:
+
+```bash
+python scripts/eval/ovo/build_rl_trajectories.py \
+  --benchmark-json /path/to/ovo_bench_new.json \
+  --out-jsonl data/ovo_rl/ovo_trajectories.jsonl \
+  --out-parquet data/ovo_rl/ovo_rl_multi_q.parquet \
+  --max-span-chunks 512 \
+  --pre-context-chunks 64 \
+  --post-context-chunks 2
+```
+
+Or run the full validation-only path directly:
+
+```bash
+bash scripts/eval/ovo/run_rl_recurrent_eval.sh \
+  --ckpt output/agent-rl/checkpoint-... \
+  --benchmark_json /path/to/ovo_bench_new.json \
+  --frames_root /path/to/OVO-Bench/frames
+```
+
+The converter packs non-overlapping questions from the same video and task into
+one trajectory, splits overlapping active-query intervals, and keeps each
+question's ask chunk and answer chunk in the same segment unless a single long
+OVO probe interval already exceeds the soft span limit. Use
+`--pack-across-tasks` only for throughput sweeps where mixed-task trajectory
+metrics are acceptable. The resulting parquet is intended for the same verl
+recurrent AgentLoop validation/test path as RL rollout, so KV window behaviour,
+recall payload handling, and reward parsing stay shared.
+
 Base VLM context modes are intentionally separate:
 
 - `streaming`: recent visual window only, no future frames.

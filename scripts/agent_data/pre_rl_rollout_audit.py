@@ -1,10 +1,15 @@
 #!/usr/bin/env python
-"""Fast pre-RL student rollout audit.
+"""Legacy fast pre-RL student rollout audit.
 
 Runs the current SFT/student checkpoint on full-video trajectory rows with the
-same batch-vLLM, video_meta, query-last rollout path used by DAgger/RL. It does
-not create training samples or run PPO update; it only reports whether the SFT
-policy is good enough to start RL.
+old batch-vLLM, video_meta, query-last audit path. It does not create training
+samples or run PPO update; it only reports whether the SFT policy is good enough
+to start RL.
+
+For correctness-sensitive RL monitoring, prefer building the same parquet rows
+used by training and running the verl recurrent AgentLoop validation/test path.
+That path owns the true-KV visual sliding window and should stay aligned with
+test-time inference.
 """
 
 from __future__ import annotations

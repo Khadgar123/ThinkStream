@@ -78,9 +78,11 @@ def test_training_scheme_builds_full_and_segment_rl_inputs():
     assert 'prompt = [{"role": "system", "content": system_prompt}]' in parquet
 
 
-def test_pre_rl_rollout_audit_uses_fast_canonical_path():
+def test_pre_rl_rollout_audit_is_legacy_sidecar_not_canonical_rollout():
     audit = _text("scripts/agent_data/pre_rl_rollout_audit.py")
 
+    assert "Legacy fast pre-RL student rollout audit" in audit
+    assert "prefer building the same parquet rows" in audit
     assert "streaming_vllm_rollout" in audit
     assert 'frame_protocol="video_meta"' in audit
     assert 'render_layout="standard_query_last"' in audit
@@ -89,13 +91,47 @@ def test_pre_rl_rollout_audit_uses_fast_canonical_path():
     assert "stable_think" in audit
 
 
+def test_ovo_rl_eval_builds_canonical_rollout_inputs():
+    builder = _text("scripts/eval/ovo/build_rl_trajectories.py")
+    run_recurrent = _text("scripts/eval/ovo/run_rl_recurrent_eval.sh")
+    readme = _text("scripts/eval/ovo/README.md")
+
+    assert "Render OVO-Bench into ThinkStream RL multi-Q trajectory rows" in builder
+    assert "through the verl recurrent rollout path" in builder
+    assert "_iter_rows_multi_q" in builder
+    assert "segment_start_chunk" in builder
+    assert "segment_end_chunk" in builder
+    assert "span_exceeded_soft_limit" in builder
+    assert "ovo_rl_multi_q.parquet" in readme
+    assert "same verl" in readme
+    assert "recurrent AgentLoop validation/test path" in readme
+    assert "VAL_ONLY=true" in run_recurrent
+    assert "VALIDATION_DATA_DIR" in run_recurrent
+    assert "bash scripts/grpo_train_verl.sh" in run_recurrent
+    assert 'MAX_CHUNKS="${MAX_CHUNKS:-2048}"' in run_recurrent
+
+
+def test_verl_launcher_supports_validation_only_rollout():
+    launcher = _text("scripts/grpo_train_verl.sh")
+    recipe = _text("thinkstream/rl/run_thinkstream_grpo.sh")
+
+    assert "VAL_ONLY" in launcher
+    assert "VAL_BEFORE_TRAIN" in launcher
+    assert "VALIDATION_DATA_DIR" in launcher
+    assert "trainer.val_before_train=${VAL_BEFORE_TRAIN}" in recipe
+    assert "+trainer.val_only=${VAL_ONLY}" in recipe
+    assert "+trainer.validation_data_dir" in recipe
+
+
 def main() -> None:
     tests = [
         test_dataset_registry_only_current_entries,
         test_sft_rl_eval_use_canonical_prompt_contract,
         test_rl_defaults_use_multi_trajectory_recurrent_update,
         test_training_scheme_builds_full_and_segment_rl_inputs,
-        test_pre_rl_rollout_audit_uses_fast_canonical_path,
+        test_pre_rl_rollout_audit_is_legacy_sidecar_not_canonical_rollout,
+        test_ovo_rl_eval_builds_canonical_rollout_inputs,
+        test_verl_launcher_supports_validation_only_rollout,
     ]
     for test in tests:
         test()
