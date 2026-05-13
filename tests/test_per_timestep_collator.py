@@ -13,7 +13,15 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import torch
-import pytest
+try:
+    import pytest
+except ImportError:  # pragma: no cover - local minimal env fallback
+    class _PytestFallback:
+        @staticmethod
+        def skip(message, allow_module_level=False):
+            raise SystemExit(message)
+
+    pytest = _PytestFallback()
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -59,6 +67,16 @@ def _make_instance(input_ids):
     }
 
 
+def _make_instance_with_recall(input_ids, recall_positions):
+    inst = _make_instance(input_ids)
+    recall = torch.zeros_like(inst["input_ids"], dtype=torch.bool)
+    for pos in recall_positions:
+        recall[0, pos] = True
+    inst["recall_video_mask"] = recall
+    inst["recall_kv_mask"] = recall.clone()
+    return inst
+
+
 def test_video_mask_not_emitted_by_default():
     """Default behaviour preserves the flash_attention_2 contract: no video_mask."""
     tok = _StubTokenizer()
@@ -87,6 +105,23 @@ def test_video_mask_emitted_when_requested():
     # Sample 1: positions 1, 2, 3 are video pads.
     assert vm[1].tolist() == [False, True, True, True, False]
     print("[OK] video_mask_emitted_when_requested")
+
+
+def test_recall_video_mask_emitted_when_requested():
+    tok = _StubTokenizer(video_token_id=7)
+    collator = PerTimestepDataCollator(tok, emit_video_mask=True)
+    batch = collator([
+        _make_instance_with_recall([1, 7, 7, 2, 7, 3], [4]),
+        _make_instance([4, 7, 7, 5]),
+    ])
+    assert "recall_video_mask" in batch
+    assert "recall_kv_mask" in batch
+    assert batch["recall_video_mask"].tolist() == [
+        [False, False, False, False, True, False],
+        [False, False, False, False, False, False],
+    ]
+    assert torch.equal(batch["recall_kv_mask"], batch["recall_video_mask"])
+    print("[OK] recall_video_mask_emitted_when_requested")
 
 
 def test_video_mask_handles_padding_uniformly():
@@ -122,6 +157,7 @@ def test_video_mask_token_id_unresolvable_warns_and_skips():
 if __name__ == "__main__":
     test_video_mask_not_emitted_by_default()
     test_video_mask_emitted_when_requested()
+    test_recall_video_mask_emitted_when_requested()
     test_video_mask_handles_padding_uniformly()
     test_video_mask_token_id_unresolvable_warns_and_skips()
     print("\nall PerTimestepDataCollator video_mask tests passed")

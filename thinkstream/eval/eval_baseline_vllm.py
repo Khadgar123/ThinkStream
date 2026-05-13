@@ -60,6 +60,7 @@ def _build_messages(datum: dict, frames, frame_meta: dict, options: list,
         start_frame_index=int(frame_meta.get("start_frame") or 0),
         total_num_frames=int(frame_meta.get("total_frames") or len(frames)),
         context_label="visual frame",
+        kv_scope="ordinary",
     )
     user_content.append({"type": "text", "text": query})
     messages = [

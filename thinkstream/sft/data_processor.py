@@ -1,14 +1,16 @@
-"""Per-timestep agent SFT data processor.
+"""Trajectory-aware agent SFT data processor.
 
 Based on Qwen3-VL official finetune data processing, adapted to the
-ShareGPT messages format emitted by pass5. Each sample
-is one inference-step snapshot with assistant-span CE labels only.
+standard Qwen messages format emitted by pass5. Canonical samples are
+multi-turn trajectory rows: from_start, from_compress, and compact_memory_update.
+Legacy flat per-step rows remain supported for ablations.
 
 Key differences from standard VLM SFT:
 - Input is pre-rendered ShareGPT messages, not ad-hoc flat JSON
 - Messages contain <memory>, <visual_window>, <recalled_frames> tags
 - Labels mask prompt/tool/user tokens and train only assistant spans
-- Samples are independent per-timestep snapshots
+- Trajectory rows may contain many assistant turns; labels train selected
+  assistant turns only.
 
 See docs/sft_engineering.md §2 and docs/data_construction_zh.md §13.
 """
@@ -17,6 +19,7 @@ import json
 import os
 import random
 import logging
+import re
 import time
 import hashlib
 from collections import Counter
@@ -31,6 +34,11 @@ import transformers
 
 from .data_list import data_list
 from thinkstream.data.rope2d import get_rope_index_25, get_rope_index_3
+from thinkstream.data.schema import (
+    TRAJ_TYPE_COMPACT_MEMORY_UPDATE,
+    TRAJ_TYPE_FROM_COMPRESS,
+    TRAJ_TYPE_FROM_START,
+)
 
 IGNORE_INDEX = -100
 
@@ -61,92 +69,158 @@ def _estimate_sample_tokens(sample: Dict) -> int:
     drop overlong samples before they hit the GPU. Accuracy ±15% is fine —
     we only need correct ranking among samples.
 
-    Handles BOTH schemas:
-      (1) Messages format (post-pass5): sum text in content + count visual frames
-      (2) Flat format: parse input.{system,memory,queries,visual_window} fields
-
     Vision token cost per frame tracks the runtime 130k-220k pixel profile
     (2 fps, merge_size=2). The estimate is intentionally conservative; it
     only needs to rank samples for length grouping and overlong filtering.
     """
-    _VIS_TOK_PER_FRAME = 128  # matches config.VISUAL_TOKENS_PER_CHUNK / FRAMES_PER_CHUNK
+    _VIS_TOK_PER_FRAME = 235  # conservative runtime image-item estimate
 
-    # ── Messages format ──
-    if "messages" in sample:
-        text_chars = 0
-        n_frames = 0
-        for msg in sample["messages"]:
-            content = msg.get("content")
-            if isinstance(content, str):
-                text_chars += len(content)
-            elif isinstance(content, list):
-                for item in content:
-                    if not isinstance(item, dict):
-                        continue
-                    t = item.get("type")
-                    if t == "text":
-                        text_chars += len(item.get("text", ""))
-                    elif item.get("image") or item.get("image_url") or t == "image":
-                        n_frames += 1
-                    elif t == "video":
-                        v = item.get("video")
-                        if isinstance(v, list):
-                            n_frames += len(v)
-                        else:
-                            # raw video w/ time range — estimate from interval
-                            vs = item.get("video_start", 0)
-                            ve = item.get("video_end", vs)
-                            n_frames += max(1, int(ve - vs) * 2)  # FPS=2
-        return text_chars // 3 + n_frames * _VIS_TOK_PER_FRAME
-
-    # ── Flat format (legacy) ──
-    inp = sample.get("input", {})
-    out = sample.get("output", "")
-    text_chars = (
-        len(inp.get("system", ""))
-        + len(out)
-        + len(inp.get("user_input", "") or "")
-    )
-    mem = inp.get("memory", {}) or {}
-    for seg in mem.get("compressed_segments", []):
-        text_chars += len(json.dumps(seg, ensure_ascii=False))
-    for t in mem.get("recent_thinks", []):
-        text_chars += len(t) if isinstance(t, str) else len(json.dumps(t, ensure_ascii=False))
-    for q in inp.get("queries", []) or []:
-        text_chars += len(json.dumps(q, ensure_ascii=False))
-    rr = inp.get("recall_result")
-    if rr:
-        text_chars += len(json.dumps(rr, ensure_ascii=False))
-    text_tokens = text_chars // 3
-    n_frames = inp.get("visual_window", {}).get("frames", 12)
-    rf = inp.get("recalled_frames")
-    if rf:
-        n_frames += rf.get("n_frames", 0)
-    visual_tokens = n_frames * _VIS_TOK_PER_FRAME
-    return text_tokens + visual_tokens
+    text_chars = 0
+    n_frames = 0
+    for msg in sample["messages"]:
+        content = msg.get("content")
+        if isinstance(content, str):
+            text_chars += len(content)
+        elif isinstance(content, list):
+            for item in content:
+                if not isinstance(item, dict):
+                    continue
+                t = item.get("type")
+                if t == "text":
+                    text_chars += len(item.get("text", ""))
+                elif item.get("image") or item.get("image_url") or t == "image":
+                    n_frames += 1
+                elif t == "video":
+                    v = item.get("video")
+                    if isinstance(v, list):
+                        n_frames += len(v)
+                    else:
+                        vs = item.get("video_start", 0)
+                        ve = item.get("video_end", vs)
+                        n_frames += max(1, int(ve - vs) * 2)  # FPS=2
+    return text_chars // 3 + n_frames * _VIS_TOK_PER_FRAME
 
 
 def _sample_has_visual(sample: Dict) -> bool:
     """Whether this row will execute the vision path in model.forward."""
-    if "messages" in sample:
-        for msg in sample.get("messages") or []:
-            content = msg.get("content")
-            parts = content if isinstance(content, list) else []
-            for item in parts:
-                if not isinstance(item, dict):
-                    continue
-                if item.get("type") in ("image", "video"):
-                    return True
-                if item.get("image") or item.get("image_url") or item.get("video"):
-                    return True
-        return False
+    for msg in sample.get("messages") or []:
+        content = msg.get("content")
+        parts = content if isinstance(content, list) else []
+        for item in parts:
+            if not isinstance(item, dict):
+                continue
+            if item.get("type") in ("image", "video"):
+                return True
+            if item.get("image") or item.get("image_url") or item.get("video"):
+                return True
+    return False
 
-    inp = sample.get("input", {}) or {}
-    vw = inp.get("visual_window") or {}
-    if int(vw.get("frames", 0) or 0) > 0:
-        return True
-    rf = inp.get("recalled_frames") or {}
-    return int(rf.get("n_frames", 0) or 0) > 0
+
+def _video_item_scopes(messages: Sequence[Dict]) -> List[str]:
+    """Return one KV scope label per rendered video item, in template order."""
+    scopes: List[str] = []
+    for msg in messages or []:
+        content = msg.get("content")
+        if not isinstance(content, list):
+            continue
+        for item in content:
+            if not isinstance(item, dict):
+                continue
+            if item.get("type") != "video" and not item.get("video"):
+                continue
+            scope = str(item.get("kv_scope") or "").strip().lower()
+            scopes.append(scope or "ordinary")
+    return scopes
+
+
+def _video_pad_token_id(tokenizer) -> Optional[int]:
+    try:
+        tid = tokenizer.convert_tokens_to_ids("<|video_pad|>")
+    except Exception:
+        return None
+    try:
+        tid = int(tid)
+    except (TypeError, ValueError):
+        return None
+    return tid if tid >= 0 else None
+
+
+def _contiguous_true_runs(mask: torch.Tensor) -> List[Tuple[int, int]]:
+    idx = torch.nonzero(mask, as_tuple=False).flatten()
+    if idx.numel() == 0:
+        return []
+    breaks = torch.nonzero(idx[1:] != idx[:-1] + 1, as_tuple=False).flatten() + 1
+    bounds = torch.cat([
+        idx.new_tensor([0]),
+        breaks,
+        idx.new_tensor([idx.numel()]),
+    ])
+    runs: List[Tuple[int, int]] = []
+    for i in range(bounds.numel() - 1):
+        lo = int(bounds[i].item())
+        hi = int(bounds[i + 1].item())
+        runs.append((int(idx[lo].item()), int(idx[hi - 1].item()) + 1))
+    return runs
+
+
+def build_recall_video_mask_from_messages(
+    *,
+    input_ids: torch.Tensor,
+    tokenizer,
+    messages: Sequence[Dict],
+) -> Optional[torch.Tensor]:
+    """Mark recalled-frame video tokens so SFT attention matches true-KV.
+
+    The processor emits one contiguous ``<|video_pad|>`` run per video item.
+    ``kv_scope='recall'`` is attached by the shared prompt builders to
+    historical recall evidence. We map those item scopes back onto token runs.
+    """
+    video_token_id = _video_pad_token_id(tokenizer)
+    if video_token_id is None:
+        return None
+    if input_ids.ndim != 2 or input_ids.shape[0] != 1:
+        return None
+    scopes = _video_item_scopes(messages)
+    if not scopes:
+        return torch.zeros_like(input_ids, dtype=torch.bool)
+
+    flat = input_ids[0]
+    runs = _contiguous_true_runs(flat == video_token_id)
+    recall_mask = torch.zeros_like(flat, dtype=torch.bool)
+    for idx, (start, end) in enumerate(runs):
+        if idx < len(scopes) and scopes[idx] == "recall":
+            recall_mask[start:end] = True
+    return recall_mask.unsqueeze(0)
+
+
+def _add_post_recall_text_kv_mask(
+    recall_kv_mask: torch.Tensor,
+    *,
+    assistant_spans: Sequence[Tuple[int, int]],
+    sample: Dict,
+) -> torch.Tensor:
+    """Mark ephemeral post-recall text spans.
+
+    Runtime true-KV deletes the recall tool-call generation and the following
+    tool-response input after the post-recall answer. In full-sequence SFT we
+    model that by marking the penultimate assistant span plus the bridge up to
+    the final assistant answer as recall-sidecar KV. The final answer itself
+    remains ordinary text memory.
+    """
+    if _sample_loss_class(sample) != "post_recall" or len(assistant_spans) < 2:
+        return recall_kv_mask
+
+    query_start, query_end = assistant_spans[-2]
+    final_start, _ = assistant_spans[-1]
+    if recall_kv_mask.ndim != 2 or recall_kv_mask.shape[0] != 1:
+        return recall_kv_mask
+    seq_len = int(recall_kv_mask.shape[1])
+    query_start = max(0, min(int(query_start), seq_len))
+    query_end = max(query_start, min(int(query_end) + 1, seq_len))
+    final_start = max(query_end, min(int(final_start), seq_len))
+    recall_kv_mask[0, query_start:query_end] = True
+    recall_kv_mask[0, query_end:final_start] = True
+    return recall_kv_mask
 
 
 def _parse_ratio_spec(spec: Optional[str]) -> Dict[str, float]:
@@ -184,7 +258,30 @@ def _sample_loss_class(sample: Dict) -> str:
         or meta.get("sft_loss_class")
     )
     if explicit:
-        return str(explicit)
+        explicit_str = str(explicit)
+        trajectory_type = str(
+            sample.get("trajectory_type")
+            or meta.get("trajectory_type")
+            or ""
+        )
+        if (
+            explicit_str == "streaming"
+            and trajectory_type in {TRAJ_TYPE_FROM_START, TRAJ_TYPE_FROM_COMPRESS}
+        ):
+            return trajectory_type
+        return explicit_str
+
+    trajectory_type = str(
+        sample.get("trajectory_type")
+        or meta.get("trajectory_type")
+        or ""
+    )
+    if trajectory_type in {
+        TRAJ_TYPE_FROM_START,
+        TRAJ_TYPE_FROM_COMPRESS,
+        TRAJ_TYPE_COMPACT_MEMORY_UPDATE,
+    }:
+        return "compress" if trajectory_type == TRAJ_TYPE_COMPACT_MEMORY_UPDATE else trajectory_type
 
     subtype = str(sample.get("sft_subtype") or meta.get("sft_subtype") or "").strip().lower()
     if "recall_query" in subtype:
@@ -205,7 +302,8 @@ def _assign_class_loss_weights(samples: List[Dict], data_args) -> None:
     if not ratios or alpha <= 0 or not samples:
         for s in samples:
             s["_loss_class"] = _sample_loss_class(s)
-            s["_sample_weight"] = 1.0
+            s.pop("_sample_weight", None)
+            s["_sample_weight_enabled"] = False
         return
 
     for s in samples:
@@ -230,6 +328,7 @@ def _assign_class_loss_weights(samples: List[Dict], data_args) -> None:
         weights[k] /= mean_w
     for s in samples:
         s["_sample_weight"] = float(weights.get(s.get("_loss_class", "?"), 1.0))
+        s["_sample_weight_enabled"] = True
 
     rank0_print(
         "Class loss weights:",
@@ -679,493 +778,12 @@ def update_processor_pixels(processor, data_args):
 
 
 # ---------------------------------------------------------------------------
-# Message construction (pipeline JSON → Qwen chat messages)
-# ---------------------------------------------------------------------------
-
-# Import shared protocol for memory formatting.
-# The canonical format_memory_block lives in agent_protocol to guarantee
-# train/inference identity. This wrapper handles the pipeline JSON structure.
-from thinkstream.data.agent_protocol import (
-    format_memory_block as _shared_format_memory,
-    format_user_input_block,
-)
-
-
-def _format_memory_block(memory: Dict) -> str:
-    """Format memory state as text. Delegates to shared agent_protocol."""
-    return _shared_format_memory(memory)
-
-
-def _resolve_frame_paths(paths: List[str], base_path: Path) -> List[str]:
-    """Resolve frame paths after a batch directory is copied to a new root."""
-    roots = []
-    for value in (os.environ.get("THINKSTREAM_DATA_ROOT"), os.environ.get("AGENT_DATA_DIR")):
-        if value:
-            root = Path(value)
-            if root not in roots:
-                roots.append(root)
-    if base_path not in roots:
-        roots.append(base_path)
-    out: List[str] = []
-    for raw in paths:
-        p = Path(str(raw))
-        parts = p.parts
-        if "frames" in parts:
-            idx = parts.index("frames")
-            for root in roots:
-                candidate = root / "frames" / Path(*parts[idx + 1:])
-                if candidate.exists():
-                    out.append(str(candidate))
-                    break
-            else:
-                out.append(str(p if p.is_absolute() else base_path / p))
-            continue
-        if not p.is_absolute():
-            direct = base_path / p
-            if direct.exists():
-                out.append(str(direct))
-                continue
-            out.append(str(direct))
-            continue
-        if p.exists():
-            out.append(str(p))
-            continue
-        out.append(str(p))
-    return out
-
-
-def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
-    """v12.0: Build messages for the official Qwen tool-call protocol.
-
-    DEPRECATED: the canonical builder is now
-    ``scripts/agent_data/pass5_messages.py:build_messages``, which is used
-    by the main pipeline (`pass5_messages.py:convert`). This function is kept
-    only for legacy eval/debug paths and mirrors the current pass5 contract as
-    closely as possible.
-
-    Three sample shapes handled (controlled by pass3c-emitted fields):
-
-    A. Single-turn (silent / response / lonely recall):
-       sample["output"] = single assistant string. Messages = [system, user, assistant].
-
-    B. Multi-turn recall (sample_type=='recall' with v12_assistant_turn_1/2):
-       Two assistant turns sandwiching a tool turn. Messages =
-         [system, user (chunk visual+memory+query),
-          assistant (tool_call recall),
-          user (recalled_frames + metadata-only recall_result),
-          assistant (final answer)]
-       This implements the within-one-chunk agentic cycle (think→recall→
-       result→think→answer) per docs/v12.0_protocol_migration_design.md §1.
-
-    C. Inter-chunk compress (inter_chunk=True):
-       The user_input compress trigger is rendered before memory, and the
-       prompt omits visual_window/images/videos because compression is a
-       text-memory action between visual timesteps.
-
-    Differences from v11 (build_per_timestep_messages):
-    - SYSTEM_PROMPT (concise; <tools> block rendered by chat_template
-      via tools= parameter at apply time).
-    - recall_result is metadata-only; historical frames carry recall evidence.
-      Shape-B recall uses a dedicated 'tool' role message (matches Qwen3-VL chat_template tool branch which
-      nests <tool_response> inside the <|im_start|>user wrapper).
-    """
-    # v12.6: import canonical chunk_sec via agent_protocol (which already
-    # falls back gracefully when scripts.agent_data.config isn't on the
-    # path — e.g. inference container). Earlier the direct
-    # `from scripts.agent_data.config import AGENT_CHUNK_SEC` would raise
-    # ModuleNotFoundError when training was launched outside the project
-    # root. Going through agent_protocol routes through the same fallback
-    # chain SFT/eval/RL all use.
-    from thinkstream.data.agent_protocol import (
-        AGENT_CHUNK_SEC,
-        FRAMES_PER_CHUNK,
-        append_visual_frames,
-        build_recall_result_metadata,
-        format_queries_block,
-        is_inter_chunk,
-        normalize_frame_protocol,
-        prompt_time_range,
-        prompt_time_value,
-        system_prompt_for_frame_protocol,
-    )
-
-    inp = sample["input"]
-    chunk_idx = sample["chunk_idx"]
-    chunk_sec = float(AGENT_CHUNK_SEC)
-    frame_protocol = normalize_frame_protocol(sample.get("frame_protocol"))
-    inter_chunk = is_inter_chunk(sample)
-    is_recall_multiturn = (
-        sample.get("sample_type") == "recall"
-        and "v12_assistant_turn_1" in sample
-    )
-    sample_type = str(sample.get("sample_type") or "").strip().lower()
-    explicit_post_recall = sample_type in {
-        "post_recall",
-        "recall_response",
-        "recall_answer",
-    }
-    legacy_post_recall = (
-        explicit_post_recall
-        or (bool(inp.get("recall_result")) and not is_recall_multiturn and sample_type != "recall")
-    )
-
-    messages = [
-        {
-            "role": "system",
-            "content": [{
-                "type": "text",
-                "text": system_prompt_for_frame_protocol(
-                    frame_protocol,
-                    prompt_kind=(
-                        "post_recall"
-                        if (
-                            legacy_post_recall
-                        )
-                        else None
-                    ),
-                    inter_chunk=inter_chunk,
-                ),
-            }],
-        }
-    ]
-
-    video_path = sample.get("video_path", "")
-    if video_path and not Path(video_path).is_absolute():
-        video_path = str(base_path / video_path)
-    require_pre = bool(sample.get("_require_pre_extracted_frames", True))
-
-    # ── User content ───────────────────────────────────────────────────
-    user_content = []
-
-    if legacy_post_recall and not is_recall_multiturn and not inter_chunk:
-        queries_text = format_queries_block(inp.get("queries", []))
-        if queries_text:
-            user_content.append({"type": "text", "text": queries_text})
-
-        rf = inp.get("recalled_frames") or {}
-        if rf:
-            rf_header = json.dumps({
-                "time_range": prompt_time_range(rf["time_range"]),
-                "source": rf.get("source", "historical_frames"),
-                "n_frames": rf["n_frames"],
-            })
-            user_content.append({
-                "type": "text",
-                "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
-            })
-            if "frame_paths" in rf:
-                paths = _resolve_frame_paths(rf["frame_paths"], base_path)
-                try:
-                    from scripts.agent_data.config import (
-                        RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
-                    )
-                except ImportError:
-                    _RTKW = {"min_pixels": 256 * 28 * 28, "max_pixels": 512 * 28 * 28}
-                start_frame = int(round(float(rf["time_range"][0]) / chunk_sec)) * FRAMES_PER_CHUNK
-                total_frames = int(round(float(rf["time_range"][1]) / chunk_sec)) * FRAMES_PER_CHUNK
-                append_visual_frames(
-                    user_content,
-                    paths,
-                    frame_protocol=frame_protocol,
-                    fps=float(FRAMES_PER_CHUNK / chunk_sec),
-                    start_frame_index=start_frame,
-                    total_num_frames=total_frames,
-                    context_label="recalled frame",
-                    min_pixels=_RTKW["min_pixels"],
-                    max_pixels=_RTKW["max_pixels"],
-                )
-            elif video_path and not require_pre:
-                user_content.append({
-                    "type": "video", "video": video_path,
-                    "video_start": prompt_time_value(rf["time_range"][0]),
-                    "video_end": prompt_time_value(rf["time_range"][1]),
-                })
-
-        rr_json = json.dumps(
-            build_recall_result_metadata(inp.get("recall_result") or {}, rf),
-            ensure_ascii=False,
-        )
-        user_content.append({
-            "type": "text",
-            "text": f"\n<recall_result>{rr_json}</recall_result>",
-        })
-        messages.append({"role": "user", "content": user_content})
-        messages.append({
-            "role": "assistant",
-            "content": [{"type": "text", "text": sample.get("output", "")}],
-        })
-        return messages
-
-    user_input_block = format_user_input_block(
-        inp.get("user_input", ""),
-        inter_chunk=inter_chunk,
-    )
-    if user_input_block:
-        user_content.append({
-            "type": "text",
-            "text": user_input_block.lstrip("\n"),
-        })
-
-    # Memory follows the fresh user event so questions/triggers are visible
-    # before long historical text.
-    memory_text = _format_memory_block(inp["memory"])
-    user_content.append({
-        "type": "text",
-        "text": f"\n<memory>\n{memory_text}\n</memory>" if user_content
-        else f"<memory>\n{memory_text}\n</memory>",
-    })
-
-    if inter_chunk:
-        messages.append({"role": "user", "content": user_content})
-        messages.append({
-            "role": "assistant",
-            "content": [{"type": "text", "text": sample.get("output", "")}],
-        })
-        return messages
-
-    # Visual window + frames.
-    vw = inp["visual_window"]
-    current_start = chunk_idx * chunk_sec
-    current_end = current_start + chunk_sec
-    vw_header = json.dumps({
-        "start": vw["video_start"],
-        "end": vw["video_end"],
-        "frames": vw["frames"],
-        "current_time": current_start,
-    })
-    user_content.append({
-        "type": "text",
-        "text": f"\n<visual_window>{vw_header}</visual_window>",
-    })
-
-    # v12.5 fallback: pass4 flat files may omit frame_paths — infer from
-    # video_id + frames count using the pre-extracted frame directory.
-    if "frame_paths" not in vw and "frames" in vw:
-        vid = sample.get("video_id", "")
-        if vid:
-            try:
-                from scripts.agent_data.config import (
-                    DATA_ROOT as _DATA_ROOT,
-                    PROJECT_ROOT as _PROJECT_ROOT,
-                    VISUAL_WINDOW_CHUNKS as _VWC,
-                    compute_visual_window_start as _cvws,
-                )
-                _frame_dir_path = _DATA_ROOT / "frames" / vid
-                try:
-                    frame_dir = str(_frame_dir_path.relative_to(_PROJECT_ROOT))
-                except ValueError:
-                    frame_dir = str(_frame_dir_path)
-            except ImportError:
-                data_root = (
-                    os.environ.get("THINKSTREAM_DATA_ROOT")
-                    or os.environ.get("AGENT_DATA_DIR")
-                )
-                if data_root:
-                    root_path = Path(data_root)
-                    frame_dir = str(
-                        root_path.parent / "frames" / vid
-                        if root_path.name == "final"
-                        else root_path / "frames" / vid
-                    )
-                else:
-                    frame_dir = f"data/agent_v5/frames/{vid}"
-                _VWC = 16
-                _cvws = lambda ck, visual_window_chunks=16: max(
-                    0, int(ck) - int(visual_window_chunks) + 1
-                )
-            window_start = _cvws(chunk_idx, _VWC)
-            paths: List[str] = []
-            for ci in range(window_start, chunk_idx + 1):
-                for fi in range(FRAMES_PER_CHUNK):
-                    fnum = ci * FRAMES_PER_CHUNK + fi + 1
-                    paths.append(f"{frame_dir}/frame_{fnum:06d}.jpg")
-            vw["frame_paths"] = paths
-
-    if "frame_paths" in vw:
-        paths = _resolve_frame_paths(vw["frame_paths"], base_path)
-        try:
-            from scripts.agent_data.config import (
-                RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
-            )
-        except ImportError:
-            _RTKW = {"min_pixels": 256 * 28 * 28, "max_pixels": 512 * 28 * 28}
-        start_frame = int(round(float(vw["video_start"]) / chunk_sec)) * FRAMES_PER_CHUNK
-        total_frames = int(round(float(vw["video_end"]) / chunk_sec)) * FRAMES_PER_CHUNK
-        append_visual_frames(
-            user_content,
-            paths,
-            frame_protocol=frame_protocol,
-            fps=float(FRAMES_PER_CHUNK / chunk_sec),
-            start_frame_index=start_frame,
-            total_num_frames=total_frames,
-            latest_start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
-            min_pixels=_RTKW["min_pixels"],
-            max_pixels=_RTKW["max_pixels"],
-        )
-    elif "frame_indices" in vw and video_path:
-        if require_pre:
-            raise ValueError(
-                f"Sample {sample.get('sample_id', '?')}: visual_window has no "
-                f"frame_paths. Pre-extract frames or set "
-                f"--require_pre_extracted_frames False."
-            )
-        user_content.append({
-            "type": "video", "video": video_path,
-            "video_start": vw["video_start"], "video_end": vw["video_end"],
-        })
-    else:
-        raise ValueError(
-            f"Sample {sample.get('sample_id', '?')}: visual_window has neither "
-            f"frame_paths nor frame_indices."
-        )
-
-    # Active query plus response history for that same query. Query-last is the
-    # canonical layout used by pass5/runtime/eval.
-    queries = inp.get("queries", [])
-    if queries:
-        queries_text = format_queries_block(queries)
-        if queries_text:
-            user_content.append({"type": "text", "text": f"\n{queries_text}"})
-
-    # Recalled frames stay in the FIRST user message ONLY for non-multi-turn
-    # recall samples (legacy single-turn recall_response). For multi-turn
-    # recall (shape B), recalled_frames are part of the tool turn payload
-    # and rendered there, not in the prompt before the model emits anything.
-    if "recalled_frames" in inp and not is_recall_multiturn and not inter_chunk:
-        rf = inp["recalled_frames"]
-        rf_header = json.dumps({
-            "time_range": rf["time_range"],
-            "source": rf.get("source", "historical_frames"),
-            "n_frames": rf["n_frames"],
-        })
-        user_content.append({
-            "type": "text",
-            "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
-        })
-        if "frame_paths" in rf:
-            paths = _resolve_frame_paths(rf["frame_paths"], base_path)
-            try:
-                from scripts.agent_data.config import (
-                    RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
-                )
-            except ImportError:
-                _RTKW = {"min_pixels": 256 * 28 * 28, "max_pixels": 512 * 28 * 28}
-            start_frame = int(round(float(rf["time_range"][0]) / chunk_sec)) * FRAMES_PER_CHUNK
-            total_frames = int(round(float(rf["time_range"][1]) / chunk_sec)) * FRAMES_PER_CHUNK
-            append_visual_frames(
-                user_content,
-                paths,
-                frame_protocol=frame_protocol,
-                fps=float(FRAMES_PER_CHUNK / chunk_sec),
-                start_frame_index=start_frame,
-                total_num_frames=total_frames,
-                context_label="recalled frame",
-                min_pixels=_RTKW["min_pixels"],
-                max_pixels=_RTKW["max_pixels"],
-            )
-        elif video_path and not require_pre:
-            user_content.append({
-                "type": "video", "video": video_path,
-                "video_start": rf["time_range"][0],
-                "video_end": rf["time_range"][1],
-            })
-
-    # Legacy (non-multi-turn) recall_result fallback. Model-visible recall
-    # result is metadata only; visual evidence comes from recalled frames.
-    if inp.get("recall_result") and not is_recall_multiturn and not inter_chunk:
-        rr = inp["recall_result"]
-        rr_json = json.dumps(
-            build_recall_result_metadata(rr, inp.get("recalled_frames")),
-            ensure_ascii=False,
-        )
-        user_content.append({
-            "type": "text",
-            "text": f"\n<recall_result>{rr_json}</recall_result>",
-        })
-
-    messages.append({"role": "user", "content": user_content})
-
-    # ── Assistant turn(s) ──────────────────────────────────────────────
-    if is_recall_multiturn:
-        # Shape B: 2 assistant turns sandwiching a tool turn.
-        messages.append({
-            "role": "assistant",
-            "content": [{"type": "text", "text": sample["v12_assistant_turn_1"]}],
-        })
-
-        # Tool turn — historical frames plus metadata-only recall_result. The
-        # Qwen3-VL chat_template renders this nested under <|im_start|>user
-        # but loss-masked at training time (assistant span only contributes).
-        rr = sample.get("recall_result") or {}
-        tool_payload = []
-
-        # If the recall returned historical frames, attach them inside the
-        # tool turn payload — model sees them as part of the tool response.
-        rf = inp.get("recalled_frames")
-        if rf:
-            rf_header = json.dumps({
-                "time_range": rf["time_range"],
-                "source": rf.get("source", "historical_frames"),
-                "n_frames": rf["n_frames"],
-            })
-            tool_payload.append({
-                "type": "text",
-                "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
-            })
-            if "frame_paths" in rf:
-                paths = _resolve_frame_paths(rf["frame_paths"], base_path)
-                try:
-                    from scripts.agent_data.config import (
-                        RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
-                    )
-                except ImportError:
-                    _RTKW = {"min_pixels": 256 * 28 * 28, "max_pixels": 512 * 28 * 28}
-                start_frame = int(round(float(rf["time_range"][0]) / chunk_sec)) * FRAMES_PER_CHUNK
-                total_frames = int(round(float(rf["time_range"][1]) / chunk_sec)) * FRAMES_PER_CHUNK
-                append_visual_frames(
-                    tool_payload,
-                    paths,
-                    frame_protocol=frame_protocol,
-                    fps=float(FRAMES_PER_CHUNK / chunk_sec),
-                    start_frame_index=start_frame,
-                    total_num_frames=total_frames,
-                    context_label="recalled frame",
-                    min_pixels=_RTKW["min_pixels"],
-                    max_pixels=_RTKW["max_pixels"],
-                )
-            elif video_path and not require_pre:
-                tool_payload.append({
-                    "type": "video", "video": video_path,
-                    "video_start": rf["time_range"][0],
-                    "video_end": rf["time_range"][1],
-                })
-        rr_json = json.dumps(
-            build_recall_result_metadata(rr, rf),
-            ensure_ascii=False,
-        )
-        tool_payload.append({
-            "type": "text",
-            "text": f"<recall_result>{rr_json}</recall_result>",
-        })
-        messages.append({"role": "user", "content": tool_payload})
-
-        messages.append({
-            "role": "assistant",
-            "content": [{"type": "text", "text": sample["v12_assistant_turn_2"]}],
-        })
-    else:
-        # Shape A or C: single assistant turn.
-        messages.append({
-            "role": "assistant",
-            "content": [{"type": "text", "text": sample["output"]}],
-        })
-
-    return messages
-
-
-# ---------------------------------------------------------------------------
 # Preprocessing: messages → model inputs with label masking
 # ---------------------------------------------------------------------------
+
+from thinkstream.data.agent_protocol import tools_for_turn
+
+_MEMORY_LOAD_ACK = "Memory loaded."
 
 def _resolve_media_path(value, base_path: Path):
     if isinstance(value, str) and value and not Path(value).is_absolute():
@@ -1185,6 +803,9 @@ def _resolve_video_paths(messages: List[Dict], base_path: Path) -> List[Dict]:
     resolved = []
     for msg in messages:
         content = msg.get("content")
+        if isinstance(content, str):
+            msg = {**msg, "content": [{"type": "text", "text": content}]}
+            content = msg["content"]
         if isinstance(content, list):
             new_content = []
             for item in content:
@@ -1341,6 +962,37 @@ def _assistant_texts_from_messages(messages: List[Dict]) -> List[str]:
     ]
 
 
+def _normalise_tools_for_sft_row(sample: Dict, tools):
+    """Defensively align on-disk tool schemas with the row's turn type."""
+    meta = sample.get("metadata") or {}
+    trajectory_type = str(sample.get("trajectory_type") or meta.get("trajectory_type") or "")
+    sample_type = str(sample.get("sample_type") or "").strip().lower()
+    tool_schema_mode = str(
+        sample.get("tool_schema_mode")
+        or meta.get("tool_schema_mode")
+        or ""
+    ).strip().lower()
+    if tool_schema_mode:
+        return tools_for_turn(tool_schema_mode)
+    subtype = str(sample.get("sft_subtype") or meta.get("sft_subtype") or "").strip().lower()
+    loss_class = str(
+        sample.get("loss_class")
+        or sample.get("sft_loss_class")
+        or meta.get("loss_class")
+        or meta.get("sft_loss_class")
+        or ""
+    ).strip().lower()
+    if "post_recall" in subtype or loss_class in {"post_recall", "recall_response"}:
+        return tools_for_turn("post_recall")
+    if "recall_query" in subtype or loss_class == "recall":
+        return tools_for_turn("streaming")
+    if trajectory_type in {TRAJ_TYPE_FROM_START, TRAJ_TYPE_FROM_COMPRESS}:
+        return tools_for_turn("streaming")
+    if trajectory_type == TRAJ_TYPE_COMPACT_MEMORY_UPDATE or sample_type == "compress":
+        return tools_for_turn("compress")
+    return tools
+
+
 def _find_json_string_value_span(text: str, keys: Tuple[str, ...] = ("text", "summary")) -> Optional[Tuple[int, int]]:
     """Find the char span of a JSON string value in a tool-call payload.
 
@@ -1466,7 +1118,8 @@ def _apply_compress_token_loss_weights(
         if turn_idx >= len(assistant_texts):
             continue
         assistant_text = assistant_texts[turn_idx]
-        if "compress" not in assistant_text:
+        is_compact_mem = "<MEM>" in assistant_text
+        if "compress" not in assistant_text and not is_compact_mem:
             continue
 
         # Default fallback: down-weight most of the assistant span as summary
@@ -1485,7 +1138,16 @@ def _apply_compress_token_loss_weights(
         else:
             token_loss_weight[0, ans_end] = close_w
 
-        body_span = _find_json_string_value_span(assistant_text)
+        if is_compact_mem:
+            mem_start = assistant_text.find("<MEM>")
+            mem_end = assistant_text.find("</MEM>")
+            body_span = (
+                (mem_start + len("<MEM>"), mem_end)
+                if mem_start >= 0 and mem_end > mem_start
+                else None
+            )
+        else:
+            body_span = _find_json_string_value_span(assistant_text)
         assistant_ids = _token_ids_no_special(tokenizer, assistant_text)
         span_ids = input_ids_flat[ans_start:ans_end]
         exact_alignment = bool(assistant_ids) and assistant_ids == span_ids
@@ -1520,7 +1182,7 @@ def _apply_compress_token_loss_weights(
     return diagnostics
 
 
-def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
+def preprocess_trajectory_sample(sample: Dict, processor, data_args=None) -> Dict:
     """Tokenize a single SFT sample (messages format) and mask labels.
 
     Input contract (post-pass5): sample MUST contain a ``messages`` key
@@ -1535,14 +1197,18 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
     as recall-response/no-tools get no tool schema.
     """
     base_path = Path(sample.get("data_path", "."))
+    video_id = str(sample.get("video_id") or "").strip()
+    media_base_path = base_path
+    if video_id and (base_path / video_id).is_dir():
+        media_base_path = base_path / video_id
 
     if "messages" not in sample:
         raise ValueError(
             f"Sample {sample.get('sample_id', '?')}: missing 'messages' key. "
-            f"Run scripts/agent_data/pass5_messages.py to convert "
-            f"input/output samples to ShareGPT messages format."
+            f"Run scripts/agent_data/pass5.py to render "
+            f"multi-turn trajectory rows."
         )
-    messages = _resolve_video_paths(sample["messages"], base_path)
+    messages = _resolve_video_paths(sample["messages"], media_base_path)
 
     # Current pass5 messages carry explicit video_metadata in type="video"
     # blocks. Keep this fallback for raw rows that still contain video items
@@ -1566,7 +1232,7 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
     # Tool schema: the row carries its own tools list. The pass5 renderer
     # decides which tools each trajectory needs (recall, compress, or both)
     # and writes the list inline.
-    tools = sample.get("tools")
+    tools = _normalise_tools_for_sft_row(sample, sample.get("tools"))
     template_kwargs = dict(
         tokenize=True, return_dict=True, return_tensors="pt",
         do_sample_frames=False,  # frame_paths are already the exact frames to use
@@ -1608,30 +1274,44 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
                 pos = ans_end
         pos += 1
 
-    # Per-chunk rows carry 1 (silent/response/compress/recall_query) or 2
-    # (post_recall full prefix) assistant turns. Trajectory rows
-    # (``trajectory_type`` set by pass5) carry N turns covering all chunks
-    # between two compress boundaries. Rows can opt into a narrower label
-    # mask through ``loss_assistant_turns`` — e.g. pass5 post_recall rows
-    # use ``"last"`` so the previous recall tool_call is context, not a
-    # second target under a no-tools schema.
-    is_trajectory_row = bool(sample.get("trajectory_type"))
-    if not is_trajectory_row and len(assistant_spans) not in {1, 2}:
+    trajectory_type = str(sample.get("trajectory_type") or "")
+    is_streaming_trajectory_row = trajectory_type in {
+        TRAJ_TYPE_FROM_START,
+        TRAJ_TYPE_FROM_COMPRESS,
+    } or str(sample.get("sample_type") or "") == "streaming_trajectory"
+    is_compact_memory_row = trajectory_type == TRAJ_TYPE_COMPACT_MEMORY_UPDATE
+    if trajectory_type not in {
+        TRAJ_TYPE_FROM_START,
+        TRAJ_TYPE_FROM_COMPRESS,
+        TRAJ_TYPE_COMPACT_MEMORY_UPDATE,
+    }:
         sid = sample.get("sample_id") or sample.get("trajectory_id") or "?"
         raise ValueError(
-            f"Sample {sid}: expected 1 or 2 assistant turn(s), "
-            f"found {len(assistant_spans)}. 1 turn for "
-            f"silent/response/compress; 2 turns for recall multi-turn."
+            f"Trajectory row {sid}: unsupported trajectory_type={trajectory_type!r}."
         )
-    if is_trajectory_row and len(assistant_spans) == 0:
+    if is_streaming_trajectory_row and len(assistant_spans) == 0:
         sid = sample.get("sample_id") or sample.get("trajectory_id") or "?"
         raise ValueError(
             f"Trajectory row {sid}: no assistant turns found in messages."
         )
+    if is_compact_memory_row and len(assistant_spans) != 1:
+        sid = sample.get("sample_id") or sample.get("trajectory_id") or "?"
+        raise ValueError(
+            f"Compact-memory row {sid}: expected exactly 1 assistant turn, "
+            f"found {len(assistant_spans)}."
+        )
 
+    assistant_texts = _assistant_texts_from_messages(messages)
     loss_spec = sample.get("loss_assistant_turns")
     if loss_spec is None:
         loss_spec = sample.get("loss_assistant_indices")
+    if (
+        loss_spec is None
+        and trajectory_type == TRAJ_TYPE_FROM_COMPRESS
+        and assistant_texts
+        and assistant_texts[0].strip() == _MEMORY_LOAD_ACK
+    ):
+        loss_spec = list(range(1, len(assistant_spans)))
     loss_spans, loss_turn_indices = _select_loss_assistant_spans(
         assistant_spans, loss_spec,
     )
@@ -1644,7 +1324,7 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
     loss_class = sample.get("_loss_class") or _sample_loss_class(sample)
     compress_weight_diag: Optional[Dict[str, Any]] = None
     if data_args is not None:
-        raw_enabled = getattr(data_args, "compress_token_weighting", True)
+        raw_enabled = getattr(data_args, "compress_token_weighting", False)
         if isinstance(raw_enabled, str):
             compress_token_weighting = raw_enabled.strip().lower() not in {
                 "0", "false", "no", "off",
@@ -1659,14 +1339,11 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
             # enabled. Mixed batches would otherwise drop token weights if
             # only some rows carried the key.
             token_loss_weight = torch.ones_like(labels, dtype=torch.float32)
-            # Per-chunk compress rows: apply compress redistribution to the
-            # single (or last) assistant span. Trajectory rows have N turns
-            # of mixed classes; per-span class detection isn't wired yet, so
-            # we skip the compress-specific token weighting for trajectory
-            # rows and let action_class_loss balance compress against other
-            # classes via inverse-frequency weights instead.
+            # Compact-memory rows can opt into the old compress-internal
+            # weighting ablation; production leaves it disabled so <MEM> body
+            # and format tokens use ordinary assistant CE.
             if (
-                not is_trajectory_row
+                (not is_streaming_trajectory_row or is_compact_memory_row)
                 and compress_token_weighting
                 and loss_class == "compress"
             ):
@@ -1709,14 +1386,36 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
                     tool_call_open_ids=tc_open_ids,
                     tool_call_close_ids=tc_close_ids,
                 )
-                # Compose with existing weights multiplicatively. This keeps
-                # compress-internal structure/body/close emphasis intact while
-                # adding cross-class balance on the action keyword positions.
+                # Compose with any existing token weights multiplicatively.
+                # Compress-internal weighting is off by default; when disabled
+                # this is just the action anchor reweighting ablation.
                 token_loss_weight = token_loss_weight * class_weight
             full_result["token_loss_weight"] = token_loss_weight
 
     full_result["labels"] = labels
     full_result["input_ids"] = input_ids
+    recall_video_mask = build_recall_video_mask_from_messages(
+        input_ids=input_ids,
+        tokenizer=processor.tokenizer,
+        messages=messages,
+    )
+    recall_kv_mask = (
+        recall_video_mask.clone()
+        if recall_video_mask is not None
+        else torch.zeros_like(input_ids, dtype=torch.bool)
+    )
+    recall_kv_mask = _add_post_recall_text_kv_mask(
+        recall_kv_mask,
+        assistant_spans=assistant_spans,
+        sample=sample,
+    )
+    if recall_video_mask is not None or bool(recall_kv_mask.any().item()):
+        full_result["recall_video_mask"] = (
+            recall_video_mask
+            if recall_video_mask is not None
+            else torch.zeros_like(input_ids, dtype=torch.bool)
+        )
+        full_result["recall_kv_mask"] = recall_kv_mask
 
     # v12.11 P1.2 fix (2026-05-01): expose ALL assistant spans, not just the
     # first. Multi-turn recall samples have 2 assistant turns (tool_call +
@@ -1736,6 +1435,9 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
         "loss_assistant_turn_indices": list(loss_turn_indices),
         "loss_assistant_turns": sample.get("loss_assistant_turns", "all"),
         "n_assistant_turns": len(assistant_spans),
+        "trajectory_type": trajectory_type,
+        "is_streaming_trajectory": is_streaming_trajectory_row,
+        "is_compact_memory_update": is_compact_memory_row,
         "sft_subtype": sample.get("sft_subtype", ""),
         "compress_token_weighting": compress_weight_diag,
     }
@@ -1746,12 +1448,11 @@ def preprocess_per_timestep(sample: Dict, processor, data_args=None) -> Dict:
 # Dataset
 # ---------------------------------------------------------------------------
 
-class PerTimestepDataset(Dataset):
-    """Dataset for per-timestep agent SFT.
+class TrajectorySFTDataset(Dataset):
+    """Dataset for trajectory-mixed agent SFT.
 
-    Each sample is a single 1s chunk (v12.5) with memory state, visual
-    window (recent 16 chunks = 16s), optional recalled frames, and a
-    single assistant output.
+    Canonical rows are multi-turn trajectories rendered by pass5. Legacy
+    flat per-step rows remain supported for ablations.
     """
 
     def __init__(self, processor, data_args, dataset_use_override: Optional[str] = None,
@@ -1794,31 +1495,33 @@ class PerTimestepDataset(Dataset):
 
             for ann in annotations:
                 ann["data_path"] = cfg["data_path"]
-                ann["_require_pre_extracted_frames"] = bool(
-                    getattr(data_args, "require_pre_extracted_frames", True)
-                )
             all_samples.extend(annotations)
 
-        # v12.6: filter strictly to messages-format samples. preprocess_per_timestep
-        # raises on missing 'messages' key (line ~448), so admitting flat-format
-        # samples here would silently pass the dataset boundary then crash inside
-        # training. Legacy flat datasets must be converted via pass5_messages.py
-        # first; the original dual-schema filter caused confusing late-stage
-        # crashes when a stale dataset path slipped through.
-        def _is_valid_messages(s: Dict) -> bool:
+        def _is_valid_trajectory_messages(s: Dict) -> bool:
             msgs = s.get("messages")
             if not isinstance(msgs, list) or not msgs:
                 return False
-            return any(m.get("role") == "assistant" for m in msgs)
+            if not any(m.get("role") == "assistant" for m in msgs):
+                return False
+            t = str(
+                s.get("trajectory_type")
+                or (s.get("metadata") or {}).get("trajectory_type")
+                or ""
+            )
+            return t in {
+                TRAJ_TYPE_FROM_START,
+                TRAJ_TYPE_FROM_COMPRESS,
+                TRAJ_TYPE_COMPACT_MEMORY_UPDATE,
+            }
 
         before = len(all_samples)
-        all_samples = [s for s in all_samples if _is_valid_messages(s)]
+        all_samples = [s for s in all_samples if _is_valid_trajectory_messages(s)]
         empty_dropped = before - len(all_samples)
         if empty_dropped > 0:
             rank0_print(
-                f"  Dropped {empty_dropped} samples — they had no 'messages' "
-                f"key or no assistant turn. If this is a flat-format dataset, "
-                f"convert via:  python -m scripts.agent_data.pass5_messages"
+                f"  Dropped {empty_dropped} samples — they were not rendered "
+                f"trajectory rows with messages, assistant turns, and a known "
+                f"trajectory_type."
             )
 
         # Default policy (DataArguments.include_failed_verification=True):
@@ -1947,7 +1650,7 @@ class PerTimestepDataset(Dataset):
 
         # Tokenize + vision + label mask. apply_chat_template uses the
         # turn-local tool schema carried by the sample.
-        data_dict = preprocess_per_timestep(sample, self.processor, self.data_args)
+        data_dict = preprocess_trajectory_sample(sample, self.processor, self.data_args)
 
         seq_len = data_dict["input_ids"][0].size(0)
 
@@ -2008,10 +1711,11 @@ class PerTimestepDataset(Dataset):
             "sequence_type": sample.get("sequence_type"),
             "base_role": sample.get("base_role"),
         }
-        data_dict["sample_weights"] = torch.tensor(
-            float(sample.get("_sample_weight", 1.0)),
-            dtype=torch.float32,
-        )
+        if sample.get("_sample_weight_enabled", False):
+            data_dict["sample_weights"] = torch.tensor(
+                float(sample.get("_sample_weight", 1.0)),
+                dtype=torch.float32,
+            )
 
         return data_dict
 
@@ -2030,8 +1734,8 @@ def pad_and_cat(tensor_list):
 
 
 @dataclass
-class PerTimestepDataCollator:
-    """Collate per-timestep samples into training batch.
+class TrajectorySFTDataCollator:
+    """Collate trajectory/legacy samples into a training batch.
 
     Adds per-sample loss weights (sft_engineering.md §5.2).
     Does NOT truncate — overlong samples filtered in Dataset init (P0-4).
@@ -2065,7 +1769,7 @@ class PerTimestepDataCollator:
                 self._video_token_id = None
             if self._video_token_id is None:
                 logging.warning(
-                    "PerTimestepDataCollator(emit_video_mask=True): could not "
+                    "TrajectorySFTDataCollator(emit_video_mask=True): could not "
                     "resolve <|video_pad|> token id; video_mask will not be "
                     "emitted. streaming_attention will fall back to causal."
                 )
@@ -2110,7 +1814,7 @@ class PerTimestepDataCollator:
         if input_ids.shape[1] > max_len:
             n_over = (input_ids.shape[1] > max_len).sum().item()
             logging.warning(
-                f"PerTimestepDataCollator: {n_over} samples exceed max_length "
+                f"TrajectorySFTDataCollator: {n_over} samples exceed max_length "
                 f"{max_len}. These should have been filtered in Dataset init. "
                 f"Check max_sample_tokens setting."
             )
@@ -2127,6 +1831,27 @@ class PerTimestepDataCollator:
             # when streaming_attention is wired so non-flex forward paths
             # (which reject unknown kwargs) stay happy.
             batch["video_mask"] = input_ids == self._video_token_id
+            recall_masks = []
+            recall_kv_masks = []
+            for inst in instances:
+                rv = inst.get("recall_video_mask")
+                rk = inst.get("recall_kv_mask")
+                if rv is None:
+                    rv = torch.zeros_like(inst["input_ids"], dtype=torch.bool)
+                if rk is None:
+                    rk = rv
+                recall_masks.append(rv.squeeze(0).to(dtype=torch.bool))
+                recall_kv_masks.append(rk.squeeze(0).to(dtype=torch.bool))
+            batch["recall_video_mask"] = torch.nn.utils.rnn.pad_sequence(
+                recall_masks,
+                batch_first=True,
+                padding_value=False,
+            )
+            batch["recall_kv_mask"] = torch.nn.utils.rnn.pad_sequence(
+                recall_kv_masks,
+                batch_first=True,
+                padding_value=False,
+            )
         if token_loss_weight is not None:
             batch["token_loss_weight"] = token_loss_weight
 
@@ -2173,15 +1898,19 @@ class PerTimestepDataCollator:
         return batch
 
 
+# Backward-compatible name used by older focused collator tests.
+PerTimestepDataCollator = TrajectorySFTDataCollator
+
+
 # ---------------------------------------------------------------------------
 
-def make_per_timestep_data_module(
+def make_trajectory_data_module(
     processor, data_args, *, emit_video_mask: bool = False,
 ) -> Dict:
-    """Create dataset + collator for per-timestep agent SFT.
+    """Create dataset + collator for trajectory-mixed agent SFT.
 
     Builds an eval_dataset when DataArguments.eval_dataset_use is set —
-    typically `stream_agent_val` (held-out video-disjoint pool). The HF
+    typically `stream_agent_trajectory_val` (held-out video-disjoint pool). The HF
     Trainer then runs eval on this every --eval_steps to surface
     overfitting in real time.
 
@@ -2190,20 +1919,20 @@ def make_per_timestep_data_module(
     per-token bool tensor identifying ``<|video_pad|>`` tokens for the
     FlexAttention block-mask builder.
     """
-    train_dataset = PerTimestepDataset(processor, data_args)
+    train_dataset = TrajectorySFTDataset(processor, data_args)
 
     eval_dataset = None
     eval_use = getattr(data_args, "eval_dataset_use", None)
     if eval_use:
         rank0_print(f"Building eval_dataset from: {eval_use}")
-        eval_dataset = PerTimestepDataset(
+        eval_dataset = TrajectorySFTDataset(
             processor,
             data_args,
             dataset_use_override=eval_use,
             max_samples=getattr(data_args, "eval_max_samples", None),
         )
 
-    collator = PerTimestepDataCollator(
+    collator = TrajectorySFTDataCollator(
         processor.tokenizer, emit_video_mask=emit_video_mask,
     )
 

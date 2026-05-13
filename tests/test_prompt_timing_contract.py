@@ -2,7 +2,14 @@ import json
 from pathlib import Path
 
 from scripts.agent_data.pass5_messages import build_messages
-from thinkstream.data.agent_protocol import build_user_content, format_queries_block
+from thinkstream.data.agent_protocol import (
+    build_user_content,
+    chunk_frame_filenames,
+    chunk_frame_indices,
+    format_queries_block,
+    infer_video_metadata,
+    resolve_chunk_frame_paths,
+)
 from thinkstream.models.agent_loop import MemoryState, build_single_step_messages
 
 
@@ -18,6 +25,40 @@ def _visual_window_payload(text: str) -> dict:
     start = text.index("<visual_window>") + len("<visual_window>")
     end = text.index("</visual_window>")
     return json.loads(text[start:end])
+
+
+def test_zero_based_chunks_map_to_ffmpeg_one_based_filenames(tmp_path: Path):
+    assert chunk_frame_indices(0, 2) == [0, 1]
+    assert chunk_frame_filenames(0, 2) == [
+        "frame_000001.jpg",
+        "frame_000002.jpg",
+    ]
+    assert chunk_frame_filenames(1, 2) == [
+        "frame_000003.jpg",
+        "frame_000004.jpg",
+    ]
+
+    meta = infer_video_metadata(
+        ["frame_000001.jpg", "frame_000002.jpg"],
+        prefer_path_indices=True,
+    )
+    assert meta["frames_indices"] == [0, 1]
+
+    canonical = tmp_path / "canonical"
+    canonical.mkdir()
+    for name in ("frame_000001.jpg", "frame_000002.jpg"):
+        (canonical / name).write_bytes(b"\xff\xd8\xff\xd9")
+    assert [
+        Path(p).name for p in resolve_chunk_frame_paths(canonical, 0, 2)
+    ] == ["frame_000001.jpg", "frame_000002.jpg"]
+
+    legacy = tmp_path / "legacy"
+    legacy.mkdir()
+    for name in ("frame_000000.jpg", "frame_000001.jpg"):
+        (legacy / name).write_bytes(b"\xff\xd8\xff\xd9")
+    assert [
+        Path(p).name for p in resolve_chunk_frame_paths(legacy, 0, 2)
+    ] == ["frame_000000.jpg", "frame_000001.jpg"]
 
 
 def test_shared_renderer_query_last_and_integer_times():
@@ -113,7 +154,7 @@ def test_runtime_post_recall_has_no_current_visual_window():
     )
     system_text = messages[0]["content"][0]["text"]
     user_text = _join_user_text(messages[1]["content"])
-    assert "[POST_RECALL / HISTORICAL-FRAMES ONLY]" in system_text
+    assert "streaming video assistant" in system_text.lower()
     assert "<visual_window>" not in user_text
     assert "<active_query>" not in user_text
     assert "<recalled_frames>" in user_text

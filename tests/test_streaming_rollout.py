@@ -63,6 +63,9 @@ class _StubEngine:
         sample=None,
         sample_kwargs=None,
         return_log_probs=False,
+        turn_kind=None,
+        recall_kv_policy=None,
+        delete_previous_assistant_kv=False,
     ):
         # Record call for assertions
         self.calls.append({
@@ -74,6 +77,10 @@ class _StubEngine:
             "num_generations": num_generations,
             "return_log_probs": return_log_probs,
             "has_sample_cb": sample is not None,
+            "sample_kwargs": dict(sample_kwargs or {}),
+            "turn_kind": turn_kind,
+            "recall_kv_policy": recall_kv_policy,
+            "delete_previous_assistant_kv": delete_previous_assistant_kv,
         })
         # Synth output: 3 tokens, last is EOS; log_probs are dummy floats.
         effective_bsz = input_ids.shape[0] * num_generations
@@ -169,6 +176,24 @@ class GenerateTurnTests(unittest.TestCase):
             sample_callback_kwargs={"foo": "bar"},
         )
         self.assertTrue(eng.calls[0]["has_sample_cb"])
+
+    def test_turn_kind_and_recall_policy_forwarded(self):
+        eng = _StubEngine()
+        adapter = StreamingRolloutEngine(eng)
+        adapter.generate_turn(
+            input_ids=torch.zeros((1, 3), dtype=torch.long),
+            position_ids=torch.zeros((1, 3), dtype=torch.long),
+            sampling_params={
+                "recall_kv_policy": "next_turn",
+                "delete_previous_recall_toolcall_kv": True,
+            },
+            turn_kind="post_recall",
+        )
+        call = eng.calls[0]
+        self.assertEqual(call["turn_kind"], "post_recall")
+        self.assertEqual(call["recall_kv_policy"], "next_turn")
+        self.assertEqual(call["sample_kwargs"]["turn_kind"], "post_recall")
+        self.assertTrue(call["delete_previous_assistant_kv"])
 
 
 class TrajectoryBoundaryTests(unittest.TestCase):

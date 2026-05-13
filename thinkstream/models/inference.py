@@ -1,25 +1,98 @@
+import os
+
 import torch
 from typing import List, Optional, Union, Any
 from transformers.modeling_utils import AttentionInterface
-from flash_attn import flash_attn_with_kvcache
 from thinkstream.models import DEFAULT_VIDEO_FLEX_WINDOW_SIZE
-from thinkstream.data.stream_data_processor import (
-    DEFAULT_MAX_CHUNKS,
-    DEFAULT_INFERENCE_MIN_PIXELS,
-    DEFAULT_INFERENCE_MAX_PIXELS,
-    FRAMES_PER_CHUNK as _FRAMES_PER_CHUNK,
-    preload_video,
-    compute_position_ids,
-)
 
 try:
-    from flashinfer.sampling import top_k_top_p_sampling_from_logits
+    from thinkstream.data.stream_data_processor import (
+        DEFAULT_MAX_CHUNKS,
+        DEFAULT_INFERENCE_MIN_PIXELS,
+        DEFAULT_INFERENCE_MAX_PIXELS,
+        FRAMES_PER_CHUNK as _FRAMES_PER_CHUNK,
+        preload_video,
+        compute_position_ids,
+    )
+    _STREAM_DATA_PROCESSOR_IMPORT_ERROR = None
+except ModuleNotFoundError as _stream_data_processor_import_error:
+    _STREAM_DATA_PROCESSOR_IMPORT_ERROR = _stream_data_processor_import_error
+    DEFAULT_MAX_CHUNKS = 120
+    DEFAULT_INFERENCE_MIN_PIXELS = 256 * 28 * 28
+    DEFAULT_INFERENCE_MAX_PIXELS = 512 * 28 * 28
+    _FRAMES_PER_CHUNK = 2
 
-    FLASHINFER_AVAILABLE = True
-    print("[INFO] Using flash infer for fast sampling.")
+    def preload_video(*args, **kwargs):
+        raise ImportError(
+            "thinkstream.data.stream_data_processor could not be imported; "
+            "install the video preprocessing dependencies to use video inference"
+        ) from _STREAM_DATA_PROCESSOR_IMPORT_ERROR
+
+    def compute_position_ids(*args, **kwargs):
+        raise ImportError(
+            "thinkstream.data.stream_data_processor could not be imported; "
+            "install the video preprocessing dependencies to compute VL position ids"
+        ) from _STREAM_DATA_PROCESSOR_IMPORT_ERROR
+
+try:
+    from flash_attn import flash_attn_with_kvcache
+
+    FLASH_ATTN_AVAILABLE = True
 except ImportError:
+    flash_attn_with_kvcache = None
+    FLASH_ATTN_AVAILABLE = False
+
+RECALL_KV_POLICY_ENV = "THINKSTREAM_RECALL_KV_POLICY"
+RECALL_KV_POLICY_SLIDING = "sliding"
+RECALL_KV_POLICY_NEXT_TURN = "next_turn"
+RECALL_KV_POLICY_CURRENT_WINDOW = "current_window"
+
+
+def _env_flag_enabled(name: str) -> bool:
+    return str(os.environ.get(name, "")).strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+
+def normalize_recall_kv_policy(value: Optional[str] = None) -> str:
+    raw = value if value is not None else os.environ.get(RECALL_KV_POLICY_ENV)
+    policy = str(raw or RECALL_KV_POLICY_NEXT_TURN).strip().lower().replace("-", "_")
+    if policy in {"sliding", "normal", "keep"}:
+        return RECALL_KV_POLICY_SLIDING
+    if policy in {"next", "next_turn", "immediate", "ephemeral"}:
+        return RECALL_KV_POLICY_NEXT_TURN
+    if policy in {"current_window", "window", "ttl"}:
+        return RECALL_KV_POLICY_CURRENT_WINDOW
+    raise ValueError(
+        f"Unsupported recall KV policy {raw!r}; expected "
+        f"{RECALL_KV_POLICY_SLIDING!r}, {RECALL_KV_POLICY_NEXT_TURN!r}, "
+        f"or {RECALL_KV_POLICY_CURRENT_WINDOW!r}."
+    )
+
+_ENABLE_FLASHINFER_IMPORT = (
+    torch.cuda.is_available()
+    and not _env_flag_enabled("THINKSTREAM_DISABLE_FLASHINFER")
+)
+if _ENABLE_FLASHINFER_IMPORT:
+    try:
+        from flashinfer.sampling import top_k_top_p_sampling_from_logits
+
+        FLASHINFER_AVAILABLE = True
+        print("[INFO] Using flash infer for fast sampling.")
+    except Exception as _flashinfer_import_error:
+        FLASHINFER_AVAILABLE = False
+        print(
+            "[WARNING] Using PyTorch Fallback for sampling "
+            f"(FlashInfer import failed: {_flashinfer_import_error})."
+        )
+else:
     FLASHINFER_AVAILABLE = False
     print("[WARNING] Using PyTorch Fallback for sampling.")
+
+if not FLASHINFER_AVAILABLE:
 
     def top_k_top_p_sampling_from_logits(
         logits: torch.Tensor, top_k: int, top_p: float
@@ -73,6 +146,8 @@ def flash_attention_2_infer(
     attn_cache_seqlens: torch.Tensor,
     **kwargs,
 ):
+    if flash_attn_with_kvcache is None:
+        raise RuntimeError("flash_attn is required for streaming GPU inference")
     attn_output = flash_attn_with_kvcache(
         query.permute(0, 2, 1, 3),
         key.permute(0, 2, 1, 3),
@@ -382,6 +457,10 @@ class StreamingInferenceEngine:
         # STATE MANAGEMENT: Cache for the NEXT starting position ids.
         # It stores the 'cur_pos_ids' (next token pos) from the END of the previous generate.
         self.next_start_pos: Optional[torch.Tensor] = None
+        self._last_input_starts: Optional[torch.Tensor] = None
+        self._last_input_ends: Optional[torch.Tensor] = None
+        self._last_generation_starts: Optional[torch.Tensor] = None
+        self._last_generation_ends: Optional[torch.Tensor] = None
         # Trigger Capture immediately (includes auto-warmup)
         self.decoder.capture(self.model)
 
@@ -389,6 +468,10 @@ class StreamingInferenceEngine:
         """Clears the KV cache and Position ID cache to start a new independent stream."""
         self.decoder.reset()
         self.next_start_pos = None
+        self._last_input_starts = None
+        self._last_input_ends = None
+        self._last_generation_starts = None
+        self._last_generation_ends = None
 
     def reset_to_prefix(
         self,
@@ -426,6 +509,10 @@ class StreamingInferenceEngine:
         for layer_idx in range(cur.shape[0]):
             self.decoder.cache.adjust_seqlens(delta[layer_idx], layer_idx=layer_idx)
         self.next_start_pos = next_start_pos.detach().clone()
+        self._last_input_starts = None
+        self._last_input_ends = None
+        self._last_generation_starts = None
+        self._last_generation_ends = None
 
     def _expand_position_ids(
         self,
@@ -520,6 +607,25 @@ class StreamingInferenceEngine:
             # Case B: Standard (B, L)
             return position_ids.max(dim=1)[0] + 1
 
+    def _expanded_valid_input_lengths(
+        self,
+        input_ids: torch.Tensor,
+        attention_mask: Optional[torch.Tensor],
+        num_generations: int,
+    ) -> torch.Tensor:
+        if attention_mask is None:
+            lengths = torch.full(
+                (input_ids.shape[0],),
+                int(input_ids.shape[1]),
+                dtype=torch.long,
+                device=input_ids.device,
+            )
+        else:
+            lengths = attention_mask.to(device=input_ids.device).sum(dim=1).long()
+        if num_generations > 1:
+            lengths = lengths.repeat_interleave(num_generations)
+        return lengths.to(device=self.device, dtype=torch.long)
+
     @torch.inference_mode()
     def prefill(
         self,
@@ -549,6 +655,18 @@ class StreamingInferenceEngine:
             f"Input batch size {input_ids.shape[0]} does not match strict batch size {self.batch_size}"
         )
         cache_seqlens = self.decoder.cache_seqlens
+        gather_last_valid_logits = None
+        if attention_mask is not None:
+            seq_len = int(input_ids.shape[1])
+            positions = torch.arange(seq_len, device=input_ids.device)
+            last_valid_pos = torch.where(
+                attention_mask.to(device=input_ids.device, dtype=torch.bool),
+                positions.unsqueeze(0),
+                torch.zeros((), device=input_ids.device, dtype=positions.dtype),
+            ).max(dim=1)[0]
+            tail_keep = seq_len - int(last_valid_pos.min().item())
+            logits_to_keep = max(int(logits_to_keep), int(tail_keep))
+            gather_last_valid_logits = last_valid_pos - (seq_len - logits_to_keep)
         # Forward pass (Prefill)
         logits = self.model(
             input_ids=input_ids,
@@ -560,6 +678,15 @@ class StreamingInferenceEngine:
             logits_to_keep=logits_to_keep,
             attn_cache_seqlens=cache_seqlens,
         ).logits
+        if gather_last_valid_logits is not None and logits.ndim == 3:
+            gather_idx = gather_last_valid_logits.clamp(
+                min=0,
+                max=logits.shape[1] - 1,
+            )
+            logits = logits[
+                torch.arange(logits.shape[0], device=logits.device),
+                gather_idx.to(device=logits.device),
+            ].unsqueeze(1)
         # Post-Prefill Correction
         if attention_mask is not None:
             valid_lengths = attention_mask.sum(dim=1).to(
@@ -677,6 +804,16 @@ class StreamingInferenceEngine:
         assert effective_bsz == self.batch_size, (
             f"Total batch size ({effective_bsz}) must strictly match initialized batch size ({self.batch_size})."
         )
+        cache_lens_before = self.decoder.cache_seqlens[
+            0, :effective_bsz
+        ].clone().to(device=self.device, dtype=torch.long)
+        input_valid_lens = self._expanded_valid_input_lengths(
+            input_ids,
+            attention_mask,
+            num_generations,
+        )
+        self._last_input_starts = cache_lens_before.detach().clone()
+        self._last_input_ends = (cache_lens_before + input_valid_lens).detach().clone()
         # 1. Process Position IDs (Expand & Shift based on Cache)
         position_ids = self._process_position_ids(
             input_ids=input_ids,
@@ -796,6 +933,11 @@ class StreamingInferenceEngine:
         # STATE UPDATE: Save the final position id for the next streaming call.
         # cur_pos_ids now holds (last_token_pos + 1).
         self.next_start_pos = cur_pos_ids.detach().clone()
+        cache_lens_after = self.decoder.cache_seqlens[
+            0, :effective_bsz
+        ].clone().to(device=self.device, dtype=torch.long)
+        self._last_generation_starts = self._last_input_ends.detach().clone()
+        self._last_generation_ends = cache_lens_after.detach().clone()
         tokens_out = [
             full_tokens[i, :length]
             for i, length in enumerate(valid_token_lens.tolist())
@@ -816,6 +958,9 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
     Mirrors the training-time flex_attention sliding window behavior:
     only the most recent `video_flex_window_size` video chunks are kept in the KV cache;
     older video token blocks are evicted before each new chunk is prefilled.
+    Recall evidence under the default ``next_turn`` policy is a sidecar: it is
+    visible for the post-recall answer turn, but it does not consume or evict
+    ordinary streaming video-window slots.
     """
 
     def __init__(
@@ -862,6 +1007,17 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
             dtype=torch.long,
             device=self.device,
         )
+        self._window_is_recall = torch.zeros(
+            (self.batch_size, video_flex_window_size),
+            dtype=torch.bool,
+            device=self.device,
+        )
+        self._window_recall_ttl = torch.full(
+            (self.batch_size, video_flex_window_size),
+            -1,
+            dtype=torch.long,
+            device=self.device,
+        )
         # Active window count per batch item: [batch_size]
         self._window_count = torch.zeros(
             self.batch_size,
@@ -879,11 +1035,23 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
             device=torch.device(device),
         )
 
+    def _ensure_recall_window_bookkeeping(self):
+        """Create recall-window tensors for older test stubs/checkpoints."""
+        if hasattr(self, "_window_is_recall") and hasattr(self, "_window_recall_ttl"):
+            return
+        self._window_is_recall = torch.zeros_like(
+            self._window_starts, dtype=torch.bool
+        )
+        self._window_recall_ttl = torch.full_like(self._window_starts, -1)
+
     def reset(self):
         """Clears KV cache, position cache, and video window bookkeeping."""
         super().reset()
+        self._ensure_recall_window_bookkeeping()
         self._window_starts.zero_()
         self._window_ends.zero_()
+        self._window_is_recall.zero_()
+        self._window_recall_ttl.fill_(-1)
         self._window_count.zero_()
 
     def reset_to_prefix(
@@ -902,9 +1070,12 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
         text-only memory summary).
         """
         super().reset_to_prefix(keep_lengths=keep_lengths, next_start_pos=next_start_pos)
+        self._ensure_recall_window_bookkeeping()
         if keep_window_count is None:
             self._window_starts.zero_()
             self._window_ends.zero_()
+            self._window_is_recall.zero_()
+            self._window_recall_ttl.fill_(-1)
             self._window_count.zero_()
             return
         assert keep_window_count.shape[0] == self.batch_size, (
@@ -919,74 +1090,284 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
         self._window_ends = torch.where(
             keep_mask, self._window_ends, torch.zeros_like(self._window_ends)
         )
+        self._window_is_recall = torch.where(
+            keep_mask, self._window_is_recall, torch.zeros_like(self._window_is_recall)
+        )
+        self._window_recall_ttl = torch.where(
+            keep_mask,
+            self._window_recall_ttl,
+            torch.full_like(self._window_recall_ttl, -1),
+        )
         self._window_count = keep_window_count.to(self._window_count.dtype)
 
     # ------------------------------------------------------------------
     # Internal helpers (fully vectorized, no Python for-loops)
     # ------------------------------------------------------------------
-    def _detect_video_tokens(
+    def _detect_video_token_windows(
         self,
         input_ids: torch.Tensor,
         num_generations: int,
-    ) -> tuple[torch.Tensor, torch.Tensor]:
-        """
-        Vectorized video token detection.
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Detect contiguous video-token windows in each incoming turn.
 
-        Assumptions (guaranteed by caller):
-            - Video tokens are contiguous in every sample.
-            - Video tokens are never masked (always valid).
-            - Every sample contains at least one video token.
-
-        Args:
-            input_ids: [input_bsz, seq_len] (before expansion)
-            num_generations: int
-
-        Returns:
-            num_vt:    [effective_bsz]  number of video tokens per item
-            first_pos: [effective_bsz]  index of first video token in input_ids per item
+        Current streaming turns carry one video block. A recall tool response
+        can carry several chunk-level video blocks in the same turn; each block
+        must be tracked separately so KV eviction matches SFT's video_mask
+        block semantics.
         """
         video_mask = input_ids == self.video_token_id  # [input_bsz, seq_len]
-        num_vt = video_mask.sum(dim=1)  # [input_bsz]
-        first_pos = video_mask.to(torch.int32).argmax(dim=1)  # [input_bsz]
-        if num_generations > 1:
-            num_vt = num_vt.repeat_interleave(num_generations)  # [effective_bsz]
-            first_pos = first_pos.repeat_interleave(num_generations)
-        return num_vt, first_pos
+        starts: list[list[int]] = []
+        lengths: list[list[int]] = []
+        for row in video_mask:
+            idx = torch.nonzero(row, as_tuple=False).flatten()
+            if idx.numel() == 0:
+                starts.append([])
+                lengths.append([])
+                continue
+            breaks = torch.nonzero(idx[1:] != idx[:-1] + 1, as_tuple=False).flatten() + 1
+            bounds = torch.cat([
+                idx.new_tensor([0]),
+                breaks,
+                idx.new_tensor([idx.numel()]),
+            ])
+            row_starts: list[int] = []
+            row_lengths: list[int] = []
+            for bi in range(bounds.numel() - 1):
+                lo = int(bounds[bi].item())
+                hi = int(bounds[bi + 1].item())
+                row_starts.append(int(idx[lo].item()))
+                row_lengths.append(int(hi - lo))
+            starts.append(row_starts)
+            lengths.append(row_lengths)
 
-    def _maybe_evict(self):
+        if num_generations > 1:
+            starts = [row for row in starts for _ in range(num_generations)]
+            lengths = [row for row in lengths for _ in range(num_generations)]
+
+        max_blocks = max((len(row) for row in starts), default=0)
+        effective_bsz = len(starts)
+        block_starts = torch.zeros(
+            (effective_bsz, max_blocks),
+            dtype=torch.long,
+            device=input_ids.device,
+        )
+        block_lens = torch.zeros_like(block_starts)
+        block_counts = torch.zeros(
+            effective_bsz,
+            dtype=torch.long,
+            device=input_ids.device,
+        )
+        for i, (row_starts, row_lengths) in enumerate(zip(starts, lengths)):
+            n = len(row_starts)
+            block_counts[i] = n
+            if n:
+                block_starts[i, :n] = torch.tensor(
+                    row_starts, dtype=torch.long, device=input_ids.device
+                )
+                block_lens[i, :n] = torch.tensor(
+                    row_lengths, dtype=torch.long, device=input_ids.device
+                )
+        return block_lens, block_starts, block_counts
+
+    def _evict_window_at(self, window_idx: int, row_mask: torch.Tensor):
+        """Evict one recorded video window index for selected rows."""
+        row_mask = row_mask.to(device=self.device, dtype=torch.bool)
+        if window_idx < 0 or window_idx >= self.video_flex_window_size:
+            raise IndexError(f"window_idx={window_idx} out of range")
+        row_mask = row_mask & (self._window_count > window_idx)
+        if not row_mask.any():
+            return
+
+        evict_starts = torch.where(row_mask, self._window_starts[:, window_idx], 0)
+        evict_ends = torch.where(row_mask, self._window_ends[:, window_idx], 0)
+        evict_lens = (evict_ends - evict_starts).unsqueeze(1)  # [B, 1]
+        self._cache_eviction.evict(evict_starts, evict_ends)
+
+        next_starts = self._window_starts.clone()
+        next_ends = self._window_ends.clone()
+        next_is_recall = self._window_is_recall.clone()
+        next_ttl = self._window_recall_ttl.clone()
+        if window_idx + 1 < self.video_flex_window_size:
+            next_starts[:, window_idx:-1] = (
+                self._window_starts[:, window_idx + 1:] - evict_lens
+            )
+            next_ends[:, window_idx:-1] = (
+                self._window_ends[:, window_idx + 1:] - evict_lens
+            )
+            next_is_recall[:, window_idx:-1] = self._window_is_recall[
+                :, window_idx + 1:
+            ]
+            next_ttl[:, window_idx:-1] = self._window_recall_ttl[
+                :, window_idx + 1:
+            ]
+        next_starts[:, -1] = 0
+        next_ends[:, -1] = 0
+        next_is_recall[:, -1] = False
+        next_ttl[:, -1] = -1
+
+        mask = row_mask.unsqueeze(1)
+        self._window_starts = torch.where(
+            mask, next_starts, self._window_starts
+        )
+        self._window_ends = torch.where(
+            mask, next_ends, self._window_ends
+        )
+        self._window_is_recall = torch.where(
+            mask, next_is_recall, self._window_is_recall
+        )
+        self._window_recall_ttl = torch.where(
+            mask, next_ttl, self._window_recall_ttl
+        )
+        self._window_count -= row_mask.long()
+        active = (
+            torch.arange(self.video_flex_window_size, device=self.device)
+            .unsqueeze(0)
+            < self._window_count.unsqueeze(1)
+        )
+        self._window_starts = torch.where(
+            active, self._window_starts, torch.zeros_like(self._window_starts)
+        )
+        self._window_ends = torch.where(
+            active, self._window_ends, torch.zeros_like(self._window_ends)
+        )
+        self._window_is_recall = torch.where(
+            active, self._window_is_recall, torch.zeros_like(self._window_is_recall)
+        )
+        self._window_recall_ttl = torch.where(
+            active,
+            self._window_recall_ttl,
+            torch.full_like(self._window_recall_ttl, -1),
+        )
+
+    def _evict_oldest(self, needs_evict: torch.Tensor):
+        """Evict the oldest recorded video window for selected rows."""
+        self._evict_window_at(0, needs_evict)
+
+    def _maybe_evict(self, has_new_video: Optional[torch.Tensor] = None):
         """
         Vectorized eviction: for every batch item at capacity, evict the oldest video chunk.
         Items below capacity are no-ops (start == end == 0 → gather identity).
         """
         needs_evict = self._window_count >= self.video_flex_window_size  # [B]
-        if not needs_evict.any():
+        if has_new_video is not None:
+            needs_evict = needs_evict & has_new_video.to(
+                device=self.device, dtype=torch.bool
+            )
+        self._evict_oldest(needs_evict)
+
+    def _evict_for_new_video_blocks(self, new_block_count: torch.Tensor):
+        """Make enough room for all video blocks in the next prefill."""
+        if not new_block_count.any():
             return
+        max_new = int(new_block_count.max().item())
+        if max_new > self.video_flex_window_size:
+            raise ValueError(
+                "incoming turn contains more video blocks "
+                f"({max_new}) than video_flex_window_size "
+                f"({self.video_flex_window_size})"
+            )
+        for _ in range(max_new):
+            needs_evict = (
+                self._window_count + new_block_count > self.video_flex_window_size
+            )
+            if not needs_evict.any():
+                break
+            self._evict_oldest(needs_evict)
 
-        # Eviction params: oldest window's (start, end) or (0, 0) for no-op items
-        evict_starts = torch.where(needs_evict, self._window_starts[:, 0], 0)  # [B]
-        evict_ends = torch.where(needs_evict, self._window_ends[:, 0], 0)  # [B]
-        evict_lens = (evict_ends - evict_starts).unsqueeze(1)  # [B, 1]
+    def _evict_recall_windows(self, expired_only: bool = False):
+        """Evict recall evidence windows without evicting ordinary video."""
+        for idx in range(self.video_flex_window_size - 1, -1, -1):
+            active = self._window_count > idx
+            mask = active & self._window_is_recall[:, idx]
+            if expired_only:
+                mask = mask & (self._window_recall_ttl[:, idx] <= 0)
+            self._evict_window_at(idx, mask)
 
-        # 1. Evict from KV cache
-        self._cache_eviction.evict(evict_starts, evict_ends)
-
-        # 2. Shift window bookkeeping: roll left by 1 and subtract eviction length
-        rolled_starts = torch.roll(self._window_starts, -1, dims=1)  # [B, W]
-        rolled_ends = torch.roll(self._window_ends, -1, dims=1)  # [B, W]
-        mask = needs_evict.unsqueeze(1)  # [B, 1]  broadcast over W
-        self._window_starts = torch.where(
-            mask, rolled_starts - evict_lens, self._window_starts
+    def _age_recall_windows(self, ordinary_block_count: torch.Tensor):
+        """Advance TTL for recall windows under the current-window policy."""
+        if not ordinary_block_count.any():
+            return
+        decrement = ordinary_block_count.to(device=self.device, dtype=torch.long)
+        active = (
+            torch.arange(self.video_flex_window_size, device=self.device)
+            .unsqueeze(0)
+            < self._window_count.unsqueeze(1)
         )
-        self._window_ends = torch.where(
-            mask, rolled_ends - evict_lens, self._window_ends
+        recall_active = active & self._window_is_recall & (self._window_recall_ttl >= 0)
+        self._window_recall_ttl = torch.where(
+            recall_active,
+            self._window_recall_ttl - decrement.unsqueeze(1),
+            self._window_recall_ttl,
         )
-        self._window_count -= needs_evict.long()
+        self._evict_recall_windows(expired_only=True)
+
+    def _evict_untracked_video_blocks(
+        self,
+        cache_lens_before: torch.Tensor,
+        block_lens: torch.Tensor,
+        block_starts: torch.Tensor,
+    ):
+        """Evict temporary visual blocks that are not sliding-window members.
+
+        ``next_turn`` recall evidence must be visible while generating the
+        post-recall assistant answer, but it must not consume one of the
+        ordinary streaming video-window slots. The blocks are therefore not
+        recorded in ``_window_*``. After generation we remove their raw KV
+        ranges directly, from right to left so earlier offsets remain valid.
+        """
+        if block_lens.numel() == 0:
+            return
+        cache_lens_before = cache_lens_before.to(device=self.device, dtype=torch.long)
+        block_lens = block_lens.to(device=self.device, dtype=torch.long)
+        block_starts = block_starts.to(device=self.device, dtype=torch.long)
+        for block_idx in range(block_lens.shape[1] - 1, -1, -1):
+            num_vt = block_lens[:, block_idx]
+            has_video = num_vt > 0
+            if not has_video.any():
+                continue
+            starts = cache_lens_before + block_starts[:, block_idx]
+            ends = starts + num_vt
+            starts = torch.where(has_video, starts, torch.zeros_like(starts))
+            ends = torch.where(has_video, ends, torch.zeros_like(ends))
+            self._cache_eviction.evict(starts, ends)
+
+    def _evict_token_spans(self, starts: torch.Tensor, ends: torch.Tensor):
+        starts = starts.to(device=self.device, dtype=torch.long)
+        ends = ends.to(device=self.device, dtype=torch.long)
+        valid = ends > starts
+        if not valid.any():
+            return torch.zeros_like(starts)
+        safe_starts = torch.where(valid, starts, torch.zeros_like(starts))
+        safe_ends = torch.where(valid, ends, torch.zeros_like(ends))
+        lens = torch.where(valid, safe_ends - safe_starts, torch.zeros_like(starts))
+        self._cache_eviction.evict(safe_starts, safe_ends)
+        return lens
+
+    def _shift_last_generation_after_deletion(
+        self,
+        deleted_starts: torch.Tensor,
+        deleted_lens: torch.Tensor,
+    ):
+        if (
+            getattr(self, "_last_generation_starts", None) is None
+            or getattr(self, "_last_generation_ends", None) is None
+        ):
+            return
+        deleted_starts = deleted_starts.to(device=self.device, dtype=torch.long)
+        deleted_lens = deleted_lens.to(device=self.device, dtype=torch.long)
+        gen_starts = self._last_generation_starts.to(device=self.device, dtype=torch.long)
+        shift = torch.where(deleted_starts <= gen_starts, deleted_lens, 0)
+        self._last_generation_starts = self._last_generation_starts - shift
+        self._last_generation_ends = self._last_generation_ends - shift
 
     def _record_video_windows(
         self,
         cache_lens_before: torch.Tensor,
         num_vt: torch.Tensor,
         first_pos: torch.Tensor,
+        *,
+        is_recall: Optional[torch.Tensor] = None,
+        recall_ttl: Optional[torch.Tensor] = None,
     ):
         """
         Vectorized recording of new video token windows into the bookkeeping tensors.
@@ -996,12 +1377,43 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
             num_vt:            [effective_bsz]  number of video tokens per item
             first_pos:         [effective_bsz]  first video token position in input_ids
         """
+        has_video = num_vt > 0
+        if not has_video.any():
+            return
+
         new_start = cache_lens_before + first_pos  # [B]
         new_end = new_start + num_vt  # [B]
-        idx = self._window_count.unsqueeze(1)  # [B, 1]
-        self._window_starts.scatter_(1, idx, new_start.unsqueeze(1))
-        self._window_ends.scatter_(1, idx, new_end.unsqueeze(1))
-        self._window_count += 1
+        idx = self._window_count.clamp(max=self.video_flex_window_size - 1).unsqueeze(1)
+
+        next_starts = self._window_starts.clone()
+        next_ends = self._window_ends.clone()
+        next_is_recall = self._window_is_recall.clone()
+        next_ttl = self._window_recall_ttl.clone()
+        next_starts.scatter_(1, idx, new_start.unsqueeze(1))
+        next_ends.scatter_(1, idx, new_end.unsqueeze(1))
+        recall_flag = (
+            is_recall.to(device=self.device, dtype=torch.bool)
+            if is_recall is not None
+            else torch.zeros_like(has_video, dtype=torch.bool)
+        )
+        ttl_value = (
+            recall_ttl.to(device=self.device, dtype=torch.long)
+            if recall_ttl is not None
+            else torch.full_like(num_vt, -1)
+        )
+        next_is_recall.scatter_(1, idx, recall_flag.unsqueeze(1))
+        next_ttl.scatter_(1, idx, ttl_value.unsqueeze(1))
+
+        row_mask = has_video.unsqueeze(1)
+        self._window_starts = torch.where(row_mask, next_starts, self._window_starts)
+        self._window_ends = torch.where(row_mask, next_ends, self._window_ends)
+        self._window_is_recall = torch.where(
+            row_mask, next_is_recall, self._window_is_recall
+        )
+        self._window_recall_ttl = torch.where(
+            row_mask, next_ttl, self._window_recall_ttl
+        )
+        self._window_count += has_video.to(self._window_count.dtype)
 
     # ------------------------------------------------------------------
     # Public API  (override)
@@ -1024,17 +1436,75 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
         adjust_position_ids: bool = True,
         sample: Optional[callable] = None,
         sample_kwargs: Optional[dict] = None,
-    ) -> List[torch.Tensor]:
+        return_log_probs: bool = False,
+        turn_kind: Optional[str] = None,
+        recall_kv_policy: Optional[str] = None,
+        delete_previous_assistant_kv: bool = False,
+    ) -> Union[List[torch.Tensor], tuple[List[torch.Tensor], List[torch.Tensor]]]:
         effective_bsz = input_ids.shape[0] * num_generations
+        sample_kwargs = sample_kwargs or {}
+        effective_turn_kind = str(
+            turn_kind
+            or sample_kwargs.get("turn_kind")
+            or sample_kwargs.get("visual_turn_kind")
+            or ""
+        ).strip().lower()
+        is_recall_evidence_turn = effective_turn_kind in {
+            "post_recall",
+            "recall_response",
+        } or str(sample_kwargs.get("visual_scope") or "").strip().lower() == "recall"
+        recall_policy = normalize_recall_kv_policy(
+            recall_kv_policy or sample_kwargs.get("recall_kv_policy")
+        )
+        recall_next_turn_sidecar = (
+            is_recall_evidence_turn
+            and recall_policy == RECALL_KV_POLICY_NEXT_TURN
+        )
+        delete_previous_assistant_kv = bool(
+            delete_previous_assistant_kv
+            or sample_kwargs.get("delete_previous_assistant_kv")
+            or sample_kwargs.get("delete_previous_recall_toolcall_kv")
+        )
 
-        # 1. Detect video tokens (vectorized, no loops)
-        num_vt, first_pos = self._detect_video_tokens(input_ids, num_generations)
+        # 1. Detect video-token blocks. Recall results may contain multiple
+        # chunk-level video blocks in one tool-response turn.
+        block_lens, block_starts, block_counts = self._detect_video_token_windows(
+            input_ids,
+            num_generations,
+        )
+        capacity_block_counts = (
+            torch.zeros_like(block_counts)
+            if recall_next_turn_sidecar
+            else block_counts
+        )
 
-        # 2. Evict oldest video block for any batch item at capacity (vectorized)
-        self._maybe_evict()
+        # 2. Evict only when new visual blocks are about to be appended.
+        # Text-only turns (question/reply/compact-memory) must not age out
+        # visual KV by themselves.
+        if (
+            recall_policy == RECALL_KV_POLICY_CURRENT_WINDOW
+            and not is_recall_evidence_turn
+        ):
+            self._age_recall_windows(capacity_block_counts)
+        self._evict_for_new_video_blocks(capacity_block_counts)
 
         # 3. Snapshot per-item cache lengths *after* eviction, *before* prefill
         cache_lens_before = self.decoder.cache_seqlens[0, :effective_bsz].clone()  # [B]
+        input_valid_lens = self._expanded_valid_input_lengths(
+            input_ids,
+            attention_mask,
+            num_generations,
+        )
+        previous_gen_starts = None
+        previous_gen_ends = None
+        if (
+            recall_next_turn_sidecar
+            and delete_previous_assistant_kv
+            and getattr(self, "_last_generation_starts", None) is not None
+            and getattr(self, "_last_generation_ends", None) is not None
+        ):
+            previous_gen_starts = self._last_generation_starts.clone()
+            previous_gen_ends = self._last_generation_ends.clone()
 
         # 4. Delegate to parent generate
         outputs = super().generate(
@@ -1052,13 +1522,65 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
             adjust_position_ids=adjust_position_ids,
             sample=sample,
             sample_kwargs=sample_kwargs,
+            return_log_probs=return_log_probs,
         )
 
         # 5. Record the new video token windows (vectorized).
         # Guard: skip when the input contained no video tokens to avoid
         # ghost zero-length window entries that would corrupt bookkeeping.
-        if num_vt.any():
-            self._record_video_windows(cache_lens_before, num_vt, first_pos)
+        if recall_next_turn_sidecar:
+            # The recall tool-response is an ephemeral sidecar. It must be
+            # visible to the post-recall answer just generated, then the whole
+            # response chunk (metadata text + visual tokens + trailing result
+            # text) is removed from KV so future reasoning is not grounded in
+            # raw recall evidence.
+            input_starts = cache_lens_before.to(device=self.device, dtype=torch.long)
+            input_ends = input_starts + input_valid_lens
+            input_deleted = self._evict_token_spans(input_starts, input_ends)
+            self._shift_last_generation_after_deletion(input_starts, input_deleted)
+            if previous_gen_starts is not None and previous_gen_ends is not None:
+                prev_deleted = self._evict_token_spans(
+                    previous_gen_starts,
+                    previous_gen_ends,
+                )
+                self._shift_last_generation_after_deletion(
+                    previous_gen_starts,
+                    prev_deleted,
+                )
+        elif block_counts.any():
+            for block_idx in range(block_lens.shape[1]):
+                num_vt = block_lens[:, block_idx]
+                if num_vt.any():
+                    recall_flags = torch.full(
+                        (effective_bsz,),
+                        bool(is_recall_evidence_turn),
+                        dtype=torch.bool,
+                        device=self.device,
+                    )
+                    if (
+                        is_recall_evidence_turn
+                        and recall_policy == RECALL_KV_POLICY_CURRENT_WINDOW
+                    ):
+                        ttl_values = torch.full(
+                            (effective_bsz,),
+                            int(self.video_flex_window_size),
+                            dtype=torch.long,
+                            device=self.device,
+                        )
+                    else:
+                        ttl_values = torch.full(
+                            (effective_bsz,),
+                            -1,
+                            dtype=torch.long,
+                            device=self.device,
+                        )
+                    self._record_video_windows(
+                        cache_lens_before,
+                        num_vt,
+                        block_starts[:, block_idx],
+                        is_recall=recall_flags,
+                        recall_ttl=ttl_values,
+                    )
 
         return outputs
 

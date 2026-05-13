@@ -120,6 +120,9 @@ class StreamingRolloutEngine:
         sample_callback: Optional[Callable] = None,
         sample_callback_kwargs: Optional[Dict[str, Any]] = None,
         return_log_probs: bool = True,
+        turn_kind: str = "",
+        recall_kv_policy: Optional[str] = None,
+        delete_previous_assistant_kv: bool = False,
     ) -> List[TurnResult]:
         """Run one assistant turn, appending to the current KV state.
 
@@ -141,6 +144,9 @@ class StreamingRolloutEngine:
         temperature = float(sp.get("temperature", 1.0))
         repetition_penalty = float(sp.get("repetition_penalty", 1.0))
 
+        callback_kwargs = dict(sample_callback_kwargs or {})
+        if turn_kind:
+            callback_kwargs.setdefault("turn_kind", turn_kind)
         out = self.engine.generate(
             input_ids=input_ids,
             position_ids=position_ids,
@@ -154,8 +160,15 @@ class StreamingRolloutEngine:
             temperature=temperature,
             repetition_penalty=repetition_penalty,
             sample=sample_callback,
-            sample_kwargs=sample_callback_kwargs,
+            sample_kwargs=callback_kwargs,
             return_log_probs=return_log_probs,
+            turn_kind=turn_kind,
+            recall_kv_policy=recall_kv_policy or sp.get("recall_kv_policy"),
+            delete_previous_assistant_kv=(
+                delete_previous_assistant_kv
+                or bool(sp.get("delete_previous_assistant_kv", False))
+                or bool(sp.get("delete_previous_recall_toolcall_kv", False))
+            ),
         )
         if return_log_probs:
             tokens_list, log_probs_list = out

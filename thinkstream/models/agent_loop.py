@@ -13,11 +13,13 @@ This guarantees train/inference format identity.
 import json
 import logging
 import os
+import re
 from copy import deepcopy
 from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Callable, Dict, List, Optional
 
+from thinkstream.data.schema import DEFAULT_VIDEO_MAX_PIXELS, DEFAULT_VIDEO_MIN_PIXELS
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
@@ -33,6 +35,7 @@ from thinkstream.data.agent_protocol import (
     normalize_render_layout,
     parse_agent_output,
     recall_time_string_for_chunks,
+    resolve_chunk_frame_paths,
     select_recall_chunks,
     system_prompt_for_frame_protocol,
     action_space_error_for_turn,
@@ -78,10 +81,15 @@ def _parse_agent_output(output_text: str) -> Dict:
         out["action"] = "compress"
         tc = v12.get("tool_call") or {}
         args = tc.get("arguments") or {}
-        out["payload"]["summary"] = {
-            "time_range": args.get("time_range", []),
-            "text": args.get("text", ""),
-        }
+        if v12.get("memory_text") or tc.get("name") == "memory_update":
+            mem_text = v12.get("memory_text") or args.get("memory_text", "")
+            out["payload"]["memory_text"] = mem_text
+            out["payload"]["memory_entries"] = _parse_mem_entries(mem_text)
+        else:
+            out["payload"]["summary"] = {
+                "time_range": args.get("time_range", []),
+                "text": args.get("text", ""),
+            }
     if v12.get("format_error"):
         out["format_error"] = v12["format_error"]
     return out
@@ -92,13 +100,38 @@ logger = logging.getLogger(__name__)
 # v12.5 (2026-04-29): 1s/chunk + 16K context → text-memory budget grows 4×
 # so it exceeds visual horizon. See scripts/agent_data/config.py docstring
 # above RECENT_THINKS_TOKEN_BUDGET for the full 16K allocation breakdown.
-RECENT_THINKS_TOKEN_BUDGET = 4000
-COMPRESS_TRIGGER_RATIO = 0.8
-COMPRESS_TOKEN_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_TRIGGER_RATIO)  # 3200
-COMPRESS_RANGE_MIN = 8              # ~8s of older thinks under 1s/chunk
-COMPRESS_RANGE_MAX = 24             # ~24s, sized for 4000-token budget
+RECENT_THINKS_TOKEN_BUDGET = int(os.environ.get("THINKSTREAM_COMPACT_MEMORY_TEXT_TOKEN_BUDGET", "3200"))
+COMPRESS_TRIGGER_RATIO = 1.0
+COMPRESS_TOKEN_THRESHOLD = RECENT_THINKS_TOKEN_BUDGET
+COMPRESS_RANGE_MIN = int(os.environ.get("THINKSTREAM_COMPACT_MEMORY_MIN_NEW_CHUNKS", "24"))
+COMPRESS_RANGE_MAX = int(os.environ.get("THINKSTREAM_COMPACT_MEMORY_MAX_NEW_CHUNKS", "36"))
 COMPRESS_REMOVE_TOKENS = 1500       # ~40% budget eviction per compress
 SUMMARY_TOKENS_MAX = 280            # matches config.py
+
+
+_MEM_LINE_RE = re.compile(
+    r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>(.*?)</m>',
+    re.DOTALL | re.IGNORECASE,
+)
+
+
+def _parse_mem_entries(mem_text: str) -> List[Dict]:
+    entries: List[Dict] = []
+    for m in _MEM_LINE_RE.finditer(mem_text or ""):
+        start = int(m.group(1))
+        end = int(m.group(2) if m.group(2) is not None else m.group(1))
+        if end < start:
+            start, end = end, start
+        text = re.sub(r"\s+", " ", m.group(3)).strip()
+        if text:
+            entries.append({
+                "time_range": [start, end],
+                "text": text,
+                "source_chunks": list(range(start, end + 1)),
+                "merge_level": 1,
+                "compact_memory": True,
+            })
+    return entries
 
 
 def select_compress_range_by_tokens(
@@ -358,15 +391,58 @@ class MemoryState:
         return len(text) // 4
 
     def count_recent_tokens(self) -> int:
-        """Count total tokens in recent_thinks."""
-        return sum(self._token_count(item) for item in self.recent_thinks)
+        """Backward-compatible alias for visible text-memory tokens."""
+        return self.count_visible_tokens()
+
+    def count_visible_tokens(self) -> int:
+        """Count compact summaries plus raw recent thinks."""
+        return (
+            sum(self._token_count(item) for item in self.compressed_segments)
+            + sum(self._token_count(item) for item in self.recent_thinks)
+        )
 
     def should_compress(self) -> bool:
-        """Trigger compression when recent_thinks reach 80% of token budget."""
+        """Trigger compact-memory update on text budget or max raw horizon."""
         return (
-            self.count_recent_tokens() >= COMPRESS_TOKEN_THRESHOLD
-            and len(self.recent_thinks) >= COMPRESS_RANGE_MIN
+            len(self.recent_thinks) >= COMPRESS_RANGE_MIN
+            and (
+                self.count_visible_tokens() >= COMPRESS_TOKEN_THRESHOLD
+                or len(self.recent_thinks) >= COMPRESS_RANGE_MAX
+            )
         )
+
+    def replace_with_compact_memory(self, entries: List[Dict]):
+        """Replace visible memory with compact <MEM> entries."""
+        new_segments: List[Dict] = []
+        for entry in entries or []:
+            tr = entry.get("time_range") or []
+            text = str(entry.get("text", "")).strip()
+            if not text or not (isinstance(tr, list) and len(tr) == 2):
+                continue
+            try:
+                start, end = int(tr[0]), int(tr[1])
+            except (TypeError, ValueError):
+                continue
+            if end < start:
+                start, end = end, start
+            chunks = []
+            for c in entry.get("source_chunks") or range(start, end + 1):
+                try:
+                    chunks.append(int(c))
+                except (TypeError, ValueError):
+                    continue
+            new_segments.append({
+                "time_range": [start, end],
+                "text": text,
+                "source_chunks": sorted(set(chunks)),
+                "merge_level": int(entry.get("merge_level", 1) or 1),
+                "compact_memory": True,
+            })
+        self.compressed_segments = sorted(
+            new_segments,
+            key=lambda item: (item["time_range"][0], item["time_range"][1]),
+        )
+        self.recent_thinks = []
 
     def compress(self, summary: Dict, compressed_chunks: Optional[List[int]] = None):
         """Replace specified thinks with summary in model context.
@@ -512,12 +588,6 @@ class MemoryState:
                 if open_until is not None:
                     q["open_until"] = open_until
                 return
-        for q in self._queries:
-            status = str(q.get("status", "")).strip().lower()
-            if status in {"open", "pending", "active"}:
-                q["status"] = "replaced"
-                q["closed_at"] = ask_time
-                q["close_reason"] = "new_query"
         if open_until is None and expected_chunks:
             try:
                 open_until = max(int(x) for x in expected_chunks) * AGENT_CHUNK_SEC
@@ -577,9 +647,9 @@ def build_single_step_messages(
     queries: Optional[List[Dict]] = None,
     recalled_frames: Optional[Dict] = None,
     recall_result: Optional[Dict] = None,
-    # v12.12 (2026-05-02): RUNTIME profile defaults — see config.py
-    min_pixels: int = 256 * 28 * 28,
-    max_pixels: int = 512 * 28 * 28,
+    # RUNTIME profile defaults — see scripts/agent_data/config.py
+    min_pixels: int = DEFAULT_VIDEO_MIN_PIXELS,
+    max_pixels: int = DEFAULT_VIDEO_MAX_PIXELS,
     frame_paths: Optional[List[str]] = None,
     frame_protocol: Optional[str] = None,
     inter_chunk: bool = False,
@@ -870,9 +940,9 @@ def make_generate_fn(
         **kwargs,
     ) -> str:
         # 1. Apply chat template + process vision (tokenize=True handles images/videos)
-        # v12.15: pass the turn-local tool schema. Streaming turns expose
-        # recall only, compression turns expose compress only, and recall-result
-        # answer turns pass no tools.
+        # v12.15+: pass the turn-local tool schema. Streaming turns expose
+        # recall only; compression and recall-result answer turns pass no
+        # tools.
         from thinkstream.data.agent_protocol import tools_for_turn
         # v12.6: collect per-video metadata for correct timestamp rendering
         video_metadata = []
@@ -969,9 +1039,9 @@ class StreamingAgentLoop:
         processor,
         *,
         model_type: str = "qwen3vl",
-        # v12.12 (2026-05-02): RUNTIME profile defaults
-        min_pixels: int = 256 * 28 * 28,
-        max_pixels: int = 512 * 28 * 28,
+        # RUNTIME profile defaults — see scripts/agent_data/config.py
+        min_pixels: int = DEFAULT_VIDEO_MIN_PIXELS,
+        max_pixels: int = DEFAULT_VIDEO_MAX_PIXELS,
         max_new_tokens: int = 256,
         retrieve_fn: Optional[Callable] = None,
         retriever=None,
@@ -1087,14 +1157,10 @@ class StreamingAgentLoop:
         out["recent_thinks"] = []
         return out
 
-    def _get_frame_paths(self, video_path: str, chunk_idx: int) -> Optional[List[str]]:
-        """Build frame_paths for the current visual_window from pre-extracted frames."""
+    def _resolve_preextracted_frame_dir(self, video_path: str) -> Optional[Path]:
+        """Locate the pre-extracted frame directory for a video."""
         if not self.frames_root:
             return None
-        window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
-        video_start = window_start * AGENT_CHUNK_SEC
-        video_end = (chunk_idx + 1) * AGENT_CHUNK_SEC
-        n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
 
         vp = Path(video_path)
         # Try relative path under video_root, fallback to full relative path
@@ -1120,20 +1186,20 @@ class StreamingAgentLoop:
             else:
                 return None
 
-        # v12.6 fix: index frames by chunk_idx × FRAMES_PER_CHUNK + 1.
-        # The seconds-based variant (int(video_start)+1) was off-by-half
-        # under FPS=2 — matches pass1a_evidence.get_chunk_frame_paths so
-        # SFT and inference read the same frame set per chunk.
-        frame_paths = []
-        for ci in range(window_start, chunk_idx + 1):
-            for fi in range(FRAMES_PER_CHUNK):
-                fnum = ci * FRAMES_PER_CHUNK + fi + 1
-                fp = frame_dir / f"frame_{fnum:06d}.jpg"
-                if fp.exists():
-                    frame_paths.append(str(fp))
+        return frame_dir
 
-        # If too few frames found, fall back to online decoding
-        if len(frame_paths) < max(1, n_frames // 2):
+    def _get_frame_paths(self, video_path: str, chunk_idx: int) -> Optional[List[str]]:
+        """Build frame_paths for the current 1s chunk from pre-extracted frames."""
+        frame_dir = self._resolve_preextracted_frame_dir(video_path)
+        if frame_dir is None:
+            return None
+
+        frame_paths = resolve_chunk_frame_paths(
+            frame_dir,
+            chunk_idx,
+            frames_per_chunk=FRAMES_PER_CHUNK,
+        )
+        if len(frame_paths) < FRAMES_PER_CHUNK:
             return None
         return frame_paths
 
@@ -1335,8 +1401,8 @@ class StreamingAgentLoop:
             print(f"[AGENT_DEBUG] parsed action={parsed['action']!r} think_len={len(parsed['think'])}")
 
         # 7. Update memory state based on action. Compress turns are
-        # memory-management tool calls, not video observations, so their
-        # <think> is not inserted into recent_thinks / recall archive.
+        # standalone memory-management turns, not video observations, so
+        # their text is not inserted into recent_thinks / recall archive.
         if (
             parsed["think"]
             and parsed["action"] != "compress"
@@ -1357,13 +1423,17 @@ class StreamingAgentLoop:
                 )
 
         if parsed["action"] == "compress":
-            summary = parsed["payload"].get("summary", {})
-            if summary and "time_range" in summary:
-                # Determine which chunks were compressed from time_range
-                compressed_chunks = self.memory.chunks_in_time_range(
-                    summary["time_range"]
-                )
-                self.memory.compress(summary, compressed_chunks=compressed_chunks)
+            entries = parsed["payload"].get("memory_entries") or []
+            if entries:
+                self.memory.replace_with_compact_memory(entries)
+            else:
+                summary = parsed["payload"].get("summary", {})
+                if summary and "time_range" in summary:
+                    # Determine which chunks were compressed from time_range
+                    compressed_chunks = self.memory.chunks_in_time_range(
+                        summary["time_range"]
+                    )
+                    self.memory.compress(summary, compressed_chunks=compressed_chunks)
 
         elif parsed["action"] == "recall":
             # Orchestrate recall: retrieve → build recall_response input → second generate
@@ -1388,32 +1458,17 @@ class StreamingAgentLoop:
                     frame_chunks = []
                     # Build recalled frame_paths by resolving per-chunk frames
                     # under the same frames_root logic.
-                    if self.frames_root:
-                        vp = Path(video_path)
-                        if self.video_root:
-                            try:
-                                rel = vp.relative_to(Path(self.video_root))
-                                stem = rel.with_suffix("")
-                                frame_dir = Path(self.frames_root) / stem
-                            except ValueError:
-                                frame_dir = Path(self.frames_root) / vp.with_suffix("")
-                        else:
-                            frame_dir = Path(self.frames_root) / vp.with_suffix("")
-                        if frame_dir.exists():
-                            # v12.6 fix: same chunk×FRAMES_PER_CHUNK convention
-                            # used everywhere else (pass1a, _get_frame_paths,
-                            # streaming_vllm). Old code used seconds-based
-                            # offsets which were off-by-half under FPS=2.
-                            for rc in returned_chunks:
-                                chunk_paths = []
-                                for fi in range(FRAMES_PER_CHUNK):
-                                    fnum = rc * FRAMES_PER_CHUNK + fi + 1
-                                    fp = frame_dir / f"frame_{fnum:06d}.jpg"
-                                    if fp.exists():
-                                        chunk_paths.append(str(fp))
-                                if chunk_paths:
-                                    frame_chunks.append(rc)
-                                    rf_paths.extend(chunk_paths)
+                    frame_dir = self._resolve_preextracted_frame_dir(video_path)
+                    if frame_dir is not None:
+                        for rc in returned_chunks:
+                            chunk_paths = resolve_chunk_frame_paths(
+                                frame_dir,
+                                rc,
+                                frames_per_chunk=FRAMES_PER_CHUNK,
+                            )
+                            if chunk_paths:
+                                frame_chunks.append(rc)
+                                rf_paths.extend(chunk_paths)
                     recalled_frames = build_recalled_frames_metadata(
                         frame_chunks if rf_paths else returned_chunks,
                         rf_paths,
@@ -1435,18 +1490,6 @@ class StreamingAgentLoop:
                 #    user(recall_result + recalled_frames)] → generate answer
                 # This is byte-identical to the SFT trajectory the model saw.
                 recall_messages = deepcopy(messages)         # [system, user(chunk N)]
-                if recall_messages and recall_messages[0].get("role") == "system":
-                    recall_messages[0] = {
-                        "role": "system",
-                        "content": [{
-                            "type": "text",
-                            "text": system_prompt_for_frame_protocol(
-                                self.frame_protocol,
-                                prompt_kind="post_recall",
-                                render_layout=self.render_layout,
-                            ),
-                        }],
-                    }
                 recall_messages.append({                      # model's own recall turn
                     "role": "assistant",
                     "content": [{"type": "text", "text": output_text}],
@@ -1460,7 +1503,9 @@ class StreamingAgentLoop:
                     render_layout=self.render_layout,
                 )
                 recall_messages.append({
-                    "role": "user", "content": tool_user_content,
+                    "role": "tool",
+                    "tool_call_id": "recall",
+                    "content": tool_user_content,
                 })
 
                 # Second generate (allow_recall=False to prevent infinite loop)

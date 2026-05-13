@@ -57,6 +57,7 @@ except Exception:
 
 from thinkstream.sft.args import DataArguments
 from thinkstream.sft.data_processor import update_processor_pixels
+from thinkstream.data.schema import DEFAULT_VIDEO_MAX_PIXELS, DEFAULT_VIDEO_MIN_PIXELS
 from scripts.eval.ovo.eval_full import (
     RT_TASKS, BT_TASKS, FT_TASKS, ALL_TASKS,
     detect_model_class,
@@ -188,6 +189,7 @@ def build_messages(frame_paths, question, *, frame_protocol="video_meta",
             context_label="visual frame",
             min_pixels=min_pixels,
             max_pixels=max_pixels,
+            kv_scope="ordinary",
         )
         if total_pixels is not None and frame_protocol == "video_meta":
             for item in reversed(user_content):
@@ -1019,8 +1021,8 @@ def main():
         help="Visual preprocessing path. auto uses qwen-vl-utils for Qwen3-VL "
              "and the direct processor path for Qwen2.5-VL.",
     )
-    p.add_argument("--min_pixels", type=int, default=130000)
-    p.add_argument("--max_pixels", type=int, default=220000)
+    p.add_argument("--min_pixels", type=int, default=DEFAULT_VIDEO_MIN_PIXELS)
+    p.add_argument("--max_pixels", type=int, default=DEFAULT_VIDEO_MAX_PIXELS)
     p.add_argument(
         "--total_pixels",
         type=int,

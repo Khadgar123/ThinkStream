@@ -17,6 +17,8 @@ import re
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence
 
+from thinkstream.data.schema import DEFAULT_VIDEO_MAX_PIXELS, DEFAULT_VIDEO_MIN_PIXELS
+
 # ---------------------------------------------------------------------------
 # Constants (canonical values, importable by all consumers)
 # ---------------------------------------------------------------------------
@@ -30,24 +32,101 @@ try:
         VISUAL_WINDOW_CHUNKS,
         FRAMES_PER_CHUNK,
         RECALL_RETURN_CHUNKS,
-        compute_visual_window_start,
     )
 except ImportError:
     AGENT_CHUNK_SEC = 1
-    VISUAL_WINDOW_CHUNKS = 16
+    VISUAL_WINDOW_CHUNKS = 8
     FRAMES_PER_CHUNK = 2
     RECALL_RETURN_CHUNKS = 4
-
-    def compute_visual_window_start(
-        chunk_idx: int,
-        visual_window_chunks: int = VISUAL_WINDOW_CHUNKS,
-        mode: Optional[str] = None,
-    ) -> int:
-        return max(0, int(chunk_idx) - int(visual_window_chunks) + 1)
 
 
 COMPRESS_TRIGGER_TAG = "<compress_trigger/>"
 _COMPRESS_TRIGGER_RE = re.compile(r"<compress_trigger\b")
+
+
+def chunk_frame_indices(
+    chunk_idx: int,
+    frames_per_chunk: int = FRAMES_PER_CHUNK,
+) -> List[int]:
+    """Zero-based source frame indices for a zero-based chunk.
+
+    Chunk/time semantics are 0-based everywhere: chunk 0 covers t=[0, 1)
+    and source frame indices [0, 1] at 2 fps. Project JPEG files produced by
+    ffmpeg's ``frame_%06d.jpg`` are 1-based names, so file-name conversion is
+    handled separately below.
+    """
+    start = int(chunk_idx) * int(frames_per_chunk)
+    return [start + i for i in range(int(frames_per_chunk))]
+
+
+def project_frame_filename(frame_index: int, *, width: int = 6) -> str:
+    """Return the project JPEG name for a zero-based source frame index."""
+    return f"frame_{int(frame_index) + 1:0{int(width)}d}.jpg"
+
+
+def chunk_frame_filenames(
+    chunk_idx: int,
+    frames_per_chunk: int = FRAMES_PER_CHUNK,
+    *,
+    width: int = 6,
+) -> List[str]:
+    return [
+        project_frame_filename(idx, width=width)
+        for idx in chunk_frame_indices(chunk_idx, frames_per_chunk)
+    ]
+
+
+def resolve_chunk_frame_paths(
+    frame_dir: Path,
+    chunk_idx: int,
+    frames_per_chunk: int = FRAMES_PER_CHUNK,
+    *,
+    allow_legacy_zero_based: bool = True,
+) -> List[str]:
+    """Resolve the two project JPEGs for one zero-based chunk.
+
+    Primary layout is pass1/ffmpeg's 1-based ``frame_000001.jpg`` naming.
+    The optional fallback keeps older synthetic/eval dumps with 0-based file
+    names readable without changing the canonical time semantics.
+    """
+    root = Path(frame_dir)
+    zero_indices = chunk_frame_indices(chunk_idx, frames_per_chunk)
+
+    def _first_existing(candidates: Sequence[Path]) -> Optional[Path]:
+        return next((p for p in candidates if p.exists()), None)
+
+    # Try the canonical project layout as a complete set first. Mixing
+    # canonical and legacy probes frame-by-frame can duplicate frame_000001 in
+    # old 0-based synthetic dumps, so fallback is all-or-nothing.
+    canonical: List[str] = []
+    for zero_idx in zero_indices:
+        chosen = _first_existing([
+            root / project_frame_filename(zero_idx, width=6),
+            root / project_frame_filename(zero_idx, width=5),
+            root / project_frame_filename(zero_idx, width=4),
+        ])
+        if chosen is None:
+            canonical = []
+            break
+        canonical.append(str(chosen))
+    if len(canonical) == len(zero_indices):
+        return canonical
+
+    if not allow_legacy_zero_based:
+        return []
+
+    legacy: List[str] = []
+    for zero_idx in zero_indices:
+        chosen = _first_existing([
+            root / f"frame_{zero_idx:06d}.jpg",
+            root / f"frame_{zero_idx:05d}.jpg",
+            root / f"{zero_idx:06d}.jpg",
+            root / f"{zero_idx:05d}.jpg",
+        ])
+        if chosen is None:
+            return []
+        legacy.append(str(chosen))
+    return legacy
 
 
 def _contains_compress_trigger(user_text: str) -> bool:
@@ -55,23 +134,13 @@ def _contains_compress_trigger(user_text: str) -> bool:
 
 
 def build_compress_trigger_user_input() -> str:
-    """Canonical system-injected user input for inter-chunk compression.
-
-    The compression instructions live in the compression system prompt. The
-    user-side payload stays as a minimal legacy event marker so SFT/RL/eval
-    can detect compression turns without mixing policy rules into user input.
-    """
+    """Legacy marker for archived compression-trigger samples."""
     return COMPRESS_TRIGGER_TAG
 
 
 def normalize_user_input_for_turn(user_input: str, *, inter_chunk: bool = False) -> str:
     """Normalize user-side event markers for the current turn kind."""
     text = str(user_input or "")
-    if inter_chunk:
-        # Compression is system-triggered. The user-side payload should be the
-        # canonical boolean marker even if the caller forgot to pass it, or
-        # passed a legacy marker with extra attributes.
-        return build_compress_trigger_user_input()
     return text
 
 
@@ -185,6 +254,36 @@ def prefer_path_frame_index() -> bool:
     return str(value).strip().lower() not in {"0", "false", "no", "off"}
 
 
+RECALL_VISUAL_LAYOUT_ENV = "THINKSTREAM_RECALL_VISUAL_LAYOUT"
+RECALL_VISUAL_LAYOUT_CHUNKED = "chunked"
+RECALL_VISUAL_LAYOUT_PACKED = "packed"
+
+AGENT_SPECIAL_TOKENS = (
+    "<think>",
+    "</think>",
+    "<response>",
+    "</response>",
+    "<silent>",
+    "<tool_call>",
+    "</tool_call>",
+    "<MEM>",
+    "</MEM>",
+)
+
+
+def normalize_recall_visual_layout(value: Optional[str] = None) -> str:
+    raw = value if value is not None else os.environ.get(RECALL_VISUAL_LAYOUT_ENV)
+    layout = str(raw or RECALL_VISUAL_LAYOUT_CHUNKED).strip().lower().replace("-", "_")
+    if layout in {"chunk", "chunks", "per_chunk", "chunked"}:
+        return RECALL_VISUAL_LAYOUT_CHUNKED
+    if layout in {"pack", "packed", "single", "single_video"}:
+        return RECALL_VISUAL_LAYOUT_PACKED
+    raise ValueError(
+        f"Unsupported recall visual layout {raw!r}; expected "
+        f"{RECALL_VISUAL_LAYOUT_CHUNKED!r} or {RECALL_VISUAL_LAYOUT_PACKED!r}."
+    )
+
+
 def build_recalled_frames_metadata(
     chunks: Optional[Sequence[Any]],
     frame_paths: Optional[Sequence[Any]] = None,
@@ -209,6 +308,7 @@ def build_recalled_frames_metadata(
         "time_range": tr,
         "n_frames": len(paths) if paths else len(selected) * int(frames_per_chunk),
         "source": source,
+        "returned_chunks": selected,
     }
     if paths:
         out["frame_paths"] = paths
@@ -321,7 +421,15 @@ def prompt_time_range(value: Any) -> Any:
 FRAME_PROTOCOL_TS_IMAGE = "ts_image"
 FRAME_PROTOCOL_VIDEO_META = "video_meta"
 FRAME_PROTOCOL_ENV = "THINKSTREAM_FRAME_PROTOCOL"
-VALID_FRAME_PROTOCOLS = {FRAME_PROTOCOL_TS_IMAGE, FRAME_PROTOCOL_VIDEO_META}
+ALLOW_TS_IMAGE_PROTOCOL = (
+    os.environ.get("THINKSTREAM_ALLOW_TS_IMAGE_PROTOCOL", "").strip().lower()
+    in {"1", "true", "yes", "on"}
+)
+VALID_FRAME_PROTOCOLS = (
+    {FRAME_PROTOCOL_VIDEO_META, FRAME_PROTOCOL_TS_IMAGE}
+    if ALLOW_TS_IMAGE_PROTOCOL
+    else {FRAME_PROTOCOL_VIDEO_META}
+)
 
 RENDER_LAYOUT_STANDARD_QUERY_LAST = "standard_query_last"
 RENDER_LAYOUT_ENV = "THINKSTREAM_RENDER_LAYOUT"
@@ -355,9 +463,16 @@ def normalize_frame_protocol(frame_protocol: Optional[str] = None) -> str:
     }
     value = aliases.get(value, value)
     if value not in VALID_FRAME_PROTOCOLS:
+        extra = (
+            " Set THINKSTREAM_ALLOW_TS_IMAGE_PROTOCOL=1 for legacy/debug "
+            "timestamp-image rendering; production KV eviction tracks video "
+            "tokens only."
+            if value == FRAME_PROTOCOL_TS_IMAGE and not ALLOW_TS_IMAGE_PROTOCOL
+            else ""
+        )
         raise ValueError(
             f"Unsupported frame protocol {frame_protocol!r}; expected one of "
-            f"{sorted(VALID_FRAME_PROTOCOLS)}"
+            f"{sorted(VALID_FRAME_PROTOCOLS)}.{extra}"
         )
     return value
 
@@ -501,6 +616,7 @@ def append_video_metadata_frame_list(
     total_num_frames: Optional[int] = None,
     min_pixels: Optional[int] = None,
     max_pixels: Optional[int] = None,
+    kv_scope: Optional[str] = None,
 ) -> None:
     """Append pre-extracted frames as one Qwen video block with metadata.
 
@@ -525,6 +641,8 @@ def append_video_metadata_frame_list(
         "video": frame_seq,
         "video_metadata": metadata,
     }
+    if kv_scope:
+        item["kv_scope"] = str(kv_scope)
     if min_pixels is not None:
         item["min_pixels"] = min_pixels
     if max_pixels is not None:
@@ -547,13 +665,13 @@ def append_visual_frames(
     image_url_encoder: Optional[Callable[[Any], str]] = None,
     min_pixels: Optional[int] = None,
     max_pixels: Optional[int] = None,
+    kv_scope: Optional[str] = None,
 ) -> None:
     """Append frames using the selected student/eval visual protocol.
 
-    Both protocols consume the same ordered ``frames`` list and the same
-    ``<visual_window>`` text block. The only difference is the media carrier:
-    timestamped individual images versus one native video block with explicit
-    Qwen video metadata.
+    Production uses one native video block with explicit Qwen video metadata.
+    Timestamped individual images are retained only for legacy/debug probes
+    and require ``THINKSTREAM_ALLOW_TS_IMAGE_PROTOCOL=1``.
     """
     protocol = normalize_frame_protocol(frame_protocol)
     if protocol == FRAME_PROTOCOL_TS_IMAGE:
@@ -586,6 +704,7 @@ def append_visual_frames(
         total_num_frames=total_num_frames,
         min_pixels=min_pixels,
         max_pixels=max_pixels,
+        kv_scope=kv_scope,
     )
 
 
@@ -704,33 +823,86 @@ def build_recall_result_user_content(
     min_pixels: Optional[int] = None,
     max_pixels: Optional[int] = None,
     render_layout: Optional[str] = None,
+    recall_visual_layout: Optional[str] = None,
 ) -> List[Dict]:
     """Build the second user payload after a recall tool call."""
     normalize_render_layout(render_layout)
+    visual_layout = normalize_recall_visual_layout(recall_visual_layout)
     user_content: List[Dict] = []
     if recalled_frames:
+        returned_chunks = select_recall_chunks(
+            recalled_frames.get("returned_chunks")
+            or (recall_result or {}).get("returned_chunks")
+            or []
+        )
         rf_header = json.dumps({
             "time_range": prompt_time_range(recalled_frames["time_range"]),
             "source": recalled_frames.get("source", "historical_frames"),
             "n_frames": recalled_frames.get("n_frames", 4),
+            "returned_chunks": returned_chunks,
         })
         user_content.append({
             "type": "text",
             "text": f"<recalled_frames>{rf_header}</recalled_frames>",
+            "kv_scope": "recall",
         })
         if recalled_frames.get("frame_paths"):
-            tr_start, tr_end = recalled_frames["time_range"]
-            append_visual_frames(
-                user_content,
-                recalled_frames["frame_paths"],
-                frame_protocol=frame_protocol,
-                fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
-                start_frame_index=int(float(tr_start)) * FRAMES_PER_CHUNK,
-                total_num_frames=int(float(tr_end)) * FRAMES_PER_CHUNK,
-                context_label="recalled frame",
-                min_pixels=min_pixels,
-                max_pixels=max_pixels,
+            paths = list(recalled_frames["frame_paths"])
+            frames_per_chunk = int(FRAMES_PER_CHUNK)
+            split_by_chunk = (
+                visual_layout == RECALL_VISUAL_LAYOUT_CHUNKED
+                and returned_chunks
+                and len(paths) == len(returned_chunks) * frames_per_chunk
             )
+            if split_by_chunk:
+                for i, chunk in enumerate(returned_chunks):
+                    chunk_paths = paths[
+                        i * frames_per_chunk:(i + 1) * frames_per_chunk
+                    ]
+                    chunk_tr = recall_time_range_for_chunks(
+                        [chunk], chunk_sec=AGENT_CHUNK_SEC
+                    )
+                    chunk_header = {
+                        "chunk": int(chunk),
+                        "time_range": prompt_time_range(chunk_tr)
+                        if chunk_tr else [],
+                        "n_frames": len(chunk_paths),
+                    }
+                    user_content.append({
+                        "type": "text",
+                        "text": (
+                            "<recalled_chunk>"
+                            f"{json.dumps(chunk_header)}"
+                            "</recalled_chunk>"
+                        ),
+                        "kv_scope": "recall",
+                    })
+                    append_visual_frames(
+                        user_content,
+                        chunk_paths,
+                        frame_protocol=frame_protocol,
+                        fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
+                        start_frame_index=int(chunk) * frames_per_chunk,
+                        total_num_frames=(int(chunk) + 1) * frames_per_chunk,
+                        context_label="recalled frame",
+                        min_pixels=min_pixels,
+                        max_pixels=max_pixels,
+                        kv_scope="recall",
+                    )
+            else:
+                tr_start, tr_end = recalled_frames["time_range"]
+                append_visual_frames(
+                    user_content,
+                    paths,
+                    frame_protocol=frame_protocol,
+                    fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
+                    start_frame_index=int(float(tr_start)) * FRAMES_PER_CHUNK,
+                    total_num_frames=int(float(tr_end)) * FRAMES_PER_CHUNK,
+                    context_label="recalled frame",
+                    min_pixels=min_pixels,
+                    max_pixels=max_pixels,
+                    kv_scope="recall",
+                )
     if recall_result:
         rr_json = json.dumps(
             build_recall_result_metadata(recall_result, recalled_frames),
@@ -739,6 +911,7 @@ def build_recall_result_user_content(
         user_content.append({
             "type": "text",
             "text": f"<recall_result>{rr_json}</recall_result>",
+            "kv_scope": "recall",
         })
     return user_content
 
@@ -1215,12 +1388,12 @@ def build_user_content(
     queries: Optional[List[Dict]] = None,
     recalled_frames: Optional[Dict] = None,
     recall_result: Optional[Dict] = None,
-    # Streaming-runtime profile, ViT-patch-aligned. Same values as
+    # Streaming-runtime profile. Same values as
     # ``schema.DEFAULT_VIDEO_{MIN,MAX}_PIXELS`` and ``sft.args.video_*_pixels``.
     # SFT/RL/Eval/deploy unified; pass1a uses HIRES (set explicitly via
     # mm_processor_kwargs at request level).
-    min_pixels: int = 256 * 28 * 28,   # 200,704
-    max_pixels: int = 512 * 28 * 28,   # 401,408
+    min_pixels: int = DEFAULT_VIDEO_MIN_PIXELS,
+    max_pixels: int = DEFAULT_VIDEO_MAX_PIXELS,
     frame_paths: Optional[List[str]] = None,
     frame_protocol: Optional[str] = None,
     inter_chunk: bool = False,
@@ -1230,7 +1403,7 @@ def build_user_content(
     """Build the user content list for a single-step message.
 
     Ordinary streaming ordering:
-    <user_input> → <memory> → <visual_window> + video_meta frames →
+    <user_input> → <memory> → current <visual_window> + video_meta chunk →
     <active_query>/<response_history>.
 
     The fresh user event stays at the front, historical text memory appears
@@ -1269,16 +1442,6 @@ def build_user_content(
     layout = normalize_render_layout(render_layout)
     chunk_sec = AGENT_CHUNK_SEC
     user_content = []
-
-    # Compression turns must carry the ``<stage:compress>`` marker so the
-    # unified system prompt's hard rule ("ONLY callable when the user message
-    # contains <stage:compress>") is satisfied. Without this, the RL rollout
-    # path produces user content that never enables compress and the model
-    # refuses to emit the tool call. The marker is a short text item placed
-    # at the very front of the user message so it is visible regardless of
-    # downstream layout choices.
-    if inter_chunk:
-        user_content.append({"type": "text", "text": "<stage:compress>\n"})
 
     effective_user_input = (
         ""
@@ -1330,16 +1493,15 @@ def build_user_content(
     if not query_last:
         append_queries_block()
 
-    # ── Visual window + protocol-selected frame carrier ──
-    # Compression is between visual timesteps and should not condition on the
-    # current frame window. Ordinary streaming / recall-response turns keep it.
+    # ── Current visual chunk + protocol-selected frame carrier ──
+    # The recurrent KV engine owns the 8-chunk visual window. Each ordinary
+    # streaming prompt supplies only the current 1s chunk (2 frames).
     if not inter_chunk:
-        window_start = compute_visual_window_start(chunk_idx, VISUAL_WINDOW_CHUNKS)
-        video_start = window_start * chunk_sec
-        video_end = (chunk_idx + 1) * chunk_sec
+        video_start = chunk_idx * chunk_sec
+        video_end = video_start + chunk_sec
         current_start = chunk_idx * chunk_sec
         current_end = current_start + chunk_sec
-        n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
+        n_frames = FRAMES_PER_CHUNK
 
         vw_header = json.dumps({
             "start": prompt_time_value(video_start),
@@ -1353,16 +1515,18 @@ def build_user_content(
         })
 
         if frame_paths:
+            current_frame_paths = list(frame_paths)[-FRAMES_PER_CHUNK:]
             append_visual_frames(
                 user_content,
-                frame_paths,
+                current_frame_paths,
                 frame_protocol=frame_protocol,
                 fps=float(FRAMES_PER_CHUNK / chunk_sec),
-                start_frame_index=window_start * FRAMES_PER_CHUNK,
+                start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
                 total_num_frames=(chunk_idx + 1) * FRAMES_PER_CHUNK,
                 latest_start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
+                kv_scope="ordinary",
             )
         else:
             user_content.append({
@@ -1370,62 +1534,30 @@ def build_user_content(
                 "video": video_path,
                 "video_start": prompt_time_value(video_start),
                 "video_end": prompt_time_value(video_end),
-                "nframes": n_frames,
+                "nframes": FRAMES_PER_CHUNK,
                 "min_pixels": min_pixels,
                 "max_pixels": max_pixels,
+                "kv_scope": "ordinary",
             })
 
     if query_last:
         append_queries_block()
-    # ── Recalled frames (recall_response only) ──
-    if recalled_frames and not inter_chunk:
-        rf_header = json.dumps({
-            "time_range": prompt_time_range(recalled_frames["time_range"]),
-            "source": recalled_frames.get("source", "historical_frames"),
-            "n_frames": recalled_frames.get("n_frames", 4),
-        })
-        user_content.append({
-            "type": "text",
-            "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
-        })
-        if recalled_frames.get("frame_paths"):
-            # Timestamp recalled images at their ORIGINAL video time.
-            tr_start, tr_end = recalled_frames["time_range"]
-            append_visual_frames(
-                user_content,
-                recalled_frames["frame_paths"],
-                frame_protocol=frame_protocol,
-                fps=float(FRAMES_PER_CHUNK / chunk_sec),
-                start_frame_index=int(tr_start * FRAMES_PER_CHUNK),
-                total_num_frames=int(tr_end * FRAMES_PER_CHUNK),
-                context_label="recalled frame",
-                min_pixels=min_pixels,
-                max_pixels=max_pixels,
-            )
-        elif video_path:
-            user_content.append({
-                "type": "video",
-                "video": video_path,
-                "video_start": prompt_time_value(recalled_frames["time_range"][0]),
-                "video_end": prompt_time_value(recalled_frames["time_range"][1]),
-                "nframes": recalled_frames.get("n_frames", 4),
-                "min_pixels": min_pixels,
-                "max_pixels": max_pixels,
-            })
-
-    # ── Recall result metadata (recall_response only) ──
-    # Model-visible recall payload is visual-only: <recalled_frames> carries
-    # historical frames, while <recall_result> carries routing metadata. Do not
-    # expose retrieved text_content/text as answer evidence.
-    if recall_result and not inter_chunk:
-        rr_json = json.dumps(
-            build_recall_result_metadata(recall_result, recalled_frames),
-            ensure_ascii=False,
+    # ── Recall result metadata / frames (legacy single-turn path) ──
+    # The normal post-recall path calls build_recall_result_user_content()
+    # directly. Keep this fallback byte-aligned with that renderer.
+    if (recalled_frames or recall_result) and not inter_chunk:
+        recall_payload = build_recall_result_user_content(
+            recalled_frames,
+            recall_result,
+            frame_protocol=frame_protocol,
+            min_pixels=min_pixels,
+            max_pixels=max_pixels,
+            render_layout=render_layout,
         )
-        user_content.append({
-            "type": "text",
-            "text": f"\n<recall_result>{rr_json}</recall_result>",
-        })
+        if recall_payload and user_content and recall_payload[0].get("type") == "text":
+            recall_payload = [dict(recall_payload[0]), *recall_payload[1:]]
+            recall_payload[0]["text"] = "\n" + str(recall_payload[0].get("text", ""))
+        user_content.extend(recall_payload)
 
     if user_input_block and not prepend_user_input:
         user_content.append({
@@ -1440,12 +1572,11 @@ def build_user_content(
 # Output Parsing
 # ---------------------------------------------------------------------------
 # Architecture:
-#   answer (terminal)   = <answer>text</answer> or <answer></answer> (silent)
+#   response terminal   = <response>text</response> or <silent>
 #   tool (recall)       = <tool_call>{"name":"recall","arguments":{...}}</tool_call>
-#   compress turn       = compression-only system prompt + optional legacy
-#                         <compress_trigger/> marker (boolean signal only; NO
-#                         range). The assistant emits a compress tool_call
-#                         carrying its OWN derived time_range + summary text.
+#   compress turn       = stage-marked memory update. The assistant emits
+#                         <MEM>...</MEM> with compact <m> entries; legacy
+#                         compress tool_call parsing is retained for older data.
     # Tools registered via system <tools> block (auto-rendered by chat_template
 # when tools=tools is passed to apply_chat_template).
 
@@ -1470,6 +1601,8 @@ def strip_frame_metadata_tags(text: str) -> str:
         kept_lines.append(line)
     cleaned = "\n".join(kept_lines)
     cleaned = _FRAME_TAG_INLINE_RE.sub(" ", cleaned)
+    if re.search(r"<MEM\b", cleaned, re.IGNORECASE):
+        return cleaned.strip()
     cleaned = re.sub(r"[ \t]{2,}", " ", cleaned)
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
     return cleaned.strip()
@@ -1504,6 +1637,11 @@ def strip_chat_template_boundary_tokens(text: str) -> str:
     return text
 
 
+def decode_agent_output_tokens(tokenizer: Any, token_ids: Sequence[int]) -> str:
+    """Decode generated assistant tokens while preserving agent tags."""
+    text = tokenizer.decode(list(token_ids), skip_special_tokens=False)
+    return strip_chat_template_boundary_tokens(text)
+
 
 # ---------------------------------------------------------------------------
 # System prompt + sample-field helpers
@@ -1515,6 +1653,7 @@ def strip_chat_template_boundary_tokens(text: str) -> str:
 # a different prompt.
 
 from thinkstream.data.schema import (  # noqa: E402
+    COMPACT_MEMORY_SYSTEM_PROMPT,
     SYSTEM_PROMPT,
 )
 
@@ -1593,14 +1732,11 @@ def system_prompt_for_frame_protocol(
     inter_chunk: bool = False,
     render_layout: Optional[str] = None,
 ) -> str:
-    """Return the canonical streaming system prompt.
-
-    Signature retained for backward compatibility with existing call sites
-    that pass ``frame_protocol`` / ``prompt_kind`` / ``inter_chunk``; those
-    arguments are now ignored because stage transitions are signalled via
-    user-side ``<stage:...>`` markers, not by selecting a different prompt.
-    """
+    """Return the turn-local system prompt."""
     layout = normalize_render_layout(render_layout)
+    kind = normalize_system_prompt_kind(prompt_kind, inter_chunk=inter_chunk)
+    if kind == "compress":
+        return COMPACT_MEMORY_SYSTEM_PROMPT
     return _apply_render_layout_to_system_prompt(SYSTEM_PROMPT, layout)
 
 
@@ -1618,17 +1754,15 @@ def _apply_render_layout_to_system_prompt(prompt: str, layout: str) -> str:
 # tool descriptions this way — no drift.
 from thinkstream.data.schema import build_tools_schema as _build_tools_schema  # noqa: E402
 
-_RECALL_TOOL_SCHEMA, _COMPRESS_TOOL_SCHEMA = _build_tools_schema(
-    include_recall=True, include_compress=True
-)
-RECALL_TOOL_SCHEMA = _RECALL_TOOL_SCHEMA
-COMPRESS_TOOL_SCHEMA = _COMPRESS_TOOL_SCHEMA
-del _RECALL_TOOL_SCHEMA, _COMPRESS_TOOL_SCHEMA
+_RECALL_TOOLS = _build_tools_schema(include_recall=True, include_compress=False)
+RECALL_TOOL_SCHEMA = _RECALL_TOOLS[0]
+COMPRESS_TOOL_SCHEMA = None
+del _RECALL_TOOLS
 
 # Back-compat name for old call sites. New code should use tools_for_turn().
-TOOLS_SCHEMA = [RECALL_TOOL_SCHEMA, COMPRESS_TOOL_SCHEMA]
+TOOLS_SCHEMA = [RECALL_TOOL_SCHEMA]
 STREAMING_TOOLS_SCHEMA = [RECALL_TOOL_SCHEMA]
-COMPRESS_TOOLS_SCHEMA = [COMPRESS_TOOL_SCHEMA]
+COMPRESS_TOOLS_SCHEMA = []
 
 
 def normalize_tool_turn_kind(
@@ -1681,7 +1815,7 @@ def tools_for_turn(
     """Return the Qwen tool schema valid for one generation turn.
 
     - streaming turns expose recall only;
-    - compression turns expose compress only;
+    - compression turns expose no tools; compact memory is raw <MEM> content;
     - recall-result answer turns expose no tools.
     """
     kind = normalize_tool_turn_kind(
@@ -1692,7 +1826,10 @@ def tools_for_turn(
     if kind == "streaming":
         return STREAMING_TOOLS_SCHEMA
     if kind == "compress":
-        return COMPRESS_TOOLS_SCHEMA
+        # Compact-memory update is plain assistant content (<MEM>...</MEM>),
+        # not a function call. Keep legacy compress tool schema defined above
+        # for old cached data, but do not expose it in new turns.
+        return None
     return None
 
 
@@ -1757,23 +1894,25 @@ def build_assistant_content(
     recall_query: Optional[Dict] = None,
     compress_summary: Optional[Dict] = None,
 ) -> str:
-    """Build assistant message content in v12.0 format.
+    """Build assistant message content in canonical v12 format.
 
     Returns a single string with <think>...</think> followed by exactly one
-    of: <tool_call>{...}</tool_call> | <answer>...</answer>.
+    of: <tool_call>{...}</tool_call> | <response>...</response> | <silent>.
 
     Args:
         think: think content (40-80 tokens recommended).
         kind: which terminal to emit.
-        answer_text: text inside <answer>...</answer> (empty for silent).
+        answer_text: text inside <response>...</response> (empty for silent).
         recall_query: dict with "query" + "time_range" keys.
         compress_summary: dict with "time_range" (list) + "text" keys.
     """
     parts = [f"<think>{think}</think>"]
 
     if kind == "answer":
-        # Empty string → <answer></answer> = silent.
-        parts.append(f"<answer>{answer_text}</answer>")
+        if str(answer_text or "").strip():
+            parts.append(f"<response>{answer_text}</response>")
+        else:
+            parts.append("<silent>")
     elif kind == "recall":
         if not recall_query:
             raise ValueError("kind='recall' requires recall_query dict")
@@ -2009,16 +2148,53 @@ def _scan_json_prefix_state(text: str) -> Dict[str, Any]:
 
 
 def diagnose_compress_output(output_text: str) -> Dict[str, Any]:
-    """Diagnose partial compress tool-call structure.
-
-    Strict parsing deliberately fails when generation is truncated before
-    ``</tool_call>``. This helper is a fallback metric: it checks whether the
-    *front* of the compress tool call is correct, so eval can distinguish
-    "never entered compress format" from "correct prefix but likely ran out of
-    decode budget while writing summary text".
-    """
+    """Diagnose partial compact-memory output structure."""
     text = strip_chat_template_boundary_tokens(output_text or "")
     think_closed = bool(re.search(r"<think>.*?</think>", text, re.DOTALL))
+    mem_open_pos = text.find("<MEM>")
+    mem_close_pos = text.find("</MEM>")
+    mem_open = mem_open_pos >= 0
+    mem_closed = mem_close_pos > mem_open_pos >= 0
+    mem_body = text[mem_open_pos + len("<MEM>"):mem_close_pos if mem_closed else None] if mem_open else ""
+    mem_lines = re.findall(r'<m\s+t="[^"]+"\s*>.*?</m>', mem_body, flags=re.DOTALL | re.IGNORECASE)
+    mem_entry_count_ok = 4 <= len(mem_lines) <= 6
+    if mem_open:
+        raw_mem_prefix = not text[:mem_open_pos].strip()
+        front_prefix_ok = bool(mem_open and len(mem_lines) >= 1 and (think_closed or raw_mem_prefix))
+        likely_truncated = bool(front_prefix_ok and not mem_closed)
+        label = (
+            "complete"
+            if mem_closed and mem_entry_count_ok
+            else "mem_bad_entry_count"
+            if mem_closed
+            else "mem_likely_truncated"
+        )
+        return {
+            "think_closed": think_closed,
+            "tool_call_open": False,
+            "json_object_open": False,
+            "name_compress": False,
+            "arguments_open": False,
+            "time_range_open": False,
+            "time_range_pair": False,
+            "text_key_open": False,
+            "text_started": bool(mem_lines),
+            "text_closed": mem_closed,
+            "json_complete": False,
+            "tool_call_closed": False,
+            "mem_open": mem_open,
+            "mem_closed": mem_closed,
+            "mem_entry_count": len(mem_lines),
+            "mem_entry_count_ok": mem_entry_count_ok,
+            "front_prefix_ok": front_prefix_ok,
+            "likely_truncated": likely_truncated,
+            "missing_tool_close_after_complete_json": False,
+            "json_prefix_state": "",
+            "json_prefix_depth": 0,
+            "prefix_level": 13 if mem_closed and mem_entry_count_ok else (4 if front_prefix_ok else 0),
+            "label": label,
+        }
+
     tool_open_pos = text.find("<tool_call>")
     tool_close_pos = text.find("</tool_call>")
     tool_call_open = tool_open_pos >= 0
@@ -2144,7 +2320,7 @@ def parse_agent_output(
     allow_bare_answer: bool = False,
     allow_malformed_tool_call: bool = False,
 ) -> Dict:
-    """Parse v12.0 agent output (think + tool_call|answer).
+    """Parse agent output (think + response/silent/tool_call/MEM).
 
     Returns:
         {
@@ -2152,7 +2328,8 @@ def parse_agent_output(
             "think": str,
             "kind": "answer" | "recall" | "compress" | "unknown",
             "answer_text": str | None,         # set when kind=answer
-            "tool_call": dict | None,          # parsed JSON when kind=recall|compress
+            "tool_call": dict | None,          # parsed JSON when kind=recall|legacy compress
+            "memory_text": str | None,         # parsed <MEM> when kind=compress
             "format_error": str | None,        # set when parsing fails
         }
     """
@@ -2163,6 +2340,7 @@ def parse_agent_output(
         "kind": "unknown",
         "answer_text": None,
         "tool_call": None,
+        "memory_text": None,
         "format_error": None,
     }
 
@@ -2177,8 +2355,21 @@ def parse_agent_output(
             else "multiple <think> blocks"
         )
 
+    response_matches = list(re.finditer(r'<response>(.*?)</response>', output_text, re.DOTALL))
+    silent_matches = list(re.finditer(r'<silent>\s*(?:</silent>)?', output_text, re.DOTALL))
+    # Legacy compatibility only. New generated/rendered data must use
+    # <response> for answers and <silent> for empty turns.
     answer_matches = list(re.finditer(r'<answer>(.*?)</answer>', output_text, re.DOTALL))
     tool_matches = list(re.finditer(r'<tool_call>(.*?)</tool_call>', output_text, re.DOTALL))
+    mem_matches = list(re.finditer(r'<MEM>\s*(.*?)\s*</MEM>', output_text, re.DOTALL | re.IGNORECASE))
+    response_match = (
+        response_matches[0]
+        if response_matches else None
+    )
+    silent_match = (
+        silent_matches[0]
+        if silent_matches else None
+    )
     answer_match = (
         answer_matches[0]
         if answer_matches else None
@@ -2187,24 +2378,43 @@ def parse_agent_output(
         tool_matches[0]
         if tool_matches else None
     )
+    mem_match = (
+        mem_matches[0]
+        if mem_matches else None
+    )
 
-    # Both present → format error (must be one or the other, not both)
-    if answer_match and tool_match:
-        result["format_error"] = "both <answer> and <tool_call> present"
+    n_terminals = (
+        int(response_match is not None)
+        + int(silent_match is not None)
+        + int(answer_match is not None)
+        + int(tool_match is not None)
+        + int(mem_match is not None)
+    )
+    if n_terminals > 1:
+        result["format_error"] = "multiple terminal blocks present"
+        return result
+    if len(response_matches) > 1:
+        result["format_error"] = "multiple <response> blocks"
+        return result
+    if len(silent_matches) > 1:
+        result["format_error"] = "multiple <silent> blocks"
         return result
     if len(answer_matches) > 1:
-        result["format_error"] = "multiple <answer> blocks"
+        result["format_error"] = "multiple legacy <answer> blocks"
         return result
     if len(tool_matches) > 1:
         result["format_error"] = "multiple <tool_call> blocks"
+        return result
+    if len(mem_matches) > 1:
+        result["format_error"] = "multiple <MEM> blocks"
         return result
 
     if (
         result["format_error"] is None
         and len(think_matches) == 1
-        and ((answer_match is None) ^ (tool_match is None))
+        and n_terminals == 1
     ):
-        terminal_match = answer_match or tool_match
+        terminal_match = response_match or silent_match or answer_match or tool_match or mem_match
         assert terminal_match is not None
         think_match = think_matches[0]
         if think_match.start() > terminal_match.start():
@@ -2220,9 +2430,41 @@ def parse_agent_output(
                     "text outside required <think> plus terminal blocks"
                 )
 
+    if response_match:
+        result["kind"] = "answer"
+        result["answer_text"] = response_match.group(1).strip()
+        return result
+
+    if silent_match:
+        result["kind"] = "answer"
+        result["answer_text"] = ""
+        return result
+
     if answer_match:
         result["kind"] = "answer"
         result["answer_text"] = answer_match.group(1).strip()
+        return result
+
+    if mem_match:
+        body = mem_match.group(1).strip()
+        line_matches = list(re.finditer(
+            r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>(.*?)</m>',
+            body,
+            re.DOTALL | re.IGNORECASE,
+        ))
+        if not (4 <= len(line_matches) <= 6):
+            result["format_error"] = f"memory update must contain 4-6 <m> lines, got {len(line_matches)}"
+            return result
+        if any(not (m.group(3) or "").strip() for m in line_matches):
+            result["format_error"] = "memory update contains empty <m> line"
+            return result
+        result["kind"] = "compress"
+        result["memory_text"] = mem_match.group(0).strip()
+        result["format_error"] = None
+        result["tool_call"] = {
+            "name": "memory_update",
+            "arguments": {"memory_text": result["memory_text"]},
+        }
         return result
 
     if tool_match:
@@ -2253,13 +2495,15 @@ def parse_agent_output(
             and bare
             and "<tool_call" not in bare
             and "<answer" not in bare
+            and "<response" not in bare
+            and "<silent" not in bare
         ):
             result["kind"] = "answer"
             result["answer_text"] = _normalize_bare_answer_text(bare)
             result["format_error"] = None
             return result
 
-    result["format_error"] = "neither <answer> nor <tool_call> emitted"
+    result["format_error"] = "neither <response>/<silent> nor <tool_call> nor <MEM> emitted"
     return result
 
 

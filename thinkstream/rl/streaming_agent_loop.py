@@ -131,6 +131,7 @@ from thinkstream.data.agent_protocol import (
     RECALL_RETURN_CHUNKS,
     build_recalled_frames_metadata,
     recall_time_string_for_chunks,
+    resolve_chunk_frame_paths,
     select_recall_chunks,
 )
 
@@ -138,13 +139,13 @@ logger = logging.getLogger(__file__)
 logger.setLevel(os.getenv("VERL_LOGGING_LEVEL", "WARN"))
 
 
-# Token budget for compress system trigger — MUST match pass2 / SFT / eval
-# exactly. Single source of truth is scripts/agent_data/config.py:
+# Token budget fallback for compression. Current RL defaults to pass2's
+# offline compact-memory boundaries when parquet provides them; this budget
+# path remains for legacy parquet or explicit runtime-trigger ablations.
 #
-#   RECENT_THINKS_TOKEN_BUDGET    = 4000   # total budget
-#   COMPRESS_TRIGGER_RATIO        = 0.8    # fire at 80%
-#   COMPRESS_TOKEN_THRESHOLD      = 3200   # = budget × ratio
-#   COMPRESS_RANGE_MIN            = 8      # min items in a compress range
+#   COMPACT_MEMORY_TEXT_TOKEN_BUDGET = 3200
+#   COMPACT_MEMORY_MIN_NEW_CHUNKS    = 24
+#   COMPACT_MEMORY_MAX_NEW_CHUNKS    = 36
 #
 # v12.13 (2026-05-03): RL was using a hardcoded 3200 + word-count×1.3
 # estimate, which drifted from pass2 / eval (both use the real Qwen
@@ -154,16 +155,21 @@ logger.setLevel(os.getenv("VERL_LOGGING_LEVEL", "WARN"))
 # self.tokenizer (already loaded by AgentLoopBase) for accurate counting.
 try:
     from scripts.agent_data.config import (  # type: ignore
-        RECENT_THINKS_TOKEN_BUDGET,
-        COMPRESS_TOKEN_THRESHOLD,
-        COMPRESS_RANGE_MIN,
+        COMPACT_MEMORY_TEXT_TOKEN_BUDGET,
+        COMPACT_MEMORY_MIN_NEW_CHUNKS,
+        COMPACT_MEMORY_MAX_NEW_CHUNKS,
     )
+    RECENT_THINKS_TOKEN_BUDGET = COMPACT_MEMORY_TEXT_TOKEN_BUDGET
+    COMPRESS_TOKEN_THRESHOLD = COMPACT_MEMORY_TEXT_TOKEN_BUDGET
+    COMPRESS_RANGE_MIN = COMPACT_MEMORY_MIN_NEW_CHUNKS
+    COMPRESS_RANGE_MAX = COMPACT_MEMORY_MAX_NEW_CHUNKS
 except ImportError:
     # Fallback for envs that don't have THINKSTREAM_HOME on PYTHONPATH —
     # values mirror config.py but won't auto-update if config changes.
-    RECENT_THINKS_TOKEN_BUDGET = 4000
+    RECENT_THINKS_TOKEN_BUDGET = 3200
     COMPRESS_TOKEN_THRESHOLD = 3200
-    COMPRESS_RANGE_MIN = 8
+    COMPRESS_RANGE_MIN = 24
+    COMPRESS_RANGE_MAX = 36
 
 # Backward-compat alias for any external import; new code should use
 # COMPRESS_TOKEN_THRESHOLD directly.
@@ -208,63 +214,11 @@ def _chunk_frame_paths(
     frame_dir = _resolve_frame_dir(video_path, frames_root)
     if frame_dir is None:
         return []
-    paths: List[str] = []
-    for fi in range(frames_per_chunk):
-        # 1-indexed file numbering — pass1a's ffmpeg `frame_%06d.jpg`
-        # default starts at frame_000001. Older test harnesses with
-        # 0-indexed dumps fall back to the next probe.
-        idx_one = chunk_idx * frames_per_chunk + fi + 1
-        candidates = [
-            frame_dir / f"frame_{idx_one:06d}.jpg",
-            frame_dir / f"frame_{idx_one:05d}.jpg",
-            frame_dir / f"frame_{idx_one:04d}.jpg",
-        ]
-        # 0-indexed legacy fallback
-        idx_zero = chunk_idx * frames_per_chunk + fi
-        candidates.extend([
-            frame_dir / f"frame_{idx_zero:06d}.jpg",
-            frame_dir / f"frame_{idx_zero:05d}.jpg",
-        ])
-        chosen: Optional[Path] = None
-        for c in candidates:
-            if c.exists():
-                chosen = c
-                break
-        if chosen is None:
-            return []
-        paths.append(str(chosen))
-    return paths
-
-
-def _compute_window_start(
-    chunk_idx: int,
-    visual_window_chunks: int,
-    mode: str = "sliding",
-) -> int:
-    """Compute the start chunk of the visual window for `chunk_idx`.
-
-    mode="sliding"   (legacy / SFT-aligned): window_start = max(0, chunk-VWC+1)
-                     The window slides 1 chunk per step. Frame token IDs in
-                     the prompt shift left by `frames_per_chunk` every step
-                     → vLLM prefix cache misses on the visual block.
-    mode="expanding" (v12.13 / KV-friendly): window_start = (chunk // VWC) * VWC
-                     The window is anchored at a segment boundary and grows
-                     until it hits the next segment. Within a segment the
-                     leading frames occupy IDENTICAL prompt positions across
-                     chunks → vLLM prefix cache hits ~(VWC-1)/VWC of visual
-                     tokens. Trade-off: at chunk_idx % VWC == 0 the window
-                     contains only 1 chunk of frames; recent context is
-                     thinner than `sliding` for the first chunk in each
-                     segment. Best paired with SFT data regenerated under
-                     the same mode (pass5_messages.py:147 needs the same
-                     branch); otherwise the rollout-time visual context
-                     differs from training-time context for boundary chunks.
-    """
-    if mode == "expanding":
-        seg = max(1, int(visual_window_chunks))
-        return (int(chunk_idx) // seg) * seg
-    # sliding (default)
-    return max(0, int(chunk_idx) - int(visual_window_chunks) + 1)
+    return resolve_chunk_frame_paths(
+        frame_dir,
+        chunk_idx,
+        frames_per_chunk=frames_per_chunk,
+    )
 
 
 def _build_visual_window(
@@ -276,23 +230,17 @@ def _build_visual_window(
     chunk_sec: float = 1.0,
     mode: str = "sliding",
 ) -> Tuple[List[str], int, int]:
-    """Build the visual window for chunk N.
+    """Build the current 1s visual chunk for chunk N.
 
     Returns:
-      flat_paths:     all frame paths in window order (window_start..N)
+      flat_paths:     current chunk frame paths only (2 frames)
       window_start_chunk, window_end_chunk
-
-    `mode` selects the windowing strategy (see _compute_window_start).
     """
-    window_start = _compute_window_start(chunk_idx, visual_window_chunks, mode)
-    window_end = chunk_idx
-    flat_paths: List[str] = []
-    for c in range(window_start, window_end + 1):
-        cf = _chunk_frame_paths(video_path, frames_root, c, frames_per_chunk)
-        if not cf:
-            return [], window_start, window_end
-        flat_paths.extend(cf)
-    return flat_paths, window_start, window_end
+    del visual_window_chunks, chunk_sec, mode
+    cf = _chunk_frame_paths(video_path, frames_root, chunk_idx, frames_per_chunk)
+    if not cf:
+        return [], chunk_idx, chunk_idx
+    return list(cf), chunk_idx, chunk_idx
 
 
 # ---------------------------------------------------------------------------
@@ -394,6 +342,17 @@ def _count_recent_thinks_tokens(
     return total
 
 
+def _count_visible_memory_tokens(
+    compressed_summaries: List[Dict[str, Any]],
+    recent_thinks: List[Dict[str, Any]],
+    tokenizer=None,
+) -> int:
+    return (
+        _count_recent_thinks_tokens(compressed_summaries, tokenizer=tokenizer)
+        + _count_recent_thinks_tokens(recent_thinks, tokenizer=tokenizer)
+    )
+
+
 # Backward-compat alias for any external import.
 def _estimate_recent_thinks_tokens(recent_thinks: List[Dict[str, Any]]) -> int:
     """DEPRECATED: kept as a no-tokenizer shim. Prefer
@@ -420,11 +379,14 @@ def _register_streaming_agent_loop():
         build_recall_result_metadata,
         build_user_content,
         build_recall_result_user_content,
+        decode_agent_output_tokens,
         normalize_frame_protocol,
         normalize_render_layout,
         parse_agent_output,
         format_memory_block,
         query_is_complete,
+        query_expected_answer_chunks,
+        query_completed_answer_chunks,
         system_prompt_for_frame_protocol,
         tools_for_turn,
     )
@@ -495,16 +457,14 @@ def _register_streaming_agent_loop():
                 os.environ.get("THINKSTREAM_FRAMES_PER_CHUNK", "2") or 2
             )
             self.visual_window_chunks = int(
-                os.environ.get("THINKSTREAM_VISUAL_WINDOW_CHUNKS", "16") or 16
+                os.environ.get("THINKSTREAM_VISUAL_WINDOW_CHUNKS", "8") or 8
             )
             self.chunk_sec = float(
                 os.environ.get("THINKSTREAM_CHUNK_SEC", "1.0") or 1.0
             )
-            # v12.13: default = COMPRESS_TOKEN_THRESHOLD imported from
-            # scripts/agent_data/config.py (3200 = 80% of 4000-tok
-            # RECENT_THINKS_TOKEN_BUDGET). Matches pass2 / eval / SFT
-            # exactly — diverging here means RL's compress fires at
-            # different memory state than what the model trained on.
+            # Runtime-token fallback. Normal RL uses offline pass2 boundaries
+            # from extra_info.offline_compress_chunks so query injection after
+            # compression matches SFT/pass5.
             self.compress_token_threshold = int(
                 os.environ.get(
                     "THINKSTREAM_COMPRESS_THRESHOLD",
@@ -512,6 +472,19 @@ def _register_streaming_agent_loop():
                 )
                 or COMPRESS_TOKEN_THRESHOLD
             )
+            trigger_source = str(
+                os.environ.get(
+                    "THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE",
+                    "offline_pass2_boundaries",
+                )
+                or "offline_pass2_boundaries"
+            ).strip().lower()
+            if trigger_source not in {
+                "offline_pass2_boundaries",
+                "runtime_memory_threshold",
+            }:
+                trigger_source = "offline_pass2_boundaries"
+            self.compress_trigger_source = trigger_source
             self.recall_stub_text = str(
                 os.environ.get(
                     "THINKSTREAM_RECALL_STUB",
@@ -559,6 +532,16 @@ def _register_streaming_agent_loop():
             if mode not in ("stitched", "recurrent"):
                 mode = "stitched"
             self.recurrent_mode = mode
+            engine = str(
+                os.environ.get("THINKSTREAM_ROLLOUT_ENGINE", "streaming")
+            ).strip().lower()
+            if engine not in {"streaming", "hf_streaming", "local_streaming", "casia"}:
+                logger.warning(
+                    "Ignoring THINKSTREAM_ROLLOUT_ENGINE=%r; true-KV "
+                    "streaming rollout is required.",
+                    engine,
+                )
+            self.rollout_engine = "streaming"
 
         # -------------------------------------------------------------------
         # Per-chunk user-side text. Mirrors SFT/pass5 layout so train/RL
@@ -784,11 +767,10 @@ def _register_streaming_agent_loop():
               2. protocol visual frames anchored to historical chunk timestamps
               3. <recall_result>{json}</recall_result> metadata
 
-            We use role="user" (not "tool") to match pass5's DeepEyesV2
-            ShareGPT alignment — the chat_template renders both as
-            <|im_start|>user\\n<tool_response>... so the on-the-wire
-            token stream is identical, but role="user" plays nicer with
-            verl's downstream chat-template handling.
+            Use role="tool" to match pass5/SFT. Qwen's chat template renders
+            this as a user-wrapped <tool_response>...</tool_response> block,
+            which keeps the post-recall prompt identical between SFT and
+            rollout/eval.
             """
             rr = recall_payload.get("recall_result") or {}
             rf = recall_payload.get("recalled_frames")  # may be None
@@ -801,32 +783,33 @@ def _register_streaming_agent_loop():
                 max_pixels=_RTKW["max_pixels"],
                 render_layout=self.render_layout,
             )
-            return {"role": "user", "content": content}
+            return {"role": "tool", "tool_call_id": "recall", "content": content}
 
         def _check_compress_trigger(
-            self, state: "VideoTrajectoryState"
+            self,
+            state: "VideoTrajectoryState",
+            *,
+            force_boundary: bool = False,
         ) -> Optional[Tuple[int, int]]:
-            """Return (start_chunk, end_chunk) range to compress, or None.
-
-            Mirrors pass2 (scripts/agent_data/pass2_rollout.py:199) and
-            eval (thinkstream/model/agent_loop.py:181) MemoryState.should_compress():
-              fires when recent_thinks tokens >= COMPRESS_TOKEN_THRESHOLD
-              AND len(recent_thinks) >= COMPRESS_RANGE_MIN.
-
-            Token counting uses self.tokenizer (the same Qwen tokenizer
-            verl loaded for the actor) — NOT word-count×1.3 — so the
-            trigger fires at the same memory state pass2/eval would.
-            """
+            """Return raw new-caption span when compact memory should update."""
             if not state.recent_thinks:
                 return None
+            if force_boundary:
+                chunks = [
+                    int(t.get("chunk", -1))
+                    for t in state.recent_thinks
+                    if isinstance(t, dict) and t.get("chunk", -1) >= 0
+                ]
+                if not chunks:
+                    return None
+                return (min(chunks), max(chunks))
             if len(state.recent_thinks) < COMPRESS_RANGE_MIN:
-                # Match eval MemoryState.should_compress's range_min guard:
-                # at least 8 thinks before compress is meaningful.
                 return None
-            est = _count_recent_thinks_tokens(
+            est = _count_visible_memory_tokens(
+                state.compressed_summaries,
                 state.recent_thinks, tokenizer=self.tokenizer,
             )
-            if est < self.compress_token_threshold:
+            if est < self.compress_token_threshold and len(state.recent_thinks) < COMPRESS_RANGE_MAX:
                 return None
             chunks = [
                 int(t.get("chunk", -1))
@@ -894,6 +877,63 @@ def _register_streaming_agent_loop():
                 dict(x) for x in archive_list if isinstance(x, dict)
             ]
 
+        async def _generate_action_tokens(
+            self,
+            *,
+            request_id: str,
+            prompt_ids: List[int],
+            new_prompt_ids: List[int],
+            sampling_params: Dict[str, Any],
+            image_data: Optional[List[Any]],
+            video_data: Optional[List[Any]],
+            turn_kind: str = "",
+            chunk_idx: Optional[int] = None,
+            stream_reset_before: bool = False,
+            stream_isolated_turn: bool = False,
+        ):
+            """Generate one assistant action through the configured rollout backend.
+
+            The default ``THINKSTREAM_ROLLOUT_ENGINE=streaming`` path is an
+            adapter hook for CASIA-style local HF rollout: it receives the full
+            prompt for logging/recovery plus ``new_prompt_ids`` for
+            incremental re-prefill against an existing KV stream. The manager
+            is expected to return an object with ``token_ids``, ``log_probs``
+            and ``stop_reason`` attributes, or a dict/list carrying those
+            fields. The legacy full-prompt vLLM path is disabled because it
+            repeatedly appends old text under true KV and breaks recall
+            deletion semantics.
+            """
+            generate_streaming = (
+                getattr(self.server_manager, "generate_streaming", None)
+                or getattr(self.server_manager, "generate_streaming_turn", None)
+                or getattr(self.server_manager, "generate_turn", None)
+            )
+            if generate_streaming is None:
+                raise RuntimeError(
+                    "ThinkStream RL now requires a true-KV streaming rollout "
+                    "backend exposing generate_streaming_turn/generate_turn; "
+                    "full-prompt vLLM rollout is disabled for correctness."
+                )
+            out = generate_streaming(
+                request_id=request_id,
+                prompt_ids=prompt_ids,
+                new_prompt_ids=new_prompt_ids,
+                sampling_params=sampling_params,
+                image_data=image_data,
+                video_data=video_data,
+                turn_kind=turn_kind,
+                chunk_idx=chunk_idx,
+                stream_reset_before=stream_reset_before,
+                stream_isolated_turn=stream_isolated_turn,
+            )
+            if hasattr(out, "__await__"):
+                out = await out
+            if isinstance(out, list):
+                if not out:
+                    raise RuntimeError("streaming rollout backend returned no outputs")
+                out = out[0]
+            return out
+
         async def run(
             self, sampling_params: dict[str, Any], **kwargs,
         ) -> Union["AgentLoopOutput", List["AgentLoopOutput"]]:
@@ -958,6 +998,18 @@ def _register_streaming_agent_loop():
                 segment_end_chunk = max(segment_start_chunk, segment_end_chunk)
                 n_chunks = min(n_chunks, segment_end_chunk + 1)
             segment_start_chunk = max(0, min(segment_start_chunk, max(0, n_chunks - 1)))
+            offline_compress_chunks: List[int] = []
+            for raw in self._as_plain_list(extra_info.get("offline_compress_chunks")):
+                try:
+                    ci = int(raw)
+                except (TypeError, ValueError):
+                    continue
+                if segment_start_chunk <= ci < n_chunks:
+                    offline_compress_chunks.append(ci)
+            offline_compress_pending = set(sorted(set(offline_compress_chunks)))
+            use_offline_compress = (
+                self.compress_trigger_source == "offline_pass2_boundaries"
+            )
 
             # Per-Q answer tracking (multi-Q mode only). Indexed by q_idx;
             # captured when the corresponding chunk's assistant turn parses
@@ -1108,6 +1160,7 @@ def _register_streaming_agent_loop():
             n_chunks_with_frames = 0
             n_chunks_text_only = 0
             n_chunks_compress_inter = 0
+            stream_reset_before_next_turn = False
 
             chunk_idx = segment_start_chunk
             while chunk_idx < n_chunks:
@@ -1118,7 +1171,26 @@ def _register_streaming_agent_loop():
                 # ── Decide turn type: compress trigger fires BETWEEN
                 # chunks. Compression turns are text-only memory management:
                 # compression-only system prompt + memory-only user payload.
-                compress_range = self._check_compress_trigger(state)
+                # Offline pass2 boundaries are recorded on the first visual
+                # chunk after the compacted raw range. Run the update before
+                # that chunk's visual turn.
+                offline_ready = (
+                    use_offline_compress
+                    and chunk_idx in offline_compress_pending
+                )
+                if offline_ready:
+                    compress_range = self._check_compress_trigger(
+                        state,
+                        force_boundary=True,
+                    )
+                    # Consume the planned boundary once. A failed compression
+                    # should be scored as a bad action, not retried forever
+                    # before the first visual turn after the boundary.
+                    offline_compress_pending.discard(chunk_idx)
+                elif use_offline_compress:
+                    compress_range = None
+                else:
+                    compress_range = self._check_compress_trigger(state)
                 inter_chunk = compress_range is not None
 
                 # ── Sliding visual window.
@@ -1147,16 +1219,17 @@ def _register_streaming_agent_loop():
                         if int(q_idx) not in query_log_idx_by_q
                     ]
                     if new_q_indices:
-                        new_q_set = set(new_q_indices)
+                        # Do not close an older question just because a new
+                        # question fires. Completion is defined by the
+                        # question's expected answer chunks and countable
+                        # answer events. This matters across compress
+                        # boundaries and off-policy RL: an unfinished
+                        # question may still be answered late, or remain
+                        # unanswered and receive the no-answer timing penalty.
                         pending_q_indices = [
-                            qi for qi in pending_q_indices if qi in new_q_set
+                            qi for qi in pending_q_indices
+                            if not _question_complete(qi)
                         ]
-                        for qlog in query_log:
-                            status = str(qlog.get("status", "")).strip().lower()
-                            if status in ("open", "pending", "active"):
-                                qlog["status"] = "replaced"
-                                qlog["closed_at"] = chunk_idx * self.chunk_sec
-                                qlog["close_reason"] = "new_query"
                     for q_idx in ask_at_chunk.get(chunk_idx, []):
                         q_obj = multi_q_list[q_idx]
                         triggered_qs_for_chunk.append(q_obj)
@@ -1194,7 +1267,9 @@ def _register_streaming_agent_loop():
                             })
                     # Push triggered Qs into the pending queue so the
                     # NEXT assistant turn's <answer> is assigned to them.
-                    pending_q_indices.extend(triggered_q_indices_for_chunk)
+                    for qi in triggered_q_indices_for_chunk:
+                        if qi not in pending_q_indices:
+                            pending_q_indices.append(qi)
 
                 # ── Build user content + chunk_messages.
                 user_content = self._build_chunk_user_content(
@@ -1252,47 +1327,70 @@ def _register_streaming_agent_loop():
                 last_prompt_len = len(initial_prompt_ids)
                 inner_aborted = False
                 while True:
-                    # Resolve images/videos for the LATEST chunk_messages.
-                    # On round 1 this is just the user payload. On round 2+
-                    # it ALSO includes the appended assistant turn1 + tool
-                    # message (recalled frames live in the tool message).
-                    chunk_mm_messages = (
-                        chunk_messages
-                        if inter_chunk
-                        else chunk_messages[len(initial_messages):]
-                    )
-                    chunk_extra_mm = await self.process_vision_info(
-                        chunk_mm_messages,
-                    )
-                    chunk_images = chunk_extra_mm.get("images") or []
-                    chunk_videos = chunk_extra_mm.get("videos") or []
-
                     turn_kind = (
                         "post_recall"
                         if recall_rounds_this_chunk > 0
                         else ("compress" if inter_chunk else "streaming")
                     )
+                    # Resolve media only for the KV delta of this turn. On the
+                    # post-recall round the ordinary current chunk and the
+                    # assistant tool_call are already in KV; only the tool
+                    # response's recalled frames are new.
+                    if turn_kind == "post_recall":
+                        chunk_mm_messages = (
+                            [chunk_messages[-1]]
+                            if chunk_messages and chunk_messages[-1].get("role") == "tool"
+                            else []
+                        )
+                        template_mm_messages = (
+                            chunk_messages[len(initial_messages):]
+                            if not inter_chunk
+                            else chunk_messages
+                        )
+                    else:
+                        chunk_mm_messages = (
+                            chunk_messages
+                            if inter_chunk
+                            else chunk_messages[len(initial_messages):]
+                        )
+                        template_mm_messages = chunk_mm_messages
+                    chunk_extra_mm = await self.process_vision_info(
+                        chunk_mm_messages,
+                    )
+                    chunk_images = chunk_extra_mm.get("images") or []
+                    chunk_videos = chunk_extra_mm.get("videos") or []
+                    if template_mm_messages is chunk_mm_messages:
+                        template_images = chunk_images
+                        template_videos = chunk_videos
+                    else:
+                        template_extra_mm = await self.process_vision_info(
+                            template_mm_messages,
+                        )
+                        template_images = template_extra_mm.get("images") or []
+                        template_videos = template_extra_mm.get("videos") or []
+
                     turn_tools = tools_for_turn(turn_kind)
                     template_messages = chunk_messages
-                    if turn_kind == "post_recall":
-                        template_messages = deepcopy(chunk_messages)
-                        if template_messages and template_messages[0].get("role") == "system":
-                            template_messages[0] = {
-                                "role": "system",
-                                "content": system_prompt_for_frame_protocol(
-                                    self.frame_protocol,
-                                    prompt_kind="post_recall",
-                                    render_layout=self.render_layout,
-                                ),
-                            }
                     chunk_prompt_ids = await self.apply_chat_template(
                         template_messages,
                         tools=turn_tools,
-                        images=(initial_images + chunk_images) if chunk_images else (
-                            initial_images if initial_images else None
+                        images=(initial_images + template_images) if (
+                            turn_kind != "post_recall" and template_images
+                        ) else (
+                            template_images if template_images else (
+                                initial_images if (
+                                    turn_kind != "post_recall" and initial_images
+                                ) else None
+                            )
                         ),
-                        videos=(initial_videos + chunk_videos) if chunk_videos else (
-                            initial_videos if initial_videos else None
+                        videos=(initial_videos + template_videos) if (
+                            turn_kind != "post_recall" and template_videos
+                        ) else (
+                            template_videos if template_videos else (
+                                initial_videos if (
+                                    turn_kind != "post_recall" and initial_videos
+                                ) else None
+                            )
                         ),
                     )
 
@@ -1312,14 +1410,12 @@ def _register_streaming_agent_loop():
                         })
                         inner_aborted = True
                         break
-                    # post_recall swaps in a different turn-local system
-                    # prompt, so its full prompt is not a prefix-extension of
-                    # the previous recall_query prompt. For stitched mode,
-                    # append the whole post-recall prompt as zero-mask context
-                    # instead of slicing by the previous prefix length.
                     effective_last_prompt_len = (
                         0
-                        if turn_kind in ("post_recall", "compress")
+                        if (
+                            turn_kind == "compress"
+                            or stream_reset_before_next_turn
+                        )
                         else last_prompt_len
                     )
                     user_block_len = len(chunk_prompt_ids) - effective_last_prompt_len
@@ -1375,14 +1471,7 @@ def _register_streaming_agent_loop():
                     #
                     # Two rollout backends. Selected at process start by env
                     # ``THINKSTREAM_ROLLOUT_ENGINE``:
-                    #   "vllm" (default): re-prefill the full prompt every
-                    #     chunk. Prefix cache hits the [system + user_q +
-                    #     memory's leading thinks] head + the unchanged
-                    #     earlier part of the user payload across rounds.
-                    #     mm_processor_cache reuses ViT prep for the ~94% of
-                    #     frames that overlap the previous chunk's sliding
-                    #     window (matches pass2's 93.8% hit).
-                    #   "streaming" (experimental, GPU-only): incremental
+                    #   "streaming" (default, GPU-only): incremental
                     #     KV via :class:`StreamingRolloutEngine` —
                     #     ``engine.generate_turn(input_ids=new_user_block,
                     #     ...)`` appends to existing KV; at compress events
@@ -1395,22 +1484,60 @@ def _register_streaming_agent_loop():
                     #     (not by this AgentLoopBase), so the engine handle
                     #     must come through ``self.server_manager`` or a
                     #     sibling field. Tracked in Wave 3.4.
+                    #   "vllm" (legacy, explicit opt-in): re-prefill the full
+                    #     prompt every chunk through verl/vLLM.
                     with simple_timer("generate_sequences", metrics):
-                        output: TokenOutput = await self.server_manager.generate(
+                        output = await self._generate_action_tokens(
                             request_id=request_id,
                             prompt_ids=chunk_prompt_ids,
+                            new_prompt_ids=chunk_prompt_ids[effective_last_prompt_len:],
                             sampling_params={
                                 **sampling_params,
                                 "max_tokens": max_tokens_this_turn,
+                                "recall_kv_policy": "next_turn",
+                                "delete_previous_recall_toolcall_kv": (
+                                    turn_kind == "post_recall"
+                                ),
                             },
-                            image_data=(initial_images + chunk_images) if chunk_images else (
-                                initial_images if initial_images else None
+                            image_data=(
+                                chunk_images if turn_kind == "post_recall"
+                                else (
+                                    (initial_images + chunk_images)
+                                    if chunk_images
+                                    else (initial_images if initial_images else None)
+                                )
                             ),
-                            video_data=(initial_videos + chunk_videos) if chunk_videos else (
-                                initial_videos if initial_videos else None
+                            video_data=(
+                                chunk_videos if turn_kind == "post_recall"
+                                else (
+                                    (initial_videos + chunk_videos)
+                                    if chunk_videos
+                                    else (initial_videos if initial_videos else None)
+                                )
                             ),
+                            turn_kind=turn_kind,
+                            chunk_idx=chunk_idx,
+                            stream_reset_before=stream_reset_before_next_turn,
+                            stream_isolated_turn=inter_chunk,
                         )
-                    assistant_ids = list(output.token_ids)
+                    stream_reset_before_next_turn = False
+                    if isinstance(output, dict):
+                        assistant_ids = list(output.get("token_ids") or [])
+                        output_log_probs = output.get("log_probs")
+                        output_stop_reason = output.get("stop_reason", "")
+                    else:
+                        assistant_ids = list(getattr(output, "token_ids", []) or [])
+                        output_log_probs = getattr(output, "log_probs", None)
+                        output_stop_reason = getattr(output, "stop_reason", "")
+                    output_log_probs_list = None
+                    if output_log_probs is not None:
+                        try:
+                            if hasattr(output_log_probs, "tolist"):
+                                output_log_probs_list = list(output_log_probs.tolist())
+                            else:
+                                output_log_probs_list = list(output_log_probs)
+                        except TypeError:
+                            output_log_probs_list = None
                     if not assistant_ids:
                         budget_abort_events.append({
                             "chunk": int(chunk_idx),
@@ -1442,8 +1569,11 @@ def _register_streaming_agent_loop():
                     per_action_prompt_ids.append(list(chunk_prompt_ids))
                     per_action_response_ids.append(list(assistant_ids))
                     per_action_response_mask.append([1] * len(assistant_ids))
-                    if output.log_probs and len(output.log_probs) == len(assistant_ids):
-                        per_action_response_logprobs.append(list(output.log_probs))
+                    if (
+                        output_log_probs_list is not None
+                        and len(output_log_probs_list) == len(assistant_ids)
+                    ):
+                        per_action_response_logprobs.append(list(output_log_probs_list))
                     else:
                         per_action_response_logprobs.append(None)
                     # mm payload: stitched mode accumulates media globally;
@@ -1457,8 +1587,11 @@ def _register_streaming_agent_loop():
                         _ac_mm = _ac_mm or {}
                         _ac_mm["images"] = list(chunk_images)
                     per_action_mm_data.append(_ac_mm)
-                    if output.log_probs and len(output.log_probs) == len(assistant_ids):
-                        response_logprobs.extend(list(output.log_probs))
+                    if (
+                        output_log_probs_list is not None
+                        and len(output_log_probs_list) == len(assistant_ids)
+                    ):
+                        response_logprobs.extend(list(output_log_probs_list))
                         any_logprobs_returned = True
                     else:
                         response_logprobs.extend([0.0] * len(assistant_ids))
@@ -1473,7 +1606,7 @@ def _register_streaming_agent_loop():
                     chunk_hit_max_tokens.append(
                         len(assistant_ids) >= int(max_tokens_this_turn)
                     )
-                    chunk_stop_reasons.append(str(output.stop_reason or ""))
+                    chunk_stop_reasons.append(str(output_stop_reason or ""))
 
                     if visual_injected:
                         accumulated_images.extend(chunk_images)
@@ -1488,8 +1621,9 @@ def _register_streaming_agent_loop():
                     num_assistant_turns += 1
 
                     # ── Decode + parse this turn.
-                    response_text = self.tokenizer.decode(
-                        assistant_ids, skip_special_tokens=True,
+                    response_text = decode_agent_output_tokens(
+                        self.tokenizer,
+                        assistant_ids,
                     )
                     parsed = parse_agent_output(
                         response_text,
@@ -1524,8 +1658,9 @@ def _register_streaming_agent_loop():
                     else:
                         chunk_compress_expected_chunks.append([])
                     if kind == "compress":
+                        mem_entries = tool_args.get("memory_text")
                         chunk_compress_emitted_ranges.append(
-                            tool_args.get("time_range")
+                            "MEM" if mem_entries else tool_args.get("time_range")
                         )
                     else:
                         chunk_compress_emitted_ranges.append(None)
@@ -1622,10 +1757,13 @@ def _register_streaming_agent_loop():
                 # mis-route.
                 #
                 # Stages (deterministic):
-                #   1. answer_chunks window match: pending Q whose
-                #      answer_chunks bracket the current chunk_idx.
-                #   2. LIFO: most-recently-triggered pending Q.
-                #   3. FIFO floor (implicit): single-pending case.
+                #   1. On-time/window match: pending Q whose unanswered
+                #      answer chunk(s) bracket the current chunk_idx.
+                #   2. Late match: closest unmatched expected chunk behind
+                #      the current chunk.
+                #   3. Early match: closest unmatched expected chunk ahead
+                #      of the current chunk.
+                #   4. LIFO fallback for malformed/no-answer-chunk metadata.
                 if multi_q_list and pending_q_indices:
                     answer_str = (
                         parsed.get("answer_text") if kind == "answer" else None
@@ -1635,26 +1773,71 @@ def _register_streaming_agent_loop():
                     if answer_str:
 
                         chosen_pos = None
-                        # 1. answer_chunks window match
-                        for pos, qi in enumerate(pending_q_indices):
+
+                        def _unmatched_expected_chunks_for_q(qi: int) -> List[int]:
+                            qlog_i = query_log_idx_by_q.get(qi)
+                            if qlog_i is not None and 0 <= qlog_i < len(query_log):
+                                qlog = query_log[qlog_i]
+                                expected = query_expected_answer_chunks(qlog)
+                                done = set(query_completed_answer_chunks(qlog))
+                                return [c for c in expected if c not in done]
                             q_obj = multi_q_list[qi]
                             ans_ch = q_obj.get("answer_chunks") or []
                             if hasattr(ans_ch, "tolist"):
                                 ans_ch = ans_ch.tolist()
-                            ans_ch_int = [
-                                int(x) for x in ans_ch
-                                if isinstance(x, (int, float))
-                            ]
-                            if ans_ch_int and (
-                                min(ans_ch_int) <= chunk_idx <= max(ans_ch_int)
-                            ):
+                            out: List[int] = []
+                            for raw_c in ans_ch:
+                                try:
+                                    out.append(int(raw_c))
+                                except (TypeError, ValueError):
+                                    continue
+                            return sorted(set(out))
+
+                        pending_expected: List[Tuple[int, int, List[int]]] = []
+                        for pos, qi in enumerate(pending_q_indices):
+                            expected = _unmatched_expected_chunks_for_q(qi)
+                            pending_expected.append((pos, qi, expected))
+
+                        # 1. On-time/window match: same as the reward window.
+                        # For single-answer cards answer_chunks may denote a
+                        # short acceptable interval; for multi-emit cards they
+                        # are the exact expected emit chunks.
+                        for pos, _qi, expected in pending_expected:
+                            if expected and min(expected) <= chunk_idx <= max(expected):
                                 chosen_pos = pos
                                 break
-                        # 2. LIFO (most-recent triggered)
+
+                        # 2. Late answer: choose the unfinished question whose
+                        # latest unmatched expected chunk is closest behind the
+                        # current chunk. This lets a late answer repair an older
+                        # pending question instead of being routed to the newest
+                        # query by LIFO.
+                        if chosen_pos is None:
+                            late_candidates: List[Tuple[int, int]] = []
+                            for pos, _qi, expected in pending_expected:
+                                past = [c for c in expected if c <= chunk_idx]
+                                if past:
+                                    late_candidates.append((max(past), pos))
+                            if late_candidates:
+                                _expected_chunk, chosen_pos = max(late_candidates)
+
+                        # 3. Early answer: if no question is due/past-due,
+                        # attribute to the closest future answer slot so timing
+                        # records an early event that does not complete it.
+                        if chosen_pos is None:
+                            early_candidates: List[Tuple[int, int]] = []
+                            for pos, _qi, expected in pending_expected:
+                                future = [c for c in expected if c > chunk_idx]
+                                if future:
+                                    early_candidates.append((min(future), pos))
+                            if early_candidates:
+                                _expected_chunk, chosen_pos = min(early_candidates)
+
+                        # 4. Fallback for malformed/no-answer-chunk metadata:
+                        # newest live query, matching the prompt renderer's
+                        # single-active behavior.
                         if chosen_pos is None:
                             chosen_pos = len(pending_q_indices) - 1
-                        # 3. FIFO is the implicit floor when 2 falls through
-                        # (single pending Q → both LIFO/FIFO pick it).
 
                         q_idx = pending_q_indices[chosen_pos]
                         answer_event: Dict[str, Any] = {
@@ -1714,6 +1897,12 @@ def _register_streaming_agent_loop():
                     if inter_chunk:
                         # System event — don't consume a video chunk.
                         state.chunk_idx = pre_chunk_idx
+                        # The next turn is the first visual turn of the new
+                        # compressed segment. A streaming backend must not
+                        # continue from old visual KV; it should rebuild from
+                        # the compressed text state and then append this
+                        # chunk's fresh visual window.
+                        stream_reset_before_next_turn = True
                     else:
                         # Append only visual-turn think to memory. post_recall
                         # reasoning is conditioned on retrieved evidence, not a
@@ -1796,6 +1985,7 @@ def _register_streaming_agent_loop():
             common_extras = {
                 "turn_scores": [],
                 "tool_rewards": [],
+                "ts_rollout_engine": self.rollout_engine,
                 "ts_frame_protocol": self.frame_protocol,
                 "ts_n_recall": float(state.n_recall_calls),
                 "ts_n_compress": float(state.n_compress_calls),
@@ -1829,6 +2019,11 @@ def _register_streaming_agent_loop():
                 "ts_recall_result_sources": chunk_recall_result_sources,
                 "ts_compress_expected_chunks": chunk_compress_expected_chunks,
                 "ts_compress_emitted_ranges": chunk_compress_emitted_ranges,
+                "ts_compress_trigger_source": (
+                    "offline_pass2_boundaries"
+                    if use_offline_compress else "runtime_memory_threshold"
+                ),
+                "ts_offline_compress_chunks": offline_compress_chunks,
                 "ts_per_q_answer_chunk": list(per_q_answer_chunk),
                 "ts_per_q_answer_text": list(per_q_answer_text),
                 "ts_per_q_answers": per_q_answers,

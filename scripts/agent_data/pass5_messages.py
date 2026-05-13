@@ -11,8 +11,8 @@ the exact same input distribution it sees at inference.
 Three sample shapes preserved (canonical pass/SFT/RL/eval video_meta protocol):
   A. Single-turn       (silent / response / lonely recall / inter-chunk compress)
   B. Multi-turn recall (recall_query → tool turn → final answer, within one chunk)
-  C. Inter-chunk compress (system inserts <compress_trigger> before memory,
-     with no visual_window/images/videos because compression is between chunks)
+  C. Inter-chunk compact-memory update (text-only system turn, no
+     visual_window/images/videos because compression is between chunks)
 
 Self-contained: imports only stdlib + thinkstream.data.agent_protocol (which
 itself is stdlib-only). No transformers required.
@@ -53,7 +53,9 @@ from thinkstream.data.agent_protocol import (
     append_visual_frames,
     build_recalled_frames_metadata,
     build_recall_result_metadata,
+    build_recall_result_user_content,
     canonical_answer_instruction,
+    chunk_frame_filenames,
     is_inter_chunk,
     normalize_frame_protocol,
     prompt_time_range,
@@ -66,7 +68,9 @@ from thinkstream.data.agent_protocol import (
 logger = logging.getLogger(__name__)
 
 RENDER_LAYOUT_QUERY_LAST = RENDER_LAYOUT_STANDARD_QUERY_LAST
+RESPONSE_BLOCK_RE = re.compile(r"<response>(.*?)</response>", flags=re.DOTALL)
 ANSWER_BLOCK_RE = re.compile(r"<answer>(.*?)</answer>", flags=re.DOTALL)
+SILENT_BLOCK_RE = re.compile(r"<silent>\s*(?:</silent>)?", flags=re.DOTALL)
 ACTIVE_QUERY_BLOCK_RE = re.compile(
     r"<active_query>\s*(.*?)\s*</active_query>",
     flags=re.DOTALL,
@@ -241,6 +245,11 @@ def _normalise_recalled_frames(inp: Dict, chunk_sec: float) -> Optional[Dict]:
 
 
 def _compress_management_think_from_output(output: str) -> str:
+    if re.search(r"<MEM>\s*.*?</MEM>", output or "", re.DOTALL | re.IGNORECASE):
+        return (
+            "Memory is near budget, so I should update the compact memory "
+            "from old memory and recent observations."
+        )
     think = (
         "Memory is over budget, so I should compress older observations "
         "into a concise summary."
@@ -327,19 +336,32 @@ def _canonical_answer_target(sample: Dict[str, Any]) -> str:
     return _per_emit_target(question, sample.get("chunk_idx"))
 
 
-def _replace_answer_target(text: str, target: str) -> str:
-    if not target:
-        return text
-    match = ANSWER_BLOCK_RE.search(text)
-    if not match or not match.group(1).strip():
-        return text
-    return ANSWER_BLOCK_RE.sub(f"<answer>{target}</answer>", text, count=1)
+def _canonicalize_response_tags(text: str, target: str = "") -> str:
+    target = str(target or "").strip()
+
+    def legacy_repl(match: re.Match) -> str:
+        value = target if target and match.group(1).strip() else match.group(1).strip()
+        return f"<response>{value}</response>" if value else "<silent>"
+
+    if target:
+        response_match = RESPONSE_BLOCK_RE.search(text)
+        if response_match:
+            return RESPONSE_BLOCK_RE.sub(
+                f"<response>{target}</response>", text, count=1
+            )
+        if SILENT_BLOCK_RE.search(text):
+            return SILENT_BLOCK_RE.sub(f"<response>{target}</response>", text, count=1)
+    text = ANSWER_BLOCK_RE.sub(legacy_repl, text)
+    return text
 
 
 def _normalise_assistant_output(sample: Dict, output: Optional[str] = None) -> str:
     output = str(sample.get("output", "") if output is None else output)
     if sample.get("sample_type") != "compress":
-        return _replace_answer_target(output, _canonical_answer_target(sample))
+        return _canonicalize_response_tags(output, _canonical_answer_target(sample))
+    mem = re.search(r"<MEM>\s*.*?</MEM>", output or "", re.DOTALL | re.IGNORECASE)
+    if mem:
+        return mem.group(0).strip()
     think = _compress_management_think_from_output(output)
     replacement = f"<think>{think}</think>"
     if re.search(r"<think>.*?</think>", output, flags=re.DOTALL):
@@ -352,18 +374,7 @@ def _normalise_assistant_output(sample: Dict, output: Optional[str] = None) -> s
         )
     else:
         output = replacement + output
-    return _replace_answer_target(output, _canonical_answer_target(sample))
-
-
-def _visual_window_start(chunk_idx: int) -> int:
-    try:
-        from scripts.agent_data.config import (
-            VISUAL_WINDOW_CHUNKS as _VWC,
-            compute_visual_window_start as _cvws,
-        )
-    except ImportError:
-        return max(0, int(chunk_idx) - 15)
-    return int(_cvws(int(chunk_idx), _VWC))
+    return _canonicalize_response_tags(output, _canonical_answer_target(sample))
 
 
 def _infer_visual_frame_paths(
@@ -375,19 +386,17 @@ def _infer_visual_frame_paths(
     inp = sample.get("input") or {}
     vw = inp.get("visual_window") or {}
     if "frame_paths" in vw:
-        return list(vw.get("frame_paths") or [])
+        return list(vw.get("frame_paths") or [])[-FRAMES_PER_CHUNK:]
     if "frames" not in vw:
         return []
     vid = sample.get("video_id", "")
     if not vid:
         return []
     chunk_idx = int(sample.get("chunk_idx", 0) or 0)
-    paths: List[str] = []
-    for ci in range(_visual_window_start(chunk_idx), chunk_idx + 1):
-        for fi in range(FRAMES_PER_CHUNK):
-            fnum = ci * FRAMES_PER_CHUNK + fi + 1
-            paths.append(f"{frame_rel_prefix}/{vid}/frame_{fnum:06d}.jpg")
-    return paths
+    return [
+        f"{frame_rel_prefix}/{vid}/{name}"
+        for name in chunk_frame_filenames(chunk_idx, FRAMES_PER_CHUNK)
+    ]
 
 
 def build_messages(
@@ -402,7 +411,7 @@ def build_messages(
 
     This is the canonical offline renderer. It must stay aligned with
     thinkstream.data.agent_protocol.build_user_content and the verl RL
-    prompt builder. Rows render user_input, memory, visual_window/video_meta,
+    prompt builder. Rows render user_input, memory, current chunk video_meta,
     then active_query/response_history.
     """
     data_dir = data_dir or DEFAULT_DATA_DIR
@@ -456,6 +465,34 @@ def build_messages(
 
     user_content: List[Dict] = []
 
+    # Compact memory update is no longer a streaming visual turn. Render it as
+    # one text-only system turn: user(old memory + recent captions) ->
+    # assistant(<MEM>...</MEM>).
+    if inter_chunk:
+        update_input = (
+            sample.get("memory_update_input")
+            or (sample.get("metadata") or {}).get("memory_update_input")
+            or inp.get("memory_update_input")
+        )
+        if not str(update_input or "").strip():
+            memory_text = format_memory_block(inp.get("memory", {}))
+            old_memory = memory_text or "<MEM>\n</MEM>"
+            update_input = (
+                "OLD_MEMORY:\n"
+                f"{old_memory}\n\n"
+                "NEW_CAPTIONS:\n(no recent captions available)\n\n"
+                "Return NEW_MEMORY."
+            )
+        messages.append({
+            "role": "user",
+            "content": [{"type": "text", "text": str(update_input).strip()}],
+        })
+        messages.append({
+            "role": "assistant",
+            "content": [{"type": "text", "text": _normalise_assistant_output(sample)}],
+        })
+        return messages
+
     # ── Legacy standalone post-recall row ──────────────────────────────
     # Canonical recall samples are shape B:
     #   user(current chunk + active_query) → assistant(recall) →
@@ -480,6 +517,7 @@ def build_messages(
             user_content.append({
                 "type": "text",
                 "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
+                "kv_scope": "recall",
             })
             if "frame_paths" in rf:
                 tr0, tr1 = rf["time_range"]
@@ -488,7 +526,7 @@ def build_messages(
                         RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                     )
                 except ImportError:
-                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+                    _RTKW = {"min_pixels": 200_704, "max_pixels": 401_408}
                 append_visual_frames(
                     user_content,
                     _resolve_paths(rf["frame_paths"], base_path, data_dir),
@@ -499,12 +537,14 @@ def build_messages(
                     context_label="recalled frame",
                     min_pixels=_RTKW["min_pixels"],
                     max_pixels=_RTKW["max_pixels"],
+                    kv_scope="recall",
                 )
             elif video_path:
                 user_content.append({
                     "type": "video", "video": video_path,
                     "video_start": prompt_time_value(rf["time_range"][0]),
                     "video_end": prompt_time_value(rf["time_range"][1]),
+                    "kv_scope": "recall",
                 })
 
         rr_json = json.dumps(
@@ -514,6 +554,7 @@ def build_messages(
         user_content.append({
             "type": "text",
             "text": f"\n<recall_result>{rr_json}</recall_result>",
+            "kv_scope": "recall",
         })
         messages.append({"role": "user", "content": user_content})
         messages.append({
@@ -557,17 +598,19 @@ def build_messages(
         if qt:
             user_content.append({"type": "text", "text": f"\n{qt}"})
 
-    # ── Visual window + frames ──────────────────────────────────────────
+    # ── Current visual chunk + frames ───────────────────────────────────
     # Inter-chunk compression is a text-memory action and does not consume a
-    # visual timestep, so omit visual_window/images/videos on compress turns.
+    # visual timestep. Ordinary streaming rows carry only the current 1s
+    # chunk (2 frames); the 8-chunk visual horizon is represented by recurrent
+    # video KV, not by replaying old frames in every prompt.
     if not inter_chunk:
         vw = inp["visual_window"]
         current_start = chunk_idx * chunk_sec
         current_end = current_start + chunk_sec
         vw_header = json.dumps({
-            "start": prompt_time_value(vw["video_start"]),
-            "end": prompt_time_value(vw["video_end"]),
-            "frames": vw["frames"],
+            "start": prompt_time_value(current_start),
+            "end": prompt_time_value(current_end),
+            "frames": FRAMES_PER_CHUNK,
             "current_time": prompt_time_value(current_start),
         })
         user_content.append({
@@ -575,61 +618,49 @@ def build_messages(
             "text": f"\n<visual_window>{vw_header}</visual_window>",
         })
 
-        # Pass4 flat files may omit frame_paths — infer from video_id +
-        # chunk_idx offset (NOT just frame_000001..n which would bind every
-        # late chunk to video-start frames). Mirrors pass1a get_chunk_frame_paths
-        # (chunk_idx × FRAMES_PER_CHUNK) so frame numbers track real video time.
+        # Pass4 flat files may omit frame_paths — infer the current chunk by
+        # video_id + chunk_idx. Older cached rows may carry a full visual
+        # window in frame_paths; trim to the current chunk below.
         if "frame_paths" not in vw and "frames" in vw:
             vid = sample.get("video_id", "")
             if vid:
                 from thinkstream.data.agent_protocol import (
                     FRAMES_PER_CHUNK as _FPC,
-                    VISUAL_WINDOW_CHUNKS as _VWC,
                 )
-                from scripts.agent_data.config import (
-                    compute_visual_window_start as _cvws,
-                )
-                window_start = _cvws(chunk_idx, _VWC)
-                paths: List[str] = []
-                for ci in range(window_start, chunk_idx + 1):
-                    for fi in range(_FPC):
-                        fnum = ci * _FPC + fi + 1
-                        paths.append(
-                            f"{frame_rel_prefix}/{vid}/frame_{fnum:06d}.jpg"
-                        )
+                paths = [
+                    f"{frame_rel_prefix}/{vid}/{name}"
+                    for name in chunk_frame_filenames(chunk_idx, _FPC)
+                ]
                 vw["frame_paths"] = paths
 
         if "frame_paths" in vw:
             from thinkstream.data.agent_protocol import (
                 FRAMES_PER_CHUNK as _FPC,
-                VISUAL_WINDOW_CHUNKS as _VWC,
             )
-            from scripts.agent_data.config import (
-                compute_visual_window_start as _cvws,
-            )
-            window_start = _cvws(chunk_idx, _VWC)
             try:
                 from scripts.agent_data.config import (
                     RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                 )
             except ImportError:
-                _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
+                _RTKW = {"min_pixels": 200_704, "max_pixels": 401_408}
             append_visual_frames(
                 user_content,
-                _resolve_paths(vw["frame_paths"], base_path, data_dir),
+                _resolve_paths(vw["frame_paths"], base_path, data_dir)[-_FPC:],
                 frame_protocol=frame_protocol,
                 fps=float(_FPC / chunk_sec),
-                start_frame_index=window_start * _FPC,
+                start_frame_index=chunk_idx * _FPC,
                 total_num_frames=(chunk_idx + 1) * _FPC,
                 latest_start_frame_index=chunk_idx * _FPC,
                 min_pixels=_RTKW["min_pixels"],
                 max_pixels=_RTKW["max_pixels"],
+                kv_scope="ordinary",
             )
         elif "frame_indices" in vw and video_path:
             user_content.append({
                 "type": "video", "video": video_path,
-                "video_start": prompt_time_value(vw["video_start"]),
-                "video_end": prompt_time_value(vw["video_end"]),
+                "video_start": prompt_time_value(current_start),
+                "video_end": prompt_time_value(current_end),
+                "kv_scope": "ordinary",
             })
         else:
             raise ValueError(
@@ -642,63 +673,32 @@ def build_messages(
         if qt:
             user_content.append({"type": "text", "text": f"\n{qt}"})
 
-    # ── Recalled frames (legacy single-turn recall) ────────────────────
-    if (
-        "recalled_frames" in inp
-        and inp["recalled_frames"]
-        and not is_recall_multiturn
-        and not inter_chunk
+    # ── Legacy single-turn recall payload ──────────────────────────────
+    if not is_recall_multiturn and not inter_chunk and (
+        inp.get("recalled_frames") or inp.get("recall_result")
     ):
-        rf = _normalise_recalled_frames(inp, chunk_sec) or inp["recalled_frames"]
-        rf_header = json.dumps({
-            "time_range": prompt_time_range(rf["time_range"]),
-            "source": rf.get("source", "historical_frames"),
-            "n_frames": rf["n_frames"],
-        })
-        user_content.append({
-            "type": "text",
-            "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
-        })
-        if "frame_paths" in rf:
-            tr0, tr1 = rf["time_range"]
-            try:
-                from scripts.agent_data.config import (
-                    RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
-                )
-            except ImportError:
-                _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-            append_visual_frames(
-                user_content,
-                _resolve_paths(rf["frame_paths"], base_path, data_dir),
-                frame_protocol=frame_protocol,
-                fps=float(FRAMES_PER_CHUNK / chunk_sec),
-                start_frame_index=int(tr0 * FRAMES_PER_CHUNK),
-                total_num_frames=int(tr1 * FRAMES_PER_CHUNK),
-                context_label="recalled frame",
-                min_pixels=_RTKW["min_pixels"],
-                max_pixels=_RTKW["max_pixels"],
+        rf = _normalise_recalled_frames(inp, chunk_sec) or inp.get("recalled_frames")
+        if rf and rf.get("frame_paths"):
+            rf = dict(rf)
+            rf["frame_paths"] = _resolve_paths(rf["frame_paths"], base_path, data_dir)
+        try:
+            from scripts.agent_data.config import (
+                RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
             )
-        elif video_path:
-            user_content.append({
-                "type": "video", "video": video_path,
-                "video_start": prompt_time_value(rf["time_range"][0]),
-                "video_end": prompt_time_value(rf["time_range"][1]),
-            })
-
-    # ── Legacy single-turn recall_result metadata (no text evidence) ────
-    if inp.get("recall_result") and not is_recall_multiturn and not inter_chunk:
-        rr = inp["recall_result"]
-        rr_json = json.dumps(
-            build_recall_result_metadata(
-                rr,
-                _normalise_recalled_frames(inp, chunk_sec),
-            ),
-            ensure_ascii=False,
+        except ImportError:
+            _RTKW = {"min_pixels": 200_704, "max_pixels": 401_408}
+        recall_payload = build_recall_result_user_content(
+            rf,
+            inp.get("recall_result") or {},
+            frame_protocol=frame_protocol,
+            min_pixels=_RTKW["min_pixels"],
+            max_pixels=_RTKW["max_pixels"],
+            render_layout=render_layout,
         )
-        user_content.append({
-            "type": "text",
-            "text": f"\n<recall_result>{rr_json}</recall_result>",
-        })
+        if recall_payload and user_content and recall_payload[0].get("type") == "text":
+            recall_payload = [dict(recall_payload[0]), *recall_payload[1:]]
+            recall_payload[0]["text"] = "\n" + str(recall_payload[0].get("text", ""))
+        user_content.extend(recall_payload)
 
     messages.append({"role": "user", "content": user_content})
 
@@ -711,70 +711,34 @@ def build_messages(
         })
 
         # Tool turn — recall_result + optional historical frames.
-        # v12.11 audit-5 P0 #1 fix (2026-05-01): order MUST mirror runtime
-        # (agent_loop.py:942-988): <recalled_frames> + video THEN
-        # <recall_result>{...}</recall_result>. Previous order put the
-        # raw recall_result JSON FIRST, then frames — train/infer drift
-        # for shape-B recall second-turn answer training.
+        # Keep this renderer byte-aligned with runtime/eval:
+        # <recalled_frames> + per-chunk evidence blocks + <recall_result>.
         rr = sample.get("recall_result") or inp.get("recall_result") or {}
-        tool_payload: List[Dict] = []
-
         rf = _normalise_recalled_frames(inp, chunk_sec)
         if rf:
-            rf_header = json.dumps({
-                "time_range": prompt_time_range(rf["time_range"]),
-                "source": rf.get("source", "historical_frames"),
-                "n_frames": rf["n_frames"],
-            })
-            tool_payload.append({
-                "type": "text",
-                "text": f"<recalled_frames>{rf_header}</recalled_frames>",
-            })
-            if "frame_paths" in rf:
-                from scripts.agent_data.config import (
-                    AGENT_CHUNK_SEC as _CHUNK_SEC,
-                )
-                tr_start, tr_end = rf["time_range"]
-                try:
-                    from scripts.agent_data.config import (
-                        RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
-                    )
-                except ImportError:
-                    _RTKW = {"min_pixels": 130_000, "max_pixels": 220_000}
-                tr_start_chunk = int(tr_start / float(_CHUNK_SEC))
-                append_visual_frames(
-                    tool_payload,
-                    _resolve_paths(rf["frame_paths"], base_path, data_dir),
-                    frame_protocol=frame_protocol,
-                    fps=float(FRAMES_PER_CHUNK / float(_CHUNK_SEC)),
-                    start_frame_index=tr_start_chunk * FRAMES_PER_CHUNK,
-                    total_num_frames=int(tr_end / float(_CHUNK_SEC)) * FRAMES_PER_CHUNK,
-                    context_label="recalled frame",
-                    min_pixels=_RTKW["min_pixels"],
-                    max_pixels=_RTKW["max_pixels"],
-                )
-            elif video_path:
-                tool_payload.append({
-                    "type": "video", "video": video_path,
-                    "video_start": prompt_time_value(rf["time_range"][0]),
-                    "video_end": prompt_time_value(rf["time_range"][1]),
-                })
-
-        # Append metadata-only <recall_result> AFTER frames. Retrieved text is
-        # intentionally hidden from the model; the visual frames are evidence.
-        rr_json = json.dumps(
-            build_recall_result_metadata(rr, rf),
-            ensure_ascii=False,
+            rf = dict(rf)
+            if rf.get("frame_paths"):
+                rf["frame_paths"] = _resolve_paths(rf["frame_paths"], base_path, data_dir)
+        try:
+            from scripts.agent_data.config import (
+                RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+            )
+        except ImportError:
+            _RTKW = {"min_pixels": 200_704, "max_pixels": 401_408}
+        tool_payload = build_recall_result_user_content(
+            rf,
+            rr,
+            frame_protocol=frame_protocol,
+            min_pixels=_RTKW["min_pixels"],
+            max_pixels=_RTKW["max_pixels"],
+            render_layout=render_layout,
         )
-        tool_payload.append({
-            "type": "text",
-            "text": f"<recall_result>{rr_json}</recall_result>",
-        })
 
-        # DeepEyesV2-aligned ShareGPT has no `tool` role — inject as user content.
-        # Qwen3-VL chat_template would otherwise nest <tool_response> under
-        # <|im_start|>user, so the on-the-wire token stream is identical.
-        messages.append({"role": "user", "content": tool_payload})
+        messages.append({
+            "role": "tool",
+            "tool_call_id": "recall",
+            "content": tool_payload,
+        })
         messages.append({
             "role": "assistant",
             "content": [{
@@ -1242,6 +1206,7 @@ def _assistant_answer_blocks(messages: List[Dict]) -> List[str]:
             )
         else:
             text = str(content or "")
+        out.extend(m.group(1).strip() for m in RESPONSE_BLOCK_RE.finditer(text))
         out.extend(m.group(1).strip() for m in ANSWER_BLOCK_RE.finditer(text))
     return out
 
@@ -1270,7 +1235,7 @@ def validate_answer_render_contract(sample: Dict, messages: List[Dict]) -> None:
     if not nonempty:
         if sample_type == "response" or action == "response":
             raise QueryRenderContractError(
-                f"sample={sample_id}: response row rendered empty/no <answer>"
+                f"sample={sample_id}: response row rendered empty/no <response>"
             )
         return
 

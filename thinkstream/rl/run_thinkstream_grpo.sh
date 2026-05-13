@@ -13,9 +13,9 @@
 #                         (used for PYTHONPATH so reward_fn can import
 #                          thinkstream.trainer.rewards).
 #   HF_MODEL_PATH       — Qwen3-VL-8B SFT checkpoint (HF format).
-#   TRAIN_PARQUET       — flattened (video, question) parquet from
-#                         scripts/agent_data/build_verl_parquet.py.
-#   VAL_PARQUET         — val split.
+#   TRAIN_PARQUET       — multi-Q trajectory parquet, normally
+#                         rendered/*/train_rl_multi_q.parquet.
+#   VAL_PARQUET         — matching multi-Q val parquet.
 #   THINKSTREAM_DATA_ROOT — generated batch root containing final/ and frames/
 #                           (optional, defaults to $THINKSTREAM_HOME/data/agent_v5).
 #
@@ -64,6 +64,18 @@
 #   THINKSTREAM_RL_ROLLOUT_AUDIT_PROB [0.01]
 #                            random sample rate; suspicious rows are always
 #                            logged until THINKSTREAM_RL_ROLLOUT_AUDIT_MAX.
+#   THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE [offline_pass2_boundaries]
+#                            use pass2/pass5 annotated compact-memory trigger
+#                            chunks instead of runtime token counting.
+#   THINKSTREAM_RL_REWARD_PROFILE [initial_outcome_time_format_decision]
+#                            score answer correctness + answer_decision +
+#                            format. Raw timing/silent_quality and
+#                            step/action/tool rewards are telemetry unless an
+#                            ablation opts in.
+#   THINKSTREAM_ROLLOUT_ENGINE [streaming]
+#                            local HF/CASIA-style rollout backend with visual
+#                            KV eviction. Set vllm only as an explicit legacy
+#                            fallback.
 
 set -xeuo pipefail
 
@@ -202,7 +214,7 @@ OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
 FREEZE_VISION_TOWER=${FREEZE_VISION_TOWER:-true}
 PPO_MAX_TOKEN_LEN_PER_GPU=${PPO_MAX_TOKEN_LEN_PER_GPU:-65536}
 LOG_PROB_MAX_TOKEN_LEN_PER_GPU=${LOG_PROB_MAX_TOKEN_LEN_PER_GPU:-65536}
-ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-vllm}
+ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-streaming}
 MAX_STEPS=${MAX_STEPS:-}
 DATA_SHUFFLE=${DATA_SHUFFLE:-true}
 DATALOADER_NUM_WORKERS=${DATALOADER_NUM_WORKERS:-0}
@@ -228,6 +240,11 @@ export THINKSTREAM_EXPERIMENT_NAME="${EXPERIMENT_NAME}"
 export THINKSTREAM_RL_ROLLOUT_AUDIT_PATH="${THINKSTREAM_RL_ROLLOUT_AUDIT_PATH:-${SAVE_DIR}/audit/rl_rollout_samples.jsonl}"
 export THINKSTREAM_RL_ROLLOUT_AUDIT_PROB="${THINKSTREAM_RL_ROLLOUT_AUDIT_PROB:-0.01}"
 export THINKSTREAM_RL_ROLLOUT_AUDIT_MAX="${THINKSTREAM_RL_ROLLOUT_AUDIT_MAX:-2000}"
+export THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE="${THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE:-offline_pass2_boundaries}"
+export THINKSTREAM_RL_REWARD_PROFILE="${THINKSTREAM_RL_REWARD_PROFILE:-initial_outcome_time_format_decision}"
+export THINKSTREAM_ENABLE_STEP_ACTION_REWARD="${THINKSTREAM_ENABLE_STEP_ACTION_REWARD:-0}"
+export THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD="${THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD:-0}"
+export THINKSTREAM_ROLLOUT_ENGINE="${THINKSTREAM_ROLLOUT_ENGINE:-streaming}"
 
 ROLLOUT_DATA_ARGS=()
 if [[ -n "${ROLLOUT_DATA_DIR}" ]]; then

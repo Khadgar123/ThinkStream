@@ -12,6 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.agent_data.pass5_messages import build_sft_rows  # noqa: E402
+from thinkstream.data.agent_protocol import build_user_content  # noqa: E402
 from thinkstream.sft.data_processor import _select_loss_assistant_spans  # noqa: E402
 
 
@@ -65,36 +66,80 @@ def test_select_loss_assistant_spans_supports_last_only():
 
 
 def test_rl_compress_turn_is_text_only_in_source():
+    content = build_user_content(
+        "",
+        3,
+        "/unused.mp4",
+        queries=[{"question": "q?", "answers": []}],
+        frame_paths=["frame_000001.jpg", "frame_000002.jpg"],
+        frame_protocol="video_meta",
+        inter_chunk=True,
+    )
+    joined_text = "\n".join(
+        str(item.get("text", "")) for item in content if isinstance(item, dict)
+    )
+    assert all(item.get("type") != "video" for item in content)
+    assert "<visual_window>" not in joined_text
+    assert "<active_query>" not in joined_text
+
+
+def test_sft_preprocess_uses_row_local_tools():
     root = Path(__file__).resolve().parents[1]
-    src = (root / "thinkstream/rl/streaming_agent_loop.py").read_text()
-    build_start = src.index("def _build_chunk_user_content(")
-    visual_start = src.index("# ── Visual window header", build_start)
-    inter_chunk_return = src.index("if inter_chunk:\n                return content", build_start)
-    assert inter_chunk_return < visual_start
+    processor_src = (root / "thinkstream/sft/data_processor.py").read_text()
+    assert "_normalise_tools_for_sft_row(sample, sample.get(\"tools\"))" in processor_src
+    assert "template_kwargs[\"tools\"] = tools" in processor_src
 
 
-def test_sft_action_eval_uses_turn_local_tools():
-    root = Path(__file__).resolve().parents[1]
-    action_src = (root / "scripts/eval/sft_action_acc.py").read_text()
-    assert "tools_for_turn(_tool_mode_for_prompt(s, msgs))" in action_src
-
-
-def test_grpo_loss_replay_uses_turn_local_tool_kind():
+def test_replay_paths_use_turn_local_tool_kind():
     root = Path(__file__).resolve().parents[1]
     processor_src = (root / "thinkstream/data/stream_data_processor.py").read_text()
-    grpo_src = (root / "thinkstream/trainer/grpo.py").read_text()
+    agent_src = (root / "thinkstream/models/agent_loop.py").read_text()
     assert "tool_turn_kind: Optional[str] = None" in processor_src
     assert "if tool_turn_kind is not None:" in processor_src
-    assert "_infer_tool_turn_kind_for_loss_messages(messages)" in grpo_src
-    assert "return \"recall_response\"" in grpo_src
+    assert "tool_turn_kind = \"compress\" if is_inter_chunk else \"streaming\"" in agent_src
+    assert "recall_gen_kwargs[\"tool_turn_kind\"] = \"post_recall\"" in agent_src
+
+
+def test_rl_uses_offline_compress_boundaries_as_trigger_source():
+    root = Path(__file__).resolve().parents[1]
+    loop_src = (root / "thinkstream/rl/streaming_agent_loop.py").read_text()
+    parquet_src = (root / "scripts/agent_data/build_verl_parquet.py").read_text()
+    assert '"offline_pass2_boundaries"' in loop_src
+    assert "offline_compress_chunks" in loop_src
+    assert "chunk_idx in offline_compress_pending" in loop_src
+    assert '"compress_trigger_source": "offline_pass2_boundaries"' in parquet_src
+
+
+def test_rl_offline_compress_boundaries_include_sample_collisions():
+    from scripts.agent_data.build_verl_parquet import (
+        _rl_gold_actions_and_offline_compress,
+    )
+
+    gold_action = {
+        "32": "compress",
+        "63": "response",
+    }
+    traj = {
+        "samples": [
+            {"chunk_idx": 32, "sample_type": "compress", "action": "compress"},
+            {"chunk_idx": 63, "sample_type": "compress", "action": "compress"},
+            {"chunk_idx": 63, "sample_type": "response", "action": "response"},
+        ],
+    }
+
+    sanitized, offline = _rl_gold_actions_and_offline_compress(gold_action, traj)
+    assert sanitized == {"63": "response"}
+    assert offline == [32, 63]
 
 
 def main() -> None:
     test_pass5_recall_rows_split_tool_schema_and_loss_policy()
     test_select_loss_assistant_spans_supports_last_only()
     test_rl_compress_turn_is_text_only_in_source()
-    test_sft_action_eval_uses_turn_local_tools()
-    test_grpo_loss_replay_uses_turn_local_tool_kind()
+    test_sft_preprocess_uses_row_local_tools()
+    test_replay_paths_use_turn_local_tool_kind()
+    test_rl_uses_offline_compress_boundaries_as_trigger_source()
+    test_rl_offline_compress_boundaries_include_sample_collisions()
     print("PASS test_pass5_recall_split")
 
 

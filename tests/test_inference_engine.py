@@ -14,6 +14,7 @@ from __future__ import annotations
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import torch
 
@@ -254,6 +255,162 @@ class WindowedResetTests(unittest.TestCase):
             stub._window_starts[1], torch.tensor([11, 0, 0, 0], dtype=torch.long)
         ))
         self.assertTrue(torch.equal(stub._window_count, keep_w))
+
+
+class RecallSidecarWindowTests(unittest.TestCase):
+    """Post-recall visual evidence must not evict ordinary streaming windows."""
+
+    def _make_windowed_generate_stub(self):
+        from thinkstream.models.inference import StreamingWindowInferenceEngine
+
+        class _StubCache:
+            def __init__(self):
+                self.cache_seqlens = torch.tensor([[100]], dtype=torch.int32)
+                self.batch_size = 1
+
+            def adjust_seqlens(self, delta, layer_idx=None):
+                if layer_idx is None:
+                    self.cache_seqlens += delta.unsqueeze(0)
+                else:
+                    self.cache_seqlens[layer_idx] += delta
+
+        class _StubDecoder:
+            def __init__(self):
+                self.cache = _StubCache()
+
+            @property
+            def cache_seqlens(self):
+                return self.cache.cache_seqlens
+
+        class _StubEviction:
+            def __init__(self, decoder):
+                self.decoder = decoder
+                self.calls = []
+
+            def evict(self, start, end):
+                start = start.detach().cpu().long()
+                end = end.detach().cpu().long()
+                self.calls.append((start.clone(), end.clone()))
+                cur = self.decoder.cache.cache_seqlens[0].long()
+                new_len = start + torch.clamp(cur - end, min=0)
+                self.decoder.cache.cache_seqlens[:] = new_len.to(
+                    torch.int32
+                ).unsqueeze(0)
+
+        stub = StreamingWindowInferenceEngine.__new__(StreamingWindowInferenceEngine)
+        stub.batch_size = 1
+        stub.video_flex_window_size = 2
+        stub.device = torch.device("cpu")
+        stub.video_token_id = 99
+        stub.decoder = _StubDecoder()
+        stub._cache_eviction = _StubEviction(stub.decoder)
+        stub._window_starts = torch.tensor([[10, 20]], dtype=torch.long)
+        stub._window_ends = torch.tensor([[15, 25]], dtype=torch.long)
+        stub._window_count = torch.tensor([2], dtype=torch.long)
+        stub._window_is_recall = torch.tensor([[False, False]], dtype=torch.bool)
+        stub._window_recall_ttl = torch.tensor([[-1, -1]], dtype=torch.long)
+        return stub
+
+    @staticmethod
+    def _fake_parent_generate(self, **kwargs):
+        input_ids = kwargs["input_ids"]
+        num_generations = int(kwargs.get("num_generations") or 1)
+        effective_bsz = input_ids.shape[0] * num_generations
+        # Approximate prefill + one generated token so post-generation
+        # eviction has a tail to compact.
+        self.decoder.cache.cache_seqlens += int(input_ids.shape[1] + 1)
+        return [torch.tensor([7], dtype=torch.long) for _ in range(effective_bsz)]
+
+    def test_next_turn_recall_evidence_does_not_evict_ordinary_windows(self):
+        from thinkstream.models import inference as inference_mod
+
+        stub = self._make_windowed_generate_stub()
+        input_ids = torch.tensor([[1, 99, 99, 2, 99, 3]], dtype=torch.long)
+        position_ids = torch.arange(input_ids.shape[1]).unsqueeze(0)
+
+        with patch.object(
+            inference_mod.StreamingInferenceEngine,
+            "generate",
+            new=self._fake_parent_generate,
+        ):
+            inference_mod.StreamingWindowInferenceEngine.generate(
+                stub,
+                input_ids=input_ids,
+                position_ids=position_ids,
+                max_new_tokens=4,
+                turn_kind="post_recall",
+                recall_kv_policy="next_turn",
+            )
+
+        calls = stub._cache_eviction.calls
+        self.assertEqual(len(calls), 1)
+        # The entire post-recall tool-response chunk is removed, including
+        # metadata text around recalled visual tokens. The full ordinary window
+        # [10, 15) must not be evicted even though the window was full.
+        self.assertTrue(torch.equal(calls[0][0], torch.tensor([100])))
+        self.assertTrue(torch.equal(calls[0][1], torch.tensor([106])))
+        self.assertTrue(torch.equal(stub._window_count, torch.tensor([2])))
+        self.assertTrue(torch.equal(stub._window_starts, torch.tensor([[10, 20]])))
+        self.assertTrue(torch.equal(stub._window_ends, torch.tensor([[15, 25]])))
+
+    def test_post_recall_can_delete_previous_recall_toolcall_span(self):
+        from thinkstream.models import inference as inference_mod
+
+        stub = self._make_windowed_generate_stub()
+        stub._last_generation_starts = torch.tensor([80], dtype=torch.long)
+        stub._last_generation_ends = torch.tensor([90], dtype=torch.long)
+        input_ids = torch.tensor([[1, 99, 99, 2, 99, 3]], dtype=torch.long)
+        position_ids = torch.arange(input_ids.shape[1]).unsqueeze(0)
+
+        with patch.object(
+            inference_mod.StreamingInferenceEngine,
+            "generate",
+            new=self._fake_parent_generate,
+        ):
+            inference_mod.StreamingWindowInferenceEngine.generate(
+                stub,
+                input_ids=input_ids,
+                position_ids=position_ids,
+                max_new_tokens=4,
+                turn_kind="post_recall",
+                recall_kv_policy="next_turn",
+                delete_previous_assistant_kv=True,
+            )
+
+        calls = stub._cache_eviction.calls
+        self.assertEqual(len(calls), 2)
+        self.assertTrue(torch.equal(calls[0][0], torch.tensor([100])))
+        self.assertTrue(torch.equal(calls[0][1], torch.tensor([106])))
+        self.assertTrue(torch.equal(calls[1][0], torch.tensor([80])))
+        self.assertTrue(torch.equal(calls[1][1], torch.tensor([90])))
+
+    def test_streaming_visual_turn_still_slides_ordinary_window(self):
+        from thinkstream.models import inference as inference_mod
+
+        stub = self._make_windowed_generate_stub()
+        input_ids = torch.tensor([[1, 99, 2]], dtype=torch.long)
+        position_ids = torch.arange(input_ids.shape[1]).unsqueeze(0)
+
+        with patch.object(
+            inference_mod.StreamingInferenceEngine,
+            "generate",
+            new=self._fake_parent_generate,
+        ):
+            inference_mod.StreamingWindowInferenceEngine.generate(
+                stub,
+                input_ids=input_ids,
+                position_ids=position_ids,
+                max_new_tokens=4,
+                turn_kind="streaming",
+            )
+
+        calls = stub._cache_eviction.calls
+        self.assertEqual(len(calls), 1)
+        self.assertTrue(torch.equal(calls[0][0], torch.tensor([10])))
+        self.assertTrue(torch.equal(calls[0][1], torch.tensor([15])))
+        self.assertTrue(torch.equal(stub._window_count, torch.tensor([2])))
+        self.assertTrue(torch.equal(stub._window_starts, torch.tensor([[15, 96]])))
+        self.assertTrue(torch.equal(stub._window_ends, torch.tensor([[20, 97]])))
 
 
 if __name__ == "__main__":

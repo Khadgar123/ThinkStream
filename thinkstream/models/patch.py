@@ -29,7 +29,13 @@ from thinkstream.models.streaming_attention import (
 from thinkstream.models import DEFAULT_VIDEO_FLEX_WINDOW_SIZE
 
 
-def build_video_block_mask(model, video_mask, attention_mask):
+def build_video_block_mask(
+    model,
+    video_mask,
+    attention_mask,
+    recall_video_mask=None,
+    recall_kv_mask=None,
+):
     """Create ``video_block_mask`` from ``video_mask`` and ``attention_mask``.
 
     This is the shared helper used by all patched forwards (SFT / GRPO) so
@@ -46,7 +52,19 @@ def build_video_block_mask(model, video_mask, attention_mask):
     B, L = video_mask.shape
     assert video_mask.shape == attention_mask.shape
     mask_mod = generate_video_sliding_window_mask_mod(
-        video_mask.contiguous(), attention_mask.contiguous(), window_size_n
+        video_mask.contiguous(),
+        attention_mask.contiguous(),
+        window_size_n,
+        recall_video_mask=(
+            recall_video_mask.contiguous()
+            if recall_video_mask is not None
+            else None
+        ),
+        recall_kv_mask=(
+            recall_kv_mask.contiguous()
+            if recall_kv_mask is not None
+            else None
+        ),
     )
     return create_mask(
         mask_mod,
@@ -55,8 +73,64 @@ def build_video_block_mask(model, video_mask, attention_mask):
         H=None,
         Q_LEN=L,
         KV_LEN=L,
-        device=model.device,
+        device=getattr(model, "device", video_mask.device),
     )
+
+
+def _patch_text_model_forward_for_video_mask(cls):
+    """Let standard HF forward build the FlexAttention video block mask.
+
+    The SFT path normally uses the vanilla HF Qwen-VL forward, not Liger's
+    lce_forward. The collator emits ``video_mask`` as a model kwarg; without
+    this wrapper it reaches each attention layer unchanged, while the
+    registered ``streaming_attention`` backend expects ``video_block_mask``.
+    Build the block mask once at the text-model boundary using the original
+    2D attention mask, then let the stock forward pass it through ``**kwargs``.
+    """
+    if getattr(cls, "_thinkstream_video_mask_forward_patched", False):
+        return
+    orig_forward = cls.forward
+
+    def forward(
+        self,
+        *args,
+        attention_mask=None,
+        video_mask=None,
+        recall_video_mask=None,
+        recall_kv_mask=None,
+        **kwargs,
+    ):
+        if video_mask is not None and kwargs.get("video_block_mask") is None:
+            kwargs["video_block_mask"] = build_video_block_mask(
+                self,
+                video_mask,
+                attention_mask,
+                recall_video_mask=recall_video_mask,
+                recall_kv_mask=recall_kv_mask,
+            )
+        return orig_forward(
+            self,
+            *args,
+            attention_mask=attention_mask,
+            video_mask=video_mask,
+            **kwargs,
+        )
+
+    cls.forward = forward
+    cls._thinkstream_video_mask_forward_patched = True
+
+
+try:
+    from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import Qwen2_5_VLTextModel
+    from transformers.models.qwen3_vl.modeling_qwen3_vl import Qwen3VLTextModel
+    from transformers.models.qwen3_vl_moe.modeling_qwen3_vl_moe import Qwen3VLMoeTextModel
+
+    for _text_cls in (Qwen2_5_VLTextModel, Qwen3VLTextModel, Qwen3VLMoeTextModel):
+        _patch_text_model_forward_for_video_mask(_text_cls)
+except Exception:
+    # Keep import-time patching tolerant across transformer versions; the
+    # Liger lce_forward patch below still covers older training paths.
+    pass
 
 
 @can_return_tuple
@@ -65,9 +139,17 @@ def _lce_forward_qwen2_5_vl(
     *args,
     attention_mask=None,
     video_mask=None,
+    recall_video_mask=None,
+    recall_kv_mask=None,
     **kwargs,
 ):
-    video_block_mask = build_video_block_mask(self, video_mask, attention_mask)
+    video_block_mask = build_video_block_mask(
+        self,
+        video_mask,
+        attention_mask,
+        recall_video_mask=recall_video_mask,
+        recall_kv_mask=recall_kv_mask,
+    )
     return lce_forward_qwen2_5_vl(
         self,
         *args,
@@ -83,9 +165,17 @@ def _lce_forward_qwen3_vl(
     *args,
     attention_mask=None,
     video_mask=None,
+    recall_video_mask=None,
+    recall_kv_mask=None,
     **kwargs,
 ):
-    video_block_mask = build_video_block_mask(self, video_mask, attention_mask)
+    video_block_mask = build_video_block_mask(
+        self,
+        video_mask,
+        attention_mask,
+        recall_video_mask=recall_video_mask,
+        recall_kv_mask=recall_kv_mask,
+    )
     return lce_forward_qwen3_vl(
         self,
         *args,
@@ -212,6 +302,8 @@ def _grpo_lce_forward_common(
     grpo_beta=0.04,
     grpo_loss_type="grpo",
     video_mask=None,
+    recall_video_mask=None,
+    recall_kv_mask=None,
     output_cls=None,
     add_second_per_grid_ts=False,
     **kwargs,
@@ -219,7 +311,13 @@ def _grpo_lce_forward_common(
     """Shared GRPO LCE forward logic. Call from model-specific forward with
     output_cls and add_second_per_grid_ts set (e.g. Qwen2.5-VL True, Qwen3-VL False).
     """
-    video_block_mask = build_video_block_mask(self, video_mask, attention_mask)
+    video_block_mask = build_video_block_mask(
+        self,
+        video_mask,
+        attention_mask,
+        recall_video_mask=recall_video_mask,
+        recall_kv_mask=recall_kv_mask,
+    )
 
     output_attentions = (
         output_attentions
@@ -356,6 +454,8 @@ def grpo_lce_forward_qwen2_5_vl(
     grpo_beta=0.04,
     grpo_loss_type="grpo",
     video_mask=None,
+    recall_video_mask=None,
+    recall_kv_mask=None,
     **kwargs,
 ):
     """GRPO-aware forward for Qwen2.5-VL (uses LigerFusedLinearGRPOLoss when advantages given)."""
@@ -388,6 +488,8 @@ def grpo_lce_forward_qwen2_5_vl(
         grpo_beta=grpo_beta,
         grpo_loss_type=grpo_loss_type,
         video_mask=video_mask,
+        recall_video_mask=recall_video_mask,
+        recall_kv_mask=recall_kv_mask,
         output_cls=Qwen2_5_VLCausalLMOutputWithPast,
         add_second_per_grid_ts=True,
         **kwargs,
@@ -423,6 +525,8 @@ def grpo_lce_forward_qwen3vl(
     grpo_beta=0.04,
     grpo_loss_type="grpo",
     video_mask=None,
+    recall_video_mask=None,
+    recall_kv_mask=None,
     **kwargs,
 ):
     """GRPO-aware forward for Qwen3-VL (uses LigerFusedLinearGRPOLoss when advantages given)."""
@@ -455,6 +559,8 @@ def grpo_lce_forward_qwen3vl(
         grpo_beta=grpo_beta,
         grpo_loss_type=grpo_loss_type,
         video_mask=video_mask,
+        recall_video_mask=recall_video_mask,
+        recall_kv_mask=recall_kv_mask,
         output_cls=Qwen3VLCausalLMOutputWithPast,
         add_second_per_grid_ts=False,
         **kwargs,

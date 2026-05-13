@@ -59,6 +59,7 @@ from thinkstream.data.agent_protocol import (
     append_visual_frames,
     normalize_frame_protocol,
 )
+from thinkstream.data.schema import DEFAULT_VIDEO_MAX_PIXELS, DEFAULT_VIDEO_MIN_PIXELS
 from thinkstream.eval.prompt_contract import build_plain_mcq_prompt
 
 FRAME_TAG_EVAL_SYSTEM = (
@@ -241,8 +242,8 @@ def load_offline_model(
     model_path: str,
     local_rank: int = 0,
     model_type: str = "qwen3vl",
-    min_pixels: int = 256 * 28 * 28,
-    max_pixels: int = 512 * 28 * 28,
+    min_pixels: int = DEFAULT_VIDEO_MIN_PIXELS,
+    max_pixels: int = DEFAULT_VIDEO_MAX_PIXELS,
 ):
     """Load a vanilla HF VLM (no streaming patches) for offline evaluation."""
     if model_type not in BASELINE_MODEL_CLS:
@@ -334,8 +335,8 @@ def add_offline_args(parser):
     )
     parser.add_argument("--max_new_tokens", type=int, default=30)
     parser.add_argument("--max_frames", type=int, default=64)
-    parser.add_argument("--min_pixels", type=int, default=256 * 28 * 28)
-    parser.add_argument("--max_pixels", type=int, default=512 * 28 * 28)
+    parser.add_argument("--min_pixels", type=int, default=DEFAULT_VIDEO_MIN_PIXELS)
+    parser.add_argument("--max_pixels", type=int, default=DEFAULT_VIDEO_MAX_PIXELS)
     parser.add_argument(
         "--frame_protocol",
         type=str,
@@ -358,8 +359,8 @@ def offline_predict_mcq(
     question_postfix: str = "\nAnswer with a single letter.",
     max_new_tokens: int = 30,
     max_frames: int = 64,
-    min_pixels: int = 256 * 28 * 28,
-    max_pixels: int = 512 * 28 * 28,
+    min_pixels: int = DEFAULT_VIDEO_MIN_PIXELS,
+    max_pixels: int = DEFAULT_VIDEO_MAX_PIXELS,
     rank: int = 0,
     world_size: int = 1,
     sample: int = None,
@@ -459,6 +460,7 @@ def offline_predict_mcq(
                 context_label="visual frame",
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
+                kv_scope="ordinary",
             )
             user_content.append({"type": "text", "text": query})
             messages = [
