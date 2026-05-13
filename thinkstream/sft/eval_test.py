@@ -32,6 +32,8 @@ from thinkstream.sft.data_processor import (
     TrajectorySFTDataCollator,
 )
 from thinkstream.sft.args import ModelArguments, DataArguments, TrainingArguments
+from thinkstream.models import patch as _ts_models_patch  # noqa: F401
+from thinkstream.models.streaming_attention import register_streaming_attention
 from dataclasses import dataclass, field
 
 
@@ -55,6 +57,11 @@ def main():
 
     local_rank = training_args.local_rank
     checkpoint_dir = eval_args.checkpoint_dir
+    attn_implementation = os.environ.get(
+        "THINKSTREAM_ATTN_IMPLEMENTATION",
+        "flash_attention_2",
+    )
+    register_streaming_attention()
 
     # Override data args for test eval
     data_args.dataset_use = eval_args.dataset
@@ -78,9 +85,23 @@ def main():
 
     model = model_cls.from_pretrained(
         checkpoint_dir,
-        attn_implementation="flash_attention_2",
+        attn_implementation=attn_implementation,
         dtype=(torch.bfloat16 if training_args.bf16 else None),
     )
+    vision_config = getattr(model.config, "vision_config", None)
+    if attn_implementation == "streaming_attention" and vision_config is not None:
+        vision_config._attn_implementation = os.environ.get(
+            "THINKSTREAM_VISION_ATTN_IMPLEMENTATION",
+            "flash_attention_2",
+        )
+        from scripts.agent_data.pass5_splitter import SLIDING_WINDOW_CHUNKS
+        model.config.video_flex_window_size = int(
+            os.environ.get(
+                "THINKSTREAM_VIDEO_FLEX_WINDOW_SIZE",
+                SLIDING_WINDOW_CHUNKS,
+            )
+        )
+    rank0_print(f"Attention: {attn_implementation}")
 
     processor = AutoProcessor.from_pretrained(checkpoint_dir)
 
@@ -100,7 +121,10 @@ def main():
     )
     rank0_print(f"Test samples: {len(test_dataset)}")
 
-    collator = TrajectorySFTDataCollator(tokenizer)
+    collator = TrajectorySFTDataCollator(
+        tokenizer,
+        emit_video_mask=(attn_implementation == "streaming_attention"),
+    )
 
     # Override training args for eval-only
     training_args.per_device_eval_batch_size = eval_args.batch_size

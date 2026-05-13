@@ -1434,7 +1434,7 @@ def preprocess_trajectory_sample(sample: Dict, processor, data_args=None) -> Dic
                 # existing compress redistribution. Per-token, not per-sample.
                 #
                 # Anchors come from two sources:
-                #   1. Single-token action ids (<silent>, <response>, ...)
+                #   1. Single-token action-start ids (<silent>, <response>)
                 #   2. Tool-name BPE spans inside <tool_call> JSON body
                 #      ("compress", "recall"). First span token is the anchor.
                 from thinkstream.sft.losses import (
@@ -1504,6 +1504,16 @@ def preprocess_trajectory_sample(sample: Dict, processor, data_args=None) -> Dic
     # canonical multi-span view (used by ALL eval / metric code in v12.11+).
     ans_start, ans_end = assistant_spans[0]
     full_result["eval_meta"] = {
+        "sample_id": sample.get("sample_id") or sample.get("trajectory_id"),
+        "video_id": (
+            sample.get("video_id")
+            or (sample.get("metadata") or {}).get("video_id")
+        ),
+        "chunk_idx": (
+            sample.get("chunk_idx")
+            if sample.get("chunk_idx") is not None
+            else (sample.get("metadata") or {}).get("chunk_idx")
+        ),
         "sample_type": sample.get("sample_type", "?"),
         "action": sample.get("action", ""),
         "gold_action": (sample.get("metadata") or {}).get("gold_action", ""),

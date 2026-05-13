@@ -210,9 +210,14 @@ esac
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 VERL_DIR="${PROJECT_DIR}/verl"
-RECIPE_DIR="${VERL_DIR}/thinkstream/rl/configs"
+RECIPE_DIR="${PROJECT_DIR}/thinkstream/rl/configs"
 RECIPE_NAME="thinkstream_grpo"
 PARENT_DIR="$(dirname "${PROJECT_DIR}")"
+if [[ "${LLM}" != /* && -e "${PROJECT_DIR}/${LLM}" ]]; then
+    LLM="${PROJECT_DIR}/${LLM}"
+elif [[ -e "${LLM}" ]]; then
+    LLM="$(cd "$(dirname "${LLM}")" && pwd)/$(basename "${LLM}")"
+fi
 if [[ -z "${THINKSTREAM_ENV:-}" ]]; then
     if [[ -x "${PARENT_DIR}/envs/thinkstream/bin/python" ]]; then
         THINKSTREAM_ENV="${PARENT_DIR}/envs/thinkstream"
@@ -237,6 +242,10 @@ if [[ "${AGENT_DATA_ROOT}" == */final ]]; then
 fi
 
 OUTPUT_DIR="${THINKSTREAM_OUTPUT_DIR:-${PROJECT_DIR}/output/${RUN_NAME}}"
+case "${OUTPUT_DIR}" in
+    /*) ;;
+    *) OUTPUT_DIR="${PROJECT_DIR}/${OUTPUT_DIR}" ;;
+esac
 RUNTIME_ROOT="${RUNTIME_ROOT:-${PROJECT_DIR}/.runtime/${RUN_NAME}}"
 TRAIN_JSONL="${TRAIN_JSONL:-${AGENT_DATA_ROOT}/final/train_rl_trajectories.jsonl}"
 VAL_JSONL="${VAL_JSONL:-${AGENT_DATA_ROOT}/final/val_trajectories.jsonl}"
@@ -431,4 +440,4 @@ if [[ -n "${MAX_STEPS}" ]]; then
 fi
 
 cd "${VERL_DIR}"
-bash thinkstream/rl/run_thinkstream_grpo.sh
+bash "${PROJECT_DIR}/thinkstream/rl/run_thinkstream_grpo.sh"

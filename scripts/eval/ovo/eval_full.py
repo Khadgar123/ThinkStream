@@ -668,6 +668,7 @@ def _format_result_telemetry(result: Dict, tokenizer, messages: List[Dict]) -> N
         bool(result.get("think"))
         and action in valid_actions
         and not result.get("action_space_error")
+        and not result.get("format_error")
     )
     if format_ok:
         payload = result.get("payload") or {}

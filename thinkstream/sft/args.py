@@ -184,8 +184,9 @@ class DataArguments:
     action_class_loss_mode: str = field(
         default="none",
         metadata={
-            "help": "Action-class loss balancing mode for "
-            "{silent, response, compress, recall} tokens. "
+            "help": "Action-start loss balancing mode for "
+            "{<silent>, <response>, optional compress/recall tool-name anchors}. "
+            "Response close tags and answer text are ordinary CE targets. "
             "'none' = no extra balancing (legacy behaviour). "
             "'inverse_freq' = inverse-frequency-weighted class-weighted CE applied via "
             "token_loss_weight (compatible with Liger fused CE). "

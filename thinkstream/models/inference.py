@@ -1048,11 +1048,12 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
         """Clears KV cache, position cache, and video window bookkeeping."""
         super().reset()
         self._ensure_recall_window_bookkeeping()
-        self._window_starts.zero_()
-        self._window_ends.zero_()
-        self._window_is_recall.zero_()
-        self._window_recall_ttl.fill_(-1)
-        self._window_count.zero_()
+        with torch.inference_mode():
+            self._window_starts.zero_()
+            self._window_ends.zero_()
+            self._window_is_recall.zero_()
+            self._window_recall_ttl.fill_(-1)
+            self._window_count.zero_()
 
     def reset_to_prefix(
         self,

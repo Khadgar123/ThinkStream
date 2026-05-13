@@ -94,7 +94,6 @@ actor_rollout_ref:
     #                bounded by limit_videos.
     # Keep these aligned with pass5 / SFT / eval.
     limit_images: 64
-    limit_videos: 2
     enforce_eager: True
     free_cache_engine: True
     enable_chunked_prefill: True

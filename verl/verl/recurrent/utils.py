@@ -54,15 +54,31 @@ def final_batch(
         raise ValueError("recurrent rollout has no final rows")
 
     final_sample_index = sample_index[final_row_idx]
-    expected = int(sample_index.max().item()) + 1 if sample_index.numel() else 0
-    if final_row_idx.numel() != expected:
+    expected = int(torch.unique(sample_index).numel()) if sample_index.numel() else 0
+    unique_final, inverse = torch.unique(
+        final_sample_index,
+        sorted=True,
+        return_inverse=True,
+    )
+    if unique_final.numel() != expected:
         raise ValueError(
             "recurrent rollout must contain exactly one final row per trajectory: "
-            f"got {final_row_idx.numel()}, expected {expected}"
+            f"got {unique_final.numel()}, expected {expected}"
         )
 
-    order = reverse_indices(final_sample_index)
-    return batch[final_row_idx[order]]
+    selected = torch.empty(
+        unique_final.numel(),
+        dtype=final_row_idx.dtype,
+        device=final_row_idx.device,
+    )
+    selected.scatter_reduce_(
+        0,
+        inverse,
+        final_row_idx,
+        reduce="amin",
+        include_self=False,
+    )
+    return batch[selected]
 
 
 def compute_1D_grpo_advantage(

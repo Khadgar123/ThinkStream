@@ -1,7 +1,11 @@
-"""Action-class loss balancing for streaming SFT.
+"""Action-start loss balancing for streaming SFT.
 
-Two drop-in mechanisms for class imbalance between {silent, response, compress,
-recall} action tokens. Pick one via ``data_args.action_class_loss_mode``:
+The only class-discriminative text tokens we balance are action-start anchors:
+``<silent>`` and ``<response>``. Response close tags and response body tokens
+stay ordinary CE targets so the model learns formatting/content without
+turning ``</response>`` into a second response-class vote.
+
+Two optional mechanisms are available via ``data_args.action_class_loss_mode``:
 
 - ``"inverse_freq"`` (inverse-frequency-weighted): compute per-class token weight = total / (2 *
   per_class_count) in the data collator, multiply into ``token_loss_weight``.
@@ -11,9 +15,10 @@ recall} action tokens. Pick one via ``data_args.action_class_loss_mode``:
   CE on assistant tokens, with optional auto-alpha class rebalancing.
   Replaces the trainer's CE path. Needs explicit logits → no Liger fused CE.
 
-Both share the same set of "action tokens" registered via
+Both share the same set of action-start tokens registered via
 ``ACTION_TOKEN_NAMES``. Tokens outside this set get weight = 1.0 and are
-unaffected.
+unaffected. Tool names (``compress``/``recall``) are optional anchors handled
+separately inside ``<tool_call>`` spans.
 """
 from __future__ import annotations
 
@@ -23,21 +28,22 @@ import torch
 import torch.nn.functional as F
 
 
-# Action tokens whose imbalance we explicitly correct. ``<think>`` /
-# ``</think>`` are excluded because they appear on every assistant turn and
-# are not class-discriminative.
+# Action-start tokens whose imbalance we explicitly correct. ``<think>`` /
+# ``</think>`` appear on every assistant turn and are not class-discriminative.
+# ``</response>`` is deliberately excluded: a response turn has both
+# ``<response>`` and ``</response>``, while a silent turn has only
+# ``<silent>``. Balancing both response tags would make one response turn count
+# twice against one silent turn and would overweight format closure instead of
+# the action decision.
 ACTION_TOKEN_NAMES: Tuple[str, ...] = (
     "<silent>",
     "<response>",
-    "</response>",
-    "<answer>",
-    "</answer>",
 )
 
 # Tool names are NOT single tokens under default Qwen BPE — they typically
 # decode to multi-piece sequences. We detect them as token spans and treat
 # the FIRST token of each span as the discriminative anchor (same role as
-# <silent>/<response> single tokens above).
+# <silent>/<response> action-start tokens above).
 TOOL_NAME_NAMES: Tuple[str, ...] = (
     "compress",
     "recall",
@@ -48,7 +54,7 @@ def resolve_action_token_ids(
     tokenizer,
     extra_action_names: Sequence[str] = (),
 ) -> dict:
-    """Resolve action-token text → token id. Falls back gracefully when a
+    """Resolve action-start token text → token id. Falls back gracefully when a
     token is multi-piece BPE'd (returns None for that key)."""
     out = {}
     names: List[str] = list(ACTION_TOKEN_NAMES) + list(extra_action_names)
@@ -229,7 +235,7 @@ def compute_inverse_frequency_weights(
         weight[c] = total_action_anchors / (num_classes * count[c] + eps)
 
     Action anchors come from two sources:
-      1. Single-token ids in ``action_token_ids`` (e.g. <silent>, <response>)
+      1. Single-token action-start ids (e.g. <silent>, <response>)
       2. Tool-name spans from ``tool_name_sequences`` (e.g. "compress",
          "recall"); the first token of each match is the anchor.
 
@@ -322,7 +328,7 @@ def focal_loss_per_token(
             entries contribute zero loss.
         action_token_ids: from ``resolve_action_token_ids``.
         gamma: focal exponent. 0.0 disables focal modulation (standard CE).
-        auto_alpha: when True, scales action-token loss by per-batch inverse
+        auto_alpha: when True, scales action-start loss by per-batch inverse
             frequency (akin to auto-alpha class rebalancing). Non-action tokens get
             alpha=1.0.
         extra_token_weight: optional [batch, seq_len] multiplier. Applied on

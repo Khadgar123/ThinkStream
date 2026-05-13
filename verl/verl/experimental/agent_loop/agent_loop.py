@@ -61,6 +61,7 @@ logger.setLevel(os.getenv("VERL_LOGGING_LEVEL", "WARN"))
 DEFAULT_ROUTING_CACHE_SIZE = 10000
 _RECURRENT_SAMPLE_INDEX_KEY = "_verl_recurrent_sample_index"
 _RECURRENT_FINAL_MASK_KEY = "_verl_recurrent_final_mask"
+_AGENT_LOOP_BATCH_ROW_INDEX_KEY = "_verl_agent_loop_batch_row_index"
 
 
 @ray.remote
@@ -654,13 +655,16 @@ class AgentLoopWorker:
         for i in range(len(batch)):
             trace_this_sample = i in traced_indices
             kwargs = {k: v[i] for k, v in batch.non_tensor_batch.items()}
+            batch_row_index = i
+            if _AGENT_LOOP_BATCH_ROW_INDEX_KEY in batch.non_tensor_batch:
+                batch_row_index = int(batch.non_tensor_batch[_AGENT_LOOP_BATCH_ROW_INDEX_KEY][i])
             tasks.append(
                 asyncio.create_task(
                     self._run_agent_loop(
                         sampling_params,
                         trajectory_info[i],
                         trace=trace_this_sample,
-                        _batch_row_index=i,
+                        _batch_row_index=batch_row_index,
                         **kwargs,
                     )
                 )
@@ -725,7 +729,16 @@ class AgentLoopWorker:
                 dataset_cls=self.dataset_cls,
                 data_config=DictConfigWrap(self.config.data),
             )
-            output = await agent_loop.run(sampling_params, **kwargs)
+            try:
+                output = await agent_loop.run(sampling_params, **kwargs)
+            except Exception:
+                logger.exception(
+                    "AgentLoop failed for index=%r video_id=%r batch_row=%r",
+                    kwargs.get("index"),
+                    kwargs.get("video_id"),
+                    _batch_row_index,
+                )
+                raise
             if isinstance(output, list):
                 processed_outputs: list[_InternalAgentLoopOutput] = []
                 for action_idx, action_output in enumerate(output):
@@ -1313,6 +1326,7 @@ class AgentLoopManager:
         """
         if self.stream_teacher_with_rollout:
             await self.teacher_model_manager.wake_up()
+        prompts.non_tensor_batch[_AGENT_LOOP_BATCH_ROW_INDEX_KEY] = np.arange(len(prompts), dtype=np.int64)
         chunkes = prompts.chunk(len(self.agent_loop_workers))
         outputs = await asyncio.gather(
             *[

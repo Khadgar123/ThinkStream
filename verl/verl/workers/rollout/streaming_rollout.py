@@ -386,6 +386,15 @@ class StreamingRolloutServer:
         if video_data:
             videos, video_metadatas = zip(*video_data, strict=False)
             text = self._tokenizer.decode(token_ids, skip_special_tokens=False)
+            video_token = getattr(self._processor, "video_token", None)
+            if video_token and text.count(video_token) != len(videos):
+                # `token_ids` already contains Qwen's expanded video placeholders.
+                # Feeding the decoded prompt back to the processor would make it
+                # expect one metadata entry per expanded token instead of one per
+                # logical video block. The processor output ids are replaced by
+                # `token_ids` below; this text is only needed to build video
+                # tensors/grids and mrope metadata.
+                text = "\n".join([video_token] * len(videos))
             encoded = self._processor(
                 text=[text],
                 videos=list(videos),
@@ -396,6 +405,44 @@ class StreamingRolloutServer:
             encoded = dict(encoded)
             encoded["input_ids"] = input_ids
             encoded["attention_mask"] = attention_mask
+            video_token_id = getattr(self._processor, "video_token_id", None)
+            pixel_values = encoded.get("pixel_values_videos")
+            video_grid = encoded.get("video_grid_thw")
+            merge_size = int(getattr(self._processor.video_processor, "merge_size", 2))
+            if (
+                video_token_id is not None
+                and pixel_values is not None
+                and video_grid is not None
+            ):
+                expected_features = int((input_ids == int(video_token_id)).sum().item())
+                actual_features = int(
+                    (video_grid.to(torch.long).prod(dim=1) // (merge_size**2)).sum().item()
+                )
+                if expected_features > 0 and actual_features != expected_features:
+                    # The agent loop's prompt ids are authoritative for the KV
+                    # stream. Keep the rollout alive if the local processor
+                    # re-materializes a slightly different video grid for the
+                    # same frame payload.
+                    target_patches = expected_features * (merge_size**2)
+                    current_patches = int(pixel_values.shape[0])
+                    if current_patches < target_patches:
+                        pad = pixel_values[-1:].expand(target_patches - current_patches, -1)
+                        encoded["pixel_values_videos"] = torch.cat([pixel_values, pad], dim=0)
+                    elif current_patches > target_patches:
+                        encoded["pixel_values_videos"] = pixel_values[:target_patches]
+                    if len(video_grid) == 1:
+                        t, h, w = [int(x) for x in video_grid[0].tolist()]
+                        if t > 0 and w > 0 and target_patches % (t * w) == 0:
+                            h = target_patches // (t * w)
+                        elif t > 0 and h > 0 and target_patches % (t * h) == 0:
+                            w = target_patches // (t * h)
+                        else:
+                            t, h, w = 1, merge_size, target_patches // merge_size
+                        encoded["video_grid_thw"] = torch.tensor(
+                            [[t, h, w]],
+                            dtype=video_grid.dtype,
+                            device=video_grid.device,
+                        )
 
         from thinkstream.data.stream_data_processor import compute_position_ids
 

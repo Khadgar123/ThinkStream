@@ -7,6 +7,7 @@ and (for GRPO) every reward component before/after gating.
 Files written to <audit_dir>/:
     sft_step.jsonl    one line per SFT optimization step
     sft_sample.jsonl  one line per sample seen (sample_id → loss, weight, type)
+    sft_eval_argmax_samples.jsonl  sampled SFT eval argmax completions
     grpo_step.jsonl   one line per GRPO step (aggregate reward stats)
     grpo_sample.jsonl one line per (sample, generation) with full reward dict
 

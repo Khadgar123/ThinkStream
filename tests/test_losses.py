@@ -21,6 +21,7 @@ import torch.nn.functional as F
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from thinkstream.sft.losses import (  # noqa: E402
+    ACTION_TOKEN_NAMES,
     _find_subsequence_anchors,
     compute_inverse_frequency_weights,
     find_tool_name_anchors,
@@ -29,11 +30,12 @@ from thinkstream.sft.losses import (  # noqa: E402
 
 
 # Synthetic vocab:
-#   0 = <pad>, 1 = <silent>, 2 = <response>, 3 = <think>, 4 = </think>,
+#   0 = <pad>, 1 = <silent>, 2 = <response>, 3 = </response>, 4 = </think>,
 #   5-9 = arbitrary content tokens.
 VOCAB_SIZE = 10
 SILENT_ID = 1
 RESPONSE_ID = 2
+RESPONSE_CLOSE_ID = 3
 IGNORE = -100
 
 ACTION_IDS = {
@@ -73,6 +75,30 @@ def test_inverse_frequency_balances_silent_response():
     )
 
     print(f"[OK] inverse_freq: silent_w={silent_w:.3f}, response_w={response_w:.3f}")
+
+
+def test_response_close_is_not_action_balanced():
+    """Only the response-open token is an action decision.
+
+    The closing tag is a formatting target and must stay ordinary CE weight,
+    otherwise one response turn contributes two action anchors while one
+    silent turn contributes one.
+    """
+    assert "</response>" not in ACTION_TOKEN_NAMES
+    assert "<answer>" not in ACTION_TOKEN_NAMES
+    assert "</answer>" not in ACTION_TOKEN_NAMES
+
+    labels = torch.full((1, 12), IGNORE, dtype=torch.long)
+    labels[0, 0:9] = SILENT_ID
+    labels[0, 9] = RESPONSE_ID
+    labels[0, 10] = RESPONSE_CLOSE_ID
+
+    w = compute_inverse_frequency_weights(labels, ACTION_IDS, ignore_index=IGNORE)
+
+    assert torch.isclose(w[0, 10], torch.tensor(1.0)), (
+        f"</response> should remain ordinary CE weight, got {w[0, 10].item()}"
+    )
+    assert w[0, 9] > w[0, 0], "rare <response> start token should be upweighted"
 
 
 def test_inverse_frequency_clamps_extreme():

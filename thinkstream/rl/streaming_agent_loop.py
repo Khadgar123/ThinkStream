@@ -1598,6 +1598,7 @@ def _register_streaming_agent_loop():
                         response_text,
                         allow_bare_answer=(turn_kind == "post_recall"),
                         allow_malformed_tool_call=(turn_kind == "compress"),
+                        allow_unclosed_response=True,
                     )
                     kind = parsed.get("kind", "unknown")
                     action_error = action_space_error_for_turn(kind, turn_kind)

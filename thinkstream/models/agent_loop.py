@@ -53,13 +53,15 @@ def _parse_agent_output(output_text: str) -> Dict:
     orchestration code. We adapt the v12 parser (which emits ``kind`` +
     ``answer_text`` / ``tool_call``) into that shape here.
     """
-    v12 = parse_agent_output(output_text)
+    v12 = parse_agent_output(output_text, allow_unclosed_response=True)
     out: Dict = {
         "raw": v12.get("raw", output_text),
         "raw_output": v12.get("raw", output_text),
         "think": v12.get("think", ""),
         "action": "",
         "payload": {},
+        "format_error": v12.get("format_error"),
+        "lenient_unclosed_response": bool(v12.get("lenient_unclosed_response")),
     }
     kind = v12.get("kind", "unknown")
     if kind == "answer":
@@ -1646,6 +1648,7 @@ class StreamingAgentLoop:
             bool(parsed.get("think"))
             and action in VALID_ACTIONS
             and not parsed.get("action_space_error")
+            and not parsed.get("format_error")
         )
         if format_ok:
             payload = parsed.get("payload") or {}

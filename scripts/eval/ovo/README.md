@@ -26,6 +26,7 @@ python scripts/eval/ovo/build_rl_trajectories.py \
   --benchmark-json /path/to/ovo_bench_new.json \
   --out-jsonl data/ovo_rl/ovo_trajectories.jsonl \
   --out-parquet data/ovo_rl/ovo_rl_multi_q.parquet \
+  --split-policy query_span \
   --max-span-chunks 512 \
   --pre-context-chunks 64 \
   --post-context-chunks 2
@@ -41,6 +42,24 @@ recurrent AgentLoop validation/test path as RL rollout, so KV window behaviour,
 recall payload handling, and reward parsing stay shared. The validation dump is
 summarized by `scripts/audit/summarize_rl_recurrent_validation.py` into
 `summary.json` under the output directory.
+
+Split policies:
+
+- `query_span`: current default; packs non-overlapping questions from the same
+  video/task and gives each group a dynamic segment around the required
+  ask/answer interval.
+- `casia`: matches the reference CASIA OVO conversion semantics: every
+  formatted probe is an independent row, `video_start/video_end` define the
+  segment, and the query fires at `video_end`.
+- `short20_40`: one question per row; short questions target
+  `--short-min-span-chunks` to `--short-max-span-chunks` chunks, while a single
+  inherently long question is allowed to exceed that target rather than cutting
+  out its required context.
+- `short20_40_stateful`: cut-plan mode for long questions. It first applies
+  `short20_40`, then splits any row above the short max into contiguous
+  stateful parts. Context-only parts intentionally carry no scored question;
+  this JSONL requires an evaluator/rollout that carries memory state across
+  `stateful_split_parent_id` parts before scoring.
 
 `summary.health` is the compact recurrent-rollout health block:
 

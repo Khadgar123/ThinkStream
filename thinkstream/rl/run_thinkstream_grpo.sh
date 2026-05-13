@@ -95,6 +95,19 @@ HF_MODEL_PATH=${HF_MODEL_PATH:?"HF_MODEL_PATH= required (Qwen3-VL-8B SFT ckpt)"}
 TRAIN_PARQUET=${TRAIN_PARQUET:?"TRAIN_PARQUET= required"}
 VAL_PARQUET=${VAL_PARQUET:?"VAL_PARQUET= required"}
 THINKSTREAM_DATA_ROOT=${THINKSTREAM_DATA_ROOT:-${THINKSTREAM_HOME}/data/agent_v5}
+abspath_from_home() {
+    case "$1" in
+        /*) printf '%s\n' "$1" ;;
+        *) printf '%s/%s\n' "${THINKSTREAM_HOME}" "$1" ;;
+    esac
+}
+if [[ "${HF_MODEL_PATH}" != /* && -e "${THINKSTREAM_HOME}/${HF_MODEL_PATH}" ]]; then
+    HF_MODEL_PATH="${THINKSTREAM_HOME}/${HF_MODEL_PATH}"
+elif [[ -e "${HF_MODEL_PATH}" ]]; then
+    HF_MODEL_PATH="$(cd "$(dirname "${HF_MODEL_PATH}")" && pwd)/$(basename "${HF_MODEL_PATH}")"
+fi
+TRAIN_PARQUET="$(abspath_from_home "${TRAIN_PARQUET}")"
+VAL_PARQUET="$(abspath_from_home "${VAL_PARQUET}")"
 if [[ "${THINKSTREAM_DATA_ROOT}" == */final ]]; then
     THINKSTREAM_DATA_ROOT="$(dirname "${THINKSTREAM_DATA_ROOT}")"
 fi
@@ -212,6 +225,7 @@ export MM_CACHE_GB
 export THINKSTREAM_MM_CACHE_GB="${MM_CACHE_GB}"
 
 PROJECT_NAME=${PROJECT_NAME:-thinkstream-v12}
+TRAINER_LOGGER=${TRAINER_LOGGER:-'["console"]'}
 THINKSTREAM_FRAME_PROTOCOL="${THINKSTREAM_FRAME_PROTOCOL:-video_meta}"
 THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard_query_last}"
 case "${THINKSTREAM_RENDER_LAYOUT}" in
@@ -223,6 +237,7 @@ case "${THINKSTREAM_RENDER_LAYOUT}" in
 esac
 EXPERIMENT_NAME=${EXPERIMENT_NAME:-grpo-v12.26-verl-${THINKSTREAM_FRAME_PROTOCOL}}
 SAVE_DIR=${SAVE_DIR:-./output/${EXPERIMENT_NAME}}
+SAVE_DIR="$(abspath_from_home "${SAVE_DIR}")"
 SAVE_FREQ=${SAVE_FREQ:-50}
 TEST_FREQ=${TEST_FREQ:-25}
 VAL_ONLY=${VAL_ONLY:-false}
@@ -232,6 +247,12 @@ fi
 VAL_BEFORE_TRAIN=${VAL_BEFORE_TRAIN:-${VAL_ONLY}}
 VALIDATION_DATA_DIR=${VALIDATION_DATA_DIR:-}
 ROLLOUT_DATA_DIR=${ROLLOUT_DATA_DIR:-}
+if [[ -n "${VALIDATION_DATA_DIR}" ]]; then
+    VALIDATION_DATA_DIR="$(abspath_from_home "${VALIDATION_DATA_DIR}")"
+fi
+if [[ -n "${ROLLOUT_DATA_DIR}" ]]; then
+    ROLLOUT_DATA_DIR="$(abspath_from_home "${ROLLOUT_DATA_DIR}")"
+fi
 PARAM_OFFLOAD=${PARAM_OFFLOAD:-true}
 OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
 FREEZE_VISION_TOWER=${FREEZE_VISION_TOWER:-true}
@@ -241,23 +262,23 @@ MAX_STEPS=${MAX_STEPS:-}
 DATA_SHUFFLE=${DATA_SHUFFLE:-true}
 DATALOADER_NUM_WORKERS=${DATALOADER_NUM_WORKERS:-0}
 
-RUNTIME_ROOT="${RUNTIME_ROOT:-${THINKSTREAM_HOME}/.runtime/${EXPERIMENT_NAME}}"
+RUNTIME_ROOT="$(abspath_from_home "${RUNTIME_ROOT:-.runtime/${EXPERIMENT_NAME}}")"
 mkdir -p "${RUNTIME_ROOT}"/{tmp,ray,hf,torch,triton,xdg}
-export TMPDIR="${TMPDIR:-${RUNTIME_ROOT}/tmp}"
-export TMP="${TMP:-${TMPDIR}}"
-export TEMP="${TEMP:-${TMPDIR}}"
-export RAY_TMPDIR="${RAY_TMPDIR:-${RUNTIME_ROOT}/ray}"
-export HF_HOME="${HF_HOME:-${RUNTIME_ROOT}/hf}"
-export TRANSFORMERS_CACHE="${TRANSFORMERS_CACHE:-${HF_HOME}/transformers}"
-export HF_DATASETS_CACHE="${HF_DATASETS_CACHE:-${HF_HOME}/datasets}"
-export TORCH_HOME="${TORCH_HOME:-${RUNTIME_ROOT}/torch}"
-export TRITON_CACHE_DIR="${TRITON_CACHE_DIR:-${RUNTIME_ROOT}/triton}"
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${RUNTIME_ROOT}/xdg}"
+export TMPDIR="$(abspath_from_home "${TMPDIR:-${RUNTIME_ROOT}/tmp}")"
+export TMP="$(abspath_from_home "${TMP:-${TMPDIR}}")"
+export TEMP="$(abspath_from_home "${TEMP:-${TMPDIR}}")"
+export RAY_TMPDIR="$(abspath_from_home "${RAY_TMPDIR:-${RUNTIME_ROOT}/ray}")"
+export HF_HOME="$(abspath_from_home "${HF_HOME:-${RUNTIME_ROOT}/hf}")"
+export TRANSFORMERS_CACHE="$(abspath_from_home "${TRANSFORMERS_CACHE:-${HF_HOME}/transformers}")"
+export HF_DATASETS_CACHE="$(abspath_from_home "${HF_DATASETS_CACHE:-${HF_HOME}/datasets}")"
+export TORCH_HOME="$(abspath_from_home "${TORCH_HOME:-${RUNTIME_ROOT}/torch}")"
+export TRITON_CACHE_DIR="$(abspath_from_home "${TRITON_CACHE_DIR:-${RUNTIME_ROOT}/triton}")"
+export XDG_CACHE_HOME="$(abspath_from_home "${XDG_CACHE_HOME:-${RUNTIME_ROOT}/xdg}")"
 
 # verl spawns Ray workers; each worker process inherits PYTHONPATH so the
 # reward function can import thinkstream.trainer.rewards.
 export PYTHONPATH="${THINKSTREAM_HOME}:${PYTHONPATH:-}"
-export THINKSTREAM_TRAJ_INDEX_PATH="${THINKSTREAM_TRAJ_INDEX_PATH:-${THINKSTREAM_DATA_ROOT}/final/train_rl_trajectories.jsonl}"
+export THINKSTREAM_TRAJ_INDEX_PATH="$(abspath_from_home "${THINKSTREAM_TRAJ_INDEX_PATH:-${THINKSTREAM_DATA_ROOT}/final/train_rl_trajectories.jsonl}")"
 export THINKSTREAM_EXPERIMENT_NAME="${EXPERIMENT_NAME}"
 export THINKSTREAM_RL_ROLLOUT_AUDIT_PATH="${THINKSTREAM_RL_ROLLOUT_AUDIT_PATH:-${SAVE_DIR}/audit/rl_rollout_samples.jsonl}"
 export THINKSTREAM_RL_ROLLOUT_AUDIT_PROB="${THINKSTREAM_RL_ROLLOUT_AUDIT_PROB:-0.01}"
@@ -352,10 +373,15 @@ TRAINING_STEPS_ARGS=()
 if [[ -n "${MAX_STEPS}" ]]; then
     TRAINING_STEPS_ARGS=(trainer.total_training_steps=${MAX_STEPS})
 fi
+VAL_MAX_SAMPLES_ARGS=()
+if [[ -n "${VAL_MAX_SAMPLES:-}" ]]; then
+    VAL_MAX_SAMPLES_ARGS=(data.val_max_samples=${VAL_MAX_SAMPLES})
+fi
 
 PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
-    --config-path="$(pwd)/thinkstream/rl/configs" \
+    --config-path="${THINKSTREAM_HOME}/thinkstream/rl/configs" \
     --config-name='thinkstream_grpo' \
+    data.custom_cls.path="${THINKSTREAM_HOME}/thinkstream/rl/thinkstream.py" \
     data.train_files="${TRAIN_PARQUET}" \
     data.val_files="[${VAL_PARQUET}]" \
     data.val_batch_size=${BATCH_SIZE} \
@@ -368,14 +394,14 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     data.dataloader_num_workers=${DATALOADER_NUM_WORKERS} \
     +ray_kwargs.ray_init._temp_dir="${RAY_TMPDIR}" \
     "${RAY_ADDRESS_ARGS[@]}" \
-    ray_kwargs.ray_init.runtime_env.env_vars.TMPDIR="${TMPDIR}" \
-    ray_kwargs.ray_init.runtime_env.env_vars.RAY_TMPDIR="${RAY_TMPDIR}" \
-    ray_kwargs.ray_init.runtime_env.env_vars.HF_HOME="${HF_HOME}" \
-    ray_kwargs.ray_init.runtime_env.env_vars.TRANSFORMERS_CACHE="${TRANSFORMERS_CACHE}" \
-    ray_kwargs.ray_init.runtime_env.env_vars.HF_DATASETS_CACHE="${HF_DATASETS_CACHE}" \
-    ray_kwargs.ray_init.runtime_env.env_vars.TORCH_HOME="${TORCH_HOME}" \
-    ray_kwargs.ray_init.runtime_env.env_vars.TRITON_CACHE_DIR="${TRITON_CACHE_DIR}" \
-    ray_kwargs.ray_init.runtime_env.env_vars.XDG_CACHE_HOME="${XDG_CACHE_HOME}" \
+    +ray_kwargs.ray_init.runtime_env.env_vars.TMPDIR="${TMPDIR}" \
+    +ray_kwargs.ray_init.runtime_env.env_vars.RAY_TMPDIR="${RAY_TMPDIR}" \
+    +ray_kwargs.ray_init.runtime_env.env_vars.HF_HOME="${HF_HOME}" \
+    +ray_kwargs.ray_init.runtime_env.env_vars.TRANSFORMERS_CACHE="${TRANSFORMERS_CACHE}" \
+    +ray_kwargs.ray_init.runtime_env.env_vars.HF_DATASETS_CACHE="${HF_DATASETS_CACHE}" \
+    +ray_kwargs.ray_init.runtime_env.env_vars.TORCH_HOME="${TORCH_HOME}" \
+    +ray_kwargs.ray_init.runtime_env.env_vars.TRITON_CACHE_DIR="${TRITON_CACHE_DIR}" \
+    +ray_kwargs.ray_init.runtime_env.env_vars.XDG_CACHE_HOME="${XDG_CACHE_HOME}" \
     algorithm.adv_estimator=grpo \
     algorithm.kl_ctrl.kl_coef=0.0 \
     actor_rollout_ref.model.path="${HF_MODEL_PATH}" \
@@ -405,7 +431,6 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.gpu_memory_utilization=${GPU_MEM_UTIL} \
     actor_rollout_ref.rollout.max_num_batched_tokens=32768 \
     actor_rollout_ref.rollout.limit_images=${LIMIT_IMAGES} \
-    actor_rollout_ref.rollout.limit_videos=${LIMIT_VIDEOS} \
     actor_rollout_ref.rollout.enforce_eager=True \
     actor_rollout_ref.rollout.free_cache_engine=True \
     actor_rollout_ref.rollout.enable_chunked_prefill=True \
@@ -420,18 +445,20 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.multi_turn.max_assistant_turns=${MAX_TURNS} \
     actor_rollout_ref.rollout.multi_turn.max_user_turns=${MAX_TURNS} \
     actor_rollout_ref.rollout.multi_turn.max_parallel_calls=1 \
-    reward.custom_reward_function.path="thinkstream/rl/thinkstream.py" \
+    actor_rollout_ref.rollout.agent.agent_loop_config_path="${THINKSTREAM_HOME}/thinkstream/rl/configs/agent_loops.yaml" \
+    reward.custom_reward_function.path="${THINKSTREAM_HOME}/thinkstream/rl/thinkstream.py" \
     reward.custom_reward_function.name=compute_score \
     trainer.critic_warmup=0 \
-    trainer.logger='["console","wandb"]' \
+    trainer.logger="${TRAINER_LOGGER}" \
     trainer.val_before_train=${VAL_BEFORE_TRAIN} \
-    +trainer.val_only=${VAL_ONLY} \
+    trainer.val_only=${VAL_ONLY} \
     trainer.n_gpus_per_node=${N_GPUS_PER_NODE} \
     trainer.nnodes=${NNODES} \
     trainer.save_freq=${SAVE_FREQ} \
     trainer.test_freq=${TEST_FREQ} \
     trainer.total_epochs=${EPOCHS} \
     "${TRAINING_STEPS_ARGS[@]}" \
+    "${VAL_MAX_SAMPLES_ARGS[@]}" \
     "${ROLLOUT_DATA_ARGS[@]}" \
     "${VALIDATION_DATA_ARGS[@]}" \
     trainer.project_name=${PROJECT_NAME} \

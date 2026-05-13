@@ -26,6 +26,9 @@ MAX_SPAN_CHUNKS=${MAX_SPAN_CHUNKS:-512}
 PRE_CONTEXT_CHUNKS=${PRE_CONTEXT_CHUNKS:-64}
 POST_CONTEXT_CHUNKS=${POST_CONTEXT_CHUNKS:-2}
 PACK_ACROSS_TASKS=${PACK_ACROSS_TASKS:-false}
+SPLIT_POLICY=${SPLIT_POLICY:-query_span}
+SHORT_MIN_SPAN_CHUNKS=${SHORT_MIN_SPAN_CHUNKS:-20}
+SHORT_MAX_SPAN_CHUNKS=${SHORT_MAX_SPAN_CHUNKS:-40}
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -41,6 +44,9 @@ while [[ $# -gt 0 ]]; do
         --pre_context_chunks|--pre-context-chunks) PRE_CONTEXT_CHUNKS="$2"; shift 2 ;;
         --post_context_chunks|--post-context-chunks) POST_CONTEXT_CHUNKS="$2"; shift 2 ;;
         --pack_across_tasks|--pack-across-tasks) PACK_ACROSS_TASKS=true; shift ;;
+        --split_policy|--split-policy) SPLIT_POLICY="$2"; shift 2 ;;
+        --short_min_span_chunks|--short-min-span-chunks) SHORT_MIN_SPAN_CHUNKS="$2"; shift 2 ;;
+        --short_max_span_chunks|--short-max-span-chunks) SHORT_MAX_SPAN_CHUNKS="$2"; shift 2 ;;
         *) echo "Unknown parameter: $1" >&2; exit 1 ;;
     esac
 done
@@ -92,6 +98,8 @@ echo "  max span:   ${MAX_SPAN_CHUNKS}"
 echo "  pre ctx:    ${PRE_CONTEXT_CHUNKS}"
 echo "  post ctx:   ${POST_CONTEXT_CHUNKS}"
 echo "  pack tasks: ${PACK_ACROSS_TASKS}"
+echo "  split:      ${SPLIT_POLICY}"
+echo "  short span: ${SHORT_MIN_SPAN_CHUNKS}-${SHORT_MAX_SPAN_CHUNKS}"
 [ -n "${TASKS}" ] && echo "  tasks:      ${TASKS}"
 echo "============================================================"
 
@@ -104,6 +112,9 @@ echo "============================================================"
     --max-span-chunks "${MAX_SPAN_CHUNKS}" \
     --pre-context-chunks "${PRE_CONTEXT_CHUNKS}" \
     --post-context-chunks "${POST_CONTEXT_CHUNKS}" \
+    --split-policy "${SPLIT_POLICY}" \
+    --short-min-span-chunks "${SHORT_MIN_SPAN_CHUNKS}" \
+    --short-max-span-chunks "${SHORT_MAX_SPAN_CHUNKS}" \
     --summary-out "${SUMMARY_JSON}" \
     "${BUILD_ARGS[@]}"
 

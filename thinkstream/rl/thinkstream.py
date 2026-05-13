@@ -320,6 +320,43 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
         return super().__len__()
 
     @staticmethod
+    def _drop_empty_video_items(messages: list[dict]) -> list[dict]:
+        cleaned: list[dict] = []
+        for message in messages or []:
+            if not isinstance(message, dict):
+                cleaned.append(message)
+                continue
+            content = message.get("content")
+            if not isinstance(content, list):
+                cleaned.append(dict(message))
+                continue
+            new_content = []
+            for item in content:
+                if not isinstance(item, dict):
+                    new_content.append(item)
+                    continue
+                if item.get("type") == "video":
+                    video = item.get("video")
+                    if video in (None, "") or video == []:
+                        continue
+                new_content.append(dict(item))
+            next_message = dict(message)
+            next_message["content"] = new_content
+            cleaned.append(next_message)
+        return cleaned
+
+    @classmethod
+    async def process_vision_info(cls, messages, image_patch_size, config):
+        from qwen_vl_utils import process_vision_info
+
+        messages = cls._drop_empty_video_items(messages)
+        return process_vision_info(
+            messages,
+            image_patch_size=image_patch_size,
+            return_video_metadata=True,
+        )
+
+    @staticmethod
     def _plain_list(value: Any) -> List[Any]:
         if hasattr(value, "tolist"):
             value = value.tolist()
@@ -815,6 +852,12 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
 
         row_dict["extra_info"] = extra
         row_dict["index"] = extra.get("index", str(row_dict.get("video_id", "")))
+        row_dict["uid"] = str(
+            row_dict.get("uid")
+            or extra.get("uid")
+            or row_dict.get("video_id")
+            or row_dict["index"]
+        )
         row_dict["tools_kwargs"] = extra.get("tools_kwargs", {}) or {}
         row_dict["interaction_kwargs"] = extra.get("interaction_kwargs", {}) or {}
 
@@ -850,8 +893,43 @@ def _split_assistant_chunks(solution_str: str) -> List[str]:
     return chunks
 
 
+def _extract_answer_text_lenient(text: str, *, allow_bare_answer: bool = False) -> Optional[str]:
+    """Extract answer text for outcome scoring, allowing a missing response close.
+
+    Strict format rewards still use ``parse_agent_output`` without this lenient
+    option. This helper is only for content/action scoring so a truncated
+    ``<response>...`` does not look like a missed answer.
+    """
+    try:
+        from thinkstream.data.agent_protocol import parse_agent_output
+
+        parsed = parse_agent_output(
+            text,
+            allow_bare_answer=allow_bare_answer,
+            allow_unclosed_response=True,
+        )
+        if parsed.get("kind") == "answer":
+            return (parsed.get("answer_text") or "").strip()
+    except Exception:  # noqa: BLE001
+        pass
+
+    m = re.search(
+        r"<response>(.*?)</response>|<answer>(.*?)</answer>",
+        text or "",
+        re.DOTALL,
+    )
+    if m:
+        return (m.group(1) if m.group(1) is not None else m.group(2)).strip()
+    return None
+
+
 def _extract_final_answer(solution_str: str) -> Optional[str]:
-    """Return the last canonical response, with legacy <answer> fallback."""
+    """Return the last response, with unclosed-response and legacy fallback."""
+    chunks = _split_assistant_chunks(solution_str)
+    for chunk in reversed(chunks or [solution_str]):
+        ans = _extract_answer_text_lenient(chunk, allow_bare_answer=True)
+        if ans:
+            return ans.strip()
     matches = [
         (m.group(1) if m.group(1) is not None else m.group(2)).strip()
         for m in re.finditer(
@@ -947,14 +1025,7 @@ def _safe_list(v: Any) -> list:
 
 def _model_action_from_turn(kind: str, text: str) -> str:
     if kind == "answer":
-        m = re.search(
-            r"<response>(.*?)</response>|<answer>(.*?)</answer>",
-            text or "",
-            re.DOTALL,
-        )
-        ans = ""
-        if m:
-            ans = (m.group(1) if m.group(1) is not None else m.group(2)).strip()
+        ans = _extract_answer_text_lenient(text or "") or ""
         return "silent" if not ans else "response"
     if kind == "recall":
         return "recall"
@@ -1308,6 +1379,7 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
                 text,
                 allow_bare_answer=turn_kind in {"recall_response", "post_recall"},
                 allow_malformed_tool_call=turn_kind == "compress",
+                allow_unclosed_response=True,
             )
             if parse_agent_output
             else {}

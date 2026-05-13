@@ -2319,6 +2319,7 @@ def parse_agent_output(
     *,
     allow_bare_answer: bool = False,
     allow_malformed_tool_call: bool = False,
+    allow_unclosed_response: bool = False,
 ) -> Dict:
     """Parse agent output (think + response/silent/tool_call/MEM).
 
@@ -2331,6 +2332,7 @@ def parse_agent_output(
             "tool_call": dict | None,          # parsed JSON when kind=recall|legacy compress
             "memory_text": str | None,         # parsed <MEM> when kind=compress
             "format_error": str | None,        # set when parsing fails
+            "lenient_unclosed_response": bool, # true when answer recovered from <response> without close
         }
     """
     output_text = strip_chat_template_boundary_tokens(output_text or "")
@@ -2342,6 +2344,7 @@ def parse_agent_output(
         "tool_call": None,
         "memory_text": None,
         "format_error": None,
+        "lenient_unclosed_response": False,
     }
 
     think_matches = list(re.finditer(r'<think>(.*?)</think>', output_text, re.DOTALL))
@@ -2475,6 +2478,42 @@ def parse_agent_output(
             return result
 
         return _finish_tool_call_parse(result, tool_obj)
+
+    if allow_unclosed_response and len(think_matches) == 1 and n_terminals == 0:
+        response_open_matches = list(re.finditer(r'<response>', output_text))
+        if len(response_open_matches) == 1 and '</response>' not in output_text:
+            think_match = think_matches[0]
+            response_open = response_open_matches[0]
+            if response_open.start() >= think_match.end():
+                outside_before_response = (
+                    output_text[:think_match.start()]
+                    + output_text[think_match.end():response_open.start()]
+                )
+                body = output_text[response_open.end():].strip()
+                nested_terminal = any(
+                    marker in body
+                    for marker in (
+                        "<silent",
+                        "<tool_call",
+                        "</tool_call",
+                        "<MEM",
+                        "</MEM",
+                        "<answer",
+                        "</answer",
+                        "<think>",
+                        "</think>",
+                    )
+                )
+                if not outside_before_response.strip() and not nested_terminal:
+                    result["kind"] = "answer"
+                    result["answer_text"] = body
+                    result["lenient_unclosed_response"] = True
+                    missing_close = "missing </response> closing tag"
+                    if result["format_error"]:
+                        result["format_error"] = f"{result['format_error']}; {missing_close}"
+                    else:
+                        result["format_error"] = missing_close
+                    return result
 
     if allow_malformed_tool_call and len(think_matches) == 1:
         tool_body = _extract_malformed_tool_call_body(output_text, think_matches[0])

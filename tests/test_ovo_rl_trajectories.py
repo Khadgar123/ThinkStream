@@ -65,6 +65,114 @@ def test_ovo_builder_keeps_task_families_separate_by_default():
     assert {q["ovo_task"] for q in packed_rows[0]["questions"]} == {"EPM", "HLD"}
 
 
+def test_ovo_builder_casia_policy_expands_probe_rows_and_uses_reference_bounds():
+    crr = {
+        "id": 10,
+        "task": "CRR",
+        "video": "MovieNet/v.mp4",
+        "question": "Did the actor open the door?",
+        "ask_time": 20,
+        "clue_time": 40,
+        "test_info": [
+            {"realtime": 30, "type": 0},
+            {"realtime": 45, "type": 1},
+        ],
+    }
+    rows, summary = build_trajectories(
+        [crr],
+        split_policy="casia",
+        post_context_chunks=3,
+    )
+
+    assert summary["split_policy"] == "casia"
+    assert summary["questions"] == 2
+    assert len(rows) == 2
+    assert [r["segment_start_chunk"] for r in rows] == [20, 20]
+    assert [r["segment_end_chunk"] for r in rows] == [33, 48]
+    assert [r["questions"][0]["gold_answer"] for r in rows] == ["No", "Yes"]
+
+
+def test_ovo_builder_short20_40_policy_targets_short_rows_without_packing():
+    rows, summary = build_trajectories(
+        [_mcq(1, 20), _mcq(2, 80)],
+        split_policy="short20_40",
+        short_min_span_chunks=20,
+        short_max_span_chunks=40,
+        post_context_chunks=2,
+    )
+
+    assert summary["split_policy"] == "short20_40"
+    assert summary["trajectories"] == 2
+    assert all(len(r["questions"]) == 1 for r in rows)
+    spans = [r["segment_end_chunk"] - r["segment_start_chunk"] + 1 for r in rows]
+    assert all(20 <= span <= 40 for span in spans)
+    assert sorted(spans) == [25, 40]
+
+
+def test_ovo_builder_stateful_policy_splits_long_rec_into_short_scored_parts():
+    rec = {
+        "id": 99,
+        "task": "REC",
+        "video": "thumos/v.mp4",
+        "activity": "jump",
+        "start_times": [0],
+        "end_times": [85],
+        "test_info": [
+            {"realtime": 5, "count": 1},
+            {"realtime": 45, "count": 2},
+            {"realtime": 85, "count": 3},
+        ],
+    }
+    rows, summary = build_trajectories(
+        [rec],
+        split_policy="short20_40_stateful",
+        short_min_span_chunks=20,
+        short_max_span_chunks=40,
+        post_context_chunks=2,
+    )
+
+    spans = [r["segment_end_chunk"] - r["segment_start_chunk"] + 1 for r in rows]
+    assert summary["source_question_units"] == 1
+    assert summary["stateful_split_parent_rows"] == 1
+    assert summary["stateful_context_rows"] == 0
+    assert len(rows) == 3
+    assert all(20 <= span <= 40 for span in spans)
+    assert [r["questions"][0]["answer_chunks"] for r in rows] == [[5], [45], [85]]
+    assert all(
+        r["segment_start_chunk"] <= r["questions"][0]["ask_chunk"] <= r["segment_end_chunk"]
+        for r in rows
+    )
+
+
+def test_ovo_builder_stateful_policy_keeps_context_parts_for_long_ssr():
+    ssr = {
+        "id": 100,
+        "task": "SSR",
+        "video": "COIN/v.mp4",
+        "start_time": [0],
+        "end_time": [85],
+        "test_info": [
+            {"realtime": 85, "type": 1, "step": "tighten the screw"},
+        ],
+    }
+    rows, summary = build_trajectories(
+        [ssr],
+        split_policy="short20_40_stateful",
+        short_min_span_chunks=20,
+        short_max_span_chunks=40,
+        post_context_chunks=2,
+    )
+
+    assert len(rows) == 3
+    assert summary["stateful_context_rows"] == 2
+    assert [len(r["questions"]) for r in rows] == [0, 0, 1]
+    assert rows[-1]["questions"][0]["answer_chunks"] == [85]
+    assert all(
+        (r["segment_end_chunk"] - r["segment_start_chunk"] + 1) <= 40
+        for r in rows
+    )
+
+
 def test_ovo_builder_splits_overlapping_active_queries():
     crr = {
         "id": 10,

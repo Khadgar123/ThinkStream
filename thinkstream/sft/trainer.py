@@ -235,6 +235,62 @@ def _parse_eval_turn_output(output_text: str) -> Dict:
     return result
 
 
+def _response_detail_flags(output_text: str, parsed=None) -> Dict[str, bool]:
+    """Fine-grained diagnostics for expected non-empty response turns."""
+    try:
+        from thinkstream.data.agent_protocol import strip_chat_template_boundary_tokens
+        text = strip_chat_template_boundary_tokens(output_text or "")
+    except Exception:
+        text = output_text or ""
+
+    open_token = "<response>"
+    close_token = "</response>"
+    open_pos = text.find(open_token)
+    response_open = open_pos >= 0
+    close_pos = (
+        text.find(close_token, open_pos + len(open_token))
+        if response_open else -1
+    )
+    response_close = response_open and close_pos >= 0
+
+    payload = ""
+    if response_open:
+        payload_start = open_pos + len(open_token)
+        payload_end = close_pos if close_pos >= payload_start else len(text)
+        for marker in (
+            "<|im_end|>", "<|endoftext|>", "<tool_call>",
+            "<silent>", "<think>",
+        ):
+            marker_pos = text.find(marker, payload_start, payload_end)
+            if marker_pos >= 0:
+                payload_end = min(payload_end, marker_pos)
+        payload = text[payload_start:payload_end]
+
+    response_nonempty = bool(payload.strip())
+    silent = bool(re.search(r"<silent>\s*", text, re.DOTALL))
+    parsed = parsed or {}
+    parsed_response_nonempty = bool(parsed.get("answer_text"))
+    format_valid = (
+        parsed.get("kind") == "answer"
+        and parsed.get("format_error") is None
+    )
+    response_strict = bool(
+        response_open
+        and response_close
+        and response_nonempty
+        and parsed_response_nonempty
+        and format_valid
+        and not silent
+    )
+    return {
+        "response_open": response_open,
+        "response_close": response_close,
+        "response_nonempty": response_nonempty,
+        "response_strict": response_strict,
+        "silent": silent,
+    }
+
+
 def _expected_kind_from_gold_turn(
     gold_text: str,
     *,
@@ -384,6 +440,11 @@ class WeightedSFTTrainer(Trainer):
 
     def _init_audit_writers(self):
         """Open <audit_dir>/sft_step.jsonl + sft_sample.jsonl. Rank-0 only."""
+        self._eval_argmax_sample_limit = max(
+            0,
+            int(os.environ.get("THINKSTREAM_SFT_EVAL_ARGMAX_SAMPLE_LIMIT", "32")),
+        )
+        self._eval_argmax_samples_written = 0
         audit_dir = resolve_audit_dir(
             getattr(self.args, "audit_log_dir", None),
             self.args.output_dir,
@@ -391,9 +452,13 @@ class WeightedSFTTrainer(Trainer):
         if audit_dir is None:
             self._audit_step_writer = None
             self._audit_sample_writer = None
+            self._audit_eval_argmax_writer = None
             return None
         self._audit_step_writer = AuditWriter(audit_dir / "sft_step.jsonl")
         self._audit_sample_writer = AuditWriter(audit_dir / "sft_sample.jsonl")
+        self._audit_eval_argmax_writer = AuditWriter(
+            audit_dir / "sft_eval_argmax_samples.jsonl"
+        )
         self._audit_every = max(1, int(getattr(self.args, "audit_log_every", 1)))
         return 0
 
@@ -623,7 +688,7 @@ class WeightedSFTTrainer(Trainer):
         gamma = float(getattr(data_args, "action_class_focal_gamma", 2.0) or 0.0)
         auto_alpha = bool(getattr(data_args, "action_class_focal_auto_alpha", True))
 
-        # Resolve action token ids. The tokenizer lives on processing_class
+        # Resolve action-start token ids. The tokenizer lives on processing_class
         # in newer HF Trainer; fall back to tokenizer attribute for older.
         tokenizer = getattr(self, "processing_class", None) or getattr(
             self, "tokenizer", None
@@ -821,6 +886,7 @@ class WeightedSFTTrainer(Trainer):
             "v12_argmax_match":  defaultdict(int),
             "v12_argmax_total":  defaultdict(int),
         }
+        self._eval_argmax_samples_written = 0
 
     def _accumulate_eval_argmax(self, logits, input_ids, eval_meta) -> None:
         """Teacher-forced argmax match at known structural positions."""
@@ -906,6 +972,7 @@ class WeightedSFTTrainer(Trainer):
                         n_turns=n_turns,
                         action=meta.get("action") or meta.get("gold_action", ""),
                     )
+                    gold_text = ""
                     if tokenizer is not None and hasattr(tokenizer, "decode"):
                         try:
                             gold_text = tokenizer.decode(
@@ -942,6 +1009,8 @@ class WeightedSFTTrainer(Trainer):
                         action=meta.get("action") or meta.get("gold_action", ""),
                         expected_stype=expected_stype,
                         expected_kind=expected_kind,
+                        meta=meta,
+                        gold_text=gold_text,
                     )
 
     def _accumulate_v12_behavioral(
@@ -950,6 +1019,8 @@ class WeightedSFTTrainer(Trainer):
         action: str = "",
         expected_stype: str = "",
         expected_kind: str = "",
+        meta=None,
+        gold_text: str = "",
     ) -> None:
         """v12.1 per-sample behavioral counters from teacher-forced argmax.
 
@@ -983,6 +1054,12 @@ class WeightedSFTTrainer(Trainer):
                 "v12_compress_prefix_tool_closed",
                 "v12_compress_prefix_likely_truncated",
                 "v12_compress_prefix_missing_tool_close",
+                "v12_response_detail_total",
+                "v12_response_open",
+                "v12_response_close",
+                "v12_response_nonempty",
+                "v12_response_strict",
+                "v12_response_silent",
             ):
                 self._eval_acc[k] = defaultdict(int)
 
@@ -1102,6 +1179,33 @@ class WeightedSFTTrainer(Trainer):
                 self._eval_acc["v12_silent_empty_match"][stype] += 1
                 self._eval_acc["v12_silent_empty_match"]["_all"] += 1
         elif expected_kind == "answer_nonempty":
+            response_flags = _response_detail_flags(decoded, parsed)
+            self._eval_acc["v12_response_detail_total"][stype] += 1
+            self._eval_acc["v12_response_detail_total"]["_all"] += 1
+            for flag_key, band in [
+                ("response_open", "v12_response_open"),
+                ("response_close", "v12_response_close"),
+                ("response_nonempty", "v12_response_nonempty"),
+                ("response_strict", "v12_response_strict"),
+                ("silent", "v12_response_silent"),
+            ]:
+                if response_flags.get(flag_key):
+                    self._eval_acc[band][stype] += 1
+                    self._eval_acc[band]["_all"] += 1
+            self._write_eval_argmax_response_sample(
+                stype=stype,
+                expected_stype=expected_stype,
+                expected_kind=expected_kind,
+                turn_idx=turn_idx,
+                n_turns=n_turns,
+                action=action,
+                observed_kind=observed_kind,
+                parsed=parsed,
+                response_flags=response_flags,
+                decoded=decoded,
+                gold_text=gold_text,
+                meta=meta or {},
+            )
             kind_match = (
                 observed_kind == "answer"
                 and bool(parsed.get("answer_text"))
@@ -1147,6 +1251,60 @@ class WeightedSFTTrainer(Trainer):
                     self._eval_acc[band][stype] += 1
                     self._eval_acc[band]["_all"] += 1
 
+    def _write_eval_argmax_response_sample(
+        self, *,
+        stype: str,
+        expected_stype: str,
+        expected_kind: str,
+        turn_idx: int,
+        n_turns: int,
+        action: str,
+        observed_kind: str,
+        parsed: Dict,
+        response_flags: Dict,
+        decoded: str,
+        gold_text: str,
+        meta: Dict,
+    ) -> None:
+        writer = getattr(self, "_audit_eval_argmax_writer", None)
+        if writer is None or not getattr(writer, "enabled", True):
+            return
+        limit = int(getattr(self, "_eval_argmax_sample_limit", 0) or 0)
+        if limit <= 0 or self._eval_argmax_samples_written >= limit:
+            return
+
+        max_chars = max(
+            256,
+            int(os.environ.get("THINKSTREAM_SFT_EVAL_ARGMAX_SAMPLE_MAX_CHARS", "2000")),
+        )
+        decoded_text = decoded or ""
+        gold_text = gold_text or ""
+        writer.write({
+            "step": self.state.global_step,
+            "epoch": self.state.epoch,
+            "sample_id": meta.get("sample_id") or meta.get("trajectory_id"),
+            "video_id": meta.get("video_id"),
+            "chunk_idx": meta.get("chunk_idx"),
+            "sample_type": meta.get("sample_type"),
+            "sft_subtype": meta.get("sft_subtype"),
+            "loss_class": meta.get("loss_class"),
+            "metric_bucket": stype,
+            "expected_stype": expected_stype,
+            "expected_kind": expected_kind,
+            "turn_idx": turn_idx,
+            "n_turns": n_turns,
+            "action": action,
+            "observed_kind": observed_kind,
+            "format_error": parsed.get("format_error"),
+            "answer_text_len": len(parsed.get("answer_text") or ""),
+            "response_flags": response_flags,
+            "argmax_decoded": decoded_text[:max_chars],
+            "argmax_decoded_truncated": len(decoded_text) > max_chars,
+            "gold_text": gold_text[:max_chars],
+            "gold_text_truncated": len(gold_text) > max_chars,
+        })
+        self._eval_argmax_samples_written += 1
+
     def _all_reduce_eval_acc(self) -> None:
         """Sum per-rank counters across DDP world. No-op if not distributed."""
         if not (dist.is_available() and dist.is_initialized()):
@@ -1187,6 +1345,12 @@ class WeightedSFTTrainer(Trainer):
             "v12_compress_prefix_tool_closed",
             "v12_compress_prefix_likely_truncated",
             "v12_compress_prefix_missing_tool_close",
+            "v12_response_detail_total",
+            "v12_response_open",
+            "v12_response_close",
+            "v12_response_nonempty",
+            "v12_response_strict",
+            "v12_response_silent",
         ]
         buf = torch.zeros(len(bands) * n, dtype=torch.long, device=device)
         for bi, band in enumerate(bands):
@@ -1216,10 +1380,10 @@ class WeightedSFTTrainer(Trainer):
 
         # v12.1 BEHAVIORAL METRICS (parsed from teacher-forced argmax)
         # — answers user-actionable questions about model behavior:
-        #   "Does silent emit empty <answer>?"  → v12_silent_empty_rate_silent
+        #   "Does silent emit empty <silent>?"  → v12_silent_empty_rate_silent
         #   "Does compress emit compress tool_call?" → v12_compress_emit_rate_compress
         #   "Does recall emit recall tool_call?"   → v12_recall_emit_rate_recall_query
-        #   "Does response emit non-empty <answer>?" → v12_answer_emit_rate_response
+        #   "Does response emit non-empty <response>?" → v12_answer_emit_rate_response
         #   "Is the parsed format valid?"           → v12_format_valid_<stype>
         #   "Did the model pick the right kind?"    → v12_kind_match_<stype>
         kind_tot = self._eval_acc.get("v12_kind_total", {}).get("_all", 0)
@@ -1285,6 +1449,23 @@ class WeightedSFTTrainer(Trainer):
                 out[f"eval/v12_silent_empty_rate"] = (
                     self._eval_acc.get("v12_silent_empty_match", {}).get(stype, 0)
                     / tot
+                )
+
+        # Response-only diagnostics. Denominator is gold non-empty response
+        # turns, so <silent> no longer inflates the answer-family emit signal.
+        for stype, tot in self._eval_acc.get("v12_response_detail_total", {}).items():
+            if tot == 0:
+                continue
+            suffix = "" if stype == "_all" else f"_{stype}"
+            for band, name in [
+                ("v12_response_open", "response_open_rate"),
+                ("v12_response_close", "response_close_rate"),
+                ("v12_response_nonempty", "response_nonempty_rate"),
+                ("v12_response_strict", "response_strict_rate"),
+                ("v12_response_silent", "silent_on_response_rate"),
+            ]:
+                out[f"eval/v12_{name}{suffix}"] = (
+                    self._eval_acc.get(band, {}).get(stype, 0) / tot
                 )
 
         # Tool-call fallback-prefix diagnostics. These are intentionally looser

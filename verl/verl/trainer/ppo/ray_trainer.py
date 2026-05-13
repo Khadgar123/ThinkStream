@@ -673,7 +673,10 @@ class RayPPOTrainer:
             # TODO: Can we keep special tokens except for padding tokens?
             input_texts = [self.tokenizer.decode(ids, skip_special_tokens=True) for ids in input_ids]
             sample_inputs.extend(input_texts)
-            sample_uids.extend(test_batch.non_tensor_batch["uid"])
+            if "uid" in test_batch.non_tensor_batch:
+                sample_uids.extend(test_batch.non_tensor_batch["uid"])
+            else:
+                sample_uids.extend([f"validation_{i}" for i in range(len(input_texts))])
 
             # evaluate using reward_function
             reward_tensor, reward_extra_info = extract_reward(test_batch)
@@ -1381,7 +1384,14 @@ class RayPPOTrainer:
 
         # load checkpoint and update weights before doing anything
         self._load_checkpoint()
-        self.checkpoint_manager.update_weights(self.global_steps)
+        if self.config.trainer.get("val_only", False):
+            # Val-only runs initialize rollout engines directly from
+            # actor_rollout_ref.model.path. Re-broadcasting the same weights
+            # through the training state dict is unnecessary and can OOM on
+            # one-GPU smoke tests where actor and rollout model are colocated.
+            pprint("Skipping initial rollout weight sync for trainer.val_only=true")
+        else:
+            self.checkpoint_manager.update_weights(self.global_steps)
 
         current_epoch = self.global_steps // len(self.train_dataloader)
 
