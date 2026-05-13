@@ -103,6 +103,7 @@ from thinkstream.data.agent_protocol import (
     system_prompt_for_frame_protocol,
     tools_for_turn,
 )
+from thinkstream.data.schema import DEFAULT_VIDEO_MAX_PIXELS, DEFAULT_VIDEO_MIN_PIXELS
 from thinkstream.eval.prompt_contract import (
     build_plain_mcq_prompt,
     build_streaming_query_meta,
@@ -416,10 +417,9 @@ def first_yes_response_between(per_chunk, start_chunk, end_chunk):
 def make_loop(model, processor, tokenizer, model_type, retriever,
               compress_mode, max_new_tokens, frames_root=None, video_root=None,
               frame_protocol="video_meta", memory_mode="full",
-              min_pixels=130_000, max_pixels=220_000):
-    # v12.12 (2026-05-02): RUNTIME profile aligned with pass2/SFT/RL
-    # (was 100352/150528, before that 200704/401408). Empirically measured
-    # 130k/220k → ~235 tok/frame, 32-frame window = 7,520 vis tok in 16K.
+              min_pixels=DEFAULT_VIDEO_MIN_PIXELS,
+              max_pixels=DEFAULT_VIDEO_MAX_PIXELS):
+    # Runtime profile aligned with schema/pass2/SFT/RL defaults.
     return StreamingAgentLoop(
         generate_fn=make_generate_fn(model, processor, model_type=model_type),
         tokenizer=tokenizer,
@@ -706,8 +706,8 @@ class _VllmAgentRunner:
     render_layout: str
     compress_mode: str
     memory_mode: str
-    min_pixels: int = 130_000
-    max_pixels: int = 220_000
+    min_pixels: int = DEFAULT_VIDEO_MIN_PIXELS
+    max_pixels: int = DEFAULT_VIDEO_MAX_PIXELS
     require_frame_cache: bool = False
     current_chunk: int = 0
     done: bool = False
@@ -3142,8 +3142,8 @@ def main():
                    default=os.environ.get("THINKSTREAM_MEMORY_POSITION", "before_visual"),
                    choices=["before_visual"],
                    help="Render text memory before the visual window.")
-    p.add_argument("--min_pixels", type=int, default=130_000)
-    p.add_argument("--max_pixels", type=int, default=220_000)
+    p.add_argument("--min_pixels", type=int, default=DEFAULT_VIDEO_MIN_PIXELS)
+    p.add_argument("--max_pixels", type=int, default=DEFAULT_VIDEO_MAX_PIXELS)
     p.add_argument("--visual_window_chunks", type=int, default=None,
                    help="Eval-only override for the sliding visual window size.")
     p.add_argument("--frames_per_chunk", type=int, default=None,

@@ -41,9 +41,8 @@ pass3a  card generation (10 families × 5 forms)     → task_cards/{vid}.json
 pass3b  placement + ask-time + trajectory plan      → placements/{vid}.json
 pass3c  per-timestep sample generation              → samples_3c/{vid}.json
 pass3e  verification (tag-only, non-destructive)    → verified/{vid}.json
-pass4   trajectory grouping + flat split files      → final/{train_sft|train_rl|val|test}*.jsonl
-pass5   ShareGPT messages format conversion         → final/{train_sft|val|test}_messages.jsonl
-                                                      + final/dataset_info.json
+pass4   trajectory grouping + split files           → final/{train_sft|train_rl|val|test}*.jsonl
+pass5   multi-turn trajectory rendering             → rendered/trajectory/{train_sft|val|test}_trajectory.jsonl
 
 scripts/agent_data_v5/build_verl_parquet.py — 把 pass4 output 转 verl 输入：
   默认               → thinkstream_v12_streaming  （per-question rows）
@@ -104,7 +103,7 @@ summary   {"type":"summary", "time_range":[a,b], "text":"...", "source_chunks":[
 | `SUMMARY_TOKENS_MAX` | 280 | 单段摘要硬上限 |
 
 **Text horizon**（设计预算）：57 个 active thinks ≈ 57 秒 + 5 段压缩 × ~16
-think/段 ≈ 80 秒 → 总 history ~137 秒，远超 visual horizon 16 秒。
+think/段 ≈ 80 秒 → 总 history ~137 秒，远超 visual horizon 8 秒。
 
 ---
 
@@ -113,15 +112,14 @@ think/段 ≈ 80 秒 → 总 history ~137 秒，远超 visual horizon 16 秒。
 ```
 AGENT_CHUNK_SEC          = 1
 FRAMES_PER_CHUNK         = 2          # 2 fps
-VISUAL_WINDOW_CHUNKS     = 16         # 16 chunks × 1s = 16s 滑窗
-VISUAL_WINDOW_FRAMES     = 32
-
-# v12.14 (vs v12.5):
-min_pixels (RUNTIME)     = 130_000    # ~360p area floor (was 100_352)
-max_pixels (RUNTIME)     = 220_000    # ~127-235 tok/frame after smart_resize
-VISUAL_TOKENS_PER_FRAME  = 235        # at min=130k max=220k (was 128)
+# v12.15 (vs v12.14):
+VISUAL_WINDOW_CHUNKS     = 8          # 8 chunks × 1s = 8s 滑窗
+VISUAL_WINDOW_FRAMES     = 16
+min_pixels (RUNTIME)     = 200_704    # 256 × 28 × 28
+max_pixels (RUNTIME)     = 401_408    # 512 × 28 × 28
+VISUAL_TOKENS_PER_FRAME  = 235        # conservative runtime estimate
 VISUAL_TOKENS_PER_CHUNK  = 470        # 235 × 2 (was 128)
-VISUAL_WINDOW_TOKENS     = 7,520      # 16 × 470 (was 2,048)
+VISUAL_WINDOW_TOKENS     = 3,760      # 8 × 470
 
 # Recall (二次 pass) 更高分辨率：
 min_pixels (RECALL)      = 200_000    # ~480p area floor
@@ -164,7 +162,7 @@ recall 路径上实现（`historical_frames_indices` + 原始 anchor）。
 
 ```
 [system + tools]                                          ← chat_template 自动渲染 <tools>
-<visual_window>{json header}</visual_window>  +  video_block (32 frames @ 16s window)
+<visual_window>{json header}</visual_window>  +  video_block (16 frames @ 8s window)
 <recalled_frames>{header}</recalled_frames>   +  recalled_video    (recall 二次 pass 才有)
 <memory>
   <compressed t="a-b">{json}</compressed> × n_seg              (≤ 5)
@@ -430,7 +428,7 @@ recurrent/adv_mean / _std
 |---|---|---|---|
 | chunk | `AGENT_CHUNK_SEC` | **1** | config.py |
 | chunk | `FRAMES_PER_CHUNK` | 2 | config.py |
-| chunk | `VISUAL_WINDOW_CHUNKS` | **16** | config.py |
+| chunk | `VISUAL_WINDOW_CHUNKS` | **8** | config.py |
 | memory | `RECENT_THINKS_TOKEN_BUDGET` | **4000** | config.py |
 | memory | `COMPRESS_TOKEN_THRESHOLD` | 3200 | config.py |
 | memory | `COMPRESS_HYSTERESIS_THRESHOLD` | 2200 | config.py |
@@ -439,11 +437,11 @@ recurrent/adv_mean / _std
 | memory | `SUMMARY_TOKENS_MAX` | **280** | config.py |
 | think | `THINK_TOKENS` | (40, 80) | config.py |
 | think | `THINK_TOKEN_AVG` | 60 | config.py |
-| visual | RUNTIME `min_pixels` / `max_pixels` | **130k / 220k** | config.py (v12.14) |
+| visual | RUNTIME `min_pixels` / `max_pixels` | **200704 / 401408** | config.py (v12.15) |
 | visual | RECALL `min_pixels` / `max_pixels` | 200k / 1.5M | config.py |
 | visual | `VISUAL_TOKENS_PER_FRAME_RUNTIME` | **235** | config.py (v12.14, was 128) |
 | visual | `VISUAL_TOKENS_PER_CHUNK` | **470** | config.py (v12.14, was 128) |
-| visual | `VISUAL_WINDOW_TOKENS` | **7,520** | config.py (v12.14, was 2,048) |
+| visual | `VISUAL_WINDOW_TOKENS` | **3,760** | config.py (v12.15) |
 | visual | `RECALL_VISION_TOKENS` | 940 | config.py |
 | budget | `MAX_SAMPLE_TOKENS` | **16384** | config.py |
 | budget | `SYSTEM_PROMPT_TOKENS` | 400 | config.py |
@@ -470,6 +468,7 @@ v12.14 recurrent dispatch)。
 | 版本 | 主要变更 |
 |---|---|
 | **v12.14** (2026-05-03) | Recurrent rollout (Phase 1-4); pad-once-mask-through FSDP; 1D GRPO advantage by uid; sample_index broadcast; `discarded_nonfinal` → `nonfinal_action_score_*` |
+| **v12.15** (2026-05-12) | Visual/KV window aligned to 8 video chunks; runtime video pixel range restored to 200704/401408 |
 | **v12.13** (2026-05-02) | D1 chunk-internal recall + 历史 MROPE; Multi-Q 3-stage attribution; 5 form-aware matchers (binary/MC/number/short/desc); 统一 matcher 闭 RL/eval gap |
 | **v12.12** (2026-04-30) | RUNTIME mm_processor_kwargs profile; visual token-per-frame 128 → 235; `VISUAL_WINDOW_TOKENS` 2048 → 7520 |
 | **v12.5** (2026-04-29) | chunk_sec 2 → 1; 视觉窗 12 → 16 chunks; text memory 600 → 4000 token; pass5 messages 转换层 |

@@ -93,11 +93,11 @@ OUTPUT_ROOT="${OUTPUT_ROOT:-output}"
 LOG_ROOT="${LOG_ROOT:-logs/${RUN_ID}}"
 mkdir -p "${LOG_ROOT}"
 
-RENDERED_DIR="${THINKSTREAM_DATA_ROOT}/rendered/${FRAME_PROTOCOL}_${THINKSTREAM_RENDER_LAYOUT}"
+SFT_RENDERED_DIR="${THINKSTREAM_DATA_ROOT}/rendered/trajectory"
 
 RUN_SFT="${RUN_SFT:-1}"
 RUN_RL="${RUN_RL:-1}"
-SFT_RUN_NAME="${SFT_RUN_NAME:-agent-sft-${RUN_ID}}"
+SFT_RUN_NAME="${SFT_RUN_NAME:-agent-trajectory-sft-${RUN_ID}}"
 RL_RUN_NAME="${RL_RUN_NAME:-agent-rl-${RUN_ID}}"
 SFT_OUTPUT_DIR="${SFT_OUTPUT_DIR:-${OUTPUT_ROOT}/${SFT_RUN_NAME}}"
 RL_OUTPUT_DIR="${RL_OUTPUT_DIR:-${OUTPUT_ROOT}/${RL_RUN_NAME}}"
@@ -107,26 +107,26 @@ exec > >(tee -a "${LOG_ROOT}/run.log") 2>&1
 echo "== ThinkStream SFT -> RL =="
 echo "run_id=${RUN_ID}"
 echo "data_root=${THINKSTREAM_DATA_ROOT}"
-echo "rendered_dir=${RENDERED_DIR}"
+echo "sft_rendered_dir=${SFT_RENDERED_DIR}"
 echo "base_model=${BASE_MODEL}"
 echo "processor_model=${PROCESSOR_MODEL}"
 echo "sft_output=${SFT_OUTPUT_DIR}"
 echo "rl_output=${RL_OUTPUT_DIR}"
 
-require_file "${RENDERED_DIR}/train_sft_messages.jsonl"
-require_file "${RENDERED_DIR}/val_messages.jsonl"
+require_file "${SFT_RENDERED_DIR}/train_sft_trajectory.jsonl"
+require_file "${SFT_RENDERED_DIR}/val_trajectory.jsonl"
 
 if [[ "${RUN_SFT}" == "1" ]]; then
   echo "== Stage 1/2: SFT =="
   THINKSTREAM_DATA_ROOT="${THINKSTREAM_DATA_ROOT}" \
-  THINKSTREAM_FINAL_DIR="${RENDERED_DIR}" \
+  THINKSTREAM_FINAL_DIR="${SFT_RENDERED_DIR}" \
   THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT}" \
   FRAME_PROTOCOL="${FRAME_PROTOCOL}" \
   THINKSTREAM_PROCESSOR_PATH="${PROCESSOR_MODEL}" \
   LLM="${BASE_MODEL}" \
   RUN_NAME="${SFT_RUN_NAME}" \
   OUTPUT_DIR="${SFT_OUTPUT_DIR}" \
-  bash scripts/sft_per_timestep.sh
+  bash scripts/sft_trajectory.sh
   SFT_CKPT="$(latest_checkpoint "${SFT_OUTPUT_DIR}")"
 else
   SFT_CKPT="${SFT_CKPT:?Set SFT_CKPT when RUN_SFT=0}"
@@ -142,7 +142,12 @@ if [[ "${RUN_RL}" == "1" ]]; then
   FRAME_PROTOCOL="${FRAME_PROTOCOL}" \
   THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}" \
   THINKSTREAM_RECURRENT_MODE="${THINKSTREAM_RECURRENT_MODE:-recurrent}" \
+  THINKSTREAM_ROLLOUT_ENGINE="${THINKSTREAM_ROLLOUT_ENGINE:-streaming}" \
   THINKSTREAM_RL_EPISODE_MODE="${THINKSTREAM_RL_EPISODE_MODE:-full}" \
+  THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE="${THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE:-offline_pass2_boundaries}" \
+  THINKSTREAM_RL_REWARD_PROFILE="${THINKSTREAM_RL_REWARD_PROFILE:-initial_outcome_time_format_decision}" \
+  THINKSTREAM_ENABLE_STEP_ACTION_REWARD="${THINKSTREAM_ENABLE_STEP_ACTION_REWARD:-0}" \
+  THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD="${THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD:-0}" \
   MULTI_Q="${MULTI_Q:-1}" \
   LLM="${SFT_CKPT}" \
   RUN_NAME="${RL_RUN_NAME}" \

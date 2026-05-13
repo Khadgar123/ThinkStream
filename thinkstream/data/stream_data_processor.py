@@ -17,6 +17,7 @@ from torchcodec.decoders import VideoDecoder
 
 from thinkstream.sft.data_list import data_list
 from .rope2d import ROPE_INDEX_FN
+from .schema import DEFAULT_VIDEO_MAX_PIXELS, DEFAULT_VIDEO_MIN_PIXELS
 
 
 def _get_video_pixels(processor):
@@ -430,11 +431,11 @@ def preload_video(
 IGNORE_INDEX = -100
 FRAMES_PER_CHUNK = 2
 DEFAULT_MAX_CHUNKS = 120
-# Streaming-runtime profile, ViT-patch-aligned. Same values as
+# Streaming-runtime profile. Same values as
 # ``schema.DEFAULT_VIDEO_{MIN,MAX}_PIXELS``, ``sft.args.video_*_pixels``, and
 # ``agent_protocol.build_user_content`` defaults. SFT/RL/Eval/deploy unified.
-DEFAULT_INFERENCE_MIN_PIXELS = 256 * 28 * 28   # 200,704
-DEFAULT_INFERENCE_MAX_PIXELS = 512 * 28 * 28   # 401,408
+DEFAULT_INFERENCE_MIN_PIXELS = DEFAULT_VIDEO_MIN_PIXELS
+DEFAULT_INFERENCE_MAX_PIXELS = DEFAULT_VIDEO_MAX_PIXELS
 
 
 def build_video_meta(
@@ -996,6 +997,7 @@ def compute_position_ids(
         image_grid_thw=image_grid_thw,
         video_grid_thw=video_grid_thw,
         second_per_grid_ts=second_per_grid_ts,
+        attention_mask=processor_output.get("attention_mask"),
     )
     return position_ids
 
@@ -1140,7 +1142,7 @@ class LazySupervisedDataset(Dataset):
             data_args, "video_max_total_pixels", 1664 * 28 * 28
         )
         self.video_min_total_pixels = getattr(
-            data_args, "video_min_total_pixels", 256 * 28 * 28
+            data_args, "video_min_total_pixels", DEFAULT_INFERENCE_MIN_PIXELS
         )
         self.model_type = data_args.model_type
         if data_args.model_type not in ROPE_INDEX_FN:
@@ -1494,13 +1496,9 @@ class DataCollatorForSupervisedDataset:
         batch["video_grid_thw"] = video_grid_thw
         batch["position_ids"] = position_ids
 
-        # v12.6: <response>/<silent> are NOT v12 special tokens — the v12
-        # protocol uses <answer>...</answer> (response) and <answer></answer>
-        # (silent) where <answer> is text, NOT a single-id vocab entry. Under
-        # v12 the legacy CE-rebalance + v9 token-type span weighting both
-        # collapse to no-ops. Kept the ce_weight key as a uniform tensor so
-        # downstream loss code that consumes it doesn't have to branch; new
-        # callers should ignore this column.
+        # v12 agent tags are registered as special tokens in the SFT entry
+        # point. Keep ce_weight uniform; class balancing, when enabled, is
+        # applied through token_loss_weight / trainer loss code.
         batch["ce_weight"] = torch.ones(self.vocab_size)
 
         # v9 token-type loss weighting still honored when token_loss_phase

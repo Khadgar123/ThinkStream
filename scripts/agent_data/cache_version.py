@@ -294,7 +294,7 @@ STAGE_VERSIONS: Dict[str, str] = {
     "3b": "v12.73",
     "3c": "v12.73",
     "4":  "v12.73",  # canonical key — verification/final split render
-    "5":  "v12.73",  # pass5_messages render version
+    "5":  "v12.74",  # pass5 multi-turn trajectory render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any
@@ -310,7 +310,7 @@ STAGE_DIRS: Dict[str, Path] = {
     "3b": PLACEMENTS_DIR,
     "3c": SAMPLES_3C_DIR,
     "4":  VERIFIED_DIR,
-    "5":  FINAL_DIR,  # v12.11: pass5_messages writes *_messages.jsonl here
+    "5":  FINAL_DIR,  # pass5 marker; rendered files live under DATA_ROOT/rendered/
 }
 
 # Downstream invalidation: changing stage X invalidates X and everything after.
@@ -381,5 +381,10 @@ def invalidate_stage_and_downstream(stage: str) -> None:
         _clear_generated_files(d)
 
     if "5" in PIPELINE_ORDER[start:]:
-        _clear_generated_files(DATA_ROOT / "rendered" / "ts_image")
-        _clear_generated_files(DATA_ROOT / "rendered" / "video_meta")
+        for name in (
+            "ts_image",
+            "video_meta",
+            "video_meta_standard_query_last",
+            "trajectory",
+        ):
+            _clear_generated_files(DATA_ROOT / "rendered" / name)

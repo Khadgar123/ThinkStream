@@ -1,7 +1,7 @@
-"""Pass 3-A — Card generation (v2 model-agnostic schema).
+"""Pass 3-A — Card generation (placement model-agnostic schema).
 
 Cards are now defined by `gold_emits` + `grounding_frames` + `question_type`
-(see v2/design.py). The card distribution is OVOBench-aligned (76% MC + binary
+(see placement/design.py). The card distribution is OVOBench-aligned (76% MC + binary
 + number + short_exact + descriptive). The heuristic generator in v2/cards.py
 derives cards directly from evidence; swap in 397B prompts later by
 replacing `_generate_via_llm` below.
@@ -25,9 +25,9 @@ import asyncio
 
 from .config import TASK_CARDS_DIR, PASS_CONFIG
 from .stable_hash import stable_mod
-from .v2.cards import generate_cards as _heuristic_generate
-from .v2.design import Card, F7_ADOPT_RATE, GoldEmit
-from .v2.llm_prompts import (
+from .placement.cards import generate_cards as _heuristic_generate
+from .placement.design import Card, F7_ADOPT_RATE, GoldEmit
+from .placement.llm_prompts import (
     FAMILY_RULES,
     QUESTION_TYPE_BY_FAMILY,
     card_generation_prompt,

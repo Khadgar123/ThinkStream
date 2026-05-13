@@ -3,12 +3,13 @@
 Kept separate from grpo.py so unit tests can run on CPU-only environments
 (matches gdpo_advantage.py separation pattern).
 
-5 components matching V12_REWARD_DICT_KEYS in gdpo_advantage.py:
+Production components matching V12_REWARD_DICT_KEYS in gdpo_advantage.py:
 - outcome           binary correctness
-- timing            bucket reward (early=-1, on=+1, late=decay, missed=-0.5)
+- answer_decision   answer/no-answer timing decision at answer slots
 - format            binary tag/JSON well-formedness
 - spam              additive penalty for excess tool calls
-- compress_quality  range_iou + text_match for compress turns
+
+``timing`` and ``silent_quality`` remain as telemetry/back-compat helpers.
 
 Plus _aggregate_advantages: multi-level GRPO advantage mixing
 (ReMemR1 ICLR'26 pattern, see V12_ADVANTAGE_MIX_ALPHA in gdpo_advantage.py).
@@ -112,6 +113,46 @@ def compute_timing_reward(
     if delay <= late_window_chunks and late_window_chunks > 0:
         return 1.0 - 0.5 * (delay / late_window_chunks)
     return 0.0
+
+
+def compute_answer_decision_reward(
+    answer_chunk: Optional[int],
+    visible_start_chunk: Optional[int],
+    visible_end_chunk: Optional[int],
+    *,
+    late_window_chunks: int = 1,
+    has_answer: Optional[bool] = None,
+) -> float:
+    """Unified answer-decision reward for streaming trajectories.
+
+    This is intentionally evaluated only at answer slots or explicit
+    false-positive answer events. Ordinary silent chunks outside an answer
+    opportunity receive 0, not positive reward, so long videos with many
+    silent chunks cannot dominate the objective.
+
+    Buckets:
+        +1.0        answer inside expected answer window
+        +0.5..+1.0  late answer inside the late window
+        -1.0        early answer before evidence/time
+        -1.0        no answer when an answer window exists
+         0.0        no answer and no answer window
+         0.0        very late answer outside late window
+
+    Positive values are still gated by outcome in the RL scorer, so a wrong
+    but timely answer is not rewarded.
+    """
+    if has_answer is None:
+        has_answer = answer_chunk is not None
+    if visible_start_chunk is None:
+        return -1.0 if has_answer else 0.0
+    if not has_answer or answer_chunk is None:
+        return -1.0
+    return compute_timing_reward(
+        answer_chunk,
+        visible_start_chunk,
+        visible_end_chunk,
+        late_window_chunks=late_window_chunks,
+    )
 
 
 def compute_format_reward(assistant_outputs: List[str]) -> float:
@@ -540,8 +581,8 @@ def aggregate_advantages(
 
     outcome_advantage: GRPO-norm of `outcome` reward, grouped by video_uid
                        (broadcast: every chunk of one video gets same value)
-    state_advantage:   GRPO-norm of weighted sum of (timing + format
-                       + compress_q − spam), grouped per (uid, chunk_idx)
+    state_advantage:   GRPO-norm of weighted sum of (answer_decision + format
+                       − spam), grouped per (uid, chunk_idx)
 
     α=0.7 default (ReMemR1's 0.8 is HotpotQA — ThinkStream skews lower
     because per-step signal is denser).
@@ -560,8 +601,7 @@ def aggregate_advantages(
     # compress_quality / recall_quality functions remain in this module for
     # legacy callers but are not aggregated into state advantage anymore.
     state_components = [
-        "timing", "format", "spam",
-        "silent_quality",   # streaming-specific decision quality
+        "answer_decision", "format", "spam",
     ]
     state_sum = torch.zeros_like(outcome_adv)
     for k in state_components:

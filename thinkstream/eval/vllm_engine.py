@@ -122,6 +122,7 @@ def make_sampling_params(
         repetition_penalty=repetition_penalty,
         presence_penalty=presence_penalty,
         stop_token_ids=stop_token_ids or [],
+        skip_special_tokens=False,
     )
 
 

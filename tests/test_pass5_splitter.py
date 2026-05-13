@@ -106,7 +106,7 @@ def test_legacy_v12_inter_chunk_is_compress_boundary():
     }
     assert is_compress_sample(sample)
     turn = translate_sample_to_turn(sample, {}, _dummy_frame_resolver)
-    assert turn.user.stage_marker == STAGE_COMPRESS_MARKER
+    assert turn.user.stage_marker is None
     assert turn.user.frame_paths == []
     print("[OK] legacy_v12_inter_chunk_is_compress_boundary")
 
@@ -232,7 +232,11 @@ def test_extract_compress_summary_from_gold_caption():
         "output": "ignored",
     }
     text, chunks = extract_compress_summary(sample)
-    assert text == "Light red throughout 0-32."
+    assert text == (
+        '<MEM>\n'
+        '  <m t="0-32">Light red throughout 0-32.</m>\n'
+        '</MEM>'
+    )
     assert chunks == [0, 1, 2, 30, 31, 32]
     print("[OK] extract_compress_summary_from_gold_caption")
 
@@ -246,7 +250,7 @@ def test_extract_compress_summary_from_tool_call_fallback():
         ),
     }
     text, chunks = extract_compress_summary(sample)
-    assert text == "fallback summary"
+    assert text == '<MEM>\n  <m t="0-15">fallback summary</m>\n</MEM>'
     assert chunks == list(range(0, 16))
     print("[OK] extract_compress_summary_from_tool_call_fallback")
 
@@ -296,7 +300,7 @@ def test_translate_compress_sample_drops_video_and_injects_stage():
         ),
     }
     turn = translate_sample_to_turn(sample, {}, _dummy_frame_resolver)
-    assert turn.user.stage_marker == STAGE_COMPRESS_MARKER
+    assert turn.user.stage_marker is None
     assert turn.user.frame_paths == []  # no video on compress
     # The assistant for a compress sample is the Step-1 select tool_call;
     # the Step-2 <m>-summary turn is built later by
@@ -313,22 +317,41 @@ def test_translate_recall_sample_builds_two_turn_pattern():
         "v12_assistant_turn_1": (
             "<think>need history</think>"
             '<tool_call>{"name": "recall", "arguments": '
-            '{"time_range": [0, 5], "query": "first red"}}</tool_call>'
+            '{"time_range": "0-5", "query": "first red"}}</tool_call>'
         ),
         "v12_assistant_turn_2": "<think>got it</think><answer>2s</answer>",
         "recall_result": {
+            "source": "historical_frames",
+            "time": "0-5",
+            "returned_chunks": [0, 1],
+            "status": "ok",
             "time_range": [0, 5],
             "n_frames": 2,
             "text": "Light first red at t=2s.",
         },
+        "recalled_frames": {
+            "time_range": [0, 2],
+            "source": "historical_frames",
+            "n_frames": 2,
+            "frame_paths": ["recall_0.jpg", "recall_1.jpg"],
+        },
     }
     turn = translate_sample_to_turn(sample, {}, _dummy_frame_resolver)
     assert turn.assistant.action_type == ACTION_RECALL
+    assert turn.assistant.tool_arguments["time_range"] == [0, 5]
     assert turn.tool_response is not None
     assert turn.tool_response["role"] == "tool"
-    # tool_response content carries the recall preview text
     body = turn.tool_response["content"]
-    assert "Light first red" in body
+    assert isinstance(body, list)
+    assert body[0]["type"] == "text"
+    assert "<recalled_frames>" in body[0]["text"]
+    assert body[1]["type"] == "video"
+    assert body[1]["video"] == ["recall_0.jpg", "recall_1.jpg"]
+    assert body[1]["min_pixels"] == 200704
+    assert body[1]["max_pixels"] == 401408
+    assert body[2]["type"] == "text"
+    assert "<recall_result>" in body[2]["text"]
+    assert "Light first red" not in json.dumps(body, ensure_ascii=False)
     assert turn.followup_assistant is not None
     assert turn.followup_assistant.action_type == ACTION_RESPONSE
     assert turn.followup_assistant.response_text == "2s"
@@ -402,23 +425,29 @@ def _make_pass4_record_with_compress():
     }
 
 
-def test_render_trajectory_record_produces_two_segments():
+def test_render_trajectory_record_produces_compact_boundary_row():
     record = _make_pass4_record_with_compress()
     rows = render_trajectory_record_to_rows(record, _dummy_frame_resolver)
 
-    assert len(rows) == 2, f"expected 2 segments, got {len(rows)}"
+    assert len(rows) == 3, f"expected 3 rows, got {len(rows)}"
 
-    # Segment 0: from_start, chunks 0..32 (ending in compress)
+    # Row 0: from_start, visual chunks before the compact update.
     seg0 = rows[0]
     assert seg0["trajectory_type"] == TRAJ_TYPE_FROM_START
     assert seg0["chunk_start"] == 0
-    assert seg0["chunk_end"] == 32
-    assert seg0["compress_event"] is not None
-    assert seg0["compress_event"]["chunk_idx"] == 32
-    assert seg0["compress_event"]["summary_text"] == "Light red 0-5, person walked."
+    assert seg0["chunk_end"] == 5
+    assert seg0["compress_event"] is None
 
-    # Segment 1: from_compress, chunks 33..34, prefix memory present
-    seg1 = rows[1]
+    # Row 1: standalone text-only compact-memory update.
+    compact = rows[1]
+    assert compact["trajectory_type"] == "compact_memory_update"
+    assert compact["chunk_start"] == 32
+    assert compact["chunk_end"] == 32
+    assert compact["compress_event"]["chunk_idx"] == 32
+    assert "Light red 0-5, person walked." in compact["compress_event"]["summary_text"]
+
+    # Row 2: from_compress, chunks 33..34, prefix memory present.
+    seg1 = rows[2]
     assert seg1["trajectory_type"] == TRAJ_TYPE_FROM_COMPRESS
     assert seg1["chunk_start"] == 33
     assert seg1["chunk_end"] == 34
@@ -429,10 +458,48 @@ def test_render_trajectory_record_produces_two_segments():
     first_user_text_blocks = [
         c for c in first_user_msg["content"] if c.get("type") == "text"
     ]
-    assert any(MEMORY_OPEN in c["text"] for c in first_user_text_blocks), (
+    assert any("<MEM>" in c["text"] for c in first_user_text_blocks), (
         "from_compress segment's first user message should contain a memory block"
     )
-    print("[OK] render_trajectory_record_produces_two_segments")
+    print("[OK] render_trajectory_record_produces_compact_boundary_row")
+
+
+def test_same_chunk_compress_precedes_trigger_chunk_response():
+    record = _make_pass4_record_with_compress()
+    record["samples"] = [
+        {"chunk_idx": 31, "sample_type": "silent",
+         "output": "<think>before</think><answer></answer>"},
+        {"chunk_idx": 32, "sample_type": "response",
+         "output": "<think>answer at boundary</think><answer>done</answer>"},
+        {
+            "chunk_idx": 32,
+            "sample_type": "compress",
+            "inter_chunk": True,
+            "gold_caption": (
+                '<MEM>\n  <m t="0-31">summary before trigger chunk</m>\n</MEM>'
+            ),
+            "gold_compress_chunks": list(range(32)),
+            "output": (
+                '<MEM>\n  <m t="0-31">summary before trigger chunk</m>\n</MEM>'
+            ),
+        },
+        {"chunk_idx": 33, "sample_type": "silent",
+         "output": "<think>after</think><answer></answer>"},
+    ]
+
+    rows = render_trajectory_record_to_rows(record, _dummy_frame_resolver)
+    assert rows[0]["trajectory_type"] == TRAJ_TYPE_FROM_START
+    assert rows[0]["chunk_end"] == 31
+    assert rows[1]["trajectory_type"] == "compact_memory_update"
+    assert rows[1]["chunk_start"] == 32
+    assert rows[2]["trajectory_type"] == TRAJ_TYPE_FROM_COMPRESS
+    assert rows[2]["chunk_start"] == 32
+    assert any(
+        m.get("role") == "assistant" and "answer at boundary" in str(m.get("content"))
+        for m in rows[2]["messages"]
+    )
+    assert "after" in rows[2]["messages"][-1]["content"]
+    print("[OK] same_chunk_compress_precedes_trigger_chunk_response")
 
 
 def test_render_questions_partitioned_by_segment():
@@ -440,7 +507,7 @@ def test_render_questions_partitioned_by_segment():
     rows = render_trajectory_record_to_rows(record, _dummy_frame_resolver)
 
     seg0_qs = rows[0]["questions_in_segment"]
-    seg1_qs = rows[1]["questions_in_segment"]
+    seg1_qs = rows[2]["questions_in_segment"]
 
     seg0_ask_chunks = {q["ask_chunk"] for q in seg0_qs}
     seg1_ask_chunks = {q["ask_chunk"] for q in seg1_qs}
@@ -529,17 +596,18 @@ def test_inherited_queries_carry_across_compress_boundary():
         ),
     }
     rows = render_trajectory_record_to_rows(record, _dummy_frame_resolver)
-    assert len(rows) == 2
-    seg1 = rows[1]
+    assert len(rows) == 3
+    seg1 = rows[2]
     assert seg1["trajectory_type"] == TRAJ_TYPE_FROM_COMPRESS
-    first_user = next(m for m in seg1["messages"] if m["role"] == "user")
+    first_user = seg1["messages"][3]
     texts = [c["text"] for c in first_user["content"] if c.get("type") == "text"]
     joined = "\n".join(texts)
-    assert "<query>" in joined, "open query should appear in from_compress header"
+    assert "<active_query>" in joined, "open query should appear in first visual turn"
     assert "Did the person re-enter?" in joined
-    assert '<q t="30">' in joined, "should preserve original ask_chunk"
+    assert "[30s] Q:" in joined, "should preserve original ask_chunk"
     # No prior response: chunk 35 is the only answer slot and it's in seg 1.
-    assert "<response>" not in joined
+    assert "<response_history>" in joined
+    assert "A:" not in joined
     print("[OK] inherited_queries_carry_across_compress_boundary")
 
 
@@ -591,14 +659,14 @@ def test_inherited_responses_carry_for_multi_event_query():
         ),
     }
     rows = render_trajectory_record_to_rows(record, _dummy_frame_resolver)
-    seg1 = rows[1]
-    first_user = next(m for m in seg1["messages"] if m["role"] == "user")
+    seg1 = rows[2]
+    first_user = seg1["messages"][3]
     joined = "\n".join(
         c["text"] for c in first_user["content"] if c.get("type") == "text"
     )
-    assert "<query>" in joined and 'How many people' in joined
-    assert "<response>" in joined, "prior chunk-10 response must be inherited"
-    assert '<r t="10">1</r>' in joined
+    assert "<active_query>" in joined and 'How many people' in joined
+    assert "<response_history>" in joined, "prior chunk-10 response must be inherited"
+    assert "[10s] A: 1" in joined
     print("[OK] inherited_responses_carry_for_multi_event_query")
 
 
@@ -640,8 +708,8 @@ def test_resolved_query_not_inherited():
         ),
     }
     rows = render_trajectory_record_to_rows(record, _dummy_frame_resolver)
-    seg1 = rows[1]
-    first_user = next(m for m in seg1["messages"] if m["role"] == "user")
+    seg1 = rows[2]
+    first_user = seg1["messages"][3]
     joined = "\n".join(
         c["text"] for c in first_user["content"] if c.get("type") == "text"
     )
@@ -678,7 +746,8 @@ if __name__ == "__main__":
     test_translate_response_sample_with_query()
     test_translate_compress_sample_drops_video_and_injects_stage()
     test_translate_recall_sample_builds_two_turn_pattern()
-    test_render_trajectory_record_produces_two_segments()
+    test_render_trajectory_record_produces_compact_boundary_row()
+    test_same_chunk_compress_precedes_trigger_chunk_response()
     test_render_questions_partitioned_by_segment()
     test_render_handles_video_with_no_compress()
     test_render_messages_are_json_serializable()

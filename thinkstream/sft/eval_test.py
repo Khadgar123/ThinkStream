@@ -2,8 +2,8 @@
 
 Usage:
     torchrun --nproc_per_node=8 thinkstream/sft/eval_test.py \
-        --checkpoint_dir output/agent-sft/checkpoint-100 \
-        --dataset stream_agent_test \
+        --checkpoint_dir output/agent-trajectory-sft/checkpoint-100 \
+        --dataset stream_agent_trajectory_test \
         --batch_size 8
 """
 
@@ -27,9 +27,9 @@ sys.path.insert(0, str(project_root))
 
 from thinkstream.sft.trainer import WeightedSFTTrainer
 from thinkstream.sft.data_processor import (
-    make_per_timestep_data_module,
-    PerTimestepDataset,
-    PerTimestepDataCollator,
+    make_trajectory_data_module,
+    TrajectorySFTDataset,
+    TrajectorySFTDataCollator,
 )
 from thinkstream.sft.args import ModelArguments, DataArguments, TrainingArguments
 from dataclasses import dataclass, field
@@ -37,8 +37,8 @@ from dataclasses import dataclass, field
 
 @dataclass
 class EvalArguments:
-    checkpoint_dir: str = field(default="output/agent-sft/checkpoint-100")
-    dataset: str = field(default="stream_agent_test")
+    checkpoint_dir: str = field(default="output/agent-trajectory-sft/checkpoint-100")
+    dataset: str = field(default="stream_agent_trajectory_test")
     batch_size: int = field(default=8)
     max_samples: int = field(default=None)
     metrics_json: str = field(default="")
@@ -92,7 +92,7 @@ def main():
     )
 
     # Build test dataset
-    test_dataset = PerTimestepDataset(
+    test_dataset = TrajectorySFTDataset(
         processor,
         data_args,
         dataset_use_override=eval_args.dataset,
@@ -100,7 +100,7 @@ def main():
     )
     rank0_print(f"Test samples: {len(test_dataset)}")
 
-    collator = PerTimestepDataCollator(tokenizer)
+    collator = TrajectorySFTDataCollator(tokenizer)
 
     # Override training args for eval-only
     training_args.per_device_eval_batch_size = eval_args.batch_size

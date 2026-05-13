@@ -77,8 +77,9 @@ def test_frame_resolver_pattern_only():
     cfg = FrameResolverConfig(frames_root=None)
     fn = make_frame_resolver("vid_x", cfg)
     paths = fn(5)
-    # 2 frames per chunk, chunk 5 → frames 10 and 11
-    assert paths == ["frame_000010.jpg", "frame_000011.jpg"], paths
+    # 2 frames per zero-based chunk, chunk 5 covers source frame indices
+    # 10 and 11. Project JPEG names are ffmpeg-style 1-based.
+    assert paths == ["frame_000011.jpg", "frame_000012.jpg"], paths
     print("[OK] frame_resolver_pattern_only")
 
 
@@ -89,7 +90,7 @@ def test_frame_resolver_with_root_relative():
         fn = make_frame_resolver("vid_y", cfg)
         paths = fn(3)
         assert paths[0].startswith("vid_y/"), paths
-        assert paths[0].endswith("frame_000006.jpg"), paths
+        assert paths[0].endswith("frame_000007.jpg"), paths
     print("[OK] frame_resolver_with_root_relative")
 
 
@@ -102,7 +103,7 @@ def test_sample_aware_resolver_prefers_explicit():
     # Chunk 5 has explicit paths → use them
     assert fn(5) == ["custom/5a.jpg", "custom/5b.jpg"]
     # Chunk 6 has no explicit paths → fall back to pattern
-    assert fn(6) == ["frame_000012.jpg", "frame_000013.jpg"]
+    assert fn(6) == ["frame_000013.jpg", "frame_000014.jpg"]
     print("[OK] sample_aware_resolver_prefers_explicit")
 
 
@@ -123,11 +124,13 @@ def test_convert_file_smoke():
         stats = convert_file(src, dst)
 
         assert stats.n_records_in == 3
-        # vid_a + vid_b: 2 segments each (with compress). vid_c: 1 segment.
-        assert stats.n_rows_out == 2 + 2 + 1, f"rows_out={stats.n_rows_out}"
+        # vid_a + vid_b: stream + compact-memory update + from-compress
+        # segment each. vid_c: one stream segment.
+        assert stats.n_rows_out == 3 + 3 + 1, f"rows_out={stats.n_rows_out}"
         assert stats.n_compress_events == 2
         assert stats.n_from_start == 3   # one per video
         assert stats.n_from_compress == 2  # one after each compress
+        assert stats.n_compact_memory_update == 2
         assert stats.n_questions == 3     # 1 per record
 
         # Validate produced JSONL
@@ -135,19 +138,24 @@ def test_convert_file_smoke():
         with dst.open("r", encoding="utf-8") as f:
             for line in f:
                 rows.append(json.loads(line))
-        assert len(rows) == 5
-        # All rows have non-empty messages + tools
+        assert len(rows) == 7
+        # Streaming rows have recall tools; compact-memory rows are text-only.
         for r in rows:
             assert len(r["messages"]) >= 3   # system + at least 1 user + 1 assistant
-            assert len(r["tools"]) == 2      # compress + recall
+            if r["trajectory_type"] == "compact_memory_update":
+                assert r["tools"] == []
+            else:
+                assert len(r["tools"]) == 1
 
-        # First row of vid_a should be from_start with chunk_end == 2 (compress)
+        # vid_a should be stream -> compact-memory update -> from-compress.
         vid_a_rows = [r for r in rows if r["video_id"] == "vid_a"]
         assert vid_a_rows[0]["trajectory_type"] == "from_start"
-        assert vid_a_rows[0]["chunk_end"] == 2
-        assert vid_a_rows[0]["compress_event"]["summary_text"] == "compressed summary 0-2"
-        assert vid_a_rows[1]["trajectory_type"] == "from_compress"
-        assert vid_a_rows[1]["chunk_start"] == 3
+        assert vid_a_rows[0]["chunk_end"] == 1
+        assert vid_a_rows[0]["compress_event"] is None
+        assert vid_a_rows[1]["trajectory_type"] == "compact_memory_update"
+        assert vid_a_rows[1]["compress_event"]["summary_text"].startswith("<MEM>")
+        assert vid_a_rows[2]["trajectory_type"] == "from_compress"
+        assert vid_a_rows[2]["chunk_start"] == 3
 
     print(f"[OK] convert_file_smoke ({stats.n_rows_out} rows, "
           f"{stats.n_compress_events} compress events)")

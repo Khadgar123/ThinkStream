@@ -325,9 +325,8 @@ def focal_loss_per_token(
         auto_alpha: when True, scales action-token loss by per-batch inverse
             frequency (akin to auto-alpha class rebalancing). Non-action tokens get
             alpha=1.0.
-        extra_token_weight: optional [batch, seq_len] multiplier (e.g. the
-            compress structure/body/close weights). Applied on top of focal +
-            alpha so existing logic composes.
+        extra_token_weight: optional [batch, seq_len] multiplier. Applied on
+            top of focal + alpha so existing logic composes.
 
     Output:
         flat_loss [N] where N = batch * seq_len. Positions with label =

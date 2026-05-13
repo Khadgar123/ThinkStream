@@ -3,23 +3,25 @@
 The two profiles differ ONLY in eval-side caps that don't affect model
 distribution: model_max_length, queries-history cap, recall metadata cap,
 max_new_tokens. They do NOT change SFT-baked constants
-(VISUAL_WINDOW_CHUNKS=16, RECENT_THINKS_TOKEN_BUDGET=4000,
+(VISUAL_WINDOW_CHUNKS=8, RECENT_THINKS_TOKEN_BUDGET=4000,
 COMPRESS_TOKEN_THRESHOLD=3200, MAX_COMPRESSED_SEGMENTS=5,
 merged-segment cap=280) — those would require pass2 re-rollout + SFT
 retrain.
 
-v12.5 (2026-04-29) — chunk semantics changed 2s → 1s/chunk; visual window
-expanded 12 → 16 chunks (32 frames @ 2fps); recent_thinks budget 600 → 4000
-to keep text-memory horizon (~57s) above visual horizon (16s). All numbers
-below updated for the new defaults.
+v12.5 (2026-04-29) — chunk semantics changed 2s → 1s/chunk. v12.15
+uses an 8-chunk visual window (16 frames @ 2fps) so text-memory horizon
+stays above visual horizon.
+
+v12.15 (2026-05-12) — visual window is reduced to 8 chunks (16 frames @
+2fps) so prompt-side visual context matches the video-KV eviction window.
 
 Per-profile token-budget breakdown (worst-case at the most-loaded chunk):
 
     Component         | 16k profile  | 32k profile  | Notes
     ------------------|--------------|--------------|----------------------------
     system+tools      |   ~400       |   ~400       | V12 protocol + tool schema
-    visual frames     | ~2048 (32fr) | ~2048 (32fr) | 16 chunks × 128 tok/chunk
-                      |              |              | (= 32 frames @ ~64 tok ea).
+    visual frames     | ~3760 (16fr) | ~3760 (16fr) | 8 chunks × 470 tok/chunk
+                      |              |              | (= 16 frames @ ~235 tok ea).
                       |              |              | SFT-baked.
     compressed segs   | 5×280=1400   | 5×280=1400   | MAX_SEGMENTS=5, SUMMARY cap
                       |              |              | 280; both SFT-baked.
@@ -33,9 +35,9 @@ Per-profile token-budget breakdown (worst-case at the most-loaded chunk):
     user_input        |   ~50        |   ~50        |
     assistant output  |  256         |  512         | EVAL-SIDE max_new_tokens.
     ------------------|--------------|--------------|----------------------------
-    SUBTOTAL          | ~8,454       | ~9,860       |
+    SUBTOTAL          | ~10,166      | ~11,572      |
     model_max_length  | 16,384       | 32,768       |
-    HEADROOM          | ~7,930       | ~22,908      |
+    HEADROOM          | ~6,218       | ~21,196      |
 
 Compression behaviour (BOTH profiles, since the trigger is SFT-baked):
 

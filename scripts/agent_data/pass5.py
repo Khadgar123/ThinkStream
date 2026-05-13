@@ -39,6 +39,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from scripts.agent_data.pass5_splitter import (  # noqa: E402
     render_trajectory_record_to_rows,
 )
+from thinkstream.data.agent_protocol import (  # noqa: E402
+    chunk_frame_indices,
+    project_frame_filename,
+)
 
 
 logger = logging.getLogger("pass5")
@@ -48,8 +52,8 @@ logger = logging.getLogger("pass5")
 # Frame resolver
 # ---------------------------------------------------------------------------
 
-# Matches the legacy pass5 frame layout (see agent_protocol.py): 2 frames per
-# chunk, sequentially numbered starting at chunk_idx * FRAMES_PER_CHUNK.
+# Matches the extracted frame layout used by pass1a/RL/eval: 2 frames per
+# chunk, sequentially numbered starting at chunk_idx * FRAMES_PER_CHUNK + 1.
 FRAMES_PER_CHUNK = 2
 FRAME_NAME_PATTERN = "frame_{frame_idx:06d}.jpg"
 
@@ -66,6 +70,13 @@ class FrameResolverConfig:
     absolute: bool = False
 
 
+def _frame_name_for_source_index(frame_index: int, pattern: str) -> str:
+    """Map a zero-based source frame index to the configured JPEG name."""
+    if pattern == FRAME_NAME_PATTERN:
+        return project_frame_filename(frame_index)
+    return pattern.format(frame_idx=int(frame_index) + 1)
+
+
 def make_frame_resolver(
     video_id: str,
     config: FrameResolverConfig,
@@ -74,20 +85,18 @@ def make_frame_resolver(
     if config.frames_root is None:
         # Pure pattern: caller is responsible for resolving the prefix later.
         def _resolve_pattern_only(chunk_idx: int) -> List[str]:
-            base = chunk_idx * config.frames_per_chunk
             return [
-                config.pattern.format(frame_idx=base + i)
-                for i in range(config.frames_per_chunk)
+                _frame_name_for_source_index(idx, config.pattern)
+                for idx in chunk_frame_indices(chunk_idx, config.frames_per_chunk)
             ]
         return _resolve_pattern_only
 
     root = config.frames_root / video_id
 
     def _resolve(chunk_idx: int) -> List[str]:
-        base = chunk_idx * config.frames_per_chunk
         paths = []
-        for i in range(config.frames_per_chunk):
-            name = config.pattern.format(frame_idx=base + i)
+        for idx in chunk_frame_indices(chunk_idx, config.frames_per_chunk):
+            name = _frame_name_for_source_index(idx, config.pattern)
             full = root / name
             if config.absolute:
                 paths.append(str(full))
@@ -148,6 +157,7 @@ class ConversionStats:
     n_rows_out: int = 0
     n_from_start: int = 0
     n_from_compress: int = 0
+    n_compact_memory_update: int = 0
     n_compress_events: int = 0
     n_questions: int = 0
     n_chunks_total: int = 0
@@ -158,6 +168,7 @@ class ConversionStats:
             "rows_out": self.n_rows_out,
             "from_start": self.n_from_start,
             "from_compress": self.n_from_compress,
+            "compact_memory_update": self.n_compact_memory_update,
             "compress_events": self.n_compress_events,
             "questions": self.n_questions,
             "chunks_total": self.n_chunks_total,
@@ -207,8 +218,10 @@ def convert_file(
                 stats.n_rows_out += 1
                 if row["trajectory_type"] == "from_start":
                     stats.n_from_start += 1
-                else:
+                elif row["trajectory_type"] == "from_compress":
                     stats.n_from_compress += 1
+                elif row["trajectory_type"] == "compact_memory_update":
+                    stats.n_compact_memory_update += 1
                 if row["compress_event"] is not None:
                     stats.n_compress_events += 1
                 stats.n_questions += len(row["questions_in_segment"])
@@ -222,11 +235,11 @@ def convert_file(
                 )
 
     logger.info(
-        "[%s] %d records → %d rows (start=%d, from_compress=%d, "
+        "[%s] %d records → %d rows (start=%d, from_compress=%d, compact=%d, "
         "compress_events=%d, questions=%d, avg_chunks=%.1f) → %s",
         input_path.name,
         stats.n_records_in, stats.n_rows_out,
-        stats.n_from_start, stats.n_from_compress,
+        stats.n_from_start, stats.n_from_compress, stats.n_compact_memory_update,
         stats.n_compress_events, stats.n_questions,
         stats.to_dict()["avg_chunks_per_row"],
         output_path.name,

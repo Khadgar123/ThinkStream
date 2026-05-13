@@ -9,6 +9,11 @@ import os
 from pathlib import Path
 from typing import Dict
 
+from thinkstream.data.schema import (
+    DEFAULT_VIDEO_MAX_PIXELS,
+    DEFAULT_VIDEO_MIN_PIXELS,
+)
+
 
 def _env_int(name: str, default: int) -> int:
     raw = os.environ.get(name)
@@ -28,6 +33,13 @@ def _env_float(name: str, default: float) -> float:
         return float(raw)
     except ValueError:
         return float(default)
+
+
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.environ.get(name)
+    if raw is None or str(raw).strip() == "":
+        return bool(default)
+    return str(raw).strip().lower() in {"1", "true", "yes", "y", "on"}
 
 # ---------------------------------------------------------------------------
 # 1. Directory layout
@@ -98,15 +110,15 @@ ALL_DIRS = [
 AGENT_CHUNK_SEC = 1          # 每个 chunk 1 秒
 FPS = 2                      # 2fps (FRAMES_PER_CHUNK / AGENT_CHUNK_SEC)
 FRAMES_PER_CHUNK = 2         # 每 chunk 2 帧
-# v12.5: 12 → 16 chunks. New chunk semantics: 16 chunks × 1s = 16s of visual
-# context (32 frames). Other streaming systems for reference: LiveCC ~240s @
+# v12.15: 8 chunks × 1s = 8s of visual context (16 frames).
+# Other streaming systems for reference: LiveCC ~240s @
 # 2fps, VideoLLM-online ~unbounded @ 2fps, MMDuet token-budgeted, Streamo
 # 1fps. Current pre-extracted-frame prompts render explicit frame-tag text
 # before each image, so timestamps still reflect real 2fps frame indices.
 # We're conservative for the 6-min batch1 footprint, but text
 # memory now comfortably exceeds visual (see RECENT_THINKS_TOKEN_BUDGET).
-VISUAL_WINDOW_CHUNKS = 16    # 视觉窗口 = 最近 16 chunks (16s @ 2fps = 32 帧)
-VISUAL_WINDOW_FRAMES = VISUAL_WINDOW_CHUNKS * FRAMES_PER_CHUNK  # 32 帧
+VISUAL_WINDOW_CHUNKS = 8     # 视觉窗口 = 最近 8 chunks (8s @ 2fps = 16 帧)
+VISUAL_WINDOW_FRAMES = VISUAL_WINDOW_CHUNKS * FRAMES_PER_CHUNK  # 16 帧
 
 # v12.13 (2026-05-02): visual window mode. Read from env so SFT generators
 # (pass2/pass5/render_samples) and the RL agent loop pick the same scheme
@@ -157,34 +169,32 @@ THINK_TOKEN_AVG = 60                # was 70; new prompt midpoint
 
 # Token-based compression trigger with hysteresis.
 #
-# v12.5 (2026-04-29) — 600 → 4000 token budget. Rationale: 16K context
-# allocation under 1s/chunk + tool protocol:
+# v12.14 (2026-05-12) — compression is keyed to the full visible text
+# memory, not raw observations only. This includes raw <memory_think> records
+# plus older <compressed> summaries, matching the prompt area the student
+# actually sees.
+#
+# 64K teacher/runtime allocation under 1s/chunk + tool protocol:
 #   system + tools schema  ≈   400
-#   visual_window (32 fr)  ≈  2048   (16 chunks × 128 tok)
+#   visual_window (16 fr)  ≈  3760   (8 chunks × 470 tok)
 #   recall vision (4 fr)   ≈   256
-#   compressed segments    ≈  1400   (5 × 280)
+#   compressed segments    ≈  1400   (5 × 280, counted in text memory)
 #   past queries           ≈   300
 #   recall result text     ≈   500
 #   output budget          ≈  1000   (think + tool call)
 #   ─────────────────────────────────
 #   subtotal               ≈  5904
-#   recent_thinks budget   ≈  4000   (≈ 57 thinks @ 70 tok ≈ 57s memory)
+#   text_memory budget     ≈  5400   (raw observations + summaries)
 #   ─────────────────────────────────
-#   total inference window ≈  9904   (well under 16K, leaves headroom)
-#
-# 8K profile: same allocation but recent_thinks_budget = 1500 (~21 thinks
-# ≈ 21s) — still > visual window 16s, preserving the memory>visual
-# invariant. Eval profiles select between the two.
-#
-# Ratio invariant: text-memory horizon (60s+) MUST exceed visual horizon
-# (16s) so the model has compressed history reaching back farther than
-# raw frames. Old config violated this (600 tok ≈ 8 thinks ≈ 16s text
-# vs 24s visual).
-RECENT_THINKS_TOKEN_BUDGET = 4000   # recent_thinks 总 token 预算 (16K profile)
+#   total inference window ≈ 11304   (well under 64K, leaves headroom)
+TEXT_MEMORY_TOKEN_BUDGET = 5400
+# Backward-compatible name used by older code paths. It now means the full
+# visible text-memory budget, not raw recent_thinks only.
+RECENT_THINKS_TOKEN_BUDGET = TEXT_MEMORY_TOKEN_BUDGET
 COMPRESS_TRIGGER_RATIO = 0.8        # 达到预算 80% 时系统触发压缩
-COMPRESS_TOKEN_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_TRIGGER_RATIO)  # = 3200
+COMPRESS_TOKEN_THRESHOLD = int(TEXT_MEMORY_TOKEN_BUDGET * COMPRESS_TRIGGER_RATIO)  # = 4320
 COMPRESS_HYSTERESIS_RATIO = 0.55    # 压缩后应降回 55% 以下，否则窗口太短
-COMPRESS_HYSTERESIS_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_HYSTERESIS_RATIO)  # = 2200
+COMPRESS_HYSTERESIS_THRESHOLD = int(TEXT_MEMORY_TOKEN_BUDGET * COMPRESS_HYSTERESIS_RATIO)  # = 2970
 
 # Student model tokenizer (用于精确计算 token 数)
 # 造数据时加载一次，全局复用
@@ -202,17 +212,13 @@ def get_tokenizer():
             _tokenizer = "unavailable"
     return _tokenizer if _tokenizer != "unavailable" else None
 
-# v12.5 (2026-04-29): compress range scaled with chunk-sec halving + budget
-# 4× growth. Old MIN/MAX = 4/12 thinks (= 8s/24s under 2s/chunk). New 8/24
-# matches the same 8-24s span under 1s/chunk AND removes enough tokens to
-# bring memory below hysteresis (4000 → 2200 = ≥1800 tok eviction = ≥26
-# thinks worst case; we cap at MAX=24 thinks ≈ 1680 tok ≈ 42% of budget).
-COMPRESS_RANGE_MIN = 8              # 每次最少压缩 8 条 (≥8s of older thinks)
-COMPRESS_RANGE_MAX = 24             # 每次最多压缩 24 条 (≤24s)
-# v12.5: target ~40% budget eviction per compress, gap from trigger (3200) to
-# hysteresis (2200) = 1000 tok minimum, so 1500 leaves the system comfortably
-# below trigger on the next think. Old: 350 (under 600 budget = 58%).
-COMPRESS_REMOVE_TOKENS = 1500
+# v12.14: wider range so a compress can replace enough visible text to fall
+# below hysteresis without becoming too frequent. Range selection may include
+# older summaries plus adjacent raw observations, with event-boundary/content
+# penalties applied in pass2_rollout.
+COMPRESS_RANGE_MIN = 12             # 每次最少压缩 12 条或等量可见记忆项
+COMPRESS_RANGE_MAX = 32             # 每次最多压缩 32 条或等量可见记忆项
+COMPRESS_REMOVE_TOKENS = 2000
 SUMMARY_TOKENS_MIN = 100            # summary 最短
 # v11.3: 180 → 280. The 180 cap was being hit by 33% of pass2 summaries —
 # they're correctly merging 8-12 chunks but the cap forced truncation. 280
@@ -223,6 +229,25 @@ COMPRESSION_RATIO_MIN = 2.5        # 最小压缩比
 RECALL_RETURN_CHUNKS = 4           # recall returns top-4 memory chunks
 RECALL_RETURN_FRAMES = RECALL_RETURN_CHUNKS * FRAMES_PER_CHUNK
 MAX_COMPRESSED_SEGMENTS = 5        # 最多保留 5 段压缩
+
+# v12.30 (2026-05-12): compact-memory update mode.
+#
+# Instead of selecting one local range and writing a JSON summary tool call,
+# pass2 now asks the teacher to rewrite the whole visible text memory into a
+# compact <MEM> block. The next trajectory starts from that pure-text memory.
+# Triggering is deliberately based on text memory only (old compact memory +
+# raw think/caption entries) so it is cheap and stable; visual/retrieval/output
+# budgets remain reserved outside this counter.
+COMPACT_MEMORY_UPDATE_MODE = _env_bool("THINKSTREAM_COMPACT_MEMORY_UPDATE_MODE", True)
+COMPACT_MEMORY_TEXT_TOKEN_BUDGET = _env_int("THINKSTREAM_COMPACT_MEMORY_TEXT_TOKEN_BUDGET", 3200)
+COMPACT_MEMORY_BALANCE_SEGMENTS = _env_bool("THINKSTREAM_COMPACT_MEMORY_BALANCE_SEGMENTS", True)
+COMPACT_MEMORY_MIN_NEW_CHUNKS = _env_int("THINKSTREAM_COMPACT_MEMORY_MIN_NEW_CHUNKS", 25)
+COMPACT_MEMORY_TARGET_NEW_CHUNKS = _env_int("THINKSTREAM_COMPACT_MEMORY_TARGET_NEW_CHUNKS", 30)
+COMPACT_MEMORY_MAX_NEW_CHUNKS = _env_int("THINKSTREAM_COMPACT_MEMORY_MAX_NEW_CHUNKS", 36)
+STREAM_CONTEXT_TARGET_TOKENS = _env_int("THINKSTREAM_STREAM_CONTEXT_TARGET_TOKENS", 12000)
+STREAM_VISUAL_TOKEN_RESERVE = _env_int("THINKSTREAM_STREAM_VISUAL_TOKEN_RESERVE", 6000)
+STREAM_RECALL_TOKEN_RESERVE = _env_int("THINKSTREAM_STREAM_RECALL_TOKEN_RESERVE", 2500)
+STREAM_OUTPUT_TOKEN_RESERVE = _env_int("THINKSTREAM_STREAM_OUTPUT_TOKEN_RESERVE", 1000)
 
 # Per-video candidate limits (controls data volume + API cost)
 # Set to 0 to disable limiting for that type
@@ -298,10 +323,10 @@ OBSERVATION_AVG_TOKENS = 60        # matches THINK_TOKEN_AVG
 # ~18 tok of vision_start/vision_end/grid_thw bookkeeping overhead.
 #
 # Empirical measurement (1920×1080 source frames):
-#   no kwargs           → 2,058 tok/frame   (32 frames = 65,856, blows 16K)
-#   min=90k  max=130k   →   138 tok/frame   (32 frames =  4,416)
-#   min=90k  max=260k   →   249 tok/frame   (32 frames =  7,968)
-#   min=56k  max=56k    →    63 tok/frame   (32 frames =  2,016)
+#   no kwargs           → 2,058 tok/frame   (16 frames = 32,928, blows 16K)
+#   min=90k  max=130k   →   138 tok/frame   (16 frames =  2,208)
+#   min=90k  max=260k   →   249 tok/frame   (16 frames =  3,984)
+#   min=56k  max=56k    →    63 tok/frame   (16 frames =  1,008)
 #
 # Source video resolution distribution (catalog):
 #   640×360 38%, 852×480 18%, 1280×720 13%, 640×480 5%, 480×360 4%,
@@ -321,11 +346,11 @@ OBSERVATION_AVG_TOKENS = 60        # matches THINK_TOKEN_AVG
 # carries the fine details forward as TEXT, which pass2/student see in
 # memory regardless of their lower runtime resolution.
 RUNTIME_MM_PROCESSOR_KWARGS: Dict[str, int] = {
-    # ViT-patch-aligned. Same as schema.DEFAULT_VIDEO_{MIN,MAX}_PIXELS,
+    # Same as schema.DEFAULT_VIDEO_{MIN,MAX}_PIXELS,
     # sft.args.video_*_pixels, agent_protocol.build_user_content defaults,
     # stream_data_processor.DEFAULT_INFERENCE_*_PIXELS. SFT/RL/Eval unified.
-    "min_pixels": 256 * 28 * 28,   # 200,704 — ~448x448 area floor
-    "max_pixels": 512 * 28 * 28,   # 401,408 — ~632x632 area cap
+    "min_pixels": DEFAULT_VIDEO_MIN_PIXELS,
+    "max_pixels": DEFAULT_VIDEO_MAX_PIXELS,
 }
 HIRES_MM_PROCESSOR_KWARGS: Dict[str, int] = {
     "min_pixels": 200_000,    # ~480p area floor; small sources upscale modestly
@@ -333,13 +358,13 @@ HIRES_MM_PROCESSOR_KWARGS: Dict[str, int] = {
 }
 
 # Empirical token counts (verify with real vLLM; adjust if measured value differs)
-VISUAL_TOKENS_PER_FRAME_RUNTIME       = 380    # at min=200k max=401k (typical source) — ViT 28x28 patches
+VISUAL_TOKENS_PER_FRAME_RUNTIME       = 235    # conservative image-item estimate at runtime pixels
 VISUAL_TOKENS_PER_FRAME_HIRES_TYPICAL = 500    # at min=200k max=1500k, weighted avg by source distribution
 VISUAL_TOKENS_PER_FRAME_HIRES_MAX     = 1500   # at min=200k max=1500k, 1280×720 source
 
 # Backward-compat alias (consumed by older code paths). Set to RUNTIME default.
 VISUAL_TOKENS_PER_CHUNK = VISUAL_TOKENS_PER_FRAME_RUNTIME * FRAMES_PER_CHUNK  # 235×2 = 470
-VISUAL_WINDOW_TOKENS = VISUAL_WINDOW_CHUNKS * VISUAL_TOKENS_PER_CHUNK  # 16 × 470 = 7,520
+VISUAL_WINDOW_TOKENS = VISUAL_WINDOW_CHUNKS * VISUAL_TOKENS_PER_CHUNK  # 8 × 470 = 3,760
 RECALL_VISION_TOKENS = VISUAL_TOKENS_PER_FRAME_RUNTIME * 4  # 4 frames recalled at runtime res = 940
 # v12.5: 4096 → 16384. Single-sample cap raised to match new 16K context
 # budget (system+visual+memory+output = ~10K nominal, 16K accommodates
@@ -360,7 +385,7 @@ VLLM_PREFILL_BATCH_TOKEN_BUDGET = _env_int(
 # Per-request token estimates (text + vision + output + thinking).
 # v12.12 (2026-05-02): visual budgets reflect mm_processor_kwargs profiles.
 # pass1a uses HIRES (~500 tok/frame typical) × 2 frames + template ≈ 2K visual.
-# pass2 uses RUNTIME (~235 tok/frame) × 32 frames + template ≈ 7.6K visual.
+# pass2 uses RUNTIME (~235 tok/frame) × 16 frames + template ≈ 3.8K visual.
 # vLLM teacher/runtime server: pass1a/pass2/SFT/RL/eval use frame-tag text +
 # image/image_url lists for pre-extracted frames. This keeps the latest chunk
 # visually explicit even when text memory is stale, and avoids relying on the
@@ -379,7 +404,7 @@ PASS_CONTEXT_ESTIMATES = {
     # v12.72: pass1b outputs short e<N> ids for merged entity groups instead
     # of copying full desc text, so visible output should stay well under 16K.
     "pass1b": {"input": 16_000, "output": 8_000, "thinking": 0},  # text-only
-    # v12.12 (2026-05-02): RUNTIME profile ~235 tok/frame × 32 = 7,520 visual.
+    # v12.15 (2026-05-12): RUNTIME profile ~235 tok/frame × 16 = 3,760 visual.
     # + system 500 + template 200 + memory ≤4000 + queries 400 + recall ≤1320
     # + pad 300 ≈ 14,240 input worst-case (with recall). Use 13,500 as a
     # representative estimate (most chunks no recall).
@@ -766,6 +791,49 @@ Rules:
 
 Output JSON only: {{"time_range": [{start}, {end}], "text": "<concise factual summary>"}}
 Do NOT output literal ellipsis, placeholder text, markdown, or analysis outside the JSON."""
+
+COMPACT_MEMORY_UPDATE_SYSTEM_PROMPT = """You update compact video memory for training data.
+
+Return exactly one <MEM> block and no other text.
+The first non-whitespace characters of your response must be <MEM>.
+The final non-whitespace characters of your response must be </MEM>.
+Bare <m> lines without the enclosing <MEM>...</MEM> block are invalid.
+The block must contain 4 to 6 chronological lines:
+  <m t="start-end">one concise English event or state.</m>
+Every <m ...> line must have its own explicit closing </m> tag.
+
+Requirements:
+- Use only timestamps that appear in OLD_MEMORY or NEW_CAPTIONS.
+- Input is video memory only. Ignore and never reproduce questions, answers, active-query tags, or response-history tags if they appear.
+- If OLD_MEMORY contains any <m> lines, at least one output <m> must preserve useful historical information from OLD_MEMORY.
+- If NEW_CAPTIONS contains any <c> lines, at least one output <m> must cover the latest new caption timestamps.
+- Cover BOTH historical state and new events; do not output only old memory or only new captions when both are present.
+- Keep important objects, actions, OCR text, counts, colors, and state changes.
+- Preserve exact visible names, jersey numbers, team labels, scoreboard values, OCR strings, sponsor/ad text, and distinctive colors when present.
+- Do not replace all older memory with a generic event line if OLD_MEMORY contains named players, OCR, or scoreboard values.
+- When NEW_CAPTIONS contains names, OCR, or scoreboard text, include the most important ones in the output.
+- Prefer 5-6 lines when many named or OCR facts are present.
+- It is acceptable to compress repeated generic play-by-play, but not to drop all exact identifiers.
+- Merge adjacent repeated captions; split when the main object, action, scene, or state changes.
+- Do not answer questions, add analysis, describe future actions, or write text outside <MEM>."""
+
+COMPACT_MEMORY_UPDATE_PROMPT = """OLD_MEMORY:
+{old_memory}
+
+NEW_CAPTIONS:
+{new_captions}
+
+Covered latest span: t={start}-{end}
+Coverage check: include old memory if present and include the latest new captions if present.
+Output skeleton: copy the <MEM> wrapper literally and replace placeholder ranges/text with real input timestamps and concise events.
+<MEM>
+  <m t="start-end">one concise event or state.</m>
+  <m t="start-end">one concise event or state.</m>
+  <m t="start-end">one concise event or state.</m>
+  <m t="start-end">one concise event or state.</m>
+</MEM>
+Do not output NEW_MEMORY:, markdown, or bare <m> lines.
+Return NEW_MEMORY."""
 
 TASK_QUESTION_PROMPT = """Based on this visual evidence:
 Entity: {entity}

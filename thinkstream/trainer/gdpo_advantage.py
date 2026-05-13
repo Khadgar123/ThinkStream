@@ -24,19 +24,19 @@ import torch
 # docs/v12.0_protocol_migration_design.md §11. Drops:
 #   - recall_quality / recall_hit_rate / range_tightness → folded into
 #     `outcome` (incorrect recall → wrong answer → outcome=0)
-#   - silent_quality / num_responses → folded into `timing` (silent through
-#     visibility window = -0.5; answer in window = +1)
+#   - silent_quality / raw timing → folded into `answer_decision`, scored only
+#     at answer slots and explicit false-positive answer events.
 #   - overflow_pen → replaced by compress_quality on the compress turn itself
 #
-# What's NEW: explicit `timing` component with bucket structure
-# (early=-1, on_time=+1, late_partial=+0.5, missed=-0.5). NO prior released
-# streaming-video paper or agentic RL paper has this — confirmed by the
-# v12.0 survey. ThinkStream is the first.
+# What's NEW: explicit streaming answer-decision component. It preserves the
+# timing bucket structure (early=-1, on_time=+1, late decays, missed=-1) but
+# gives ordinary no-op silent chunks 0, so long videos cannot earn reward by
+# staying silent.
 #
 # Multi-level GRPO advantage aggregation (ReMemR1 ICLR'26 pattern):
 #   final_advantage = α · outcome_advantage + (1−α) · state_advantage
 #   outcome_advantage   = GRPO-norm(correctness, group_by=video_uid)
-#   state_advantage     = GRPO-norm(timing + format + compress_q − spam,
+#   state_advantage     = GRPO-norm(answer_decision + format − spam,
 #                                   group_by=(video_uid, chunk_idx))
 #   default α = 0.7 (ReMemR1 default 0.8 is HotpotQA — ThinkStream has
 #   stronger per-step signal so we skew toward state).
@@ -71,29 +71,25 @@ import torch
 #   1. outcome reward → GRPO group-norm propagates advantage to all chunks
 #      (rollouts whose recall/compress decisions led to correct answer get
 #       above-mean advantage; others get below-mean → policy learns)
-#   2. silent_quality + timing — streaming-specific signals (no industry
-#      analog); these are NOT chunk-level credit assignment, they're
-#      additional outcome dimensions ("when to talk", not just "what to say").
-#      In the verl recipe scorer, positive auxiliary rewards are scaled by
-#      per-question answer correctness so wrong answers cannot be rescued by
-#      timing/format, while partially correct multi-question rollouts still
-#      receive partial auxiliary signal.
+#   2. answer_decision — streaming-specific answer/no-answer timing signal.
+#      It is not dense chunk-level credit assignment; it is evaluated at
+#      answer slots and false-positive answer events. Positive auxiliary
+#      rewards are scaled by per-question answer correctness so wrong answers
+#      cannot be rescued by timing/format.
 #
 V12_REWARD_DICT_KEYS: tuple = (
     "outcome",          # 0/1 per-question correctness; dominant signal
-    "timing",           # bucketed timing reward (-1 early / +1 on / +0.5 late / -0.5 missed)
+    "answer_decision",  # slot/event answer timing: no reward for ordinary silence
     "format",           # 0/1 — tags balanced, JSON parses, exactly one terminal
     "spam",             # >=0 — penalty for excess tool calls (additive)
-    "silent_quality",   # streaming-specific: +0.3 correct silence, -0.6 hallucinate, -0.6 missed
 )
 
 _V12_PRODUCTION_WEIGHTS: Dict[str, float] = {
     "outcome":          1.0,    # primary signal — DeepEyesV2 0.8 ↑ to 1.0 (drop format weight)
-    "timing":           0.3,    # streaming bonus/penalty
+    "answer_decision":  0.3,    # answer/no-answer timing decision at slots/events
     "format":           0.1,    # weak — gate-like; per DeepEyesV2 0.2 but lower since
-                                # silent_quality + timing already shape the streaming policy
+                                # answer_decision already shapes streaming timing
     "spam":            -0.2,    # NEGATIVE — over-budget tool penalty (additive)
-    "silent_quality":   0.2,    # streaming-specific decision quality (no industry analog)
 }
 
 

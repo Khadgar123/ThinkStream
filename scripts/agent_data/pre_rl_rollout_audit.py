@@ -27,6 +27,8 @@ from thinkstream.data.agent_protocol import (  # noqa: E402
     parse_agent_output,
     query_expected_answer_chunks,
 )
+from thinkstream.data.schema import DEFAULT_VIDEO_MAX_PIXELS, DEFAULT_VIDEO_MIN_PIXELS  # noqa: E402
+from thinkstream.trainer.rewards import compute_answer_decision_reward  # noqa: E402
 from thinkstream.trainer.outcome_match import score_outcome_by_form  # noqa: E402
 
 
@@ -38,6 +40,149 @@ def _read_jsonl(path: Path, limit: int = 0) -> Iterable[Dict[str, Any]]:
             line = line.strip()
             if line:
                 yield json.loads(line)
+
+
+def _plain(value: Any) -> Any:
+    """Convert pandas/pyarrow numpy wrappers to plain Python containers."""
+    if hasattr(value, "tolist"):
+        value = value.tolist()
+    if isinstance(value, dict):
+        return {str(k): _plain(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_plain(v) for v in value]
+    return value
+
+
+def _load_parquet_trajectory_rows(path: Path, limit: int = 0) -> List[Dict[str, Any]]:
+    """Load the same multi-Q parquet rows used by RL training.
+
+    ``build_verl_parquet --multi_q`` stores the training annotation in
+    ``extra_info.questions`` plus ``reward_model.ground_truth``. The rollout
+    audit runs on trajectory-shaped records, so normalize the parquet row back
+    to that shared shape instead of re-reading final/*.jsonl.
+    """
+    try:
+        import pandas as pd
+    except ImportError as exc:  # pragma: no cover - environment guard
+        raise SystemExit("pandas is required to read parquet audit input") from exc
+
+    df = pd.read_parquet(path)
+    if limit:
+        df = df.head(limit)
+    rows: List[Dict[str, Any]] = []
+    for raw in df.to_dict("records"):
+        row = _plain(raw)
+        extra = row.get("extra_info") or {}
+        if not isinstance(extra, dict):
+            extra = {}
+        reward_model = row.get("reward_model") or {}
+        if not isinstance(reward_model, dict):
+            reward_model = {}
+        gt_raw = reward_model.get("ground_truth")
+        gt: Dict[str, Any] = {}
+        if isinstance(gt_raw, str) and gt_raw.strip():
+            try:
+                loaded = json.loads(gt_raw)
+                if isinstance(loaded, dict):
+                    gt = _plain(loaded)
+            except json.JSONDecodeError:
+                gt = {}
+        elif isinstance(gt_raw, dict):
+            gt = _plain(gt_raw)
+
+        questions = extra.get("questions") or gt.get("questions") or []
+        if not isinstance(questions, list):
+            questions = []
+        gold_action = (
+            extra.get("gold_action_per_chunk")
+            or gt.get("gold_action_per_chunk")
+            or row.get("gold_action_per_chunk")
+            or {}
+        )
+        if not isinstance(gold_action, dict):
+            gold_action = {}
+        offline_compress = (
+            extra.get("offline_compress_chunks")
+            or gt.get("offline_compress_chunks")
+            or row.get("offline_compress_chunks")
+            or []
+        )
+        if not isinstance(offline_compress, list):
+            offline_compress = []
+
+        try:
+            n_chunks = int(row.get("n_chunks") or extra.get("n_chunks") or 0)
+        except (TypeError, ValueError):
+            n_chunks = 0
+        rows.append({
+            "video_id": str(row.get("video_id") or extra.get("video_id") or ""),
+            "trajectory_id": str(row.get("video_id") or extra.get("index") or ""),
+            "video_path": str(row.get("video_path") or extra.get("video_path") or ""),
+            "questions": questions,
+            "gold_action_per_chunk": {
+                str(k): str(v) for k, v in gold_action.items()
+            },
+            "offline_compress_chunks": [
+                int(x) for x in offline_compress
+                if isinstance(x, (int, float)) or str(x).lstrip("-").isdigit()
+            ],
+            "stats": {
+                "n_chunks_covered": n_chunks,
+                "chunk_idx_max": max(0, n_chunks - 1),
+            },
+            "extra_info": extra,
+            "reward_model": reward_model,
+            "_source_parquet": str(path),
+        })
+    return rows
+
+
+def _load_source_rows(path: Path, limit: int = 0) -> List[Dict[str, Any]]:
+    if path.suffix.lower() == ".parquet":
+        return _load_parquet_trajectory_rows(path, limit=limit)
+    return list(_read_jsonl(path, limit))
+
+
+def _infer_scheme_root(source: Path) -> Path:
+    if source.suffix.lower() == ".parquet":
+        # data/.../rendered/<layout>/train_rl_multi_q.parquet -> data/...
+        if source.parent.parent.name == "rendered":
+            return source.parent.parent.parent
+        if source.parent.name == "final":
+            return source.parent.parent
+        return source.parent
+    return source.parent.parent if source.parent.name == "final" else source.parent
+
+
+def _trajectory_max_chunk(row: Dict[str, Any]) -> int:
+    """Best-effort final chunk index for jsonl and parquet trajectory rows."""
+    candidates: List[int] = []
+    stats = row.get("stats") or {}
+    if isinstance(stats, dict):
+        for key in ("chunk_idx_max", "max_chunk_idx"):
+            val = stats.get(key)
+            if str(val).lstrip("-").isdigit():
+                candidates.append(int(val))
+        n_chunks = stats.get("n_chunks_covered") or stats.get("n_chunks")
+        if str(n_chunks).lstrip("-").isdigit():
+            candidates.append(max(0, int(n_chunks) - 1))
+    n_chunks_row = row.get("n_chunks")
+    if str(n_chunks_row).lstrip("-").isdigit():
+        candidates.append(max(0, int(n_chunks_row) - 1))
+    for s in row.get("samples") or []:
+        if isinstance(s, dict) and str(s.get("chunk_idx")).lstrip("-").isdigit():
+            candidates.append(int(s["chunk_idx"]))
+    for q in row.get("questions") or []:
+        if not isinstance(q, dict):
+            continue
+        for key in ("ask_chunks", "answer_chunks", "support_chunks"):
+            for ck in q.get(key) or []:
+                if str(ck).lstrip("-").isdigit():
+                    candidates.append(int(ck))
+    for ck in row.get("offline_compress_chunks") or []:
+        if str(ck).lstrip("-").isdigit():
+            candidates.append(int(ck))
+    return max(candidates, default=0)
 
 
 def _select_shard(
@@ -148,6 +293,49 @@ def _gold_for_expected_chunk(q: Dict[str, Any], expected_chunk: Optional[int]) -
         or q.get("correct_answer_text")
         or ""
     ).strip()
+
+
+def _event_chunk(answer_event: Dict[str, Any]) -> Optional[int]:
+    try:
+        chunk = int(answer_event.get("chunk", -1))
+    except (TypeError, ValueError):
+        return None
+    return chunk if chunk >= 0 else None
+
+
+def _decision_bucket(
+    *,
+    decision: float,
+    timing: str,
+    has_answer: bool,
+    expected_chunk: Optional[int],
+) -> str:
+    if has_answer:
+        if timing in {"early", "late", "on_time"}:
+            return timing
+        if expected_chunk is None:
+            return "false_positive_extra"
+        return "answered"
+    if expected_chunk is None:
+        return "normal_silent"
+    if decision <= -1.0:
+        return "missed"
+    return "silent"
+
+
+def _record_answer_decision(
+    stats: Counter,
+    nested: Dict[str, Counter],
+    *,
+    decision: float,
+    bucket: str,
+    correct: bool,
+) -> None:
+    stats["answer_decision_slots"] += 1
+    stats["answer_decision_sum"] += float(decision)
+    gated = float(decision) if decision <= 0.0 or correct else 0.0
+    stats["answer_decision_gated_sum"] += gated
+    nested["answer_decision"][bucket] += 1
 
 
 def _question_key(q: Dict[str, Any]) -> Tuple[str, int]:
@@ -367,7 +555,10 @@ def _summarize_rollout(
     stats["rollout_groups"] += max(group_size, 1)
     _record_question_mix(questions, nested, scale=max(group_size, 1))
     stats["offline_gold_compress_chunks"] += (
-        sum(1 for v in gold_action.values() if str(v) == "compress")
+        (
+            len(source_traj.get("offline_compress_chunks") or [])
+            or sum(1 for v in gold_action.values() if str(v) == "compress")
+        )
         * max(group_size, 1)
     )
 
@@ -633,6 +824,38 @@ def _summarize_rollout(
                         stats["early_correct_slots"] += 1
 
                 if not picked:
+                    early_chunk = _event_chunk(early[0]) if early else None
+                    exp_chunk = int(expected_chunk) if expected_chunk is not None else None
+                    if early_chunk is not None:
+                        decision = compute_answer_decision_reward(
+                            early_chunk,
+                            exp_chunk,
+                            exp_chunk,
+                            late_window_chunks=2,
+                            has_answer=True,
+                        )
+                        bucket = "early"
+                    else:
+                        decision = compute_answer_decision_reward(
+                            None,
+                            exp_chunk,
+                            exp_chunk,
+                            late_window_chunks=2,
+                            has_answer=False,
+                        )
+                        bucket = _decision_bucket(
+                            decision=decision,
+                            timing="",
+                            has_answer=False,
+                            expected_chunk=expected_chunk,
+                        )
+                    _record_answer_decision(
+                        stats,
+                        nested,
+                        decision=decision,
+                        bucket=bucket,
+                        correct=False,
+                    )
                     stats["missing_answer_slots"] += 1
                     _append_bad(
                         badcases,
@@ -666,6 +889,27 @@ def _summarize_rollout(
                     correct_option=source_q.get("correct_option", ""),
                     gold_answer=gold,
                     answer_form=str(source_q.get("answer_form") or ""),
+                )
+                exp_chunk = int(expected_chunk) if expected_chunk is not None else None
+                picked_chunk = _event_chunk(picked)
+                decision = compute_answer_decision_reward(
+                    picked_chunk,
+                    exp_chunk,
+                    exp_chunk,
+                    late_window_chunks=2,
+                    has_answer=True,
+                )
+                _record_answer_decision(
+                    stats,
+                    nested,
+                    decision=decision,
+                    bucket=_decision_bucket(
+                        decision=decision,
+                        timing=timing,
+                        has_answer=True,
+                        expected_chunk=expected_chunk,
+                    ),
+                    correct=score >= 1.0,
                 )
                 if score >= 1.0:
                     stats["answer_correct_slots"] += 1
@@ -708,7 +952,14 @@ def _counter_dict(c: Counter) -> Dict[str, int]:
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--source", required=True, help="final/train_rl_trajectories.jsonl or val trajectories")
+    p.add_argument(
+        "--source",
+        required=True,
+        help=(
+            "RL source trajectories jsonl or rendered train/val/test "
+            "multi-Q parquet used by training"
+        ),
+    )
     p.add_argument("--ckpt", required=True)
     p.add_argument("--out", required=True, help="summary json output path")
     p.add_argument("--badcase-out", default="")
@@ -731,8 +982,8 @@ def main() -> None:
     p.add_argument("--vllm-max-images-per-prompt", type=int, default=64)
     p.add_argument("--vllm-max-videos-per-prompt", type=int, default=2)
     p.add_argument("--vllm-mm-processor-cache-gb", type=int, default=256)
-    p.add_argument("--min-pixels", type=int, default=130_000)
-    p.add_argument("--max-pixels", type=int, default=220_000)
+    p.add_argument("--min-pixels", type=int, default=DEFAULT_VIDEO_MIN_PIXELS)
+    p.add_argument("--max-pixels", type=int, default=DEFAULT_VIDEO_MAX_PIXELS)
     p.add_argument("--frames-root", default="")
     p.add_argument("--disable-recall", action="store_true")
     p.add_argument("--badcases-per-kind", type=int, default=50)
@@ -757,10 +1008,10 @@ def main() -> None:
         if args.memory_merge_events_out
         else out.with_suffix(".memory_merge_events.jsonl")
     )
-    scheme_root = source.parent.parent if source.parent.name == "final" else source.parent
+    scheme_root = _infer_scheme_root(source)
     frames_root = Path(args.frames_root) if args.frames_root else scheme_root / "frames"
 
-    all_rows = list(_read_jsonl(source, args.limit_videos))
+    all_rows = _load_source_rows(source, args.limit_videos)
     trajectories = _select_shard(all_rows, num_shards=args.num_shards, shard_index=args.shard_index)
     if not trajectories:
         raise SystemExit(f"no trajectories loaded from {source}")
@@ -800,13 +1051,7 @@ def main() -> None:
 
     for start in range(0, len(trajectories), args.rollout_batch_size):
         batch = trajectories[start:start + args.rollout_batch_size]
-        max_batch_chunk = max(
-            (
-                max((int(s.get("chunk_idx", 0)) for s in t.get("samples", [])), default=0)
-                for t in batch
-            ),
-            default=0,
-        )
+        max_batch_chunk = max((_trajectory_max_chunk(t) for t in batch), default=0)
         rollout_max_chunks = min(args.max_chunks, max_batch_chunk + 1)
         print(
             f"[{start}:{start + len(batch)}] B={len(batch)} "
@@ -881,6 +1126,15 @@ def main() -> None:
             "early_correct_rate": _rate(stats["early_correct_slots"], stats["answer_slots"]),
             "on_time_correct_rate": _rate(stats["on_time_correct_slots"], stats["answer_slots"]),
             "timing": _counter_dict(nested["timing"]),
+            "answer_decision_avg": _rate(
+                stats["answer_decision_sum"],
+                stats["answer_decision_slots"],
+            ),
+            "answer_decision_gated_avg": _rate(
+                stats["answer_decision_gated_sum"],
+                stats["answer_decision_slots"],
+            ),
+            "answer_decision": _counter_dict(nested["answer_decision"]),
         },
         "action": {
             "gold_total": int(stats["action_gold_total"]),
@@ -926,7 +1180,7 @@ def main() -> None:
             "offline_gold_action_rows_skipped": int(
                 stats["offline_gold_compress_action_rows_skipped"]
             ),
-            "trigger_source": "runtime_memory_threshold",
+            "trigger_source": "offline_pass2_boundaries",
         },
         "memory_merge": {
             "events": int(stats["memory_merge_events"]),

@@ -1,4 +1,4 @@
-"""Per-timestep agent SFT trainer.
+"""Trajectory-mixed agent SFT trainer.
 
 Only keeps what we actually use:
 - WeightedSFTTrainer: assistant-span CE + audit metrics
@@ -155,6 +155,122 @@ def expected_v12_kind_for_eval(
     if stype in ("compress", "compress_inter"):
         return "compress"
     return "unknown"
+
+
+def _parse_eval_turn_output(output_text: str) -> Dict:
+    """Parse one decoded assistant turn for SFT eval metrics.
+
+    The runtime protocol currently uses ``<silent>`` and ``<response>`` for
+    streaming turns, while older v12 eval code understood only
+    ``<answer>``/tool-call/MEM. Keep the old parser for tools and memory, then
+    add the streaming terminals here so multi-turn trajectory eval does not
+    collapse to ``unknown``.
+    """
+    from thinkstream.data.agent_protocol import (
+        parse_agent_output,
+        strip_chat_template_boundary_tokens,
+    )
+
+    text = strip_chat_template_boundary_tokens(output_text or "")
+    parsed = parse_agent_output(
+        text,
+        allow_bare_answer=False,
+        allow_malformed_tool_call=True,
+    )
+    if parsed.get("kind") != "unknown":
+        return parsed
+
+    result = {
+        "raw": text,
+        "think": "",
+        "kind": "unknown",
+        "answer_text": None,
+        "tool_call": None,
+        "memory_text": None,
+        "format_error": None,
+    }
+
+    think_matches = list(re.finditer(r"<think>(.*?)</think>", text, re.DOTALL))
+    if len(think_matches) == 1:
+        result["think"] = think_matches[0].group(1).strip()
+        if not result["think"]:
+            result["format_error"] = "empty <think> block"
+    else:
+        result["format_error"] = (
+            "missing <think> block" if not think_matches
+            else "multiple <think> blocks"
+        )
+
+    silent_matches = list(re.finditer(r"<silent>\s*", text, re.DOTALL))
+    response_matches = list(
+        re.finditer(r"<response>(.*?)</response>", text, re.DOTALL)
+    )
+    n_terminals = len(silent_matches) + len(response_matches)
+    if n_terminals == 0:
+        return result
+    if n_terminals > 1:
+        result["format_error"] = "multiple streaming terminal blocks present"
+        return result
+
+    terminal_match = silent_matches[0] if silent_matches else response_matches[0]
+    result["kind"] = "answer"
+    result["answer_text"] = (
+        "" if silent_matches else response_matches[0].group(1).strip()
+    )
+
+    if result["format_error"] is None and len(think_matches) == 1:
+        think_match = think_matches[0]
+        if think_match.start() > terminal_match.start():
+            result["format_error"] = "terminal block appears before <think>"
+        else:
+            outside = (
+                text[:think_match.start()]
+                + text[think_match.end():terminal_match.start()]
+                + text[terminal_match.end():]
+            )
+            if outside.strip():
+                result["format_error"] = (
+                    "text outside required <think> plus terminal block"
+                )
+    return result
+
+
+def _expected_kind_from_gold_turn(
+    gold_text: str,
+    *,
+    fallback_stype: str,
+    turn_idx: int,
+    n_turns: int,
+    action: str,
+) -> str:
+    parsed = _parse_eval_turn_output(gold_text)
+    kind = parsed.get("kind")
+    if kind == "compress":
+        return "compress"
+    if kind == "recall":
+        return "recall"
+    if kind == "answer":
+        return (
+            "answer_empty"
+            if not (parsed.get("answer_text") or "")
+            else "answer_nonempty"
+        )
+    return expected_v12_kind_for_eval(
+        fallback_stype,
+        turn_idx=turn_idx,
+        n_turns=n_turns,
+        action=action,
+    )
+
+
+def _behavior_bucket_for_expected_kind(expected_kind: str, fallback: str) -> str:
+    if expected_kind == "answer_empty":
+        return "silent"
+    if expected_kind == "answer_nonempty":
+        return "response"
+    if expected_kind in {"recall", "compress"}:
+        return expected_kind
+    return fallback or "unknown"
 
 
 def _assert_logits_have_grad(logits, mode: str) -> None:
@@ -521,8 +637,9 @@ class WeightedSFTTrainer(Trainer):
         tool_seqs = resolve_tool_name_token_sequences(tokenizer)
         tc_open_ids, tc_close_ids = resolve_tool_call_marker_ids(tokenizer)
 
-        # Compose existing token_loss_weight (e.g. compress structure/body/close)
-        # with focal modulation by passing as extra_token_weight.
+        # Compose optional token_loss_weight with focal modulation by passing
+        # it as extra_token_weight. Compress-internal weighting is disabled by
+        # default, so this is usually empty.
         extra_w = None
         if token_loss_weight is not None:
             extra_w = token_loss_weight[..., 1:].to(
@@ -756,6 +873,10 @@ class WeightedSFTTrainer(Trainer):
                     or len(all_ans_spans)
                     or len(metric_spans)
                 )
+                tokenizer = (
+                    getattr(self, "processing_class", None)
+                    or getattr(self, "tokenizer", None)
+                )
                 for local_idx, (ans_start, ans_end) in enumerate(metric_spans):
                     turn_idx = (
                         int(turn_indices[local_idx])
@@ -779,20 +900,48 @@ class WeightedSFTTrainer(Trainer):
                         self._eval_acc["v12_argmax_match"][metric_stype] += matched
                         self._eval_acc["v12_argmax_match"]["_all"] += matched
 
+                    expected_kind = expected_v12_kind_for_eval(
+                        expected_stype or metric_stype,
+                        turn_idx=turn_idx,
+                        n_turns=n_turns,
+                        action=meta.get("action") or meta.get("gold_action", ""),
+                    )
+                    if tokenizer is not None and hasattr(tokenizer, "decode"):
+                        try:
+                            gold_text = tokenizer.decode(
+                                input_ids[b, s:e].tolist(),
+                                skip_special_tokens=False,
+                            )
+                            expected_kind = _expected_kind_from_gold_turn(
+                                gold_text,
+                                fallback_stype=expected_stype or metric_stype,
+                                turn_idx=turn_idx,
+                                n_turns=n_turns,
+                                action=(
+                                    meta.get("action")
+                                    or meta.get("gold_action", "")
+                                ),
+                            )
+                        except Exception:
+                            pass
+                    behavior_stype = _behavior_bucket_for_expected_kind(
+                        expected_kind,
+                        metric_stype,
+                    )
+
                     # v12.1 BEHAVIORAL METRICS — decode argmax tokens →
                     # parse v12 protocol → emit kind/format counters per
-                    # sample_type. v12.11: now invoked per assistant turn,
-                    # so multi-turn recall samples get BOTH tool_call and
-                    # final-answer turns counted toward behavioral stats.
-                    # turn_idx tells the helper which turn this span is so
-                    # it can pick the right expected_kind for shape-B
-                    # recall (turn 0 = tool_call, turn 1 = final answer).
+                    # expected action bucket. v12.11 handled multi-span recall;
+                    # trajectory SFT additionally needs per-turn expected kind
+                    # from the gold assistant text because row-level
+                    # sample_type is just "streaming_trajectory".
                     self._accumulate_v12_behavioral(
-                        preds, input_ids, b, s, e, metric_stype,
+                        preds, input_ids, b, s, e, behavior_stype,
                         turn_idx=turn_idx,
                         n_turns=n_turns,
                         action=meta.get("action") or meta.get("gold_action", ""),
                         expected_stype=expected_stype,
+                        expected_kind=expected_kind,
                     )
 
     def _accumulate_v12_behavioral(
@@ -800,6 +949,7 @@ class WeightedSFTTrainer(Trainer):
         turn_idx: int = 0, n_turns: int = 1,
         action: str = "",
         expected_stype: str = "",
+        expected_kind: str = "",
     ) -> None:
         """v12.1 per-sample behavioral counters from teacher-forced argmax.
 
@@ -848,8 +998,7 @@ class WeightedSFTTrainer(Trainer):
         except Exception:
             return
 
-        from thinkstream.data.agent_protocol import parse_agent_output
-        parsed = parse_agent_output(decoded)
+        parsed = _parse_eval_turn_output(decoded)
         observed_kind = parsed.get("kind", "unknown")
         format_valid = parsed.get("format_error") is None
 
@@ -864,7 +1013,7 @@ class WeightedSFTTrainer(Trainer):
         # answer ("answer_nonempty"). Inferring expected purely from
         # sample_type would tag turn 1 as "recall" too → false negative on
         # v12_kind_match.
-        expected_kind = expected_v12_kind_for_eval(
+        expected_kind = expected_kind or expected_v12_kind_for_eval(
             expected_stype or stype,
             turn_idx=turn_idx,
             n_turns=n_turns,

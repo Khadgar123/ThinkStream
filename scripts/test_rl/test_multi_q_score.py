@@ -27,7 +27,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 def _load_compute_score():
     spec = importlib.util.spec_from_file_location(
         "rt_thinkstream",
-        PROJECT_ROOT / "verl" / "thinkstream/rl" / "thinkstream.py",
+        PROJECT_ROOT / "thinkstream/rl" / "thinkstream.py",
     )
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -93,7 +93,10 @@ def main() -> int:
     )
     assert result["outcome"] == 1.0, f"all-correct: {result}"
     assert result["n_questions"] == n_q
-    print(f"  ✓ all-correct: outcome={result['outcome']:.3f} timing={result['timing']:.3f}")
+    print(
+        f"  ✓ all-correct: outcome={result['outcome']:.3f} "
+        f"decision={result['answer_decision']:.3f} timing={result['timing']:.3f}"
+    )
 
     # ── FIRST WRONG (use a string that won't match any option text)
     extra_in["ts_per_q_answer_text"] = ["NOPE_NOT_AN_OPTION"] + per_q_text[1:]
@@ -113,7 +116,12 @@ def main() -> int:
     assert r3["outcome"] == 0.0
     assert r3["n_answered"] == 0.0
     assert r3["timing"] < 0  # missed-bucket penalty
-    print(f"  ✓ unanswered: outcome={r3['outcome']:.3f} timing={r3['timing']:.3f} n_answered={r3['n_answered']:.0f}")
+    assert r3["answer_decision"] <= r3["timing"]
+    print(
+        f"  ✓ unanswered: outcome={r3['outcome']:.3f} "
+        f"decision={r3['answer_decision']:.3f} timing={r3['timing']:.3f} "
+        f"n_answered={r3['n_answered']:.0f}"
+    )
 
     # ── LIBERAL MCQ matching tests
     cases = [

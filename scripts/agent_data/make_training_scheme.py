@@ -6,7 +6,7 @@ The generated directory is a standalone data root for training scripts:
 - final/train_rl_trajectories.jsonl
 - final/val_trajectories.jsonl
 - final/test_trajectories.jsonl
-- rendered/video_meta_standard_query_last/{train_sft,val,test}_messages.jsonl
+- rendered/trajectory/{train_sft,val,test}_trajectory.jsonl
 - rendered/video_meta_standard_query_last/{train_rl,val}_rl_multi_q.parquet
 - reports/distribution.{json,md}
 
@@ -650,51 +650,34 @@ def _write_trajectory_files(
     return counts
 
 
-def _render_messages(
+def _render_trajectories(
     *,
     final_dir: Path,
     out: Path,
-    protocols: Sequence[str],
-    render_layout: str,
-    no_balance_sft: bool,
 ) -> Dict[str, int]:
-    from scripts.agent_data.pass5_messages import convert, write_dataset_info
+    from scripts.agent_data.pass5 import convert_dir
 
-    counts: Dict[str, int] = {}
-    for protocol in protocols:
-        rendered = out / "rendered" / _render_dir_name(protocol, render_layout)
-        rendered.mkdir(parents=True, exist_ok=True)
-        split_specs = [
-            ("train_sft_trajectories.jsonl", "train_sft_messages.jsonl", True),
-            ("val_trajectories.jsonl", "val_messages.jsonl", False),
-            ("test_trajectories.jsonl", "test_messages.jsonl", False),
-        ]
-        for src_name, dst_name, is_sft in split_specs:
-            balance = is_sft and not no_balance_sft
-            result = convert(
-                final_dir / src_name,
-                rendered / dst_name,
-                is_trajectory=True,
-                base_path=Path.cwd(),
-                data_dir=out,
-                limit=None,
-                balance_sft=balance,
-                frame_protocol=protocol,
-                render_layout=render_layout,
-            )
-            counts[f"rendered/{rendered.name}/{dst_name}"] = int(result.get("ok", 0))
-        write_dataset_info(rendered, ["train_sft", "val", "test"])
-        _write_json(
-            rendered / "render_manifest.json",
-            {
-                "generated_by": "make_training_scheme.py",
-                "source_final_dir": str(final_dir),
-                "output_dir": str(rendered),
-                "frame_protocol": protocol,
-                "render_layout": render_layout,
-                "splits": ["train_sft", "val", "test"],
-            },
-        )
+    rendered = out / "rendered" / "trajectory"
+    rendered.mkdir(parents=True, exist_ok=True)
+    manifest = convert_dir(
+        input_dir=final_dir,
+        output_dir=rendered,
+        frames_root=None,
+    )
+    counts = {
+        f"rendered/trajectory/{split}_trajectory.jsonl": int(stats.get("rows_out", 0))
+        for split, stats in manifest.items()
+    }
+    _write_json(
+        rendered / "render_manifest.json",
+        {
+            "generated_by": "make_training_scheme.py",
+            "source_final_dir": str(final_dir),
+            "output_dir": str(rendered),
+            "splits": ["train_sft", "val", "test"],
+            "manifest": manifest,
+        },
+    )
     return counts
 
 
@@ -748,7 +731,7 @@ def _write_report(
     splits: Dict[str, List[Dict[str, Any]]],
     manifest_counts: Dict[str, int],
     trajectory_counts: Dict[str, int],
-    message_counts: Dict[str, int],
+    sft_eval_render_counts: Dict[str, int],
     parquet_counts: Dict[str, int],
     protocols: Sequence[str],
     render_layout: str,
@@ -770,19 +753,12 @@ def _write_report(
         "row_counts": {
             "manifests": manifest_counts,
             "trajectories": trajectory_counts,
-            "messages": message_counts,
+            "sft_eval_trajectories": sft_eval_render_counts,
             "parquets": parquet_counts,
         },
         "canonical_paths": {
-            "sft_messages": {
-                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "train_sft_messages.jsonl")
-                for p in protocols
-            },
+            "sft_trajectory": str(out / "rendered" / "trajectory" / "train_sft_trajectory.jsonl"),
             "dagger_source_trajectories": str(out / "final" / "train_sft_dagger_source_trajectories.jsonl"),
-            "dagger_output_messages": {
-                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "train_sft_dagger_messages.jsonl")
-                for p in protocols
-            },
             "rl_train_parquet": {
                 p: str(out / "rendered" / _render_dir_name(p, render_layout) / "train_rl_multi_q.parquet")
                 for p in protocols
@@ -807,9 +783,9 @@ def _write_report(
                 p: str(out / "rendered" / _render_dir_name(p, render_layout) / "test_rl_multi_q_segment_cache.parquet")
                 for p in protocols
             },
-            "eval_messages": {
-                p: str(out / "rendered" / _render_dir_name(p, render_layout) / "val_messages.jsonl")
-                for p in protocols
+            "eval_trajectories": {
+                "val": str(out / "rendered" / "trajectory" / "val_trajectory.jsonl"),
+                "test": str(out / "rendered" / "trajectory" / "test_trajectory.jsonl"),
             },
         },
         "suggested_loss_ratios": {
@@ -859,10 +835,9 @@ def _write_report(
         "",
         "## Trainable Files",
         "",
-        f"- SFT: `rendered/{render_dir}/train_sft_messages.jsonl`",
+        "- SFT: `rendered/trajectory/train_sft_trajectory.jsonl`",
         "- DAgger source: `final/train_sft_dagger_source_trajectories.jsonl`",
-        f"- DAgger output target: `rendered/{render_dir}/train_sft_dagger_messages.jsonl`",
-        f"- Eval: `rendered/{render_dir}/val_messages.jsonl`, `rendered/{render_dir}/test_messages.jsonl`",
+        "- Eval: `rendered/trajectory/val_trajectory.jsonl`, `rendered/trajectory/test_trajectory.jsonl`",
         f"- RL full-video: `rendered/{render_dir}/train_rl_multi_q.parquet`",
         f"- RL/agent eval: `rendered/{render_dir}/val_rl_multi_q.parquet`, `rendered/{render_dir}/test_rl_multi_q.parquet`",
         f"- RL segment: `rendered/{render_dir}/train_rl_multi_q_segment_cache.parquet`",
@@ -907,13 +882,17 @@ def main() -> None:
         default=CANONICAL_RENDER_LAYOUT,
         choices=SUPPORTED_RENDER_LAYOUTS,
         help=(
-            "Prompt layout for rendered messages and RL parquets. "
+            "Prompt layout for RL parquets. "
             "standard_query_last is the only supported training layout."
         ),
     )
     parser.add_argument("--no-render", action="store_true", help="Only write split trajectories/reports.")
     parser.add_argument("--no-parquet", action="store_true", help="Skip RL parquet generation.")
-    parser.add_argument("--no-balance-sft", action="store_true", help="Disable pass5 SFT silent downsampling.")
+    parser.add_argument(
+        "--no-balance-sft",
+        action="store_true",
+        help="Deprecated no-op; SFT rendering is trajectory-based and not downsampled here.",
+    )
     parser.add_argument(
         "--train-allocation",
         choices=["balanced", "weighted", "stratified"],
@@ -999,15 +978,12 @@ def main() -> None:
     )
 
     protocols = list(dict.fromkeys(args.frame_protocols))
-    message_counts: Dict[str, int] = {}
+    sft_eval_render_counts: Dict[str, int] = {}
     parquet_counts: Dict[str, int] = {}
     if not args.no_render:
-        message_counts = _render_messages(
+        sft_eval_render_counts = _render_trajectories(
             final_dir=out / "final",
             out=out,
-            protocols=protocols,
-            render_layout=args.render_layout,
-            no_balance_sft=args.no_balance_sft,
         )
     if not args.no_parquet:
         parquet_counts = _build_rl_parquets(
@@ -1026,7 +1002,7 @@ def main() -> None:
         splits=splits,
         manifest_counts=manifest_counts,
         trajectory_counts=trajectory_counts,
-        message_counts=message_counts,
+        sft_eval_render_counts=sft_eval_render_counts,
         parquet_counts=parquet_counts,
         protocols=protocols,
         render_layout=args.render_layout,

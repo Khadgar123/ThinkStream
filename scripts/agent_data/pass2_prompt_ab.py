@@ -29,7 +29,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
-from scripts.agent_data_pipeline.vllm_client import VLLMClient, encode_image_base64
+from scripts.agent_data_pipeline.vllm_client import (
+    TruncatedCompletionError,
+    VLLMClient,
+    encode_image_base64,
+)
 from thinkstream.data.agent_protocol import append_timestamped_image_list
 
 from .audit_pass2_stale import audit_rollouts
@@ -41,7 +45,6 @@ from .config import (
     RUNTIME_MM_PROCESSOR_KWARGS,
     SUMMARY_TOKENS_MAX,
     VLLM_MODEL,
-    compute_visual_window_start,
 )
 from .pass1a_evidence import get_chunk_frame_paths
 from .pass2_rollout import (
@@ -296,7 +299,7 @@ class VariantSpec:
     memory_mode: str
     block_order: str
     frame_order: str
-    visual_scope: str = "window"
+    visual_scope: str = "current_only"
     prompt_mode: str = "structured"
     memory_recent_limit: Optional[int] = None
     memory_include_summaries: bool = True
@@ -620,20 +623,18 @@ def _ordered_frames(
 ) -> Tuple[List[str], List[str], int]:
     if visual_scope == "current_only":
         window_start = chunk_idx
-    elif visual_scope == "window":
-        window_start = compute_visual_window_start(chunk_idx)
     else:
-        raise ValueError(f"Unsupported visual_scope={visual_scope!r}")
+        raise ValueError(
+            f"Unsupported visual_scope={visual_scope!r}; current_only is required"
+        )
 
     window_images: List[str] = []
     timestamp_labels: List[str] = []
-    for c in range(window_start, chunk_idx + 1):
-        label = "latest chunk" if c == chunk_idx else "older context"
-        for img_path in get_chunk_frame_paths(frame_paths, c):
-            if not Path(img_path).exists():
-                continue
-            window_images.append(img_path)
-            timestamp_labels.append(label)
+    for img_path in get_chunk_frame_paths(frame_paths, chunk_idx):
+        if not Path(img_path).exists():
+            continue
+        window_images.append(img_path)
+        timestamp_labels.append("latest chunk")
 
     if frame_order == "reverse":
         window_images.reverse()
@@ -878,7 +879,9 @@ async def run_variant_single_video(
         pre_action_timeline = snapshots[chunk_idx]["timeline"]
         pre_action_thinks = snapshots[chunk_idx]["recent_thinks"]
         should_compress_now = (
-            memory.should_compress() and len(pre_action_thinks) >= COMPRESS_RANGE_MIN
+            memory.should_compress()
+            and len(pre_action_timeline) >= COMPRESS_RANGE_MIN
+            and len(pre_action_thinks) >= 2
         )
 
         request = build_variant_observation_request(
@@ -961,13 +964,23 @@ async def run_variant_single_video(
                 safe_comp_max = _safe_max_tokens_for_pass2(
                     comp_request, comp_request["max_tokens"]
                 )
-                comp_raw = await client._call_one(
-                    messages=comp_request["messages"],
-                    max_tokens=safe_comp_max,
-                    temperature=comp_request["temperature"],
-                    request_id=f"{video_id}_{spec.name}_compress_{chunk_idx}",
-                    enable_thinking=bool(PASS_CONFIG["pass2_rollout"].get("thinking", False)),
-                )
+                try:
+                    comp_raw = await client._call_one(
+                        messages=comp_request["messages"],
+                        max_tokens=safe_comp_max,
+                        temperature=comp_request["temperature"],
+                        request_id=f"{video_id}_{spec.name}_compress_{chunk_idx}",
+                        enable_thinking=bool(PASS_CONFIG["pass2_rollout"].get("thinking", False)),
+                    )
+                except TruncatedCompletionError as exc:
+                    logger.warning(
+                        "  [%s] %s compression truncated at chunk %d; using fallback: %s",
+                        video_id,
+                        spec.name,
+                        chunk_idx,
+                        exc,
+                    )
+                    comp_raw = None
                 summary = parse_compress_result(comp_raw, comp_request["_meta"])
                 selected_indices = comp_request["_meta"]["selected_indices"]
                 memory.compress(summary, selected_indices=selected_indices)

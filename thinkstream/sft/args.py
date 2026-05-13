@@ -1,4 +1,4 @@
-"""Training arguments for per-timestep agent SFT.
+"""Training arguments for trajectory-mixed agent SFT.
 
 Based on Qwen3-VL official finetune arguments, extended with:
 - Agent protocol special tokens
@@ -9,6 +9,8 @@ Based on Qwen3-VL official finetune arguments, extended with:
 import transformers
 from dataclasses import dataclass, field
 from typing import Optional
+
+from thinkstream.data.schema import DEFAULT_VIDEO_MAX_PIXELS, DEFAULT_VIDEO_MIN_PIXELS
 
 
 @dataclass
@@ -29,9 +31,9 @@ class DataArguments:
         metadata={
             "help": "Dataset name(s) for eval_dataset, same syntax as "
             "dataset_use (comma-separated, %% sampling). When set, "
-            "make_per_timestep_data_module builds an eval dataset that "
+            "make_trajectory_data_module builds an eval dataset that "
             "the HF Trainer will run on every eval_steps. Use "
-            "stream_agent_val for the held-out video-disjoint pool."
+            "stream_agent_trajectory_val for the held-out video-disjoint pool."
         },
     )
     eval_max_samples: Optional[int] = field(
@@ -58,7 +60,7 @@ class DataArguments:
         default=None,
         metadata={
             "help": "Optional comma-separated eval class target ratios, e.g. "
-            "'silent=0.2,response=0.2,recall=0.2,post_recall=0.2,compress=0.2'. "
+            "'from_start=0.425,from_compress=0.425,compress=0.15'. "
             "If unset, present loss_class buckets are sampled equally."
         },
     )
@@ -77,26 +79,23 @@ class DataArguments:
     max_pixels: int = field(default=28 * 28 * 576)
     min_pixels: int = field(default=28 * 28 * 16)
 
-    # Video (per-timestep: 24 frames, fixed resolution)
+    # Video chunk settings.
     video_max_frames: Optional[int] = field(default=32)
     video_min_frames: Optional[int] = field(default=4)
-    # Streaming-runtime profile, ViT-patch-aligned (multiples of 28·28):
-    #   min = 256·28·28 = 200,704 — 2× Qwen3-VL official floor (128·28·28)
-    #     for higher streaming-window detail recovery per chunk.
-    #   max = 512·28·28 = 401,408 — capped below Qwen3-VL official
-    #     (768·28·28) so 16 chunks × ~380 tok/frame fit comfortably in
-    #     a 16K context with room for memory + think budgets.
+    # Streaming-runtime profile selected for the 8B local HF + KV-window path:
+    #   min = 256·28·28 = 200,704
+    #   max = 512·28·28 = 401,408
     # Same values as DEFAULT_VIDEO_{MIN,MAX}_PIXELS in thinkstream.data.schema
     # and RUNTIME_MM_PROCESSOR_KWARGS in scripts/agent_data/config.py —
     # SFT/RL/Eval/deploy unified.
-    video_max_pixels: int = field(default=512 * 28 * 28)   # 401,408
-    video_min_pixels: int = field(default=256 * 28 * 28)   # 200,704
+    video_max_pixels: int = field(default=DEFAULT_VIDEO_MAX_PIXELS)
+    video_min_pixels: int = field(default=DEFAULT_VIDEO_MIN_PIXELS)
     video_fps: float = field(default=2.0)
 
-    # Per-timestep agent config
-    # v12.5: 1s/chunk, 16-chunk visual window (16s @ 2fps = 32 frames).
+    # Agent trajectory config.
+    # v12.15: 1s/chunk, 8-chunk visual window (8s @ 2fps = 16 frames).
     agent_chunk_sec: float = field(default=1.0)
-    visual_window_chunks: int = field(default=16)
+    visual_window_chunks: int = field(default=8)
     max_sample_tokens: Optional[int] = field(
         default=12000,
         metadata={
@@ -121,8 +120,9 @@ class DataArguments:
     class_loss_target_ratios: Optional[str] = field(
         default=None,
         metadata={
-            "help": "Optional comma-separated sample_type target distribution, "
-            "e.g. 'silent=0.35,response=0.25,recall=0.25,compress=0.15'. "
+            "help": "Optional comma-separated trajectory loss-class target "
+            "distribution, e.g. "
+            "'from_start=0.425,from_compress=0.425,compress=0.15'. "
             "When set, rows remain unique and per-sample weights are assigned "
             "as w=(target/observed)^alpha normalized to mean 1."
         },
@@ -143,13 +143,12 @@ class DataArguments:
         },
     )
     compress_token_weighting: bool = field(
-        default=True,
+        default=False,
         metadata={
-            "help": "For compress SFT rows, redistribute loss inside the "
-            "assistant span: emphasize tool/action/schema/closing tokens and "
-            "down-weight the open-ended summary body. This targets the hard "
-            "format/stop behaviour without teaching the model to simply keep "
-            "writing longer summaries."
+            "help": "Ablation-only. When enabled for compress SFT rows, "
+            "redistribute loss inside the assistant span between format/body/"
+            "closing tokens. Default False keeps normal assistant-token CE so "
+            "the <MEM> body is trained with the same weight as the format."
         },
     )
     compress_structure_token_weight: float = field(
@@ -224,15 +223,6 @@ class DataArguments:
             "ce_weight clamp(0, 20)."
         },
     )
-    require_pre_extracted_frames: bool = field(
-        default=True,
-        metadata={
-            "help": "Fail loudly if a sample lacks frame_paths. "
-            "Online video decoding is ~50× slower than pre-extracted frames; "
-            "set False only for one-off smoke tests."
-        },
-    )
-
     # Audit / reviewable training logs
     audit_log_dir: Optional[str] = field(
         default=None,

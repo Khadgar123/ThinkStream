@@ -23,12 +23,11 @@ import random
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from .config import PLACEMENTS_DIR
+from .config import PLACEMENTS_DIR, VISUAL_WINDOW_CHUNKS
 from .pass3a_cards import dict_to_card
 from .stable_hash import stable_seed
-from .v2.design import (
+from .placement.design import (
     Placement,
-    RECENT_THINKS_HORIZON,
     adaptive_q_count,
     assign_recall_noise,
     place_card,
@@ -40,11 +39,8 @@ from .v2.design import (
 logger = logging.getLogger(__name__)
 
 
-RECALL_MEMORY_GAP_OVERLAP_MAX = float(
-    os.environ.get("THINKSTREAM_RECALL_MEMORY_GAP_OVERLAP_MAX", "0.95")
-)
 RECALL_MEMORY_GAP_MIN_AGE = int(
-    os.environ.get("THINKSTREAM_RECALL_MEMORY_GAP_MIN_AGE", str(RECENT_THINKS_HORIZON))
+    os.environ.get("THINKSTREAM_RECALL_MEMORY_GAP_MIN_AGE", str(VISUAL_WINDOW_CHUNKS + 1))
 )
 
 
@@ -55,18 +51,12 @@ def _refine_selected_recall_with_rollout(
     *,
     video_id: str = "",
 ) -> Dict[str, int]:
-    """Keep only recall slots that have a real memory gap or can be hardened.
+    """Keep only recall slots with historical evidence outside the KV window.
 
     Pass3B already receives pass2 rollout, so it can cheaply reject low-value
-    recall before pass3c rendering. This is intentionally conservative:
-    - response recall is kept when current memory/context does not expose the
-      answer and BM25 can return historical chunks;
-    - if the current memory already exposes the answer, keep the slot only as a
-      teacher-hardening candidate so pass3c can rewrite the card without
-      changing timing;
-    - wait-state recall is kept only when elapsed-history BM25 returns a real
-      past chunk whose detailed text is not already in the current memory.
-      Otherwise a plain silent row is better training signal.
+    recall before pass3c rendering. Compact text memory is lossy state, not a
+    substitute for old visual KV, so recall necessity is determined by evidence
+    age/retrievability rather than answer-word overlap with memory text.
     """
     stats = {
         "slots_seen": 0,
@@ -84,10 +74,6 @@ def _refine_selected_recall_with_rollout(
     # Local import avoids making pass3b import pass3c at module load time.
     from .pass3c_samples import (
         RECALL_RETURN_CHUNKS,
-        _current_context_text_for_chunk,
-        _memory_text_for_chunk,
-        _memory_overlap_score,
-        _needs_recall_hardening,
         _is_unanswerable_card,
         _recall_query_available,
         _recall_query_for,
@@ -120,35 +106,14 @@ def _refine_selected_recall_with_rollout(
             })
         return archive
 
-    def archive_text_by_chunk(current_chunk: int) -> Dict[int, str]:
-        return {
-            int(item["chunk"]): str(item.get("text", ""))
-            for item in archive_before(current_chunk)
-        }
-
-    def has_real_memory_gap(
-        chunks: List[int],
-        current_chunk: int,
-        memory_text: str,
-    ) -> bool:
-        """True when a retrieved historical chunk is outside current memory.
-
-        Recent pass2 thinks are already present in the model prompt; recalling
-        them would teach unnecessary tool use. A recall slot should require
-        either older history or compressed-away visual detail.
-        """
-        by_chunk = archive_text_by_chunk(current_chunk)
+    def has_kv_age_gap(chunks: List[int], current_chunk: int) -> bool:
+        """True when any chunk is strictly older than the visual KV window."""
         for ch in chunks:
             try:
                 ci = int(ch)
             except (TypeError, ValueError):
                 continue
-            if int(current_chunk) - ci <= int(RECALL_MEMORY_GAP_MIN_AGE):
-                continue
-            text = by_chunk.get(ci, "")
-            if not text:
-                continue
-            if _memory_overlap_score(text, memory_text) <= RECALL_MEMORY_GAP_OVERLAP_MAX:
+            if int(current_chunk) - ci >= int(RECALL_MEMORY_GAP_MIN_AGE):
                 return True
         return False
 
@@ -184,16 +149,6 @@ def _refine_selected_recall_with_rollout(
                     stats["dropped_empty_history"] += 1
                     drop_slot(p, int(c), "answer_support_already_past")
                     continue
-                memory_text = _memory_text_for_chunk(rollout, int(c))
-                context_text = _current_context_text_for_chunk(
-                    rollout,
-                    int(c),
-                    memory_text=memory_text,
-                )
-                if _needs_recall_hardening(card, context_text):
-                    stats["dropped_empty_history"] += 1
-                    drop_slot(p, int(c), "answer_visible_before_wait_response")
-                    continue
                 rq = _recall_wait_query_for(card, int(c))
                 if not _valid_recall_query(rq):
                     stats["dropped_invalid_query"] += 1
@@ -208,9 +163,9 @@ def _refine_selected_recall_with_rollout(
                     stats["dropped_future_leak"] += 1
                     drop_slot(p, int(c), "wait_future_leak")
                     continue
-                if not has_real_memory_gap(chunks, int(c), memory_text):
+                if not has_kv_age_gap(chunks, int(c)):
                     stats["dropped_no_memory_gap"] += 1
-                    drop_slot(p, int(c), "wait_history_already_in_memory")
+                    drop_slot(p, int(c), "wait_history_still_visual")
                     continue
                 p.recall_reason_at[int(c)] = (
                     p.recall_reason_at.get(int(c), "") or "elapsed_history_check"
@@ -262,6 +217,10 @@ def _refine_selected_recall_with_rollout(
             )
             if multi_event_history_probe:
                 support = set(_support_chunks_before(card, int(c)))
+                if not has_kv_age_gap(list(support or set(chunks)), int(c)):
+                    stats["dropped_no_memory_gap"] += 1
+                    drop_slot(p, int(c), "multi_event_history_still_visual")
+                    continue
                 if support and not (support & set(chunks)):
                     rr = _recall_result_for(
                         card,
@@ -284,29 +243,15 @@ def _refine_selected_recall_with_rollout(
                 )
                 continue
 
-            memory_text = _memory_text_for_chunk(rollout, int(c))
-            context_text = _current_context_text_for_chunk(
-                rollout,
-                int(c),
-                memory_text=memory_text,
-            )
             visual_verification_probe = (
                 p.mechanism == "memory_direct"
                 and str(getattr(p, "recall_need", "") or "")
                 == "memory_direct_visual_verification"
             )
-            if p.mechanism == "recall_demo" and _needs_recall_hardening(card, context_text):
-                p.recall_reason_at[int(c)] = "teacher_hardening_memory_gap"
-                p.recall_need = "teacher_hardening_answer_visible_in_memory"
-                stats["kept_teacher_hardening"] += 1
-                continue
-            if _needs_recall_hardening(card, context_text) and not visual_verification_probe:
+            support_before = _support_chunks_before(card, int(c))
+            if not has_kv_age_gap(support_before or chunks, int(c)):
                 stats["dropped_no_memory_gap"] += 1
-                drop_slot(p, int(c), "answer_visible_in_memory")
-                continue
-            if not has_real_memory_gap(chunks, int(c), memory_text) and not visual_verification_probe:
-                stats["dropped_no_memory_gap"] += 1
-                drop_slot(p, int(c), "response_history_already_in_memory")
+                drop_slot(p, int(c), "response_history_still_visual")
                 continue
 
             support = set(_support_chunks_before(card, int(c)))
@@ -376,6 +321,24 @@ def _dict_to_placement(d: Dict) -> Placement:
         recall_at={int(k): v for k, v in d.get("recall_at", {}).items()},
         recall_reason_at={int(k): v for k, v in d.get("recall_reason_at", {}).items()},
     )
+
+
+def _placement_crosses_compress_boundary(
+    placement: Placement,
+    compression_boundaries: List[int],
+) -> bool:
+    """True if a compact-memory boundary would split a question episode."""
+    if not compression_boundaries:
+        return False
+    response_chunks = [
+        int(c) for c, action in placement.chunk_actions.items()
+        if action and str(action[0]) == "response"
+    ]
+    if not response_chunks:
+        return False
+    ask = int(placement.ask_chunk)
+    last_answer = max(response_chunks)
+    return any(ask < int(boundary) <= last_answer for boundary in compression_boundaries)
 
 
 # ---------------------------------------------------------------------------
@@ -450,11 +413,21 @@ def plan_trajectories(
     cards_by_id = {c.card_id: c for c in cards_obj}
     filtered_by_card: Dict[str, List[Placement]] = {}
     rejected: Dict[str, int] = {}
+    compression_boundaries = [
+        int(e.get("trigger_chunk"))
+        for e in (rollout or {}).get("compression_events", [])
+        if e.get("trigger_chunk") is not None
+    ]
     for cid, plcs in placements_by_card.items():
         card = cards_by_id.get(cid)
         if not card:
             continue
         for p in plcs:
+            if _placement_crosses_compress_boundary(p, compression_boundaries):
+                rejected["crosses_compress_boundary"] = (
+                    rejected.get("crosses_compress_boundary", 0) + 1
+                )
+                continue
             ok, reason = placement_timing_verdict(card, p)
             if ok:
                 filtered_by_card.setdefault(cid, []).append(p)

@@ -42,6 +42,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Callable, Any, Tuple
+import re
 
 import torch
 
@@ -280,6 +281,32 @@ def default_update_state(
         new_state.n_compress_calls += 1
         tool_call = parsed.get("tool_call") or {}
         args = tool_call.get("arguments") or {}
+        mem_text = parsed.get("memory_text") or args.get("memory_text") or ""
+        if mem_text:
+            entries = []
+            for m in re.finditer(
+                r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>(.*?)</m>',
+                mem_text,
+                flags=re.DOTALL | re.IGNORECASE,
+            ):
+                start = int(m.group(1))
+                end = int(m.group(2) if m.group(2) is not None else m.group(1))
+                if end < start:
+                    start, end = end, start
+                text = re.sub(r"\s+", " ", m.group(3)).strip()
+                if text:
+                    entries.append({
+                        "time_range": [start, end],
+                        "text": text,
+                        "from_chunk": chunk_idx,
+                        "merge_level": 1,
+                        "source_chunks": list(range(start, end + 1)),
+                        "compact_memory": True,
+                    })
+            if entries:
+                new_state.compressed_summaries = entries
+                new_state.recent_thinks = []
+                return new_state
         # v12.12 (2026-05-02): track merge_level for unified compress policy.
         # When the trigger range overlaps an existing summary (cross-summary
         # compression), the new summary inherits max(replaced merge_levels) + 1.

@@ -22,6 +22,7 @@ Processing: Sequential per video, parallel across videos.
 import json
 import logging
 import re
+import html
 from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -29,6 +30,14 @@ from PIL import Image
 
 from .config import (
     AGENT_CHUNK_SEC,
+    COMPACT_MEMORY_BALANCE_SEGMENTS,
+    COMPACT_MEMORY_MAX_NEW_CHUNKS,
+    COMPACT_MEMORY_MIN_NEW_CHUNKS,
+    COMPACT_MEMORY_TARGET_NEW_CHUNKS,
+    COMPACT_MEMORY_TEXT_TOKEN_BUDGET,
+    COMPACT_MEMORY_UPDATE_MODE,
+    COMPACT_MEMORY_UPDATE_PROMPT,
+    COMPACT_MEMORY_UPDATE_SYSTEM_PROMPT,
     COMPRESS_PROMPT,
     COMPRESS_RANGE_MAX,
     COMPRESS_RANGE_MIN,
@@ -50,10 +59,73 @@ from .config import (
 )
 from .evidence_think import build_think_from_pass1_evidence, think_source_for_evidence
 from .pass1a_evidence import get_chunk_frame_paths
-from scripts.agent_data_pipeline.vllm_client import encode_image_base64
+from scripts.agent_data_pipeline.vllm_client import TruncatedCompletionError, encode_image_base64
 from thinkstream.data.agent_protocol import append_timestamped_image_list
 
 logger = logging.getLogger(__name__)
+
+
+def plan_compact_memory_intervals(
+    num_chunks: int,
+    *,
+    min_len: int = COMPACT_MEMORY_MIN_NEW_CHUNKS,
+    target_len: int = COMPACT_MEMORY_TARGET_NEW_CHUNKS,
+    max_len: int = COMPACT_MEMORY_MAX_NEW_CHUNKS,
+) -> List[int]:
+    """Plan full-video compact-memory segment lengths.
+
+    The online runtime can only use text-token pressure, but pass2 data
+    construction knows the full video length. Use that to avoid pathological
+    short tails from fixed max-length triggering, e.g. 149 -> 36/36/36/36/5.
+    If an exact 25-36 partition is mathematically impossible, prefer one
+    slightly-longer segment over a very short tail.
+    """
+    n = int(num_chunks or 0)
+    if n <= 0:
+        return []
+    min_len = max(1, int(min_len))
+    target_len = max(min_len, int(target_len))
+    max_len = max(min_len, int(max_len))
+    if n <= max_len:
+        return [n]
+
+    min_segments = (n + max_len - 1) // max_len
+    max_segments = n // min_len
+    if min_segments <= max_segments:
+        target_segments = max(1, round(n / target_len))
+        k = min(max(target_segments, min_segments), max_segments)
+        base, rem = divmod(n, k)
+        return [base + (1 if i < rem else 0) for i in range(k)]
+
+    # Infeasible lengths are mostly 37-49 and 73-74 for the default 25-36
+    # range. Choose the largest segment count that still keeps every segment
+    # at least min_len; this creates a slightly-long segment instead of a
+    # short tail, e.g. 43 -> 43 and 73 -> 37/36.
+    k = max(1, max_segments)
+    base, rem = divmod(n, k)
+    return [base + (1 if i < rem else 0) for i in range(k)]
+
+
+def plan_compact_memory_boundaries(
+    num_chunks: int,
+    *,
+    min_len: int = COMPACT_MEMORY_MIN_NEW_CHUNKS,
+    target_len: int = COMPACT_MEMORY_TARGET_NEW_CHUNKS,
+    max_len: int = COMPACT_MEMORY_MAX_NEW_CHUNKS,
+) -> List[int]:
+    """Return chunk indices where pass2 should compact before that chunk."""
+    pos = 0
+    boundaries: List[int] = []
+    intervals = plan_compact_memory_intervals(
+        num_chunks,
+        min_len=min_len,
+        target_len=target_len,
+        max_len=max_len,
+    )
+    for length in intervals[:-1]:
+        pos += int(length)
+        boundaries.append(pos)
+    return boundaries
 
 
 # v12.11 hotfix (2026-05-01): vLLM rejects requests where the server-side
@@ -71,12 +143,12 @@ logger = logging.getLogger(__name__)
 # via THINKSTREAM_VLLM_MAX_MODEL_LEN env so this client-side cap matches
 # the server's actual context window.
 #
-# Conservative input estimate per pass2 observation request (v12.12):
-#   visual:  32 frames × ~235 tok/frame = ~7,520 tok (RUNTIME mm_processor_kwargs)
+# Conservative input estimate per pass2 observation request (v12.15):
+#   visual:  16 frames × ~235 tok/frame = ~3,760 tok (RUNTIME mm_processor_kwargs)
 #   memory:  recent_thinks ≤ 4000 tok + compressed ≤ 1400 tok = ~5400 tok
 #   prompt template + safety: ~700 tok
 #   ─────────────────────────────────────────────────
-#   estimated input ~13,600 tok worst case → max_tokens=16K fits in 64K cap.
+#   estimated input ~9,800 tok worst case → max_tokens=16K fits in 64K cap.
 import os as _os
 _PASS2_SAFE_MAX_MODEL_LEN = int(
     _os.environ.get("THINKSTREAM_VLLM_MAX_MODEL_LEN", "65536")
@@ -217,18 +289,59 @@ class MemoryState:
         return total
 
     def count_recent_tokens(self) -> int:
-        """Count only raw recent-think tokens.
+        """Backward-compatible alias for full visible-memory token count."""
+        return self.count_tokens()
 
-        Compression trigger parity: SFT data construction, HF runtime, eval,
-        and RL all fire compression based on recent raw thinks. Compressed
-        summaries are prompt memory for the model; they do not drive trigger
-        timing and are not part of the recall index.
+    def compress_trigger_diagnostic(self) -> Dict:
+        """Return compact-memory trigger status and the accounting inputs.
+
+        The production trigger intentionally ignores visual tokens and tool
+        output tokens; those are reserved at the context-budget level. This
+        counter tracks only visible text memory: previous compact summaries
+        plus raw observations since the last compact update.
         """
-        return sum(self._count_item_tokens(item) for item in self.recent_thinks)
+        if not COMPACT_MEMORY_UPDATE_MODE:
+            tokens = self.count_recent_tokens()
+            return {
+                "triggered": tokens >= COMPRESS_TOKEN_THRESHOLD,
+                "mode": "legacy_range_summary",
+                "visible_text_tokens": tokens,
+                "threshold_tokens": COMPRESS_TOKEN_THRESHOLD,
+                "recent_raw_chunks": len(self.recent_thinks),
+                "min_new_chunks": COMPRESS_RANGE_MIN,
+                "max_new_chunks": COMPRESS_RANGE_MAX,
+                "reason": "legacy_token_threshold" if tokens >= COMPRESS_TOKEN_THRESHOLD else "below_threshold",
+            }
+
+        tokens = self.count_tokens()
+        recent_raw = len(self.recent_thinks)
+        token_ready = tokens >= COMPACT_MEMORY_TEXT_TOKEN_BUDGET
+        forced_by_age = recent_raw >= COMPACT_MEMORY_MAX_NEW_CHUNKS
+        enough_new = recent_raw >= COMPACT_MEMORY_MIN_NEW_CHUNKS
+        triggered = enough_new and (token_ready or forced_by_age)
+        if triggered:
+            reason = "text_budget" if token_ready else "max_new_chunks"
+        elif not enough_new:
+            reason = "min_new_chunks"
+        else:
+            reason = "below_text_budget"
+        return {
+            "triggered": triggered,
+            "mode": "compact_memory_update",
+            "visible_text_tokens": tokens,
+            "threshold_tokens": COMPACT_MEMORY_TEXT_TOKEN_BUDGET,
+            "recent_raw_chunks": recent_raw,
+            "min_new_chunks": COMPACT_MEMORY_MIN_NEW_CHUNKS,
+            "target_new_chunks": COMPACT_MEMORY_TARGET_NEW_CHUNKS,
+            "max_new_chunks": COMPACT_MEMORY_MAX_NEW_CHUNKS,
+            "token_ready": token_ready,
+            "forced_by_age": forced_by_age,
+            "reason": reason,
+        }
 
     def should_compress(self) -> bool:
-        """Trigger when recent raw-think tokens reach 80% of budget."""
-        return self.count_recent_tokens() >= COMPRESS_TOKEN_THRESHOLD
+        """Trigger when the full visible text memory reaches the budget."""
+        return bool(self.compress_trigger_diagnostic().get("triggered"))
 
     def compress(self, summary: Dict, selected_indices: List[int]):
         """In-place replacement: selected timeline items → summary.
@@ -274,6 +387,41 @@ class MemoryState:
                 new_timeline.append(item)
 
         self.timeline = new_timeline
+
+    def replace_with_compact_entries(self, summary: Dict):
+        """Replace the visible timeline with teacher-produced compact memory.
+
+        Retrieval archive is deliberately untouched so recall can still map
+        raw one-second observations back to original frames.
+        """
+        entries = summary.get("entries") or []
+        new_timeline: List[Dict] = []
+        for entry in entries:
+            text = str(entry.get("text", "")).strip()
+            tr = entry.get("time_range") or []
+            if not text or not (isinstance(tr, list) and len(tr) == 2):
+                continue
+            try:
+                start, end = int(tr[0]), int(tr[1])
+            except (TypeError, ValueError):
+                continue
+            if end < start:
+                start, end = end, start
+            source_chunks: List[int] = []
+            for c in (entry.get("source_chunks") or range(start, end + 1)):
+                try:
+                    source_chunks.append(int(c))
+                except (TypeError, ValueError):
+                    continue
+            new_timeline.append({
+                "type": "summary",
+                "time_range": [start, end],
+                "text": text,
+                "source_chunks": sorted(set(source_chunks)),
+                "merge_level": int(entry.get("merge_level", summary.get("merge_level", 1)) or 1),
+                "compact_memory": True,
+            })
+        self.timeline = sorted(new_timeline, key=lambda item: (item["time_range"][0], item["time_range"][1]))
 
     @staticmethod
     def _format_timeline_item_as_memory_tag(item: Dict) -> str:
@@ -550,16 +698,15 @@ def build_observation_request(
 ) -> Dict:
     """Build request for 397B to generate a student observation.
 
-    v12.18 (2026-05-04): observation requests send the full sliding visual
-    window as a timestamped image list, ordered from older context to the
-    latest chunk. Real A/B calls on stale pass2 failures showed that this is
-    more reliable than the vLLM video_url path for making the latest chunk
-    win against stale text memory, while still preserving the student's visual
-    sliding-window distribution.
+    Fallback-only path. Production pass2 uses pass1's current-only evidence
+    notes; if evidence is missing, keep this teacher request aligned with the
+    runtime prompt by sending only the current 1s chunk's two frames. The
+    recurrent visual KV window is a runtime mechanism and is not replayed in
+    the request content.
     """
     start = chunk_idx * AGENT_CHUNK_SEC
     end = start + AGENT_CHUNK_SEC
-    window_start = compute_visual_window_start(chunk_idx)
+    window_start = chunk_idx
 
     memory_text = memory.format_for_observation_prompt()
 
@@ -576,13 +723,11 @@ def build_observation_request(
     content: List[Dict] = [{"type": "text", "text": prompt}]
     window_images: List[str] = []
     timestamp_labels: List[str] = []
-    for c in range(window_start, chunk_idx + 1):
-        label = "latest chunk" if c == chunk_idx else "older context"
-        for img_path in get_chunk_frame_paths(frame_paths, c):
-            if not Path(img_path).exists():
-                continue
-            window_images.append(img_path)
-            timestamp_labels.append(label)
+    for img_path in get_chunk_frame_paths(frame_paths, chunk_idx):
+        if not Path(img_path).exists():
+            continue
+        window_images.append(img_path)
+        timestamp_labels.append("latest chunk")
     append_timestamped_image_list(
         content,
         window_images,
@@ -757,6 +902,123 @@ def _range_time_bounds(items: List[Dict]) -> Tuple[int, int]:
     return (min(starts), max(ends)) if bounds else (0, 0)
 
 
+_MEM_BLOCK_RE = re.compile(r"<MEM>\s*(.*?)\s*</MEM>", re.DOTALL | re.IGNORECASE)
+_MEM_LINE_RE = re.compile(
+    r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>(.*?)</m>',
+    re.DOTALL | re.IGNORECASE,
+)
+
+
+def _xml_text(text: object) -> str:
+    """Escape text embedded inside XML-ish teacher prompt tags."""
+    return html.escape(str(text or "").strip(), quote=False)
+
+
+def _format_compact_memory_block(items: List[Dict]) -> str:
+    """Render current summary items as OLD_MEMORY for compact update."""
+    lines = ["<MEM>"]
+    for item in items:
+        if item.get("type") != "summary":
+            continue
+        start, end = _item_time_bounds(item)
+        if end < start:
+            start, end = end, start
+        lines.append(f'  <m t="{int(start)}-{int(end)}">{_xml_text(item.get("text", ""))}</m>')
+    lines.append("</MEM>")
+    return "\n".join(lines)
+
+
+def _format_new_captions_block(items: List[Dict]) -> str:
+    """Render raw recent think items as NEW_CAPTIONS for compact update."""
+    lines = ["<NEW_CAPTIONS>"]
+    for item in items:
+        if item.get("type") != "think":
+            continue
+        try:
+            chunk = int(item.get("chunk"))
+        except (TypeError, ValueError):
+            start, _end = _item_time_bounds(item)
+            chunk = int(start)
+        lines.append(f'  <c t="{chunk}">{_xml_text(item.get("text", ""))}</c>')
+    lines.append("</NEW_CAPTIONS>")
+    return "\n".join(lines)
+
+
+def _extract_mem_block(raw: str) -> str:
+    """Return a normalized ``<MEM>`` block from a teacher response.
+
+    Large teacher models often obey the semantic task but drift on the thin XML
+    wrapper: either returning bare ``<m>`` lines without ``<MEM>``, or omitting
+    ``</m>`` on each line while still separating entries line-by-line. Repair
+    those mechanical forms here so useful compact memories do not fall back to
+    deterministic summaries.
+    """
+    text = re.sub(r"<think>.*?</think>", "", str(raw or ""), flags=re.DOTALL).strip()
+    if not text:
+        return ""
+
+    mem_match = _MEM_BLOCK_RE.search(text)
+    body = mem_match.group(1) if mem_match else text
+    if not re.search(r"<m\b", body, flags=re.IGNORECASE):
+        return mem_match.group(0).strip() if mem_match else ""
+
+    line_re = re.compile(
+        r"(<m\b[^>]*>)(.*?)(?=(?:\n\s*<m\b)|(?:\s*</MEM>)|$)",
+        re.DOTALL | re.IGNORECASE,
+    )
+    lines: List[str] = []
+    for match in line_re.finditer(body):
+        open_tag = match.group(1).strip()
+        payload = match.group(2)
+        payload = re.sub(r"</?MEM>", "", payload, flags=re.IGNORECASE)
+        if "</m>" in payload.lower():
+            payload = re.split(r"</m>", payload, maxsplit=1, flags=re.IGNORECASE)[0]
+        payload = re.sub(r"\s+", " ", payload).strip()
+        if payload:
+            lines.append(f"  {open_tag}{payload}</m>")
+    if not lines:
+        return mem_match.group(0).strip() if mem_match else ""
+    return "<MEM>\n" + "\n".join(lines) + "\n</MEM>"
+
+
+def parse_compact_memory_entries(raw: str) -> List[Dict]:
+    """Parse teacher/user <MEM> block into summary-like timeline entries."""
+    block = _extract_mem_block(raw or "")
+    if not block:
+        return []
+    entries: List[Dict] = []
+    for m in _MEM_LINE_RE.finditer(block):
+        try:
+            start = int(m.group(1))
+            end = int(m.group(2) if m.group(2) is not None else m.group(1))
+        except (TypeError, ValueError):
+            continue
+        if end < start:
+            start, end = end, start
+        text = html.unescape(re.sub(r"\s+", " ", m.group(3)).strip())
+        if not _is_valid_compress_text(text):
+            continue
+        entries.append({
+            "type": "summary",
+            "time_range": [start, end],
+            "text": text,
+            "source_chunks": list(range(start, end + 1)),
+            "merge_level": 1,
+            "compact_memory": True,
+        })
+    entries.sort(key=lambda item: (item["time_range"][0], item["time_range"][1]))
+    return entries
+
+
+def _entries_to_mem_text(entries: List[Dict]) -> str:
+    lines = ["<MEM>"]
+    for entry in entries:
+        tr = entry.get("time_range") or [0, 0]
+        lines.append(f'  <m t="{int(tr[0])}-{int(tr[1])}">{entry.get("text", "").strip()}</m>')
+    lines.append("</MEM>")
+    return "\n".join(lines)
+
+
 # Compression scoring weights (configurable, sum ≈ 1.0)
 COMPRESS_W_CONTENT  = 0.30  # content importance → avoid compressing
 COMPRESS_W_MERGE    = 0.20  # re-compression penalty → avoid
@@ -857,10 +1119,9 @@ def choose_optimal_compress_range(
 ) -> Tuple[List[int], Dict]:
     """Choose the best contiguous visible-memory range to compress.
 
-    Trigger timing still depends only on raw recent_thinks, but range selection
-    runs over the unified visible timeline so older summaries can be
-    re-compressed together with adjacent raw thinks. This matches the original
-    v12.12 policy: summaries receive a soft merge_level penalty, not a hard
+    Trigger timing and range selection both run over the unified visible
+    timeline, so older summaries can be re-compressed together with adjacent
+    raw observations. Summaries receive a soft merge_level penalty, not a hard
     exclusion.
 
     Returns: (selected_indices in timeline, policy_meta)
@@ -969,6 +1230,64 @@ def build_compress_request(
     `frame_paths` arg is kept for backward compatibility with callers and is
     no longer consumed here.
     """
+    if COMPACT_MEMORY_UPDATE_MODE:
+        if not pre_action_timeline:
+            return None
+        raw_think_items = [item for item in pre_action_timeline if item.get("type") == "think"]
+        if not raw_think_items:
+            return None
+        selected_indices = list(range(len(pre_action_timeline)))
+        source_items = [pre_action_timeline[i] for i in selected_indices]
+        first_time, last_time = _range_time_bounds(source_items)
+        raw_think_chunks = [
+            int(item["chunk"]) for item in raw_think_items
+            if isinstance(item.get("chunk"), int) or str(item.get("chunk", "")).isdigit()
+        ]
+        compress_chunks = _range_source_chunks(source_items)
+        merge_level = (
+            max((int(item.get("merge_level", 0)) for item in source_items), default=0)
+            + 1
+        )
+        old_memory_text = _format_compact_memory_block(source_items)
+        new_captions_text = _format_new_captions_block(source_items)
+        prompt = COMPACT_MEMORY_UPDATE_PROMPT.format(
+            old_memory=old_memory_text,
+            new_captions=new_captions_text,
+            start=int(first_time),
+            end=int(last_time),
+        )
+        return {
+            "messages": [
+                {"role": "system", "content": COMPACT_MEMORY_UPDATE_SYSTEM_PROMPT},
+                {"role": "user", "content": prompt},
+            ],
+            "max_tokens": PASS_CONFIG["pass2_rollout"]["max_tokens_compress"],
+            "temperature": PASS_CONFIG["pass2_rollout"]["temperature"],
+            "id": f"{video_id}_compact_mem_{chunk_idx}",
+            "_meta": {
+                "task_type": "compact_memory_update",
+                "time_range": [int(first_time), int(last_time)],
+                "selected_indices": selected_indices,
+                "chunks": compress_chunks,
+                "raw_think_chunks": raw_think_chunks,
+                "merge_level": merge_level,
+                "teacher_policy": {
+                    "mode": "compact_memory_update",
+                    "timeline_size": len(pre_action_timeline),
+                    "n_new_captions": len(raw_think_items),
+                    "n_old_memory": sum(1 for item in pre_action_timeline if item.get("type") == "summary"),
+                },
+                "overlap_chunks": [],
+                "has_visual_context": False,
+                "observations_text": "\n".join(
+                    MemoryState._format_timeline_item_as_memory_tag(item)
+                    for item in source_items
+                ),
+                "old_memory_text": old_memory_text,
+                "new_captions_text": new_captions_text,
+            },
+        }
+
     selected_indices, policy_meta = choose_optimal_compress_range(
         pre_action_timeline, evidence
     )
@@ -1050,6 +1369,81 @@ def _fallback_compress_text(meta: Dict) -> str:
     return obs
 
 
+def _fallback_compact_entries(meta: Dict, target_lines: int = 5) -> List[Dict]:
+    """Deterministic compact-memory fallback when teacher output is invalid."""
+    records: List[Dict] = []
+    obs = meta.get("observations_text", "")
+    for m in re.finditer(
+        r"<(memory_think|compressed)>(.*?)</\1>",
+        obs,
+        flags=re.DOTALL,
+    ):
+        kind = m.group(1)
+        try:
+            payload = json.loads(m.group(2))
+        except (TypeError, json.JSONDecodeError):
+            continue
+        text = str(payload.get("text", "")).strip()
+        if not text:
+            continue
+        if kind == "memory_think":
+            time_raw = str(payload.get("time", "")).strip()
+            nums = [int(x) for x in re.findall(r"\d+", time_raw)]
+            if nums:
+                start, end = nums[0], nums[-1]
+            else:
+                start, end = meta.get("time_range", [0, 0])
+        else:
+            tr = payload.get("time_range") or []
+            if isinstance(tr, list) and len(tr) == 2:
+                start, end = int(tr[0]), int(tr[1])
+            else:
+                start, end = meta.get("time_range", [0, 0])
+        if end < start:
+            start, end = end, start
+        records.append({"start": int(start), "end": int(end), "text": text})
+
+    if not records:
+        start, end = meta.get("time_range", [0, 0])
+        records = [{
+            "start": int(start),
+            "end": int(end),
+            "text": _fallback_compress_text(meta),
+        }]
+
+    records.sort(key=lambda r: (r["start"], r["end"]))
+    if len(records) <= 6:
+        groups = [[r] for r in records]
+    else:
+        n_groups = max(4, min(6, int(target_lines)))
+        groups = []
+        for gi in range(n_groups):
+            lo = round(gi * len(records) / n_groups)
+            hi = round((gi + 1) * len(records) / n_groups)
+            groups.append(records[lo:hi])
+
+    entries: List[Dict] = []
+    for group in groups:
+        group = [r for r in group if r]
+        if not group:
+            continue
+        start = min(r["start"] for r in group)
+        end = max(r["end"] for r in group)
+        text = " ".join(r["text"] for r in group)
+        text = re.sub(r"\s+", " ", text).strip()
+        if len(text) > 260:
+            text = text[:260].rsplit(" ", 1)[0].rstrip(".;,") + "."
+        entries.append({
+            "type": "summary",
+            "time_range": [start, end],
+            "text": text,
+            "source_chunks": list(range(start, end + 1)),
+            "merge_level": int(meta.get("merge_level", 1) or 1),
+            "compact_memory": True,
+        })
+    return entries[:6]
+
+
 def _is_valid_compress_text(text: object) -> bool:
     if not isinstance(text, str):
         return False
@@ -1069,6 +1463,56 @@ def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
     """Parse compression summary output."""
     source_chunks = sorted(int(c) for c in (meta.get("chunks") or []))
     merge_level = int(meta.get("merge_level", 1) or 1)
+    if meta.get("task_type") == "compact_memory_update":
+        fallback_entries = _fallback_compact_entries(meta)
+        default = {
+            "time_range": meta["time_range"],
+            "text": _entries_to_mem_text(fallback_entries),
+            "entries": fallback_entries,
+            "source_chunks": source_chunks,
+            "merge_level": merge_level,
+            "parse_success": False,
+            "compact_memory_update": True,
+        }
+        if raw is None:
+            return default
+        raw_no_think = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
+        literal_mem = _MEM_BLOCK_RE.search(raw_no_think)
+        mem_block = _extract_mem_block(raw_no_think)
+        entries = parse_compact_memory_entries(raw_no_think)
+        if not entries:
+            default["_raw"] = raw_no_think[:4000]
+            return default
+        n_entries = len(entries)
+        time_range = [
+            min(int(e["time_range"][0]) for e in entries),
+            max(int(e["time_range"][1]) for e in entries),
+        ]
+        parse_success = 4 <= n_entries <= 6
+        out = {
+            "time_range": time_range,
+            # Keep the teacher's raw <MEM> block as the canonical text
+            # artifact. Parsed <m t="..."> entries are diagnostics/state for
+            # the rollout; downstream trajectory rendering reuses this whole
+            # block instead of rebuilding memory from the parsed lines.
+            "text": mem_block or _entries_to_mem_text(entries),
+            "entries": entries,
+            "source_chunks": sorted(set(c for e in entries for c in e.get("source_chunks", []))),
+            "merge_level": merge_level,
+            "parse_success": parse_success,
+            "compact_memory_update": True,
+            "n_entries": n_entries,
+        }
+        literal_block = literal_mem.group(0).strip() if literal_mem else raw_no_think
+        raw_open_m = len(re.findall(r"<m\b", literal_block, flags=re.IGNORECASE))
+        raw_close_m = len(re.findall(r"</m>", literal_block, flags=re.IGNORECASE))
+        if (not literal_mem) or raw_open_m != raw_close_m:
+            out["format_repaired"] = True
+        if not parse_success:
+            out["_raw"] = raw_no_think[:4000]
+            out["parse_warning"] = "expected_4_to_6_entries"
+        return out
+
     default = {
         "time_range": meta["time_range"],
         "text": _fallback_compress_text(meta),
@@ -1161,6 +1605,13 @@ async def run_pass2_single_video(
             except (TypeError, ValueError):
                 cidx = i
             evidence_by_chunk[cidx] = cap
+    planned_compact_intervals: List[int] = []
+    planned_compact_boundaries: List[int] = []
+    planned_compact_boundary_set = set()
+    if COMPACT_MEMORY_UPDATE_MODE and COMPACT_MEMORY_BALANCE_SEGMENTS:
+        planned_compact_intervals = plan_compact_memory_intervals(num_chunks)
+        planned_compact_boundaries = plan_compact_memory_boundaries(num_chunks)
+        planned_compact_boundary_set = set(planned_compact_boundaries)
 
     for chunk_idx in range(num_chunks):
         # --- 1. Snapshot BEFORE this step's think ---
@@ -1168,10 +1619,35 @@ async def run_pass2_single_video(
         pre_action_timeline = snapshots[chunk_idx]["timeline"]
         pre_action_thinks = snapshots[chunk_idx]["recent_thinks"]
 
-        should_compress_now = (
-            memory.should_compress()
-            and len(pre_action_thinks) >= COMPRESS_RANGE_MIN
-        )
+        raw_trigger_diag = memory.compress_trigger_diagnostic()
+        compress_trigger_diag = raw_trigger_diag
+        if COMPACT_MEMORY_UPDATE_MODE and COMPACT_MEMORY_BALANCE_SEGMENTS:
+            schedule_ready = chunk_idx in planned_compact_boundary_set
+            compress_trigger_diag = dict(raw_trigger_diag)
+            compress_trigger_diag.update({
+                "triggered": schedule_ready,
+                "mode": "compact_memory_update_balanced",
+                "schedule_ready": schedule_ready,
+                "planned_intervals": planned_compact_intervals,
+                "planned_boundaries": planned_compact_boundaries,
+                "reason": (
+                    "balanced_boundary" if schedule_ready
+                    else (
+                        "balanced_wait_after_token_ready"
+                        if raw_trigger_diag.get("token_ready")
+                        else "balanced_wait"
+                    )
+                ),
+            })
+            should_compress_now = bool(schedule_ready)
+        elif COMPACT_MEMORY_UPDATE_MODE:
+            should_compress_now = bool(compress_trigger_diag.get("triggered"))
+        else:
+            should_compress_now = (
+                bool(compress_trigger_diag.get("triggered"))
+                and len(pre_action_timeline) >= COMPRESS_RANGE_MIN
+                and len(pre_action_thinks) >= 2
+            )
 
         # --- 2. Get think for current chunk ---
         # v12.25: production path uses pass1's independent current-only
@@ -1291,17 +1767,30 @@ async def run_pass2_single_video(
             )
             # compress teacher request is text-memory only; mm_processor_kwargs
             # is unused but harmless if passed.
-            comp_raw = await client._call_one(
-                messages=comp_request["messages"],
-                max_tokens=safe_comp_max,
-                temperature=comp_request["temperature"],
-                request_id=comp_request["id"],
-                enable_thinking=enable_thinking,
-            )
+            try:
+                comp_raw = await client._call_one(
+                    messages=comp_request["messages"],
+                    max_tokens=safe_comp_max,
+                    temperature=comp_request["temperature"],
+                    request_id=comp_request["id"],
+                    enable_thinking=enable_thinking,
+                )
+            except TruncatedCompletionError as exc:
+                logger.warning(
+                    "  [%s] Compression response truncated at chunk %d; "
+                    "using deterministic fallback summary: %s",
+                    video_id,
+                    chunk_idx,
+                    exc,
+                )
+                comp_raw = None
             summary = parse_compress_result(comp_raw, comp_request["_meta"])
             selected_indices = comp_request["_meta"]["selected_indices"]
 
-            memory.compress(summary, selected_indices=selected_indices)
+            if summary.get("compact_memory_update") and summary.get("entries"):
+                memory.replace_with_compact_entries(summary)
+            else:
+                memory.compress(summary, selected_indices=selected_indices)
             memory.add_think(chunk_idx, think_text)
 
             post_compress_tokens = memory.count_recent_tokens()
@@ -1309,7 +1798,8 @@ async def run_pass2_single_video(
             if not hysteresis_ok:
                 logger.warning(
                     f"  [{video_id}] Compression hysteresis violated at chunk {chunk_idx}: "
-                    f"post-compress {post_compress_tokens} tok > {COMPRESS_HYSTERESIS_THRESHOLD} threshold"
+                    f"post-compress visible memory {post_compress_tokens} tok > "
+                    f"{COMPRESS_HYSTERESIS_THRESHOLD} threshold"
                 )
 
             compression_events.append({
@@ -1318,7 +1808,12 @@ async def run_pass2_single_video(
                 "selected_indices": selected_indices,
                 "compressed_thinks_chunks": comp_request["_meta"].get("chunks", []),
                 "compressed_raw_think_chunks": comp_request["_meta"].get("raw_think_chunks", []),
+                "memory_update_input": comp_request["messages"][-1]["content"],
+                "old_memory_text": comp_request["_meta"].get("old_memory_text", ""),
+                "new_captions_text": comp_request["_meta"].get("new_captions_text", ""),
                 "teacher_policy": comp_request["_meta"].get("teacher_policy", {}),
+                "trigger_diagnostic": compress_trigger_diag,
+                "compact_memory_update": bool(summary.get("compact_memory_update")),
                 "hysteresis_ok": hysteresis_ok,
                 "post_compress_tokens": post_compress_tokens,
             })
@@ -1388,6 +1883,14 @@ async def run_pass2_single_video(
         "compression_events": compression_events,
         "snapshots": snapshots,
         "final_memory": memory.snapshot(num_chunks),
+        "compact_memory_plan": {
+            "enabled": bool(COMPACT_MEMORY_UPDATE_MODE and COMPACT_MEMORY_BALANCE_SEGMENTS),
+            "min_chunks": COMPACT_MEMORY_MIN_NEW_CHUNKS,
+            "target_chunks": COMPACT_MEMORY_TARGET_NEW_CHUNKS,
+            "max_chunks": COMPACT_MEMORY_MAX_NEW_CHUNKS,
+            "intervals": planned_compact_intervals,
+            "boundaries": planned_compact_boundaries,
+        },
     }
 
 

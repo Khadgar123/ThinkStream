@@ -77,7 +77,7 @@ def test_no_empty_trajectory():
         print(f"  PASS {fname}: no empty trajectories")
 
 
-def test_recall_failure_is_rejected_not_emitted():
+def test_recall_failure_is_tagged_not_dropped():
     from scripts.agent_data.pass4 import _build_trajectory_record
 
     samples = [
@@ -98,8 +98,11 @@ def test_recall_failure_is_rejected_not_emitted():
         }
     ]
 
-    with pytest.raises(ValueError, match="no answer chunk"):
-        _build_trajectory_record("vid", "t0", samples)
+    rec = _build_trajectory_record("vid", "t0", samples)
+    assert len(rec["samples"]) == 1
+    q = rec["questions"][0]
+    assert q["verification"]["passed"] is False
+    assert "pass4:no_answer_chunk" in q["verification"]["fail_reasons"]
 
 
 def test_recall_silent_wait_state_requires_later_answer():

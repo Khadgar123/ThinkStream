@@ -23,9 +23,7 @@ _ANSWER_RE = re.compile(r'<answer>(.*?)</answer>', re.DOTALL)
 
 from .config import (
     AGENT_CHUNK_SEC,
-    VISUAL_WINDOW_CHUNKS,
     FRAMES_PER_CHUNK,
-    compute_visual_window_start,
 )
 from thinkstream.data.agent_protocol import (
     build_recalled_frames_metadata,
@@ -102,31 +100,28 @@ def _build_visual_window(
     chunk_idx: int, num_chunks: int, video_path: str,
     frame_dir: str = None,
 ) -> Dict:
-    """Build visual_window structure from chunk index.
+    """Build current-chunk visual structure from chunk index.
 
     If frame_dir is provided (pre-extracted frames), includes frame_paths
     for fast training I/O. Otherwise SFT data_processor falls back to
     video_path online decoding.
     """
-    window_start = compute_visual_window_start(chunk_idx)
-    video_start = window_start * AGENT_CHUNK_SEC
+    video_start = chunk_idx * AGENT_CHUNK_SEC
     video_end = (chunk_idx + 1) * AGENT_CHUNK_SEC
-    n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
 
     vw = {
         "video_start": video_start,
         "video_end": video_end,
-        "frames": n_frames,
+        "frames": FRAMES_PER_CHUNK,
     }
 
-    # If pre-extracted frames exist, add frame_paths for fast I/O
+    # If pre-extracted frames exist, add only the current chunk's two frames.
     if frame_dir:
         paths = []
-        for ci in range(window_start, chunk_idx + 1):
-            for fi in range(FRAMES_PER_CHUNK):
-                p = Path(frame_dir) / f"chunk_{ci:04d}_f{fi}.jpg"
-                if p.exists():
-                    paths.append(str(p))
+        for fi in range(FRAMES_PER_CHUNK):
+            p = Path(frame_dir) / f"chunk_{chunk_idx:04d}_f{fi}.jpg"
+            if p.exists():
+                paths.append(str(p))
         if paths:
             vw["frame_paths"] = paths
 
@@ -302,10 +297,13 @@ def render_sample(
     # ``<compress_trigger/>`` signal into sample.user_input; the gold range
     # lives in the assistant tool_call output and must be derived from memory.
     gold_compress_chunks: List[int] = []
+    memory_update_input = str(sample.get("memory_update_input") or "").strip()
     if sample.get("action") == "compress":
         for event in rollout.get("compression_events", []):
             if event.get("trigger_chunk") == chunk_idx:
                 summary = event.get("summary") or {}
+                if not memory_update_input:
+                    memory_update_input = str(event.get("memory_update_input") or "").strip()
                 cr = (
                     summary.get("source_chunks")
                     or event.get("compressed_source_chunks")
@@ -414,6 +412,9 @@ def render_sample(
         # event's description). Single-emit cards get list of length 1.
         "per_emit_answers": list(sample.get("per_emit_answers") or []),
     }
+    if memory_update_input:
+        inp["memory_update_input"] = memory_update_input
+        metadata["memory_update_input"] = memory_update_input
 
     # v12.11 audit-4 P0 #1 fix (2026-05-01): merged shape-B recall samples
     # had `output` popped by _merge_recall_pairs (the canonical text
@@ -466,6 +467,17 @@ def render_sample(
     for v12_key in ("v12_assistant_turn_1", "v12_assistant_turn_2", "inter_chunk"):
         if v12_key in sample:
             rendered[v12_key] = sample[v12_key]
+    for compact_key in (
+        "memory_update_input",
+        "gold_caption",
+        "gold_compress_chunks",
+        "gold_memory_entries",
+        "memory_update_mode",
+    ):
+        if compact_key in sample:
+            rendered[compact_key] = sample[compact_key]
+    if memory_update_input:
+        rendered["memory_update_input"] = memory_update_input
 
     return rendered
 

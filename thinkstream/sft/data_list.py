@@ -1,13 +1,11 @@
 """Dataset registry for ThinkStream SFT/eval data.
 
-Canonical SFT inputs are pass5 ShareGPT
-`*_messages.jsonl` files. Canonical RL inputs are verl parquets built from
+Canonical SFT inputs are pass5 trajectory
+`*_trajectory.jsonl` files. Canonical RL inputs are verl parquets built from
 `*_trajectories.jsonl` by scripts/agent_data/build_verl_parquet.py.
 
-The registry intentionally exposes only the current rendered
-`video_meta + standard_query_last` message/trajectory datasets. Flat
-phase/category datasets stay outside the training surface so SFT, RL, and eval
-cannot silently mix incompatible prompt layouts.
+The registry intentionally exposes only trajectory datasets so SFT, RL, and
+eval cannot silently mix incompatible prompt layouts.
 """
 
 import os
@@ -81,23 +79,6 @@ def _agent_path(filename: str) -> str:
 
 
 DATASET_REGISTRY = {
-    # ─── Production ─────────────────────────────────────────────────
-    # SFT trainer ingests pass5 `*_messages.jsonl` rows. Each row is one
-    # chunk/action snapshot rendered in the same prompt contract used by RL
-    # rollout and OVO eval.
-    "stream_agent_sft": {
-        "annotation_path": _agent_path("train_sft_messages.jsonl"),
-        "data_path": "./",
-    },
-    "stream_agent_val": {
-        "annotation_path": _agent_path("val_messages.jsonl"),
-        "data_path": "./",
-    },
-    "stream_agent_test": {
-        "annotation_path": _agent_path("test_messages.jsonl"),
-        "data_path": "./",
-    },
-
     # RL trainer and streaming eval ingest trajectory JSONL/parquets with
     # `questions`, `gold_action_per_chunk`, and full sample metadata.
     "stream_agent_rl_traj": {
@@ -116,10 +97,10 @@ DATASET_REGISTRY = {
     # ─── Multi-turn trajectory SFT (pass5 trajectory renderer) ──────
     # Each row is one trajectory (between two compress events) carrying a
     # full multi-turn ``messages`` list + inline ``tools`` schema. Consumed
-    # by the same WeightedSFTTrainer; ``preprocess_per_timestep`` detects
+    # by the same WeightedSFTTrainer; ``preprocess_trajectory_sample`` detects
     # ``trajectory_type`` and relaxes the per-row assistant-turn count.
     # Produced by ``scripts.agent_data.pass5.convert_dir(...)``; pipeline
-    # opts in via env ``THINKSTREAM_RUN_PASS5_TRAJECTORY=1``.
+    # The pipeline writes these by default under ``rendered/trajectory``.
     "stream_agent_trajectory_train": {
         # pass4 emits ``train_sft_trajectories.jsonl`` for the SFT split (its
         # canonical naming is ``<split>_trajectories.jsonl`` with split
@@ -143,7 +124,7 @@ DATASET_REGISTRY = {
 def data_list(dataset_names: list) -> list:
     """Resolve dataset names to config dicts.
 
-    Supports sampling: "stream_agent_sft%50" = 50% of SFT data.
+    Supports sampling: "stream_agent_trajectory_train%50" = 50% of SFT data.
     """
     result = []
     for name in dataset_names:

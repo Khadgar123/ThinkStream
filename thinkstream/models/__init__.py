@@ -20,7 +20,7 @@ MODEL_CLS = {
     if cls is not None
 }
 
-DEFAULT_VIDEO_FLEX_WINDOW_SIZE = 20
+DEFAULT_VIDEO_FLEX_WINDOW_SIZE = 8
 
 
 def get_text_config(config: PretrainedConfig) -> PretrainedConfig:

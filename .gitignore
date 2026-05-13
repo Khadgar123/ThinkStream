@@ -57,6 +57,8 @@ tensorboard/
 # ignore the thinkstream package's data submodule.
 !thinkstream/data/
 !thinkstream/data/**
+thinkstream/data/**/__pycache__/
+thinkstream/data/**/*.py[cod]
 outputs/
 output/
 pretrained/

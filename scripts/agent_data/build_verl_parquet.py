@@ -90,16 +90,51 @@ def _canonical_answer_style(q: Dict[str, Any]) -> str:
     return str(q.get("answer_style") or "")
 
 
+def _offline_compress_chunks_from_samples(traj: Dict[str, Any]) -> List[int]:
+    """Extract compact-memory trigger chunks from canonical sample rows.
+
+    A single video chunk can have both an inter-chunk compression event and the
+    ordinary streaming action for that chunk. ``gold_action_per_chunk`` can only
+    store one action, so response/silent targets may legitimately occupy the
+    same key. The samples list preserves the text-only compress rows and is the
+    canonical source for RL trigger timing in that collision case.
+    """
+    chunks: List[int] = []
+    for sample in traj.get("samples") or []:
+        if not isinstance(sample, dict):
+            continue
+        sample_type = str(sample.get("sample_type") or "").strip().lower()
+        action = str(sample.get("action") or "").strip().lower()
+        meta_action = str(
+            (sample.get("metadata") or {}).get("gold_action") or ""
+        ).strip().lower()
+        text = str(sample.get("output") or sample.get("gold_caption") or "")
+        is_compact_mem = "<MEM>" in text and "</MEM>" in text
+        if (
+            sample_type != "compress"
+            and action != "compress"
+            and meta_action != "compress"
+            and not (
+                bool(sample.get("inter_chunk") or sample.get("v12_inter_chunk"))
+                and is_compact_mem
+            )
+        ):
+            continue
+        iv = _safe_int(sample.get("chunk_idx", sample.get("chunk")))
+        if iv is not None and iv >= 0:
+            chunks.append(iv)
+    return chunks
+
+
 def _rl_gold_actions_and_offline_compress(
     gold_action: Dict[str, Any],
+    traj: Dict[str, Any] | None = None,
 ) -> Tuple[Dict[str, str], List[int]]:
     """Return RL action targets plus offline compress diagnostics.
 
-    Compression is a system memory-pressure event in RL/eval. It must be
-    triggered from live memory state, not from pass2/pass3 offline
-    ``gold_action_per_chunk`` labels. Keep those offline positions only as
-    diagnostics so future reward/audit code cannot accidentally train compress
-    timing from gold labels.
+    Compression is a system event, not an action-shaping target. RL rollout may
+    reuse these offline pass2 boundaries for trigger timing, but reward code must
+    not train the policy from ``gold_action_per_chunk["compress"]`` labels.
     """
     sanitized: Dict[str, str] = {}
     offline_compress: List[int] = []
@@ -111,6 +146,8 @@ def _rl_gold_actions_and_offline_compress(
                 offline_compress.append(iv)
             continue
         sanitized[str(key)] = action
+    if traj is not None:
+        offline_compress.extend(_offline_compress_chunks_from_samples(traj))
     return sanitized, sorted(set(offline_compress))
 
 
@@ -315,7 +352,7 @@ def _iter_rows(
             video_path = traj.get("video_path", "")
             raw_gold_action = traj.get("gold_action_per_chunk", {}) or {}
             gold_action, offline_compress_chunks = (
-                _rl_gold_actions_and_offline_compress(raw_gold_action)
+                _rl_gold_actions_and_offline_compress(raw_gold_action, traj)
             )
             n_chunks = _infer_n_chunks(traj)
             questions = (traj.get("questions") or [])[:max_questions_per_traj]
@@ -351,8 +388,8 @@ def _iter_rows(
                 # would erase the true response action and train the model to
                 # stay silent at the answer time.
                 # Offline compress labels have already been removed from
-                # gold_action. Runtime compression is triggered by the live
-                # memory budget, not by per-question gold targets.
+                # gold_action. They are carried separately as trigger
+                # boundaries/diagnostics, not per-question action targets.
                 q_gold_action: Dict[str, str] = {}
                 window_marks = ask_chunks + answer_chunks
                 if window_marks:
@@ -414,7 +451,7 @@ def _iter_rows(
                         "answer_chunks": answer_chunks,
                         "per_emit_answers": list(q.get("per_emit_answers") or []),
                         "offline_compress_chunks": offline_compress_chunks,
-                        "compress_trigger_source": "runtime_memory_threshold",
+                        "compress_trigger_source": "offline_pass2_boundaries",
                         "render_layout": render_layout,
                         **student_cache,
                     },
@@ -440,7 +477,7 @@ def _iter_rows(
                             ),
                             "gold_action_per_chunk": q_gold_action,
                             "offline_compress_chunks": offline_compress_chunks,
-                            "compress_trigger_source": "runtime_memory_threshold",
+                            "compress_trigger_source": "offline_pass2_boundaries",
                         }, ensure_ascii=False),
                         "style": "thinkstream_v12",
                     },
@@ -473,7 +510,7 @@ def _iter_rows_multi_q(
                               gold_answer, answer_form, per_emit_answers, ...)
       gold_action_per_chunk: Dict[str, str] — full per-chunk action-shaping map
                                               with offline compress labels removed
-      offline_compress_chunks: List[int] — pass2/pass3 compress positions for audits only
+      offline_compress_chunks: List[int] — pass2/pass3 compress trigger positions
       reward_model.ground_truth: JSON-encoded list of per-question targets
                                  + the sanitized action map.
 
@@ -498,7 +535,7 @@ def _iter_rows_multi_q(
             video_path = traj.get("video_path", "")
             raw_gold_action = traj.get("gold_action_per_chunk", {}) or {}
             gold_action, offline_compress_chunks = (
-                _rl_gold_actions_and_offline_compress(raw_gold_action)
+                _rl_gold_actions_and_offline_compress(raw_gold_action, traj)
             )
             n_chunks = _infer_n_chunks(traj)
             questions = (traj.get("questions") or [])[:max_questions_per_traj]
@@ -559,7 +596,7 @@ def _iter_rows_multi_q(
                     "questions": q_targets,
                     "gold_action_per_chunk": gold_action,
                     "offline_compress_chunks": offline_compress_chunks,
-                    "compress_trigger_source": "runtime_memory_threshold",
+                    "compress_trigger_source": "offline_pass2_boundaries",
                     "all_ask_chunks": sorted(set(all_ask_chunks)),
                     "render_layout": render_layout,
                     **student_cache,
@@ -569,7 +606,7 @@ def _iter_rows_multi_q(
                         "questions": q_targets,
                         "gold_action_per_chunk": gold_action,
                         "offline_compress_chunks": offline_compress_chunks,
-                        "compress_trigger_source": "runtime_memory_threshold",
+                        "compress_trigger_source": "offline_pass2_boundaries",
                     }, ensure_ascii=False),
                     "style": "thinkstream_v12_multi_q",
                 },
@@ -591,15 +628,14 @@ def main() -> int:
     )
     ap.add_argument(
         "--multi_q",
-        action=argparse.BooleanOptionalAction,
+        action="store_true",
         default=True,
         help=(
             "Multi-Q trajectory mode (default ON): 1 video = 1 parquet row "
             "containing all questions. Aligns RL training with OVOBench eval "
             "form (one video, many MCQ time-points) and matches the user's "
             "directive: RL keeps the whole video, only SFT slices on compress. "
-            "Pass ``--no-multi_q`` to opt into the legacy (video, question) "
-            "flatten path."
+            "Kept only for old launch scripts; single-question parquet is retired."
         ),
     )
     ap.add_argument(
@@ -634,22 +670,12 @@ def main() -> int:
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    iterator = (
-        _iter_rows_multi_q(
-            in_path,
-            max_questions_per_traj=args.max_questions_per_traj,
-            frame_protocol=frame_protocol,
-            render_layout=render_layout,
-            include_student_cache=args.include_student_cache,
-        )
-        if args.multi_q
-        else _iter_rows(
-            in_path,
-            max_questions_per_traj=args.max_questions_per_traj,
-            frame_protocol=frame_protocol,
-            render_layout=render_layout,
-            include_student_cache=args.include_student_cache,
-        )
+    iterator = _iter_rows_multi_q(
+        in_path,
+        max_questions_per_traj=args.max_questions_per_traj,
+        frame_protocol=frame_protocol,
+        render_layout=render_layout,
+        include_student_cache=args.include_student_cache,
     )
     rows: List[Dict[str, Any]] = list(iterator)
     if not rows:
@@ -658,9 +684,8 @@ def main() -> int:
 
     df = pd.DataFrame(rows)
     df.to_parquet(out_path, index=False)
-    shape_label = "video" if args.multi_q else "(video,question)"
     print(
-        f"[build_verl_parquet] {in_path.name}: {len(rows)} {shape_label} rows "
+        f"[build_verl_parquet] {in_path.name}: {len(rows)} video rows "
         f"→ {out_path} ({out_path.stat().st_size/1024:.1f} KiB, "
         f"frame_protocol={frame_protocol}, render_layout={render_layout}, "
         f"student_cache={args.include_student_cache})"

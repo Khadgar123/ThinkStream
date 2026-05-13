@@ -238,6 +238,70 @@ def test_recall_failure_injection_is_rejected():
         render_video_samples([card], {"r0": [placement]}, num_chunks=10)
 
 
+def test_recall_validity_ignores_compact_memory_answer_overlap():
+    from scripts.agent_data.pass3c_samples import (
+        _needs_recall_hardening,
+        _validate_hardened_recall_card,
+    )
+
+    card = {
+        "card_id": "r-memory",
+        "family": "F1",
+        "question": "What object was on the table earlier?",
+        "answer_form": "short_exact",
+        "canonical_answer": "red cup",
+        "gold_emits": [{"chunk": 1, "value": "red cup"}],
+        "grounding_frames": [1],
+        "recall_query": {"query": "object on the table earlier", "time_range": [1, 2]},
+    }
+    evidence = {
+        1: {
+            "chunk_idx": 1,
+            "atomic_facts": [{"fact": "A red cup is on the table."}],
+        }
+    }
+    memory_text = '<MEM>\n  <m t="0-10">The red cup was on the table.</m>\n</MEM>'
+
+    assert _needs_recall_hardening(card, memory_text) is False
+    ok, reason = _validate_hardened_recall_card(
+        card,
+        current_chunk=20,
+        memory_text=memory_text,
+        evidence_by_chunk=evidence,
+    )
+    assert ok, reason
+
+
+def test_recall_support_must_be_strictly_outside_8s_window():
+    from scripts.agent_data.pass3c_samples import _validate_hardened_recall_card
+
+    card = {
+        "card_id": "r-window",
+        "family": "F1",
+        "question": "What object was shown earlier?",
+        "answer_form": "short_exact",
+        "canonical_answer": "blue bag",
+        "gold_emits": [{"chunk": 12, "value": "blue bag"}],
+        "grounding_frames": [12],
+        "recall_query": {"query": "object shown earlier", "time_range": [12, 13]},
+    }
+    evidence = {
+        12: {
+            "chunk_idx": 12,
+            "atomic_facts": [{"fact": "A blue bag is shown."}],
+        }
+    }
+
+    ok, reason = _validate_hardened_recall_card(
+        card,
+        current_chunk=20,
+        memory_text="",
+        evidence_by_chunk=evidence,
+    )
+    assert not ok
+    assert reason.startswith("grounding_inside_visual_window")
+
+
 def test_card_with_canonical_but_no_gold_emit_is_rejected():
     from scripts.agent_data.pass3a_cards import _verify_card_layers
 

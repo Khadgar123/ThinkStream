@@ -44,7 +44,9 @@ from .config import (
 from .evidence_think import build_think_from_pass1_evidence, think_source_for_evidence
 from .pass2_rollout import (
     MemoryState,
+    _entries_to_mem_text,
     _fallback_compress_text,
+    _fallback_compact_entries,
     build_compress_request,
     parse_compress_result,
 )
@@ -83,6 +85,18 @@ def _normalize_evidence(evidence: Sequence[Dict]) -> List[Dict]:
 
 
 def _deterministic_summary(meta: Dict) -> Dict:
+    if meta.get("task_type") == "compact_memory_update":
+        entries = _fallback_compact_entries(meta)
+        return {
+            "time_range": meta["time_range"],
+            "text": _entries_to_mem_text(entries),
+            "entries": entries,
+            "source_chunks": sorted(int(c) for c in (meta.get("chunks") or [])),
+            "merge_level": int(meta.get("merge_level", 1) or 1),
+            "parse_success": True,
+            "compact_memory_update": True,
+            "source": "pass2b_deterministic",
+        }
     return {
         "time_range": meta["time_range"],
         "text": _fallback_compress_text(meta),
@@ -154,7 +168,8 @@ async def run_pass2b_single_video(
         should_compress_now = (
             compress_mode != "none"
             and memory.should_compress()
-            and len(pre_action_thinks) >= COMPRESS_RANGE_MIN
+            and len(pre_action_timeline) >= COMPRESS_RANGE_MIN
+            and len(pre_action_thinks) >= 2
         )
 
         cap = evidence_by_chunk.get(chunk_idx, {"chunk_idx": chunk_idx})
@@ -185,7 +200,10 @@ async def run_pass2b_single_video(
                     mode=compress_mode,
                 )
                 selected_indices = comp_request["_meta"]["selected_indices"]
-                memory.compress(summary, selected_indices=selected_indices)
+                if summary.get("compact_memory_update") and summary.get("entries"):
+                    memory.replace_with_compact_entries(summary)
+                else:
+                    memory.compress(summary, selected_indices=selected_indices)
                 memory.add_think(chunk_idx, think_text)
 
                 post_compress_tokens = memory.count_recent_tokens()
@@ -194,7 +212,12 @@ async def run_pass2b_single_video(
                     "summary": summary,
                     "selected_indices": selected_indices,
                     "compressed_thinks_chunks": comp_request["_meta"].get("chunks", []),
+                    "compressed_raw_think_chunks": comp_request["_meta"].get("raw_think_chunks", []),
+                    "memory_update_input": comp_request["messages"][-1]["content"],
+                    "old_memory_text": comp_request["_meta"].get("old_memory_text", ""),
+                    "new_captions_text": comp_request["_meta"].get("new_captions_text", ""),
                     "teacher_policy": comp_request["_meta"].get("teacher_policy", {}),
+                    "compact_memory_update": bool(summary.get("compact_memory_update")),
                     "hysteresis_ok": post_compress_tokens <= COMPRESS_HYSTERESIS_THRESHOLD,
                     "post_compress_tokens": post_compress_tokens,
                     "source": "pass2b_rescue_from_pass1",

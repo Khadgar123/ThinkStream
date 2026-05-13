@@ -162,3 +162,59 @@ def test_post_recall_marks_toolcall_and_tool_response_as_recall_kv():
     assert kv_mask == expected
     assert labels[11].item() == IGNORE_INDEX
     assert labels[22].item() == 70
+
+
+def test_full_trajectory_recall_tool_response_marks_recall_kv():
+    # Same shape as a multi-turn trajectory row: recall happens inside a
+    # from_compress segment, not in a standalone post_recall row.
+    ids = [
+        1, 9, 50, 3,              # system
+        1, 8, 51, 7, 7, 3,        # user chunk with ordinary video
+        1, 2, 99, 40, 41, 3,      # assistant recall tool-call span
+        1, 10, 60, 7, 7, 61, 3,   # tool response with recall video
+        1, 2, 99, 70, 71, 3,      # final assistant answer span
+        1, 8, 52, 7, 7, 3,        # next ordinary user chunk
+        1, 2, 99, 80, 81, 3,      # next assistant turn
+    ]
+    sample = {
+        "trajectory_type": TRAJ_TYPE_FROM_COMPRESS,
+        "loss_assistant_turns": "all",
+        "video_id": "vid",
+        "data_path": str(Path(".")),
+        "messages": [
+            {"role": "system", "content": "s"},
+            {"role": "user", "content": [
+                {"type": "text", "text": "<t=3>"},
+                {"type": "video", "video": ["a.jpg"], "kv_scope": "ordinary"},
+            ]},
+            {"role": "assistant", "content": "<think>need</think>", "tool_calls": [{
+                "id": "rec_3",
+                "type": "function",
+                "function": {"name": "recall", "arguments": {"time_range": [0, 1]}},
+            }]},
+            {"role": "tool", "tool_call_id": "rec_3", "content": [
+                {"type": "text", "text": "<recalled_frames>{}</recalled_frames>"},
+                {"type": "video", "video": ["b.jpg"]},
+                {"type": "text", "text": "<recall_result>{}</recall_result>"},
+            ]},
+            {"role": "assistant", "content": "<think>ok</think><response>yes</response>"},
+            {"role": "user", "content": [
+                {"type": "text", "text": "<t=4>"},
+                {"type": "video", "video": ["c.jpg"], "kv_scope": "ordinary"},
+            ]},
+            {"role": "assistant", "content": "<think>continue</think><silent>"},
+        ],
+        "tools": [],
+    }
+    out = preprocess_trajectory_sample(sample, _FakeProcessor(ids))
+    kv_mask = out["recall_kv_mask"][0].tolist()
+    video_mask = out["recall_video_mask"][0].tolist()
+
+    expected_kv = [False] * len(ids)
+    for i in range(13, 26):
+        expected_kv[i] = True
+    assert kv_mask == expected_kv
+    assert video_mask[19] is True
+    assert video_mask[20] is True
+    assert video_mask[32] is False
+    assert video_mask[33] is False

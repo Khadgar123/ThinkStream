@@ -134,7 +134,7 @@ def main() -> None:
 
     from scripts.eval.processor_loader import load_processor_for_checkpoint
     from thinkstream.sft.args import DataArguments
-    from thinkstream.sft.data_processor import preprocess_per_timestep, update_processor_pixels
+    from thinkstream.sft.data_processor import preprocess_trajectory_sample, update_processor_pixels
 
     processor = load_processor_for_checkpoint(args.processor)
     data_args = DataArguments()
@@ -162,7 +162,7 @@ def main() -> None:
         row = dict(row)
         row.setdefault("data_path", str(args.base_path))
         try:
-            out = preprocess_per_timestep(row, processor, data_args)
+            out = preprocess_trajectory_sample(row, processor, data_args)
         except Exception as exc:
             failures.append(f"{row.get('sample_id')}: {type(exc).__name__}: {exc}")
             continue

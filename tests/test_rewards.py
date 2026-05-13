@@ -96,6 +96,23 @@ def test_timing_v12():
     print("✓ timing_v12 (early=-1, on=+1, late=decay, missed=-0.5)")
 
 
+def test_answer_decision_v12():
+    from thinkstream.trainer.rewards import compute_answer_decision_reward as f
+
+    assert f(answer_chunk=5, visible_start_chunk=5, visible_end_chunk=5) == 1.0
+    assert f(answer_chunk=4, visible_start_chunk=5, visible_end_chunk=5) == -1.0
+    assert f(answer_chunk=None, visible_start_chunk=5, visible_end_chunk=5) == -1.0
+    assert f(answer_chunk=None, visible_start_chunk=None, visible_end_chunk=None) == 0.0
+    assert f(
+        answer_chunk=2,
+        visible_start_chunk=None,
+        visible_end_chunk=None,
+        has_answer=True,
+    ) == -1.0
+
+    print("✓ answer_decision_v12 (slot/event reward, normal silence neutral)")
+
+
 def test_format_v12():
     from thinkstream.trainer.rewards import compute_format_reward as f
 
@@ -179,14 +196,14 @@ def test_v12_advantage_aggregation():
     outcome[:group_size * n_chunks] = 1.0  # video 0: all 1.0
     # video 1: all 0.0 (default)
 
-    # Timing: rollout 0 of each video gets +1, others 0
-    timing = torch.zeros(B)
+    # Answer-decision: rollout 0 of each video gets +1, others 0
+    answer_decision = torch.zeros(B)
     for v in range(n_video):
         for c in range(n_chunks):
             row = v * group_size * n_chunks + 0 * n_chunks + c  # rollout 0
-            timing[row] = 1.0
+            answer_decision[row] = 1.0
 
-    rewards = {"outcome": outcome, "timing": timing,
+    rewards = {"outcome": outcome, "answer_decision": answer_decision,
                "format": torch.ones(B), "spam": torch.zeros(B),
                "compress_quality": torch.zeros(B)}
     masks = {k: torch.ones(B) for k in rewards}
@@ -207,10 +224,12 @@ def test_v12_advantage_aggregation():
     # Video 1 same: all 0.0 → group mean 0.0 → adv 0.
     # So outcome_adv is all 0 in this test. That's fine.
 
-    # State_advantage: timing on rollout 0 of each video should be > rollout
-    # 1/2/3 (which had timing=0). So adv[rollout_0_chunks] > adv[rollout_1_chunks].
-    # Rollout 0 of video 0: rows 0,1,2 — timing=1, others=0. State sum = 1*0.3 + 1*0.1 = 0.4
-    # Rollout 1-3 of video 0: rows 3..11 — timing=0, format=1. State = 0.1
+    # State_advantage: answer_decision on rollout 0 of each video should be
+    # > rollout 1/2/3. So adv[rollout_0_chunks] > adv[rollout_1_chunks].
+    # Rollout 0 of video 0: rows 0,1,2 — answer_decision=1, others=0.
+    # State sum = 1*0.3 + 1*0.1 = 0.4
+    # Rollout 1-3 of video 0: rows 3..11 — answer_decision=0, format=1.
+    # State = 0.1
     # Per-chunk-position group: 4 rollouts at chunk 0 → values [0.4, 0.1, 0.1, 0.1], mean=0.175
     # Rollout 0 chunk 0 state_adv = 0.4 - 0.175 = 0.225
     # Rollout 1 chunk 0 state_adv = 0.1 - 0.175 = -0.075
@@ -480,16 +499,16 @@ def test_recipe_reward_gates_positive_auxiliary_on_correct_answer():
 
     weights = {
         "outcome": 1.0,
-        "timing": 0.3,
+        "answer_decision": 0.3,
         "format": 0.1,
         "spam": -0.2,
-        "silent_quality": 0.2,
     }
     parts = {
         "outcome": 0.0,
-        "timing": 1.0,
+        "answer_decision": 1.0,
         "format": 1.0,
         "spam": 0.0,
+        "timing": 1.0,
         "silent_quality": 0.3,
     }
 
@@ -503,22 +522,23 @@ def test_recipe_reward_keeps_negative_auxiliary_when_answer_wrong():
 
     weights = {
         "outcome": 1.0,
-        "timing": 0.3,
+        "answer_decision": 0.3,
         "format": 0.1,
         "spam": -0.2,
-        "silent_quality": 0.2,
     }
     parts = {
         "outcome": 0.0,
-        "timing": -1.0,
+        "answer_decision": -1.0,
         "format": 1.0,
         "spam": 2.0,
+        "timing": -1.0,
         "silent_quality": -0.6,
     }
 
     score, gate = _combine_reward_parts(weights, parts)
     assert gate == 0.0
-    assert abs(score - (-0.82)) < 1e-6
+    # Default initial profile excludes spam/tool shaping from the scalar reward.
+    assert abs(score - (-0.3)) < 1e-6
 
 
 def test_recipe_reward_allows_auxiliary_when_answer_correct():
@@ -526,22 +546,22 @@ def test_recipe_reward_allows_auxiliary_when_answer_correct():
 
     weights = {
         "outcome": 1.0,
-        "timing": 0.3,
+        "answer_decision": 0.3,
         "format": 0.1,
         "spam": -0.2,
-        "silent_quality": 0.2,
     }
     parts = {
         "outcome": 1.0,
-        "timing": 1.0,
+        "answer_decision": 1.0,
         "format": 1.0,
         "spam": 0.0,
+        "timing": 1.0,
         "silent_quality": 0.3,
     }
 
     score, gate = _combine_reward_parts(weights, parts)
     assert gate == 1.0
-    assert abs(score - 1.46) < 1e-6
+    assert abs(score - 1.4) < 1e-6
 
 
 def test_recipe_reward_scales_auxiliary_on_partial_outcome():
@@ -549,42 +569,43 @@ def test_recipe_reward_scales_auxiliary_on_partial_outcome():
 
     weights = {
         "outcome": 1.0,
-        "timing": 0.3,
+        "answer_decision": 0.3,
         "format": 0.1,
         "spam": -0.2,
-        "silent_quality": 0.2,
     }
     parts = {
         "outcome": 0.5,
-        "timing": 1.0,
+        "answer_decision": 1.0,
         "format": 1.0,
         "spam": 0.0,
+        "timing": 1.0,
         "silent_quality": 0.3,
     }
 
     score, gate = _combine_reward_parts(weights, parts)
     assert gate == 0.5
-    # 0.5 outcome + 0.5 * (0.3 timing + 0.1 format + 0.06 silent)
-    assert abs(score - 0.73) < 1e-6
+    # 0.5 outcome + 0.5 * (0.3 answer_decision + 0.1 format)
+    assert abs(score - 0.7) < 1e-6
 
 
 def test_recipe_multi_q_reward_gates_each_question_independently():
     from thinkstream.rl.thinkstream import _compute_score_multi_q
     from thinkstream.trainer.rewards import (
         compute_timing_reward,
+        compute_answer_decision_reward,
         compute_silent_quality,
     )
 
     weights = {
         "outcome": 1.0,
-        "timing": 0.3,
+        "answer_decision": 0.3,
         "format": 0.1,
         "spam": -0.2,
-        "silent_quality": 0.2,
     }
     rewards = {
         "outcome": lambda *a, **k: 0.0,
         "timing": compute_timing_reward,
+        "answer_decision": compute_answer_decision_reward,
         "format": lambda chunks: 1.0,
         "spam": lambda **kwargs: 0.0,
         "silent_quality": compute_silent_quality,
@@ -629,13 +650,15 @@ def test_recipe_multi_q_reward_gates_each_question_independently():
     assert abs(res["outcome"] - (1 / 3)) < 1e-6, res
     # Raw timing remains the mean over questions: Q1=1, Q2=1, Q3=-0.5.
     assert abs(res["timing"] - 0.5) < 1e-6, res
+    # answer_decision does not award dense normal silence; missed slots are -1.
+    assert abs(res["answer_decision"] - (1 / 3)) < 1e-6, res
     assert abs(res["outcome_gate"] - (1 / 3)) < 1e-6, res
     # Score:
-    # Q1: 1 outcome + 0.3 timing = 1.3
-    # Q2: wrong but timely, positive timing is gated to 0
-    # Q3: missed answer, timing -0.15 and silent_quality -0.12 always apply
-    # Mean question score = (1.3 + 0 - 0.27) / 3, plus format 0.1 * 1/3.
-    expected = ((1.3 + 0.0 - 0.27) / 3.0) + (0.1 / 3.0)
+    # Q1: 1 outcome + 0.3 answer_decision = 1.3
+    # Q2: wrong but timely, positive answer_decision is gated to 0
+    # Q3: missed answer, answer_decision -0.3 applies
+    # Mean question score = (1.3 + 0 - 0.3) / 3, plus format 0.1 * 1/3.
+    expected = ((1.3 + 0.0 - 0.3) / 3.0) + (0.1 / 3.0)
     assert abs(res["score"] - expected) < 1e-6, res
 
 
@@ -656,14 +679,23 @@ def test_recipe_action_shaping_scores_system_compress_only():
         "ts_chunk_video_indices": [0, -1, 2],
         "ts_chunk_turn_kinds": ["streaming", "compress", "streaming"],
     }
-    # The offline compress label at chunk 0 is neutral. The live system
-    # compress turn and the response chunk are both correct: (0.1 + 0.1) / 2.
+    # Initial RL keeps compression monitor-only. The offline compress label at
+    # chunk 0 and the live system compress turn are neutral; only the response
+    # action contributes.
     assert _per_chunk_action_avg(extra, {"0": "compress", "2": "response"}) == 0.1
 
     bad_extra = dict(extra)
     bad_extra["ts_chunk_kinds"] = ["answer", "answer", "answer"]
-    # The live compress turn is now non-compliant: (-0.05 + 0.1) / 2.
-    assert _per_chunk_action_avg(bad_extra, {"0": "compress", "2": "response"}) == 0.025
+    assert _per_chunk_action_avg(bad_extra, {"0": "compress", "2": "response"}) == 0.1
+    # Explicit opt-in restores the old live-compress shaping for ablations.
+    assert (
+        _per_chunk_action_avg(
+            bad_extra,
+            {"0": "compress", "2": "response"},
+            score_compress=True,
+        )
+        == 0.025
+    )
 
 
 def _single_q_dataset_stub():
@@ -837,6 +869,7 @@ if __name__ == "__main__":
     test_v12_reward_keys_match()
     test_outcome_v12()
     test_timing_v12()
+    test_answer_decision_v12()
     test_format_v12()
     test_spam_v12()
     test_silent_quality_v12()

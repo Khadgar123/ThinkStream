@@ -46,17 +46,19 @@ from thinkstream.data.agent_protocol import (
     normalize_frame_protocol,
     normalize_render_layout,
     query_is_complete,
+    resolve_chunk_frame_paths,
     select_recall_chunks,
     system_prompt_for_frame_protocol,
     tools_for_turn,
 )
+from thinkstream.data.schema import DEFAULT_VIDEO_MAX_PIXELS, DEFAULT_VIDEO_MIN_PIXELS
 from thinkstream.models.agent_loop import (
+    COMPRESS_RANGE_MAX,
     COMPRESS_TOKEN_THRESHOLD,
     COMPRESS_RANGE_MIN,
     MemoryState,
     _parse_agent_output,
     build_single_step_messages,
-    select_compress_range_by_tokens,
 )
 from thinkstream.eval.prompt_contract import build_streaming_query_meta
 
@@ -106,52 +108,55 @@ class _SampleRunner:
     question_meta_at_chunk: Dict[int, Dict] = field(default_factory=dict)
 
 
+def _resolve_preextracted_frame_dir(
+    video_path: str,
+    frames_root: Optional[str],
+    video_root: Optional[str],
+) -> Optional[Path]:
+    if not frames_root:
+        return None
+    root = Path(frames_root)
+    vp = Path(video_path)
+    candidates: List[Path] = []
+    if video_root:
+        try:
+            rel = vp.relative_to(Path(video_root))
+            candidates.append(root / rel.with_suffix(""))
+        except ValueError:
+            if not vp.is_absolute():
+                candidates.append(root / vp.with_suffix(""))
+    elif not vp.is_absolute():
+        candidates.append(root / vp.with_suffix(""))
+    candidates.append(root / vp.stem)
+    if any(root.glob("frame_*.jpg")):
+        candidates.append(root)
+    for frame_dir in candidates:
+        if frame_dir.exists():
+            return frame_dir
+    return None
+
+
 def _resolve_frame_paths(
     video_path: str,
     chunk_idx: int,
     frames_root: Optional[str],
     video_root: Optional[str],
 ) -> Optional[List[str]]:
-    """Mirrors StreamingAgentLoop._get_frame_paths() — pre-extracted JPEGs.
+    """Resolve the current 1s chunk's pre-extracted JPEGs.
 
     Returns None if frames_root not configured or insufficient frames found
     (caller falls back to online video decode).
     """
-    if not frames_root:
-        return None
-    window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
-    video_start = window_start * AGENT_CHUNK_SEC
-    video_end = (chunk_idx + 1) * AGENT_CHUNK_SEC
-    n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
-
-    vp = Path(video_path)
-    if video_root:
-        try:
-            rel = vp.relative_to(Path(video_root))
-            frame_dir = Path(frames_root) / rel.with_suffix("")
-        except ValueError:
-            frame_dir = Path(frames_root) / vp.with_suffix("")
-    else:
-        frame_dir = Path(frames_root) / vp.with_suffix("")
-
-    if not frame_dir.exists():
+    frame_dir = _resolve_preextracted_frame_dir(video_path, frames_root, video_root)
+    if frame_dir is None:
         return None
 
-    # v12.6 fix: index frames by chunk_idx × FRAMES_PER_CHUNK, NOT by
-    # int(video_start)+1. Under FPS=2 + FRAMES_PER_CHUNK=2 the latter
-    # produced off-by-half frame indices (1 frame per second instead of 2).
-    # Matches pass1a_evidence.get_chunk_frame_paths convention so SFT and
-    # eval read the same frames for the same chunk_idx.
-    paths = []
-    for ci in range(window_start, chunk_idx + 1):
-        for fi in range(FRAMES_PER_CHUNK):
-            # 1-indexed frame numbers: chunk 0 → frame_000001, frame_000002
-            fnum = ci * FRAMES_PER_CHUNK + fi + 1
-            fp = frame_dir / f"frame_{fnum:06d}.jpg"
-            if fp.exists():
-                paths.append(str(fp))
-
-    if len(paths) < max(1, n_frames // 2):
+    paths = resolve_chunk_frame_paths(
+        frame_dir,
+        chunk_idx,
+        frames_per_chunk=FRAMES_PER_CHUNK,
+    )
+    if len(paths) < FRAMES_PER_CHUNK:
         return None
     return paths
 
@@ -163,40 +168,25 @@ def _resolve_chunk_frame_paths(
     video_root: Optional[str],
 ) -> List[str]:
     """Resolve exactly one chunk's pre-extracted frames."""
-    if not frames_root:
+    frame_dir = _resolve_preextracted_frame_dir(video_path, frames_root, video_root)
+    if frame_dir is None:
         return []
-    vp = Path(video_path)
-    if video_root:
-        try:
-            rel = vp.relative_to(Path(video_root))
-            frame_dir = Path(frames_root) / rel.with_suffix("")
-        except ValueError:
-            frame_dir = Path(frames_root) / vp.with_suffix("")
-    else:
-        frame_dir = Path(frames_root) / vp.with_suffix("")
-    if not frame_dir.exists():
-        return []
-    paths: List[str] = []
-    for fi in range(FRAMES_PER_CHUNK):
-        fnum = int(chunk_idx) * FRAMES_PER_CHUNK + fi + 1
-        fp = frame_dir / f"frame_{fnum:06d}.jpg"
-        if not fp.exists():
-            return []
-        paths.append(str(fp))
-    return paths
+    return resolve_chunk_frame_paths(
+        frame_dir,
+        chunk_idx,
+        frames_per_chunk=FRAMES_PER_CHUNK,
+    )
 
 
 def _compress_trigger_diagnostic(memory: MemoryState) -> Dict[str, Any]:
     tokens = int(memory.count_recent_tokens())
     n_recent = len(memory.recent_thinks)
-    range_n = select_compress_range_by_tokens(
-        memory.recent_thinks,
-        token_count_fn=memory._token_count,
-    )
     triggered = bool(
-        tokens >= COMPRESS_TOKEN_THRESHOLD
-        and n_recent >= COMPRESS_RANGE_MIN
-        and range_n > 0
+        n_recent >= COMPRESS_RANGE_MIN
+        and (
+            tokens >= COMPRESS_TOKEN_THRESHOLD
+            or n_recent >= COMPRESS_RANGE_MAX
+        )
     )
     if triggered:
         reason = "triggered"
@@ -213,10 +203,9 @@ def _compress_trigger_diagnostic(memory: MemoryState) -> Dict[str, Any]:
         "token_threshold": int(COMPRESS_TOKEN_THRESHOLD),
         "recent_thinks": n_recent,
         "range_min": int(COMPRESS_RANGE_MIN),
-        "selected_range_n": int(range_n),
-        "selected_range_chunks": memory.chunks_for_items(
-            memory.recent_thinks[:range_n]
-        ) if range_n > 0 else [],
+        "range_max": int(COMPRESS_RANGE_MAX),
+        "selected_range_n": n_recent if triggered else 0,
+        "selected_range_chunks": memory.chunks_for_items(memory.recent_thinks) if triggered else [],
     }
 
 
@@ -231,6 +220,41 @@ def _maybe_compress_trigger(memory: MemoryState, chunk_idx: int) -> str:
     itself is removed (model decides when AND what to compress).
     """
     return "<compress_trigger/>" if _compress_trigger_diagnostic(memory)["triggered"] else ""
+
+
+def _compress_trigger_for_runner(runner: Any, chunk_idx: int) -> Dict[str, Any]:
+    """Use offline pass2 boundaries when the row provides them.
+
+    The RL training rollout consumes the same boundaries to avoid spending
+    rollout time recomputing token thresholds. Eval/pre-RL audit should use
+    the identical trigger source so answer timing and compression turns are
+    measured under the same conversation structure.
+    """
+    runtime_diag = _compress_trigger_diagnostic(runner.memory)
+    trigger_source = str(
+        getattr(runner, "compress_trigger_source", "runtime_memory_threshold")
+        or "runtime_memory_threshold"
+    )
+    if trigger_source != "offline_pass2_boundaries":
+        diag = dict(runtime_diag)
+        diag["trigger_source"] = "runtime_memory_threshold"
+        return diag
+
+    pending = getattr(runner, "offline_compress_pending", None)
+    if pending is None:
+        pending = set()
+        setattr(runner, "offline_compress_pending", pending)
+    triggered = chunk_idx in pending
+    if triggered:
+        pending.discard(chunk_idx)
+    diag = dict(runtime_diag)
+    diag.update({
+        "triggered": bool(triggered),
+        "reason": "offline_pass2_boundary" if triggered else "not_offline_boundary",
+        "trigger_source": "offline_pass2_boundaries",
+        "offline_compress_chunks_remaining": sorted(int(x) for x in pending),
+    })
+    return diag
 
 
 def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
@@ -270,8 +294,8 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
                 open_until=meta.get("open_until"),
             )
 
-    runner._last_compress_trigger_diagnostic = _compress_trigger_diagnostic(
-        runner.memory
+    runner._last_compress_trigger_diagnostic = _compress_trigger_for_runner(
+        runner, chunk_idx
     )
     compress_trigger = (
         "<compress_trigger/>"
@@ -346,12 +370,16 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> str:
     else:
         runner._last_memory_merge_event = None
     if action == "compress":
-        summary = parsed["payload"].get("summary", {})
-        if summary and "time_range" in summary:
-            compressed_chunks = runner.memory.chunks_in_time_range(
-                summary["time_range"]
-            )
-            runner.memory.compress(summary, compressed_chunks=compressed_chunks)
+        entries = parsed["payload"].get("memory_entries") or []
+        if entries:
+            runner.memory.replace_with_compact_memory(entries)
+        else:
+            summary = parsed["payload"].get("summary", {})
+            if summary and "time_range" in summary:
+                compressed_chunks = runner.memory.chunks_in_time_range(
+                    summary["time_range"]
+                )
+                runner.memory.compress(summary, compressed_chunks=compressed_chunks)
     elif action == "response":
         answer_text = parsed["payload"].get("response", "")
         if answer_text:
@@ -488,8 +516,8 @@ def streaming_predict_mcq_vllm(
     compress_max_new_tokens: int = 512,
     frames_per_chunk: int = 8,
     max_chunks: int = 30,
-    min_pixels: int = 256 * 28 * 28,
-    max_pixels: int = 512 * 28 * 28,
+    min_pixels: int = DEFAULT_VIDEO_MIN_PIXELS,
+    max_pixels: int = DEFAULT_VIDEO_MAX_PIXELS,
     frames_root: Optional[str] = None,
     video_root: Optional[str] = None,
     temperature: float = 0.0,
@@ -745,6 +773,8 @@ class _RolloutRunner:
     _last_turn_kind: str = "streaming"
     _last_trigger: bool = False
     _last_compress_trigger_diagnostic: Dict[str, Any] = field(default_factory=dict)
+    compress_trigger_source: str = "runtime_memory_threshold"
+    offline_compress_pending: set[int] = field(default_factory=set)
     # Per-chunk results, shape matches grpo.py:736-758 contract.
     chunk_results: List[Dict] = field(default_factory=list)
     # v12.6 #15: trajectory schema support — each chunk may carry its own
@@ -866,6 +896,24 @@ def _extract_question_at_chunk_map(raw_sample: Dict) -> Dict[int, str]:
     return out
 
 
+def _extract_offline_compress_chunks(raw_sample: Dict) -> List[int]:
+    extra = raw_sample.get("extra_info") or {}
+    if not isinstance(extra, dict):
+        extra = {}
+    chunks = (
+        raw_sample.get("offline_compress_chunks")
+        or extra.get("offline_compress_chunks")
+        or []
+    )
+    out: List[int] = []
+    for ck in chunks:
+        try:
+            out.append(int(ck))
+        except (TypeError, ValueError):
+            continue
+    return sorted(set(out))
+
+
 def _apply_rollout_output(
     runner: _RolloutRunner, output_text: str, tokenizer, *,
     compress_budget: int,
@@ -974,8 +1022,8 @@ def streaming_vllm_rollout(
     compress_max_new_tokens: int = 512,
     rollout_max_chunks: int = 30,
     rollout_extra_chunks: int = 5,
-    min_pixels: int = 256 * 28 * 28,
-    max_pixels: int = 512 * 28 * 28,
+    min_pixels: int = DEFAULT_VIDEO_MIN_PIXELS,
+    max_pixels: int = DEFAULT_VIDEO_MAX_PIXELS,
     temperature: float = 1.0,
     top_p: float = 0.95,
     top_k: int = 50,
@@ -1085,6 +1133,19 @@ def streaming_vllm_rollout(
         else:
             cap_target = latest_ask + rollout_extra_chunks
         max_chunks_this = min(cap_target + 1, rollout_max_chunks)
+        raw_extra = raw_sample.get("extra_info") or {}
+        if not isinstance(raw_extra, dict):
+            raw_extra = {}
+        offline_compress_chunks = _extract_offline_compress_chunks(raw_sample)
+        compress_trigger_source = str(
+            raw_sample.get("compress_trigger_source")
+            or raw_extra.get("compress_trigger_source")
+            or (
+                "offline_pass2_boundaries"
+                if offline_compress_chunks
+                else "runtime_memory_threshold"
+            )
+        )
 
         for g in range(group_size):
             # v12.6 #15: per-runner BM25 retriever for recall tool execution.
@@ -1116,6 +1177,8 @@ def streaming_vllm_rollout(
                 question_at_chunk=q_at_chunk,
                 question_meta_at_chunk=q_meta_at_chunk,    # v12.13 P0-1
                 retriever=runner_retriever,
+                compress_trigger_source=compress_trigger_source,
+                offline_compress_pending=set(offline_compress_chunks),
             ))
 
     if not runners:
@@ -1138,11 +1201,16 @@ def streaming_vllm_rollout(
 
     # ── Chunk-lockstep loop ──
     max_global_chunk = max(r.max_chunks for r in runners)
-    for chunk_idx in range(max_global_chunk):
-        live = [r for r in runners
-                if not r.done and r.current_chunk == chunk_idx]
-        if not live:
+    max_compress_turns = max(
+        (len(getattr(r, "offline_compress_pending", set()) or set()) for r in runners),
+        default=0,
+    )
+    for _ in range(max_global_chunk + max_compress_turns + 8):
+        active = [r for r in runners if not r.done]
+        if not active:
             break
+        chunk_idx = min(r.current_chunk for r in active)
+        live = [r for r in active if r.current_chunk == chunk_idx]
 
         # Phase A: build messages (reuse _prepare_step_messages via duck typing)
         messages_list: List[List[Dict]] = []
@@ -1308,7 +1376,11 @@ def streaming_vllm_rollout(
                         max_pixels=r.max_pixels,
                         render_layout=r.render_layout,
                     )
-                    rc_msgs.append({"role": "user", "content": tool_user_content})
+                    rc_msgs.append({
+                        "role": "tool",
+                        "tool_call_id": "recall",
+                        "content": tool_user_content,
+                    })
 
                     recall_msgs_batch.append(rc_msgs)
                     recall_meta.append((r, recall_result, recalled_frames, rc_msgs))

@@ -1,15 +1,15 @@
-"""Per-timestep agent SFT training entry point.
+"""Trajectory-mixed agent SFT training entry point.
 
 Based on Qwen3-VL official finetune, adapted for ThinkStream.
 Supports Qwen2.5-VL and Qwen3-VL (including MoE variants).
 
 Usage (production):
-    PHASE=sft bash scripts/sft_per_timestep.sh
+    bash scripts/sft_trajectory.sh
     # or directly:
     torchrun --nproc_per_node=8 thinkstream/sft/train.py \
         --model_name_or_path Qwen/Qwen3-VL-8B \
-        --dataset_use stream_agent_sft \
-        --output_dir output/agent-sft-v12.23
+        --dataset_use stream_agent_trajectory_train \
+        --output_dir output/agent-trajectory-sft
 """
 
 import os
@@ -34,8 +34,9 @@ project_root = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(project_root))
 
 from thinkstream.sft.trainer import WeightedSFTTrainer
-from thinkstream.sft.data_processor import make_per_timestep_data_module
+from thinkstream.sft.data_processor import make_trajectory_data_module
 from thinkstream.sft.args import ModelArguments, DataArguments, TrainingArguments
+from thinkstream.data.agent_protocol import AGENT_SPECIAL_TOKENS
 # Patch lce_forward to accept video_mask and build the FlexAttention
 # block mask (no-op when attn_implementation != "streaming_attention").
 # Importing the module triggers the patch.
@@ -60,6 +61,52 @@ def safe_save_model_for_hf_trainer(trainer: transformers.Trainer, output_dir: st
         cpu_state_dict = {key: value.cpu() for key, value in state_dict.items()}
         del state_dict
         trainer._save(output_dir, state_dict=cpu_state_dict)
+
+
+def _register_agent_special_tokens(tokenizer) -> int:
+    """Register canonical agent tags as indivisible special tokens."""
+    existing_vocab = tokenizer.get_vocab()
+    already_special = set(getattr(tokenizer, "all_special_tokens", []) or [])
+    to_add = [
+        tok for tok in AGENT_SPECIAL_TOKENS
+        if tok not in existing_vocab or tok not in already_special
+    ]
+    if not to_add:
+        return 0
+    return int(tokenizer.add_special_tokens({
+        "additional_special_tokens": list(AGENT_SPECIAL_TOKENS),
+    }))
+
+
+def _resize_and_init_new_embeddings(model, old_vocab_size: int, new_vocab_size: int):
+    """Resize LM embeddings and initialize newly added tags from old means."""
+    in_emb = model.get_input_embeddings()
+    if in_emb is None or not hasattr(in_emb, "weight"):
+        return
+    old_embedding_size = int(in_emb.weight.shape[0])
+    target_size = max(new_vocab_size, old_embedding_size)
+    if target_size > old_embedding_size:
+        model.resize_token_embeddings(target_size)
+        in_emb = model.get_input_embeddings()
+    init_start = int(old_vocab_size)
+    init_end = int(new_vocab_size)
+    if init_end <= init_start:
+        return
+    with torch.no_grad():
+        if in_emb is not None and hasattr(in_emb, "weight"):
+            weight = in_emb.weight
+            mean = weight[:init_start].mean(dim=0, keepdim=True)
+            weight[init_start:init_end].copy_(mean)
+        out_emb = model.get_output_embeddings()
+        if out_emb is not None and hasattr(out_emb, "weight"):
+            weight = out_emb.weight
+            if weight.shape[0] < target_size:
+                model.resize_token_embeddings(target_size)
+                out_emb = model.get_output_embeddings()
+                weight = out_emb.weight
+            mean = weight[:init_start].mean(dim=0, keepdim=True)
+            if weight.shape[0] >= init_end:
+                weight[init_start:init_end].copy_(mean)
 
 
 class ProcessorSaveCallback(transformers.TrainerCallback):
@@ -172,9 +219,25 @@ def train(attn_implementation="flash_attention_2"):
             f"Only Qwen2.5-VL and Qwen3-VL are supported."
         )
 
+    vision_config = getattr(model.config, "vision_config", None)
+    vision_attn_implementation = os.environ.get(
+        "THINKSTREAM_VISION_ATTN_IMPLEMENTATION",
+        "flash_attention_2",
+    )
+    if attn_implementation == "streaming_attention" and vision_config is not None:
+        # Match the reference SFT/GRPO setup: streaming_attention is only for
+        # language tokens carrying video_block_mask; the vision tower does not
+        # receive that mask and should use ordinary vision attention.
+        vision_config._attn_implementation = vision_attn_implementation
+
     rank0_print(f"Model: {model_args.model_name_or_path} ({model.__class__.__name__})")
     rank0_print(f"Model type: {data_args.model_type}")
     rank0_print(f"Attention: {attn_implementation}")
+    if vision_config is not None:
+        rank0_print(
+            "Vision attention: "
+            f"{getattr(vision_config, '_attn_implementation', None)}"
+        )
 
     # Video sliding-window size for streaming_attention. Aligns with
     # SLIDING_WINDOW_CHUNKS in pass5_splitter so SFT mask matches the
@@ -191,11 +254,8 @@ def train(attn_implementation="flash_attention_2"):
         rank0_print(f"video_flex_window_size: {window_size}")
 
     # ── Processor ──
-    # v12: Qwen3-VL official tool protocol. Agent tags stay as plain text
-    # (BPE multi-token sequences). No vocabulary resize, no embedding
-    # smart-init — DeepEyesV2 / Qwen-VL official finetune / VST all follow
-    # this pattern. v12 hard-requires Qwen3-VL because Qwen2.5-VL's bundled
-    # chat_template silently drops `tools=`.
+    # v12 hard-requires Qwen3-VL because Qwen2.5-VL's bundled chat_template
+    # silently drops `tools=`.
     if data_args.model_type != "qwen3vl":
         raise RuntimeError(
             f"v12 protocol REQUIRES Qwen3-VL (model_type=qwen3vl); "
@@ -214,7 +274,15 @@ def train(attn_implementation="flash_attention_2"):
     )
     if processor_path != model_args.model_name_or_path:
         rank0_print(f"Processor: {processor_path}")
-    rank0_print("[v12.0] no special tokens added (official Qwen tool protocol)")
+    old_vocab_size = len(processor.tokenizer)
+    n_added = _register_agent_special_tokens(processor.tokenizer)
+    new_vocab_size = len(processor.tokenizer)
+    _resize_and_init_new_embeddings(model, old_vocab_size, new_vocab_size)
+    rank0_print(
+        "[v12] agent special tokens registered: "
+        f"added={n_added}, vocab={old_vocab_size}->{new_vocab_size}, "
+        f"tokens={list(AGENT_SPECIAL_TOKENS)}"
+    )
 
     model.config.use_cache = False
 
@@ -237,6 +305,7 @@ def train(attn_implementation="flash_attention_2"):
         padding_side="right",
         use_fast=False,
     )
+    _register_agent_special_tokens(tokenizer)
     # Sync special tokens added to processor's tokenizer
     tokenizer.add_tokens(
         [t for t in processor.tokenizer.get_added_vocab().keys()
@@ -268,7 +337,7 @@ def train(attn_implementation="flash_attention_2"):
             model.model.print_trainable_parameters()
 
     # ── Data module ──
-    data_module = make_per_timestep_data_module(
+    data_module = make_trajectory_data_module(
         processor,
         data_args,
         emit_video_mask=(attn_implementation == "streaming_attention"),

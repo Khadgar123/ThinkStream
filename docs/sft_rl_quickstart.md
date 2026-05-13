@@ -19,7 +19,7 @@ flash_attn 2.8.3, and flashinfer-python 0.6.7. Core versions are pinned in
 ## 2. Data Layout
 
 Point `THINKSTREAM_DATA_ROOT` at a generated agent-v5 batch root. The direct
-launcher expects rendered SFT messages and RL trajectories/parquets:
+launcher expects rendered SFT/eval trajectory rows and RL trajectories/parquets:
 
 ```text
 data/agent_v5/<batch_root>/
@@ -27,9 +27,10 @@ data/agent_v5/<batch_root>/
     train_rl_trajectories.jsonl
     val_trajectories.jsonl
   frames/
+  rendered/trajectory/
+    train_sft_trajectory.jsonl
+    val_trajectory.jsonl
   rendered/video_meta_standard_query_last/
-    train_sft_messages.jsonl
-    val_messages.jsonl
     train_rl_multi_q.parquet       # auto-built if missing
     val_rl_multi_q.parquet         # auto-built if missing
 ```
@@ -56,8 +57,9 @@ bash scripts/prepare_training_data.sh \
   --force
 ```
 
-The output already contains canonical rendered SFT messages and RL parquet
-files under `rendered/video_meta_standard_query_last/`.
+The output already contains canonical SFT/eval trajectory rows under
+`rendered/trajectory/` and RL parquet files under
+`rendered/video_meta_standard_query_last/`.
 
 ## 4. One-Command SFT -> RL
 

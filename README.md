@@ -83,9 +83,9 @@ bash scripts/prepare_training_data.sh \
     --val-videos 50 --test-videos 50 --force
 ```
 
-This writes SFT messages and RL parquet files to
-`rendered/video_meta_standard_query_last/` and keeps split trajectories in
-`final/`.
+This writes SFT/eval multi-turn trajectory rows to `rendered/trajectory/`,
+RL parquet files to `rendered/video_meta_standard_query_last/`, and keeps
+split trajectories in `final/`.
 
 ```bash
 THINKSTREAM_DATA_ROOT=data/agent_v5/scheme_v1 \
@@ -93,7 +93,7 @@ BASE_MODEL=/path/to/Qwen3-VL-8B-Instruct \
 bash scripts/run_sft_rl.sh
 ```
 
-The one-command launcher runs per-step SFT and then GRPO RL from the best SFT
+The one-command launcher runs trajectory SFT and then GRPO RL from the best SFT
 checkpoint. GRPO RL uses the vendored verl recipe with the shared v12 reward
 adapter. Current full-video defaults use recurrent rollout with `MULTI_Q=1`,
 `GROUP_SIZE=8`, `BATCH_SIZE=1`, `TP_SIZE=2`, `MAX_CHUNKS=420`,

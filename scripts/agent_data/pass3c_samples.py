@@ -1,8 +1,8 @@
-"""Pass 3-C — Trajectory sample rendering (v2 model-agnostic).
+"""Pass 3-C — Trajectory sample rendering (placement model-agnostic).
 
 For each trajectory's selected placements, walks every chunk in [0, num_chunks)
 and emits ONE raw SFT sample per chunk (silent / response / recall+response /
-recall+silent / patrol / compress_silent), using v2/design.py as the single
+recall+silent / patrol / compress_silent), using placement/design.py as the single
 source of truth for gold actions.
 
 Pipeline contract preserved:
@@ -27,7 +27,6 @@ from typing import Dict, List, Optional
 from thinkstream.data.agent_protocol import (
     RECALL_RETURN_CHUNKS,
     build_assistant_content,
-    build_compress_trigger_user_input,
     format_memory_block,
     recall_time_string_for_chunks,
     select_recall_chunks,
@@ -39,16 +38,16 @@ from .config import (
     FRAMES_PER_CHUNK,
     PASS_CONFIG,
     SAMPLES_3C_DIR,
-    compute_visual_window_start,
+    VISUAL_WINDOW_CHUNKS,
 )
 from .pass3a_cards import dict_to_card
 from .pass3b_placement import _dict_to_placement
 from .stable_hash import stable_mod
-from .v2.design import (
+from .placement.design import (
     Placement,
     render_video_samples as _design_render,
 )
-from .v2.llm_prompts import (
+from .placement.llm_prompts import (
     family_taxonomy,
     parse_recall_query_response,
     recall_query_prompt,
@@ -58,8 +57,6 @@ from .v2.llm_prompts import (
 logger = logging.getLogger(__name__)
 
 
-RECALL_MEMORY_OVERLAP_HARDEN_THRESHOLD = 0.50
-RECALL_MEMORY_OVERLAP_ACCEPT_THRESHOLD = 0.35
 RECALL_SUPPORT_OVERLAP_MIN = 0.40
 RECALL_HARDEN_MAX_ATTEMPTS = 3
 RECALL_HARDEN_CANDIDATES_PER_ATTEMPT = 3
@@ -717,12 +714,11 @@ def _history_evidence_lines(
     only gives the teacher grounded historical material from which it may build
     a harder question.
     """
-    visual_start = compute_visual_window_start(int(current_chunk))
     original_support = set(_support_chunks_before(card, int(current_chunk)))
     memory_tokens = set(_tokens(memory_text)) if memory_text else set()
     scored = []
     for ci, cap in evidence_by_chunk.items():
-        if ci < 0 or ci >= visual_start:
+        if ci < 0 or int(current_chunk) - int(ci) <= VISUAL_WINDOW_CHUNKS:
             continue
         text = _evidence_text(cap)
         if not text:
@@ -936,17 +932,13 @@ def _validate_hardened_recall_card(
     question = str(card.get("question") or "")
     if _answer_visible_in_text(answer, question, threshold=0.50):
         return False, "question_leaks_answer"
-    if _answer_visible_in_text(
-        answer, memory_text,
-        threshold=RECALL_MEMORY_OVERLAP_ACCEPT_THRESHOLD,
-    ):
-        return False, "answer_still_visible_in_memory"
-
-    visual_start = compute_visual_window_start(int(current_chunk))
     grounding = _support_chunks_before(card, int(current_chunk))
     if not grounding:
         return False, "no_past_grounding"
-    not_historical = [c for c in grounding if c >= visual_start]
+    not_historical = [
+        c for c in grounding
+        if int(current_chunk) - int(c) <= VISUAL_WINDOW_CHUNKS
+    ]
     if not_historical:
         return False, f"grounding_inside_visual_window:{not_historical[:5]}"
     missing = [c for c in grounding if c not in evidence_by_chunk]
@@ -970,13 +962,14 @@ def _validate_hardened_recall_card(
 
 
 def _needs_recall_hardening(card: Dict, memory_text: str) -> bool:
-    answer = _card_answer_text(card)
-    if not answer or answer.strip().lower() == "unable to answer":
-        return False
-    return _answer_visible_in_text(
-        answer, memory_text,
-        threshold=RECALL_MEMORY_OVERLAP_HARDEN_THRESHOLD,
-    )
+    """Memory text overlap no longer makes a recall slot invalid.
+
+    Compact memory is a lossy state prior; the model still needs the recall
+    tool to inspect old visual frames once support is outside the 8s KV window.
+    Keep this shim for older call sites, but do not rewrite questions/answers
+    based on memory-word visibility.
+    """
+    return False
 
 
 def _is_unanswerable_card(card: Dict) -> bool:
@@ -1464,38 +1457,52 @@ def _compress_sample(
     chunk_idx: int, think: str, queries: List[Dict],
     trajectory_id: str, compress_event: Dict,
 ) -> Dict:
-    """Compress sample — model emits <tool_call>{"name":"compress",...}</tool_call>.
+    """Compact-memory update sample from a pass2 compression event.
 
-    This is the SFT supervision signal that teaches the model to output a
-    compression tool_call when the system signals memory pressure.
-
-      user_input = <compress_trigger/> (legacy event marker only)
-      output     = <think>...</think><tool_call>{compress with gold summary
-                                                  INCLUDING time_range}</tool_call>
-      action     = "compress"
-      inter_chunk = True (pass5 suppresses visual_window, query, and
-      recalled-frame response context)
-
-    The gold summary (time_range + text) comes from rollout's compression_events,
-    which were generated by the question-blind pass2 rollout.
-
-    v12.12 (2026-05-02): trigger no longer carries range='a-b'. Range stays
-    ONLY in the gold tool_call output — model must learn to derive the range
-    from <memory> contents (chunk timestamps + summary boundaries) rather
-    than copy it from the system-injected trigger. SFT loss covers every
-    token of the assistant turn, including the time_range field, so the
-    range-selection policy is distilled from pass2's score_range oracle
-    into the model. This unblocks the v12.12 RL upgrade where the trigger
-    is removed entirely and the model decides timing AND range.
+    New data treats memory compaction as a standalone text-only system turn:
+    user(old memory + recent captions) -> assistant(<MEM>...</MEM>).
+    It is no longer a streaming tool_call or a <stage:compress> turn.
     """
     summary = compress_event.get("summary", {}) or {}
     tr = summary.get("time_range", [])
-    trigger_tag = build_compress_trigger_user_input()
     chunks = sorted(int(c) for c in
         (summary.get("source_chunks")
          or compress_event.get("compressed_source_chunks")
          or compress_event.get("compressed_thinks_chunks")
          or []))
+    mem_text = (summary.get("text") or "").strip()
+    if summary.get("compact_memory_update") or mem_text.startswith("<MEM>") or summary.get("entries"):
+        if not mem_text.startswith("<MEM>"):
+            lines = ["<MEM>"]
+            for entry in summary.get("entries") or []:
+                etr = entry.get("time_range") or []
+                if not (isinstance(etr, list) and len(etr) == 2):
+                    continue
+                lines.append(
+                    f'  <m t="{int(etr[0])}-{int(etr[1])}">{str(entry.get("text", "")).strip()}</m>'
+                )
+            lines.append("</MEM>")
+            mem_text = "\n".join(lines)
+        return {
+            "chunk_idx": chunk_idx,
+            "sample_type": "compress",
+            "prompt_type": "SYSTEM_PROMPT",
+            "trajectory_id": trajectory_id,
+            "card_id": "",
+            "sequence_type": "compress_event",
+            "action": "compress",
+            "output": mem_text,
+            "queries": deepcopy(queries),
+            "user_input": "",
+            "memory_update_input": str(compress_event.get("memory_update_input") or "").strip(),
+            "recall_result": None,
+            "base_role": "compress_action",
+            "inter_chunk": True,
+            "gold_caption": mem_text,
+            "gold_compress_chunks": chunks,
+            "gold_memory_entries": deepcopy(summary.get("entries") or []),
+            "memory_update_mode": "compact_mem",
+        }
     if isinstance(tr, list) and len(tr) == 2:
         tr0, tr1 = int(tr[0]), int(tr[1])
     elif chunks:
@@ -1529,7 +1536,7 @@ def _compress_sample(
         "action": "compress",
         "output": output_text,
         "queries": deepcopy(queries),
-        "user_input": trigger_tag,                           # system signal
+        "user_input": "",
         "recall_result": None,
         "base_role": "compress_action",
         "inter_chunk": True,
@@ -1718,7 +1725,7 @@ async def generate_trajectory_samples(
     compress_chunks = [int(e.get("trigger_chunk", -1))
                        for e in rollout.get("compression_events", [])
                        if e.get("trigger_chunk", -1) >= 0]
-    # Map trigger_chunk → full event so we can inject <compress_trigger>
+    # Map trigger_chunk -> full event so we can inject standalone compact-memory samples.
     compress_event_by_chunk: Dict[int, Dict] = {
         int(e.get("trigger_chunk", -1)): e
         for e in rollout.get("compression_events", [])
@@ -1774,9 +1781,12 @@ async def generate_trajectory_samples(
     raw: List[Dict] = []
     for ds in design_samples:
         c = ds.chunk_idx
-        # Add queries that became active by this chunk
+        # Add queries that became active by this chunk. Compact-memory update
+        # happens before processing chunk c, so a question asked at c must not
+        # be visible to the compact update row.
+        query_activation_limit = c - 1 if ds.sample_kind == "compress_silent" else c
         for p in placements_sorted:
-            if p.ask_chunk <= c and p.card_id not in queries_idx_by_card:
+            if p.ask_chunk <= query_activation_limit and p.card_id not in queries_idx_by_card:
                 card = cards_map.get(p.card_id) or {}
                 queries_idx_by_card[p.card_id] = len(queries_state)
                 # v12.13 fix (P0-3): include options + answer_form so
@@ -1830,9 +1840,8 @@ async def generate_trajectory_samples(
                 base_role="patrol", sample_subtype="patrol",
             ))
         elif ds.sample_kind == "compress_silent":
-            # SFT must teach the model to OUTPUT compress tool_calls, not
-            # observe silently. Render as a compress action sample with
-            # gold summary from the rollout's compression event.
+            # Render as a standalone compact-memory update sample with the
+            # gold <MEM> block from the rollout's compression event.
             ce = compress_event_by_chunk.get(c)
             if ce:
                 raw.append(_compress_sample(

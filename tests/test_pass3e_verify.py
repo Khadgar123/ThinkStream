@@ -8,7 +8,7 @@ This test asserts:
   1. tag_samples returns ALL input samples (no drops).
   2. Each sample has verification.passed flag.
   3. Aggregate stats still report pass/fail counts correctly.
-  4. Legacy filter_samples (for backward compat) still drops failures.
+  4. Legacy filter_samples name is also tag-only for backward compat.
 
 Run: python tests/test_pass3e_verify.py
 """
@@ -116,17 +116,75 @@ def test_tag_samples_keeps_failures_with_reasons():
         print(f"  SKIP this sample passed all checks (verification permissive)")
 
 
-def test_filter_samples_still_drops_legacy():
-    """Backward-compat: legacy filter_samples still drops failures."""
+def test_filter_samples_is_tag_only_legacy_name():
+    """Backward-compat: legacy filter_samples name no longer drops rows."""
     from scripts.agent_data.pass3e_verify import filter_samples
 
     bad_sample = _make_minimal_v12_sample(5, "response", gold_answer="answer")
     bad_sample["output"] = "no tags at all"
     inputs = [_make_minimal_v12_sample(0, "silent"), bad_sample]
     out, stats = filter_samples(inputs)
-    # filter_samples returns only verification.passed=True
-    assert all(s.get("verification", {}).get("passed", True) for s in out)
-    print(f"  PASS filter_samples keeps {len(out)}/{len(inputs)} (drops failures)")
+    assert len(out) == len(inputs), "filter_samples must preserve trajectory rows"
+    assert stats["total"] == len(inputs)
+    assert any(not s.get("verification", {}).get("passed", True) for s in out)
+    print(f"  PASS filter_samples keeps all {len(out)} rows with tags")
+
+
+def test_recall_array_time_range_is_valid():
+    """Current recall tool schema uses [start, end], not legacy 'start-end'."""
+    from scripts.agent_data.pass3e_verify import verify_format
+
+    sample = _make_minimal_v12_sample(5, "silent")
+    sample.update({
+        "sample_type": "recall",
+        "action": "response",
+        "v12_assistant_turn_1": (
+            '<think>need prior visual evidence</think>'
+            '<tool_call>{"name":"recall","arguments":'
+            '{"query":"red apron","time_range":[1,4]}}</tool_call>'
+        ),
+        "v12_assistant_turn_2": (
+            "<think>retrieved frames contain the answer</think><answer>red</answer>"
+        ),
+    })
+    ok, reason = verify_format(sample)
+    assert ok, reason
+    print("  PASS recall array time_range accepted")
+
+
+def test_think_checks_are_policy_skipped():
+    """Think length/blacklist audits should not hard-fail current data."""
+    from scripts.agent_data.pass3e_verify import (
+        verify_grounding,
+        verify_think_token_length,
+    )
+
+    sample = _make_minimal_v12_sample(5, "silent")
+    sample["output"] = (
+        "<think>"
+        + " ".join(["noise"] * 200)
+        + "</think><answer></answer>"
+    )
+    ok, reason = verify_grounding(sample)
+    assert ok, reason
+    ok, reason = verify_think_token_length(sample)
+    assert ok, reason
+    print("  PASS think grounding/token-length checks are skipped")
+
+
+def test_mc_answer_text_in_options_is_not_leakage():
+    """MC prompts may contain answer candidates by design."""
+    from scripts.agent_data.pass3e_verify import verify_question_answer_leakage
+
+    sample = _make_minimal_v12_sample(5, "response", gold_answer="red hat")
+    sample["metadata"].update({
+        "answer_form": "multiple_choice",
+        "question": "Which item appears first: red hat, blue cup, or green bag?",
+        "options": ["A) red hat", "B) blue cup", "C) green bag"],
+    })
+    ok, reason = verify_question_answer_leakage(sample)
+    assert ok, reason
+    print("  PASS MC option answer text is not leakage")
 
 
 def test_aggregate_stats_pass_rate():
@@ -147,7 +205,10 @@ def main():
         test_tag_samples_returns_all_input,
         test_tag_samples_attaches_verification,
         test_tag_samples_keeps_failures_with_reasons,
-        test_filter_samples_still_drops_legacy,
+        test_filter_samples_is_tag_only_legacy_name,
+        test_recall_array_time_range_is_valid,
+        test_think_checks_are_policy_skipped,
+        test_mc_answer_text_in_options_is_not_leakage,
         test_aggregate_stats_pass_rate,
     ]
     failures = []

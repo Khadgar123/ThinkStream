@@ -42,11 +42,11 @@ from thinkstream.data.schema import (  # noqa: E402
 
 # ---------- Tools schema ----------
 
-def test_tools_schema_default_has_both():
+def test_tools_schema_default_recall_only():
     tools = build_tools_schema()
     names = {t["function"]["name"] for t in tools}
-    assert names == {TOOL_NAME_COMPRESS, TOOL_NAME_RECALL}
-    print("[OK] tools_schema_default_has_both")
+    assert names == {TOOL_NAME_RECALL}
+    print("[OK] tools_schema_default_recall_only")
 
 
 def test_tools_schema_filter():
@@ -78,16 +78,16 @@ def test_user_content_with_query():
     )
     spec = ChunkUserSpec(chunk_idx=12, frame_paths=["f.jpg"], active_query=query)
     content = build_user_content(spec)
-    # Block order: <t=N> → video → <query> (text scaffold first, vision
-    # second, then the question — "look then ask").
-    assert len(content) == 3, f"expected 3 items: {content}"
+    # Block order: <t=N> → video → <active_query> → <response_history>.
+    assert len(content) == 4, f"expected 4 items: {content}"
     assert content[0]["text"] == "<t=12>"
     assert content[1]["type"] == "video"
     query_text = content[2]["text"]
-    assert "<query>" in query_text
+    assert "<active_query>" in query_text
     assert "What color is the jacket?" in query_text
     assert "A. Red" in query_text
     assert "Answer with the letter only." in query_text
+    assert "<response_history>" in content[3]["text"]
     print("[OK] user_content_with_query")
 
 
@@ -257,8 +257,8 @@ def test_render_trajectory_from_start_silent_chain():
     assert messages[2]["role"] == "assistant"
     assert messages[3]["role"] == "user"
     assert messages[4]["role"] == "assistant"
-    # Tools: both compress + recall present
-    assert {t["function"]["name"] for t in tools} == {TOOL_NAME_COMPRESS, TOOL_NAME_RECALL}
+    # Active streaming rows expose recall only; compact memory is a separate row.
+    assert {t["function"]["name"] for t in tools} == {TOOL_NAME_RECALL}
     print("[OK] render_trajectory_from_start_silent_chain")
 
 
@@ -442,16 +442,11 @@ def test_system_prompt_v2_contains_key_rules():
     assert "<silent>" in SYSTEM_PROMPT
     assert "<response>" in SYSTEM_PROMPT
     assert "<think>" in SYSTEM_PROMPT
-    # Stage marker semantics (v2's distinguishing feature)
-    assert "<stage:compress>" in SYSTEM_PROMPT
     # Recall rules (from V12_STREAMING)
     assert "recall" in SYSTEM_PROMPT.lower()
     assert "time_range" in SYSTEM_PROMPT
-    # Compress rules (from V12_COMPRESS)
-    assert "compress" in SYSTEM_PROMPT.lower()
-    assert "summary" in SYSTEM_PROMPT.lower()
     # Memory orientation rules
-    assert "<memory>" in SYSTEM_PROMPT
+    assert "<memory>" in SYSTEM_PROMPT or "<MEM>" in SYSTEM_PROMPT
     print("[OK] system_prompt_v2_contains_key_rules")
 
 
@@ -487,11 +482,11 @@ def test_get_canonical_system_prompt_always_returns_unified():
     print("[OK] get_canonical_system_prompt_always_returns_unified")
 
 
-def test_system_prompt_for_frame_protocol_ignores_stage_args():
-    """The selector now returns the canonical prompt regardless of
-    prompt_kind / inter_chunk / frame_protocol; those args remain in the
-    signature for backward compatibility but no longer affect the output."""
+def test_system_prompt_for_frame_protocol_selects_compact_prompt():
+    """Streaming/post-recall use the canonical prompt; compress/inter-chunk
+    uses the compact-memory prompt for the standalone memory-update row."""
     from thinkstream.data.agent_protocol import (
+        COMPACT_MEMORY_SYSTEM_PROMPT,
         system_prompt_for_frame_protocol,
         SYSTEM_PROMPT as ap_prompt,
     )
@@ -500,12 +495,13 @@ def test_system_prompt_for_frame_protocol_ignores_stage_args():
     p3 = system_prompt_for_frame_protocol(inter_chunk=True)
     p4 = system_prompt_for_frame_protocol(prompt_kind="recall_response")
     p5 = system_prompt_for_frame_protocol()
-    assert p1 == p2 == p3 == p4 == p5 == ap_prompt
-    print("[OK] system_prompt_for_frame_protocol_ignores_stage_args")
+    assert p1 == p4 == p5 == ap_prompt
+    assert p2 == p3 == COMPACT_MEMORY_SYSTEM_PROMPT
+    print("[OK] system_prompt_for_frame_protocol_selects_compact_prompt")
 
 
 if __name__ == "__main__":
-    test_tools_schema_default_has_both()
+    test_tools_schema_default_recall_only()
     test_tools_schema_filter()
     test_user_content_silent_chunk()
     test_user_content_with_query()
@@ -527,5 +523,5 @@ if __name__ == "__main__":
     test_system_prompt_v2_contains_key_rules()
     test_agent_protocol_re_exports_canonical()
     test_get_canonical_system_prompt_always_returns_unified()
-    test_system_prompt_for_frame_protocol_ignores_stage_args()
+    test_system_prompt_for_frame_protocol_selects_compact_prompt()
     print("\n✅ all schema tests passed")

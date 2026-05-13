@@ -42,7 +42,7 @@ ALL_JSONL_FILES = [
 ]
 
 OPTION_RE = re.compile(r"^\s*(?:\(([A-Z])\)|([A-Z])[\).:])\s*(.*)\s*$", re.DOTALL)
-ANSWER_RE = re.compile(r"<answer>(.*?)</answer>", re.DOTALL)
+ANSWER_RE = re.compile(r"<(answer|response)>(.*?)</\1>", re.DOTALL)
 QUERY_BLOCK_RE = re.compile(
     r"(?P<qline>\[[^\]\n]+s\]\s+Q:\s+(?P<question>.*?)\n)"
     r"(?P<oline>\[[^\]\n]+s\]\s+Options:\s+)(?P<options>.*?)(?=\n\[|\n</active_query>|\n</queries>|$)",
@@ -186,20 +186,25 @@ def _patch_query_answers(obj: Dict[str, Any], target: str | None) -> bool:
 
 
 def _patch_answer_payload(text: str, target: str | None) -> Tuple[str, bool]:
-    if not target or not isinstance(text, str) or "<answer>" not in text:
+    if (
+        not target
+        or not isinstance(text, str)
+        or not ("<answer>" in text or "<response>" in text)
+    ):
         return text, False
 
     changed = False
 
     def repl(match: re.Match[str]) -> str:
         nonlocal changed
-        current = match.group(1)
+        tag = match.group(1)
+        current = match.group(2)
         if not current.strip():
             return match.group(0)
         if current.strip() == target:
             return match.group(0)
         changed = True
-        return f"<answer>{target}</answer>"
+        return f"<{tag}>{target}</{tag}>"
 
     return ANSWER_RE.sub(repl, text), changed
 
@@ -417,9 +422,9 @@ def _target_from_query_text(
 
 
 def _answer_values(text: str) -> List[str]:
-    if not isinstance(text, str) or "<answer>" not in text:
+    if not isinstance(text, str) or not ("<answer>" in text or "<response>" in text):
         return []
-    return [m.group(1).strip() for m in ANSWER_RE.finditer(text) if m.group(1).strip()]
+    return [m.group(2).strip() for m in ANSWER_RE.finditer(text) if m.group(2).strip()]
 
 
 def _query_text_errors(

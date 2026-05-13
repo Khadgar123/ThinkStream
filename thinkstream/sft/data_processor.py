@@ -120,6 +120,7 @@ def _video_item_scopes(messages: Sequence[Dict]) -> List[str]:
     """Return one KV scope label per rendered video item, in template order."""
     scopes: List[str] = []
     for msg in messages or []:
+        role = str(msg.get("role") or "").strip().lower()
         content = msg.get("content")
         if not isinstance(content, list):
             continue
@@ -129,6 +130,12 @@ def _video_item_scopes(messages: Sequence[Dict]) -> List[str]:
             if item.get("type") != "video" and not item.get("video"):
                 continue
             scope = str(item.get("kv_scope") or "").strip().lower()
+            if not scope and role == "tool":
+                # Older pass5 trajectory JSONL was rendered before kv_scope
+                # was added to recall tool responses. A tool-role video block
+                # in this protocol is recall evidence, not ordinary stream
+                # video, so keep old data trainable under the sidecar mask.
+                scope = "recall"
             scopes.append(scope or "ordinary")
     return scopes
 
@@ -198,28 +205,55 @@ def _add_post_recall_text_kv_mask(
     *,
     assistant_spans: Sequence[Tuple[int, int]],
     sample: Dict,
+    messages: Optional[Sequence[Dict]] = None,
 ) -> torch.Tensor:
     """Mark ephemeral post-recall text spans.
 
     Runtime true-KV deletes the recall tool-call generation and the following
     tool-response input after the post-recall answer. In full-sequence SFT we
-    model that by marking the penultimate assistant span plus the bridge up to
-    the final assistant answer as recall-sidecar KV. The final answer itself
-    remains ordinary text memory.
+    model that by marking each recall tool-call assistant span plus the bridge
+    up to the following assistant answer as recall-sidecar KV. The answer
+    content itself remains ordinary text memory.
     """
-    if _sample_loss_class(sample) != "post_recall" or len(assistant_spans) < 2:
-        return recall_kv_mask
-
-    query_start, query_end = assistant_spans[-2]
-    final_start, _ = assistant_spans[-1]
     if recall_kv_mask.ndim != 2 or recall_kv_mask.shape[0] != 1:
         return recall_kv_mask
     seq_len = int(recall_kv_mask.shape[1])
-    query_start = max(0, min(int(query_start), seq_len))
-    query_end = max(query_start, min(int(query_end) + 1, seq_len))
-    final_start = max(query_end, min(int(final_start), seq_len))
-    recall_kv_mask[0, query_start:query_end] = True
-    recall_kv_mask[0, query_end:final_start] = True
+
+    def _mark(query_start: int, query_end: int, final_start: int) -> None:
+        query_start = max(0, min(int(query_start), seq_len))
+        query_end = max(query_start, min(int(query_end) + 1, seq_len))
+        final_start = max(query_end, min(int(final_start), seq_len))
+        recall_kv_mask[0, query_start:query_end] = True
+        recall_kv_mask[0, query_end:final_start] = True
+
+    def _assistant_is_recall_tool(msg: Dict) -> bool:
+        for call in msg.get("tool_calls") or []:
+            fn = call.get("function") if isinstance(call, dict) else None
+            if isinstance(fn, dict) and str(fn.get("name") or "").strip() == "recall":
+                return True
+        text = _message_text_content(msg)
+        return "<tool_call>" in text and '"recall"' in text
+
+    if messages is not None:
+        assistant_messages = [
+            msg for msg in messages
+            if str(msg.get("role") or "").strip().lower() == "assistant"
+        ]
+        n = min(len(assistant_messages), len(assistant_spans))
+        marked = False
+        for idx in range(n - 1):
+            if _assistant_is_recall_tool(assistant_messages[idx]):
+                query_start, query_end = assistant_spans[idx]
+                final_start, _ = assistant_spans[idx + 1]
+                _mark(query_start, query_end, final_start)
+                marked = True
+        if marked or _sample_loss_class(sample) != "post_recall":
+            return recall_kv_mask
+
+    if _sample_loss_class(sample) == "post_recall" and len(assistant_spans) >= 2:
+        query_start, query_end = assistant_spans[-2]
+        final_start, _ = assistant_spans[-1]
+        _mark(query_start, query_end, final_start)
     return recall_kv_mask
 
 
@@ -1408,6 +1442,7 @@ def preprocess_trajectory_sample(sample: Dict, processor, data_args=None) -> Dic
         recall_kv_mask,
         assistant_spans=assistant_spans,
         sample=sample,
+        messages=messages,
     )
     if recall_video_mask is not None or bool(recall_kv_mask.any().item()):
         full_result["recall_video_mask"] = (

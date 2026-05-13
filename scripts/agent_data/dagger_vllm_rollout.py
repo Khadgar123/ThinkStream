@@ -39,6 +39,7 @@ from thinkstream.data.agent_protocol import (
 )
 from thinkstream.eval.streaming_vllm import streaming_vllm_rollout
 from thinkstream.eval.vllm_engine import init_vllm_engine
+from thinkstream.data.schema import DEFAULT_VIDEO_MAX_PIXELS, DEFAULT_VIDEO_MIN_PIXELS
 from thinkstream.sft.args import DataArguments
 from thinkstream.sft.data_processor import update_processor_pixels
 
@@ -294,7 +295,11 @@ def _teacher_messages(
             max_pixels=max_pixels,
             render_layout=render_layout,
         )
-        messages.append({"role": "user", "content": tool_user_content})
+        messages.append({
+            "role": "tool",
+            "tool_call_id": "recall",
+            "content": tool_user_content,
+        })
         messages.append({
             "role": "assistant",
             "content": [{
@@ -569,8 +574,8 @@ def main() -> None:
     parser.add_argument("--vllm-max-images-per-prompt", type=int, default=64)
     parser.add_argument("--vllm-max-videos-per-prompt", type=int, default=2)
     parser.add_argument("--vllm-mm-processor-cache-gb", type=int, default=256)
-    parser.add_argument("--min-pixels", type=int, default=130_000)
-    parser.add_argument("--max-pixels", type=int, default=220_000)
+    parser.add_argument("--min-pixels", type=int, default=DEFAULT_VIDEO_MIN_PIXELS)
+    parser.add_argument("--max-pixels", type=int, default=DEFAULT_VIDEO_MAX_PIXELS)
     parser.add_argument("--frames-root", default="")
     parser.add_argument("--frame-protocol", default="video_meta", choices=["video_meta"])
     parser.add_argument(

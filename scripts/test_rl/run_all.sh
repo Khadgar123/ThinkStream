@@ -21,10 +21,9 @@ python -m scripts.test_rl.synthetic_traj \
     --out "$OUT/synthetic_trajectories.jsonl"
 echo
 
-echo "═══ Step 2: Mock rollout + reward + prompt consistency ═══"
-python -m scripts.test_rl.mock_rollout \
-    --traj "$OUT/synthetic_trajectories.jsonl" \
-    --report "$OUT/mock_report.json"
+echo "═══ Step 2: Recurrent rollout wiring + reward advantage checks ═══"
+python -m scripts.test_rl.test_phase3_dispatch
+python -m scripts.test_rl.test_phase4_recurrent_advantage
 echo
 
 echo "═══ Step 3: VERL dataset ground_truth field check ═══"
@@ -42,4 +41,4 @@ python -m scripts.test_rl.test_multi_q_score \
 echo
 
 echo "═══ ✓ Mini RL test passed ═══"
-echo "Report: $OUT/mock_report.json"
+echo "Synthetic trajectories: $OUT/synthetic_trajectories.jsonl"

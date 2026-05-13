@@ -21,6 +21,7 @@ import re
 from typing import Dict, Iterable, List, Literal, Optional, Tuple
 
 from ..config import MAX_QUESTIONS_PER_TRAJECTORY as CONFIG_MAX_QUESTIONS_PER_TRAJECTORY
+from ..config import VISUAL_WINDOW_CHUNKS as CONFIG_VISUAL_WINDOW_CHUNKS
 from ..stable_hash import stable_mod
 
 
@@ -28,7 +29,7 @@ from ..stable_hash import stable_mod
 # Constants (mirrors agent_data/config.py + adds new ones)
 # ---------------------------------------------------------------------------
 
-VISUAL_WINDOW_CHUNKS = 16        # frames still in visual prompt
+VISUAL_WINDOW_CHUNKS = CONFIG_VISUAL_WINDOW_CHUNKS  # chunks still in visual prompt
 RECENT_THINKS_HORIZON = 60       # ~4000 tok / 70 tok-per-think — pre-compress horizon
 RECALL_OK_RATE = 0.95            # pure-oracle recall demo
 RECALL_NOISY_RATE = 0.05         # oracle ⊕ distractor frames
@@ -785,9 +786,12 @@ def refine_placements_with_evidence(
             and _answer_terms_present(card, memory_text)
         )
         if simple_memory_case:
-            p.mechanism = "memory_direct"
-            p.difficulty_mode = "memory_direct"
-            p.recall_need = "memory_text_exact"
+            # In multi-turn training, compact text memory is only a lossy
+            # state prior; old visual detail may no longer be recoverable from
+            # KV. Keep the recall candidate when evidence is outside the
+            # current visual window instead of demoting it solely because the
+            # answer words appear in historical text.
+            p.recall_need = p.recall_need or "text_memory_but_outside_kv"
             refined.append(p)
             continue
 
@@ -1193,8 +1197,7 @@ def assign_recall_noise(
                 continue
         if not support:
             return False
-        visual_start = max(0, int(c) - VISUAL_WINDOW_CHUNKS + 1)
-        return any(s < visual_start for s in support)
+        return any(int(c) - s > VISUAL_WINDOW_CHUNKS for s in support)
 
     for p in placements:
         if p.mechanism == "recall_demo":
@@ -1419,20 +1422,18 @@ def render_video_samples(
     all_samples: List[Sample] = []
     for c in range(num_chunks):
         candidates = per_chunk.get(c, [])
+        if c in compress_set:
+            all_samples.append(Sample(
+                chunk_idx=c,
+                sample_kind="compress_silent",
+                placement_id="",
+                card_id="",
+                ask_chunk=-1,
+                mechanism="multi_emit",
+                extra={"role": "compress_event"},
+            ))
         if not candidates:
-            # NEW silent situation: chunk where memory compression triggered.
-            # Model should observe (silent) but not respond. This is a rare,
-            # specific silent context the model otherwise never sees.
             if c in compress_set:
-                all_samples.append(Sample(
-                    chunk_idx=c,
-                    sample_kind="compress_silent",
-                    placement_id="",
-                    card_id="",
-                    ask_chunk=-1,
-                    mechanism="multi_emit",
-                    extra={"role": "compress_event"},
-                ))
                 continue
             # Patrol candidate — apply stratified downsampling
             keep_rate = (PATROL_KEEP_RATE_RICH if chunk_rich.get(c, False)

@@ -64,6 +64,54 @@ def build_evidence_request(
     }
 
 
+def build_compact_evidence_retry_request(
+    chunk_idx: int,
+    frame_paths: List[str],
+    video_id: str,
+) -> Dict:
+    """Build a bounded fallback request after a pass1a length truncation."""
+    start = chunk_idx * AGENT_CHUNK_SEC
+    end = start + AGENT_CHUNK_SEC
+    prompt = f"""Annotate this 1-second video clip (t={int(start)}-{int(end)}s, 2 frames).
+
+Return ONLY a compact valid JSON object with exactly these keys:
+{{
+  "time": [{int(start)}, {int(end)}],
+  "visible_entities": [
+    {{"desc": "short grounded appearance", "action": "verb phrase or static", "position": "left/center/right/top/bottom/foreground/background"}}
+  ],
+  "atomic_facts": ["short observable fact"],
+  "ocr": ["exact visible text"],
+  "spatial": "one short sentence",
+  "think": "one grounded current-only observation paragraph"
+}}
+
+Hard limits:
+- visible_entities: 1-5 items.
+- atomic_facts: 1-4 items.
+- ocr: 0-3 items.
+- spatial: at most 25 words.
+- think: 35-60 words.
+- Do not repeat entities or facts.
+- Do not include markdown, explanations, or any text outside JSON.
+- If frames are fully black/white, still return valid JSON with empty arrays and a short think describing the blank frame."""
+    chunk_frame_paths = get_chunk_frame_paths(frame_paths, chunk_idx)
+    return {
+        "messages": [{
+            "role": "user",
+            "content": build_vision_content(
+                prompt,
+                chunk_frame_paths,
+                start_frame_index=chunk_idx * FRAMES_PER_CHUNK,
+            ),
+        }],
+        "max_tokens": 2048,
+        "temperature": 0.2,
+        "id": f"{video_id}_1a_{chunk_idx}_compact_retry",
+        "_meta": {"video_id": video_id, "chunk_idx": chunk_idx, "time": [start, end]},
+    }
+
+
 def _walker_rescue(s: str) -> Optional[Dict]:
     """Element-by-element walker for truncated JSON. Returns a dict with the
     expected fields when ANY evidence field yielded a closed element, else None.
@@ -392,22 +440,66 @@ async def run_pass1a(
 
     async def annotate_chunk(chunk_idx):
         request = build_evidence_request(chunk_idx, frame_paths, video_id)
-        result = await _call(
-            request["messages"], request["max_tokens"],
-            request["temperature"], request["id"],
-        )
+        active_request = request
+        try:
+            result = await _call(
+                request["messages"], request["max_tokens"],
+                request["temperature"], request["id"],
+            )
+        except Exception as exc:
+            from scripts.agent_data_pipeline.vllm_client import TruncatedCompletionError
+
+            if not isinstance(exc, TruncatedCompletionError):
+                raise
+            logger.warning(
+                "  [%s] 1-A chunk %d hit max_tokens; retrying compact JSON path: %s",
+                video_id,
+                chunk_idx,
+                exc,
+            )
+            active_request = build_compact_evidence_retry_request(
+                chunk_idx, frame_paths, video_id
+            )
+            try:
+                result = await _call(
+                    active_request["messages"], active_request["max_tokens"],
+                    active_request["temperature"], active_request["id"],
+                )
+            except Exception as retry_exc:
+                if not isinstance(retry_exc, TruncatedCompletionError):
+                    raise
+                caption = parse_evidence_result(None, request["_meta"])
+                caption["_truncated"] = True
+                caption["_retry_failed"] = True
+                caption["_error"] = str(retry_exc)
+                caption["chunk_idx"] = chunk_idx
+                caption["video_id"] = video_id
+                return caption
         caption = parse_evidence_result(result, request["_meta"])
+        if active_request is not request:
+            caption["_truncation_recovered"] = bool(caption.get("parse_success"))
 
         # Retry once if silent-empty. Higher temperature breaks the
         # deterministic "I see nothing worth reporting" path.
         if caption.get("_silent_empty") or not caption.get("parse_success"):
-            retry_result = await _call(
-                request["messages"], request["max_tokens"],
-                0.7, f'{request["id"]}_retry',
-            )
+            try:
+                retry_result = await _call(
+                    active_request["messages"], active_request["max_tokens"],
+                    0.7, f'{active_request["id"]}_retry',
+                )
+            except Exception as exc:
+                from scripts.agent_data_pipeline.vllm_client import TruncatedCompletionError
+
+                if not isinstance(exc, TruncatedCompletionError):
+                    raise
+                caption["_retry_failed"] = True
+                caption["_error"] = str(exc)
+                retry_result = None
             retry_caption = parse_evidence_result(retry_result, request["_meta"])
             if retry_caption.get("parse_success"):
                 caption = retry_caption
+                if active_request is not request:
+                    caption["_truncation_recovered"] = True
             else:
                 # Both attempts failed — keep flag for downstream to skip
                 caption["_retry_failed"] = True

@@ -119,7 +119,25 @@ def match_mcq_answer(
     if correct_idx is not None and 0 <= correct_idx < len(options):
         correct_text = normalize_answer(_strip_option_label(options[correct_idx]))
 
-    # Strategy 1: leading-letter match.
+    # Strategy 1: exact / option-text-in-model-output.
+    #
+    # Do this before leading-letter matching. Some correct option texts start
+    # with an article or literal capital letter, e.g. "A money bag". Treating
+    # the leading "A " as an option-letter prediction would incorrectly reject
+    # the gold text when the correct option is not A.
+    if correct_text and (ma == correct_text or correct_text in ma):
+        return True
+
+    # Gold-answer text fallback before leading-letter rejection for the same
+    # reason: MC rows may supervise text-only answers while retaining options.
+    if gold_answer:
+        ga = normalize_answer(_strip_option_label(gold_answer))
+        if ga and len(ga) >= 2 and (ma == ga or ga in ma):
+            return True
+        if ga and len(ga) < 2 and ma == ga:
+            return True
+
+    # Strategy 2: leading-letter match.
     leading = ma.lstrip("([").lstrip()
     # Legacy/generated edge case: a MCQ row may carry only correct_option
     # without the full options list. Letter matching must still work so old
@@ -140,23 +158,11 @@ def match_mcq_answer(
                 return False
             return True
 
-    # Strategy 2: equality / option-text-in-model-output (one-way only).
-    if correct_text and (ma == correct_text or correct_text in ma):
-        return True
-
     # Strategy 3: any option's text matches.
     for i, opt in enumerate(options):
         on = normalize_answer(_strip_option_label(opt))
         if on and (ma == on or (len(on) >= 4 and on in ma)):
             return i == correct_idx
-
-    # Strategy 4: gold_answer text fallback.
-    if gold_answer:
-        ga = normalize_answer(_strip_option_label(gold_answer))
-        if ga and len(ga) >= 2 and (ma == ga or ga in ma):
-            return True
-        if ga and len(ga) < 2 and ma == ga:
-            return True
 
     return False
 

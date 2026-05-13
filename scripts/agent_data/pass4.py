@@ -1,6 +1,6 @@
 """PASS 4 — Trajectory-grouped jsonl emission for v12 RL + streaming benchmark.
 
-This is the trajectory-grouping step before pass5 message conversion. It reads
+This is the trajectory-grouping step before pass5 trajectory rendering. It reads
 tagged samples from data/agent_v5/
 verified/ (output of pass3e_verify) and groups them by (video_id,
 trajectory_id) into the per-split files in data/agent_v5/final/.
@@ -30,7 +30,6 @@ OUTPUT FILES (data/agent_v5/final/):
   train_rl_trajectories.jsonl     — RL-side trajectories
   val_trajectories.jsonl          — val-side trajectories
   test_trajectories.jsonl         — test-side trajectories
-  train_sft_full.jsonl            — SFT-side flat single-step rows
   trajectories_manifest.json      — per-split stats + video lists
 
 EACH ROW (jsonl):
@@ -166,8 +165,8 @@ def _build_trajectory_record(
             int(s.get("chunk_idx", 0)),
             # Stable secondary sort for multi-turn within a chunk:
             # query before response, silent last.
-            {"recall_query": 0, "recall_response": 1, "response": 2,
-             "compress": 3, "silent": 4, "recall_silent": 5}.get(
+            {"compress": -1, "recall_query": 0, "recall_response": 1, "response": 2,
+             "recall": 1, "silent": 4, "recall_silent": 5}.get(
                 s.get("sample_type", "silent"), 6
             ),
         ),
@@ -513,32 +512,19 @@ def emit_all(data_dir: Path) -> Dict:
             split_name, video_ids, verified_dir, out_path,
         )
 
-    # Also emit FLAT single-step file for SFT trainer (which iterates per-row).
-    # Source: same trajectory file we just emitted, flattened by extracting
-    # each row's `samples` list. This guarantees SFT and trajectory views are
-    # bit-identical sample sets.
-    flat_stats = _emit_flat_sft(
-        traj_path=final_dir / "train_sft_trajectories.jsonl",
-        out_path=final_dir / "train_sft_full.jsonl",
-    )
-    all_stats["train_sft_full"] = flat_stats
-
-    # Totals exclude train_sft_full because it duplicates train_sft samples
-    # (just unpacked from trajectory rows). Counting once is correct.
-    _traj_only = {k: v for k, v in all_stats.items() if k != "train_sft_full"}
     manifest = {
         "generated_by": "pass4.py",
         "source_verified_dir": str(verified_dir),
         "splits": all_stats,
         "totals": {
             "videos": sum(
-                s.get("videos_with_data", 0) for s in _traj_only.values()
+                s.get("videos_with_data", 0) for s in all_stats.values()
             ),
             "trajectories": sum(
-                s.get("trajectories", 0) for s in _traj_only.values()
+                s.get("trajectories", 0) for s in all_stats.values()
             ),
             "samples": sum(
-                s.get("samples", 0) for s in _traj_only.values()
+                s.get("samples", 0) for s in all_stats.values()
             ),
         },
     }
@@ -550,15 +536,11 @@ def emit_all(data_dir: Path) -> Dict:
 
 
 def _emit_flat_sft(traj_path: Path, out_path: Path) -> Dict:
-    """Flatten train_sft_trajectories.jsonl into per-step rows for SFT trainer.
+    """Legacy helper: flatten train_sft_trajectories.jsonl into per-step rows.
 
-    SFT trainer (thinkstream/sft/data_processor.py) iterates one sample per
-    row. Trajectory format groups N samples per row, which the trainer
-    cannot consume directly. This helper unpacks the `samples` list from
-    each trajectory row, preserving all per-sample fields.
-
-    Output rows are byte-identical to what pass3c emitted, post-pass4
-    filter. Strictly more samples than train_sft.jsonl (which is post-cap).
+    The canonical SFT path now uses pass5's multi-turn trajectory renderer
+    (``rendered/trajectory/train_sft_trajectory.jsonl``). This function is
+    kept only for archived ad-hoc tools that explicitly call it.
     """
     if not traj_path.exists():
         logger.warning(

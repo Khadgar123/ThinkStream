@@ -21,8 +21,8 @@ pass3a_cards.py     -> task_cards/
 pass3b_placement.py -> placements/
 pass3c_samples.py   -> samples_3c/
 pass3e_verify.py    -> verified/
-pass4.py            -> final/*_trajectories.jsonl and flat splits
-pass5_messages.py   -> final/*_messages.jsonl for SFT
+pass4.py            -> final/*_trajectories.jsonl and split files
+pass5.py            -> rendered/trajectory/*_trajectory.jsonl for SFT/eval
 ```
 
 The expensive teacher passes are protocol-neutral after frame extraction:
@@ -31,23 +31,13 @@ options, answer_form, accepted answers, and answer chunks. The student-facing
 visual carrier is late-bound at render/eval time:
 
 ```bash
-# Current robust protocol: explicit timestamp text + image items.
-python -m scripts.agent_data_v5.pass5_messages \
-  --final-dir data/agent_v5/batch2/final \
-  --output-dir data/agent_v5/batch2/rendered/ts_image \
-  --frame-protocol ts_image
-
-# Native Qwen video-metadata protocol over the same pre-extracted frames.
-python -m scripts.agent_data_v5.pass5_messages \
-  --final-dir data/agent_v5/batch2/final \
-  --output-dir data/agent_v5/batch2/rendered/video_meta \
-  --frame-protocol video_meta
+python -m scripts.agent_data.pass5 \
+  --input-dir data/agent_v5/batch2/final \
+  --output-dir data/agent_v5/batch2/rendered/trajectory
 ```
 
-Both rendered variants keep the same sample schema, memory, queries,
-visual_window, answers, options, and split assignment. The prompt semantics are
-also aligned; only the system-prompt sentence describing the visual carrier and
-the media content item differ. `format_queries_block()` renders an explicit
+Rendered rows keep memory, queries, visual windows, answers, options, and split
+assignment in a multi-turn trajectory schema. `format_queries_block()` renders an explicit
 `Answer format:` line for the active question, so SFT/RL/eval all tell the model
 whether to answer with a single MC letter, letter+text, text-only, number,
 binary answer, short exact phrase, or descriptive text.

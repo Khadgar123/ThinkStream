@@ -101,6 +101,7 @@ def _load_thinkstream_rewards():
         from thinkstream.trainer.rewards import (  # type: ignore
             compute_outcome_reward,
             compute_timing_reward,
+            compute_answer_decision_reward,
             compute_format_reward,
             compute_spam_score,
             compute_silent_quality,
@@ -111,6 +112,7 @@ def _load_thinkstream_rewards():
         _ts_rewards = {
             "outcome": compute_outcome_reward,
             "timing": compute_timing_reward,
+            "answer_decision": compute_answer_decision_reward,
             "format": compute_format_reward,
             "spam": compute_spam_score,
             "silent_quality": compute_silent_quality,
@@ -220,6 +222,8 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
     @staticmethod
     def _normalize_episode_mode(value: Any) -> str:
         mode = str(value or "full").strip().lower().replace("-", "_")
+        # This is a derived segment view over the same multi-Q parquet row,
+        # not a separate single-step annotation source.
         if mode in {"segment", "single_question", "single_q", "question", "per_question"}:
             return "single_question"
         if mode in {"full", "full_video", "trajectory", "multi_q"}:
@@ -757,13 +761,10 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
 def _split_assistant_chunks(solution_str: str) -> List[str]:
     """Split the concatenated assistant rollout into per-turn outputs.
 
-    verl's reward_manager decodes responses with skip_special_tokens=True,
-    so `<|im_end|>`/`<|im_start|>` are stripped before reaching us. Each
-    v12 assistant turn opens with `<think>` and closes with either
-    `</answer>` or `</tool_call>`. We split between turns by finding each
-    `<think>` opening; the chunk extends to (but excludes) the next
-    `<think>`. Degenerate output (no `<think>`) is returned as a single
-    chunk so downstream code still has something to score.
+    In normal ThinkStream rollouts, ``extra["ts_chunk_asst_texts"]`` carries
+    raw decoded assistant turns with agent special tokens preserved and this
+    helper is only a fallback. Each canonical v12 assistant turn opens with
+    ``<think>``; split on that marker when it is available.
     """
     s = solution_str.strip()
     if not s:
@@ -782,8 +783,15 @@ def _split_assistant_chunks(solution_str: str) -> List[str]:
 
 
 def _extract_final_answer(solution_str: str) -> Optional[str]:
-    """The trajectory's final answer is the LAST <answer>...</answer>."""
-    matches = re.findall(r"<answer>(.*?)</answer>", solution_str, re.DOTALL)
+    """Return the last canonical response, with legacy <answer> fallback."""
+    matches = [
+        (m.group(1) if m.group(1) is not None else m.group(2)).strip()
+        for m in re.finditer(
+            r"<response>(.*?)</response>|<answer>(.*?)</answer>",
+            solution_str,
+            re.DOTALL,
+        )
+    ]
     if not matches:
         return None
     return matches[-1].strip()
@@ -871,8 +879,14 @@ def _safe_list(v: Any) -> list:
 
 def _model_action_from_turn(kind: str, text: str) -> str:
     if kind == "answer":
-        m = re.search(r"<answer>(.*?)</answer>", text or "", re.DOTALL)
-        ans = m.group(1).strip() if m else ""
+        m = re.search(
+            r"<response>(.*?)</response>|<answer>(.*?)</answer>",
+            text or "",
+            re.DOTALL,
+        )
+        ans = ""
+        if m:
+            ans = (m.group(1) if m.group(1) is not None else m.group(2)).strip()
         return "silent" if not ans else "response"
     if kind == "recall":
         return "recall"
@@ -885,15 +899,24 @@ def _per_chunk_action_avg(
     extra: Dict[str, Any],
     gold_action_per_chunk: Dict[str, str],
     audit_out: Optional[Dict[str, Any]] = None,
+    *,
+    score_compress: Optional[bool] = None,
 ) -> Optional[float]:
-    """Small action-shaping signal aligned to turn-local rollout metadata.
+    """Small action-alignment diagnostic aligned to turn-local metadata.
 
     Recall is **monitor-only** (P7): a `recall_audit` dict is written into
     ``audit_out`` (keys ``recall_seen`` / ``recall_matched`` /
     ``recall_align_rate``) for wandb telemetry, but recall alignment is
     NOT pushed into the returned per-chunk action score — the correctness
     reward of the answer that consumes recall results does that shaping.
+
+    Compression is also monitor-only by default. Set
+    ``THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD=1`` only for an explicit
+    ablation; the initial RL objective should not directly reward tool
+    compliance or pass2's exact compression policy.
     """
+    if score_compress is None:
+        score_compress = _env_bool("THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD", False)
     chunk_kinds = _safe_list(extra.get("ts_chunk_kinds"))
     if not chunk_kinds:
         return None
@@ -904,6 +927,7 @@ def _per_chunk_action_avg(
     scores: List[float] = []
     recall_seen_for_chunk: set[int] = set()
     recall_audit: Dict[str, int] = {"seen": 0, "matched": 0}
+    compress_audit: Dict[str, int] = {"seen": 0, "matched": 0}
 
     for turn_i, kind_raw in enumerate(chunk_kinds):
         kind = str(kind_raw or "unknown")
@@ -922,10 +946,13 @@ def _per_chunk_action_avg(
         model_action = _model_action_from_turn(kind, str(text or ""))
 
         if turn_kind == "compress":
-            # Compression is system-triggered by the memory budget. Do not
-            # align it to offline gold chunk positions; only score whether the
-            # model complied with the actual compression turn.
-            scores.append(0.1 if model_action == "compress" else -0.05)
+            # Compression is system-triggered. Track whether the model
+            # complied, but do not reward it in the initial objective.
+            compress_audit["seen"] += 1
+            if model_action == "compress":
+                compress_audit["matched"] += 1
+            if score_compress:
+                scores.append(0.1 if model_action == "compress" else -0.05)
             continue
 
         try:
@@ -980,6 +1007,13 @@ def _per_chunk_action_avg(
         audit_out["recall_matched"] = matched
         audit_out["recall_align_rate"] = (
             float(matched) / float(seen) if seen > 0 else 0.0
+        )
+        c_seen = compress_audit["seen"]
+        c_matched = compress_audit["matched"]
+        audit_out["compress_seen"] = c_seen
+        audit_out["compress_matched"] = c_matched
+        audit_out["compress_align_rate"] = (
+            float(c_matched) / float(c_seen) if c_seen > 0 else 0.0
         )
 
     if not scores:
@@ -1478,6 +1512,56 @@ def _outcome_gate(parts: Dict[str, float]) -> float:
     return outcome
 
 
+def _active_reward_keys() -> set[str]:
+    """Reward keys that are allowed to affect the scalar RL objective.
+
+    The default is the low-hack-risk profile for streaming QA: answer
+    correctness, answer-decision timing, and framework format. Raw
+    ``timing``/``silent_quality`` are telemetry; step/action/tool signals stay
+    telemetry unless an explicit ablation opts in.
+    """
+    profile = (
+        os.environ.get("THINKSTREAM_RL_REWARD_PROFILE")
+        or os.environ.get("THINKSTREAM_REWARD_PROFILE")
+        or "initial_outcome_time_format_decision"
+    ).strip().lower()
+    if profile in {"legacy", "full", "v12_full", "all"}:
+        return {"outcome", "timing", "format", "spam", "silent_quality"}
+    if profile in {"answer_only", "outcome_only"}:
+        return {"outcome"}
+    if profile in {"initial_outcome_time_format", "casia"}:
+        return {"outcome", "timing", "format"}
+    if profile in {
+        "initial_outcome_time_format_decision",
+        "initial_outcome_decision_format",
+        "answer_decision",
+        "decision",
+    }:
+        return {"outcome", "answer_decision", "format"}
+    # Default / aliases: answer correctness + answer/no-answer timing decision.
+    return {"outcome", "answer_decision", "format"}
+
+
+def _step_action_reward_enabled() -> bool:
+    """Whether per-chunk gold action alignment may change the scalar score."""
+    return _env_bool("THINKSTREAM_ENABLE_STEP_ACTION_REWARD", False)
+
+
+def _trajectory_solution_text(extra: Dict[str, Any], solution_str: str) -> str:
+    """Use agent-loop recorded full turns when recurrent mode supplies only
+    the current action's decoded ``solution_str`` to the reward function."""
+    if not _env_bool("THINKSTREAM_SCORE_FULL_TRAJECTORY_TEXT", True):
+        return solution_str
+    texts = [
+        str(x)
+        for x in _safe_list(extra.get("ts_chunk_asst_texts"))
+        if str(x or "").strip()
+    ]
+    if texts:
+        return "\n".join(texts)
+    return solution_str
+
+
 def _combine_reward_parts(
     weights: Dict[str, float],
     parts: Dict[str, float],
@@ -1488,11 +1572,15 @@ def _combine_reward_parts(
     by the outcome gate so partial correctness receives partial auxiliary
     credit while wrong answers receive none.
     """
+    active_keys = _active_reward_keys()
     gate = _outcome_gate(parts)
-    outcome_total = float(weights.get("outcome", 0.0) * parts.get("outcome", 0.0))
+    outcome_total = (
+        float(weights.get("outcome", 0.0) * parts.get("outcome", 0.0))
+        if "outcome" in active_keys else 0.0
+    )
     aux_total = 0.0
     for key, value in parts.items():
-        if key == "outcome":
+        if key == "outcome" or key not in active_keys:
             continue
         weighted = float(weights.get(key, 0.0) * value)
         if weighted > 0:
@@ -1509,11 +1597,11 @@ def _combine_multi_q_reward_parts(
 ) -> tuple[float, float, List[float]]:
     """Combine multi-question rewards at question granularity.
 
-    ``per_question_parts`` contains outcome/timing/silent_quality for each
-    question. Each question gates its own positive auxiliary rewards, then the
-    question scores are averaged. Trajectory-level components such as format
-    and spam are applied once: positive trajectory auxiliaries are scaled by
-    the mean per-question gate, while negative penalties always apply.
+    ``per_question_parts`` contains outcome/timing plus monitor-only fields
+    such as silent_quality. Each question gates its own positive auxiliary
+    rewards, then the question scores are averaged. Trajectory-level format is
+    applied once. Tool/step fields remain in diagnostics unless the reward
+    profile explicitly enables them.
     """
     if not per_question_parts:
         total, gate = _combine_reward_parts(weights, trajectory_parts)
@@ -1528,14 +1616,52 @@ def _combine_multi_q_reward_parts(
 
     total = sum(per_question_scores) / len(per_question_scores)
     gate = sum(per_question_gates) / len(per_question_gates)
+    active_keys = _active_reward_keys()
 
     for key, value in trajectory_parts.items():
+        if key not in active_keys:
+            continue
         weighted = float(weights.get(key, 0.0) * value)
         if weighted > 0:
             total += gate * weighted
         else:
             total += weighted
     return total, gate, per_question_scores
+
+
+def _answer_decision_reward(
+    rewards: Dict[str, Any],
+    answer_chunk: Optional[int],
+    visible_start: Optional[int],
+    visible_end: Optional[int],
+    *,
+    late_window_chunks: int = 2,
+    has_answer: Optional[bool] = None,
+) -> float:
+    fn = rewards.get("answer_decision")
+    if callable(fn):
+        try:
+            return float(fn(
+                answer_chunk,
+                visible_start,
+                visible_end,
+                late_window_chunks=late_window_chunks,
+                has_answer=has_answer,
+            ))
+        except TypeError:
+            return float(fn(answer_chunk, visible_start, visible_end))
+    if has_answer is None:
+        has_answer = answer_chunk is not None and int(answer_chunk) >= 0
+    if visible_start is None:
+        return -1.0 if has_answer else 0.0
+    if not has_answer or answer_chunk is None or int(answer_chunk) < 0:
+        return -1.0
+    return float(rewards["timing"](
+        answer_chunk,
+        visible_start,
+        visible_end,
+        late_window_chunks=late_window_chunks,
+    ))
 
 
 def _score_one_question(
@@ -1545,9 +1671,10 @@ def _score_one_question(
     model_answer: str,
     answered_chunk: int,
 ) -> Dict[str, float]:
-    """Score a single question's outcome + timing + silent decision.
+    """Score a single question's outcome + answer-decision timing.
 
-    Returns dict with keys: outcome, timing, silent_quality, answered.
+    Returns dict with keys: outcome, answer_decision, timing,
+    silent_quality, answered.
     `answered`=1 if the model produced any answer text for this Q.
     """
     options = _safe_list(q.get("options"))
@@ -1622,6 +1749,14 @@ def _score_one_question(
         visible_start, visible_end,
         late_window_chunks=2,
     ))
+    answer_decision = _answer_decision_reward(
+        rewards,
+        answered_chunk if answered_chunk >= 0 else None,
+        visible_start,
+        visible_end,
+        late_window_chunks=2,
+        has_answer=bool(answered),
+    )
 
     # Silent quality — audit P1.6: per-Q silent decision.
     # compute_silent_quality takes (final_answer, gold_action, gold_answer)
@@ -1657,6 +1792,7 @@ def _score_one_question(
 
     return {
         "outcome": outcome,
+        "answer_decision": answer_decision,
         "timing": timing,
         "silent_quality": silent_q,
         "answered": answered,
@@ -1756,7 +1892,19 @@ def _score_one_question_events(
                 expected_chunk,
                 late_window_chunks=2,
             ))
+            early_decision = _answer_decision_reward(
+                rewards,
+                int(early.get("chunk", -1)),
+                expected_chunk,
+                expected_chunk,
+                late_window_chunks=2,
+                has_answer=True,
+            )
             sub["timing"] = min(float(sub["timing"]), early_timing)
+            sub["answer_decision"] = min(
+                float(sub.get("answer_decision", sub["timing"])),
+                early_decision,
+            )
             try:
                 early_silent = float(rewards["silent_quality"](
                     str(early.get("text", "")),
@@ -1768,6 +1916,10 @@ def _score_one_question_events(
                 pass
         if extra_events:
             sub["timing"] = min(float(sub["timing"]), -1.0)
+            sub["answer_decision"] = min(
+                float(sub.get("answer_decision", sub["timing"])),
+                -1.0,
+            )
             try:
                 over_silent = min(
                     float(rewards["silent_quality"](
@@ -1802,8 +1954,10 @@ def _score_one_question_events(
     used_event_idx: set[int] = set()
     outcome_scores: List[float] = []
     timing_scores: List[float] = []
+    decision_scores: List[float] = []
     silent_scores: List[float] = []
     fp_timing_scores: List[float] = []
+    fp_decision_scores: List[float] = []
     fp_silent_scores: List[float] = []
     for i, emit_chunk in enumerate(target_chunks):
         lo = emit_chunk
@@ -1821,6 +1975,14 @@ def _score_one_question_events(
         if found_idx is None:
             outcome_scores.append(0.0)
             timing_scores.append(float(rewards["timing"](None, emit_chunk, hi)))
+            decision_scores.append(_answer_decision_reward(
+                rewards,
+                None,
+                emit_chunk,
+                hi,
+                late_window_chunks=slack,
+                has_answer=False,
+            ))
             silent_scores.append(float(rewards["silent_quality"](
                 None, "response", gold_default,
             )))
@@ -1840,6 +2002,14 @@ def _score_one_question_events(
         timing_scores.append(float(rewards["timing"](
             ev_chunk, emit_chunk, emit_chunk, late_window_chunks=slack,
         )))
+        decision_scores.append(_answer_decision_reward(
+            rewards,
+            ev_chunk,
+            emit_chunk,
+            emit_chunk,
+            late_window_chunks=slack,
+            has_answer=True,
+        ))
         silent_scores.append(float(rewards["silent_quality"](
             model_answer, "response", gold_for_emit,
         )))
@@ -1856,21 +2026,34 @@ def _score_one_question_events(
             fp_timing_scores.append(float(rewards["timing"](
                 ev_chunk, expected_chunk, expected_chunk, late_window_chunks=slack,
             )))
+            fp_decision_scores.append(_answer_decision_reward(
+                rewards,
+                ev_chunk,
+                expected_chunk,
+                expected_chunk,
+                late_window_chunks=slack,
+                has_answer=True,
+            ))
         else:
             fp_timing_scores.append(-1.0)
+            fp_decision_scores.append(-1.0)
         fp_silent_scores.append(float(rewards["silent_quality"](
             str(ev.get("text", "")), "silent", gold_default,
         )))
 
     timing = sum(timing_scores) / len(timing_scores)
+    answer_decision = sum(decision_scores) / len(decision_scores)
     silent_quality = sum(silent_scores) / len(silent_scores)
     if fp_timing_scores:
         timing = min(timing, min(fp_timing_scores))
+    if fp_decision_scores:
+        answer_decision = min(answer_decision, min(fp_decision_scores))
     if fp_silent_scores:
         silent_quality = min(silent_quality, min(fp_silent_scores))
 
     return {
         "outcome": sum(outcome_scores) / len(outcome_scores),
+        "answer_decision": answer_decision,
         "timing": timing,
         "silent_quality": silent_quality,
         "answered": 1.0 if used_event_idx else 0.0,
@@ -1885,10 +2068,12 @@ def _compute_score_multi_q(
     solution_str: str,
 ) -> Dict[str, float]:
     """Score a multi-Q trajectory. Aggregate per-Q rewards by mean."""
+    trajectory_solution = _trajectory_solution_text(extra, solution_str)
     n_q = len(questions)
     if n_q == 0:
         return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
-                "format": 0.0, "spam": 0.0, "silent_quality": 0.0,
+                "answer_decision": 0.0, "format": 0.0, "spam": 0.0,
+                "silent_quality": 0.0,
                 "n_questions": 0.0, "n_answered": 0.0}
 
     # Per-Q answer attribution from the agent loop's extra_fields.
@@ -1902,6 +2087,7 @@ def _compute_score_multi_q(
     # Per-Q scoring.
     per_q_outcome: List[float] = []
     per_q_timing: List[float] = []
+    per_q_decision: List[float] = []
     per_q_silent: List[float] = []
     per_q_parts: List[Dict[str, float]] = []
     n_answered = 0
@@ -1922,9 +2108,11 @@ def _compute_score_multi_q(
             )
         per_q_outcome.append(sub["outcome"])
         per_q_timing.append(sub["timing"])
+        per_q_decision.append(sub["answer_decision"])
         per_q_silent.append(sub["silent_quality"])
         per_q_parts.append({
             "outcome": float(sub["outcome"]),
+            "answer_decision": float(sub["answer_decision"]),
             "timing": float(sub["timing"]),
             "silent_quality": float(sub["silent_quality"]),
         })
@@ -1934,13 +2122,14 @@ def _compute_score_multi_q(
     # Trajectory-level aggregates.
     avg_outcome = sum(per_q_outcome) / n_q
     avg_timing = sum(per_q_timing) / n_q
+    avg_decision = sum(per_q_decision) / n_q
     avg_silent = sum(per_q_silent) / n_q
 
     # Format + spam are trajectory-level (not per-Q). Format is a minimal
     # framework-executability signal: parse/action-space/runtime time_range
     # validity, without gold range/query matching.
-    fmt = float(_framework_format_score(extra, solution_str))
-    tool_counts = _count_tool_calls(solution_str)
+    fmt = float(_framework_format_score(extra, trajectory_solution))
+    tool_counts = _count_tool_calls(trajectory_solution)
     try:
         spam = float(rewards["spam"](
             n_recall_calls=tool_counts["recall"],
@@ -1951,6 +2140,7 @@ def _compute_score_multi_q(
 
     parts = {
         "outcome": avg_outcome,
+        "answer_decision": avg_decision,
         "timing": avg_timing,
         "format": fmt,
         "spam": spam,
@@ -1973,10 +2163,11 @@ def _compute_score_multi_q(
         extra, gold_action_per_chunk, audit_out=recall_audit,
     )
     if action_avg is not None:
-        alpha = float(extra.get("gdpo_alpha", 0.7))
-        gated_state = action_avg if action_avg <= 0 else gate * action_avg
-        total = alpha * total + (1.0 - alpha) * gated_state
         parts["per_chunk_action_avg"] = float(action_avg)
+        if _step_action_reward_enabled():
+            alpha = float(extra.get("gdpo_alpha", 0.7))
+            gated_state = action_avg if action_avg <= 0 else gate * action_avg
+            total = alpha * total + (1.0 - alpha) * gated_state
     # Recall monitor — wandb-only, not reward (P7).
     for k, v in recall_audit.items():
         parts[k] = float(v)
@@ -2001,6 +2192,8 @@ def _compute_score_multi_q(
         "n_answered": float(n_answered),
         "per_q_outcome_min": float(min(per_q_outcome)),
         "per_q_outcome_max": float(max(per_q_outcome)),
+        "trajectory_all_correct": float(min(per_q_outcome)),
+        "trajectory_mean_correct": float(avg_outcome),
         "per_q_reward_min": float(min(per_q_scores)) if per_q_scores else 0.0,
         "per_q_reward_max": float(max(per_q_scores)) if per_q_scores else 0.0,
     }
@@ -2022,13 +2215,14 @@ def compute_score(
         flatten; score one question with v12 5-component reward.
 
     Returns a dict so verl logs per-component rewards to wandb:
-        {"score": <total>, "outcome": ..., "timing": ..., "format": ...,
-         "spam": ..., "silent_quality": ...}
+        {"score": <total>, "outcome": ..., "answer_decision": ...,
+         "timing": ..., "format": ..., "spam": ..., "silent_quality": ...}
     """
     rewards, weights = _load_thinkstream_rewards()
     if not rewards:
         return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
-                "format": 0.0, "spam": 0.0, "silent_quality": 0.0}
+                "answer_decision": 0.0, "format": 0.0, "spam": 0.0,
+                "silent_quality": 0.0}
 
     extra = extra_info or {}
 
@@ -2069,7 +2263,7 @@ def compute_score(
         _maybe_audit_rl_rollout(
             data_source=data_source,
             extra=extra,
-            solution_str=solution_str,
+            solution_str=_trajectory_solution_text(extra, solution_str),
             ground_truth=ground_truth,
             result=result,
             questions=norm,
@@ -2113,8 +2307,9 @@ def compute_score(
     )
     gold_action_per_chunk = _strip_offline_compress_actions(gold_action_per_chunk)
 
-    chunks = _split_assistant_chunks(solution_str)
-    final_answer_inferred = _extract_final_answer(solution_str)
+    trajectory_solution = _trajectory_solution_text(extra, solution_str)
+    chunks = _split_assistant_chunks(trajectory_solution)
+    final_answer_inferred = _extract_final_answer(trajectory_solution)
     # Prefer the rollout-emitted answer text + chunk over decoding the
     # tokens. The agent loop has the authoritative state and writes both
     # into extra_fields (which verl funnels into extra_info via
@@ -2147,9 +2342,13 @@ def compute_score(
             answer_chunk = n_turns - 2
         else:
             for idx, chunk in enumerate(chunks):
-                if re.search(r"<answer>(.+?)</answer>", chunk, re.DOTALL):
+                if re.search(
+                    r"<response>(.+?)</response>|<answer>(.+?)</answer>",
+                    chunk,
+                    re.DOTALL,
+                ):
                     answer_chunk = idx
-    tool_counts = _count_tool_calls(solution_str)
+    tool_counts = _count_tool_calls(trajectory_solution)
 
     parts: Dict[str, float] = {}
     try:
@@ -2161,7 +2360,15 @@ def compute_score(
             correct_option=correct_option,
         )
         parts["timing"] = rewards["timing"](answer_chunk, visible_start, visible_end)
-        parts["format"] = _framework_format_score(extra, solution_str)
+        parts["answer_decision"] = _answer_decision_reward(
+            rewards,
+            answer_chunk,
+            visible_start,
+            visible_end,
+            late_window_chunks=1,
+            has_answer=final_answer is not None and bool(str(final_answer).strip()),
+        )
+        parts["format"] = _framework_format_score(extra, trajectory_solution)
         parts["spam"] = rewards["spam"](
             n_recall_calls=tool_counts["recall"],
             n_compress_calls=tool_counts["compress"],
@@ -2175,7 +2382,8 @@ def compute_score(
     except Exception as e:
         logger.warning("v12 reward component failed: %s", e)
         return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
-                "format": 0.0, "spam": 0.0, "silent_quality": 0.0}
+                "answer_decision": 0.0, "format": 0.0, "spam": 0.0,
+                "silent_quality": 0.0}
 
     total, gate = _combine_reward_parts(weights, parts)
 
@@ -2184,10 +2392,11 @@ def compute_score(
         extra, gold_action_per_chunk, audit_out=recall_audit,
     )
     if action_avg is not None:
-        alpha = float(extra.get("gdpo_alpha", 0.7))
-        gated_state = action_avg if action_avg <= 0 else gate * action_avg
-        total = alpha * total + (1.0 - alpha) * gated_state
         parts["per_chunk_action_avg"] = float(action_avg)
+        if _step_action_reward_enabled():
+            alpha = float(extra.get("gdpo_alpha", 0.7))
+            gated_state = action_avg if action_avg <= 0 else gate * action_avg
+            total = alpha * total + (1.0 - alpha) * gated_state
     # Recall monitor — wandb-only, not reward (P7).
     for k, v in recall_audit.items():
         parts[k] = float(v)
@@ -2225,7 +2434,7 @@ def compute_score(
     _maybe_audit_rl_rollout(
         data_source=data_source,
         extra=extra,
-        solution_str=solution_str,
+        solution_str=trajectory_solution,
         ground_truth=ground_truth,
         result=result,
         questions=[single_question],
@@ -2234,8 +2443,7 @@ def compute_score(
 
 
 if __name__ == "__main__":
-    # Mirrors verl's reward_manager (skip_special_tokens=True) — there are
-    # no <|im_*|> markers in solution_str.
+    # Smoke path: raw agent tags are preserved in solution_str.
     sample = (
         "<think>chunk 0 silent</think>"
         "<think>chunk 1 final</think><answer>yes</answer>"
