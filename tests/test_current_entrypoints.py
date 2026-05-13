@@ -123,6 +123,19 @@ def test_verl_launcher_supports_validation_only_rollout():
     assert "+trainer.validation_data_dir" in recipe
 
 
+def test_verl_launcher_exposes_multinode_ray_address():
+    launcher = _text("scripts/grpo_train_verl.sh")
+    recipe = _text("thinkstream/rl/run_thinkstream_grpo.sh")
+
+    assert "NNODES" in launcher
+    assert "RAY_ADDRESS" in launcher
+    assert 'export NNODES="${NNODES:-1}"' in launcher
+    assert 'export RAY_ADDRESS="${RAY_ADDRESS:-}"' in launcher
+    assert "RAY_ADDRESS_ARGS" in recipe
+    assert 'ray_kwargs.ray_init.address="${RAY_ADDRESS}"' in recipe
+    assert "trainer.nnodes=${NNODES}" in recipe
+
+
 def main() -> None:
     tests = [
         test_dataset_registry_only_current_entries,
@@ -132,6 +145,7 @@ def main() -> None:
         test_pre_rl_rollout_audit_is_legacy_sidecar_not_canonical_rollout,
         test_ovo_rl_eval_builds_canonical_rollout_inputs,
         test_verl_launcher_supports_validation_only_rollout,
+        test_verl_launcher_exposes_multinode_ray_address,
     ]
     for test in tests:
         test()

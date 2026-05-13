@@ -22,6 +22,9 @@
 #
 # Optional env (defaults shown):
 #   NPROC           — GPUs per node (8)
+#   NNODES          — number of Ray nodes for training (1)
+#   RAY_ADDRESS     — existing Ray cluster address, e.g. auto or
+#                     ray://HEAD:10001 / HEAD:6379 depending on Ray launch.
 #   GROUP_SIZE      — GRPO group size G (8) — enough variance for GRPO
 #   MAXLEN          — max prompt length (16384) — true-KV context cap
 #   MAX_NEW_TOKEN   — response buffer. Defaults to 4096 in recurrent mode
@@ -316,6 +319,8 @@ echo "Reward profile:    ${THINKSTREAM_RL_REWARD_PROFILE}"
 echo "Output:            ${OUTPUT_DIR}"
 echo "Runtime root:      ${RUNTIME_ROOT}"
 echo "GPUs:              ${NPROC}"
+echo "Nodes:             ${NNODES:-1}"
+[ -n "${RAY_ADDRESS:-}" ] && echo "Ray address:       ${RAY_ADDRESS}"
 echo "Rollout backend:   ${ROLLOUT_BACKEND}"
 echo "Rollout engine:    ${THINKSTREAM_ROLLOUT_ENGINE}"
 echo "TP size:           ${TP_SIZE}"
@@ -391,6 +396,8 @@ export HF_MODEL_PATH="${LLM}"
 export TRAIN_PARQUET="${TRAIN_PARQUET}"
 export VAL_PARQUET="${VAL_PARQUET}"
 export N_GPUS_PER_NODE="${NPROC}"
+export NNODES="${NNODES:-1}"
+export RAY_ADDRESS="${RAY_ADDRESS:-}"
 export GEN_TP="${TP_SIZE}"
 export GROUP_SIZE="${GROUP_SIZE}"
 export BATCH_SIZE="${BATCH_SIZE}"

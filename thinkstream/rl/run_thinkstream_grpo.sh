@@ -21,6 +21,7 @@
 #
 # Optional env (defaults in [...]):
 #   N_GPUS_PER_NODE [8] / NNODES [1]
+#   RAY_ADDRESS [""] existing Ray cluster address; set to auto or HEAD:6379
 #   GEN_TP [1]              tensor parallel size. The true-KV HF backend is
 #                           one local rollout model per GPU, so keep this at
 #                           1 to use all 8 cards as independent trajectory
@@ -119,6 +120,7 @@ fi
 
 N_GPUS_PER_NODE=${N_GPUS_PER_NODE:-8}
 NNODES=${NNODES:-1}
+RAY_ADDRESS=${RAY_ADDRESS:-}
 ROLLOUT_BACKEND=${ROLLOUT_BACKEND:-streaming}
 if [[ "${ROLLOUT_BACKEND}" != "streaming" ]]; then
     echo "ERROR: ThinkStream RL requires ROLLOUT_BACKEND=streaming for true-KV rollout." >&2
@@ -278,6 +280,10 @@ VALIDATION_DATA_ARGS=()
 if [[ -n "${VALIDATION_DATA_DIR}" ]]; then
     VALIDATION_DATA_ARGS=(+trainer.validation_data_dir="${VALIDATION_DATA_DIR}")
 fi
+RAY_ADDRESS_ARGS=()
+if [[ -n "${RAY_ADDRESS}" ]]; then
+    RAY_ADDRESS_ARGS=(ray_kwargs.ray_init.address="${RAY_ADDRESS}")
+fi
 
 # v12.13: ThinkStream-specific multi_turn config (verl's MultiTurnConfig
 # rejects custom keys, so we pass them as env vars; streaming_agent_loop.py
@@ -361,6 +367,7 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     data.shuffle=${DATA_SHUFFLE} \
     data.dataloader_num_workers=${DATALOADER_NUM_WORKERS} \
     +ray_kwargs.ray_init._temp_dir="${RAY_TMPDIR}" \
+    "${RAY_ADDRESS_ARGS[@]}" \
     ray_kwargs.ray_init.runtime_env.env_vars.TMPDIR="${TMPDIR}" \
     ray_kwargs.ray_init.runtime_env.env_vars.RAY_TMPDIR="${RAY_TMPDIR}" \
     ray_kwargs.ray_init.runtime_env.env_vars.HF_HOME="${HF_HOME}" \
