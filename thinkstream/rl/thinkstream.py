@@ -178,6 +178,59 @@ def _strip_offline_compress_actions(gold_action: Any) -> Dict[str, str]:
     }
 
 
+def _coerce_int_list(value: Any) -> List[int]:
+    if hasattr(value, "tolist"):
+        value = value.tolist()
+    if value is None:
+        return []
+    if isinstance(value, (list, tuple, set)):
+        raw_values = list(value)
+    else:
+        raw_values = [value]
+    out: List[int] = []
+    for raw in raw_values:
+        try:
+            out.append(int(raw))
+        except (TypeError, ValueError):
+            continue
+    return out
+
+
+def _offline_compress_chunks_from_gold_action(gold_action: Any) -> List[int]:
+    """Recover legacy offline compression triggers before action-map cleanup."""
+    if hasattr(gold_action, "tolist"):
+        gold_action = gold_action.tolist()
+    if not isinstance(gold_action, dict):
+        return []
+    chunks: List[int] = []
+    for k, v in gold_action.items():
+        if str(v or "") != "compress":
+            continue
+        try:
+            chunks.append(int(k))
+        except (TypeError, ValueError):
+            continue
+    return chunks
+
+
+def _merge_offline_compress_chunks(
+    existing: Any,
+    gold_action: Any,
+    *,
+    start_chunk: Optional[int] = None,
+    end_chunk: Optional[int] = None,
+) -> List[int]:
+    """Merge new-style boundaries with legacy `gold_action=compress` labels."""
+    chunks = _coerce_int_list(existing) + _offline_compress_chunks_from_gold_action(
+        gold_action
+    )
+    if start_chunk is not None:
+        chunks = [ci for ci in chunks if ci >= int(start_chunk)]
+    if end_chunk is not None:
+        chunks = [ci for ci in chunks if ci <= int(end_chunk)]
+    return sorted(set(ci for ci in chunks if ci >= 0))
+
+
 def _get_base_rlhf_dataset():
     from verl.utils.dataset.rl_dataset import RLHFDataset  # type: ignore
     return RLHFDataset
@@ -540,7 +593,8 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
             extra,
             planned_start,
         )
-        gold_action = extra.get("gold_action_per_chunk") or {}
+        raw_gold_action = extra.get("gold_action_per_chunk") or {}
+        gold_action = raw_gold_action
         if hasattr(gold_action, "tolist"):
             gold_action = gold_action.tolist()
         if not isinstance(gold_action, dict):
@@ -580,6 +634,12 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
             "question_idx": int(q_idx),
             "question_index": int(q_idx),
             "questions": [q],
+            "offline_compress_chunks": _merge_offline_compress_chunks(
+                extra.get("offline_compress_chunks"),
+                raw_gold_action,
+                start_chunk=segment_start,
+                end_chunk=segment_end,
+            ),
             "gold_action_per_chunk": segment_gold_action,
             "all_ask_chunks": self._safe_int_list(q.get("ask_chunks") or [q.get("ask_chunk")]),
             "segment_planned_start_chunk": int(planned_start),
@@ -616,6 +676,7 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
 
         gt = {
             "questions": [q],
+            "offline_compress_chunks": single_extra.get("offline_compress_chunks", []),
             "gold_action_per_chunk": segment_gold_action,
             "episode_mode": "single_question",
             "source_video_row_index": source_video_row_index,
@@ -724,6 +785,10 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
             extra["questions"] = normalized_qs
 
             gap = extra.get("gold_action_per_chunk")
+            extra["offline_compress_chunks"] = _merge_offline_compress_chunks(
+                extra.get("offline_compress_chunks"),
+                gap,
+            )
             extra["gold_action_per_chunk"] = _strip_offline_compress_actions(gap)
 
             extra.update({
@@ -732,6 +797,7 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
                 "n_chunks": int(row_dict.get("n_chunks") or 0),
             })
         else:
+            row_gap = row_dict.get("gold_action_per_chunk")
             extra.update({
                 "video_id": str(row_dict.get("video_id", "")),
                 "video_path": str(row_dict.get("video_path", "")),
@@ -739,9 +805,11 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
                 "gold_answer": str(row_dict.get("gold_answer", "")),
                 "answer_form": str(row_dict.get("answer_form", "")),
                 "ask_chunks": list(row_dict.get("ask_chunks") or []),
-                "gold_action_per_chunk": _strip_offline_compress_actions(
-                    row_dict.get("gold_action_per_chunk")
+                "offline_compress_chunks": _merge_offline_compress_chunks(
+                    extra.get("offline_compress_chunks"),
+                    row_gap,
                 ),
+                "gold_action_per_chunk": _strip_offline_compress_actions(row_gap),
                 "n_chunks": int(row_dict.get("n_chunks") or 0),
             })
 

@@ -717,6 +717,31 @@ def test_rl_episode_mode_segment_alias():
     assert CustomRLHFDataset._normalize_episode_mode("full-video") == "full"
 
 
+def test_rl_dataset_recovers_legacy_offline_compress_boundaries():
+    from thinkstream.rl.thinkstream import (
+        _merge_offline_compress_chunks,
+        _strip_offline_compress_actions,
+    )
+
+    legacy_gold = {
+        "12": "silent",
+        "32": "compress",
+        "63": "response",
+        "bad": "compress",
+    }
+
+    assert _strip_offline_compress_actions(legacy_gold) == {
+        "12": "silent",
+        "63": "response",
+    }
+    assert _merge_offline_compress_chunks(None, legacy_gold) == [32]
+    assert _merge_offline_compress_chunks([8, "32"], legacy_gold) == [8, 32]
+    assert (
+        _merge_offline_compress_chunks([8], legacy_gold, start_chunk=20, end_chunk=40)
+        == [32]
+    )
+
+
 def test_single_question_window_boundaries_and_scalar_chunks():
     ds = _single_q_dataset_stub()
 
@@ -777,7 +802,12 @@ def test_single_question_segment_uses_student_snapshot_or_rolls_from_zero():
         "extra_info": {
             "n_chunks": 80,
             "questions": [q],
-            "gold_action_per_chunk": {"12": "silent", "30": "silent", "40": "response"},
+            "gold_action_per_chunk": {
+                "12": "silent",
+                "30": "silent",
+                "32": "compress",
+                "40": "response",
+            },
             "student_cache_meta": {
                 "source": "pass2_student_rollout",
                 "checkpoint": "ckpt-a",
@@ -815,8 +845,10 @@ def test_single_question_segment_uses_student_snapshot_or_rolls_from_zero():
     assert [x["chunk"] for x in extra["initial_student_state"]["think_archive"]] == [12]
     assert extra["initial_student_state_checkpoint"] == "ckpt-a"
     assert extra["initial_student_state_global_step"] == 12
+    assert extra["offline_compress_chunks"] == [32]
     assert "12" not in extra["gold_action_per_chunk"]
     assert "30" in extra["gold_action_per_chunk"]
+    assert extra["gold_action_per_chunk"]["32"] == "silent"
     assert "40" in extra["gold_action_per_chunk"]
 
     bad_cache_row = dict(row)
@@ -889,6 +921,7 @@ if __name__ == "__main__":
     test_recipe_multi_q_reward_gates_each_question_independently()
     test_recipe_action_shaping_scores_system_compress_only()
     test_rl_episode_mode_segment_alias()
+    test_rl_dataset_recovers_legacy_offline_compress_boundaries()
     test_single_question_window_boundaries_and_scalar_chunks()
     test_single_question_segment_uses_student_snapshot_or_rolls_from_zero()
     test_silent_quality_v12_complements_outcome()
