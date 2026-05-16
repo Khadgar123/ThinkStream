@@ -36,13 +36,10 @@ ALL_JSONL_FILES = [
     "c1_train.jsonl",
     "train_sft_full.jsonl",
     *TRAJ_FILES.values(),
-    "train_sft_messages.jsonl",
-    "val_messages.jsonl",
-    "test_messages.jsonl",
 ]
 
 OPTION_RE = re.compile(r"^\s*(?:\(([A-Z])\)|([A-Z])[\).:])\s*(.*)\s*$", re.DOTALL)
-ANSWER_RE = re.compile(r"<(answer|response)>(.*?)</\1>", re.DOTALL)
+ANSWER_RE = re.compile(r"</Response>\s*(.*?)\s*$", re.DOTALL)
 QUERY_BLOCK_RE = re.compile(
     r"(?P<qline>\[[^\]\n]+s\]\s+Q:\s+(?P<question>.*?)\n)"
     r"(?P<oline>\[[^\]\n]+s\]\s+Options:\s+)(?P<options>.*?)(?=\n\[|\n</active_query>|\n</queries>|$)",
@@ -105,32 +102,17 @@ def _accepted_answers(options: List[str], correct_option: str) -> List[str]:
 def _target_for_style(style: str, options: List[str], correct_option: str) -> str | None:
     correct_option = str(correct_option or "").strip().upper()
     text = _correct_text(options, correct_option) or ""
-    if style == "letter_only":
-        return correct_option
-    if style == "letter_plus_text":
-        return f"{correct_option}) {text}" if text else correct_option
-    if style == "text_only":
-        return text
-    return None
+    if not correct_option:
+        return None
+    return f"{correct_option}) {text}" if text else correct_option
 
 
 def _style_for_obj(obj: Dict[str, Any]) -> str:
-    return "letter_only"
-
-
-def _letter_list(options: List[str]) -> str:
-    labels = LETTERS[:max(2, min(len(options), 26))]
-    if len(labels) == 1:
-        return labels[0]
-    return ", ".join(labels[:-1]) + f", or {labels[-1]}"
+    return "letter_plus_text"
 
 
 def _instruction_for_style(style: str, options: List[str]) -> str:
-    if style == "text_only":
-        return "Answer format: answer text only, no option letter."
-    if style == "letter_plus_text":
-        return "Answer format: letter plus option text, e.g. A) option text."
-    return f"Answer format: one letter only ({_letter_list(options)})."
+    return "Answer format: letter plus option text, e.g. A) option text."
 
 
 def _patch_per_emit_answers(obj: Dict[str, Any], target: str | None) -> bool:
@@ -189,7 +171,7 @@ def _patch_answer_payload(text: str, target: str | None) -> Tuple[str, bool]:
     if (
         not target
         or not isinstance(text, str)
-        or not ("<answer>" in text or "<response>" in text)
+        or "</Response>" not in text
     ):
         return text, False
 
@@ -197,14 +179,13 @@ def _patch_answer_payload(text: str, target: str | None) -> Tuple[str, bool]:
 
     def repl(match: re.Match[str]) -> str:
         nonlocal changed
-        tag = match.group(1)
-        current = match.group(2)
+        current = match.group(1)
         if not current.strip():
             return match.group(0)
         if current.strip() == target:
             return match.group(0)
         changed = True
-        return f"<{tag}>{target}</{tag}>"
+        return f"</Response> {target}"
 
     return ANSWER_RE.sub(repl, text), changed
 
@@ -298,10 +279,10 @@ def build_mapping(final_dir: Path) -> Dict[Tuple[str, str, str], Dict[str, Any]]
                     continue
                 if _correct_text(options, old_correct) is None:
                     continue
-                records.append((key, options, old_correct))
+                records.append((key, options, old_correct, _style_for_obj(q)))
 
         records.sort(key=lambda r: _stable_hash("|".join(r[0])))
-        for i, (key, options, old_correct) in enumerate(records):
+        for i, (key, options, old_correct, answer_style) in enumerate(records):
             valid = LETTERS[:len(options)]
             new_correct = valid[i % len(valid)]
             reb = _rebalance_options(options, old_correct, new_correct)
@@ -313,7 +294,7 @@ def build_mapping(final_dir: Path) -> Dict[Tuple[str, str, str], Dict[str, Any]]
                 "old_correct_option": old_correct,
                 "correct_option": corrected,
                 "options": new_options,
-                "answer_style": _style_for_obj(q),
+                "answer_style": answer_style,
             }
     return mapping
 
@@ -391,9 +372,10 @@ def _patch_query_text(text: str, video_id: str, by_video_question: Dict[Tuple[st
         hit = by_video_question.get((str(video_id or ""), question))
         if not hit:
             return match.group(0)
+        prefix = match.group("iprefix").split("Answer format:", 1)[0]
         return (
             f"{match.group('qline')}{match.group('body')}"
-            f"{match.group('iprefix')}{_letter_list(hit['options'])}{match.group('suffix')}"
+            f"{prefix}{_instruction_for_style(_style_for_obj(hit), hit['options'])}"
         )
 
     return QUERY_INSTRUCTION_RE.sub(
@@ -414,7 +396,7 @@ def _target_from_query_text(
         hit = by_video_question.get((str(video_id or ""), question))
         if hit:
             return _target_for_style(
-                str(hit.get("answer_style") or "letter_only"),
+                str(hit.get("answer_style") or "letter_plus_text"),
                 hit["options"],
                 hit["correct_option"],
             )
@@ -422,9 +404,14 @@ def _target_from_query_text(
 
 
 def _answer_values(text: str) -> List[str]:
-    if not isinstance(text, str) or not ("<answer>" in text or "<response>" in text):
+    if not isinstance(text, str) or "</Response>" not in text:
         return []
-    return [m.group(2).strip() for m in ANSWER_RE.finditer(text) if m.group(2).strip()]
+    values = []
+    for m in ANSWER_RE.finditer(text):
+        value = m.group(1)
+        if value and value.strip():
+            values.append(value.strip())
+    return values
 
 
 def _query_text_errors(
@@ -453,13 +440,9 @@ def _query_text_errors(
         hit = by_video_question.get((str(video_id or ""), question))
         if not hit:
             continue
-        expected = _letter_list(hit["options"])
-        actual = " ".join(str(match.group("letters") or "").split())
-        if actual != expected:
-            errors.append(
-                f"{location}: answer-format letters mismatch for {question!r}: "
-                f"{actual!r} != {expected!r}"
-            )
+        errors.append(
+            f"{location}: stale one-letter MC answer instruction for {question!r}"
+        )
     return errors
 
 

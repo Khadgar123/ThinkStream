@@ -20,8 +20,6 @@ from thinkstream.data.schema import (  # noqa: E402
     ACTION_SILENT,
     AssistantSpec,
     ChunkUserSpec,
-    MEMORY_CLOSE,
-    MEMORY_OPEN,
     QuerySpec,
     STAGE_COMPRESS_MARKER,
     SYSTEM_PROMPT,
@@ -86,9 +84,23 @@ def test_user_content_with_query():
     assert "<active_query>" in query_text
     assert "What color is the jacket?" in query_text
     assert "A. Red" in query_text
-    assert "Answer with the letter only." in query_text
+    assert "Answer format: letter plus option text" in query_text
+    assert "Answer with the letter only." not in query_text
     assert "<response_history>" in content[3]["text"]
     print("[OK] user_content_with_query")
+
+
+def test_user_content_infers_answer_format_from_query_spec():
+    query = QuerySpec(
+        text="Is the door currently open?",
+        answer_form="binary",
+    )
+    assert "Answer format: Yes or No only." in query.to_text()
+    spec = ChunkUserSpec(chunk_idx=12, frame_paths=["f.jpg"], active_query=query)
+    content = build_user_content(spec)
+    query_text = content[2]["text"]
+    assert "[12s] Q: Is the door currently open?" in query_text
+    assert "[12s] Answer format: Yes or No only." in query_text
 
 
 def test_user_content_compress_stage_drops_video():
@@ -118,9 +130,9 @@ def test_user_content_from_compress_prefix_memory():
         ],
     )
     content = build_user_content(spec)
-    # First item must be memory block; then timestamp; then video.
+    # First item must be bare memory lines; then timestamp; then video.
     assert content[0]["type"] == "text"
-    assert MEMORY_OPEN in content[0]["text"] and MEMORY_CLOSE in content[0]["text"]
+    assert "<memory>" not in content[0]["text"]
     assert "light remained red" in content[0]["text"]
     assert '<m t="31">' in content[0]["text"]
     assert content[1]["text"] == "<t=33>"
@@ -137,7 +149,7 @@ def test_assistant_silent():
     ))
     assert msg["role"] == "assistant"
     assert "tool_calls" not in msg
-    assert msg["content"] == "<think>Person walking, light still red.</think><silent>"
+    assert msg["content"] == "<think>Person walking, light still red.</think></Silence>"
     print("[OK] assistant_silent")
 
 
@@ -148,7 +160,7 @@ def test_assistant_response():
         response_text="The light is now green!",
     ))
     assert "<think>" in msg["content"]
-    assert "<response>The light is now green!</response>" in msg["content"]
+    assert "</Response> The light is now green!" in msg["content"]
     assert "tool_calls" not in msg
     print("[OK] assistant_response")
 
@@ -179,14 +191,13 @@ def test_assistant_recall_tool_call():
         think="Need historical context.",
         action_type=ACTION_RECALL,
         tool_call_id="rec_1",
-        tool_arguments={"time_range": [0, 10], "query": "first red light"},
+        tool_arguments={"start_time": 0, "end_time": 11},
     ))
     tc = msg["tool_calls"][0]
     assert tc["function"]["name"] == TOOL_NAME_RECALL
     args = tc["function"]["arguments"]
     assert isinstance(args, dict)
-    assert args["query"] == "first red light"
-    assert args["time_range"] == [0, 10]
+    assert args == {"start_time": 0, "end_time": 11}
     print("[OK] assistant_recall_tool_call")
 
 
@@ -275,7 +286,7 @@ def test_render_trajectory_with_tool_call_two_turn_pattern():
                 think="Need historical info.",
                 action_type=ACTION_RECALL,
                 tool_call_id="rec_1",
-                tool_arguments={"time_range": [0, 5], "query": "first red light"},
+                tool_arguments={"start_time": 0, "end_time": 6},
             ),
             tool_response=tool_response,
             followup_assistant=AssistantSpec(
@@ -296,12 +307,12 @@ def test_render_trajectory_with_tool_call_two_turn_pattern():
     assert messages[3]["role"] == "tool"
     assert messages[3]["tool_call_id"] == "rec_1"
     assert messages[4]["role"] == "assistant"
-    assert "<response>" in messages[4]["content"]
+    assert "</Response>" in messages[4]["content"]
     print("[OK] render_trajectory_with_tool_call_two_turn_pattern")
 
 
 def test_render_trajectory_from_compress_first_turn_has_memory():
-    from thinkstream.data.schema import MemoryEntry
+    from thinkstream.data.schema import MEMORY_LOAD_ACK, MemoryEntry
     turns = [
         TurnSpec(
             user=ChunkUserSpec(
@@ -320,17 +331,30 @@ def test_render_trajectory_from_compress_first_turn_has_memory():
     ]
     spec = TrajectorySpec(trajectory_type=TRAJ_TYPE_FROM_COMPRESS, turns=turns)
     messages, _ = render_trajectory_messages(spec)
-    # First user message must contain memory block
-    first_user = messages[1]
-    assert first_user["role"] == "user"
-    first_text = first_user["content"][0]["text"]
-    assert MEMORY_OPEN in first_text
-    assert "0-32 summary" in first_text
-    # Second user message must NOT contain memory block (it's a continuation)
-    second_user = messages[3]
+    # From-compress starts with a text-only memory prefill turn, then an
+    # assistant ack, then the first real visual turn.
+    memory_user = messages[1]
+    assert memory_user["role"] == "user"
+    memory_text = memory_user["content"][0]["text"]
+    assert "<memory>" not in memory_text
+    assert '<m t="0-32">' in memory_text
+    assert "0-32 summary" in memory_text
+    assert messages[2] == {"role": "assistant", "content": MEMORY_LOAD_ACK}
+
+    first_visual_user = messages[3]
+    assert first_visual_user["role"] == "user"
+    first_visual_text = "\n".join(
+        c["text"] for c in first_visual_user["content"] if c.get("type") == "text"
+    )
+    assert "<m " not in first_visual_text
+    assert "<t=33>" in first_visual_text
+    assert any(c.get("type") == "video" for c in first_visual_user["content"])
+
+    # Later user messages must also not carry memory lines.
+    second_user = messages[5]
     assert second_user["role"] == "user"
     second_text = second_user["content"][0]["text"]
-    assert MEMORY_OPEN not in second_text
+    assert "<m " not in second_text
     print("[OK] render_trajectory_from_compress_first_turn_has_memory")
 
 
@@ -430,8 +454,8 @@ def test_messages_apply_chat_template_smoke():
     )
     assert "<|im_start|>system" in rendered
     assert "<tools>" in rendered or "tool_call" in rendered.lower()
-    assert "<silent>" in rendered
-    assert "<response>" in rendered
+    assert "</Silence>" in rendered
+    assert "</Response>" in rendered
     print(f"[OK] apply_chat_template_smoke ({len(rendered)} chars)")
 
 
@@ -439,14 +463,25 @@ def test_system_prompt_v2_contains_key_rules():
     """The unified v2 prompt absorbs key rules from all three V12 stage
     variants. Spot-check that the headline rules are present."""
     # Output grammar
-    assert "<silent>" in SYSTEM_PROMPT
-    assert "<response>" in SYSTEM_PROMPT
+    assert "</Silence>" in SYSTEM_PROMPT
+    assert "</Response>" in SYSTEM_PROMPT
     assert "<think>" in SYSTEM_PROMPT
     # Recall rules (from V12_STREAMING)
     assert "recall" in SYSTEM_PROMPT.lower()
-    assert "time_range" in SYSTEM_PROMPT
+    assert "start_time" in SYSTEM_PROMPT
+    assert "end_time" in SYSTEM_PROMPT
+    assert "Prefer </Response>" not in SYSTEM_PROMPT
+    assert "Decision priority:" in SYSTEM_PROMPT
+    assert "future/proactive trigger" in SYSTEM_PROMPT
+    assert "Do not give partial answers or guesses" in SYSTEM_PROMPT
+    assert "unknown/abstain option" in SYSTEM_PROMPT
+    assert "Use recall only if older missing visual evidence is required" in SYSTEM_PROMPT
+    assert "Recall cannot fetch future evidence" in SYSTEM_PROMPT
+    assert "one concise phrase or sentence" in SYSTEM_PROMPT
     # Memory orientation rules
-    assert "<memory>" in SYSTEM_PROMPT or "<MEM>" in SYSTEM_PROMPT
+    assert '<m t="' in SYSTEM_PROMPT
+    assert "<memory>" not in SYSTEM_PROMPT
+    assert "<MEM>" not in SYSTEM_PROMPT
     print("[OK] system_prompt_v2_contains_key_rules")
 
 
@@ -482,6 +517,13 @@ def test_get_canonical_system_prompt_always_returns_unified():
     print("[OK] get_canonical_system_prompt_always_returns_unified")
 
 
+def test_system_prompt_describes_memory_load_prefill_turn():
+    assert 'assistant text "Memory loaded."' in SYSTEM_PROMPT
+    assert "the next user turn starts with <t=N>" in SYSTEM_PROMPT
+    assert "include those lines directly before <t=N>" not in SYSTEM_PROMPT
+    print("[OK] system_prompt_describes_memory_load_prefill_turn")
+
+
 def test_system_prompt_for_frame_protocol_selects_compact_prompt():
     """Streaming/post-recall use the canonical prompt; compress/inter-chunk
     uses the compact-memory prompt for the standalone memory-update row."""
@@ -497,6 +539,8 @@ def test_system_prompt_for_frame_protocol_selects_compact_prompt():
     p5 = system_prompt_for_frame_protocol()
     assert p1 == p4 == p5 == ap_prompt
     assert p2 == p3 == COMPACT_MEMORY_SYSTEM_PROMPT
+    assert "preserve useful old memory when it is still relevant" in p2
+    assert "cover the latest new captions" in p2
     print("[OK] system_prompt_for_frame_protocol_selects_compact_prompt")
 
 
@@ -505,6 +549,7 @@ if __name__ == "__main__":
     test_tools_schema_filter()
     test_user_content_silent_chunk()
     test_user_content_with_query()
+    test_user_content_infers_answer_format_from_query_spec()
     test_user_content_compress_stage_drops_video()
     test_user_content_from_compress_prefix_memory()
     test_assistant_silent()
@@ -523,5 +568,6 @@ if __name__ == "__main__":
     test_system_prompt_v2_contains_key_rules()
     test_agent_protocol_re_exports_canonical()
     test_get_canonical_system_prompt_always_returns_unified()
+    test_system_prompt_describes_memory_load_prefill_turn()
     test_system_prompt_for_frame_protocol_selects_compact_prompt()
     print("\n✅ all schema tests passed")

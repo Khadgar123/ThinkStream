@@ -68,7 +68,12 @@ _AGENT_LOOP_BATCH_ROW_INDEX_KEY = "_verl_agent_loop_batch_row_index"
 class GlobalRequestLoadBalancer:
     """Global sticky-session + in-flight load balancer shared by all AgentLoopWorkers."""
 
-    def __init__(self, server_actor_ids: list[str], max_cache_size: int = DEFAULT_ROUTING_CACHE_SIZE):
+    def __init__(
+        self,
+        server_actor_ids: list[str],
+        max_cache_size: int = DEFAULT_ROUTING_CACHE_SIZE,
+        max_streaming_sessions_per_server: Optional[int] = None,
+    ):
         if not server_actor_ids:
             raise ValueError("server_actor_ids must be non-empty")
 
@@ -76,6 +81,11 @@ class GlobalRequestLoadBalancer:
         self._request_id_to_server: LRUCache = LRUCache(maxsize=max_cache_size)
         self._streaming_session_to_server: dict[str, str] = {}
         self._streaming_session_counts: dict[str, int] = {sid: 0 for sid in server_actor_ids}
+        if max_streaming_sessions_per_server is None:
+            max_streaming_sessions_per_server = int(
+                os.environ.get("THINKSTREAM_STREAMING_SLOTS_PER_GPU", "1") or 1
+            )
+        self._max_streaming_sessions_per_server = max(1, int(max_streaming_sessions_per_server))
 
     def acquire_server(self, request_id: str) -> str:
         """Acquire a server for the given request, reusing the same server for multi-turn conversations."""
@@ -112,7 +122,7 @@ class GlobalRequestLoadBalancer:
 
         while True:
             server_id = min(self._streaming_session_counts, key=self._streaming_session_counts.get)
-            if self._streaming_session_counts[server_id] <= 0:
+            if self._streaming_session_counts[server_id] < self._max_streaming_sessions_per_server:
                 self._streaming_session_to_server[request_id] = server_id
                 self._streaming_session_counts[server_id] += 1
                 return server_id
@@ -947,6 +957,34 @@ class AgentLoopWorker:
             multi_modal_inputs["images_seqlens"] = images_seqlens
         return multi_modal_inputs
 
+    def _uses_qwen3_vl_mrope(self) -> bool:
+        """Qwen3-VL uses official 3-channel T/H/W MRoPE position ids."""
+        candidates = []
+        for obj in (
+            self.processor,
+            getattr(self.processor, "image_processor", None),
+            getattr(self.processor, "video_processor", None),
+            self.tokenizer,
+            self.model_config,
+        ):
+            if obj is None:
+                continue
+            candidates.append(obj.__class__.__name__)
+            for attr in ("name_or_path", "model_type", "path", "model_path"):
+                value = getattr(obj, attr, None)
+                if value:
+                    candidates.append(str(value))
+            if hasattr(obj, "get"):
+                for key in ("model_type", "path", "model_path"):
+                    try:
+                        value = obj.get(key, None)
+                    except Exception:
+                        value = None
+                    if value:
+                        candidates.append(str(value))
+        text = " ".join(candidates).lower().replace("_", "").replace("-", "")
+        return "qwen3" in text and "vl" in text
+
     def _compute_position_ids(self, input_ids, attention_mask, multi_modal_inputs) -> torch.Tensor:
         """Compute position ids for multi-modal inputs."""
         if self.processor is None:
@@ -970,10 +1008,20 @@ class AgentLoopWorker:
             **multi_modal_kwargs,
         )
         vision_position_ids = vision_position_ids.transpose(0, 1)  # (3, 1, seq_len) => (1, 3, seq_len)
+        if self._uses_qwen3_vl_mrope():
+            return vision_position_ids
 
         valid_mask = attention_mask[0].bool()
-        text_position_ids = torch.ones((1, len(input_ids[0])), dtype=torch.long)
-        text_position_ids[0, valid_mask] = torch.arange(valid_mask.sum().item())
+        text_position_ids = torch.ones(
+            (1, len(input_ids[0])),
+            dtype=vision_position_ids.dtype,
+            device=vision_position_ids.device,
+        )
+        text_position_ids[0, valid_mask] = torch.arange(
+            valid_mask.sum().item(),
+            dtype=vision_position_ids.dtype,
+            device=vision_position_ids.device,
+        )
         text_position_ids = text_position_ids.unsqueeze(0)
         position_ids = torch.cat((text_position_ids, vision_position_ids), dim=1)  # (1, 4, seq_length)
         return position_ids
@@ -1312,6 +1360,9 @@ class AgentLoopManager:
         self.global_load_balancer = GlobalRequestLoadBalancer.remote(
             server_actor_ids=self.server_addresses,
             max_cache_size=DEFAULT_ROUTING_CACHE_SIZE,
+            max_streaming_sessions_per_server=int(
+                os.environ.get("THINKSTREAM_STREAMING_SLOTS_PER_GPU", "1") or 1
+            ),
         )
 
     @auto_await
@@ -1327,15 +1378,46 @@ class AgentLoopManager:
         if self.stream_teacher_with_rollout:
             await self.teacher_model_manager.wake_up()
         prompts.non_tensor_batch[_AGENT_LOOP_BATCH_ROW_INDEX_KEY] = np.arange(len(prompts), dtype=np.int64)
-        chunkes = prompts.chunk(len(self.agent_loop_workers))
+        num_chunks = min(len(self.agent_loop_workers), max(1, len(prompts)))
+        while num_chunks > 1 and len(prompts) % num_chunks != 0:
+            num_chunks -= 1
+        workers = self.agent_loop_workers[:num_chunks]
+        chunkes = prompts.chunk(num_chunks)
         outputs = await asyncio.gather(
             *[
                 worker.generate_sequences.remote(chunk)
-                for worker, chunk in zip(self.agent_loop_workers, chunkes, strict=True)
+                for worker, chunk in zip(workers, chunkes, strict=True)
             ]
         )
         if self.stream_teacher_with_rollout:
             await self.teacher_model_manager.sleep()
+        # Recurrent agent loops can emit trajectory-level reward diagnostics
+        # only on final action rows. Each worker normalizes keys internally,
+        # but different workers may see different optional reward keys. Align
+        # them before DataProto.concat so a single optional metric does not
+        # break multi-worker validation.
+        non_tensor_keys = {
+            key
+            for output_item in outputs
+            for key in output_item.non_tensor_batch.keys()
+        }
+        for output_item in outputs:
+            row_count = len(output_item)
+            for key in non_tensor_keys:
+                if key not in output_item.non_tensor_batch:
+                    output_item.non_tensor_batch[key] = np.full(
+                        row_count, None, dtype=object
+                    )
+        reward_extra_keys = []
+        seen_reward_extra_keys = set()
+        for output_item in outputs:
+            for key in output_item.meta_info.get("reward_extra_keys", []) or []:
+                if key not in seen_reward_extra_keys:
+                    reward_extra_keys.append(key)
+                    seen_reward_extra_keys.add(key)
+        if reward_extra_keys:
+            for output_item in outputs:
+                output_item.meta_info["reward_extra_keys"] = reward_extra_keys
         output = DataProto.concat(outputs)
 
         # calculate performance metrics

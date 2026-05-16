@@ -32,6 +32,11 @@ from thinkstream.sft.data_processor import (
     TrajectorySFTDataCollator,
 )
 from thinkstream.sft.args import ModelArguments, DataArguments, TrainingArguments
+from thinkstream.data.agent_protocol import (
+    WRONG_RESPONSE_SPECIAL_TOKENS,
+    ensure_agent_special_tokens,
+    validate_agent_special_tokens,
+)
 from thinkstream.models import patch as _ts_models_patch  # noqa: F401
 from thinkstream.models.streaming_attention import register_streaming_attention
 from dataclasses import dataclass, field
@@ -111,6 +116,18 @@ def main():
         padding_side="right",
         use_fast=False,
     )
+    ensure_agent_special_tokens(processor.tokenizer, model=model)
+    tokenizer.add_tokens(
+        [
+            t for t in processor.tokenizer.get_added_vocab().keys()
+            if t not in tokenizer.get_vocab()
+            and t not in WRONG_RESPONSE_SPECIAL_TOKENS
+        ],
+        special_tokens=True,
+    )
+    ensure_agent_special_tokens(tokenizer, model=model)
+    validate_agent_special_tokens(processor.tokenizer)
+    validate_agent_special_tokens(tokenizer)
 
     # Build test dataset
     test_dataset = TrajectorySFTDataset(

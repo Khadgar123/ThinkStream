@@ -86,8 +86,8 @@ def base_messages_text(t: int) -> tuple[Dict[str, Any], str, str]:
     prefix = f'<current_chunk t="{t}-{t + 1}" fps="2">'
     suffix = (
         "</current_chunk>\n"
-        "<query>Describe only the attached current 1-second chunk. "
-        "Output one concise English sentence.</query>"
+        "<active_query>Describe only the attached current 1-second chunk. "
+        "Output one concise English sentence.</active_query>"
     )
     return system, prefix, suffix
 

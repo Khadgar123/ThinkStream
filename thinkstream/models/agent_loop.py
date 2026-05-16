@@ -3,7 +3,7 @@
 Single-step inference loop that mirrors the data construction pipeline exactly:
 - Maintains MemoryState (compressed_segments, recent_thinks, queries log)
 - System-triggered compression (token-count threshold)
-- Recall orchestration (parse query → retrieve → second generate)
+- Recall orchestration (parse historical start/end interval → retrieve frames → second generate)
 - Constructs per-timestep input matching SFT training format
 
 Each step is an independent single-turn inference (no KV cache reuse across steps).
@@ -36,7 +36,7 @@ from thinkstream.data.agent_protocol import (
     parse_agent_output,
     recall_time_string_for_chunks,
     resolve_chunk_frame_paths,
-    select_recall_chunks,
+    select_recall_chunks_uniform,
     system_prompt_for_frame_protocol,
     action_space_error_for_turn,
     append_query_answer_with_timing,
@@ -53,7 +53,7 @@ def _parse_agent_output(output_text: str) -> Dict:
     orchestration code. We adapt the v12 parser (which emits ``kind`` +
     ``answer_text`` / ``tool_call``) into that shape here.
     """
-    v12 = parse_agent_output(output_text, allow_unclosed_response=True)
+    v12 = parse_agent_output(output_text, allow_bare_memory=True)
     out: Dict = {
         "raw": v12.get("raw", output_text),
         "raw_output": v12.get("raw", output_text),
@@ -75,9 +75,9 @@ def _parse_agent_output(output_text: str) -> Dict:
         out["action"] = "recall"
         tc = v12.get("tool_call") or {}
         args = tc.get("arguments") or {}
-        out["payload"]["query"] = {
-            "query": args.get("query", ""),
-            "time_range": args.get("time_range", ""),
+        out["payload"]["recall_args"] = {
+            "start_time": args.get("start_time"),
+            "end_time": args.get("end_time"),
         }
     elif kind == "compress":
         out["action"] = "compress"
@@ -414,7 +414,7 @@ class MemoryState:
         )
 
     def replace_with_compact_memory(self, entries: List[Dict]):
-        """Replace visible memory with compact <MEM> entries."""
+        """Replace visible memory with compact <m> entries."""
         new_segments: List[Dict] = []
         for entry in entries or []:
             tr = entry.get("time_range") or []
@@ -545,21 +545,30 @@ class MemoryState:
                    open_until: Optional[float] = None):
         """Register a question (pending until answered).
 
-        v12.13 fix (P0-1): accept options + answer_form so format_queries_block
-        can render "Options: A) ... B) ..." for pending MC queries at
-        inference / RL rollout time. v12.25 also stores answer_style /
-        answer_instruction so SFT, RL, and eval see the same MC answer
-        protocol hint. v12.43 carries answer_chunks/per_emit_answers so
+        Accept options + answer_form so format_queries_block can render
+        Options and the canonical Answer format line for pending queries at
+        inference / RL rollout time. answer_style / answer_instruction keep
+        SFT, RL, and eval on the same output protocol. v12.43 carries
+        answer_chunks/per_emit_answers so
         multi-emit questions remain active until their final expected response.
         """
         if not hasattr(self, "_queries"):
             self._queries = []
         expected_chunks = list(answer_chunks or [])
         expected_emits = list(per_emit_answers or [])
+        inferred_answer_form = (
+            answer_form
+            or ("multiple_choice" if options else "")
+        )
+        inferred_answer_style = (
+            "letter_plus_text"
+            if inferred_answer_form == "multiple_choice"
+            else (answer_style or "")
+        )
         answer_instruction = (
             canonical_answer_instruction({
-                "answer_form": answer_form or "",
-                "answer_style": answer_style or "",
+                "answer_form": inferred_answer_form,
+                "answer_style": inferred_answer_style,
                 "answer_instruction": answer_instruction or "",
                 "options": list(options or []),
             })
@@ -572,10 +581,10 @@ class MemoryState:
                 q["last_ask_time"] = ask_time
                 if options:
                     q["options"] = list(options)
-                if answer_form:
-                    q["answer_form"] = answer_form
-                if answer_style:
-                    q["answer_style"] = answer_style
+                if inferred_answer_form:
+                    q["answer_form"] = inferred_answer_form
+                if inferred_answer_style:
+                    q["answer_style"] = inferred_answer_style
                 if answer_instruction:
                     q["answer_instruction"] = answer_instruction
                 if expected_chunks:
@@ -604,8 +613,8 @@ class MemoryState:
             "question": question,
             "ask_time": ask_time,
             "options": list(options or []),
-            "answer_form": answer_form or "",
-            "answer_style": answer_style or "",
+            "answer_form": inferred_answer_form,
+            "answer_style": inferred_answer_style,
             "answer_instruction": answer_instruction or "",
             "answer_chunks": expected_chunks,
             "per_emit_answers": expected_emits,
@@ -725,136 +734,96 @@ def build_single_step_messages(
 # ---------------------------------------------------------------------------
 
 
-def parse_time_range(tr) -> Optional[tuple]:
-    """Parse a query['time_range'] field into (t_start, t_end) seconds.
-
-    Accepts: "10-30", "10.0-30.0", [10, 30], (10, 30). Returns None on
-    missing/empty/malformed input — callers should treat None as "no
-    range filter; use full archive".
-    """
-    if tr is None:
+def parse_time_range(query) -> Optional[tuple]:
+    """Parse recall ``start_time`` / ``end_time`` into a closed interval."""
+    if not isinstance(query, dict):
         return None
-    if isinstance(tr, (list, tuple)) and len(tr) == 2:
-        try:
-            return float(tr[0]), float(tr[1])
-        except (TypeError, ValueError):
-            return None
-    if isinstance(tr, str):
-        s = tr.strip()
-        if not s:
-            return None
-        try:
-            a, b = s.split("-", 1)
-            return float(a), float(b)
-        except (ValueError, AttributeError):
-            return None
-    return None
-
-
-def _env_int(name: str, default: int) -> int:
     try:
-        return int(os.environ.get(name, str(default)))
+        start = float(query.get("start_time"))
+        end = float(query.get("end_time"))
     except (TypeError, ValueError):
-        return default
-
-
-def recall_time_range_margin_chunks() -> int:
-    """Small recall-range tolerance for RL exploration.
-
-    The model still emits the exact requested range, but retrieval widens that
-    range by a few chunks before scoring. This gives near-boundary recall
-    attempts a chance to retrieve the support evidence and receive downstream
-    answer reward. Set THINKSTREAM_RECALL_TIME_RANGE_MARGIN_CHUNKS=0 to recover
-    strict historical behavior.
-    """
-    return max(0, _env_int("THINKSTREAM_RECALL_TIME_RANGE_MARGIN_CHUNKS", 3))
-
-
-def expand_time_range_by_chunks(
-    time_range,
-    *,
-    margin_chunks: int,
-    chunk_sec: float = AGENT_CHUNK_SEC,
-) -> Optional[tuple]:
-    tr = parse_time_range(time_range)
-    if tr is None:
         return None
-    t0, t1 = tr
-    if t0 > t1:
-        t0, t1 = t1, t0
-    margin = max(0, int(margin_chunks)) * float(chunk_sec)
-    if margin <= 0:
-        return t0, t1
-    return max(0.0, t0 - margin), t1 + margin
+    if start < 0 or end < start:
+        return None
+    return start, end
+
+
+def recall_query_available_for_chunk(
+    query,
+    current_chunk: int,
+    chunk_sec: float = AGENT_CHUNK_SEC,
+) -> bool:
+    """True when a closed recall range can only touch historical chunks."""
+    tr = parse_time_range(query)
+    if tr is None:
+        return False
+    _start, end = tr
+    recallable_end = (float(current_chunk) * float(chunk_sec)) - float(chunk_sec)
+    return end <= recallable_end
 
 
 def filter_archive_by_time_range(
     archive: List[Dict],
-    time_range,
+    query,
     chunk_sec: float = AGENT_CHUNK_SEC,
     *,
-    margin_chunks: Optional[int] = None,
+    margin_chunks: int = 0,
 ) -> List[Dict]:
-    """Restrict archive to items whose chunk overlaps [t_start, t_end].
+    """Restrict archive to chunks whose timestamp is in [start_time, end_time].
 
-    "with_time_range" mode = the model emits a time_range and the retriever
-    pre-filters to that window before scoring. A small margin can be applied
-    around valid ranges so near-boundary recalls still retrieve useful support
-    during RL exploration. Falls back to the full archive when the range is
-    missing/malformed (matches the SFT distribution where ~30% of queries are
-    keyword-only by design).
+    Recall is strict time-range sampling. ``margin_chunks`` exists only for
+    compatibility with older callers and should remain zero in normal use.
+    Missing or malformed ranges return the unfiltered archive so older utility
+    callers keep their historical behavior.
     """
-    if margin_chunks is None:
-        margin_chunks = recall_time_range_margin_chunks()
-    tr = expand_time_range_by_chunks(
-        time_range,
-        margin_chunks=margin_chunks,
-        chunk_sec=chunk_sec,
-    )
+    tr = parse_time_range(query)
     if tr is None:
         return archive
     t0, t1 = tr
-    if t0 > t1:
-        t0, t1 = t1, t0
+    if margin_chunks:
+        margin = max(0, int(margin_chunks)) * float(chunk_sec)
+        t0 = max(0.0, t0 - margin)
+        t1 = t1 + margin
     out = []
     for item in archive:
         c = item.get("chunk")
         if c is None:
             continue
-        c_start = c * chunk_sec
-        c_end = c_start + chunk_sec
-        if c_end > t0 and c_start < t1:
+        c_time = c * chunk_sec
+        if t0 <= c_time <= t1:
             out.append(item)
     return out
 
 
-def bm25_retrieve(
+def time_range_retrieve(
     query: Dict,
     archive: List[Dict],
     max_results: int = RECALL_RETURN_CHUNKS,
 ) -> Dict:
-    """BM25-based retrieval from archive.
+    """Retrieve by start/end recall interval only, with uniform chunk sampling.
 
-    Honours `query["time_range"]` when present (filters archive to chunks
-    overlapping that window); falls back to full archive on missing /
-    malformed range. Uses rank_bm25 if available, else keyword overlap.
-    Returns an internal retrieval dict with text_content and returned_chunks.
-    Runtime prompt rendering strips text_content and exposes metadata only.
+    This is the active recall semantics for query-free tool calls. The model
+    chooses a historical time interval; the tool returns up to 4 uniformly
+    spaced chunks from that interval, which render as 8 frames at 2 fps.
     """
-    query_text = query.get("query", "")
-    if not query_text.strip() or not archive:
+    if not archive:
         return {
             "source": "failure",
             "time": "",
             "text_content": "No matching results found.",
             "returned_chunks": [],
         }
-
-    margin_chunks = recall_time_range_margin_chunks()
+    if parse_time_range(query or {}) is None:
+        return {
+            "source": "failure",
+            "time": "",
+            "text_content": "No valid recall start_time/end_time provided.",
+            "returned_chunks": [],
+        }
     archive = filter_archive_by_time_range(
         archive,
-        query.get("time_range"),
-        margin_chunks=margin_chunks,
+        query or {},
+        margin_chunks=0,
     )
     if not archive:
         return {
@@ -863,58 +832,29 @@ def bm25_retrieve(
             "text_content": "No matching results found.",
             "returned_chunks": [],
         }
-
-    texts = [item.get("text", "") for item in archive]
-
-    try:
-        from rank_bm25 import BM25Okapi
-        tokenized = [t.lower().split() for t in texts]
-        bm25 = BM25Okapi(tokenized)
-        scores = bm25.get_scores(query_text.lower().split())
-        top_indices = sorted(range(len(scores)), key=lambda i: -scores[i])[:max_results]
-    except ImportError:
-        # Fallback: keyword overlap scoring
-        query_words = set(query_text.lower().split())
-        scored = []
-        for i, text in enumerate(texts):
-            text_words = set(text.lower().split())
-            overlap = len(query_words & text_words)
-            scored.append((overlap, i))
-        scored.sort(key=lambda x: -x[0])
-        top_indices = [i for _, i in scored[:max_results]]
-
-    if not top_indices:
-        return {
-            "source": "failure",
-            "time": "",
-            "text_content": "No matching results found.",
-            "returned_chunks": [],
-        }
-
-    top_items = [archive[i] for i in top_indices]
-    returned_chunks = select_recall_chunks(
-        [item["chunk"] for item in top_items],
+    chunks = select_recall_chunks_uniform(
+        [item.get("chunk") for item in archive],
         max_chunks=max_results,
     )
-    returned_set = set(returned_chunks)
+    returned = set(chunks)
     text_parts = [
-        f'[{item["time"]}] {item["text"]}'
-        for item in top_items
-        if int(item.get("chunk", -1)) in returned_set
+        f'[{item.get("time", "")}] {item.get("text", "")}'
+        for item in archive
+        if int(item.get("chunk", -1)) in returned
     ]
-
     return {
         "source": "historical_frames",
-        "time": recall_time_string_for_chunks(returned_chunks),
+        "time": recall_time_string_for_chunks(chunks),
         "text_content": "\n".join(text_parts),
-        "returned_chunks": returned_chunks,
-        "query_time_range": query.get("time_range"),
-        "time_range_margin_chunks": margin_chunks,
+        "returned_chunks": chunks,
+        "requested_start_time": (query or {}).get("start_time"),
+        "requested_end_time": (query or {}).get("end_time"),
+        "time_range_margin_chunks": 0,
+        "retrieval_mode": "time_range_uniform",
     }
 
 
-# Backward compat alias
-simple_retrieve = bm25_retrieve
+simple_retrieve = time_range_retrieve
 
 
 # ---------------------------------------------------------------------------
@@ -1069,20 +1009,17 @@ class StreamingAgentLoop:
                          interface). Use `retriever` instead for new code.
                          Kept for backward compat with callers that pass a
                          plain (query, archive) -> dict callable.
-            retriever:   Optional Retriever instance (BM25Retriever or
-                         HybridRetriever from thinkstream.models.retrieval).
-                         Takes precedence over retrieve_fn. Stateful — its
-                         index_chunk() is called after each chunk's think
-                         is added so dense backends can build a visual index
-                         on the fly.
+            retriever:   Optional Retriever instance from
+                         thinkstream.models.retrieval. Takes precedence over
+                         retrieve_fn.
             compress_mode: "system" (default, used by SFT eval) — when
                 memory.should_compress() fires, system inserts a bare
-                <compress_trigger/> as a memory-pressure signal (NO range,
-                v12.12); the model derives the range from <memory> and
-                writes both range and summary in its tool_call.
+                <compress_trigger/> as a memory-pressure signal; the compact
+                memory turn uses its own system prompt and emits bare
+                <m t="...">...</m> lines.
                 "self" (used by RL eval after GDPO) — system never
                 inserts a trigger; the model decides autonomously when
-                to emit <action>compress</action> and which range to
+                to emit a compress tool call and which range to
                 summarize. Only enable "self" with an RL-tuned ckpt:
                 v11 SFT samples were all C1 (system-triggered fixed
                 range), so a pure-SFT model under "self" mode is OOD.
@@ -1129,16 +1066,16 @@ class StreamingAgentLoop:
         self.max_new_tokens = max_new_tokens
         self.frame_protocol = normalize_frame_protocol(frame_protocol)
         self.render_layout = normalize_render_layout()
-        # Resolve retriever: explicit `retriever` > `retrieve_fn` > BM25 default.
+        # Resolve retriever: explicit `retriever` > `retrieve_fn` > time-range default.
         # The new Retriever API has both __call__ and index_chunk; legacy
         # retrieve_fn callables are wrapped via coerce_retriever.
-        from thinkstream.models.retrieval import coerce_retriever, BM25Retriever
+        from thinkstream.models.retrieval import coerce_retriever, TimeRangeRetriever
         if retriever is not None:
             self.retriever = coerce_retriever(retriever)
         elif retrieve_fn is not None:
             self.retriever = coerce_retriever(retrieve_fn)
         else:
-            self.retriever = BM25Retriever()
+            self.retriever = TimeRangeRetriever()
         # retrieve_fn kept as a thin alias for legacy access.
         self.retrieve_fn = self.retriever
         self.compress_mode = compress_mode
@@ -1249,9 +1186,10 @@ class StreamingAgentLoop:
         Returns parsed output dict with keys: think, action, payload.
         Handles compression trigger and recall orchestration internally.
 
-        v12.13 fix (P0-1): user_question_meta carries options + answer_form
-        for MC queries so MemoryState.add_query stores them; subsequent
-        chunks render Options in the active-query block via format_queries_block.
+        v12.13+ query contract: user_question_meta carries options,
+        answer_form, and answer_style so MemoryState.add_query stores
+        structured query metadata. Subsequent chunks render Options and the
+        canonical Answer format line in <active_query> via format_queries_block.
         """
         # 1. Snapshot BEFORE this step. Compression turns must still see the
         # full memory state; ordinary turns may hide text memory for ablations.
@@ -1309,11 +1247,10 @@ class StreamingAgentLoop:
             oldest = self.memory.recent_thinks[:n_to_compress] if n_to_compress > 0 else []
             if oldest:
                 chunks = self.memory.chunks_for_items(oldest)
-                # v12.12 (2026-05-02): trigger carries NO range. Model must
-                # derive the range from <memory> contents and emit it inside
-                # the assistant tool_call. Range comparison for telemetry /
-                # success scoring (downstream) still uses `chunks` computed
-                # by the system's range-selection policy as the oracle target.
+                # Trigger carries no range. The compact-memory system prompt
+                # sees the visible <m> lines and emits replacement <m> lines.
+                # Telemetry still uses `chunks` computed by the system range
+                # policy as the oracle target.
                 compress_trigger = "<compress_trigger/>"
                 _compress_telemetry = {
                     "thinks_count_at_trigger": len(self.memory.recent_thinks),
@@ -1332,9 +1269,9 @@ class StreamingAgentLoop:
                     ),
                 }
         # compress_mode == "self": no trigger inserted. The model is
-        # expected to autonomously emit <action>compress</action> when
-        # it judges memory pressure, with its own time_range in the
-        # <summary>. Only used after GDPO has trained the policy to
+        # expected to autonomously emit a compress tool call when it judges
+        # memory pressure, with its own time_range in the arguments. Only used
+        # after GDPO has trained the policy to
         # pick ranges; pure-SFT ckpts will likely never compress in
         # this mode and overflow.
 
@@ -1376,7 +1313,8 @@ class StreamingAgentLoop:
         # reconstruction can replay the same prompt — see
         # thinkstream/trainer/grpo.py:_build_rollout_messages. Without this
         # the loss path conditions logprobs on a stripped-down context (no
-            # <memory>, <visual_window>, active-query state) and gradient direction drifts.
+        # compact <m> memory, current <t=N> visual turn, or active-query state)
+        # and gradient direction drifts.
         self._last_step_messages = messages
 
         # 5. Generate
@@ -1417,10 +1355,9 @@ class StreamingAgentLoop:
             and self.memory_mode != "none"
         ):
             self.memory.add_think(chunk_idx, parsed["think"])
-            # Stateful retrievers (e.g. HybridRetriever) hook here to
-            # encode the chunk's frames into their visual index. BM25Retriever
-            # no-ops. Failures are swallowed so retrieval doesn't break the
-            # main agent loop.
+            # Retrievers may hook here to maintain per-video state. The default
+            # time-range retriever is stateless. Failures are swallowed so
+            # retrieval doesn't break the main agent loop.
             try:
                 self.retriever.index_chunk(chunk_idx, video_path, parsed["think"])
             except Exception as e:
@@ -1444,15 +1381,38 @@ class StreamingAgentLoop:
 
         elif parsed["action"] == "recall":
             # Orchestrate recall: retrieve → build recall_response input → second generate
-            query = parsed["payload"].get("query", {})
-            if query:
+            recall_args = parsed["payload"].get("recall_args", {})
+            if recall_args:
                 recall_archive = (
                     []
                     if self.memory_mode in {"no_recall", "none"}
                     else self.memory.retrieval_archive
                 )
-                raw_recall_result = self.retriever(query, recall_archive)
-                returned_chunks = select_recall_chunks(
+                if recall_query_available_for_chunk(
+                    recall_args,
+                    chunk_idx,
+                    AGENT_CHUNK_SEC,
+                ):
+                    historical_archive = []
+                    for item in recall_archive:
+                        try:
+                            item_chunk = int(item.get("chunk", -1))
+                        except (AttributeError, TypeError, ValueError):
+                            continue
+                        if item_chunk < int(chunk_idx):
+                            historical_archive.append(item)
+                    raw_recall_result = self.retriever(
+                        recall_args,
+                        historical_archive,
+                    )
+                else:
+                    raw_recall_result = {
+                        "source": "failure",
+                        "time": "",
+                        "text_content": "No valid historical recall range provided.",
+                        "returned_chunks": [],
+                    }
+                returned_chunks = select_recall_chunks_uniform(
                     raw_recall_result.get("returned_chunks", [])
                 )
                 raw_recall_result["returned_chunks"] = returned_chunks
@@ -1640,7 +1600,7 @@ class StreamingAgentLoop:
                 think_tokens = 0
         parsed["think_token_count"] = think_tokens
 
-        # 3. format_ok: did the output have a parseable <think> AND <action>?
+        # 3. format_ok: did the output have parseable agent protocol tags?
         #    Action-specific payload presence is also required for non-silent.
         VALID_ACTIONS = {"silent", "response", "recall", "compress"}
         action = parsed.get("action") or ""
@@ -1655,21 +1615,19 @@ class StreamingAgentLoop:
             if action == "response":
                 format_ok = "response" in payload and bool(payload["response"])
             elif action == "recall":
-                format_ok = "query" in payload  # parsed JSON; query_raw means JSON broke
+                format_ok = "recall_args" in payload
             elif action == "compress":
-                summary = payload.get("summary")
-                format_ok = bool(summary) and "time_range" in (summary or {})
+                format_ok = bool(payload.get("memory_entries") or payload.get("memory_text"))
         parsed["format_ok"] = format_ok
 
         # 4. compress_succeeded: when a <compress_trigger> was injected, did
-        #    the model emit action=compress with a valid <summary>? Failure =
+        #    the model emit action=compress with valid compact memory? Failure =
         #    trigger ignored or summary unparseable. Only meaningful when
         #    compress_telemetry is set.
         if _compress_telemetry is not None:
             parsed["compress_succeeded"] = (
                 action == "compress"
-                and "summary" in (parsed.get("payload") or {})
-                and "time_range" in (parsed["payload"]["summary"] or {})
+                and bool((parsed.get("payload") or {}).get("memory_entries"))
             )
         else:
             parsed["compress_succeeded"] = None  # N/A this step

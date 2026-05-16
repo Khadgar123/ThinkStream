@@ -50,7 +50,7 @@ Usage:
         --benchmark_json /path/to/ovo_bench_new.json \\
         --video_root /path/to/videos \\
         --compress_mode system \\
-        --retriever hybrid \\
+        --retriever time_range \\
         [--tasks CRR,SSR,REC] [--n 30]
 """
 import argparse
@@ -72,7 +72,12 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
 import torch
-from transformers import AutoProcessor, AutoTokenizer
+from transformers import AutoConfig, AutoProcessor, AutoTokenizer
+from thinkstream.data.agent_protocol import (
+    WRONG_RESPONSE_SPECIAL_TOKENS,
+    ensure_agent_special_tokens,
+    validate_agent_special_tokens,
+)
 
 from thinkstream.models.agent_loop import (
     COMPRESS_RANGE_MIN,
@@ -85,6 +90,7 @@ from thinkstream.models.agent_loop import (
     _parse_agent_output,
     build_single_step_messages,
     make_generate_fn,
+    recall_query_available_for_chunk,
     select_compress_range_by_tokens,
 )
 from thinkstream.models.retrieval import make_retriever
@@ -99,7 +105,7 @@ from thinkstream.data.agent_protocol import (
     normalize_frame_protocol,
     normalize_memory_position,
     normalize_render_layout,
-    select_recall_chunks,
+    select_recall_chunks_uniform,
     system_prompt_for_frame_protocol,
     tools_for_turn,
 )
@@ -134,18 +140,25 @@ SOURCE_FRAMES_PER_CHUNK = 0
 
 
 def detect_model_class(ckpt: str):
-    name = ckpt.lower()
-    basename = Path(ckpt.rstrip("/")).name.lower()
-    if "qwen3.5" in name or "qwen_3.5" in name or "qwen3_5" in name:
+    config_text = ""
+    try:
+        cfg = AutoConfig.from_pretrained(ckpt, local_files_only=True)
+        model_type = str(getattr(cfg, "model_type", "") or "").lower()
+        architectures = [str(x).lower() for x in getattr(cfg, "architectures", [])]
+        config_text = " ".join([model_type, *architectures])
+    except Exception:
+        config_text = Path(ckpt.rstrip("/")).name.lower()
+
+    if "qwen3.5" in config_text or "qwen_3.5" in config_text or "qwen3_5" in config_text:
         from transformers import Qwen3_5ForConditionalGeneration as Cls
         return Cls, "qwen3_5"
-    if "qwen3" in name and "a" in basename:
+    if "qwen3_vl_moe" in config_text or "qwen3vlmoe" in config_text:
         from transformers import Qwen3VLMoeForConditionalGeneration as Cls
         return Cls, "qwen3vl"
-    if "qwen3" in name:
+    if "qwen3" in config_text or "qwen3_vl" in config_text:
         from transformers import Qwen3VLForConditionalGeneration as Cls
         return Cls, "qwen3vl"
-    if "qwen2.5" in name or "qwen-2.5" in name:
+    if "qwen2.5" in config_text or "qwen-2.5" in config_text or "qwen2_5" in config_text:
         from transformers import Qwen2_5_VLForConditionalGeneration as Cls
         return Cls, "qwen2.5vl"
     from transformers import Qwen3VLForConditionalGeneration as Cls
@@ -179,7 +192,7 @@ def build_mcq_query_meta(sample):
     return build_streaming_query_meta(
         sample,
         answer_form="multiple_choice",
-        answer_style="letter_only",
+        answer_style="letter_plus_text",
     )
 
 
@@ -320,17 +333,22 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None,
                     rev[int(c)] = rev.get(int(c), 0) + 1
             if result.get("action") == "recall":
                 payload = result.get("payload") or {}
-                q = payload.get("query") or {}
-                schema = "with_time_range" if isinstance(q, dict) and q.get("time_range") \
-                    else "keyword_only"
+                recall_args = payload.get("recall_args") or {}
+                schema = "with_start_end" if (
+                    isinstance(recall_args, dict)
+                    and recall_args.get("start_time") is not None
+                    and recall_args.get("end_time") is not None
+                ) else "missing_start_end"
                 recall_result = result.get("recall_result") or {}
                 recall_metadata_chars = len(json.dumps(recall_result, ensure_ascii=False))
                 telemetry.setdefault("recall_events", []).append({
                     "chunk": chunk_idx,
                     "returned_chunks": list(result.get("recall_returned_chunks", [])),
                     "schema": schema,
-                    "query": q.get("query", "") if isinstance(q, dict) else "",
-                    "query_time_range": q.get("time_range", "") if isinstance(q, dict) else "",
+                    "requested_time_range": {
+                        "start_time": recall_args.get("start_time"),
+                        "end_time": recall_args.get("end_time"),
+                    } if isinstance(recall_args, dict) else {},
                     "source": recall_result.get("source", ""),
                     "result_time": recall_result.get("time", ""),
                     "result_metadata_chars": recall_metadata_chars,
@@ -607,14 +625,6 @@ def _clone_retriever(template):
         return template.clone_empty()
     if isinstance(template, NullRetriever):
         return NullRetriever()
-    # BM25Retriever is stateless; using a fresh factory avoids sharing any
-    # accidental future state. If construction fails, fall back to template.
-    try:
-        from thinkstream.models.retrieval import BM25Retriever
-        if isinstance(template, BM25Retriever):
-            return BM25Retriever(max_results=getattr(template, "max_results", 4))
-    except Exception:
-        pass
     return template
 
 
@@ -623,10 +633,7 @@ def _build_retriever_template(args):
         return NullRetriever()
     return make_retriever(
         kind=args.retriever,
-        siglip_path=args.siglip_path,
-        alpha=args.alpha,
         max_results=args.max_results,
-        device="cuda",
         frames_root=args.frames_root,
         video_root=args.video_root,
     )
@@ -675,7 +682,7 @@ def _format_result_telemetry(result: Dict, tokenizer, messages: List[Dict]) -> N
         if action == "response":
             format_ok = "response" in payload and bool(payload["response"])
         elif action == "recall":
-            format_ok = "query" in payload
+            format_ok = "recall_args" in payload
         elif action == "compress":
             summary = payload.get("summary")
             format_ok = bool(summary) and "time_range" in (summary or {})
@@ -887,16 +894,36 @@ class _VllmAgentRunner:
 
     def build_recall_messages(self) -> Tuple[Optional[List[Dict]], Optional[Dict]]:
         result = self.last_result or {}
-        query = (result.get("payload") or {}).get("query") or {}
-        if not query:
+        recall_args = (result.get("payload") or {}).get("recall_args") or {}
+        if not recall_args:
             return None, None
         archive = (
             []
             if self.memory_mode in {"no_recall", "none"}
             else self.memory.retrieval_archive
         )
-        raw_recall_result = self.retriever(query, archive)
-        returned = select_recall_chunks(raw_recall_result.get("returned_chunks", []))
+        if recall_query_available_for_chunk(
+            recall_args,
+            self.current_chunk,
+            AGENT_CHUNK_SEC,
+        ):
+            recall_archive = []
+            for item in archive:
+                try:
+                    item_chunk = int(item.get("chunk", -1))
+                except (AttributeError, TypeError, ValueError):
+                    continue
+                if item_chunk < int(self.current_chunk):
+                    recall_archive.append(item)
+            raw_recall_result = self.retriever(recall_args, recall_archive)
+        else:
+            raw_recall_result = {
+                "source": "failure",
+                "time": "",
+                "text_content": "No valid historical recall range provided.",
+                "returned_chunks": [],
+            }
+        returned = select_recall_chunks_uniform(raw_recall_result.get("returned_chunks", []))
         raw_recall_result["returned_chunks"] = returned
         result["recall_returned_chunks"] = returned
 
@@ -1051,11 +1078,15 @@ def _record_vllm_step_telemetry(
             rev[int(c)] = rev.get(int(c), 0) + 1
     if result.get("action") == "recall":
         payload = result.get("payload") or {}
-        q = payload.get("query") or {}
+        recall_args = payload.get("recall_args") or {}
         schema = (
-            "with_time_range"
-            if isinstance(q, dict) and q.get("time_range")
-            else "keyword_only"
+            "with_start_end"
+            if (
+                isinstance(recall_args, dict)
+                and recall_args.get("start_time") is not None
+                and recall_args.get("end_time") is not None
+            )
+            else "missing_start_end"
         )
         recall_result = result.get("recall_result") or {}
         recall_metadata_chars = len(json.dumps(recall_result, ensure_ascii=False))
@@ -1063,8 +1094,10 @@ def _record_vllm_step_telemetry(
             "chunk": chunk_idx,
             "returned_chunks": list(result.get("recall_returned_chunks", [])),
             "schema": schema,
-            "query": q.get("query", "") if isinstance(q, dict) else "",
-            "query_time_range": q.get("time_range", "") if isinstance(q, dict) else "",
+            "requested_time_range": {
+                "start_time": recall_args.get("start_time"),
+                "end_time": recall_args.get("end_time"),
+            } if isinstance(recall_args, dict) else {},
             "source": recall_result.get("source", ""),
             "result_time": recall_result.get("time", ""),
             "result_metadata_chars": recall_metadata_chars,
@@ -1137,25 +1170,20 @@ def _support_hit(chunks, intervals: Optional[List[Tuple[int, int]]]):
     return False
 
 
-def _query_range_chunks(time_range) -> List[int]:
-    if not time_range:
+def _query_range_chunks(time_window) -> List[int]:
+    if not time_window:
         return []
     start = end = None
-    if isinstance(time_range, str):
-        m = re.fullmatch(r"\s*([0-9]+(?:\.[0-9]+)?)\s*-\s*([0-9]+(?:\.[0-9]+)?)\s*", time_range)
-        if m:
-            start = float(m.group(1))
-            end = float(m.group(2))
-    elif isinstance(time_range, (list, tuple)) and len(time_range) >= 2:
+    if isinstance(time_window, dict):
         try:
-            start = float(time_range[0])
-            end = float(time_range[1])
+            start = float(time_window.get("start_time"))
+            end = float(time_window.get("end_time"))
         except (TypeError, ValueError):
             start = end = None
-    if start is None or end is None or end <= start:
+    if start is None or end is None or end < start:
         return []
     lo = max(0, int(start // AGENT_CHUNK_SEC))
-    hi = max(lo, int((end + AGENT_CHUNK_SEC - 1e-6) // AGENT_CHUNK_SEC) - 1)
+    hi = max(lo, int(end // AGENT_CHUNK_SEC))
     return list(range(lo, hi + 1))
 
 
@@ -1272,10 +1300,10 @@ def telemetry_summary(
     )
     recall_query_range_hits = sum(
         1 for e in recalls
-        if _support_hit(_query_range_chunks(e.get("query_time_range")), support_intervals)
+        if _support_hit(_query_range_chunks(e.get("requested_time_range")), support_intervals)
     )
     recall_range_lens = [
-        len(_query_range_chunks(e.get("query_time_range"))) for e in recalls
+        len(_query_range_chunks(e.get("requested_time_range"))) for e in recalls
     ]
     recall_return_lens = [
         len(e.get("returned_chunks") or []) for e in recalls
@@ -1497,21 +1525,24 @@ def _rec_query_meta(sample: Dict) -> Dict:
 
 
 def _crr_query_meta(sample: Dict) -> Dict:
-    """CRR is a persistent question; keep it open until the first Yes slot."""
-    positive_chunks = sorted({
-        _probe_chunk(probe)
-        for probe in sample.get("test_info", []) or []
-        if int(probe.get("type", 0) or 0) == 1
-    })
-    meta = {"answer_form": "binary"}
-    if positive_chunks:
-        meta.update({
-            "answer_chunks": positive_chunks,
-            "per_emit_answers": [
-                {"chunk": c, "value": "Yes"} for c in positive_chunks
-            ],
-            "open_until": max(positive_chunks) * AGENT_CHUNK_SEC,
+    """CRR is a persistent Yes/No probe over all test_info checkpoints."""
+    per_emit = []
+    chunks = []
+    for probe in sample.get("test_info", []) or []:
+        c = _probe_chunk(probe)
+        chunks.append(c)
+        per_emit.append({
+            "chunk": c,
+            "value": "Yes" if int(probe.get("type", 0) or 0) == 1 else "No",
         })
+    chunks = sorted(set(chunks))
+    meta = {
+        "answer_form": "binary",
+        "answer_chunks": chunks,
+        "per_emit_answers": per_emit,
+    }
+    if chunks:
+        meta["open_until"] = max(chunks) * AGENT_CHUNK_SEC
     return meta
 
 
@@ -1544,7 +1575,7 @@ def attach_probe_recall_fields(
         for e in events
     )
     probe["recall_query_range_hit_before_response"] = any(
-        _support_hit(_query_range_chunks(e.get("query_time_range")), support_intervals)
+        _support_hit(_query_range_chunks(e.get("requested_time_range")), support_intervals)
         for e in events
     )
     probe["recall_returned_hit_before_response"] = probe[
@@ -3093,14 +3124,7 @@ def main():
     p.add_argument("--max_agent_jobs", type=int, default=None,
                    help="Hard cap on built vLLM trajectory jobs after all "
                         "sample filters. Intended only for protocol smoke tests.")
-    p.add_argument("--retriever", default="hybrid", choices=["none", "bm25", "hybrid"])
-    p.add_argument("--alpha", type=float, default=0.5)
-    p.add_argument("--siglip_path", default="google/siglip-base-patch16-224")
-    p.add_argument("--use_agent_vision", action="store_true",
-                   help="For hybrid retriever, use the agent model's own vision "
-                        "tower instead of loading SigLIP. Saves ~600MB and keeps "
-                        "the embedding space aligned with what the agent saw at "
-                        "training time. Default off (uses SigLIP) for stability.")
+    p.add_argument("--retriever", default="time_range", choices=["none", "time_range"])
     p.add_argument("--compress_mode", default="system", choices=["system", "self", "off", "none"])
     p.add_argument("--memory_mode", default=os.environ.get("THINKSTREAM_EVAL_MEMORY_MODE", "full"),
                    choices=["full", "no_prompt", "no_recall", "none"],
@@ -3271,9 +3295,6 @@ def main():
     if args.max_new_tokens == 128 and args.profile == "32k":
         args.max_new_tokens = profile_cfg["max_new_tokens_default"]
 
-    if args.engine == "vllm" and args.use_agent_vision:
-        raise ValueError("--use_agent_vision is only supported with --engine hf")
-
     processor = AutoProcessor.from_pretrained(args.ckpt)
     processor = update_processor_pixels(processor, DataArguments())
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
@@ -3285,9 +3306,14 @@ def main():
     )
     tokenizer.add_tokens(
         [t for t in processor.tokenizer.get_added_vocab().keys()
-         if t not in tokenizer.get_vocab()],
+         if t not in tokenizer.get_vocab()
+         and t not in WRONG_RESPONSE_SPECIAL_TOKENS],
         special_tokens=True,
     )
+    ensure_agent_special_tokens(processor.tokenizer)
+    ensure_agent_special_tokens(tokenizer)
+    validate_agent_special_tokens(processor.tokenizer)
+    validate_agent_special_tokens(tokenizer)
 
     with open(args.benchmark_json) as f:
         all_samples = json.load(f)
@@ -3438,18 +3464,17 @@ def main():
             dtype=torch.bfloat16 if not args.no_bf16 else None,
             attn_implementation="flash_attention_2",
         )
+        ensure_agent_special_tokens(tokenizer, model=model)
+        validate_agent_special_tokens(tokenizer)
         model = model.cuda()
         model.eval()
-        print(f"Building retriever: kind={args.retriever}, alpha={args.alpha}, "
-              f"vision_source={'agent' if args.use_agent_vision else 'siglip'}")
+        print(f"Building retriever: kind={args.retriever}")
         if args.retriever == "none" or args.memory_mode in {"no_recall", "none"}:
             retriever = NullRetriever()
         else:
             retriever = make_retriever(
-                kind=args.retriever, siglip_path=args.siglip_path,
-                alpha=args.alpha, max_results=args.max_results, device="cuda",
-                agent_model=model if args.use_agent_vision else None,
-                agent_processor=processor if args.use_agent_vision else None,
+                kind=args.retriever,
+                max_results=args.max_results,
                 frames_root=args.frames_root,
                 video_root=args.video_root,
             )
@@ -3495,8 +3520,7 @@ def main():
             "ckpt": args.ckpt,
             "compress_mode": args.compress_mode,
             "memory_mode": args.memory_mode,
-            "retriever": {"kind": args.retriever, "alpha": args.alpha,
-                          "siglip_path": args.siglip_path if args.retriever == "hybrid" else None},
+            "retriever": {"kind": args.retriever},
             "scoring": args.scoring,
             "profile": args.profile,
             "frame_protocol": frame_protocol,

@@ -26,7 +26,7 @@ pass3b  placement and timeline planning      -> placements/
 pass3c  one-question-at-a-time samples       -> samples_3c/
 pass3e  non-destructive verification tags    -> verified/
 pass4   trajectory grouping and split files  -> final/
-pass5   ShareGPT messages for SFT            -> final/*_messages.jsonl
+pass5   multi-turn trajectory rendering      -> rendered/trajectory/*_trajectory.jsonl
 ```
 
 `scripts/agent_data_v5/v2/` is not a deprecated project version. It is the
@@ -52,11 +52,14 @@ data/agent_v5/batch2/
   verified/<video_id>.json
   audits/*.json
   final/
-    train_sft_messages.jsonl
+    train_sft_trajectories.jsonl
     train_rl_trajectories.jsonl
-    val_messages.jsonl
-    test_messages.jsonl
-    dataset_info.json
+    val_trajectories.jsonl
+    test_trajectories.jsonl
+  rendered/trajectory/
+    train_sft_trajectory.jsonl
+    val_trajectory.jsonl
+    test_trajectory.jsonl
 ```
 
 Use one of these equivalent selectors:
@@ -102,10 +105,10 @@ SFT, GRPO rollout, and eval.
 
 ```bash
 THINKSTREAM_DATA_ROOT=data/agent_v5/batch2 \
-bash scripts/sft_per_timestep.sh
+bash scripts/sft_trajectory.sh
 ```
 
-SFT reads `final/train_sft_messages.jsonl` through
+SFT reads `rendered/trajectory/train_sft_trajectory.jsonl` through
 `thinkstream/sft/data_list.py`.
 
 ## RL

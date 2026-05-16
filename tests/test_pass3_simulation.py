@@ -121,8 +121,8 @@ def test_synthetic_pass3_recall_quality():
     agg = aggregate([result])
     failures = assert_quality(
         agg,
-        min_recall_question_pct=50.0,
-        max_recall_question_pct=93.0,
+        min_recall_question_pct=8.0,
+        max_recall_question_pct=20.0,
     )
     assert not failures, failures
 
@@ -147,8 +147,8 @@ def test_synthetic_pass3_recall_quality():
             )
 
 
-def test_pass3c_downgrades_stale_bad_recall_slots():
-    """pass3c should repair stale 3b recall slots before rendering samples."""
+def test_pass3c_preserves_historical_recall_slots():
+    """pass3c should render selected historical recall slots consistently."""
     hld = _mc_card("HLD1", 201, emit=12, answer="Unable to answer", correct="D")
     easy = _mc_card("N1", 202, emit=20, answer="green logo")
     cards = {_card.card_id: _card_dict(_card) for _card in [hld, easy]}
@@ -199,16 +199,20 @@ def test_pass3c_downgrades_stale_bad_recall_slots():
         client=None,
         video_id="synthetic_pass3c",
     ))
-    by_card = {s.get("card_id"): s for s in samples if s.get("sample_type") == "response"}
-    assert hld.card_id in by_card, "HLD stale recall should render as direct response negative"
-    assert easy.card_id in by_card, "memory-answerable stale recall should render as response"
-    assert not [
+    by_card = {
+        s.get("card_id"): s
+        for s in samples
+        if s.get("sample_type") in {"response", "recall"}
+    }
+    assert hld.card_id in by_card, "HLD historical slot should render"
+    assert easy.card_id in by_card, "historical memory slot should render"
+    assert [
         s for s in samples
         if s.get("sample_type") == "recall" and s.get("card_id") in {hld.card_id, easy.card_id}
-    ], "stale bad recall slots must be downgraded before pass3c emits samples"
+    ], "selected historical recall slots should keep recall supervision"
 
 
 if __name__ == "__main__":
     test_synthetic_pass3_recall_quality()
-    test_pass3c_downgrades_stale_bad_recall_slots()
+    test_pass3c_preserves_historical_recall_slots()
     print("PASS synthetic pass3 recall-quality simulation")

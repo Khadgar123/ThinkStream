@@ -90,7 +90,9 @@ def _is_correct_answer(answer: str, question: dict[str, Any]) -> bool:
         letter = _extract_mc_letter(answer)
         if letter and letter == correct_option:
             return True
-        # Some rows request text_only for MC; accepted answers covers both.
+        # Legacy rows may carry answer text without the option letter; accepted
+        # answers covers that for monitoring, but generated prompts use
+        # letter-plus-text.
 
     accepted = _safe_list(question.get("accepted_answers"))
     gold = question.get("gold_answer") or question.get("correct_answer_text")
@@ -186,10 +188,13 @@ def _range_to_chunks(time_range: Any) -> set[int]:
     elif isinstance(time_range, (list, tuple)) and len(time_range) == 2:
         start = _safe_float(time_range[0], math.nan)
         end = _safe_float(time_range[1], math.nan)
-    if start is None or end is None or math.isnan(start) or math.isnan(end) or end <= start:
+    elif isinstance(time_range, dict):
+        start = _safe_float(time_range.get("start_time"), math.nan)
+        end = _safe_float(time_range.get("end_time"), math.nan)
+    if start is None or end is None or math.isnan(start) or math.isnan(end) or end < start:
         return set()
     lo = max(0, int(math.floor(start)))
-    hi = max(lo, int(math.ceil(end)) - 1)
+    hi = max(lo, int(math.floor(end)))
     return set(range(lo, hi + 1))
 
 
@@ -443,12 +448,15 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 recall_runtime_ok += 1
             event_chunk = _safe_int(turn.get("event_chunk"), _safe_int(turn.get("video_chunk")))
             args = _turn_tool_args(turn)
-            query_range = (
-                turn.get("query_time_range")
-                if turn.get("query_time_range") is not None
-                else args.get("time_range")
+            requested_range = (
+                turn.get("requested_time_range")
+                if turn.get("requested_time_range") is not None
+                else {
+                    "start_time": args.get("start_time"),
+                    "end_time": args.get("end_time"),
+                }
             )
-            chunks = _range_to_chunks(query_range)
+            chunks = _range_to_chunks(requested_range)
             if chunks:
                 recall_range_parse_ok += 1
             recall_range_lens.append(len(chunks))

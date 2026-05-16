@@ -11,7 +11,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts.agent_data.pass5_messages import build_sft_rows  # noqa: E402
+from scripts.agent_data.pass5_messages import (  # noqa: E402
+    _recall_action_think_for_sample,
+    build_sft_rows,
+)
 from thinkstream.data.agent_protocol import build_user_content  # noqa: E402
 from thinkstream.sft.data_processor import _select_loss_assistant_spans  # noqa: E402
 
@@ -24,7 +27,7 @@ def _recall_sample():
         "sample_id": "r0",
         "sample_type": "recall",
         "v12_assistant_turn_1": "<think>need history</think><tool_call>{}</tool_call>",
-        "v12_assistant_turn_2": "<think>result has it</think><answer>red apron</answer>",
+        "v12_assistant_turn_2": "<think>result has it</think></Response> red apron",
         "metadata": {"gold_action": "recall"},
     }
 
@@ -52,6 +55,18 @@ def test_pass5_recall_rows_split_tool_schema_and_loss_policy():
     assert second["tool_schema_mode"] == "post_recall"
     assert second["loss_assistant_turns"] == "last"
     assert len(second["messages"]) == 5
+
+
+def test_pass5_recall_think_keeps_original_observation_only():
+    old = (
+        "A person stands near the counter. Current visible evidence is "
+        "insufficient to answer the active query because the needed evidence "
+        "is historical, so I will recall the earlier window rather than guess."
+    )
+
+    think = _recall_action_think_for_sample(_recall_sample(), old)
+
+    assert think == "A person stands near the counter."
 
 
 def test_select_loss_assistant_spans_supports_last_only():

@@ -159,8 +159,8 @@ def compute_format_reward(assistant_outputs: List[str]) -> float:
     """v12 format: 1.0 if every assistant output parses cleanly, else 0.0.
 
     Checks each turn for exactly one think block followed by exactly one
-    terminal (<answer> XOR <tool_call>), no extra text outside those tags,
-    and strict recall/compress tool JSON schema.
+    terminal (</Silence>, </Response> text, <tool_call>, or compact <m> lines), no extra
+    text outside those tags, and strict recall/compress tool JSON schema.
     """
     from thinkstream.data.agent_protocol import parse_agent_output
     if not assistant_outputs:

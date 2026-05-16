@@ -41,6 +41,7 @@ from .config import (
 )
 from .pass3a_cards import extract_keywords, extract_card_keywords
 from .pass3b_placement import _keyword_overlap as keyword_overlap
+from thinkstream.data.agent_protocol import parse_agent_output
 from thinkstream.trainer.outcome_match import score_outcome_by_form
 
 logger = logging.getLogger(__name__)
@@ -111,13 +112,13 @@ def _parse_time_range_from_memory_line(item) -> Tuple[int, int]:
     return -1, -1
 
 
-_RECALL_TIME_RANGE_RE = re.compile(
-    r"^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$"
-)
 _MEM_RE = re.compile(r"<MEM>\s*(.*?)\s*</MEM>", re.DOTALL | re.IGNORECASE)
 _M_LINE_RE = re.compile(
     r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>(.*?)</m>',
     re.DOTALL | re.IGNORECASE,
+)
+_RESULT_TIME_SPAN_RE = re.compile(
+    r"^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$"
 )
 _AUDIT_TOKEN_RE = re.compile(r"[a-z0-9]+")
 _AUDIT_STOPWORDS = {
@@ -130,22 +131,14 @@ _AUDIT_STOPWORDS = {
 }
 
 
-def _valid_recall_time_range(value) -> bool:
-    # Current tool schema uses the same closed numeric range format as
-    # compress: [start, end]. Keep the old "start-end" string accepted for
-    # archived samples and lenient parser repairs.
-    if isinstance(value, list):
-        if len(value) != 2:
-            return False
-        if not all(isinstance(v, (int, float)) for v in value):
-            return False
-        return float(value[1]) > float(value[0])
-    if isinstance(value, str):
-        m = _RECALL_TIME_RANGE_RE.fullmatch(value)
-        if not m:
-            return False
-        return float(m.group(2)) > float(m.group(1))
-    return False
+def _valid_recall_time_args(args) -> bool:
+    if not isinstance(args, dict):
+        return False
+    if set(args.keys()) != {"start_time", "end_time"}:
+        return False
+    if not all(isinstance(args.get(k), (int, float)) for k in ("start_time", "end_time")):
+        return False
+    return float(args["start_time"]) >= 0 and float(args["end_time"]) >= float(args["start_time"])
 
 
 def _audit_tokens(text: str) -> set:
@@ -197,23 +190,18 @@ def _memory_item_text(item) -> str:
 
 
 def _verify_mc_response_text(resp_text: str, metadata: Dict) -> Tuple[bool, str]:
-    """Validate MC answer semantics and, when present, the SFT target style."""
-    style = (metadata.get("answer_style") or "").strip()
+    """Validate MC answer semantics and the project-wide SFT target style."""
     correct = (metadata.get("correct_option") or "").strip().upper()
     options = list(metadata.get("options") or [])
-    valid_letters = "".join(chr(ord("A") + i) for i in range(min(len(options), 26)))
-    if style == "letter_only":
-        letter_pattern = f"[{re.escape(valid_letters or 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')}]"
-        if not re.fullmatch(letter_pattern, resp_text.strip().upper()):
-            return False, f"mc_response_not_letter_only: '{resp_text[:30]}'"
-        if correct and resp_text.strip().upper() != correct:
-            return False, f"mc_response_letter_mismatch: got '{resp_text}' want '{correct}'"
-    elif style == "letter_plus_text":
-        if correct and not re.match(rf"^\s*{re.escape(correct)}[\).:\s]", resp_text.strip(), re.I):
+    option_text = ""
+    if correct and options:
+        idx = ord(correct) - ord("A")
+        if 0 <= idx < len(options):
+            option_text = re.sub(r"^\s*(?:\([A-Z]\)|[A-Z][\).:])\s*", "", str(options[idx]).strip(), flags=re.I)
+    if correct:
+        target = f"{correct}) {option_text}" if option_text else correct
+        if resp_text.strip() != target:
             return False, f"mc_response_not_letter_plus_text: '{resp_text[:30]}'"
-    elif style == "text_only":
-        if re.match(r"^\s*(?:\([A-Z]\)|[A-Z][\).:])", resp_text.strip(), re.I):
-            return False, f"mc_response_has_letter_for_text_only: '{resp_text[:30]}'"
 
     gold = (metadata.get("correct_answer_text")
             or metadata.get("gold_answer")
@@ -289,15 +277,15 @@ def _is_v12_sample(sample: Dict) -> bool:
     v12.11 audit-4 P0 #2 fix (2026-05-01): plain silent/response samples
     don't carry protocol_version (it's only stamped on shape-B recall and
     inter-chunk compress). These samples DO use the v12 protocol — their
-    output is `<think>...</think><answer>...</answer>` (or empty answer
-    for silent), NOT v11's `<action>...</action>`. Without recognising
-    them as v12, the legacy verifier looks for `<action>` and reports
+    output is `<think>...</think></Response> ...` or
+    `<think>...</think></Silence>`, not the old paired action-tag protocol. Without recognising
+    them as v12, the legacy verifier reports
     `format_check_failed` on every silent / response sample → systematic
     false-negatives in pass3e verification.
 
     Detect v12 reliably via: explicit marker fields OR an output that
-    contains `<answer>` / `<tool_call>` / `<MEM>` (v12-only tags) and lacks the
-    legacy `<action>` tag.
+    contains streaming terminal / `<tool_call>` / compact `<m>` tags and lacks
+    old non-v12 action markup.
     """
     if (sample.get("protocol_version") == "v12"
             or "v12_assistant_turn_1" in sample
@@ -306,8 +294,13 @@ def _is_v12_sample(sample: Dict) -> bool:
     out = sample.get("output", "") or sample.get("v12_assistant_turn_2", "") or ""
     if not isinstance(out, str):
         return False
-    has_v12_tag = ("<answer>" in out) or ("<tool_call>" in out) or ("<MEM>" in out)
-    has_legacy_tag = "<action>" in out
+    has_v12_tag = (
+        ("</Response>" in out)
+        or ("</Silence>" in out)
+        or ("<tool_call>" in out)
+        or ("<m " in out)
+    )
+    has_legacy_tag = "<" + "action>" in out
     return has_v12_tag and not has_legacy_tag
 
 
@@ -318,6 +311,20 @@ def _v12_combined_assistant_text(sample: Dict) -> str:
         return (sample.get("v12_assistant_turn_1", "") + "\n"
                 + sample.get("v12_assistant_turn_2", ""))
     return sample.get("output", "")
+
+
+def _v12_parse_turn(text: str) -> Dict:
+    return parse_agent_output(text or "", allow_bare_memory=True)
+
+
+def _v12_answer_text(text: str) -> Optional[str]:
+    parsed = _v12_parse_turn(text)
+    if parsed.get("kind") == "answer":
+        return str(parsed.get("answer_text") or "").strip()
+    m = re.search(r"</Response>\s*(.*?)\s*$", text or "", re.DOTALL)
+    if not m:
+        return None
+    return (m.group(1) or "").strip()
 
 
 def verify_information_flow(sample: Dict) -> Tuple[bool, str]:
@@ -395,7 +402,7 @@ def verify_information_flow(sample: Dict) -> Tuple[bool, str]:
 # v12.0 — protocol-aware verification
 #
 # v12 samples use Qwen tool protocol (<tool_call>{json}</tool_call> +
-# <answer>...</answer>) instead of v11's <action>X</action> structure.
+# </Response> / </Silence>) instead of the old paired action-tag structure.
 # pass4's legacy verify_format / verify_information_flow / etc. all check
 # v11-specific tags and would reject every v12 sample (or silently let bad
 # format slip through). The functions below are v12-equivalents called from
@@ -404,10 +411,10 @@ def verify_information_flow(sample: Dict) -> Tuple[bool, str]:
 
 
 def _verify_information_flow_v12(sample: Dict) -> Tuple[bool, str]:
-    """v12 information-flow check: validate <answer>/<tool_call> content.
+    """v12 information-flow check: validate response/tool_call content.
 
     Mirrors the v11 strict-format intent (binary/MC/number drift = OVO miss)
-    but reads from v12's <answer> terminal instead of <response>.
+    but reads from v12's Streamo-like response terminal.
     """
     metadata = sample.get("metadata", {})
     output = _v12_combined_assistant_text(sample)
@@ -420,10 +427,10 @@ def _verify_information_flow_v12(sample: Dict) -> Tuple[bool, str]:
     if metadata.get("leakage_checks", {}).get("query_contains_answer"):
         return False, "query_contains_answer_value"
 
-    # Locate the FINAL answer — for multi-turn recall it's in turn 2
-    answer_match = re.search(r"<answer>(.*?)</answer>", output, re.DOTALL)
-    if answer_match is not None:
-        resp_text = answer_match.group(1).strip()
+    # Locate the FINAL answer — for multi-turn recall it's in turn 2.
+    resp_text_opt = _v12_answer_text(output)
+    if resp_text_opt is not None:
+        resp_text = resp_text_opt.strip()
         # silent samples = empty answer (intended). Validate non-silent only.
         is_answer_sample = (
             sample_type in ("response", "recall_response")
@@ -457,9 +464,9 @@ def _verify_information_flow_v12(sample: Dict) -> Tuple[bool, str]:
         noise_level = recall_result.get("noise_level", recall_result.get("source", "oracle"))
         if noise_level in ("distractor", "failure"):
             t2 = sample.get("v12_assistant_turn_2", "")
-            ans = re.search(r"<answer>(.*?)</answer>", t2, re.DOTALL)
-            if ans:
-                resp = ans.group(1).lower()
+            ans = _v12_answer_text(t2)
+            if ans is not None:
+                resp = ans.lower()
                 if sample.get("action") == "silent" and not resp.strip():
                     return True, "pass"
                 uncertain_kws = [
@@ -474,16 +481,17 @@ def _verify_information_flow_v12(sample: Dict) -> Tuple[bool, str]:
 
 
 def _verify_format_v12(sample: Dict) -> Tuple[bool, str]:
-    """v12 format check: <think>/<answer>/<tool_call>/<MEM> well-formedness.
+    """v12 format check: <think>/response/tool_call/<m> well-formedness.
 
     v12 grammar (from agent_protocol.parse_agent_output):
       <think>...</think>  (always)
       then EXACTLY ONE of:
-        <answer>...</answer>
+        </Response> answer
+        </Silence>
         <tool_call>{name, arguments}</tool_call>
-        <MEM><m t="...">...</m>...</MEM>
+        bare <m t="...">...</m> lines
     Multi-turn recall: turn 1 = <tool_call>{name=recall}</tool_call>,
-                       turn 2 = <answer>...</answer>
+                       turn 2 = </Response> answer or </Silence>
     """
     sample_type = sample.get("sample_type", "")
     is_multiturn = "v12_assistant_turn_1" in sample
@@ -504,19 +512,19 @@ def _verify_format_v12(sample: Dict) -> Tuple[bool, str]:
                     and sample.get("action") == "compress"):
                 return False, f"v12_missing_think_tags (turn {i})"
 
-        has_answer = "<answer>" in out and "</answer>" in out
-        has_tool_call = "<tool_call>" in out and "</tool_call>" in out
-        has_mem_update = bool(_MEM_RE.search(out))
+        parsed = _v12_parse_turn(out)
+        has_answer = parsed.get("kind") == "answer"
+        has_tool_call = parsed.get("kind") == "recall" and bool(parsed.get("tool_call"))
+        has_mem_update = parsed.get("kind") == "compress" and bool(parsed.get("memory_text"))
 
-        n_terminals = int(has_answer) + int(has_tool_call) + int(has_mem_update)
-        if n_terminals > 1:
-            return False, f"v12_both_terminals (turn {i})"
-        if n_terminals == 0:
+        if parsed.get("format_error"):
+            return False, f"v12_format_error (turn {i}): {parsed.get('format_error')}"
+        if not (has_answer or has_tool_call or has_mem_update):
             return False, f"v12_no_terminal (turn {i})"
 
         if has_mem_update:
-            mem_match = _MEM_RE.search(out)
-            mem_lines = list(_M_LINE_RE.finditer(mem_match.group(1) if mem_match else ""))
+            mem_text = str(parsed.get("memory_text") or "")
+            mem_lines = list(_M_LINE_RE.finditer(mem_text))
             if not (4 <= len(mem_lines) <= 6):
                 return False, f"v12_mem_update_bad_line_count ({len(mem_lines)})"
             for line in mem_lines:
@@ -525,51 +533,36 @@ def _verify_format_v12(sample: Dict) -> Tuple[bool, str]:
 
         # Tool-call JSON well-formedness
         if has_tool_call:
-            tc_match = re.search(r"<tool_call>(.*?)</tool_call>", out, re.DOTALL)
-            if tc_match:
-                try:
-                    tc_obj = json.loads(tc_match.group(1).strip())
-                except (json.JSONDecodeError, ValueError):
-                    return False, f"v12_tool_call_invalid_json (turn {i})"
-                if "name" not in tc_obj or "arguments" not in tc_obj:
-                    return False, f"v12_tool_call_missing_fields (turn {i})"
-                name = tc_obj.get("name")
-                if name not in ("recall", "compress"):
-                    return False, f"v12_unknown_tool_name: {name!r}"
-                args = tc_obj.get("arguments") or {}
-                if name == "recall":
-                    if "query" not in args or "time_range" not in args:
-                        return False, "v12_recall_args_missing_fields"
-                    if not str(args.get("query") or "").strip():
-                        return False, "v12_recall_empty_query"
-                    if not _valid_recall_time_range(args.get("time_range")):
-                        return False, "v12_recall_bad_time_range"
-                elif name == "compress":
-                    if "time_range" not in args or "text" not in args:
-                        return False, "v12_compress_args_missing_fields"
-                    if not _valid_compress_time_range(args.get("time_range")):
-                        return False, "v12_compress_bad_time_range"
-                    if not args.get("text"):
-                        return False, "v12_compress_empty_summary"
+            tc_obj = parsed.get("tool_call") or {}
+            if "name" not in tc_obj or "arguments" not in tc_obj:
+                return False, f"v12_tool_call_missing_fields (turn {i})"
+            name = tc_obj.get("name")
+            if name != "recall":
+                return False, f"v12_unknown_tool_name: {name!r}"
+            args = tc_obj.get("arguments") or {}
+            if name == "recall":
+                if "start_time" not in args or "end_time" not in args:
+                    return False, "v12_recall_args_missing_fields"
+                if not _valid_recall_time_args(args):
+                    return False, "v12_recall_bad_start_end"
 
     # Sample-type ↔ terminal-kind consistency
     final_text = turns[-1]
-    final_has_answer = "<answer>" in final_text
-    final_has_tool = "<tool_call>" in final_text
-    final_has_mem = bool(_MEM_RE.search(final_text))
+    final_parsed = _v12_parse_turn(final_text)
+    final_has_answer = final_parsed.get("kind") == "answer"
+    final_has_tool = final_parsed.get("kind") == "recall" and bool(final_parsed.get("tool_call"))
+    final_has_mem = final_parsed.get("kind") == "compress" and bool(final_parsed.get("memory_text"))
     if sample_type == "silent":
         if not final_has_answer:
-            return False, "v12_silent_must_emit_answer"
-        m = re.search(r"<answer>(.*?)</answer>", final_text, re.DOTALL)
-        if m and m.group(1).strip():
+            return False, "v12_silent_must_emit_silence"
+        if str(final_parsed.get("answer_text") or "").strip():
             return False, "v12_silent_answer_must_be_empty"
     elif sample_type == "response":
         if not final_has_answer:
-            return False, "v12_response_must_emit_answer"
+            return False, "v12_response_must_emit_response"
     elif sample_type == "compress":
-        # compress samples: legacy tool_call OR compact-memory <MEM> update.
-        if not (final_has_tool or final_has_mem):
-            return False, "v12_compress_must_emit_tool_call_or_mem"
+        if not final_has_mem:
+            return False, "v12_compress_must_emit_mem"
         if final_has_answer:
             return False, "v12_compress_should_not_emit_answer"
         if not is_inter_chunk:
@@ -581,17 +574,25 @@ def _verify_format_v12(sample: Dict) -> Tuple[bool, str]:
             return False, "v12_recall_not_multiturn"
         if "<tool_call>" not in turns[0]:
             return False, "v12_recall_turn1_missing_tool_call"
-        if "<answer>" not in turns[1]:
-            return False, "v12_recall_turn2_missing_answer"
+        if _v12_parse_turn(turns[1]).get("kind") != "answer":
+            return False, "v12_recall_turn2_missing_response_or_silence"
 
     return True, "pass"
 
 
 def _v12_extract_summary_text(sample: Dict) -> str:
-    """Extract compress summary text from v12 tool_call or <MEM> update."""
+    """Extract compress summary text from compact <m> updates."""
     if sample.get("sample_type") != "compress":
         return ""
     output = _v12_combined_assistant_text(sample)
+    parsed = _v12_parse_turn(output)
+    if parsed.get("kind") == "compress" and parsed.get("memory_text"):
+        parts = [
+            re.sub(r"\s+", " ", m.group(3)).strip()
+            for m in _M_LINE_RE.finditer(str(parsed.get("memory_text") or ""))
+            if (m.group(3) or "").strip()
+        ]
+        return " ".join(parts)
     mem_match = _MEM_RE.search(output)
     if mem_match:
         parts = [
@@ -600,24 +601,17 @@ def _v12_extract_summary_text(sample: Dict) -> str:
             if (m.group(3) or "").strip()
         ]
         return " ".join(parts)
-    tc_match = re.search(r"<tool_call>(.*?)</tool_call>", output, re.DOTALL)
-    if not tc_match:
-        return ""
-    try:
-        tc = json.loads(tc_match.group(1).strip())
-    except (json.JSONDecodeError, ValueError):
-        return ""
-    return (tc.get("arguments") or {}).get("text", "") or ""
+    return ""
 
 
 def _verify_compression_ratio_v12(sample: Dict) -> Tuple[bool, str]:
-    """v12 compression: read summary text from tool_call args or <MEM>."""
+    """v12 compression: read summary text from <m> lines."""
     if sample.get("sample_type") != "compress":
         return True, "pass"
 
     output = _v12_combined_assistant_text(sample)
     summary_text = _v12_extract_summary_text(sample)
-    if _MEM_RE.search(output):
+    if _M_LINE_RE.search(output):
         if not summary_text:
             return False, "empty_compression_summary"
         source_texts = _compressed_source_texts(sample)
@@ -792,67 +786,7 @@ def verify_format(sample: Dict) -> Tuple[bool, str]:
     if _is_v12_sample(sample):
         return _verify_format_v12(sample)
 
-    output = sample.get("output", "")
-    sample_type = sample.get("sample_type", "")
-
-    # recall_response: may lack think tags (think was in recall_query step)
-    if sample_type != "recall_response":
-        if "<think>" not in output or "</think>" not in output:
-            # Base compress with empty think is allowed
-            if not (_is_base_sample(sample) and sample.get("action") == "compress"):
-                return False, "missing_think_tags"
-
-    if "<action>" not in output or "</action>" not in output:
-        return False, "missing_action_tags"
-
-    # Think length
-    obs_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
-    if obs_match:
-        words = len(obs_match.group(1).split())
-        action_match = re.search(r'<action>(.*?)</action>', output, re.DOTALL)
-        action_type = action_match.group(1) if action_match else ""
-        min_words = 3 if action_type in ("compress", "recall") else 5
-        if words < min_words:
-            return False, f"think_too_short ({words} words)"
-        if words > 100:
-            return False, f"think_too_long ({words} words)"
-
-    # Valid action
-    action_match = re.search(r'<action>(.*?)</action>', output, re.DOTALL)
-    if action_match:
-        action = action_match.group(1)
-        if action not in {"silent", "response", "recall", "compress"}:
-            return False, f"invalid_action: {action}"
-        if action == "recall" and "<query>" not in output:
-            return False, "recall_action_without_query"
-        if action == "compress" and "<summary>" not in output:
-            return False, "compress_action_without_summary"
-        if action == "response" and "<response>" not in output:
-            return False, "response_action_without_response_tag"
-
-    # Query JSON
-    if "<query>" in output:
-        query_match = re.search(r'<query>(.*?)</query>', output, re.DOTALL)
-        if query_match:
-            try:
-                q = json.loads(query_match.group(1))
-                if "query" not in q:
-                    return False, "query_json_missing_query_field"
-            except (json.JSONDecodeError, ValueError):
-                return False, "query_invalid_json"
-
-    # Summary JSON
-    if "<summary>" in output:
-        summary_match = re.search(r'<summary>(.*?)</summary>', output, re.DOTALL)
-        if summary_match:
-            try:
-                s = json.loads(summary_match.group(1))
-                if "time_range" not in s or "text" not in s:
-                    return False, "summary_json_missing_fields"
-            except (json.JSONDecodeError, ValueError):
-                return False, "summary_invalid_json"
-
-    return True, "pass"
+    return False, "legacy_action_query_tags_unsupported"
 
 
 def verify_think_token_length(sample: Dict) -> Tuple[bool, str]:
@@ -1350,10 +1284,10 @@ def verify_recall_evidence_reachable(sample: Dict, rollout: Dict = None) -> Tupl
     if isinstance(recall_result, dict):
         tr = recall_result.get("time", "")
         if tr:
-            m = _RECALL_TIME_RANGE_RE.fullmatch(str(tr))
+            m = _RESULT_TIME_SPAN_RE.fullmatch(str(tr))
             if not m:
                 return False, f"recall_bad_result_time: {tr}"
-            if chunk_idx_int >= 0 and float(m.group(2)) > chunk_idx_int:
+            if chunk_idx_int >= 0 and float(m.group(2)) >= chunk_idx_int:
                 return False, (
                     f"recall_result_time_in_future: time={tr} "
                     f"chunk={chunk_idx_int}"
@@ -1374,7 +1308,7 @@ def verify_recall_evidence_reachable(sample: Dict, rollout: Dict = None) -> Tupl
             )
         # recall_silent is valid when historical evidence is returned but the
         # awaited future/current condition is still unresolved. Do not hard-fail
-        # merely because BM25 returned frames.
+        # merely because time-range recall returned frames.
 
     return True, "pass"
 

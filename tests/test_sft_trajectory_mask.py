@@ -7,11 +7,22 @@ from pathlib import Path
 import torch
 
 from thinkstream.data.schema import (
+    MEMORY_LOAD_ACK,
     TRAJ_TYPE_COMPACT_MEMORY_UPDATE,
     TRAJ_TYPE_FROM_COMPRESS,
 )
 from thinkstream.sft.data_processor import IGNORE_INDEX, preprocess_trajectory_sample
 from thinkstream.sft.data_processor import build_recall_video_mask_from_messages
+from thinkstream.sft.data_processor import (
+    LOSS_BUCKET_ACTION,
+    LOSS_BUCKET_TEXT,
+    LOSS_SUBBUCKET_ACT_RECALL,
+    LOSS_SUBBUCKET_ACT_RESPONSE,
+    LOSS_SUBBUCKET_ACT_SILENT,
+    LOSS_SUBBUCKET_TEXT_COMPRESSION,
+    LOSS_SUBBUCKET_TEXT_THINK,
+    _build_loss_bucket_ids,
+)
 
 
 class _FakeTokenizer:
@@ -41,6 +52,36 @@ class _FakeProcessor:
         return {"input_ids": self._input_ids.clone()}
 
 
+class _CharTokenizer:
+    def encode(self, text, add_special_tokens=False):
+        if text == "<|im_start|>assistant":
+            return [1, 2]
+        return [1000 + ord(ch) for ch in text]
+
+    def __call__(self, text, add_special_tokens=False, return_offsets_mapping=False):
+        input_ids = self.encode(text, add_special_tokens=add_special_tokens)
+        out = {"input_ids": input_ids}
+        if return_offsets_mapping:
+            out["offset_mapping"] = [(i, i + 1) for i in range(len(text))]
+        return out
+
+    def decode(self, ids, skip_special_tokens=False, clean_up_tokenization_spaces=False):
+        return "".join(chr(int(i) - 1000) for i in ids)
+
+
+def _bucketize_text(text: str):
+    tok = _CharTokenizer()
+    ids = tok.encode(text, add_special_tokens=False)
+    input_ids = torch.tensor([ids + [3]], dtype=torch.long)
+    labels = input_ids.clone()
+    return _build_loss_bucket_ids(
+        input_ids=input_ids,
+        labels=labels,
+        loss_spans=[(0, len(ids))],
+        tokenizer=tok,
+    )
+
+
 def test_from_compress_masks_memory_loaded_ack():
     # Two assistant turns:
     #   turn 0 = Memory loaded. ack, should be prompt-only
@@ -58,10 +99,10 @@ def test_from_compress_masks_memory_loaded_ack():
         "data_path": str(Path(".")),
         "messages": [
             {"role": "system", "content": "s"},
-            {"role": "user", "content": [{"type": "text", "text": "<MEM></MEM>"}]},
-            {"role": "assistant", "content": "Memory loaded."},
+            {"role": "user", "content": [{"type": "text", "text": '<m t="0-1">x</m>'}]},
+            {"role": "assistant", "content": MEMORY_LOAD_ACK},
             {"role": "user", "content": [{"type": "text", "text": "<t=30>"}]},
-            {"role": "assistant", "content": "<think>x</think><silent>"},
+            {"role": "assistant", "content": "<think>x</think></Silence>"},
         ],
         "tools": [],
     }
@@ -81,7 +122,7 @@ def test_compact_memory_row_trains_single_mem_assistant():
     ids = [
         1, 7, 99, 3,          # system
         1, 8, 99, 3,          # user
-        1, 2, 99, 30, 31, 3,  # assistant <MEM> span
+        1, 2, 99, 30, 31, 3,  # assistant compact-memory span
     ]
     sample = {
         "trajectory_type": TRAJ_TYPE_COMPACT_MEMORY_UPDATE,
@@ -90,7 +131,7 @@ def test_compact_memory_row_trains_single_mem_assistant():
         "messages": [
             {"role": "system", "content": "compact"},
             {"role": "user", "content": [{"type": "text", "text": "OLD_MEMORY"}]},
-            {"role": "assistant", "content": "<MEM><m t=\"0-1\">x</m></MEM>"},
+            {"role": "assistant", "content": '<m t="0-1">x</m>'},
         ],
         "tools": [],
     }
@@ -102,6 +143,75 @@ def test_compact_memory_row_trains_single_mem_assistant():
     assert labels[11].item() == 30
     assert labels[12].item() == 31
     assert labels[13].item() == 3
+
+
+def test_loss_bucket_split_response_answer_from_think():
+    text = "<think>visual state</think></Response> A) red cup"
+    bucket_ids, subbucket_ids, diag = _bucketize_text(text)
+    buckets = bucket_ids[0].tolist()
+    subbuckets = subbucket_ids[0].tolist()
+
+    response_pos = text.index("</Response>")
+    answer_pos = text.index("A")
+    think_body_pos = text.index("visual")
+
+    assert buckets[response_pos] == LOSS_BUCKET_ACTION
+    assert subbuckets[response_pos] == LOSS_SUBBUCKET_ACT_RESPONSE
+    assert buckets[answer_pos] == LOSS_BUCKET_ACTION
+    assert subbuckets[answer_pos] == LOSS_SUBBUCKET_ACT_RESPONSE
+    assert buckets[think_body_pos] == LOSS_BUCKET_TEXT
+    assert subbuckets[think_body_pos] == LOSS_SUBBUCKET_TEXT_THINK
+    assert diag["tokens_by_subbucket"]["act_response"] >= len("</Response> A) red cup")
+
+
+def test_loss_bucket_split_silent_and_recall_time():
+    text = (
+        "<think>need old frame</think>"
+        '<tool_call>{"name":"recall","arguments":{"start_time":0,"end_time":3}}</tool_call>'
+    )
+    bucket_ids, subbucket_ids, diag = _bucketize_text(text)
+    buckets = bucket_ids[0].tolist()
+    subbuckets = subbucket_ids[0].tolist()
+
+    tool_pos = text.index("<tool_call>")
+    recall_pos = text.index("recall")
+    start_time_pos = text.index('"start_time"')
+
+    assert buckets[tool_pos] == LOSS_BUCKET_ACTION
+    assert subbuckets[tool_pos] == LOSS_SUBBUCKET_ACT_RECALL
+    assert buckets[recall_pos] == LOSS_BUCKET_ACTION
+    assert subbuckets[recall_pos] == LOSS_SUBBUCKET_ACT_RECALL
+    assert buckets[start_time_pos] == LOSS_BUCKET_ACTION
+    assert subbuckets[start_time_pos] == LOSS_SUBBUCKET_ACT_RECALL
+    assert diag["tokens_by_subbucket"]["act_recall"] >= len(
+        '<tool_call>{"name":"recall","arguments":{"start_time":0,"end_time":3}}</tool_call>'
+    )
+
+    silent_bucket, silent_subbucket, _ = _bucketize_text(
+        "<think>waiting</think></Silence>"
+    )
+    silent_pos = "<think>waiting</think></Silence>".index("</Silence>")
+    assert silent_bucket[0, silent_pos].item() == LOSS_BUCKET_ACTION
+    assert silent_subbucket[0, silent_pos].item() == LOSS_SUBBUCKET_ACT_SILENT
+
+
+def test_loss_bucket_split_memory_key_and_compression_body():
+    text = '<m t="0-23">A person crosses water.</m>'
+    bucket_ids, subbucket_ids, diag = _bucketize_text(text)
+    buckets = bucket_ids[0].tolist()
+    subbuckets = subbucket_ids[0].tolist()
+
+    open_pos = text.index("<m")
+    body_pos = text.index("person")
+    close_pos = text.index("</m>")
+
+    assert buckets[open_pos] == LOSS_BUCKET_TEXT
+    assert subbuckets[open_pos] == LOSS_SUBBUCKET_TEXT_COMPRESSION
+    assert buckets[body_pos] == LOSS_BUCKET_TEXT
+    assert subbuckets[body_pos] == LOSS_SUBBUCKET_TEXT_COMPRESSION
+    assert buckets[close_pos] == LOSS_BUCKET_TEXT
+    assert subbuckets[close_pos] == LOSS_SUBBUCKET_TEXT_COMPRESSION
+    assert diag["tokens_by_subbucket"]["text_compression"] >= len(text)
 
 
 def test_recall_video_mask_uses_message_kv_scope():
@@ -144,9 +254,9 @@ def test_post_recall_marks_toolcall_and_tool_response_as_recall_kv():
             {"role": "user", "content": [{"type": "text", "text": "prompt"}]},
             {"role": "assistant", "content": "<think>need</think><tool_call>{}</tool_call>"},
             {"role": "tool", "tool_call_id": "recall", "content": [
-                {"type": "text", "text": "<recall_result>{}</recall_result>", "kv_scope": "recall"},
+                {"type": "text", "text": "The recall tool returned historical video frames for t=0-2.", "kv_scope": "recall"},
             ]},
-            {"role": "assistant", "content": "<think>ok</think><answer>yes</answer>"},
+            {"role": "assistant", "content": "<think>ok</think></Response> yes"},
         ],
         "tools": [],
     }
@@ -167,6 +277,7 @@ def test_post_recall_marks_toolcall_and_tool_response_as_recall_kv():
     assert query_mask == expected_q
     assert labels[11].item() == IGNORE_INDEX
     assert labels[22].item() == 70
+    assert out["eval_meta"]["post_recall_answer_turn_indices"] == [1]
 
 
 def test_full_trajectory_recall_tool_response_marks_recall_kv():
@@ -195,19 +306,18 @@ def test_full_trajectory_recall_tool_response_marks_recall_kv():
             {"role": "assistant", "content": "<think>need</think>", "tool_calls": [{
                 "id": "rec_3",
                 "type": "function",
-                "function": {"name": "recall", "arguments": {"time_range": [0, 1]}},
+                "function": {"name": "recall", "arguments": {"start_time": 0, "end_time": 2}},
             }]},
             {"role": "tool", "tool_call_id": "rec_3", "content": [
-                {"type": "text", "text": "<recalled_frames>{}</recalled_frames>"},
+                {"type": "text", "text": "The recall tool returned historical video frames for t=0-2."},
                 {"type": "video", "video": ["b.jpg"]},
-                {"type": "text", "text": "<recall_result>{}</recall_result>"},
             ]},
-            {"role": "assistant", "content": "<think>ok</think><response>yes</response>"},
+            {"role": "assistant", "content": "<think>ok</think></Response> yes"},
             {"role": "user", "content": [
                 {"type": "text", "text": "<t=4>"},
                 {"type": "video", "video": ["c.jpg"], "kv_scope": "ordinary"},
             ]},
-            {"role": "assistant", "content": "<think>continue</think><silent>"},
+            {"role": "assistant", "content": "<think>continue</think></Silence>"},
         ],
         "tools": [],
     }
@@ -227,3 +337,4 @@ def test_full_trajectory_recall_tool_response_marks_recall_kv():
     assert video_mask[20] is True
     assert video_mask[32] is False
     assert video_mask[33] is False
+    assert out["eval_meta"]["post_recall_answer_turn_indices"] == [1]

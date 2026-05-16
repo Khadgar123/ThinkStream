@@ -7,7 +7,8 @@ import numpy as np
 import torch
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "verl"))
+sys.path.insert(0, str(ROOT))
+sys.path.insert(1, str(ROOT / "verl"))
 
 from verl import DataProto  # noqa: E402
 from verl.trainer.ppo.ray_trainer import (  # noqa: E402

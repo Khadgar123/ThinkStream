@@ -304,13 +304,13 @@ class MemoryState:
             tokens = self.count_recent_tokens()
             return {
                 "triggered": tokens >= COMPRESS_TOKEN_THRESHOLD,
-                "mode": "legacy_range_summary",
+                "mode": "token_threshold_fallback",
                 "visible_text_tokens": tokens,
                 "threshold_tokens": COMPRESS_TOKEN_THRESHOLD,
                 "recent_raw_chunks": len(self.recent_thinks),
                 "min_new_chunks": COMPRESS_RANGE_MIN,
                 "max_new_chunks": COMPRESS_RANGE_MAX,
-                "reason": "legacy_token_threshold" if tokens >= COMPRESS_TOKEN_THRESHOLD else "below_threshold",
+                "reason": "token_threshold_reached" if tokens >= COMPRESS_TOKEN_THRESHOLD else "below_threshold",
             }
 
         tokens = self.count_tokens()
@@ -427,16 +427,19 @@ class MemoryState:
     def _format_timeline_item_as_memory_tag(item: Dict) -> str:
         """Render one timeline item with the same tags the student sees."""
         if item.get("type") == "summary":
-            payload = {
-                "time_range": list(item.get("time_range") or []),
-                "text": item.get("text", ""),
-            }
-            return f"<compressed>{json.dumps(payload, ensure_ascii=False)}</compressed>"
-        payload = {
-            "time": item.get("time", ""),
-            "text": item.get("text", ""),
-        }
-        return f"<memory_think>{json.dumps(payload, ensure_ascii=False)}</memory_think>"
+            tr = list(item.get("time_range") or [])
+            if len(tr) >= 2:
+                t_value = f"{int(tr[0])}-{int(tr[1])}"
+            else:
+                t_value = str(item.get("time", "")).strip()
+        else:
+            tr = item.get("time_range") or []
+            if isinstance(tr, list) and len(tr) >= 2:
+                t_value = f"{int(tr[0])}-{int(tr[1])}"
+            else:
+                t_value = str(item.get("time", "")).strip()
+        text = " ".join(str(item.get("text", "")).strip().split())
+        return f'<m t="{t_value}">{text}</m>' if t_value and text else ""
 
     def format_for_prompt(self) -> str:
         """Format timeline with the same memory tags used by SFT/RL/eval."""
@@ -863,11 +866,10 @@ def _chunks_from_time_range(time_range: List[int]) -> List[int]:
         start_s, end_s = float(time_range[0]), float(time_range[1])
     except (TypeError, ValueError):
         return []
-    if end_s <= start_s:
+    if end_s < start_s:
         return []
     start_chunk = int(start_s / float(AGENT_CHUNK_SEC))
-    # time_range end is exclusive; subtract a tiny epsilon before flooring.
-    end_chunk = int((end_s - 1e-6) / float(AGENT_CHUNK_SEC))
+    end_chunk = int(end_s / float(AGENT_CHUNK_SEC))
     return list(range(start_chunk, end_chunk + 1))
 
 
@@ -916,7 +918,7 @@ def _xml_text(text: object) -> str:
 
 def _format_compact_memory_block(items: List[Dict]) -> str:
     """Render current summary items as OLD_MEMORY for compact update."""
-    lines = ["<MEM>"]
+    lines: List[str] = []
     for item in items:
         if item.get("type") != "summary":
             continue
@@ -924,8 +926,7 @@ def _format_compact_memory_block(items: List[Dict]) -> str:
         if end < start:
             start, end = end, start
         lines.append(f'  <m t="{int(start)}-{int(end)}">{_xml_text(item.get("text", ""))}</m>')
-    lines.append("</MEM>")
-    return "\n".join(lines)
+    return "\n".join(lines) if lines else "(empty)"
 
 
 def _format_new_captions_block(items: List[Dict]) -> str:
@@ -945,14 +946,7 @@ def _format_new_captions_block(items: List[Dict]) -> str:
 
 
 def _extract_mem_block(raw: str) -> str:
-    """Return a normalized ``<MEM>`` block from a teacher response.
-
-    Large teacher models often obey the semantic task but drift on the thin XML
-    wrapper: either returning bare ``<m>`` lines without ``<MEM>``, or omitting
-    ``</m>`` on each line while still separating entries line-by-line. Repair
-    those mechanical forms here so useful compact memories do not fall back to
-    deterministic summaries.
-    """
+    """Return normalized compact-memory ``<m>`` lines from a teacher response."""
     text = re.sub(r"<think>.*?</think>", "", str(raw or ""), flags=re.DOTALL).strip()
     if not text:
         return ""
@@ -977,12 +971,12 @@ def _extract_mem_block(raw: str) -> str:
         if payload:
             lines.append(f"  {open_tag}{payload}</m>")
     if not lines:
-        return mem_match.group(0).strip() if mem_match else ""
-    return "<MEM>\n" + "\n".join(lines) + "\n</MEM>"
+        return ""
+    return "\n".join(lines)
 
 
 def parse_compact_memory_entries(raw: str) -> List[Dict]:
-    """Parse teacher/user <MEM> block into summary-like timeline entries."""
+    """Parse compact-memory <m> lines into summary-like timeline entries."""
     block = _extract_mem_block(raw or "")
     if not block:
         return []
@@ -1011,11 +1005,10 @@ def parse_compact_memory_entries(raw: str) -> List[Dict]:
 
 
 def _entries_to_mem_text(entries: List[Dict]) -> str:
-    lines = ["<MEM>"]
+    lines: List[str] = []
     for entry in entries:
         tr = entry.get("time_range") or [0, 0]
         lines.append(f'  <m t="{int(tr[0])}-{int(tr[1])}">{entry.get("text", "").strip()}</m>')
-    lines.append("</MEM>")
     return "\n".join(lines)
 
 
@@ -1345,21 +1338,13 @@ def _fallback_compress_text(meta: Dict) -> str:
     """Extract a deterministic summary fallback from the selected observations."""
     obs = meta.get("observations_text", "")
     tagged_texts = []
-    for m in re.finditer(
-        r"<(?:memory_think|compressed)>(.*?)</(?:memory_think|compressed)>",
-        obs,
-        flags=re.DOTALL,
-    ):
-        try:
-            payload = json.loads(m.group(1))
-        except (TypeError, json.JSONDecodeError):
-            continue
-        text = str(payload.get("text", "")).strip()
+    for m in re.finditer(r"<m\b[^>]*>(.*?)</m>", obs, flags=re.DOTALL):
+        text = str(m.group(1)).strip()
         if text:
             tagged_texts.append(text)
     if tagged_texts:
         obs = " ".join(tagged_texts)
-    obs = re.sub(r"</?(?:summary|memory_think|compressed)[^>]*>", " ", obs)
+    obs = re.sub(r"</?(?:summary|memory_think|compressed|m)[^>]*>", " ", obs)
     obs = re.sub(r"\[[^\]]+\]\s*", " ", obs)
     obs = " ".join(obs.split())
     if not obs:
@@ -1374,31 +1359,18 @@ def _fallback_compact_entries(meta: Dict, target_lines: int = 5) -> List[Dict]:
     records: List[Dict] = []
     obs = meta.get("observations_text", "")
     for m in re.finditer(
-        r"<(memory_think|compressed)>(.*?)</\1>",
+        r'<m\s+t="([^"]+)"\s*>(.*?)</m>',
         obs,
-        flags=re.DOTALL,
+        flags=re.DOTALL | re.IGNORECASE,
     ):
-        kind = m.group(1)
-        try:
-            payload = json.loads(m.group(2))
-        except (TypeError, json.JSONDecodeError):
-            continue
-        text = str(payload.get("text", "")).strip()
+        text = str(m.group(2)).strip()
         if not text:
             continue
-        if kind == "memory_think":
-            time_raw = str(payload.get("time", "")).strip()
-            nums = [int(x) for x in re.findall(r"\d+", time_raw)]
-            if nums:
-                start, end = nums[0], nums[-1]
-            else:
-                start, end = meta.get("time_range", [0, 0])
+        nums = [int(x) for x in re.findall(r"\d+", str(m.group(1)))]
+        if nums:
+            start, end = nums[0], nums[-1]
         else:
-            tr = payload.get("time_range") or []
-            if isinstance(tr, list) and len(tr) == 2:
-                start, end = int(tr[0]), int(tr[1])
-            else:
-                start, end = meta.get("time_range", [0, 0])
+            start, end = meta.get("time_range", [0, 0])
         if end < start:
             start, end = end, start
         records.append({"start": int(start), "end": int(end), "text": text})
@@ -1488,13 +1460,11 @@ def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
             min(int(e["time_range"][0]) for e in entries),
             max(int(e["time_range"][1]) for e in entries),
         ]
-        parse_success = 4 <= n_entries <= 6
+        parse_success = n_entries > 0
         out = {
             "time_range": time_range,
-            # Keep the teacher's raw <MEM> block as the canonical text
-            # artifact. Parsed <m t="..."> entries are diagnostics/state for
-            # the rollout; downstream trajectory rendering reuses this whole
-            # block instead of rebuilding memory from the parsed lines.
+            # Keep normalized <m t="..."> lines as the canonical compact
+            # memory text. Parsed entries are diagnostics/state for rollout.
             "text": mem_block or _entries_to_mem_text(entries),
             "entries": entries,
             "source_chunks": sorted(set(c for e in entries for c in e.get("source_chunks", []))),
@@ -1908,7 +1878,12 @@ def save_rollout(video_id: str, rollout: Dict, output_dir: Path = ROLLOUT_DIR):
 
 def load_rollout(video_id: str, rollout_dir: Path = ROLLOUT_DIR) -> Optional[Dict]:
     from .cache_version import stage_version_ok
-    if not stage_version_ok("2"):
+    truthy = {"1", "true", "yes", "on"}
+    allow_stale = (
+        _os.environ.get("THINKSTREAM_ALLOW_STALE_PASS2_CACHE", "").lower() in truthy
+        or _os.environ.get("THINKSTREAM_ALLOW_STALE_UPSTREAM_CACHE", "").lower() in truthy
+    )
+    if not allow_stale and not stage_version_ok("2"):
         return None
     path = rollout_dir / f"{video_id}.json"
     if not path.exists():

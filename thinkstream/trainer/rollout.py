@@ -243,7 +243,7 @@ def default_update_state(
     new_state = deepcopy(state)
     new_state.chunk_idx = chunk_idx + 1   # advance to next chunk
 
-    parsed = parse_agent_output(response_text, allow_unclosed_response=True)
+    parsed = parse_agent_output(response_text, allow_bare_memory=True)
     kind = parsed.get("kind", "unknown")
 
     if kind == "answer":

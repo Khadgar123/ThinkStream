@@ -115,7 +115,7 @@ def offline_predict_mcq_vllm(
     log.info(f"Options: {options}, protocol_version={protocol_version}")
 
     # v12.15: offline eval is an ordinary streaming turn, so expose recall
-    # only. Leave None for v11 legacy <action>X</action> format.
+    # only.
     tools_for_template = None
     if protocol_version == "v12":
         from thinkstream.data.agent_protocol import tools_for_turn

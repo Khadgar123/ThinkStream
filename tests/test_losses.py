@@ -30,17 +30,18 @@ from thinkstream.sft.losses import (  # noqa: E402
 
 
 # Synthetic vocab:
-#   0 = <pad>, 1 = <silent>, 2 = <response>, 3 = </response>, 4 = </think>,
+#   0 = <pad>, 1 = </Silence>, 2 = </Response>, 3 = response-body token,
+#   4 = </think>,
 #   5-9 = arbitrary content tokens.
 VOCAB_SIZE = 10
 SILENT_ID = 1
 RESPONSE_ID = 2
-RESPONSE_CLOSE_ID = 3
+RESPONSE_BODY_ID = 3
 IGNORE = -100
 
 ACTION_IDS = {
-    "<silent>": SILENT_ID,
-    "<response>": RESPONSE_ID,
+    "</Silence>": SILENT_ID,
+    "</Response>": RESPONSE_ID,
 }
 
 
@@ -77,13 +78,14 @@ def test_inverse_frequency_balances_silent_response():
     print(f"[OK] inverse_freq: silent_w={silent_w:.3f}, response_w={response_w:.3f}")
 
 
-def test_response_close_is_not_action_balanced():
-    """Only the response-open token is an action decision.
+def test_response_body_is_not_action_balanced():
+    """Only the response marker token is an action decision.
 
-    The closing tag is a formatting target and must stay ordinary CE weight,
-    otherwise one response turn contributes two action anchors while one
-    silent turn contributes one.
+    The answer text after </Response> stays ordinary CE weight, otherwise one
+    response turn contributes many action anchors while one silent turn
+    contributes one.
     """
+    assert ACTION_TOKEN_NAMES == ("</Silence>", "</Response>")
     assert "</response>" not in ACTION_TOKEN_NAMES
     assert "<answer>" not in ACTION_TOKEN_NAMES
     assert "</answer>" not in ACTION_TOKEN_NAMES
@@ -91,14 +93,14 @@ def test_response_close_is_not_action_balanced():
     labels = torch.full((1, 12), IGNORE, dtype=torch.long)
     labels[0, 0:9] = SILENT_ID
     labels[0, 9] = RESPONSE_ID
-    labels[0, 10] = RESPONSE_CLOSE_ID
+    labels[0, 10] = RESPONSE_BODY_ID
 
     w = compute_inverse_frequency_weights(labels, ACTION_IDS, ignore_index=IGNORE)
 
     assert torch.isclose(w[0, 10], torch.tensor(1.0)), (
-        f"</response> should remain ordinary CE weight, got {w[0, 10].item()}"
+        f"response body token should remain ordinary CE weight, got {w[0, 10].item()}"
     )
-    assert w[0, 9] > w[0, 0], "rare <response> start token should be upweighted"
+    assert w[0, 9] > w[0, 0], "rare </Response> marker token should be upweighted"
 
 
 def test_inverse_frequency_clamps_extreme():
@@ -259,16 +261,16 @@ def test_find_subsequence_anchors_basic():
 
 def test_tool_name_anchors_integrated_with_inverse_freq():
     """Simulate a batch with one compress tool_call (2-token "compress" span)
-    and one response (single <response> token). Verify both classes are
+    and one response (single </Response> token). Verify both classes are
     detected and balanced."""
 
     # Synthetic vocab adds tool name pieces:
-    #   1 = <silent>, 2 = <response>, 5-6 = "compress" BPE pieces, 7 = "recall"
+    #   1 = </Silence>, 2 = </Response>, 5-6 = "compress" BPE pieces, 7 = "recall"
     COMP_A, COMP_B = 5, 6
     RECALL = 7
 
     # Sample 0: assistant emits "compress" (2 tokens) once
-    # Sample 1: assistant emits <response> twice
+    # Sample 1: assistant emits </Response> twice
     labels = torch.full((2, 10), IGNORE, dtype=torch.long)
     labels[0, 2] = COMP_A
     labels[0, 3] = COMP_B

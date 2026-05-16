@@ -2,7 +2,7 @@
 
 For each trajectory's selected placements, walks every chunk in [0, num_chunks)
 and emits ONE raw SFT sample per chunk (silent / response / recall+response /
-recall+silent / patrol / compress_silent), using placement/design.py as the single
+recall+silent / compress_silent), using placement/design.py as the single
 source of truth for gold actions.
 
 Pipeline contract preserved:
@@ -14,6 +14,7 @@ Pipeline contract preserved:
 from __future__ import annotations
 
 import asyncio
+import html
 import json
 import logging
 import os
@@ -22,16 +23,16 @@ import re
 import unicodedata
 from copy import deepcopy
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from thinkstream.data.agent_protocol import (
     RECALL_RETURN_CHUNKS,
+    append_timestamped_image_list,
     build_assistant_content,
     format_memory_block,
     recall_time_string_for_chunks,
-    select_recall_chunks,
+    select_recall_chunks_uniform,
 )
-from thinkstream.models.agent_loop import bm25_retrieve
 
 from .config import (
     AGENT_CHUNK_SEC,
@@ -49,8 +50,6 @@ from .placement.design import (
 )
 from .placement.llm_prompts import (
     family_taxonomy,
-    parse_recall_query_response,
-    recall_query_prompt,
     response_generation_prompt,
 )
 
@@ -61,6 +60,29 @@ RECALL_SUPPORT_OVERLAP_MIN = 0.40
 RECALL_HARDEN_MAX_ATTEMPTS = 3
 RECALL_HARDEN_CANDIDATES_PER_ATTEMPT = 3
 RECALL_HARDEN_EVIDENCE_LINES = 56
+
+
+def _env_flag(name: str, default: bool = False) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return bool(default)
+    return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
+PASS3C_ENABLE_LLM_RESPONSE = _env_flag("THINKSTREAM_PASS3C_ENABLE_LLM_RESPONSE", False)
+PASS3C_ENABLE_LLM_POST_RECALL_THINK = _env_flag(
+    "THINKSTREAM_PASS3C_ENABLE_LLM_POST_RECALL_THINK",
+    True,
+)
+PASS3C_ENABLE_RECALL_HARDENING = _env_flag("THINKSTREAM_PASS3C_ENABLE_RECALL_HARDENING", False)
+PASS3C_ALLOW_POST_RECALL_THINK_FALLBACK = _env_flag(
+    "THINKSTREAM_PASS3C_ALLOW_POST_RECALL_THINK_FALLBACK",
+    False,
+)
+PASS3C_POST_RECALL_THINK_ATTEMPTS = max(
+    1,
+    int(os.environ.get("THINKSTREAM_PASS3C_POST_RECALL_THINK_ATTEMPTS", "3")),
+)
 
 
 # ---------------------------------------------------------------------------
@@ -84,86 +106,68 @@ def _recall_action_think(
 ) -> str:
     """Gold first-turn think for recall tool calls.
 
-    Pass2 thinks are question-blind current-frame observations. For recall
-    turns, keep that observation as this timestep's text memory, then add a
-    short action decision so SFT learns why the recall tool is selected.
+    Pass2 thinks are question-blind current-frame observations. The following
+    tool_call already supervises the recall action, so do not append a generic
+    "I will recall..." rationale; that template was easy for SFT models to
+    overfit and reduced recall-query diversity.
     """
-    base = str(visual_think or "").strip()
-    low = base.lower()
-    if "visible evidence" in low and "recall" in low:
-        return base
-    reason = str(reason or "").strip()
-    if final_action == "silent":
-        if reason == "memory_unclear":
-            decision = (
-                "The active query depends on elapsed context, but the current "
-                "view is not enough to answer. I will recall the earlier "
-                "history once, and stay silent if it still does not contain "
-                "the needed evidence."
-            )
-        elif reason == "related_history_check":
-            decision = (
-                "A related moment may have occurred earlier, so I should "
-                "recall the elapsed history before deciding. If the retrieved "
-                "history still lacks the answer, I will keep waiting."
-            )
-        elif reason == "pre_answer_check":
-            decision = (
-                "Before answering the pending query, I should check whether "
-                "the answer already appeared in history. If it has not, the "
-                "correct action is still an empty answer."
-            )
-        elif reason == "long_wait_history_check":
-            decision = (
-                "The query has stayed open long enough that earlier visual "
-                "details may no longer be in current memory. I will recall "
-                "elapsed history and keep waiting if the answer is still not "
-                "supported."
-            )
-        else:
-            decision = (
-                "Current visible evidence is insufficient to answer the "
-                "active query. The answer may not have appeared yet, so I "
-                "will recall elapsed history once and stay silent if still "
-                "unsupported."
-            )
-    else:
-        if reason == "cumulative_history":
-            decision = (
-                "The current moment is relevant, but the answer also depends "
-                "on earlier occurrences, so I will recall the prior window "
-                "before giving the cumulative answer."
-            )
-        elif reason == "status_history":
-            decision = (
-                "The status question depends on an event that may have "
-                "happened earlier, so I will recall that historical moment "
-                "before answering."
-            )
-        else:
-            decision = (
-                "Current visible evidence is insufficient to answer the "
-                "active query because the needed evidence is historical, so "
-                "I will recall the earlier window rather than guess."
-            )
-    return f"{base} {decision}".strip()
+    return _strip_recall_action_boilerplate(visual_think)
+
+
+_RECALL_ACTION_BOILERPLATE_RE = re.compile(
+    r"\s*(?:"
+    r"Current visible evidence is insufficient|"
+    r"The active query depends on elapsed context|"
+    r"A related moment may have occurred earlier|"
+    r"Before answering the pending query|"
+    r"The query has stayed open long enough|"
+    r"The current moment is relevant, but the answer also depends|"
+    r"The status question depends on an event"
+    r").*$",
+    re.IGNORECASE | re.DOTALL,
+)
+
+
+def _strip_recall_action_boilerplate(text: str) -> str:
+    """Remove old recall-action rationale templates from first-turn thinks."""
+    cleaned = str(text or "").strip()
+    if not cleaned:
+        return ""
+    cleaned = _RECALL_ACTION_BOILERPLATE_RE.sub("", cleaned).strip()
+    return re.sub(r"\s+", " ", cleaned).strip()
 
 
 MC_OPTION_LETTERS = "ABCDE"
 MC_OPTION_COUNTS = {2, 3, 4, 5}
 _OPTION_LABEL_RE = re.compile(r"^\s*(?:\([A-E]\)|[A-E][\).:])\s*")
 _TOKEN_RE = re.compile(r"[^\W_]+", re.UNICODE)
-MC_ANSWER_STYLES = ("letter_only", "letter_plus_text", "text_only")
+MC_ANSWER_STYLES = ("letter_plus_text",)
+_NUMBER_WORDS_BY_DIGIT = {
+    "0": {"zero"},
+    "1": {"one"},
+    "2": {"two"},
+    "3": {"three"},
+    "4": {"four"},
+    "5": {"five"},
+    "6": {"six"},
+    "7": {"seven"},
+    "8": {"eight"},
+    "9": {"nine"},
+    "10": {"ten"},
+}
 _STOPWORDS = {
     "the", "a", "an", "and", "or", "to", "of", "in", "on", "at", "for",
     "with", "while", "what", "which", "who", "where", "when", "how", "is",
     "are", "was", "were", "be", "been", "being", "by", "from", "as", "it",
     "this", "that", "these", "those", "into", "onto", "there", "here", "his",
     "her", "their", "its", "your", "only", "answer", "option", "text",
-    "letter", "video", "scene", "frame", "frames", "question",
+    "letter", "video", "scene", "frame", "frames", "question", "can", "you",
+    "now", "currently", "current", "whether", "many", "much", "times",
+    "count", "number", "total", "far", "already", "yet", "latest",
+    "action", "perform", "performed", "specific", "type", "kind", "variety",
+    "category", "did", "does", "happen", "happened", "final", "chunk",
+    "chunks", "before", "after",
 }
-
-
 def _strip_option_label(text: str) -> str:
     return _OPTION_LABEL_RE.sub("", str(text or "")).strip()
 
@@ -210,16 +214,81 @@ def _answer_visible_in_text(answer: str, text: str, *, threshold: float) -> bool
     )
 
 
-def _recall_query_leaks_answer(card: Dict, query: Dict) -> bool:
-    """True when a recall search query exposes the target answer itself."""
+def _standalone_token_in_text(token: str, text: str) -> bool:
+    token = str(token or "").strip()
+    if not token:
+        return False
+    return re.search(rf"(?<![\w]){re.escape(token)}(?![\w])", str(text or ""), re.IGNORECASE) is not None
+
+
+def _text_leaks_answer_value(
+    card: Dict,
+    text: str,
+    *,
+    threshold: float = 0.50,
+    include_option_letter: bool = False,
+) -> bool:
+    """True when retrieval-facing text exposes the target answer itself."""
     answer = _card_answer_text(card)
     if not answer or answer.strip().lower() == "unable to answer":
         return False
-    return _answer_visible_in_text(
-        answer,
-        str((query or {}).get("query", "")),
-        threshold=0.50,
-    )
+    if _answer_visible_in_text(answer, text, threshold=threshold):
+        return True
+    answer_n = _norm_text(answer)
+    if answer_n in {"yes", "no"} and _standalone_token_in_text(answer_n, text):
+        return True
+    if re.fullmatch(r"\d+", answer_n or ""):
+        if _standalone_token_in_text(answer_n, text):
+            return True
+        for word in _NUMBER_WORDS_BY_DIGIT.get(answer_n, set()):
+            if _standalone_token_in_text(word, text):
+                return True
+    if include_option_letter and card.get("answer_form") == "multiple_choice":
+        letter, _text = _mc_correct_letter_text(card)
+        if letter and _standalone_token_in_text(letter, text):
+            return True
+    return False
+
+
+def _redact_answer_value(card: Dict, text: str) -> str:
+    answer = _card_answer_text(card)
+    out = str(text or "")
+    if not answer or answer.strip().lower() == "unable to answer":
+        return out
+    if len(str(answer).strip()) >= 2:
+        out = re.sub(re.escape(str(answer).strip()), " ", out, flags=re.IGNORECASE)
+    answer_n = _norm_text(answer)
+    if re.fullmatch(r"\d+", answer_n or ""):
+        out = re.sub(rf"(?<![\w]){re.escape(answer_n)}(?![\w])", "the target count", out)
+        for word in _NUMBER_WORDS_BY_DIGIT.get(answer_n, set()):
+            out = re.sub(rf"(?<![\w]){re.escape(word)}(?![\w])", "the target count", out, flags=re.IGNORECASE)
+    return out
+
+
+def _redact_answer_space(card: Dict, text: str) -> str:
+    """Remove target-answer and MC option surface forms from teacher context."""
+    out = _redact_answer_value(card, text)
+    if (card or {}).get("answer_form") == "multiple_choice":
+        letter, correct_text = _mc_correct_letter_text(card)
+        if letter:
+            out = re.sub(rf"(?<![\w]){re.escape(letter)}(?![\w])", "the target option", out)
+        if correct_text and len(correct_text.strip()) >= 2:
+            out = re.sub(
+                re.escape(correct_text.strip()),
+                "the target option",
+                out,
+                flags=re.IGNORECASE,
+            )
+        for opt in (card or {}).get("options") or []:
+            opt_text = _strip_option_label(opt)
+            if len(opt_text.strip()) >= 3:
+                out = re.sub(
+                    re.escape(opt_text.strip()),
+                    "an option candidate",
+                    out,
+                    flags=re.IGNORECASE,
+                )
+    return re.sub(r"\s+", " ", out).strip()
 
 
 def _memory_overlap_score(
@@ -352,21 +421,15 @@ def _mc_answer_style_for_card(card: Dict, video_id: str = "") -> str:
     """Project-wide MC target format.
 
     Keep MCQ prompts and SFT targets in the same OvO-compatible form across
-    data construction, SFT, RL rollout, and eval. The scorer remains liberal,
-    but generated supervision should be a single option letter.
+    data construction, SFT, RL rollout, and eval. The scorer remains liberal
+    and still accepts the bare option letter, but generated supervision should
+    include option text so answer tokens carry semantic grounding.
     """
-    return "letter_only"
+    return "letter_plus_text"
 
 
 def _mc_answer_instruction(style: str, options: Optional[List[str]] = None) -> str:
-    if style == "letter_only":
-        n_opts = len(list(options or []))
-        labels = [chr(ord("A") + i) for i in range(max(2, min(n_opts or 4, 26)))]
-        label_text = ", ".join(labels[:-1]) + f", or {labels[-1]}"
-        return f"Answer format: one letter only ({label_text})."
-    if style == "letter_plus_text":
-        return "Answer format: letter plus option text, e.g. A) option text."
-    return "Answer format: answer text only, no option letter."
+    return "Answer format: letter plus option text, e.g. A) option text."
 
 
 def _mc_answer_text(card: Dict, fallback: str = "", style: Optional[str] = None) -> str:
@@ -376,14 +439,12 @@ def _mc_answer_text(card: Dict, fallback: str = "", style: Optional[str] = None)
     actual answer is the canonical option. Use correct_option/options first so
     the response answers the question, then fall back to canonical_answer.
 
-    `style` controls the output protocol. If absent, keep the old text-only
-    behavior for offline tests and legacy cards.
+    MC supervision is always rendered as letter plus option text. Legacy
+    letter-only/text-only metadata is ignored here; old rows are normalized at
+    rendering time by the shared query protocol.
     """
     correct, text = _mc_correct_letter_text(card, fallback)
-    style = style or str(card.get("answer_style") or "text_only")
-    if style == "letter_only" and correct:
-        return correct
-    if style == "letter_plus_text" and correct:
+    if correct:
         return f"{correct}) {text}" if text else correct
     return text
 
@@ -449,52 +510,25 @@ async def _response_text_via_llm(card: Dict, value: str, client, video_id: str,
     return text or _response_text_for(card, value)
 
 
-def _query_keywords(question: str) -> str:
-    keywords = " ".join(
-        w.lower() for w in str(question or "").split() if len(w) > 3
-    )[:80]
-    return keywords or str(question or "").strip().lower()[:80]
-
-
-# Legacy string form (pass3 data before time_range type unification).
-_LEGACY_RECALL_TIME_RANGE_RE = re.compile(
-    r"^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$"
-)
-
-
-def _coerce_time_range_endpoints(value: object) -> Optional[tuple]:
-    """Return ``(start, end)`` floats from either form, or None if invalid.
-
-    Canonical form: ``[start, end]`` list/tuple of two numbers.
-    Legacy form: ``"start-end"`` string (kept for backward compat with
-    older pass3 data).
-    """
-    if isinstance(value, (list, tuple)) and len(value) == 2:
-        try:
-            return float(value[0]), float(value[1])
-        except (TypeError, ValueError):
-            return None
-    if isinstance(value, str):
-        m = _LEGACY_RECALL_TIME_RANGE_RE.fullmatch(value)
-        if m:
-            return float(m.group(1)), float(m.group(2))
-    return None
-
-
-def _valid_recall_time_range(value: object) -> bool:
-    """True for a valid past-time range; accepts list [s,e] or string 's-e'."""
-    pair = _coerce_time_range_endpoints(value)
-    return pair is not None and pair[1] > pair[0]
+def _recall_query_interval(query: object) -> Optional[tuple]:
+    """Return ``(start_time, end_time)`` floats from a recall-query dict."""
+    if not isinstance(query, dict):
+        return None
+    try:
+        start = float(query.get("start_time"))
+        end = float(query.get("end_time"))
+    except (TypeError, ValueError):
+        return None
+    return start, end
 
 
 def _valid_recall_query(query: Dict) -> bool:
-    return bool((query or {}).get("query")) and _valid_recall_time_range(
-        (query or {}).get("time_range")
-    )
+    pair = _recall_query_interval(query or {})
+    return pair is not None and pair[0] >= 0 and pair[1] >= pair[0]
 
 
-def _recall_range_end(value: object) -> Optional[float]:
-    pair = _coerce_time_range_endpoints(value)
+def _recall_range_end(query: object) -> Optional[float]:
+    pair = _recall_query_interval(query)
     return pair[1] if pair is not None else None
 
 
@@ -502,8 +536,8 @@ def _recall_query_available(query: Dict, current_chunk: int) -> bool:
     """Recall queries may only search observations strictly before now."""
     if not _valid_recall_query(query):
         return False
-    end = _recall_range_end((query or {}).get("time_range"))
-    return end is not None and end <= current_chunk * AGENT_CHUNK_SEC
+    end = _recall_range_end(query or {})
+    return end is not None and end < current_chunk * AGENT_CHUNK_SEC
 
 
 def _support_chunks(card: Dict) -> List[int]:
@@ -530,61 +564,36 @@ def _support_chunks_before(card: Dict, current_chunk: int) -> List[int]:
     ]
 
 
-def _grounding_time_range_before(card: Dict, current_chunk: int) -> list:
-    """Return ``[start_sec, end_sec]`` for the grounding evidence strictly
-    before ``current_chunk``. Empty list when no grounding is available.
-
-    Returns the canonical Qwen tool_call form (``list[int, int]``);
-    callers / parsers that previously emitted the legacy ``"start-end"``
-    string accept either via parse_recall_query_response.
-    """
+def _grounding_recall_args_before(card: Dict, current_chunk: int) -> Dict:
+    """Return recall tool args for grounding evidence strictly before now."""
     grounding = _support_chunks_before(card, current_chunk)
     if not grounding:
-        return []
-    tr_start = int(min(grounding) * AGENT_CHUNK_SEC)
-    tr_end = int((max(grounding) + 1) * AGENT_CHUNK_SEC)
-    return [tr_start, tr_end]
+        return {}
+    start_time = int(min(grounding) * AGENT_CHUNK_SEC)
+    end_time = int(max(grounding) * AGENT_CHUNK_SEC)
+    return {"start_time": start_time, "end_time": end_time}
 
 
 def _hld_recall_query_for(card: Dict, current_chunk: int) -> Dict:
-    """Recall query for HLD/Unable cases.
+    """Recall request for HLD/Unable cases.
 
-    HLD recall is an evidence check, not a search for the answer value. The
-    query includes the requested target plus broad scene anchors so retrieval can
-    return representative historical observations for verifying absence.
+    Recall is time-range only. HLD recall is an evidence check over older frames,
+    not a lexical search for the missing target. Unlike answerable recall,
+    HLD must check all previous context because the gold target is absence.
     """
-    time_range = _grounding_time_range_before(card, current_chunk)
-    if not time_range:
-        end_s = max(0, int(current_chunk * AGENT_CHUNK_SEC))
-        time_range = [0, end_s] if end_s > 0 else []
-    banned = {
-        "what", "which", "where", "when", "color", "material", "many",
-        "video", "unable", "answer", "option", "did", "leave", "close",
-        "open", "before", "after",
+    if int(current_chunk) <= 0:
+        return {}
+    return {
+        "start_time": 0,
+        "end_time": int((int(current_chunk) - 1) * AGENT_CHUNK_SEC),
     }
-    target_terms = [t for t in _tokens(card.get("question", "")) if t not in banned]
-    terms = (target_terms[:3] + ["visible", "objects", "scene"])[:5]
-    return {"query": " ".join(terms), "time_range": time_range}
 
 
 def _recall_query_for(card: Dict, current_chunk: int) -> Dict:
-    """Build recall_query (synchronous fast path).
-
-    Returns card.recall_query if pre-generated, else heuristic.
-    """
+    """Build the time-range-only recall request for pass3c."""
     if _is_unanswerable_card(card):
         return _hld_recall_query_for(card, current_chunk)
-    if (
-        card.get("question_type") != "multi_emit"
-        and card.get("recall_query")
-        and _recall_query_available(card["recall_query"], current_chunk)
-        and not _recall_query_leaks_answer(card, card["recall_query"])
-    ):
-        return card["recall_query"]
-    time_range = _grounding_time_range_before(card, current_chunk)
-    q = card.get("question", "")
-    keywords = _query_keywords(q)
-    return {"query": keywords, "time_range": time_range}
+    return _grounding_recall_args_before(card, current_chunk)
 
 
 def _repair_recall_query_for_response(
@@ -598,18 +607,13 @@ def _repair_recall_query_for_response(
     placements with support in the past and outside the visual window. This
     helper repairs stale LLM/cache query ranges by rebuilding from support.
     """
-    if (
-        _recall_query_available(query, current_chunk)
-        and not _recall_query_leaks_answer(card, query)
-    ):
-        return query
+    if _recall_query_available(query, current_chunk):
+        return {
+            "start_time": (query or {}).get("start_time"),
+            "end_time": (query or {}).get("end_time"),
+        }
     repaired = _recall_query_for(card, current_chunk)
-    if (
-        _recall_query_available(repaired, current_chunk)
-        and not _recall_query_leaks_answer(card, repaired)
-    ):
-        return repaired
-    return {}
+    return repaired if _recall_query_available(repaired, current_chunk) else {}
 
 
 def _recall_wait_query_for(card: Dict, chunk_idx: int) -> Dict:
@@ -617,53 +621,84 @@ def _recall_wait_query_for(card: Dict, chunk_idx: int) -> Dict:
 
     This deliberately ignores card.recall_query / grounding_frames because
     those point to the future answer evidence. At a real streaming timestep
-    the student cannot know that future range. The query searches only the
-    already elapsed history up to the current chunk; an empty result teaches
-    "keep waiting", not "answer from future".
+    the student cannot know that future range. The query searches only history
+    before the current 8s visual window. The tool still returns only the
+    canonical 4s recall payload; an empty result teaches "keep waiting", not
+    "answer from future".
     """
-    end_s = max(0, int(chunk_idx * AGENT_CHUNK_SEC))
-    return {
-        "query": _query_keywords(card.get("question", "")),
-        "time_range": [0, end_s] if end_s > 0 else [],
-    }
+    visual_start_chunk = max(
+        0,
+        int(chunk_idx) - int(VISUAL_WINDOW_CHUNKS) + 1,
+    )
+    return (
+        {
+            "start_time": 0,
+            "end_time": int((visual_start_chunk - 1) * AGENT_CHUNK_SEC),
+        }
+        if visual_start_chunk > 0
+        else {}
+    )
 
 
-async def _recall_query_via_llm(card: Dict, client, video_id: str,
-                                  chunk_idx: int) -> Dict:
-    """397B-driven recall_query. Caches result on card so we don't re-call."""
-    if card.get("question_type") == "multi_emit":
-        # Cumulative/status multi-emit recall depends on the current probe
-        # chunk. A card-level cached teacher query can be too narrow for later
-        # probes, so use the deterministic current-chunk range.
-        return _recall_query_for(card, chunk_idx)
-    if (
-        card.get("recall_query")
-        and _recall_query_available(card["recall_query"], chunk_idx)
-        and not _recall_query_leaks_answer(card, card["recall_query"])
-    ):
-        return card["recall_query"]
-    prompt = recall_query_prompt(card, current_chunk=chunk_idx, mode="answer")
-    cfg = PASS_CONFIG.get("pass3c_recall_query", PASS_CONFIG.get("pass3c", {}))
-    fallback_tr = _grounding_time_range_before(card, chunk_idx)
-    try:
-        raw = await client._call_one(
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=int(cfg.get("max_tokens", 4096)),
-            temperature=float(cfg.get("temperature", 0.3)),
-            request_id=f"{video_id}_3c_rq_{card.get('card_id','?')}_{chunk_idx}",
-            enable_thinking=cfg.get("thinking", False),
-        )
-    except Exception as exc:
-        logger.warning(f"[{video_id}] 3c recall_query LLM failed: {exc}")
-        return _recall_query_for(card, chunk_idx)
-    rq = parse_recall_query_response(raw or "", fallback_time_range=fallback_tr)
-    if (
-        not _recall_query_available(rq, chunk_idx)
-        or _recall_query_leaks_answer(card, rq)
-    ):
-        return _recall_query_for(card, chunk_idx)
-    card["recall_query"] = rq      # cache for re-use within trajectory
-    return rq
+def _recall_archive_before(rollout: Dict, current_chunk: Optional[int]) -> List[Dict]:
+    archive: List[Dict] = []
+    for t in (rollout or {}).get("thinks", []):
+        try:
+            ci = int(t.get("chunk_idx", t.get("chunk", -1)))
+        except (AttributeError, TypeError, ValueError):
+            continue
+        if ci < 0:
+            continue
+        if current_chunk is not None and ci >= int(current_chunk):
+            continue
+        text = str(t.get("think", t.get("text", "")) or "").strip()
+        if not text:
+            continue
+        archive.append({
+            "chunk": ci,
+            "time": f"{int(ci * AGENT_CHUNK_SEC)}-"
+                    f"{int((ci + 1) * AGENT_CHUNK_SEC)}",
+            "text": text,
+        })
+    return archive
+
+
+def _archive_text_for_chunks(archive: List[Dict], chunks: List[int]) -> str:
+    by_chunk = {int(item.get("chunk", -1)): item for item in archive}
+    lines: List[str] = []
+    for c in chunks:
+        item = by_chunk.get(int(c))
+        if not item:
+            continue
+        lines.append(f"[{item.get('time', '')}] {item.get('text', '')}")
+    return "\n".join(lines)
+
+
+def _recall_chunks_for_request(
+    rollout: Dict,
+    recall_query: Optional[Dict],
+    current_chunk: Optional[int],
+) -> List[int]:
+    """Return time-range-only recall chunks, uniformly sampled to 8 frames."""
+    tr = _recall_query_interval(recall_query or {})
+    if tr is None:
+        return []
+    start_s, end_s = tr
+    if end_s < start_s:
+        return []
+    candidates: List[int] = []
+    for item in _recall_archive_before(rollout or {}, current_chunk):
+        try:
+            ci = int(item.get("chunk"))
+        except (TypeError, ValueError):
+            continue
+        c_time = ci * float(AGENT_CHUNK_SEC)
+        if start_s <= c_time <= end_s:
+            candidates.append(ci)
+    return select_recall_chunks_uniform(
+        candidates,
+        max_chunks=RECALL_RETURN_CHUNKS,
+    )
 
 
 def _parse_json_candidates(raw: str) -> List[Dict]:
@@ -797,10 +832,9 @@ Rules:
 - grounding_frames must be the minimal historical chunk indices needed to
   verify the answer; every index must appear in historical_evidence and be
   before c{int(current_chunk)}.
-- recall_query.query must contain search keywords only, not the answer value
-  or any correct-option text. If the question asks for exact OCR/number/color/
-  state/count, query for the surrounding object/action/location instead of
-  that target value. Use neutral anchors from the question/event.
+- recall uses only start_time/end_time. Do not generate keyword queries; the
+  tool will uniformly sample returned frames from the requested historical
+  interval.
 - Use compact closed-form video-QA wording. Prefer short, user-facing questions
   with natural event anchors such as before/after/while/when rather than
   internal chunks or long setup text.
@@ -820,8 +854,7 @@ candidate objects, best candidate first:
   {{
     "question": "...",
     "canonical_answer": "...",{options_doc}
-    "grounding_frames": [int, ...],
-    "recall_query": {{"query": "3-6 keywords", "time_range": [start, end]}}
+    "grounding_frames": [int, ...]
   }}
 ]"""
 
@@ -853,11 +886,8 @@ def _candidate_to_recall_card(
 
     def default_recall_query() -> Dict:
         return {
-            "query": _query_keywords(question),
-            "time_range": [
-                int(min(grounding) * AGENT_CHUNK_SEC),
-                int((max(grounding) + 1) * AGENT_CHUNK_SEC),
-            ],
+            "start_time": int(min(grounding) * AGENT_CHUNK_SEC),
+            "end_time": int(max(grounding) * AGENT_CHUNK_SEC),
         }
 
     out = deepcopy(original)
@@ -908,11 +938,13 @@ def _candidate_to_recall_card(
     rq = candidate.get("recall_query") or {}
     if not isinstance(rq, dict):
         rq = {}
-    if (
-        not _valid_recall_query(rq)
-        or _answer_visible_in_text(answer_text, str(rq.get("query", "")), threshold=0.50)
-    ):
+    if not _valid_recall_query(rq):
         rq = default_recall_query()
+    else:
+        rq = {
+            "start_time": rq.get("start_time"),
+            "end_time": rq.get("end_time"),
+        }
     out["recall_query"] = rq
     out["recall_hardened"] = True
     out["recall_hardened_from_card_id"] = original.get("card_id", "")
@@ -956,8 +988,6 @@ def _validate_hardened_recall_card(
     rq = card.get("recall_query") or {}
     if not _recall_query_available(rq, int(current_chunk)):
         return False, "bad_recall_query_time"
-    if _answer_visible_in_text(answer, str(rq.get("query", "")), threshold=0.50):
-        return False, "recall_query_leaks_answer"
     return True, "pass"
 
 
@@ -1260,60 +1290,20 @@ def _recall_result_for(
     current_chunk: Optional[int] = None,
     recall_query: Optional[Dict] = None,
 ) -> Dict:
-    """Build a recall_result matching the old pass3c noise vocabulary.
+    """Build a recall result from the explicit time range.
 
-    noise_kind ∈ {oracle, noisy, not_yet, failure}.
-    Production data uses oracle/noisy/not_yet; failure is legacy diagnostic.
+    ``noise_kind`` is retained for placement metadata, but retrieval itself no
+    longer injects distractors: the tool returns uniform chunks from the
+    requested window only.
     """
-    def _archive_before_now() -> List[Dict]:
-        archive = []
-        for t in rollout.get("thinks", []):
-            try:
-                ci = int(t.get("chunk_idx", t.get("chunk", -1)))
-            except (TypeError, ValueError):
-                continue
-            if ci < 0:
-                continue
-            if current_chunk is not None and ci >= int(current_chunk):
-                continue
-            text = str(t.get("think", t.get("text", "")) or "").strip()
-            if not text:
-                continue
-            archive.append({
-                "chunk": ci,
-                "time": f"{int(ci * AGENT_CHUNK_SEC)}-"
-                        f"{int((ci + 1) * AGENT_CHUNK_SEC)}",
-                "text": text,
-            })
-        return archive
-
-    def _archive_text_for_chunks(archive: List[Dict], chunks: List[int]) -> str:
-        by_chunk = {int(item.get("chunk", -1)): item for item in archive}
-        lines = []
-        for c in chunks:
-            item = by_chunk.get(int(c))
-            if not item:
-                continue
-            lines.append(f"[{item.get('time', '')}] {item.get('text', '')}")
-        return "\n".join(lines)
-
     if current_chunk is None:
         grounding = _support_chunks(card)
     else:
         grounding = _support_chunks_before(card, int(current_chunk))
     absence_check = _is_unanswerable_card(card)
+    archive = _recall_archive_before(rollout, current_chunk)
     if noise_kind == "not_yet":
-        archive = _archive_before_now()
-        retrieved = bm25_retrieve(
-            recall_query or {},
-            archive,
-            max_results=RECALL_RETURN_CHUNKS,
-        )
-        chunks = select_recall_chunks(retrieved.get("returned_chunks") or [])
-        if not chunks and archive:
-            chunks = select_recall_chunks(
-                [item["chunk"] for item in archive[-RECALL_RETURN_CHUNKS:]]
-            )
+        chunks = _recall_chunks_for_request(rollout, recall_query or {}, current_chunk)
         if not chunks:
             return {
                 "source": "failure",
@@ -1324,7 +1314,7 @@ def _recall_result_for(
         tr_text = recall_time_string_for_chunks(chunks)
         return {
             "source": "historical_frames",
-            "text_content": retrieved.get("text_content") or (
+            "text_content": _archive_text_for_chunks(archive, chunks) or (
                 f"Retrieved {len(chunks) * FRAMES_PER_CHUNK} historical frames "
                 f"from t={tr_text}s; they do not contain enough evidence to "
                 "answer the pending question yet."
@@ -1340,41 +1330,11 @@ def _recall_result_for(
             "returned_chunks": [],
             "time": "",
         }
-    chunks: List[int] = []
-    text_content = ""
-    if _valid_recall_query(recall_query or {}):
-        archive = _archive_before_now()
-        retrieved = bm25_retrieve(
-            recall_query or {},
-            archive,
-            max_results=RECALL_RETURN_CHUNKS,
-        )
-        chunks = select_recall_chunks(retrieved.get("returned_chunks") or [])
-        text_content = retrieved.get("text_content", "")
+    chunks = _recall_chunks_for_request(rollout, recall_query or {}, current_chunk)
+    text_content = _archive_text_for_chunks(archive, chunks)
 
-    # Fallback preserves answerable recall samples when the teacher query text
-    # does not lexically match the pass2 memory even though gold support exists.
-    if not chunks:
-        chunks = sorted(int(c) for c in grounding)
-        text_content = _archive_text_for_chunks(_archive_before_now(), chunks)
-    elif grounding and not any(int(c) in set(int(g) for g in grounding) for c in chunks):
-        # For SFT, a successful recall turn must return the answer support,
-        # not merely any lexical neighbor. BM25 can retrieve a distractor when
-        # the query is underspecified, so snap back to the grounded chunks.
-        chunks = sorted(int(c) for c in grounding)
-        text_content = _archive_text_for_chunks(_archive_before_now(), chunks)
-
-    if noise_kind == "noisy":
-        # Inject a distractor chunk near grounding
-        max_c = max(0, int(rollout.get("num_chunks", 1)) - 1)
-        if current_chunk is not None:
-            max_c = min(max_c, max(0, int(current_chunk) - 1))
-        distractor = min(chunks[-1] + 5, max_c)
-        if len(chunks) >= RECALL_RETURN_CHUNKS:
-            chunks = chunks[:max(0, RECALL_RETURN_CHUNKS - 1)] + [distractor]
-        else:
-            chunks = chunks + [distractor]
-    chunks = select_recall_chunks(chunks)
+    chunks = select_recall_chunks_uniform(chunks)
+    text_content = _archive_text_for_chunks(archive, chunks)
     if not chunks:
         return {
             "source": "failure",
@@ -1423,7 +1383,7 @@ def _silent_sample(
     sequence_type: str = "", base_role: str = "active_silent",
     sample_subtype: str = "silent", user_input: str = "",
 ) -> Dict:
-    """Plain silent sample (silent / patrol).
+    """Plain silent sample.
 
     recall_silent uses _recall_silent_multiturn_sample so the model sees the
     recall tool call and the no-match result before staying silent.
@@ -1453,14 +1413,243 @@ def _silent_sample(
     }
 
 
+_COMPACT_M_LINE_RE = re.compile(
+    r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>(.*?)</m>',
+    re.DOTALL | re.IGNORECASE,
+)
+
+
+def _compact_safe_text(value: Any) -> str:
+    return html.escape(str(value or "").strip(), quote=False)
+
+
+def _compact_range_from_item(item: Dict[str, Any]) -> Optional[Tuple[int, int]]:
+    chunks = item.get("source_chunks") or item.get("chunks") or []
+    if isinstance(chunks, Sequence) and not isinstance(chunks, (str, bytes)) and chunks:
+        try:
+            vals = sorted(int(c) for c in chunks)
+            return vals[0], vals[-1]
+        except (TypeError, ValueError):
+            pass
+    tr = item.get("time_range") or item.get("time") or []
+    if isinstance(tr, Sequence) and not isinstance(tr, (str, bytes)) and len(tr) >= 2:
+        try:
+            start = int(tr[0])
+            end = int(tr[1])
+        except (TypeError, ValueError):
+            return None
+        if end > start:
+            # Legacy pass2 stores compressed ranges as half-open chunk ranges.
+            end -= 1
+        return start, max(start, end)
+    return None
+
+
+def _compact_segments_to_mlines(segments: Sequence[Dict[str, Any]]) -> str:
+    lines: List[str] = []
+    for seg in segments or []:
+        if not isinstance(seg, dict):
+            continue
+        rng = _compact_range_from_item(seg)
+        text = _compact_safe_text(seg.get("text") or seg.get("summary") or seg.get("think"))
+        if rng is None or not text:
+            continue
+        start, end = rng
+        lines.append(f'<m t="{start}-{end}">{text}</m>')
+    return "\n".join(lines)
+
+
+def _compact_chunks_from_event(compress_event: Dict[str, Any]) -> List[int]:
+    summary = compress_event.get("summary") or {}
+    for key in (
+        "compressed_raw_think_chunks",
+        "compressed_source_chunks",
+        "compressed_thinks_chunks",
+        "selected_indices",
+    ):
+        vals = compress_event.get(key) or []
+        if vals:
+            try:
+                return sorted(set(int(c) for c in vals))
+            except (TypeError, ValueError):
+                pass
+    vals = summary.get("source_chunks") or []
+    if vals:
+        try:
+            return sorted(set(int(c) for c in vals))
+        except (TypeError, ValueError):
+            pass
+    tr = summary.get("time_range") or []
+    if isinstance(tr, Sequence) and not isinstance(tr, (str, bytes)) and len(tr) >= 2:
+        try:
+            start, end = int(tr[0]), int(tr[1])
+            return list(range(start, max(start, end)))
+        except (TypeError, ValueError):
+            pass
+    return []
+
+
+def _compact_snapshot_for_event(
+    rollout: Dict[str, Any],
+    trigger_chunk: int,
+    *,
+    post: bool,
+) -> Dict[str, Any]:
+    snapshots = rollout.get("snapshots") or {}
+    keys = [trigger_chunk + 1, trigger_chunk] if post else [trigger_chunk, trigger_chunk - 1]
+    for key in keys:
+        snap = snapshots.get(key) or snapshots.get(str(key))
+        if isinstance(snap, dict):
+            return snap
+    if post and isinstance(rollout.get("final_memory"), dict):
+        return rollout["final_memory"]
+    return {}
+
+
+def _compact_event_summary_segment(compress_event: Dict[str, Any]) -> Dict[str, Any]:
+    summary = dict(compress_event.get("summary") or {})
+    chunks = _compact_chunks_from_event(compress_event)
+    if chunks:
+        summary["source_chunks"] = chunks
+        summary["time_range"] = [min(chunks), max(chunks) + 1]
+    return summary
+
+
+def _compact_post_memory_text(
+    rollout: Dict[str, Any],
+    compress_event: Dict[str, Any],
+    trigger_chunk: int,
+) -> str:
+    post_snapshot = _compact_snapshot_for_event(rollout, trigger_chunk, post=True)
+    mem_text = _compact_segments_to_mlines(post_snapshot.get("compressed_segments") or [])
+    if mem_text:
+        return mem_text
+
+    pre_snapshot = _compact_snapshot_for_event(rollout, trigger_chunk, post=False)
+    segments = list(pre_snapshot.get("compressed_segments") or [])
+    segments.append(_compact_event_summary_segment(compress_event))
+    return _compact_segments_to_mlines(segments)
+
+
+def _compact_caption_block(rollout: Dict[str, Any], chunks: Sequence[int]) -> str:
+    thinks: Dict[int, str] = {}
+    for item in rollout.get("thinks") or []:
+        try:
+            chunk = int(item.get("chunk_idx", item.get("chunk")))
+        except (AttributeError, TypeError, ValueError):
+            continue
+        text = str(item.get("think") or item.get("text") or "").strip()
+        if text:
+            thinks[chunk] = text
+    lines = []
+    for chunk in sorted(set(int(c) for c in chunks)):
+        text = _compact_safe_text(thinks.get(chunk, ""))
+        if text:
+            lines.append(f'  <c t="{chunk}">{text}</c>')
+    return "\n".join(lines)
+
+
+def _compact_memory_update_input(
+    rollout: Dict[str, Any],
+    compress_event: Dict[str, Any],
+    trigger_chunk: int,
+) -> str:
+    chunks = _compact_chunks_from_event(compress_event)
+    if chunks:
+        start, end = min(chunks), max(chunks)
+    else:
+        start = end = int(trigger_chunk)
+    pre_snapshot = _compact_snapshot_for_event(rollout, trigger_chunk, post=False)
+    old_lines = _compact_segments_to_mlines(pre_snapshot.get("compressed_segments") or [])
+    old_body = f"  {old_lines.replace(chr(10), chr(10) + '  ')}" if old_lines else ""
+    caption_body = _compact_caption_block(rollout, chunks) or "  (no source captions found in pass2 rollout)"
+    return (
+        "OLD_MEMORY:\n"
+        "<MEM>\n"
+        f"{old_body}\n"
+        "</MEM>\n\n"
+        "NEW_CAPTIONS:\n"
+        "<NEW_CAPTIONS>\n"
+        f"{caption_body}\n"
+        "</NEW_CAPTIONS>\n\n"
+        f"Covered latest span: t={start}-{end}\n"
+        "Coverage check: preserve useful OLD_MEMORY and cover the listed "
+        "NEW_CAPTIONS using their real timestamps.\n"
+        "Return only compact-memory XML lines:\n"
+        '<m t="start-end">one concise event or state.</m>\n'
+        "Do not output NEW_MEMORY:, markdown, prose, analysis, or any text "
+        "outside the <m> lines."
+    )
+
+
+def _compact_entries_from_mlines(mem_text: str) -> List[Dict[str, Any]]:
+    entries: List[Dict[str, Any]] = []
+    for match in _COMPACT_M_LINE_RE.finditer(mem_text or ""):
+        start = int(match.group(1))
+        end = int(match.group(2) if match.group(2) is not None else match.group(1))
+        text = html.unescape(re.sub(r"\s+", " ", match.group(3)).strip())
+        if text:
+            entries.append({
+                "t": f"{start}-{end}",
+                "time_range": [start, end],
+                "source_chunks": list(range(start, end + 1)),
+                "text": text,
+            })
+    return entries
+
+
+def _legacy_compact_sample_from_rollout(
+    chunk_idx: int,
+    queries: List[Dict],
+    trajectory_id: str,
+    compress_event: Dict,
+    rollout: Optional[Dict],
+) -> Optional[Dict]:
+    if not rollout:
+        return None
+    try:
+        trigger_chunk = int(compress_event.get("trigger_chunk", chunk_idx))
+    except (TypeError, ValueError):
+        trigger_chunk = int(chunk_idx)
+    mem_text = _compact_post_memory_text(rollout, compress_event, trigger_chunk).strip()
+    if not mem_text:
+        return None
+    chunks = sorted({
+        chunk
+        for entry in _compact_entries_from_mlines(mem_text)
+        for chunk in entry.get("source_chunks", [])
+    })
+    update_input = _compact_memory_update_input(rollout, compress_event, trigger_chunk)
+    return {
+        "chunk_idx": chunk_idx,
+        "sample_type": "compress",
+        "prompt_type": "SYSTEM_PROMPT",
+        "trajectory_id": trajectory_id,
+        "card_id": "",
+        "sequence_type": "compress_event",
+        "action": "compress",
+        "output": mem_text,
+        "queries": deepcopy(queries),
+        "user_input": "",
+        "memory_update_input": update_input,
+        "recall_result": None,
+        "base_role": "compress_action",
+        "inter_chunk": True,
+        "gold_caption": mem_text,
+        "gold_compress_chunks": chunks or _compact_chunks_from_event(compress_event),
+        "gold_memory_entries": _compact_entries_from_mlines(mem_text),
+        "memory_update_mode": "compact_mem",
+    }
+
+
 def _compress_sample(
     chunk_idx: int, think: str, queries: List[Dict],
-    trajectory_id: str, compress_event: Dict,
+    trajectory_id: str, compress_event: Dict, *, rollout: Optional[Dict] = None,
 ) -> Dict:
     """Compact-memory update sample from a pass2 compression event.
 
     New data treats memory compaction as a standalone text-only system turn:
-    user(old memory + recent captions) -> assistant(<MEM>...</MEM>).
+    user(old memory + recent captions) -> assistant(bare <m> lines).
     It is no longer a streaming tool_call or a <stage:compress> turn.
     """
     summary = compress_event.get("summary", {}) or {}
@@ -1472,8 +1661,15 @@ def _compress_sample(
          or []))
     mem_text = (summary.get("text") or "").strip()
     if summary.get("compact_memory_update") or mem_text.startswith("<MEM>") or summary.get("entries"):
-        if not mem_text.startswith("<MEM>"):
-            lines = ["<MEM>"]
+        m_lines = re.findall(
+            r'<m\s+t="[^"]+"\s*>.*?</m>',
+            mem_text,
+            flags=re.DOTALL | re.IGNORECASE,
+        )
+        if m_lines:
+            mem_text = "\n".join(line.strip() for line in m_lines)
+        else:
+            lines = []
             for entry in summary.get("entries") or []:
                 etr = entry.get("time_range") or []
                 if not (isinstance(etr, list) and len(etr) == 2):
@@ -1481,7 +1677,6 @@ def _compress_sample(
                 lines.append(
                     f'  <m t="{int(etr[0])}-{int(etr[1])}">{str(entry.get("text", "")).strip()}</m>'
                 )
-            lines.append("</MEM>")
             mem_text = "\n".join(lines)
         return {
             "chunk_idx": chunk_idx,
@@ -1503,6 +1698,15 @@ def _compress_sample(
             "gold_memory_entries": deepcopy(summary.get("entries") or []),
             "memory_update_mode": "compact_mem",
         }
+    legacy_compact = _legacy_compact_sample_from_rollout(
+        chunk_idx,
+        queries,
+        trajectory_id,
+        compress_event,
+        rollout,
+    )
+    if legacy_compact is not None:
+        return legacy_compact
     if isinstance(tr, list) and len(tr) == 2:
         tr0, tr1 = int(tr[0]), int(tr[1])
     elif chunks:
@@ -1569,11 +1773,512 @@ def _response_sample(
     }
 
 
+def _recall_text_hint(card: Dict, recall_result: Dict, *, max_words: int = 18) -> str:
+    """Extract a short non-answer visual anchor from internal recall text."""
+    text = str(
+        (recall_result or {}).get("text_content")
+        or (recall_result or {}).get("text")
+        or ""
+    )
+    if not text:
+        return ""
+    text = re.sub(r"\[[^\]]{0,40}\]", " ", text)
+    text = re.sub(
+        r"\bt\s*=\s*\d+(?:\.\d+)?(?:\s*-\s*\d+(?:\.\d+)?)?\s*s?",
+        " ",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = _redact_answer_value(card, text)
+    text = re.sub(r"\s+", " ", text).strip()
+    if not text or _text_leaks_answer_value(card, text, threshold=0.45):
+        return ""
+    candidates = re.split(r"(?<=[.!?])\s+|;\s+|\n+", text)
+    for cand in candidates:
+        cand = re.sub(r"\s+", " ", cand).strip(" .")
+        if len(cand) < 12:
+            continue
+        if _text_leaks_answer_value(card, cand, threshold=0.45):
+            continue
+        words = cand.split()
+        return " ".join(words[:max_words]).strip(" .,;:")
+    return ""
+
+
+_POST_RECALL_META_DECISION_RE = re.compile(
+    r"\b(?:the\s+)?(?:final\s+)?(?:correct\s+)?(?:answer|option|choice)\s*"
+    r"(?:is|would be|should be|:)\s*(?:option\s+)?[A-E]\b|"
+    r"\b(?:choose|select|pick)\s+(?:option\s+)?[A-E]\b",
+    re.IGNORECASE,
+)
+
+
+def _capitalize_sentence_start(text: str) -> str:
+    for idx, ch in enumerate(text):
+        if ch.isalpha():
+            return text[:idx] + ch.upper() + text[idx + 1:]
+    return text
+
+
+_POST_RECALL_SOURCE_SUBJECT_RE = re.compile(
+    r"^\s*(?:the\s+)?(?:recalled|retrieved|returned|old|historical|earlier)\s+"
+    r"(?:frames?|window|chunks?|visuals?|visual\s+window|evidence)\s+"
+    r"(?:show|shows|display|displays|reveal|reveals|contain|contains|"
+    r"depict|depicts|include|includes|indicate|indicates)\b|"
+    r"^\s*(?:the\s+)?frames?\s+"
+    r"(?:show|shows|display|displays|reveal|reveals|contain|contains|"
+    r"depict|depicts|include|includes|indicate|indicates)\b|"
+    r"\b(?:tool|recall)\s+(?:result|response|output)\b",
+    re.IGNORECASE,
+)
+
+_POST_RECALL_SOURCE_TERM_RE = re.compile(
+    r"\b(?:recalled|retrieved|returned|old|historical)\s+"
+    r"(?:frames?|window|chunks?|visuals?|visual\s+window|evidence)\b|"
+    r"\brecall(?:ed|ing)?\b",
+    re.IGNORECASE,
+)
+
+
+def _strip_safe_post_recall_source_wrappers(text: str) -> str:
+    """Remove only wrappers that leave a complete teacher sentence intact."""
+    out = str(text or "").strip()
+    prefix_patterns = [
+        r"^\s*(?:in|within|from)\s+(?:the\s+)?"
+        r"(?:recalled|retrieved|returned|old|historical|earlier)\s+"
+        r"(?:frames?|window|chunks?|visuals?|visual\s+window|evidence)\s*,\s*",
+        r"^\s*after\s+(?:checking|viewing|seeing)\s+(?:the\s+)?"
+        r"(?:recalled|retrieved|returned|old|historical|earlier)\s+"
+        r"(?:frames?|window|chunks?|visuals?|visual\s+window|evidence)\s*,\s*",
+    ]
+    suffix_patterns = [
+        r"\s+(?:in|within|from)\s+(?:the\s+)?"
+        r"(?:recalled|retrieved|returned|old|historical|earlier)\s+"
+        r"(?:frames?|window|chunks?|visuals?|visual\s+window|evidence)[.!?]?\s*$",
+        r"\s+as\s+seen\s+in\s+(?:the\s+)?"
+        r"(?:recalled|retrieved|returned|old|historical|earlier)\s+"
+        r"(?:frames?|window|chunks?|visuals?|visual\s+window|evidence)[.!?]?\s*$",
+    ]
+    for pattern in prefix_patterns:
+        out = re.sub(pattern, "", out, flags=re.IGNORECASE).strip(" ,;:")
+    for pattern in suffix_patterns:
+        out = re.sub(pattern, "", out, flags=re.IGNORECASE).strip(" ,;:")
+    out = re.sub(r"\s+", " ", out).strip(" ,;:")
+    return _capitalize_sentence_start(out.strip())
+
+
+def _has_post_recall_source_framing(text: str) -> bool:
+    out = str(text or "")
+    return bool(
+        _POST_RECALL_SOURCE_SUBJECT_RE.search(out)
+        or _POST_RECALL_SOURCE_TERM_RE.search(out)
+    )
+
+
+def _extract_jsonish_post_recall_text(text: str) -> str:
+    """Best-effort salvage for teachers that wrap the sentence in JSON."""
+    stripped = str(text or "").strip()
+    if not stripped or stripped[0] not in "{[":
+        return stripped
+    try:
+        parsed = json.loads(stripped)
+    except Exception:
+        return stripped
+    stack = [parsed]
+    preferred = {
+        "sentence",
+        "observation",
+        "visual_observation",
+        "visual_fact",
+        "thought",
+        "think",
+        "text",
+    }
+    fallback = ""
+    while stack:
+        item = stack.pop(0)
+        if isinstance(item, dict):
+            for key in preferred:
+                value = item.get(key)
+                if isinstance(value, str) and value.strip():
+                    return value.strip()
+            for value in item.values():
+                if isinstance(value, str) and value.strip() and not fallback:
+                    fallback = value.strip()
+                elif isinstance(value, (dict, list)):
+                    stack.append(value)
+        elif isinstance(item, list):
+            stack.extend(item)
+        elif isinstance(item, str) and item.strip() and not fallback:
+            fallback = item.strip()
+    return fallback or stripped
+
+
+def _clean_post_recall_think(raw: str, card: Dict) -> str:
+    text = str(raw or "").strip()
+    if not text:
+        return ""
+    text = text.replace("```json", "```")
+    if text.startswith("```") and text.count("```") >= 2:
+        text = text.split("```", 2)[1].strip()
+    text = _extract_jsonish_post_recall_text(text)
+    text = re.sub(r"</?think>", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"</?response>|</?answer>|</?silent>", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"<tool_call>.*?</tool_call>", "", text, flags=re.IGNORECASE | re.DOTALL)
+    text = re.sub(r"<MEM>.*?</MEM>", "", text, flags=re.IGNORECASE | re.DOTALL)
+    text = re.sub(r"^\s*(?:thought|analysis|observation|result)\s*:\s*", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"</?(?:Response|Silence|answer|response|silent)>", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\s+", " ", text).strip(" \"'`")
+    if not text:
+        return ""
+    if re.search(r"<tool_call|</?MEM\b", text, re.IGNORECASE):
+        return ""
+    first = re.split(r"(?<=[.!?])\s+", text, maxsplit=1)[0].strip()
+    first = _strip_safe_post_recall_source_wrappers(first)
+    if not first:
+        return ""
+    if _has_post_recall_source_framing(first):
+        return ""
+    if _POST_RECALL_META_DECISION_RE.search(first):
+        return ""
+    if not re.search(r"[.!?]$", first):
+        first += "."
+    return first
+
+
+def _post_recall_think_prompt(
+    card: Dict,
+    recall_query: Dict,
+    recall_result: Dict,
+    *,
+    action: str,
+    template_id: int = 0,
+    retry_feedback: str = "",
+    response: str = "",
+) -> str:
+    question = str((card or {}).get("question") or "").strip()
+    options = list((card or {}).get("options") or [])
+    options_doc = "\n".join(str(opt).strip() for opt in options if str(opt).strip())
+    if not options_doc:
+        options_doc = "None"
+    recall_window = {
+        "start_time": (recall_query or {}).get("start_time"),
+        "end_time": (recall_query or {}).get("end_time"),
+    }
+    retrieved_text = str(
+        (recall_result or {}).get("text_content")
+        or (recall_result or {}).get("text")
+        or ""
+    )
+    chunks = ", ".join(str(c) for c in (recall_result or {}).get("returned_chunks") or [])
+    if not retrieved_text:
+        retrieved_text = "No textual summary is available; only visual segment metadata is available."
+    if action == "response":
+        target_text = _card_answer_text(card or {})
+        target_doc = (
+            "\nTeacher-only response target for alignment: "
+            f"{str(response or '').strip() or target_text}"
+        )
+        if target_text and target_text != str(response or "").strip():
+            target_doc += f" ({target_text})"
+        target_doc += (
+            "\nUse the target only to choose which visual fact to "
+            "describe; do not write a meta answer decision."
+        )
+        mode_rule = (
+            "The next assistant turn will answer separately. Your sentence should state "
+            "the visual fact that supports that answer."
+        )
+    else:
+        target_doc = ""
+        mode_rule = (
+            "The next assistant turn will stay silent because this old window does not "
+            "settle the active query."
+        )
+    template = int(template_id or 0) % 3
+    if template == 1:
+        task_doc = """Write the assistant's direct local visual observation.
+
+This sentence should sound like a concise visual note, not a generic
+explanation of which tool was used."""
+        style_doc = """- Mention a visible actor/object/action/context from the visual content.
+- If the content is insufficient, state the missing visual fact directly."""
+    elif template == 2:
+        task_doc = """Write a one-sentence bridge from visual observation to the next action.
+
+The bridge should summarize the visual information objectively. The
+final answer will be inserted separately after the response token."""
+        style_doc = """- Use concrete scene details from the visual notes when available.
+- For response turns, include the answer-relevant visual fact if it is visible."""
+    else:
+        task_doc = """Write one short visual thought for a streaming video agent."""
+        style_doc = """- Objectively describe what is visible or whether the needed fact is absent.
+- Use a natural sentence, not a repeated stock phrase."""
+
+    retry_doc = ""
+    if retry_feedback:
+        retry_doc = f"\nPrevious attempt was invalid: {retry_feedback}\n"
+
+    return f"""{task_doc}
+
+Active question: {question}
+Options visible to the student, for identifying the relevant visual fact: {options_doc}
+Internal time range: {recall_window}
+Internal chunk IDs: {chunks or "none"}
+Visual notes: {retrieved_text[:900]}
+Attached images, when present, are the source of truth for the visual content.
+Action after this thought: {action}
+{target_doc}
+{retry_doc}
+
+{mode_rule}
+
+Rules:
+- Output exactly one short English sentence, 8-36 words.
+{style_doc}
+- Describe visible actors, objects, actions, scene relations, OCR text, counts,
+  colors, or states inside the provided visual content when they are relevant.
+- If the visual content contains the fact needed for the answer, mention that
+  visual fact naturally. Do not avoid it.
+- For response turns, prioritize the visual fact that is sufficient to answer
+  the active question, not merely background from the same window.
+- If the question asks what/which tool, action, text, color, count, or state,
+  name that tool, action, text, color, count, or state when visible.
+- For response turns, do not list absent distractor options; use the visual
+  segment that contains the positive answering fact.
+- Do not write a meta decision such as "the answer is A" or "choose option B";
+  the separate response field will carry the answer format.
+- Do not mention the retrieval/tool source. Avoid words or phrases like
+  "recall", "recalled frames", "retrieved window", "returned chunks",
+  "tool result", "old frames", or "the frames show".
+- Start with the visual subject itself, such as "The person...", "The title
+  card...", or "At 85 seconds...".
+- Do not include protocol tags, tool calls, JSON, or multiple sentences.
+- When the next action is response, do not say the content lacks, omits, or
+  fails to specify the needed fact.
+- Do not mention "I think" or "I notice".
+
+Output the sentence only:"""
+
+
+def _frame_paths_for_chunks(
+    all_frame_paths: Optional[List[str]],
+    chunks: List[int],
+) -> List[str]:
+    if not all_frame_paths or not chunks:
+        return []
+    from .pass1a_evidence import get_chunk_frame_paths
+
+    paths: List[str] = []
+    for chunk in chunks:
+        paths.extend(get_chunk_frame_paths(all_frame_paths, int(chunk)))
+    return paths
+
+
+def _post_recall_teacher_messages(
+    prompt: str,
+    recall_result: Dict,
+    *,
+    all_frame_paths: Optional[List[str]] = None,
+) -> List[Dict]:
+    chunks = select_recall_chunks_uniform((recall_result or {}).get("returned_chunks") or [])
+    frame_paths = _frame_paths_for_chunks(all_frame_paths, chunks)
+    if not frame_paths:
+        return [{"role": "user", "content": prompt}]
+    from scripts.agent_data_pipeline.vllm_client import encode_image_base64
+
+    content: List[Dict] = [{"type": "text", "text": prompt}]
+    for chunk in chunks:
+        chunk_paths = _frame_paths_for_chunks(all_frame_paths, [int(chunk)])
+        if not chunk_paths:
+            continue
+        append_timestamped_image_list(
+            content,
+            chunk_paths,
+            fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
+            start_frame_index=int(chunk) * FRAMES_PER_CHUNK,
+            total_num_frames=(int(chunk) + 1) * FRAMES_PER_CHUNK,
+            context_label=f"visual segment c{int(chunk)}",
+            image_key="image_url",
+            image_url_encoder=encode_image_base64,
+        )
+    return [{"role": "user", "content": content}]
+
+
+async def _post_recall_think_via_llm(
+    card: Dict,
+    recall_query: Dict,
+    recall_result: Dict,
+    response: str,
+    client,
+    video_id: str,
+    chunk_idx: int,
+    *,
+    action: str,
+    all_frame_paths: Optional[List[str]] = None,
+) -> str:
+    if client is None or not PASS3C_ENABLE_LLM_POST_RECALL_THINK:
+        return ""
+    cfg = PASS_CONFIG.get("pass3c_post_recall_think", PASS_CONFIG.get("pass3c", {}))
+    attempts = max(
+        1,
+        int(cfg.get("attempts", PASS3C_POST_RECALL_THINK_ATTEMPTS)),
+    )
+    last_raw = ""
+    retry_feedback = ""
+    for attempt in range(attempts):
+        prompt = _post_recall_think_prompt(
+            card,
+            recall_query,
+            recall_result,
+            action=action,
+            retry_feedback=retry_feedback,
+            response=response,
+            template_id=stable_mod(
+                video_id,
+                str((card or {}).get("card_id", "")),
+                chunk_idx,
+                action,
+                attempt,
+                "post_recall_think_prompt",
+                modulo=3,
+            ),
+        )
+        try:
+            raw = await client._call_one(
+                messages=_post_recall_teacher_messages(
+                    prompt,
+                    recall_result,
+                    all_frame_paths=all_frame_paths,
+                ),
+                max_tokens=int(cfg.get("max_tokens", 128)),
+                temperature=float(cfg.get("temperature", 0.7)),
+                request_id=(
+                    f"{video_id}_3c_postrecall_"
+                    f"{(card or {}).get('card_id','?')}_{chunk_idx}_{action}_try{attempt + 1}"
+                ),
+                enable_thinking=cfg.get("thinking", False),
+            )
+        except Exception as exc:
+            logger.warning(f"[{video_id}] 3c post-recall think LLM failed: {exc}")
+            retry_feedback = "the teacher request failed; return one grounded sentence only."
+            continue
+        last_raw = raw or ""
+        cleaned = _clean_post_recall_think(last_raw, card or {})
+        if not cleaned:
+            retry_feedback = (
+                "output must be a visual observation sentence, not a tool call, "
+                "empty text, source-framing phrase, or option-letter answer decision."
+            )
+            logger.warning(
+                "[%s] 3c post-recall think unusable for card=%s chunk=%s "
+                "action=%s attempt=%s raw=%r",
+                video_id,
+                (card or {}).get("card_id", ""),
+                chunk_idx,
+                action,
+                attempt + 1,
+                last_raw[:180],
+            )
+            continue
+        return cleaned
+    logger.warning(
+        "[%s] 3c post-recall think exhausted teacher attempts for card=%s "
+        "chunk=%s action=%s raw=%r",
+        video_id,
+        (card or {}).get("card_id", ""),
+        chunk_idx,
+        action,
+        last_raw[:180],
+    )
+    return ""
+
+
+def _post_recall_think_for(
+    card: Dict,
+    recall_result: Dict,
+    response: str,
+    *,
+    card_id: str,
+    chunk_idx: int,
+) -> str:
+    """Deterministic but varied second-turn think after recall.
+
+    Keep the text grounded in the action type instead of reusing one global
+    sentence across every recall sample. Do not quote the answer directly here;
+    the answer belongs in the response field.
+    """
+    af = str((card or {}).get("answer_form") or "")
+    family = str((card or {}).get("family") or "")
+    hint = _recall_text_hint(card or {}, recall_result)
+    if hint:
+        fact = _capitalize_sentence_start(hint).rstrip(" .")
+        if af == "number":
+            variants = [
+                f"{fact}, linking the count to earlier visible events.",
+                f"{fact}, keeping the numeric check tied to the observed action.",
+                f"{fact}, providing the occurrence context for this count.",
+            ]
+        elif af == "binary":
+            variants = [
+                f"{fact}, providing the visual context for the status check.",
+                f"{fact}, keeping the binary check tied to observed details.",
+                f"{fact}, anchoring the status check to the scene.",
+            ]
+        elif af == "multiple_choice":
+            variants = [
+                f"{fact}, providing the visual detail needed for the comparison.",
+                f"{fact}, grounding the comparison in the observed scene.",
+                f"{fact}, giving the scene detail behind the response.",
+            ]
+        else:
+            variants = [
+                f"{fact}, providing the relevant visual context.",
+                f"{fact}, anchoring the response to the observed moment.",
+                f"{fact}, giving the scene context for this turn.",
+            ]
+        idx = stable_mod(f"{card_id}:{chunk_idx}", "post_recall_hint", modulo=len(variants))
+        return variants[idx].strip()
+    if str(response or "").strip().lower() == "unable to answer" or family == "HLD1":
+        variants = [
+            "The needed visual fact is absent from the checked scene.",
+            "The checked scene keeps the absence case tied to visible content.",
+            "The scene supports the unanswerable case without guessing from memory.",
+        ]
+    elif af == "multiple_choice":
+        variants = [
+            "The prior scene provides the visible detail needed for the comparison.",
+            "The observed scene ties the comparison to a concrete visual moment.",
+            "The scene detail anchors the response to visible content.",
+        ]
+    elif af == "binary":
+        variants = [
+            "The prior scene provides the visual context for the binary status check.",
+            "The observed scene ties the status check to a concrete visual moment.",
+            "The visible detail keeps the binary check grounded in the scene.",
+        ]
+    elif af == "number":
+        variants = [
+            "The scene provides the repeated-event context for the count.",
+            "The visible occurrences tie the numeric check to observed events.",
+            "The count stays grounded in visible repeated actions.",
+        ]
+    else:
+        variants = [
+            "The prior scene provides the relevant visual context for this turn.",
+            "The observed detail anchors the response to a concrete visual moment.",
+            "The response stays grounded in visible scene details.",
+        ]
+    idx = stable_mod(f"{card_id}:{chunk_idx}", "post_recall_think", modulo=len(variants))
+    return variants[idx].strip()
+
+
 def _recall_response_sample(
     chunk_idx: int, think: str, response: str, queries: List[Dict],
     recall_query: Dict, recall_result: Dict,
     trajectory_id: str, card_id: str, sequence_type: str,
-    user_input: str = "", recall_reason: str = "",
+    user_input: str = "", recall_reason: str = "", card: Optional[Dict] = None,
+    post_recall_think: str = "", allow_template_fallback: bool = True,
 ) -> Dict:
     """Multi-turn recall sample (v12 protocol).
 
@@ -1589,11 +2294,15 @@ def _recall_response_sample(
         kind="recall",
         recall_query=recall_query,
     )
-    turn2_think = (
-        "The recalled frames provide the historical evidence needed for this "
-        "pending question. I compare that retrieved moment with the question "
-        "and give the grounded answer without adding unsupported details."
-    )
+    turn2_think = str(post_recall_think or "").strip()
+    if not turn2_think and allow_template_fallback:
+        turn2_think = _post_recall_think_for(
+            card or {},
+            recall_result,
+            response,
+            card_id=card_id,
+            chunk_idx=chunk_idx,
+        )
     turn2 = build_assistant_content(
         think=turn2_think, kind="answer", answer_text=response,
     )
@@ -1618,19 +2327,20 @@ def _recall_silent_multiturn_sample(
     chunk_idx: int, think: str, queries: List[Dict],
     recall_query: Dict, recall_result: Dict,
     trajectory_id: str, card_id: str, sequence_type: str,
-    user_input: str = "", recall_reason: str = "",
+    user_input: str = "", recall_reason: str = "", post_recall_think: str = "",
+    allow_template_fallback: bool = True,
 ) -> Dict:
     """Recall followed by an empty answer while the query remains open.
 
     Production use is the forward/waiting case: after a question is asked,
     recall may show that the answer has not appeared in history yet. The
-    model should keep <answer></answer> empty for this chunk, leave the query
+    model should emit </Silence> for this chunk, leave the query
     pending, and answer at a later response chunk.
 
     SFT rendering (pass5 shape B variant):
       assistant → tool_call(recall_query)        ← turn1: model attempts recall
       tool      → recalled_frames + recall_result ← system returns historical frames
-      assistant → think + empty <answer>          ← turn2: wait, query stays open
+      assistant → think + </Silence>             ← turn2: wait, query stays open
     """
     turn1 = build_assistant_content(
         think=_recall_action_think(
@@ -1639,11 +2349,12 @@ def _recall_silent_multiturn_sample(
         kind="recall",
         recall_query=recall_query,
     )
-    turn2_think = (
-        "The recalled frames do not provide enough evidence to answer the "
-        "pending question yet. I should keep the question pending and leave "
-        "the answer empty until the relevant future moment is visible."
-    )
+    turn2_think = str(post_recall_think or "").strip()
+    if not turn2_think and allow_template_fallback:
+        turn2_think = (
+            "The checked scene does not contain the needed past evidence yet, so "
+            "the query should stay open and the answer should remain empty."
+        )
     turn2 = build_assistant_content(
         think=turn2_think, kind="answer", answer_text="",  # ← silent
     )
@@ -1700,8 +2411,9 @@ async def generate_trajectory_samples(
     cards_map: Dict[str, Dict],
     rollout: Dict,
     evidence: List[Dict],
-    client=None,                     # optional LLM for descriptive response / recall query text
+    client=None,                     # optional LLM for descriptive response / post-recall think
     video_id: str = "",
+    all_frame_paths: Optional[List[str]] = None,
 ) -> List[Dict]:
     """Render one trajectory's placements into raw per-chunk samples.
 
@@ -1709,9 +2421,9 @@ async def generate_trajectory_samples(
     (chunk_idx, sample_type, action, output, queries, user_input,
     recall_result, sequence_type, card_id, trajectory_id, optional
     v12_assistant_turn_*). Non-descriptive answers stay deterministic;
-    descriptive answer text and recall queries can use `client` when
-    provided. render_samples then adds the `input` dict + metadata for
-    pass3e/4/5.
+    descriptive answer text and post-recall visual notes can use `client`
+    when provided. Recall itself is time-range-only. render_samples then adds
+    the `input` dict + metadata for pass3e/4/5.
     """
     placements_dicts = trajectory.get("placements", [])
     placements = [_dict_to_placement(p) for p in placements_dicts]
@@ -1732,7 +2444,7 @@ async def generate_trajectory_samples(
         if e.get("trigger_chunk", -1) >= 0
     }
 
-    # Run design's gold-action pipeline (handles patrol stratification,
+    # Run design's gold-action pipeline (handles dense timeline silence,
     # compress_silent, priority resolution).
     for cid, card in cards_map.items():
         if (card or {}).get("answer_form") == "multiple_choice":
@@ -1742,14 +2454,15 @@ async def generate_trajectory_samples(
                 style, options=card.get("options") or []
             )
 
-    await _harden_selected_recall_slots(
-        placements=placements,
-        cards_map=cards_map,
-        rollout=rollout,
-        evidence=evidence,
-        client=client,
-        video_id=video_id,
-    )
+    if PASS3C_ENABLE_RECALL_HARDENING:
+        await _harden_selected_recall_slots(
+            placements=placements,
+            cards_map=cards_map,
+            rollout=rollout,
+            evidence=evidence,
+            client=client,
+            video_id=video_id,
+        )
 
     cards_obj = [dict_to_card(c) for c in cards_map.values()]
     placements_by_card: Dict[str, List[Placement]] = {}
@@ -1789,10 +2502,11 @@ async def generate_trajectory_samples(
             if p.ask_chunk <= query_activation_limit and p.card_id not in queries_idx_by_card:
                 card = cards_map.get(p.card_id) or {}
                 queries_idx_by_card[p.card_id] = len(queries_state)
-                # v12.13 fix (P0-3): include options + answer_form so
-                # format_queries_block can render MC choices for active
-                # queries (forward responses fire AFTER ask, with no fresh
-                # user_input — model sees only the active-query block).
+                # Include options + answer_form/answer_style so
+                # format_queries_block can render choices and the canonical
+                # Answer format line for active queries (forward responses fire
+                # AFTER ask, with no fresh user_input — model sees only the
+                # active-query block).
                 queries_state.append({
                     "card_id": p.card_id,
                     "question": card.get("question", ""),
@@ -1823,30 +2537,30 @@ async def generate_trajectory_samples(
         sequence_type = _mech_to_sequence_type(ds.mechanism) if card_id else ""
         # user_input fires only at the ask_chunk for that card.
         #
-        # v12.13 (2026-05-02): MC options live ONLY in the query-state block via
-        # format_queries_block (queries_state carries options + answer_form;
-        # active MC queries render an "Options: A) ... B) ..." line).
-        # Putting options ALSO in user_input was duplicating ~30 tokens
-        # per ask (model saw the same option list twice: once in query state
-        # and once in <user_input>). user_input now carries just the
-        # question text, parity with non-MC asks.
+        # Options and output protocol live ONLY in the query-state block via
+        # format_queries_block (queries_state carries options + answer_form).
+        # Putting them ALSO in user_input duplicates prompt text and creates a
+        # train/runtime mismatch. user_input carries just the bare question text,
+        # matching non-MC asks.
         user_input = ""
         if card_id and ask_chunk_by_card.get(card_id) == c and card:
             user_input = card.get("question", "")
 
         if ds.sample_kind == "patrol":
+            # Legacy cache compatibility. New design emits ordinary "silent"
+            # for no-active-query timeline chunks.
             raw.append(_silent_sample(
                 c, _think_for_chunk(rollout, c), queries_state, traj_id,
-                base_role="patrol", sample_subtype="patrol",
+                base_role="legacy_patrol", sample_subtype="timeline_silent",
             ))
         elif ds.sample_kind == "compress_silent":
             # Render as a standalone compact-memory update sample with the
-            # gold <MEM> block from the rollout's compression event.
+            # gold <m> lines from the rollout's compression event.
             ce = compress_event_by_chunk.get(c)
             if ce:
                 raw.append(_compress_sample(
                     c, _think_for_chunk(rollout, c), queries_state,
-                    traj_id, ce,
+                    traj_id, ce, rollout=rollout,
                 ))
             else:
                 # Defensive fallback if event missing — emit silent
@@ -1867,7 +2581,7 @@ async def generate_trajectory_samples(
             rq = _recall_wait_query_for(card or {}, c)
             if not _valid_recall_query(rq):
                 # At the first chunk there is no past interval to search.
-                # Training a recall tool call with time_range="" teaches an
+                # Training a recall tool call without start_time/end_time teaches an
                 # invalid API call; the correct behavior is to stay silent and
                 # keep the query open for a later chunk.
                 raw.append(_silent_sample(
@@ -1880,15 +2594,45 @@ async def generate_trajectory_samples(
                                      ds.recall_result_kind or "not_yet",
                                      current_chunk=c,
                                      recall_query=rq)
+            post_recall_think = ""
+            if client is not None and PASS3C_ENABLE_LLM_POST_RECALL_THINK:
+                post_recall_think = await _post_recall_think_via_llm(
+                    card or {},
+                    rq,
+                    rr,
+                    "",
+                    client,
+                    video_id,
+                    c,
+                    action="silent",
+                    all_frame_paths=all_frame_paths,
+                )
+            if (
+                not post_recall_think
+                and client is not None
+                and PASS3C_ENABLE_LLM_POST_RECALL_THINK
+                and not PASS3C_ALLOW_POST_RECALL_THINK_FALLBACK
+            ):
+                raise ValueError(
+                    f"[{video_id}] teacher failed to generate non-empty "
+                    f"post-recall think for recall+silent card={card_id!r} "
+                    f"chunk={c}. Refusing to write empty/template think."
+                )
             raw.append(_recall_silent_multiturn_sample(
                 c, _think_for_chunk(rollout, c), queries_state,
                 rq, rr, traj_id, card_id or "", sequence_type,
                 user_input=user_input, recall_reason=recall_reason,
+                post_recall_think=post_recall_think,
+                allow_template_fallback=(
+                    client is None
+                    or not PASS3C_ENABLE_LLM_POST_RECALL_THINK
+                    or PASS3C_ALLOW_POST_RECALL_THINK_FALLBACK
+                ),
             ))
             # Do not append an answer or close the query. recall+silent is a
             # wait state; a later response/recall+response sample must answer.
         elif ds.sample_kind == "response":
-            if client is not None:
+            if client is not None and PASS3C_ENABLE_LLM_RESPONSE:
                 resp = await _response_text_via_llm(
                     card or {}, ds.response_text, client, video_id, c)
             else:
@@ -1907,24 +2651,16 @@ async def generate_trajectory_samples(
             )
         elif ds.sample_kind == "recall+response":
             recall_reason = str((ds.extra or {}).get("recall_reason", ""))
-            if client is not None:
+            if client is not None and PASS3C_ENABLE_LLM_RESPONSE:
                 resp = await _response_text_via_llm(
                     card or {}, ds.response_text, client, video_id, c)
-                if recall_reason == "memory_text_needs_visual_verification":
-                    # These slots are created deterministically from selected
-                    # memory_direct hard-visual questions. The point is to
-                    # verify historical visual evidence rather than rewrite
-                    # the card, so avoid an extra teacher call and use the
-                    # support-grounded query/range.
-                    rq = _recall_query_for(card or {}, c)
-                else:
-                    rq = await _recall_query_via_llm(
-                        card or {}, client, video_id, c
-                    )
             else:
                 resp = _response_text_for(card or {}, ds.response_text)
-                rq = _recall_query_for(card or {}, c)
-            rq = _repair_recall_query_for_response(card or {}, rq, c)
+            rq = _repair_recall_query_for_response(
+                card or {},
+                _recall_query_for(card or {}, c),
+                c,
+            )
             if not _recall_query_available(rq, c):
                 raise ValueError(
                     f"[{video_id}] unrecoverable invalid recall+response "
@@ -1943,10 +2679,40 @@ async def generate_trajectory_samples(
                     "chunks could be returned. Rerun/fix pass3a/pass3b "
                     "instead of writing a plain response into SFT."
                 )
+            post_recall_think = ""
+            if client is not None and PASS3C_ENABLE_LLM_POST_RECALL_THINK:
+                post_recall_think = await _post_recall_think_via_llm(
+                    card or {},
+                    rq,
+                    rr,
+                    resp,
+                    client,
+                    video_id,
+                    c,
+                    action="response",
+                    all_frame_paths=all_frame_paths,
+                )
+            if (
+                not post_recall_think
+                and client is not None
+                and PASS3C_ENABLE_LLM_POST_RECALL_THINK
+                and not PASS3C_ALLOW_POST_RECALL_THINK_FALLBACK
+            ):
+                raise ValueError(
+                    f"[{video_id}] teacher failed to generate non-empty "
+                    f"post-recall think for recall+response card={card_id!r} "
+                    f"chunk={c}. Refusing to write empty/template think."
+                )
             raw.append(_recall_response_sample(
                 c, _think_for_chunk(rollout, c), resp, queries_state,
                 rq, rr, traj_id, card_id, sequence_type, user_input=user_input,
-                recall_reason=recall_reason,
+                recall_reason=recall_reason, card=card or {},
+                post_recall_think=post_recall_think,
+                allow_template_fallback=(
+                    client is None
+                    or not PASS3C_ENABLE_LLM_POST_RECALL_THINK
+                    or PASS3C_ALLOW_POST_RECALL_THINK_FALLBACK
+                ),
             ))
             status = (
                 "answered" if c >= open_until_by_card.get(card_id, c)
@@ -1982,6 +2748,8 @@ async def generate_trajectory_samples(
             s["answer_instruction"] = card.get("answer_instruction")
         placement = next((p for p in placements if p.card_id == cid), None)
         if placement is not None:
+            s["support_policy"] = getattr(placement, "support_policy", "") or card.get("support_policy", "")
+            s["card_support_policy"] = card.get("support_policy", "")
             s["per_emit_answers"] = [
                 {"chunk": int(c), "value": str(value)}
                 for c, (kind, value) in sorted(placement.chunk_actions.items())

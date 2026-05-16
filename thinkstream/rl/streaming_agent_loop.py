@@ -19,12 +19,14 @@
 #       <|im_start|>system\n{SYSTEM_PROMPT}\n<|im_end|>     ← common prefix
 #       <|im_start|>user\n{question}\n<|im_end|>                ← common prefix
 #       <|im_start|>user\n
-#         <memory>...</memory>
-#         <active_query>...</active_query> plus <response_history>...</response_history>
-#                                             (while a query is live)
-#         <visual_window>{current chunk header}</visual_window>
+#         <m t="...">...</m>                 ← optional compact-history prefill
+#       <|im_end|>
+#       <|im_start|>assistant\nMemory loaded.<|im_end|>  ← system-inserted ack
+#       <|im_start|>user\n
+#         <t=N>
 #         {video_meta for current chunk's 2 frames}
-#         <user_input>...</user_input>     (question text or bare compress trigger)
+#         <active_query>...</active_query> plus <response_history>...</response_history>
+#                                             (ask/reset plus semantic refreshes)
 #       <|im_end|>
 #       <|im_start|>assistant\n
 #     ...
@@ -41,13 +43,11 @@
 # thinkstream/data/agent_protocol.py:213-214 build_user_content):
 #
 #     prompt_chunk_t = [
-#       system + user_q                        ← stable across chunks
-#       <memory>                               ← monotonic append; SFT-first
-#       (active_query + response_history)      ← optional while a query is live
-#       <visual_window header>                 ← current chunk metadata
+#       system                                 ← stable across chunks
+#       optional user(<m> lines) + assistant("Memory loaded.") after compact-state reset
+#       <t=N>                                  ← current chunk timestamp in the next user turn
 #       video_meta frame block                 ← current 2 frames only
-#       <recall_result> (optional)             ← chunk-specific
-#       <user_input>                           ← question or bare compress trigger
+#       active_query + response_history        ← ask chunk or inherited open query
 #     ]
 #
 # WINDOW MODE (THINKSTREAM_VISUAL_WINDOW_MODE):
@@ -56,7 +56,7 @@
 #   chunk's final 2 paths; the physical visual window is maintained by
 #   StreamingWindowInferenceEngine.video_flex_window_size.
 #
-# SFT ALIGNMENT (the 5 things that must match pass5_messages.py):
+# SFT ALIGNMENT (the 5 things that must match pass5 trajectory rendering):
 #   1. Frame paths use 1-indexed numbering: frame_{ci*FPC + fi + 1:06d}.jpg
 #   2. Pre-extracted frames render through the selected frame protocol:
 #      `ts_image` uses frame-tag text + image items; `video_meta` uses one
@@ -65,10 +65,10 @@
 #      frame_idx = window_start*FPC + i.
 #   4. Compress turn uses a compression-only system prompt plus bare
 #      <compress_trigger/> (v12.12: no range). It carries memory only:
-#      active_query, visual_window, and media carriers are suppressed so
+#      active_query, current timestamp, and media carriers are suppressed so
 #      SFT/RL/eval share the same text-only compression payload.
-#   5. Recall result rendering as <recall_result>{...}</recall_result>
-#      JSON dict (source/time/text).
+#   5. Recall tool result renders one short plain status line followed by
+#      recalled video blocks. Structured metadata stays out of the prompt.
 #
 # DEFERRED (must be addressed before claiming full deploy parity):
 #   D1. Per-chunk attention reset / training-time per-chunk forward
@@ -104,7 +104,7 @@ from thinkstream.data.agent_protocol import (
     build_recalled_frames_metadata,
     recall_time_string_for_chunks,
     resolve_chunk_frame_paths,
-    select_recall_chunks,
+    select_recall_chunks_uniform,
 )
 
 logger = logging.getLogger(__file__)
@@ -165,6 +165,7 @@ def _resolve_frame_dir(video_path: str, frames_root: str) -> Optional[Path]:
     # Batch frames normally live at frames/<video_stem>/, while OVO keeps the
     # original relative layout, e.g. frames/Ego4D/clips/<video_stem>/.
     candidates = [
+        root / vp.parent,
         root / vp.with_suffix(""),
         root / vp.stem,
         root / vp.with_suffix("").name,
@@ -222,21 +223,21 @@ def _build_visual_window(
 
 
 # ---------------------------------------------------------------------------
-# Recall retriever — BM25 over the raw per-chunk think archive.
+# Recall retriever — start/end sampler over the raw per-chunk think archive.
 # ---------------------------------------------------------------------------
 def _retrieve_from_memory(
     state_think_archive: List[Dict[str, Any]],
-    query_text: str,
     time_range: Optional[Tuple[float, float]] = None,
     top_k: int = RECALL_RETURN_CHUNKS,
     chunk_sec: float = 1.0,
+    current_chunk: Optional[int] = None,
 ) -> Dict[str, Any]:
-    """Return a legacy recall_result dict used internally before metadata-only
-    serialisation as <recall_result>...</recall_result> on the NEXT chunk's
-    user message. (True intra-chunk multi-turn recall — assistant tool_call
-    → user/tool recall_result+frames → assistant answer — is deferred.)
+    """Return an internal recall result dict.
+
+    Model-visible recall evidence is rendered later as one short status line
+    plus recalled video blocks.
     """
-    if not (query_text or "").strip():
+    if time_range is None:
         return {"source": "memory", "time": "", "text": "", "returned_chunks": []}
     archive: List[Dict[str, Any]] = []
     for entry in state_think_archive or []:
@@ -248,6 +249,8 @@ def _retrieve_from_memory(
         except (TypeError, ValueError):
             continue
         if chunk < 0:
+            continue
+        if current_chunk is not None and chunk >= int(current_chunk):
             continue
         archive.append({
             "chunk": chunk,
@@ -263,15 +266,17 @@ def _retrieve_from_memory(
         return {
             "source": "memory",
             "time": tr_text,
-            "text": "No relevant past observation in the requested time range.",
+            "text": "No relevant past observation in the requested recall window.",
             "returned_chunks": [],
         }
-    from thinkstream.models.agent_loop import bm25_retrieve
-    query = {"query": query_text}
-    if time_range is not None:
-        query["time_range"] = [float(time_range[0]), float(time_range[1])]
-    result = bm25_retrieve(query, archive, max_results=top_k)
-    returned_chunks = select_recall_chunks(result.get("returned_chunks") or [])
+    from thinkstream.models.agent_loop import time_range_retrieve
+
+    query = {
+        "start_time": float(time_range[0]),
+        "end_time": float(time_range[1]),
+    }
+    result = time_range_retrieve(query, archive, max_results=top_k)
+    returned_chunks = select_recall_chunks_uniform(result.get("returned_chunks") or [])
     if not returned_chunks:
         tr_text = ""
         if time_range is not None:
@@ -279,7 +284,7 @@ def _retrieve_from_memory(
         return {
             "source": "memory",
             "time": tr_text,
-            "text": "No relevant past observation in the requested time range.",
+            "text": "No relevant past observation in the requested recall window.",
             "returned_chunks": [],
         }
     return {
@@ -338,6 +343,44 @@ def _estimate_recent_thinks_tokens(recent_thinks: List[Dict[str, Any]]) -> int:
     return _count_recent_thinks_tokens(recent_thinks, tokenizer=None)
 
 
+def _append_visible_think_to_state(
+    state: Any,
+    chunk_idx: int,
+    think_text: str,
+) -> bool:
+    """Persist a visual-turn think for compression and time-range recall.
+
+    Callers intentionally skip post-recall answer reasoning: that text is
+    conditioned on temporary retrieved evidence, while the first recall
+    tool-call turn still contains the current frame observation that should
+    remain in trajectory memory.
+    """
+    text = str(think_text or "").strip()
+    if not text:
+        return False
+    item = {"chunk": int(chunk_idx), "text": text}
+    state.recent_thinks.append(item)
+    state.think_archive.append(dict(item))
+    return True
+
+
+def _write_agent_trace(payload: Dict[str, Any]) -> None:
+    path = str(os.environ.get("THINKSTREAM_AGENT_TRACE_JSONL", "") or "").strip()
+    if not path:
+        return
+    try:
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(payload, ensure_ascii=False, default=str) + "\n")
+    except Exception as exc:
+        logger.warning("failed to write agent trace %s: %s", path, exc)
+
+
+def _short_text(value: Any, limit: int = 4000) -> str:
+    text = str(value or "")
+    return text if len(text) <= limit else text[:limit] + "...<truncated>"
+
+
 # ---------------------------------------------------------------------------
 # verl-side registration. Wrapped so the module is importable in dev
 # environments lacking verl/ray/torch.
@@ -357,17 +400,21 @@ def _register_streaming_agent_loop():
         build_recall_result_metadata,
         build_user_content,
         build_recall_result_user_content,
+        canonical_answer_instruction,
         decode_agent_output_tokens,
         normalize_frame_protocol,
         normalize_render_layout,
         parse_agent_output,
         format_memory_block,
+        format_queries_block,
         query_is_complete,
         query_expected_answer_chunks,
         query_completed_answer_chunks,
+        query_response_history_policy,
         system_prompt_for_frame_protocol,
         tools_for_turn,
     )
+    from thinkstream.data.schema import MEMORY_LOAD_ACK  # type: ignore
     from thinkstream.trainer.rollout import (  # type: ignore
         VideoTrajectoryState,
         default_update_state,
@@ -392,6 +439,57 @@ def _register_streaming_agent_loop():
                 or _RTKW["max_pixels"]
             ),
         }
+
+    def _is_cumulative_count_query(q: Dict[str, Any]) -> bool:
+        if query_response_history_policy(q) == "omit":
+            return False
+        answer_form = str(q.get("answer_form") or "").strip().lower()
+        question_way = str(q.get("question_way") or "").strip().lower()
+        fields = " ".join(
+            str(q.get(k) or "")
+            for k in ("family", "task", "source_task", "question_way", "evidence_type")
+        ).upper()
+        tokens = {tok for tok in re.split(r"[^A-Z0-9]+", fields) if tok}
+        return (
+            answer_form == "number"
+            or question_way == "repeated_count"
+            or bool({"F5", "REC"} & tokens)
+        )
+
+    def _query_ask_chunk(q: Dict[str, Any], chunk_sec: int) -> int:
+        try:
+            return int(round(float(q.get("ask_time", 0)) / max(float(chunk_sec), 1.0)))
+        except (TypeError, ValueError):
+            return 0
+
+    def _query_prompt_refresh_needed(
+        queries: List[Dict[str, Any]],
+        chunk_idx: int,
+        *,
+        chunk_sec: int,
+    ) -> bool:
+        """Force query text back into true-KV prompts at semantic checkpoints."""
+        period = max(0, int(os.environ.get("THINKSTREAM_QUERY_REFRESH_PERIOD", "8")))
+        chunk = int(chunk_idx)
+        for q in queries or []:
+            if not isinstance(q, dict) or query_is_complete(q):
+                continue
+            expected = query_expected_answer_chunks(q)
+            if chunk in expected:
+                return True
+            if _is_cumulative_count_query(q) and (chunk - 1) in set(
+                query_completed_answer_chunks(q)
+            ):
+                return True
+            ask_chunk = _query_ask_chunk(q, chunk_sec)
+            final_chunk = max(expected) if expected else ask_chunk
+            if (
+                period
+                and ask_chunk < chunk <= final_chunk
+                and (chunk - ask_chunk) % period == 0
+            ):
+                return True
+        return False
 
     class ThinkStreamStreamingAgentLoop(AgentLoopBase):
         """MemAgent-style chunk-level rollout for streaming video."""
@@ -450,6 +548,14 @@ def _register_streaming_agent_loop():
                 )
                 or COMPRESS_TOKEN_THRESHOLD
             )
+            self.compress_range_min = int(
+                os.environ.get("THINKSTREAM_COMPRESS_RANGE_MIN", str(COMPRESS_RANGE_MIN))
+                or COMPRESS_RANGE_MIN
+            )
+            self.compress_range_max = int(
+                os.environ.get("THINKSTREAM_COMPRESS_RANGE_MAX", str(COMPRESS_RANGE_MAX))
+                or COMPRESS_RANGE_MAX
+            )
             trigger_source = str(
                 os.environ.get(
                     "THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE",
@@ -491,6 +597,12 @@ def _register_streaming_agent_loop():
             self.max_recall_per_chunk = int(
                 os.environ.get("THINKSTREAM_MAX_RECALL_PER_CHUNK", "1") or 1
             )
+            memory_mode = str(
+                os.environ.get("THINKSTREAM_TRUE_KV_MEMORY_MODE", "delta")
+            ).strip().lower().replace("-", "_")
+            if memory_mode not in {"delta", "full", "standalone"}:
+                memory_mode = "delta"
+            self.true_kv_memory_mode = memory_mode
 
             # v12.14 Option B Phase 3: dual-mode rollout output.
             #   "stitched" (default): one AgentLoopOutput per trajectory
@@ -536,10 +648,10 @@ def _register_streaming_agent_loop():
             """Render the <user_input>...</user_input> string for this chunk.
 
             Two paths:
-              - Multi-Q mode (triggered_questions non-empty): render the
-                question(s) whose ask_chunk == chunk_idx, including the
-                MCQ options when present so the model has the option text
-                in the prompt at decision time.
+              - Multi-Q mode (triggered_questions non-empty): render only the
+                bare question text for the question(s) whose ask_chunk ==
+                chunk_idx. Options and answer-format instructions live in
+                query_log and are rendered exactly once by format_queries_block.
               - Single-Q legacy mode (`question` set, ask_chunks given):
                 fire the same single question whenever chunk_idx >=
                 min(ask_chunks). Backward compat with the (video, question)
@@ -577,6 +689,8 @@ def _register_streaming_agent_loop():
             recall_result: Optional[Dict[str, Any]],
             compress_trigger_range: Optional[Tuple[int, int]],
             inter_chunk: bool,
+            true_kv_delta: bool = False,
+            seed_memory: bool = True,
         ) -> List[Dict[str, Any]]:
             """Build the user content list for chunk N.
 
@@ -587,9 +701,8 @@ def _register_streaming_agent_loop():
 
             Mirrors the shared SFT/runtime layout in
             thinkstream.data.agent_protocol.build_user_content EXACTLY:
-              <user_input> → <memory> → <visual_window> + video_meta frames →
-              <active_query> + <response_history> →
-              <recalled_frames> + visual evidence → <recall_result> metadata
+              <user_input> -> <m t="..."> memory -> <t=N> + video_meta frames
+              -> <active_query> + <response_history>
 
             Distribution alignment is the hard constraint. Do not rearrange
             text or visual blocks to chase prefix-cache hits; the true-KV
@@ -603,10 +716,16 @@ def _register_streaming_agent_loop():
                     chunk_idx, question, ask_chunks, triggered_questions,
                 ) or ""
             try:
+                if true_kv_delta and not inter_chunk and not seed_memory:
+                    visible_compressed: List[Dict[str, Any]] = []
+                    visible_recent: List[Dict[str, Any]] = []
+                else:
+                    visible_compressed = state.compressed_summaries
+                    visible_recent = state.recent_thinks
                 mem_snapshot = {
-                    "compressed_segments": state.compressed_summaries,
-                    "compressed": state.compressed_summaries,
-                    "recent_thinks": state.recent_thinks,
+                    "compressed_segments": visible_compressed,
+                    "compressed": visible_compressed,
+                    "recent_thinks": visible_recent,
                 }
                 mem_text = format_memory_block(mem_snapshot)
             except Exception:
@@ -632,9 +751,24 @@ def _register_streaming_agent_loop():
                 memory_snapshot=mem_snapshot,
                 render_layout=self.render_layout,
             )
+
+        @staticmethod
+        def _format_memory_prefill_text(
+            state: "VideoTrajectoryState",
+        ) -> str:
+            """Return compact-memory text for a separate memory-load prefill turn."""
+            try:
+                mem_snapshot = {
+                    "compressed_segments": state.compressed_summaries,
+                    "compressed": state.compressed_summaries,
+                    "recent_thinks": state.recent_thinks,
+                }
+                return str(format_memory_block(mem_snapshot) or "").strip()
+            except Exception:
+                return ""
         async def _execute_recall(
             self, args: Dict[str, Any], state: "VideoTrajectoryState",
-            *, video_path: str = "",
+            *, video_path: str = "", current_chunk: Optional[int] = None,
         ) -> Dict[str, Any]:
             """v12.13 D1: build the COMPLETE tool response for shape-B recall.
 
@@ -653,33 +787,30 @@ def _register_streaming_agent_loop():
             chunk), so the model sees these as old frames from time T, not
             current visual evidence.
             """
-            query = (args.get("query") or args.get("keywords") or
-                     args.get("text") or "")
-            time_range = args.get("time_range")
             tr_tuple: Optional[Tuple[float, float]] = None
-            # Recall tool schema (agent_protocol.py:417) emits time_range
-            # as "start-end" string (e.g. "10-30"); legacy eval code may
-            # pass list/tuple [start, end]. Accept BOTH.
-            if isinstance(time_range, str) and time_range.strip():
-                m = re.match(r"\s*([\d.]+)\s*-\s*([\d.]+)\s*", time_range)
-                if m:
-                    try:
-                        tr_tuple = (float(m.group(1)), float(m.group(2)))
-                    except ValueError:
-                        tr_tuple = None
-            elif isinstance(time_range, (list, tuple)) and len(time_range) >= 2:
-                try:
-                    tr_tuple = (float(time_range[0]), float(time_range[1]))
-                except (TypeError, ValueError):
-                    tr_tuple = None
+            try:
+                start_time = float(args.get("start_time"))
+                end_time = float(args.get("end_time"))
+                if start_time >= 0 and end_time >= start_time:
+                    if current_chunk is None:
+                        tr_tuple = (start_time, end_time)
+                    else:
+                        recallable_end = (
+                            (float(current_chunk) * float(self.chunk_sec))
+                            - float(self.chunk_sec)
+                        )
+                        if end_time <= recallable_end:
+                            tr_tuple = (start_time, end_time)
+            except (TypeError, ValueError):
+                tr_tuple = None
 
             # ── Text retrieval (existing path) ──────────────────────────
             try:
                 text_result = _retrieve_from_memory(
                     getattr(state, "think_archive", []) or [],
-                    query_text=query,
                     time_range=tr_tuple,
                     chunk_sec=self.chunk_sec,
+                    current_chunk=current_chunk,
                 )
             except Exception as e:
                 logger.warning("recall retrieval failed: %s", e)
@@ -688,8 +819,8 @@ def _register_streaming_agent_loop():
             # ── Historical frame extraction (D1) ───────────────────────
             # Text retrieval chooses candidate chunks first, then we cap to
             # top-K and render only those chunks. Do not expand the model's
-            # requested time_range into an unbounded frame interval.
-            selected_chunks = select_recall_chunks(
+            # requested start/end window into an unbounded frame interval.
+            selected_chunks = select_recall_chunks_uniform(
                 text_result.get("returned_chunks") or []
             )
             recalled_frame_paths: List[str] = []
@@ -741,14 +872,12 @@ def _register_streaming_agent_loop():
 
             Mirrors pass5_messages.py:280-380 ordering EXACTLY (the v12.11
             audit P0 fix order is the SFT contract):
-              1. <recalled_frames>{json header}</recalled_frames> text
+              1. short plain recall status text
               2. protocol visual frames anchored to historical chunk timestamps
-              3. <recall_result>{json}</recall_result> metadata
 
             Use role="tool" to match pass5/SFT. Qwen's chat template renders
-            this as a user-wrapped <tool_response>...</tool_response> block,
-            which keeps the post-recall prompt identical between SFT and
-            rollout/eval.
+            this with its built-in tool-response wrapper, keeping the
+            post-recall prompt identical between SFT and rollout/eval.
             """
             rr = recall_payload.get("recall_result") or {}
             rf = recall_payload.get("recalled_frames")  # may be None
@@ -781,13 +910,13 @@ def _register_streaming_agent_loop():
                 if not chunks:
                     return None
                 return (min(chunks), max(chunks))
-            if len(state.recent_thinks) < COMPRESS_RANGE_MIN:
+            if len(state.recent_thinks) < self.compress_range_min:
                 return None
             est = _count_visible_memory_tokens(
                 state.compressed_summaries,
                 state.recent_thinks, tokenizer=self.tokenizer,
             )
-            if est < self.compress_token_threshold and len(state.recent_thinks) < COMPRESS_RANGE_MAX:
+            if est < self.compress_token_threshold and len(state.recent_thinks) < self.compress_range_max:
                 return None
             chunks = [
                 int(t.get("chunk", -1))
@@ -991,7 +1120,7 @@ def _register_streaming_agent_loop():
 
             # Per-Q answer tracking (multi-Q mode only). Indexed by q_idx;
             # captured when the corresponding chunk's assistant turn parses
-            # to kind=="answer" (or any explicit <answer>...</answer>).
+            # to kind=="answer" (canonical </Response> text).
             per_q_answer_chunk: List[int] = [-1] * len(multi_q_list)
             per_q_answer_text: List[str] = [""] * len(multi_q_list)
             per_q_answers: List[List[Dict[str, Any]]] = [
@@ -1008,7 +1137,7 @@ def _register_streaming_agent_loop():
             def _question_complete(q_idx: int) -> bool:
                 """Return True when this pending question has enough answers.
 
-                Empty <answer></answer> is a per-chunk silent action, not a
+                </Silence> is a per-chunk silent action, not a
                 terminal event. Early answers are logged but do not satisfy an
                 expected answer chunk; multi-emit cards need one countable
                 answer per expected answer chunk.
@@ -1085,7 +1214,7 @@ def _register_streaming_agent_loop():
             chunk_max_tokens: List[int] = []
             chunk_hit_max_tokens: List[bool] = []
             chunk_stop_reasons: List[str] = []
-            chunk_recall_query_ranges: List[Any] = []
+            chunk_recall_time_ranges: List[Any] = []
             chunk_recall_returned_chunks: List[List[int]] = []
             chunk_recall_result_sources: List[str] = []
             chunk_compress_expected_chunks: List[List[int]] = []
@@ -1122,6 +1251,11 @@ def _register_streaming_agent_loop():
             per_action_response_mask: List[List[int]] = []
             per_action_response_logprobs: List[Optional[List[float]]] = []
             per_action_mm_data: List[Optional[Dict[str, Any]]] = []
+            debug_trace_enabled = (
+                str(os.environ.get("THINKSTREAM_AGENT_TRACE", "")).strip().lower()
+                in {"1", "true", "yes", "on", "trace", "verbose", "2"}
+            ) or bool(os.environ.get("THINKSTREAM_AGENT_TRACE_JSONL"))
+            debug_trace_steps: List[Dict[str, Any]] = []
 
             state = VideoTrajectoryState(
                 video_uid=str(video_id),
@@ -1139,6 +1273,8 @@ def _register_streaming_agent_loop():
             n_chunks_text_only = 0
             n_chunks_compress_inter = 0
             stream_reset_before_next_turn = False
+            stream_memory_seed_required = True
+            last_stream_query_block = ""
 
             chunk_idx = segment_start_chunk
             while chunk_idx < n_chunks:
@@ -1228,13 +1364,23 @@ def _register_streaming_agent_loop():
                                 "options": list(q_obj.get("options") or []),
                                 "answer_form": q_obj.get("answer_form", ""),
                                 "answer_style": (
-                                    "letter_only"
+                                    "letter_plus_text"
                                     if q_obj.get("answer_form") == "multiple_choice"
                                     else q_obj.get("answer_style", "")
                                 ),
-                                "answer_instruction": q_obj.get("answer_instruction", ""),
+                                "answer_instruction": (
+                                    canonical_answer_instruction(q_obj)
+                                    or q_obj.get("answer_instruction", "")
+                                ),
                                 "answer_chunks": ans_chunks_int,
                                 "per_emit_answers": list(q_obj.get("per_emit_answers") or []),
+                                "question_type": q_obj.get("question_type", ""),
+                                "question_way": q_obj.get("question_way", ""),
+                                "evidence_type": q_obj.get("evidence_type", ""),
+                                "family": q_obj.get("family", q_obj.get("task", "")),
+                                "task": q_obj.get("task", ""),
+                                "source_task": q_obj.get("source_task", ""),
+                                "response_history_policy": query_response_history_policy(q_obj),
                                 "ask_time": chunk_idx * self.chunk_sec,
                                 "open_until": (
                                     max(ans_chunks_int) * self.chunk_sec
@@ -1244,13 +1390,35 @@ def _register_streaming_agent_loop():
                                 "answers": [],
                             })
                     # Push triggered Qs into the pending queue so the
-                    # NEXT assistant turn's <answer> is assigned to them.
+                # NEXT assistant turn's </Response> is assigned to them.
                     for qi in triggered_q_indices_for_chunk:
                         if qi not in pending_q_indices:
                             pending_q_indices.append(qi)
 
                 # ── Build user content + chunk_messages.
-                user_content = self._build_chunk_user_content(
+                #
+                # Replay/standalone prompts keep the SFT-compatible full memory
+                # snapshot. True-KV generation must not repeat that snapshot on
+                # every visual chunk: previous assistant thinks and seeded
+                # compressed summaries are already physically present in KV.
+                # After a compact-state reset, seed memory in the same shape as
+                # pass5 from_compress rows: user(<m> lines) ->
+                # assistant("Memory loaded.") -> current visual user turn.
+                query_block = format_queries_block(query_log)
+                seed_delta = (
+                    not inter_chunk
+                    and self.true_kv_memory_mode == "delta"
+                    and (
+                        stream_memory_seed_required
+                        or stream_reset_before_next_turn
+                    )
+                )
+                memory_prefill_text = (
+                    self._format_memory_prefill_text(state)
+                    if seed_delta else ""
+                )
+                has_memory_prefill = bool(memory_prefill_text)
+                replay_user_content = self._build_chunk_user_content(
                     state=state,
                     chunk_idx=chunk_idx,
                     window_paths=window_paths,
@@ -1265,7 +1433,48 @@ def _register_streaming_agent_loop():
                     recall_result=recall_result_for_next,
                     compress_trigger_range=compress_range,
                     inter_chunk=inter_chunk,
+                    true_kv_delta=has_memory_prefill,
+                    seed_memory=not has_memory_prefill,
                 )
+                stream_user_content = replay_user_content
+                if (
+                    not inter_chunk
+                    and self.true_kv_memory_mode == "delta"
+                ):
+                    stream_queries = query_log
+                    force_query_refresh = seed_delta or _query_prompt_refresh_needed(
+                        query_log,
+                        chunk_idx,
+                        chunk_sec=self.chunk_sec,
+                    )
+                    if (
+                        query_block
+                        and not force_query_refresh
+                        and query_block == last_stream_query_block
+                    ):
+                        stream_queries = []
+                    stream_user_content = self._build_chunk_user_content(
+                        state=state,
+                        chunk_idx=chunk_idx,
+                        window_paths=window_paths,
+                        window_start_chunk=window_start_chunk,
+                        window_end_chunk=window_end_chunk,
+                        question=question,
+                        ask_chunks=ask_chunks,
+                        triggered_questions=(
+                            triggered_qs_for_chunk if multi_q_list else None
+                        ),
+                        queries=stream_queries,
+                        recall_result=recall_result_for_next,
+                        compress_trigger_range=compress_range,
+                        inter_chunk=inter_chunk,
+                        true_kv_delta=True,
+                        seed_memory=seed_delta and not has_memory_prefill,
+                    )
+                    if query_block and (force_query_refresh or stream_queries):
+                        last_stream_query_block = query_block
+                    elif not query_block:
+                        last_stream_query_block = ""
                 recall_result_for_next = None
 
                 if inter_chunk:
@@ -1282,9 +1491,40 @@ def _register_streaming_agent_loop():
                             render_layout=self.render_layout,
                         ),
                     }]
+                    stream_chunk_messages = chunk_messages
                 else:
                     chunk_messages = list(initial_messages)
-                chunk_messages.append({"role": "user", "content": user_content})
+                    stream_chunk_messages = (
+                        chunk_messages
+                        if stream_user_content is replay_user_content
+                        else list(initial_messages)
+                    )
+                memory_prefill_messages = []
+                if has_memory_prefill and not inter_chunk:
+                    memory_prefill_messages = [
+                        {
+                            "role": "user",
+                            "content": [{
+                                "type": "text",
+                                "text": memory_prefill_text,
+                            }],
+                        },
+                        {"role": "assistant", "content": MEMORY_LOAD_ACK},
+                    ]
+                    chunk_messages.extend(deepcopy(memory_prefill_messages))
+                    if stream_chunk_messages is not chunk_messages:
+                        stream_chunk_messages.extend(deepcopy(memory_prefill_messages))
+                chunk_messages.append({
+                    "role": "user",
+                    "content": replay_user_content,
+                })
+                if stream_chunk_messages is chunk_messages:
+                    pass
+                else:
+                    stream_chunk_messages.append({
+                        "role": "user",
+                        "content": stream_user_content,
+                    })
                 # ── chunk-internal ready-loop (v12.13 D1):
                 #
                 # When `max_recall_per_chunk == 0` (legacy default), the
@@ -1303,6 +1543,7 @@ def _register_streaming_agent_loop():
                 parsed: Dict[str, Any] = {}
                 recall_rounds_this_chunk = 0
                 last_prompt_len = len(initial_prompt_ids)
+                stream_prefix_ids_for_delta: Optional[List[int]] = None
                 inner_aborted = False
                 while True:
                     turn_kind = (
@@ -1316,20 +1557,20 @@ def _register_streaming_agent_loop():
                     # response's recalled frames are new.
                     if turn_kind == "post_recall":
                         chunk_mm_messages = (
-                            [chunk_messages[-1]]
-                            if chunk_messages and chunk_messages[-1].get("role") == "tool"
+                            [stream_chunk_messages[-1]]
+                            if stream_chunk_messages and stream_chunk_messages[-1].get("role") == "tool"
                             else []
                         )
                         template_mm_messages = (
-                            chunk_messages[len(initial_messages):]
+                            stream_chunk_messages[len(initial_messages):]
                             if not inter_chunk
-                            else chunk_messages
+                            else stream_chunk_messages
                         )
                     else:
                         chunk_mm_messages = (
-                            chunk_messages
+                            stream_chunk_messages
                             if inter_chunk
-                            else chunk_messages[len(initial_messages):]
+                            else stream_chunk_messages[len(initial_messages):]
                         )
                         template_mm_messages = chunk_mm_messages
                     chunk_extra_mm = await self.process_vision_info(
@@ -1348,7 +1589,20 @@ def _register_streaming_agent_loop():
                         template_videos = template_extra_mm.get("videos") or []
 
                     turn_tools = tools_for_turn(turn_kind)
-                    template_messages = chunk_messages
+                    # The active true-KV stream for an in-chunk recall answer
+                    # already contains the first streaming turn's system/tool
+                    # schema. Rebuilding the post-recall prompt with no tools
+                    # makes the common-prefix slice stop before the current
+                    # visual block, so the recall delta accidentally includes
+                    # current-frame video tokens. Keep the generation-side
+                    # template prefix-compatible; replay can still use the
+                    # no-tool post_recall prompt below.
+                    generation_tools = (
+                        tools_for_turn("streaming")
+                        if turn_kind == "post_recall"
+                        else turn_tools
+                    )
+                    template_messages = stream_chunk_messages
                     prompt_images = (initial_images + template_images) if (
                         turn_kind != "post_recall" and template_images
                     ) else (
@@ -1369,10 +1623,26 @@ def _register_streaming_agent_loop():
                     )
                     chunk_prompt_ids = await self.apply_chat_template(
                         template_messages,
-                        tools=turn_tools,
+                        tools=generation_tools,
                         images=prompt_images,
                         videos=prompt_videos,
                     )
+                    replay_prompt_ids = chunk_prompt_ids
+                    replay_prompt_images = prompt_images
+                    replay_prompt_videos = prompt_videos
+                    if (
+                        stream_chunk_messages is not chunk_messages
+                        or generation_tools is not turn_tools
+                    ):
+                        replay_extra_mm = await self.process_vision_info(chunk_messages)
+                        replay_prompt_images = replay_extra_mm.get("images") or None
+                        replay_prompt_videos = replay_extra_mm.get("videos") or None
+                        replay_prompt_ids = await self.apply_chat_template(
+                            chunk_messages,
+                            tools=turn_tools,
+                            images=replay_prompt_images,
+                            videos=replay_prompt_videos,
+                        )
 
                     # Prompt-budget guard (single-chunk + tool round can
                     # exceed budget after frames are appended; skip out
@@ -1390,14 +1660,29 @@ def _register_streaming_agent_loop():
                         })
                         inner_aborted = True
                         break
-                    effective_last_prompt_len = (
-                        0
-                        if (
-                            turn_kind == "compress"
-                            or stream_reset_before_next_turn
+                    if turn_kind == "compress" or stream_reset_before_next_turn:
+                        effective_last_prompt_len = 0
+                    elif stream_prefix_ids_for_delta is not None:
+                        # Post-recall prompts are rebuilt from structured
+                        # messages, while the active KV stream contains the
+                        # exact tokens generated by the first assistant
+                        # tool-call turn. Tokenize/render drift of even one
+                        # chat-template boundary token can otherwise slice
+                        # into the recalled visual blocks and make video token
+                        # counts diverge from the visual payload.
+                        common = 0
+                        max_common = min(
+                            len(stream_prefix_ids_for_delta),
+                            len(chunk_prompt_ids),
                         )
-                        else last_prompt_len
-                    )
+                        while (
+                            common < max_common
+                            and stream_prefix_ids_for_delta[common] == chunk_prompt_ids[common]
+                        ):
+                            common += 1
+                        effective_last_prompt_len = common
+                    else:
+                        effective_last_prompt_len = last_prompt_len
                     user_block_len = len(chunk_prompt_ids) - effective_last_prompt_len
                     if user_block_len < 0:
                         budget_abort_events.append({
@@ -1453,11 +1738,14 @@ def _register_streaming_agent_loop():
                     # stream and returns per-token log_probs for PPO. Compress
                     # turns are isolated text-only system events; recall
                     # post-turns use the next-turn sidecar KV policy.
+                    stream_reset_before_this_turn = bool(stream_reset_before_next_turn)
                     with simple_timer("generate_sequences", metrics):
                         output = await self._generate_action_tokens(
                             request_id=request_id,
                             prompt_ids=chunk_prompt_ids,
-                            new_prompt_ids=chunk_prompt_ids[effective_last_prompt_len:],
+                            new_prompt_ids=chunk_prompt_ids[
+                                effective_last_prompt_len:
+                            ],
                             sampling_params={
                                 **sampling_params,
                                 "max_tokens": max_tokens_this_turn,
@@ -1484,7 +1772,7 @@ def _register_streaming_agent_loop():
                             ),
                             turn_kind=turn_kind,
                             chunk_idx=chunk_idx,
-                            stream_reset_before=stream_reset_before_next_turn,
+                            stream_reset_before=stream_reset_before_this_turn,
                             stream_isolated_turn=inter_chunk,
                         )
                     stream_reset_before_next_turn = False
@@ -1515,6 +1803,8 @@ def _register_streaming_agent_loop():
                         })
                         inner_aborted = True
                         break
+                    if not inter_chunk:
+                        stream_memory_seed_required = False
 
                     # ── Stitch (incremental relative to last_prompt_len).
                     user_block_ids = chunk_prompt_ids[effective_last_prompt_len:]
@@ -1529,11 +1819,12 @@ def _register_streaming_agent_loop():
                     # v12.14 Phase 3: also record per-action standalone
                     # (prompt, response) so recurrent mode can emit one
                     # AgentLoopOutput per action. Each action's prompt is
-                    # the FULL prompt at this round (chunk_prompt_ids,
-                    # which already includes prior recall multi-turn
-                    # context for round 2+); its response is just this
-                    # round's assistant tokens.
-                    per_action_prompt_ids.append(list(chunk_prompt_ids))
+                    # the standalone replay prompt at this round
+                    # (replay_prompt_ids, which includes the full memory
+                    # snapshot and prior recall multi-turn context for
+                    # round 2+); its response is just this round's
+                    # assistant tokens.
+                    per_action_prompt_ids.append(list(replay_prompt_ids))
                     per_action_response_ids.append(list(assistant_ids))
                     per_action_response_mask.append([1] * len(assistant_ids))
                     if (
@@ -1550,11 +1841,11 @@ def _register_streaming_agent_loop():
                     # true-KV generation call still receives only the new tool
                     # frames.
                     _ac_mm = None
-                    if prompt_videos:
-                        _ac_mm = {"videos": list(prompt_videos)}
-                    if prompt_images:
+                    if replay_prompt_videos:
+                        _ac_mm = {"videos": list(replay_prompt_videos)}
+                    if replay_prompt_images:
                         _ac_mm = _ac_mm or {}
-                        _ac_mm["images"] = list(prompt_images)
+                        _ac_mm["images"] = list(replay_prompt_images)
                     per_action_mm_data.append(_ac_mm)
                     if (
                         output_log_probs_list is not None
@@ -1597,8 +1888,7 @@ def _register_streaming_agent_loop():
                     parsed = parse_agent_output(
                         response_text,
                         allow_bare_answer=(turn_kind == "post_recall"),
-                        allow_malformed_tool_call=(turn_kind == "compress"),
-                        allow_unclosed_response=True,
+                        allow_bare_memory=(turn_kind == "compress"),
                     )
                     kind = parsed.get("kind", "unknown")
                     action_error = action_space_error_for_turn(kind, turn_kind)
@@ -1613,12 +1903,57 @@ def _register_streaming_agent_loop():
                     chunk_turn_kinds.append(turn_kind)
                     chunk_action_space_errors.append(action_error)
                     chunk_asst_texts.append(response_text)
+                    if debug_trace_enabled:
+                        try:
+                            stream_delta_text = self.tokenizer.decode(
+                                user_block_ids,
+                                skip_special_tokens=False,
+                            )
+                        except Exception:
+                            stream_delta_text = ""
+                        trace_step = {
+                            "event": "agent_turn",
+                            "request_id": request_id,
+                            "video_id": str(video_id),
+                            "chunk_idx": int(chunk_idx),
+                            "turn_kind": turn_kind,
+                            "kind": kind,
+                            "format_error": parsed.get("format_error"),
+                            "action_space_error": action_error,
+                            "inter_chunk": bool(inter_chunk),
+                            "recall_round": int(recall_rounds_this_chunk),
+                            "stream_reset_before": bool(stream_reset_before_this_turn),
+                            "window_start_chunk": int(window_start_chunk),
+                            "window_end_chunk": int(window_end_chunk),
+                            "window_frames": [Path(p).name for p in window_paths],
+                            "stream_prompt_len": int(len(chunk_prompt_ids)),
+                            "replay_prompt_len": int(len(replay_prompt_ids)),
+                            "effective_last_prompt_len": int(effective_last_prompt_len),
+                            "stream_delta_len": int(len(user_block_ids)),
+                            "assistant_len": int(len(assistant_ids)),
+                            "max_tokens": int(max_tokens_this_turn),
+                            "stop_reason": str(output_stop_reason or ""),
+                            "think": _short_text(parsed.get("think"), 2000),
+                            "answer_text": _short_text(parsed.get("answer_text"), 1000),
+                            "tool_args": tool_args,
+                            "stream_delta_text": _short_text(stream_delta_text, 5000),
+                            "assistant_text": _short_text(response_text, 5000),
+                            "recent_thinks_tail_before_update": [
+                                dict(x) for x in list(getattr(state, "recent_thinks", []) or [])[-4:]
+                                if isinstance(x, dict)
+                            ],
+                        }
+                        debug_trace_steps.append(trace_step)
+                        _write_agent_trace(trace_step)
                     if kind == "recall":
-                        chunk_recall_query_ranges.append(
-                            tool_args.get("time_range", "")
+                        chunk_recall_time_ranges.append(
+                            {
+                                "start_time": tool_args.get("start_time"),
+                                "end_time": tool_args.get("end_time"),
+                            }
                         )
                     else:
-                        chunk_recall_query_ranges.append("")
+                        chunk_recall_time_ranges.append("")
                     chunk_recall_returned_chunks.append([])
                     chunk_recall_result_sources.append("")
                     if inter_chunk and compress_range is not None:
@@ -1642,9 +1977,20 @@ def _register_streaming_agent_loop():
                         and not inter_chunk
                         and recall_rounds_this_chunk < self.max_recall_per_chunk
                     ):
+                        # Shape-B recall has two assistant turns in the same
+                        # video chunk. Persist the first turn's current-frame
+                        # think now; the final post-recall answer think is
+                        # skipped later because it is grounded in temporary
+                        # retrieved evidence, not a fresh visual observation.
+                        _append_visible_think_to_state(
+                            state,
+                            chunk_idx,
+                            parsed.get("think") or "",
+                        )
                         args = tool_args
                         recall_payload = await self._execute_recall(
                             args, state, video_path=video_path,
+                            current_chunk=chunk_idx,
                         )
                         recall_result = recall_payload.get("recall_result") or {}
                         chunk_recall_returned_chunks[-1] = [
@@ -1668,15 +2014,23 @@ def _register_streaming_agent_loop():
                         # (We can't reuse `assistant_ids` directly — the chat
                         # template adds <|im_start|>assistant prefix/suffix
                         # tokens we'd duplicate.)
-                        chunk_messages.append({
+                        assistant_message = {
                             "role": "assistant",
                             "content": [{"type": "text", "text": response_text}],
-                        })
-                        chunk_messages.append(self._build_recall_tool_message(recall_payload))
-
-                        last_prompt_len = (
-                            len(chunk_prompt_ids) + len(assistant_ids)
+                        }
+                        recall_tool_message = self._build_recall_tool_message(
+                            recall_payload,
                         )
+                        chunk_messages.append(assistant_message)
+                        chunk_messages.append(recall_tool_message)
+                        if stream_chunk_messages is not chunk_messages:
+                            stream_chunk_messages.append(deepcopy(assistant_message))
+                            stream_chunk_messages.append(deepcopy(recall_tool_message))
+
+                        stream_prefix_ids_for_delta = (
+                            list(chunk_prompt_ids) + list(assistant_ids)
+                        )
+                        last_prompt_len = len(stream_prefix_ids_for_delta)
                         recall_rounds_this_chunk += 1
                         # Continue inner loop — generate turn 2 (the answer).
                         continue
@@ -1689,6 +2043,7 @@ def _register_streaming_agent_loop():
                         args = tool_args
                         recall_payload = await self._execute_recall(
                             args, state, video_path=video_path,
+                            current_chunk=chunk_idx,
                         )
                         recall_result_for_next = recall_payload.get("recall_result")
                         recall_result = recall_result_for_next or {}
@@ -1706,7 +2061,7 @@ def _register_streaming_agent_loop():
                 if inner_aborted and num_assistant_turns == 0:
                     break
 
-                # ── Multi-Q: assign this turn's NON-EMPTY <answer> to a
+                # ── Multi-Q: assign this turn's NON-EMPTY </Response> to a
                 # pending question.
                 #
                 # IMPORTANT — what pass3 SFT data actually looks like:
@@ -1714,7 +2069,7 @@ def _register_streaming_agent_loop():
                 # (chunk_idx, ask_chunk, gold_emits, question_type) that
                 # marks AT MOST ONE Q as `response` per chunk. So along a
                 # SFT-aligned rollout, pure FIFO IS correct: when the model
-                # emits <answer> at chunk N, exactly one pending Q is in
+                # emits </Response> at chunk N, exactly one pending Q is in
                 # its `response_chunk == N` slot, and any earlier pending
                 # Q has already been popped at its own response_chunk.
                 #
@@ -1849,8 +2204,8 @@ def _register_streaming_agent_loop():
                 # video timeline, so we revert state.chunk_idx after.
                 # If the output violated the turn-local action space, do
                 # not feed the raw text to default_update_state: a
-                # compress-prompt <answer> must not terminate the rollout,
-                # and a streaming-prompt compress tool_call must not mutate
+                # compress-prompt </Response> must not terminate the rollout,
+                # and a streaming-prompt compact-memory update must not mutate
                 # memory.
                 # `kind` / `parsed` / `response_text` here are from the
                 # FINAL inner-loop turn (the chunk's terminating
@@ -1873,6 +2228,8 @@ def _register_streaming_agent_loop():
                         # the compressed text state and then append this
                         # chunk's fresh visual window.
                         stream_reset_before_next_turn = True
+                        stream_memory_seed_required = True
+                        last_stream_query_block = ""
                     else:
                         # Append only visual-turn think to memory. post_recall
                         # reasoning is conditioned on retrieved evidence, not a
@@ -1884,9 +2241,11 @@ def _register_streaming_agent_loop():
                             and turn_kind != "post_recall"
                             and kind in ("answer", "recall", "unknown")
                         ):
-                            item = {"chunk": chunk_idx, "text": think_text}
-                            state.recent_thinks.append(item)
-                            state.think_archive.append(dict(item))
+                            _append_visible_think_to_state(
+                                state,
+                                chunk_idx,
+                                think_text,
+                            )
                         if multi_q_list:
                             all_questions_complete = all(
                                 _question_complete(qi)
@@ -1984,7 +2343,7 @@ def _register_streaming_agent_loop():
                 "ts_chunk_hit_max_tokens": chunk_hit_max_tokens,
                 "ts_chunk_stop_reasons": chunk_stop_reasons,
                 "ts_budget_abort_events": budget_abort_events,
-                "ts_recall_query_ranges": chunk_recall_query_ranges,
+                "ts_recall_time_ranges": chunk_recall_time_ranges,
                 "ts_recall_returned_chunks": chunk_recall_returned_chunks,
                 "ts_recall_result_sources": chunk_recall_result_sources,
                 "ts_compress_expected_chunks": chunk_compress_expected_chunks,
@@ -1999,6 +2358,8 @@ def _register_streaming_agent_loop():
                 "ts_per_q_answers": per_q_answers,
                 "ts_n_questions": float(len(multi_q_list)),
             }
+            if debug_trace_enabled:
+                common_extras["ts_debug_trace_steps"] = debug_trace_steps
 
             # ──────────────────────────────────────────────────────
             # v12.14 Phase 3: dispatch on recurrent_mode

@@ -77,7 +77,7 @@ def build_streaming_query_meta(
     item: Dict[str, Any],
     *,
     answer_form: str | None = None,
-    answer_style: str = "letter_only",
+    answer_style: str = "letter_plus_text",
 ) -> Dict[str, Any]:
     """Structured metadata for ``MemoryState.add_query`` / active_query.
 

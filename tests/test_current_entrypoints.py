@@ -125,7 +125,7 @@ def test_verl_launcher_supports_validation_only_rollout():
     assert "VAL_BEFORE_TRAIN" in launcher
     assert "VALIDATION_DATA_DIR" in launcher
     assert "trainer.val_before_train=${VAL_BEFORE_TRAIN}" in recipe
-    assert "+trainer.val_only=${VAL_ONLY}" in recipe
+    assert "trainer.val_only=${VAL_ONLY}" in recipe
     assert "+trainer.validation_data_dir" in recipe
 
 

@@ -164,13 +164,13 @@ def build_messages(
         raise ValueError(f"unknown layout: {layout}")
     suffix = "\n".join([
         "</current_videochunk>",
-        "<query>",
+        "<active_query>",
         (
             f'  <q t="{t}">Describe only the attached current video chunk in one concise English observation. '
             "Use the video content as the visual source. Do not describe older memory or answer QA. "
             "Output exactly <think>current chunk observation</think><answer></answer></q>"
         ),
-        "</query>",
+        "</active_query>",
     ])
     return [
         {

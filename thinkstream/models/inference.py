@@ -226,6 +226,17 @@ class StreamingCache:
             layer.zero_()
         self.cache_seqlens.zero_()
 
+    def reset_slots(self, slot_ids: torch.Tensor) -> None:
+        """Reset only selected batch rows in the KV cache."""
+        slot_ids = slot_ids.to(device=self.cache_seqlens.device, dtype=torch.long)
+        if slot_ids.numel() == 0:
+            return
+        for layer in self.k_cache:
+            layer.index_fill_(0, slot_ids, 0)
+        for layer in self.v_cache:
+            layer.index_fill_(0, slot_ids, 0)
+        self.cache_seqlens[:, slot_ids] = 0
+
     def update(
         self,
         key_states: torch.Tensor,
@@ -347,6 +358,15 @@ class GraphDecoder:
         self.static_input_ids.zero_()
         self.static_position_ids.zero_()
         self.static_logits.zero_()
+
+    def reset_slots(self, slot_ids: torch.Tensor) -> None:
+        self.cache.reset_slots(slot_ids)
+        slot_ids = slot_ids.to(device=self.static_input_ids.device, dtype=torch.long)
+        if slot_ids.numel() == 0:
+            return
+        self.static_input_ids.index_fill_(0, slot_ids, 0)
+        self.static_position_ids.index_fill_(0, slot_ids, 0)
+        self.static_logits.index_fill_(0, slot_ids, 0)
 
     @torch.inference_mode()
     def capture(self, model: torch.nn.Module):
@@ -472,6 +492,42 @@ class StreamingInferenceEngine:
         self._last_input_ends = None
         self._last_generation_starts = None
         self._last_generation_ends = None
+
+    def _zero_state_rows(self, value: Optional[torch.Tensor], slot_ids: torch.Tensor) -> Optional[torch.Tensor]:
+        if value is None:
+            return None
+        out = value.clone()
+        if out.ndim == 0:
+            return out
+        row_dim = 1 if out.ndim == 3 else 0
+        index = slot_ids.to(device=out.device, dtype=torch.long)
+        out.index_fill_(row_dim, index, 0)
+        return out
+
+    def reset_slots(self, slot_ids: Union[list[int], torch.Tensor]) -> None:
+        """Clear selected batch rows without disturbing other streaming slots."""
+        if not isinstance(slot_ids, torch.Tensor):
+            slot_ids = torch.tensor(list(slot_ids), device=self.device, dtype=torch.long)
+        else:
+            slot_ids = slot_ids.to(device=self.device, dtype=torch.long)
+        if slot_ids.numel() == 0:
+            return
+        self.decoder.reset_slots(slot_ids)
+        self.next_start_pos = self._zero_state_rows(
+            getattr(self, "next_start_pos", None), slot_ids
+        )
+        self._last_input_starts = self._zero_state_rows(
+            getattr(self, "_last_input_starts", None), slot_ids
+        )
+        self._last_input_ends = self._zero_state_rows(
+            getattr(self, "_last_input_ends", None), slot_ids
+        )
+        self._last_generation_starts = self._zero_state_rows(
+            getattr(self, "_last_generation_starts", None), slot_ids
+        )
+        self._last_generation_ends = self._zero_state_rows(
+            getattr(self, "_last_generation_ends", None), slot_ids
+        )
 
     def reset_to_prefix(
         self,
@@ -659,14 +715,21 @@ class StreamingInferenceEngine:
         if attention_mask is not None:
             seq_len = int(input_ids.shape[1])
             positions = torch.arange(seq_len, device=input_ids.device)
+            attn_bool = attention_mask.to(device=input_ids.device, dtype=torch.bool)
+            valid_any = attn_bool.any(dim=1)
             last_valid_pos = torch.where(
-                attention_mask.to(device=input_ids.device, dtype=torch.bool),
+                attn_bool,
                 positions.unsqueeze(0),
                 torch.zeros((), device=input_ids.device, dtype=positions.dtype),
             ).max(dim=1)[0]
-            tail_keep = seq_len - int(last_valid_pos.min().item())
+            effective_last_valid_pos = torch.where(
+                valid_any,
+                last_valid_pos,
+                torch.full_like(last_valid_pos, seq_len - 1),
+            )
+            tail_keep = seq_len - int(effective_last_valid_pos.min().item())
             logits_to_keep = max(int(logits_to_keep), int(tail_keep))
-            gather_last_valid_logits = last_valid_pos - (seq_len - logits_to_keep)
+            gather_last_valid_logits = effective_last_valid_pos - (seq_len - logits_to_keep)
         # Forward pass (Prefill)
         logits = self.model(
             input_ids=input_ids,
@@ -773,6 +836,7 @@ class StreamingInferenceEngine:
         sample: Optional[callable] = None,
         sample_kwargs: Optional[dict] = None,
         return_log_probs: bool = False,
+        active_mask: Optional[torch.Tensor] = None,
     ) -> Union[List[torch.Tensor], tuple[List[torch.Tensor], List[torch.Tensor]]]:
         """
         Executes the generation pipeline.
@@ -804,6 +868,18 @@ class StreamingInferenceEngine:
         assert effective_bsz == self.batch_size, (
             f"Total batch size ({effective_bsz}) must strictly match initialized batch size ({self.batch_size})."
         )
+        if active_mask is None:
+            active_mask = torch.ones(effective_bsz, dtype=torch.bool, device=self.device)
+        else:
+            active_mask = active_mask.to(device=self.device, dtype=torch.bool)
+            assert active_mask.shape[0] == effective_bsz, (
+                f"active_mask shape {active_mask.shape} mismatch with batch size {effective_bsz}"
+            )
+        prev_next_start_pos = None if self.next_start_pos is None else self.next_start_pos.detach().clone()
+        prev_last_input_starts = None if self._last_input_starts is None else self._last_input_starts.detach().clone()
+        prev_last_input_ends = None if self._last_input_ends is None else self._last_input_ends.detach().clone()
+        prev_last_generation_starts = None if self._last_generation_starts is None else self._last_generation_starts.detach().clone()
+        prev_last_generation_ends = None if self._last_generation_ends is None else self._last_generation_ends.detach().clone()
         cache_lens_before = self.decoder.cache_seqlens[
             0, :effective_bsz
         ].clone().to(device=self.device, dtype=torch.long)
@@ -812,8 +888,14 @@ class StreamingInferenceEngine:
             attention_mask,
             num_generations,
         )
-        self._last_input_starts = cache_lens_before.detach().clone()
-        self._last_input_ends = (cache_lens_before + input_valid_lens).detach().clone()
+        next_input_starts = cache_lens_before.detach().clone()
+        next_input_ends = (cache_lens_before + input_valid_lens).detach().clone()
+        if prev_last_input_starts is not None:
+            next_input_starts = torch.where(active_mask, next_input_starts, prev_last_input_starts)
+        if prev_last_input_ends is not None:
+            next_input_ends = torch.where(active_mask, next_input_ends, prev_last_input_ends)
+        self._last_input_starts = next_input_starts
+        self._last_input_ends = next_input_ends
         # 1. Process Position IDs (Expand & Shift based on Cache)
         position_ids = self._process_position_ids(
             input_ids=input_ids,
@@ -867,13 +949,11 @@ class StreamingInferenceEngine:
         full_tokens[:, 0] = next_token.squeeze(
             -1
         )  # NOTE: Fill the output token from prefill
-        valid_token_lens += 1  # Update generated length
+        valid_token_lens += active_mask.long()  # Update generated length for active rows only
 
-        finished = torch.isin(next_token.squeeze(-1), self.eos_token_ids)
+        finished = torch.isin(next_token.squeeze(-1), self.eos_token_ids) | (~active_mask)
         # NOTE: We should ensure that all the eos tokens in the sequences are encoded for next turn generation.
-        eos_encoded = torch.zeros(
-            (effective_bsz,), dtype=torch.bool, device=self.device
-        )
+        eos_encoded = ~active_mask.clone()
         # Calculate next position ids for decoding.
         # This gives us the scalar START pos for the next token [StrictBatchSize]
         cur_pos_ids = self._get_next_position_ids(position_ids).unsqueeze(1)
@@ -906,11 +986,11 @@ class StreamingInferenceEngine:
                         log_prob_out=log_prob_buffer,
                     )
                 full_tokens[:, step] = torch.where(
-                    finished,
+                    finished | (~active_mask),
                     self.pad_token_id,
                     next_token.squeeze(-1),
                 )
-                valid_token_lens += ~finished
+                valid_token_lens += ((~finished) & active_mask).long()
             # NOTE: If eos is already encoded, then the current step is invalid,
             # so the cache_seqlens and cur_pos_ids should not update.
             self.decoder.cache.adjust_seqlens(
@@ -932,12 +1012,36 @@ class StreamingInferenceEngine:
         )
         # STATE UPDATE: Save the final position id for the next streaming call.
         # cur_pos_ids now holds (last_token_pos + 1).
-        self.next_start_pos = cur_pos_ids.detach().clone()
+        next_start_pos = cur_pos_ids.detach().clone()
+        if prev_next_start_pos is not None:
+            if next_start_pos.ndim == 2:
+                next_start_pos = torch.where(
+                    active_mask.unsqueeze(1),
+                    next_start_pos,
+                    prev_next_start_pos,
+                )
+            elif next_start_pos.ndim == 3:
+                next_start_pos = torch.where(
+                    active_mask.view(1, -1, 1),
+                    next_start_pos,
+                    prev_next_start_pos,
+                )
+        self.next_start_pos = next_start_pos
         cache_lens_after = self.decoder.cache_seqlens[
             0, :effective_bsz
         ].clone().to(device=self.device, dtype=torch.long)
-        self._last_generation_starts = self._last_input_ends.detach().clone()
-        self._last_generation_ends = cache_lens_after.detach().clone()
+        next_generation_starts = self._last_input_ends.detach().clone()
+        next_generation_ends = cache_lens_after.detach().clone()
+        if prev_last_generation_starts is not None:
+            next_generation_starts = torch.where(
+                active_mask, next_generation_starts, prev_last_generation_starts
+            )
+        if prev_last_generation_ends is not None:
+            next_generation_ends = torch.where(
+                active_mask, next_generation_ends, prev_last_generation_ends
+            )
+        self._last_generation_starts = next_generation_starts
+        self._last_generation_ends = next_generation_ends
         tokens_out = [
             full_tokens[i, :length]
             for i, length in enumerate(valid_token_lens.tolist())
@@ -1054,6 +1158,23 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
             self._window_is_recall.zero_()
             self._window_recall_ttl.fill_(-1)
             self._window_count.zero_()
+
+    def reset_slots(self, slot_ids: Union[list[int], torch.Tensor]) -> None:
+        """Clear selected streaming slots and their visual-window metadata."""
+        if not isinstance(slot_ids, torch.Tensor):
+            slot_ids = torch.tensor(list(slot_ids), device=self.device, dtype=torch.long)
+        else:
+            slot_ids = slot_ids.to(device=self.device, dtype=torch.long)
+        if slot_ids.numel() == 0:
+            return
+        super().reset_slots(slot_ids)
+        self._ensure_recall_window_bookkeeping()
+        with torch.inference_mode():
+            self._window_starts.index_fill_(0, slot_ids, 0)
+            self._window_ends.index_fill_(0, slot_ids, 0)
+            self._window_is_recall.index_fill_(0, slot_ids, False)
+            self._window_recall_ttl.index_fill_(0, slot_ids, -1)
+            self._window_count.index_fill_(0, slot_ids, 0)
 
     def reset_to_prefix(
         self,
@@ -1441,8 +1562,16 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
         turn_kind: Optional[str] = None,
         recall_kv_policy: Optional[str] = None,
         delete_previous_assistant_kv: bool = False,
+        active_mask: Optional[torch.Tensor] = None,
     ) -> Union[List[torch.Tensor], tuple[List[torch.Tensor], List[torch.Tensor]]]:
         effective_bsz = input_ids.shape[0] * num_generations
+        if active_mask is None:
+            active_mask = torch.ones(effective_bsz, dtype=torch.bool, device=self.device)
+        else:
+            active_mask = active_mask.to(device=self.device, dtype=torch.bool)
+            assert active_mask.shape[0] == effective_bsz, (
+                f"active_mask shape {active_mask.shape} mismatch with batch size {effective_bsz}"
+            )
         sample_kwargs = sample_kwargs or {}
         effective_turn_kind = str(
             turn_kind
@@ -1473,6 +1602,14 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
             input_ids,
             num_generations,
         )
+        if block_counts.numel():
+            block_counts = torch.where(active_mask, block_counts, torch.zeros_like(block_counts))
+            if block_lens.numel():
+                block_lens = torch.where(
+                    active_mask.unsqueeze(1),
+                    block_lens,
+                    torch.zeros_like(block_lens),
+                )
         capacity_block_counts = (
             torch.zeros_like(block_counts)
             if recall_next_turn_sidecar
@@ -1524,6 +1661,7 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
             sample=sample,
             sample_kwargs=sample_kwargs,
             return_log_probs=return_log_probs,
+            active_mask=active_mask,
         )
 
         # 5. Record the new video token windows (vectorized).
@@ -1537,9 +1675,13 @@ class StreamingWindowInferenceEngine(StreamingInferenceEngine):
             # raw recall evidence.
             input_starts = cache_lens_before.to(device=self.device, dtype=torch.long)
             input_ends = input_starts + input_valid_lens
+            input_ends = torch.where(active_mask, input_ends, input_starts)
             input_deleted = self._evict_token_spans(input_starts, input_ends)
             self._shift_last_generation_after_deletion(input_starts, input_deleted)
             if previous_gen_starts is not None and previous_gen_ends is not None:
+                previous_gen_ends = torch.where(
+                    active_mask, previous_gen_ends, previous_gen_starts
+                )
                 prev_deleted = self._evict_token_spans(
                     previous_gen_starts,
                     previous_gen_ends,
@@ -1926,11 +2068,11 @@ def think_budget_sample_restricted(
 
     **When ``restricted_token_ids is None``** (unrestricted / silent mode)::
 
-        </think>  →  <silent>  →  <|im_end|>
+        </think>  →  </Silence>  →  <|im_end|>
 
     **When ``restricted_token_ids is not None``** (constrained vocabulary)::
 
-        </think>  →  <response>  →  argmax(logits[restricted_token_ids])  →  <|im_end|>
+        </think>  →  </Response>  →  argmax(logits[restricted_token_ids])  →  <|im_end|>
 
     Usage::
 
@@ -1942,8 +2084,8 @@ def think_budget_sample_restricted(
                 "think_end_token_id": tokenizer.convert_tokens_to_ids("</think>"),
                 "max_think_tokens": 512,
                 "eos_token_id": tokenizer.convert_tokens_to_ids("<|im_end|>"),
-                "silent_token_id": tokenizer.convert_tokens_to_ids("<silent>"),
-                "response_token_id": tokenizer.convert_tokens_to_ids("<response>"),
+                "silent_token_id": tokenizer.convert_tokens_to_ids("</Silence>"),
+                "response_token_id": tokenizer.convert_tokens_to_ids("</Response>"),
                 # restricted_token_ids defaults to None → silent mode
             },
         )
@@ -1956,8 +2098,8 @@ def think_budget_sample_restricted(
                 "think_end_token_id": tokenizer.convert_tokens_to_ids("</think>"),
                 "max_think_tokens": 512,
                 "eos_token_id": tokenizer.convert_tokens_to_ids("<|im_end|>"),
-                "silent_token_id": tokenizer.convert_tokens_to_ids("<silent>"),
-                "response_token_id": tokenizer.convert_tokens_to_ids("<response>"),
+                "silent_token_id": tokenizer.convert_tokens_to_ids("</Silence>"),
+                "response_token_id": tokenizer.convert_tokens_to_ids("</Response>"),
                 "restricted_token_ids": [id_A, id_B, id_C, ...],
             },
         )
@@ -1972,8 +2114,8 @@ def think_budget_sample_restricted(
         think_end_token_id:   Token ID for ``</think>``.
         max_think_tokens:     Budget: max tokens before ``</think>`` is forced.
         eos_token_id:         Token ID for ``<|im_end|>``.
-        silent_token_id:      Token ID for ``<silent>``.
-        response_token_id:    Token ID for ``<response>``.
+        silent_token_id:      Token ID for ``</Silence>``.
+        response_token_id:    Token ID for ``</Response>``.
         restricted_token_ids: Optional list of allowed answer token IDs.  When *None*,
                               the silent-mode pattern is used; otherwise the constrained
                               vocabulary pattern is used.
@@ -2023,8 +2165,8 @@ def think_budget_sample_restricted(
     tokens_after = (step - think_pos - 1) * has_think.long()  # [B]
 
     if not is_query_window:
-        # ---- Silent mode: </think> → <silent> → <|im_end|> ----
-        # tokens_after == 0  →  force <silent>
+        # ---- Silent mode: </think> → </Silence> → <|im_end|> ----
+        # tokens_after == 0  →  force </Silence>
         # tokens_after == 1  →  force <|im_end|>
         force_silent = has_think & (tokens_after == 0)  # [B]
         force_eos = has_think & (tokens_after == 1)  # [B]
@@ -2036,8 +2178,8 @@ def think_budget_sample_restricted(
             eos_t = torch.full_like(next_token, eos_token_id)
             next_token = torch.where(force_eos.unsqueeze(1), eos_t, next_token)
     elif not allow_deferral:
-        # ---- Constrained mode: </think> → <response> → top-1 restricted → <|im_end|> ----
-        # tokens_after == 0  →  force <response>
+        # ---- Constrained mode: </think> → </Response> → top-1 restricted → <|im_end|> ----
+        # tokens_after == 0  →  force </Response>
         # tokens_after == 1  →  force argmax over restricted_token_ids
         # tokens_after == 2  →  force <|im_end|>
         force_response = has_think & (tokens_after == 0)  # [B]
@@ -2065,8 +2207,8 @@ def think_budget_sample_restricted(
             next_token = torch.where(force_eos.unsqueeze(1), eos_t, next_token)
     else:
         # ---- Deferral mode: </think> → (model chooses) ----
-        # If model chooses <response>: → top-1 restricted → <|im_end|>
-        # If model chooses <silent>: → <|im_end|>
+        # If model chooses </Response>: → top-1 restricted → <|im_end|>
+        # If model chooses </Silence>: → <|im_end|>
 
         # tokens_after == 0: Do NOT force anything. Let model sample.
 
@@ -2080,12 +2222,12 @@ def think_budget_sample_restricted(
             # We want generated_tokens[b, think_pos[b] + 1]
             first_token_after = generated_tokens[batch_indices, think_pos + 1]
 
-            # Path A: <response> chosen
+            # Path A: </Response> chosen
             path_response = is_past_first & (first_token_after == response_token_id)
             force_restricted = path_response & (tokens_after == 1)
             force_eos_A = path_response & (tokens_after == 2)
 
-            # Path B: <silent> chosen
+            # Path B: </Silence> chosen
             path_silent = is_past_first & (first_token_after == silent_token_id)
             force_eos_B = path_silent & (tokens_after == 1)
 

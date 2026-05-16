@@ -37,6 +37,9 @@ from typing import Callable, Dict, Iterable, Iterator, List, Optional
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from scripts.agent_data.pass5_splitter import (  # noqa: E402
+    DEFAULT_QUERY_INJECTION_POLICY,
+    VALID_QUERY_INJECTION_POLICIES,
+    normalize_query_injection_policy,
     render_trajectory_record_to_rows,
 )
 from thinkstream.data.agent_protocol import (  # noqa: E402
@@ -184,12 +187,14 @@ def convert_file(
     frames_root: Optional[Path] = None,
     limit: Optional[int] = None,
     log_every: int = 100,
+    query_injection_policy: Optional[str] = None,
 ) -> ConversionStats:
     """Read one pass4 JSONL → emit v2 JSONL. Returns stats."""
     stats = ConversionStats()
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     fr_config = FrameResolverConfig(frames_root=frames_root)
+    query_policy = normalize_query_injection_policy(query_injection_policy)
 
     with output_path.open("w", encoding="utf-8") as out_f:
         for rec_idx, record in enumerate(iter_pass4_records(input_path)):
@@ -206,7 +211,11 @@ def convert_file(
             )
 
             try:
-                rows = render_trajectory_record_to_rows(record, resolver)
+                rows = render_trajectory_record_to_rows(
+                    record,
+                    resolver,
+                    query_injection_policy=query_policy,
+                )
             except Exception as exc:
                 logger.error(
                     "render failed for %s/%s: %s",
@@ -261,6 +270,7 @@ def convert_dir(
     frames_root: Optional[Path] = None,
     limit: Optional[int] = None,
     splits: Optional[frozenset] = None,
+    query_injection_policy: Optional[str] = None,
 ) -> Dict[str, Dict]:
     """Process every ``*_trajectories.jsonl`` under input_dir.
 
@@ -269,6 +279,7 @@ def convert_dir(
     override (e.g. ``frozenset({"my_custom_split"})`` for ad-hoc work).
     """
     allowed_splits = splits if splits is not None else SFT_TRAJECTORY_SPLITS
+    query_policy = normalize_query_injection_policy(query_injection_policy)
     manifest: Dict[str, Dict] = {}
     sources = sorted(input_dir.glob("*_trajectories.jsonl"))
     if not sources:
@@ -283,7 +294,13 @@ def convert_dir(
             )
             continue
         dst = output_dir / f"{split}_trajectory.jsonl"
-        stats = convert_file(src, dst, frames_root=frames_root, limit=limit)
+        stats = convert_file(
+            src,
+            dst,
+            frames_root=frames_root,
+            limit=limit,
+            query_injection_policy=query_policy,
+        )
         manifest[split] = stats.to_dict()
     # Write a manifest summary alongside the outputs.
     manifest_path = output_dir / "_pass5_manifest.json"
@@ -328,6 +345,16 @@ def main():
         help="cap records processed (smoke test)",
     )
     ap.add_argument(
+        "--query-injection-policy",
+        default=None,
+        choices=sorted(VALID_QUERY_INJECTION_POLICIES),
+        help=(
+            "active-query re-injection policy for multi-turn SFT/eval render "
+            f"(default: env THINKSTREAM_QUERY_INJECTION_POLICY or "
+            f"{DEFAULT_QUERY_INJECTION_POLICY})"
+        ),
+    )
+    ap.add_argument(
         "--log-level", default="INFO",
         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
     )
@@ -345,6 +372,7 @@ def main():
         convert_file(
             args.input, args.output,
             frames_root=args.frames_root, limit=args.limit,
+            query_injection_policy=args.query_injection_policy,
         )
         return
 
@@ -355,6 +383,7 @@ def main():
         convert_dir(
             args.input_dir, args.output_dir,
             frames_root=args.frames_root, limit=args.limit,
+            query_injection_policy=args.query_injection_policy,
         )
 
 

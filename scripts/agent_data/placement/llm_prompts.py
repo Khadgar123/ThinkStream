@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import json
 import re
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 # ---------------------------------------------------------------------------
@@ -49,21 +49,23 @@ FAMILY_TAXONOMY = {
             "evidence_window": "cross_time", "operation": "delayed resolution",
             "ovo_task": "EPM/CRR", "ours_unique": True},
     "CRR1": {"family_name": "event_happened_status", "category": "Temporal Understanding",
-             "skill": "answer whether a described event has happened yet across probes",
-             "evidence_window": "streaming", "operation": "event status",
+             "skill": "answer whether current evidence can resolve a previous question",
+             "evidence_window": "streaming", "operation": "evidence sufficiency status",
              "ovo_task": "CRR", "ours_unique": False},
     "M1":  {"family_name": "video_summary", "category": "Global Understanding",
             "skill": "summarize the whole video trajectory", "evidence_window": "global",
-            "operation": "summary", "ovo_task": "global", "ours_unique": False},
-    "E2":  {"family_name": "next_event", "category": "Temporal Understanding",
-            "skill": "wait for and identify the next observable event", "evidence_window": "future",
-            "operation": "next-event detection", "ovo_task": "EPM", "ours_unique": False},
+            "operation": "summary", "ovo_task": "global", "ours_unique": True},
+    "E2":  {"family_name": "proactive_output", "category": "Temporal Understanding",
+            "skill": "wait for a future visual trigger and output a short target",
+            "evidence_window": "future",
+            "operation": "proactive trigger output", "ovo_task": "EPM", "ours_unique": False},
     "F6":  {"family_name": "future_state", "category": "Temporal Understanding",
             "skill": "predict the next state from current cues", "evidence_window": "current",
             "operation": "future state", "ovo_task": "FPD", "ours_unique": False},
     "F7":  {"family_name": "step_status", "category": "Temporal Understanding",
-            "skill": "answer whether a step has happened by now", "evidence_window": "streaming",
-            "operation": "status flip", "ovo_task": "SSR", "ours_unique": False},
+            "skill": "answer whether a step is currently being carried out",
+            "evidence_window": "streaming", "operation": "current step status",
+            "ovo_task": "SSR", "ours_unique": False},
     "CR3": {"family_name": "intent_now", "category": "Causal & Intent Reasoning",
             "skill": "infer the current actor intent", "evidence_window": "current",
             "operation": "intent inference", "ovo_task": "ASI", "ours_unique": False},
@@ -86,7 +88,7 @@ FAMILY_TAXONOMY = {
              "ovo_task": "OJR", "ours_unique": False},
     "F5":  {"family_name": "action_count", "category": "Streaming Agent Actions",
             "skill": "emit cumulative counts for repeated actions", "evidence_window": "streaming",
-            "operation": "cumulative counting", "ovo_task": "REC", "ours_unique": True},
+            "operation": "cumulative counting", "ovo_task": "REC", "ours_unique": False},
     "C1":  {"family_name": "text_readout", "category": "Current Perception",
             "skill": "read exact visible text", "evidence_window": "current",
             "operation": "OCR", "ovo_task": "OCR", "ours_unique": False},
@@ -108,8 +110,9 @@ def family_taxonomy(family: str) -> Dict:
 
 FAMILY_RULES = {
     # Family ids define the question/reasoning skill. Availability difficulty
-    # (current/direct, memory_direct, recall, future/wait) is assigned later by
-    # pass3b placement, so no family should be interpreted as recall-only.
+    # (current/direct, state-memory direct, recall, future/wait) is assigned
+    # later by pass3b placement, so no family should be interpreted as
+    # recall-only.
     "N1":  {"answer_form": "multiple_choice", "profile": "backward",
             "intent": "Appearance recall: which entity actually appeared in the video",
             **family_taxonomy("N1")},
@@ -132,20 +135,20 @@ FAMILY_RULES = {
             "intent": "Delayed clue resolution: an early clue is resolved by later evidence",
             **family_taxonomy("CR5")},
     "CRR1": {"answer_form": "binary", "profile": "realtime",
-             "intent": "Event status over time: has a described event happened yet",
+             "intent": "CRR probe status: whether current evidence now resolves a prior visual question",
              **family_taxonomy("CRR1")},
     "M1":  {"answer_form": "descriptive", "profile": "backward",
             "intent": "Video summary",
             **family_taxonomy("M1")},
     # forward (silent_then_response)
-    "E2":  {"answer_form": "multiple_choice", "profile": "forward",
-            "intent": "Next event: wait for the next observable event",
+    "E2":  {"answer_form": "short_exact", "profile": "forward",
+            "intent": "Proactive output: wait for a future trigger and emit the requested short output",
             **family_taxonomy("E2")},
     "F6":  {"answer_form": "multiple_choice", "profile": "realtime",
             "intent": "Future prediction: answer from current visual cues",
             **family_taxonomy("F6")},
     "F7":  {"answer_form": "binary", "profile": "realtime",
-            "intent": "Step status: has step X happened yet (Yes/No flips at step_chunk)",
+            "intent": "SSR step status: immediate Yes/No check for whether a step is currently being carried out",
             **family_taxonomy("F7")},
     # realtime (direct)
     "CR3": {"answer_form": "multiple_choice", "profile": "realtime",
@@ -178,7 +181,7 @@ FAMILY_RULES = {
             **family_taxonomy("PN1")},
 }
 
-QUESTION_TYPE_BY_FAMILY = {f: ("multi_emit" if f in ("F5", "F7", "CRR1", "PN1") else "single_emit")
+QUESTION_TYPE_BY_FAMILY = {f: ("multi_emit" if f in ("F5", "CRR1", "PN1") else "single_emit")
                            for f in FAMILY_RULES}
 
 
@@ -186,10 +189,16 @@ ANSWER_FORM_VARIANTS = {
     # Keep perception/backward tracing families in their benchmark-like MCQ
     # form. Non-MCQ pressure should mainly come from active responding:
     # F5/REC counting, F7/SSR status, and CRR1/CRR status-over-time.
+    "E2": ("short_exact", "number"),
 }
 
 
 FAMILY_EXTRA_RULES = {
+    "P1": """
+- P1 asks for a visible object attribute such as color, material, state, or
+  appearance. Do not turn P1 into OCR/text/brand reading; those belong to C1.
+- Keep question_way="object_attribute" and evidence_type="object_attribute_visual".
+- The correct answer must be directly visible in the planned support chunks.""",
     "HLD1": """
 - HLD1 is an explicit negative/unanswerable card.
 - Generate diverse negatives, not one repeated template. Prefer a mix of:
@@ -222,46 +231,127 @@ FAMILY_EXTRA_RULES = {
   do not leave grounding_frames empty and do not use future evidence.
 - Do NOT include a non-Unable option if that exact option text appears in the
   grounding evidence.
+- Avoid global absence claims unless the provided evidence truly covers the
+  relevant scene. Prefer bounded historical checks such as a location,
+  container, object group, or action interval that the grounding frames can
+  inspect.
 - Avoid leaking the answer inside the question, e.g. do not ask "What color was
   the red umbrella"; ask about a neutral object/fact instead.
 - If you cannot construct a safe unanswerable card, output an empty JSON list.""",
     "F7": """
-- F7 must be multi-time status.
-- The user-facing question should look like a natural status check:
-  "Has/Did/Is ... yet/by now?" It should not mention options or answer format.
-- gold_emits MUST contain at least one "No" before the change chunk and at least one "Yes" at/after it.
-- Values must be monotonic over time: No ... No, then Yes ... Yes; never Yes before No.
-- If the timeline permits, include one later Yes probe after the change has
-  clearly left the recent visual window, while keeping the total probes to 3-5.
-  This creates a meaningful history-check status question without increasing
-  the number of F7 cards.
-- grounding_frames should include the change chunk that makes the status become Yes.""",
+- F7 mirrors OVO SSR: an immediate current step-status row, not a persistent
+  multi-answer state probe and not historical event status.
+- The question should ask whether the person is currently carrying out a step,
+  e.g. "Is the person currently ...?" Do not use "has happened", "yet", or
+  "by now".
+- question_type must be single_emit. Use exactly one gold_emit at the current
+  probe chunk where the answer is judged.
+- answer_form must be binary, with no options. The gold value is "Yes" only
+  if the step is currently visible at that probe; otherwise "No".
+- grounding_frames should include the same current probe chunk plus any
+  immediately adjacent current evidence needed to verify the status.""",
     "CRR1": """
-- CRR1 is a multi-probe event-status card.
-- Ask whether a concrete event has happened yet. The event description may be
-  in the question, but the wording should still be a compact status check:
-  "Has/Did ... yet/by now?" Answer values must be only "No" before the event
-  is evidenced and "Yes" at/after the evidence chunk.
-- gold_emits MUST contain at least one No before the event and at least one Yes
-  after it. Use 3-5 probe chunks, not every chunk in a long range.
-- If the timeline permits, include one later Yes probe after the event has
-  left the recent visual window. Prefer concrete event-completion facts,
-  before/after object states, or clue-resolution events rather than vague
-  progress questions.
-- Choose events with enough earlier context that the No probes are meaningful.
-- grounding_frames should include the event chunk that changes the status.""",
+- CRR1 mirrors OVO CRR: a probe asks whether the video-so-far/current prefix
+  now provides enough information to answer an original visual question.
+- The user-facing question should be a compact sufficiency/status check such
+  as "Can you answer what happened to the cup now?" or "Is there enough visual
+  evidence now to answer where the item ended up?"
+- The question should not ask for the final hidden answer directly. It asks
+  whether the current/latest visible evidence is sufficient yet. Natural
+  wording should signal that the answer can change from No to Yes as more
+  video arrives.
+- Choose an underlying question/clue whose answer is NOT visually resolvable
+  at the earliest planned probe but becomes resolvable at a later planned
+  probe. Do not choose a fact that is already visible at the first probe; that
+  would make all probe values "Yes" and is not a valid CRR1 card.
+- Answer "No" before the clue/resolution is visually available. Once a planned
+  probe is "Yes", every later planned probe must also be "Yes".
+- Use 3-5 probe chunks, not every chunk in a long range. One later Yes probe is
+  useful, but this is still a status/state task; do not design it as a default
+  recall example.
+- grounding_frames should include the clue/resolution chunks that make the
+  answer possible.""",
+    "CR3": """
+- CR3 is normally current intent/cause from visible evidence.
+- If task_subtype is emotion_context_current, ask a compact StreamingBench-like
+  emotion or mood question grounded in visible expression/body language and
+  immediate context. Keep it multiple-choice and current, not historical.""",
+    "R1": """
+- R1 is current visible reasoning.
+- If task_subtype is scene_understanding_current, ask a current scene/clip
+  understanding MCQ. The answer should be visible from the planned support
+  chunks, not a broad whole-video summary.
+- If task_subtype is multimodal_alignment, ask whether visible cues, OCR/text,
+  object state, action context, or scene description match or contradict each
+  other. Keep it grounded in the planned visual chunks; do not require audio
+  if the evidence does not contain audio facts.""",
+    "N1": """
+- N1 asks which entity/person appeared or interacted in the video.
+- If task_subtype is person_identity_interaction, ask a person/entity
+  interaction question similar to StreamingBench sequential QA, but do not
+  require an actual previous question unless the wording is self-contained.
+- If task_subtype is sequential_reference, use follow-up-style wording with a
+  stable earlier referent, e.g. "the person/object just referred to" or
+  "that same item", but include enough visual anchor text that the card can be
+  rendered independently in pass3C.""",
+    "M1": """
+- M1 is a global/scene-summary style question, not OCR, brand recall, or a
+  single-object attribute question.
+- Keep question_way="scene_summary" and evidence_type="global_context_memory".
+- Ask about the overall activity, repeated pattern, or broad trajectory shown
+  across the planned support chunks. The answer should be one short, concrete
+  sentence rather than a paragraph.
+- gold_emits must use the planned answer chunk, which is the latest planned
+  support chunk.""",
     "F5": """
 - F5 should be phrased as cumulative repeated-action counting:
   "How many times has ... happened by now?" or "How many ... have appeared so far?"
 - The counted unit must be visually repeatable and unambiguous. Do not count
   vague activity, camera cuts, or inferred intent.
 - gold_emits values must be digit strings and should update only at meaningful
-  occurrence chunks, not at every frame.""",
+  occurrence chunks, not at every frame.
+- Do not skip earlier count-changing occurrences before the first gold_emit;
+  the first emitted count should be the first clear occurrence in the selected
+  sequence, so a chunk-0 OVO-style query has a coherent cumulative trajectory.
+- Keep cumulative counts in the OVO REC range 0-10. If the event would require
+  larger numbers, choose a narrower repeated action or a shorter probe sequence.
+- When evidence permits, include 6-9 cumulative response points so the rendered
+  trajectory matches OVO REC-style repeated scoring. Use fewer only when there
+  are not enough clear repeated occurrences in the provided video evidence.
+- If task_subtype is global_prefix_count, use OVO REC from-start semantics:
+  one question can be asked at the beginning of the trajectory and the answer
+  is a cumulative digit at each planned answer chunk. Do not make a local-only
+  "right now" count for that slot.
+- If task_subtype is local_repeated_count, use a compact local repeated-action
+  episode with cumulative counts over the selected occurrence chunks.
+- This is a memory/state task, not a visual recall task by default.""",
+    "E2": """
+- E2 mirrors StreamingBench Proactive Output: ask now, stay silent until a
+  future visual trigger appears, then output the requested short phrase/number
+  exactly once.
+- The question may naturally contain the required output phrase, e.g.
+  "When the scoreboard shows AD, output 'Break point'." This is intentional:
+  the task is trigger detection, not hidden-answer QA.
+- The question must read as a proactive trigger instruction, not as a normal
+  visual QA question. Use varied future-trigger phrasing such as a later
+  appearance, state change, completion, or condition becoming visible. Do not
+  reuse one fixed "When X, output Y" wording for every card.
+- Use short_exact or number answers only. Do not use multiple-choice options.
+- The trigger must be visually checkable in one future chunk or a short future
+  window. Avoid vague long-horizon goals.
+- grounding_frames/gold_emits[0].chunk must be the trigger chunk where the
+  output should be emitted. support_policy must be future_current_cue and
+  recall_eligible must be false.""",
     "F6": """
 - F6 is immediate future prediction from current cues, not wait-until-the-future.
 - The question should ask what is likely to happen next or what state will
   result, but gold_emits[0].chunk should be the current cue chunk where the
   prediction is answerable from visible intent/context.
+- The question must be prospective. It should not ask for a current state,
+  current OCR/text, visible object attribute, or current location unless that
+  visible cue is explicitly used to ask what will happen next or what result is
+  about to follow. If the natural question is only a current fact, omit the F6
+  card and leave it for R1/CR3/C1/STU/OJR.
 - Keep canonical_answer short; avoid answers that require waiting many later
   chunks to verify in the training label.""",
     "C1": """
@@ -285,7 +375,10 @@ FAMILY_EXTRA_RULES = {
 - CR2 should test event order with 3-4 visually distinct steps.
 - Prefer close temporal order, repeated similar actions, or before/after states
   where a model can confuse which event happened first.
-- MC distractors should be alternate orders using the same observed events.""",
+- MC distractors should be alternate orders using the same observed events.
+- Use only the planned support chunks to establish the before/after relation,
+  and emit the answer exactly at the planned answer chunk.
+- Do not add new unplanned future chunks to grounding_frames or gold_emits.""",
     "CR4": """
 - CR4 should require combining at least two separated observations. Avoid cards
   answerable from one obvious frame.
@@ -293,11 +386,36 @@ FAMILY_EXTRA_RULES = {
   outcome inferred from setup plus result, or category inferred from multiple
   visual clues.
 - grounding_frames should include the minimal separated chunks needed for the
-  multi-evidence answer.""",
+  multi-evidence answer.
+- If task_subtype is contextual_misleading_or_anomaly, mirror
+  StreamingBench contextual/anomaly style: ask what is actually happening or
+  what context is misleading/abnormal, using concrete visual evidence rather
+  than generic commonsense.
+- If task_subtype is source_discrimination, ask which visible cue/source in
+  the planned chunks supports the answer, or distinguish what was visually
+  observed from what would only be inferred from context.
+- Do not move the answer to a later unplanned chunk, and do not turn this into
+  a single-frame OCR/text-reading question.""",
     "CR5": """
 - CR5 should contain an early ambiguous clue and a later resolving observation.
 - Prefer clue-resolution questions where the correct answer is not known from
   the early clue alone.
+- The question should make the clue/resolution relationship natural to the
+  viewer: an early ambiguous object/action, a later reveal, or a later outcome
+  that settles which interpretation was correct.
+- If the planned slot is selected as a future/wait style card, phrase the
+  question so it is clear the assistant must wait for the resolving visual
+  evidence instead of guessing from the clue. If the planned slot is historical
+  recall, phrase it as an earlier completed clue/reveal moment.
+- For ambiguous past_or_future_clue slots, choose one temporal stance in the
+  question text rather than leaving it ambiguous. A future/wait CR5 question
+  must explicitly mention waiting for a later reveal/resolving evidence; a
+  historical CR5 question must use before/earlier/completed-event wording. Do
+  not write a historical "Before..." question if the intended use is future
+  delayed placement.
+- When multiple CR5 cards are requested and evidence supports both styles,
+  include both a historical clue-recall wording and a future wait-for-reveal
+  wording instead of making all CR5 cards historical.
 - grounding_frames should include both the clue chunk and the resolving chunk.
 - Distractors should match plausible interpretations of the early clue.""",
     "ACR1": """
@@ -484,6 +602,91 @@ def _format_evidence_timeline(evidence: List[Dict], *, max_chars: int = 90000) -
     return "\n".join([note.format(kept=len(kept))] + [rows[i][2] for i in kept])
 
 
+def _format_planned_slot_evidence(
+    evidence: List[Dict],
+    planned_slots: List[Dict],
+    *,
+    max_lines_per_slot: int = 24,
+    max_total_chars: int = 42000,
+) -> str:
+    """Render slot-local evidence so the teacher does not drift to other chunks."""
+    by_chunk = {
+        int(cap.get("chunk_idx", pos)): cap
+        for pos, cap in enumerate(evidence)
+        if isinstance(cap, dict)
+    }
+    slot_count = max(1, len(planned_slots or []))
+    per_slot_line_budget = max(8, min(max_lines_per_slot, 48 // slot_count))
+    remaining_chars = max_total_chars
+    blocks: List[str] = []
+    for slot in planned_slots:
+        support = sorted({int(c) for c in (slot.get("support_chunks") or [])})
+        answers = sorted({int(c) for c in (slot.get("answer_chunks") or [])})
+        allowed = sorted(set(support) | set(answers))
+        shown = allowed
+        if len(shown) > per_slot_line_budget:
+            # Keep answer chunks, endpoints, and evenly spaced support chunks.
+            keep = set(answers)
+            if allowed:
+                keep.update({allowed[0], allowed[-1]})
+            remaining_budget = max(0, per_slot_line_budget - len(keep))
+            if remaining_budget:
+                last = len(allowed) - 1
+                for i in range(remaining_budget):
+                    keep.add(allowed[round(i * last / max(1, remaining_budget - 1))])
+            shown = [c for c in allowed if c in keep]
+        lines = [
+            f"- slot_id={slot.get('slot_id', '')}",
+            f"  allowed_chunks={allowed}",
+            f"  answer_chunks={answers}",
+            "  allowed_evidence:",
+        ]
+        for chunk in shown:
+            cap = by_chunk.get(chunk)
+            if cap is not None:
+                lines.append(_evidence_timeline_line(cap))
+        omitted = len(allowed) - len(shown)
+        if omitted > 0:
+            lines.append(f"  ... omitted {omitted} lower-priority allowed chunks ...")
+        block = "\n".join(lines)
+        if len(block) > remaining_chars:
+            blocks.append(
+                "\n".join([
+                    f"- slot_id={slot.get('slot_id', '')}",
+                    f"  allowed_chunks={allowed}",
+                    f"  answer_chunks={answers}",
+                    "  ... omitted slot-local evidence because the prompt budget was reached ...",
+                ])
+            )
+            break
+        blocks.append(block)
+        remaining_chars -= len(block) + 2
+    return "\n\n".join(blocks)
+
+
+def _format_planned_slot_guidance(planned_slots: List[Dict]) -> str:
+    lines: List[str] = []
+    for slot in planned_slots:
+        slot_id = str(slot.get("slot_id", ""))
+        task_family = str(slot.get("task_family") or slot.get("slot_group") or "")
+        task_subtype = str(slot.get("task_subtype") or slot.get("slot_subtype") or "")
+        timing_type = str(slot.get("timing_type") or slot.get("temporal_bucket") or "")
+        readable = str(slot.get("readable_task_name") or " / ".join(
+            p for p in (task_family, task_subtype, timing_type) if p
+        ))
+        legacy = str(slot.get("legacy_family_id") or slot.get("family") or "")
+        goal = str(slot.get("question_goal", ""))
+        behavior = str(slot.get("answer_behavior", ""))
+        hint = str(slot.get("placement_hint", ""))
+        if not any((readable, goal, behavior, hint)):
+            continue
+        lines.append(
+            f"- {slot_id}: task={readable}; legacy_family_id={legacy}; "
+            f"answer_behavior={behavior}; goal={goal}; placement_hint={hint}"
+        )
+    return "\n".join(lines)
+
+
 def _generation_guidance(rule: Dict, qtype: str) -> str:
     profile = rule.get("profile", "")
     answer_form = rule.get("answer_form", "")
@@ -492,7 +695,9 @@ def _generation_guidance(rule: Dict, qtype: str) -> str:
 Generation guidance for streaming multi-answer cards:
 - Ask one stable question whose answer can be updated at several probe chunks.
 - F5/counting: use a repeated action and emit the cumulative count at each occurrence.
-- F7/status: choose a concrete step/state that is false before a change and true after it.
+- CRR/status: emit "No" before the video-so-far evidence is sufficient, then
+  "Yes" at the first planned probe where the clue is resolved and at every
+  later planned probe. Do not return to "No" after a "Yes".
 - Keep the active span useful but not gratuitously long; do not include dense per-frame emits.
 """
     if profile == "backward":
@@ -504,15 +709,22 @@ Generation guidance for past-memory/cross-time cards:
   that are plausible but wrong.
 - grounding_frames should be the minimal earlier chunks needed for the answer, not
   every chunk where the object remains visible.
+- The question should normally sound like it refers to a completed or earlier
+  visual moment. Prefer natural event anchors or past-tense wording when the
+  same sentence would otherwise read like a current-frame question.
 """
     if profile == "forward":
         return """
 Generation guidance for future/next-event cards:
-- Ask about the next observable event or state that becomes clear later in the timeline.
+- Ask about a future visual trigger that becomes clear later in the timeline.
 - The answer should become determinable in a short future window and should be concise:
-  one event/state phrase or one MC letter, not a long description.
+  a visible text/number, short event label, or short state phrase grounded in
+  the trigger evidence, not a long description.
 - Avoid questions whose answer requires keeping the query open across many unrelated
   later events, because long unresolved questions block the next question.
+- The user-facing question must make the wait/trigger or prospective nature
+  clear in natural language; do not phrase a future card as an ordinary current
+  visual QA item.
 """
     if answer_form == "multiple_choice":
         return """
@@ -521,6 +733,9 @@ Generation guidance for current/direct cards:
   object relation, OCR, or current intent if it is visually supported.
 - Distractors should be visually plausible alternatives from nearby or other chunks,
   not generic random words.
+- The question should read as an immediate visual judgment. It may use present
+  or progressive wording, visible-in-this-view wording, or a compact event
+  anchor, but it should not sound like a memory recall or future-trigger task.
 """
     return """
 Generation guidance:
@@ -558,11 +773,18 @@ def _question_style_guidance(rule: Dict, qtype: str) -> str:
             "  adds a meaningful close distractor or an Unable-to-answer alternative.",
         ])
     elif answer_form == "binary":
-        parts.extend([
-            "- Binary questions should make the decision boundary explicit: the event",
-            "  has either happened by the probe moment or has not happened yet.",
-            "- Avoid vague progress wording; name the concrete event or state transition.",
-        ])
+        if qtype == "multi_emit":
+            parts.extend([
+                "- Binary multi-answer questions should make the probe semantics explicit.",
+                "  For CRR, ask whether the latest/current evidence is now sufficient.",
+                "- Avoid mixing current-status wording with historical 'has happened/yet/by now'",
+                "  wording unless the family is explicitly CRR-style sufficiency.",
+            ])
+        else:
+            parts.extend([
+                "- Binary questions should make the decision boundary explicit and name",
+                "  the concrete event, state transition, or current visual condition.",
+            ])
     elif answer_form == "number":
         parts.extend([
             "- Number questions should specify the counted unit clearly and use evidence",
@@ -576,10 +798,68 @@ def _question_style_guidance(rule: Dict, qtype: str) -> str:
     return "\n".join(parts)
 
 
+def _temporal_stance_guidance(planned_slots: List[Dict]) -> str:
+    """Natural-language timing guidance for teacher card questions.
+
+    This is intentionally prompt-only: pass3 does not post-process question
+    strings into templates. The goal is to make the teacher express the same
+    temporal contract that placement already enforces.
+    """
+    slot_hint = ""
+    if planned_slots:
+        slot_hint = """
+- Planned slots include timing_type, temporal_bucket, support_policy, and
+  answer_behavior. Copy those structured fields exactly, and also make the
+  question wording agree with them. If the evidence supports the answer but
+  the question would sound like the wrong timing bucket, rewrite the question
+  naturally rather than changing the slot.
+"""
+    return f"""
+Temporal stance guidance for the user-facing question:
+- The timing should be understandable from the question text itself, not only
+  from metadata. A human viewer should be able to tell whether the question is
+  about the current visible moment, a completed earlier moment, a future
+  trigger, a prediction from current cues, or an evolving status probe.
+- Do not use a fixed template, fixed prefix, or copied example sentence. Vary
+  the grammar and anchors, and keep the question natural and compact.
+{slot_hint}- For current_direct/current_visual cards, phrase the question as an
+  immediate visual judgment: present/progressive state, visible-in-this-view
+  relation, current action, current text, current count, or current intent.
+  Avoid unanchored references to earlier/later events.
+- For past_visual_recall_candidate, past_unanswerable, or
+  historical_visual_recall cards, anchor the question to a completed visual
+  moment or earlier event. Use natural past-tense/event-anchor wording such as
+  a completed action, a before/after relation, a "while/when that event was
+  happening" reference, or an earlier shown object/state. Avoid bare present
+  questions like "What color are..." when the support is historical; make the
+  earlier moment explicit without mentioning chunks or timestamps.
+- For future_delayed/proactive_output cards, the question must clearly ask the
+  assistant to wait for a later visual trigger and then emit a short output.
+  The future trigger should be visually checkable and distinct from the ask
+  moment. Use varied trigger language; do not make all cards start with the
+  same word.
+- For current_future_prediction/future_current_cue cards, ask for the likely
+  next action, imminent state, or expected result from current cues. Do not
+  make these cards ask only for a current fact, current OCR text, or current
+  object attribute; those belong to current perception families.
+- For multi_answer repeated-count cards, make cumulative semantics clear
+  through natural "so far/by now/up to this point" style wording. For SSR
+  current step-status cards, ask an immediate current Yes/No question. For CRR
+  sufficiency/status cards, ask whether the visible evidence is now/yet/by this
+  point sufficient to resolve the underlying question, because the answer must
+  change from No to Yes as the stream progresses.
+- If a candidate question would be equally plausible as current, past, or
+  future with no wording change, revise it to include a natural temporal
+  anchor. If that cannot be done without becoming awkward or revealing the
+  answer, omit the card.
+""".strip()
+
+
 def card_generation_prompt(
     family: str,
     evidence: List[Dict],
     target_n: int = 1,
+    planned_slots: Optional[List[Dict]] = None,
 ) -> str:
     """Build a 397B prompt that produces v2 cards for a single family.
 
@@ -603,9 +883,39 @@ def card_generation_prompt(
         else " | ".join(f'"{x}"' for x in allowed_answer_forms)
     )
 
-    evidence_text = _format_evidence_timeline(evidence)
+    planned_slots = [dict(slot) for slot in (planned_slots or [])]
+    if planned_slots:
+        target_n = len(planned_slots)
+    evidence_text = _format_evidence_timeline(
+        evidence,
+        max_chars=50000 if planned_slots else 90000,
+    )
     generation_guidance = _generation_guidance(rule, qtype).strip()
     style_guidance = _question_style_guidance(rule, qtype).strip()
+    temporal_stance_guidance = _temporal_stance_guidance(planned_slots).strip()
+    slot_block = ""
+    if planned_slots:
+        slot_block = f"""
+Planned slots for this family. Produce exactly one card per slot when the
+evidence supports it; otherwise omit that slot instead of changing chunks.
+Every output card MUST copy the matching slot_id and MUST obey that slot's
+question_style, question_way, evidence_type, support_policy, temporal_role,
+target_ovo_task, gold_emit chunks, and grounding_frames.
+Do not normalize, rename, or replace planned-slot field values with synonyms.
+
+{json.dumps(planned_slots, ensure_ascii=False, indent=2)}
+
+Slot-local allowed evidence. The full timeline above is only background
+context and a source of plausible distractors. The correct answer and
+grounding_frames for each planned slot MUST come only from that slot's
+allowed_chunks below. If those chunks do not support a high-quality card,
+omit that slot instead of using another part of the video.
+
+{_format_planned_slot_evidence(evidence, planned_slots)}
+
+Slot intent guidance:
+{_format_planned_slot_guidance(planned_slots)}
+"""
 
     options_block = ""
     if "multiple_choice" in allowed_answer_forms:
@@ -622,10 +932,52 @@ def card_generation_prompt(
         emits_doc = ('"gold_emits": [{"chunk": int, "value": str}],         '
                      '# single_emit: exactly 1 entry; chunk = when answer is determinable')
     family_extra = FAMILY_EXTRA_RULES.get(family, "").strip()
+    style_mix_doc = (
+        "For this ours-unique family, set question_style to \"ours_unique\"."
+        if rule.get("ours_unique")
+        else (
+            "Use the planned slot's question_style exactly. Without planned slots, "
+            "aim for a 65-70% benchmark_core, 20-25% benchmark_variant, and "
+            "5-10% ours_unique final mix: for the first strong benchmark-like "
+            "card use \"benchmark_core\"; if producing a second card, use "
+            "\"benchmark_variant\" with the same task type and answer form but "
+            "a different natural question sentence. Do not set \"ours_unique\" "
+            "for this family."
+        )
+    )
+    e2_answer_leak_doc = (
+        "\n- E2/proactive-output exception: the question is allowed to include "
+        "the requested output phrase because the skill is detecting the future "
+        "trigger and emitting that phrase exactly once."
+        if family == "E2"
+        else ""
+    )
+    if planned_slots:
+        task_name_lines = []
+        for slot in planned_slots:
+            task_family = str(slot.get("task_family") or slot.get("slot_group") or "")
+            task_subtype = str(slot.get("task_subtype") or slot.get("slot_subtype") or "")
+            timing_type = str(slot.get("timing_type") or slot.get("temporal_bucket") or "")
+            readable = str(slot.get("readable_task_name") or " / ".join(
+                p for p in (task_family, task_subtype, timing_type) if p
+            ))
+            task_name_lines.append(
+                f"- {slot.get('slot_id', '')}: {readable} "
+                f"(legacy_family_id={slot.get('legacy_family_id') or slot.get('family') or family})"
+            )
+        readable_task_doc = "\n".join(task_name_lines)
+    else:
+        readable_task_doc = (
+            f"- {rule['category']} / {rule['family_name']} "
+            f"(legacy_family_id={family})"
+        )
 
     return f"""You are a teacher generating training card(s) from a video's per-chunk evidence.
 
-Family: {family}  ({rule["intent"]})
+Readable task names:
+{readable_task_doc}
+Internal legacy family id: {family}
+Legacy rule summary: {rule["intent"]}
 Category: {rule["category"]} / {rule["family_name"]}
 Answer form: {answer_form_doc}
 Question type: {qtype}
@@ -633,22 +985,49 @@ Question type: {qtype}
 Evidence timeline from pass1/pass1b (per-chunk visible_entities + facts + spatial + ocr + state_changes + think):
 {evidence_text}
 
+{slot_block}
+
 {generation_guidance}
 
 {style_guidance}
 
+{temporal_stance_guidance}
+
 Produce {target_n} card(s) as a JSON list. Each card schema:
 {{
+  "slot_id": "...",                                      # required when planned slots are provided; copy from the planned slot
   "family": "{family}",
   "question": "...",                                     # bare natural-language question only
+  "question_style": "benchmark_core" | "benchmark_variant" | "ours_unique",
+  "question_way": "object_attribute|person_identity_interaction|action_recognition|text_readout|spatial_relation|temporal_order|causal_intent|future_prediction|proactive_output|repeated_count|current_status_probe|evidence_sufficiency_probe|unanswerable_absence|sequential_reference|emotion_context|scene_summary|live_narration|source_discrimination|multimodal_alignment",
+  "evidence_type": "object_attribute_visual|person_relation_visual|action_event_visual|text_ocr_visual|spatial_relation_visual|temporal_order_visual|causal_context_visual|future_cue_visual|future_trigger_visual|repeated_event_stream|status_probe_stream|absence_unanswerable|global_context_memory|emotion_context_visual|live_state_change|source_discrimination_visual|multimodal_alignment_visual",
   "answer_form": {answer_form_schema},
   "canonical_answer": "...",                              # the final/correct answer text{options_block}
   {emits_doc}
-  "grounding_frames": [int, ...]                         # MINIMAL set of chunk indices needed to verify the answer
+  "grounding_frames": [int, ...],                        # MINIMAL set of chunk indices needed to verify the answer
+  "target_ovo_task": "OCR|ACR|ATR|STU|FPD|OJR|EPM|ASI|HLD|REC|SSR|CRR|GLOBAL|STREAMING_AGENT",
+  "temporal_role": "current_visual|current_probe|historical_visual_detail|historical_abstention_check|delayed_clue_resolution|cumulative_count|current_step_status|crr_sufficiency_probe|future_current_cue|future_event_wait|live_narration|global_summary",
+  "support_policy": "current_visual|historical_visual_recall|historical_state_memory|future_current_cue|probe_status",
+  "legacy_family_id": "{family}",                         # copy from planned slot when provided; old internal id only
+  "task_family": "current_perception|past_memory|temporal_reasoning|future|multi_state|global_context",
+  "task_subtype": "...",                                  # readable subtype; copy from planned slot when provided
+  "timing_type": "...",                                   # current/past/future/multi timing; copy from planned slot when provided
+  "readable_task_name": "...",                            # task_family / task_subtype / timing_type
+  "slot_group": "current_perception|past_memory|temporal_reasoning|future|multi_state|global_context",
+  "slot_subtype": "...",                                # copy from planned slot when provided
+  "temporal_bucket": "...",                             # copy from planned slot when provided
+  "benchmark_source": "...",                            # copy from planned slot when provided
+  "benchmark_task": "...",                              # copy from planned slot when provided
+  "answer_behavior": "...",                             # copy from planned slot when provided
+  "question_goal": "...",                               # copy from planned slot when provided
+  "placement_hint": "...",                              # copy from planned slot when provided
+  "recall_eligible": true | false,
+  "state_memory_required": true | false
 }}
 
 Rules:
 - question must NOT contain or paraphrase the answer.
+{e2_answer_leak_doc}
 - question must contain ONLY the user question. Do NOT put options, answer
   format instructions, choice prompts, response-format phrases, or letter
   labels inside question. Options and answer requirements belong only in the
@@ -659,13 +1038,60 @@ Rules:
   chunk indices, frame numbers, timestamps, "c12", "chunk 12", or evidence
   row ids. Use visual/event references instead.
 - grounding_frames must reference chunks present in the evidence above.
-- Treat the family as a reasoning type, not an availability bucket. The same
-  card may later be placed as current/direct, memory_direct, or recall.
+- When planned slots are provided, do not choose your own evidence position:
+  gold_emits chunk list MUST exactly equal the slot answer_chunks; for
+  multi_emit, emit at every answer_chunks/probe chunk in the same order.
+  grounding_frames must be a non-empty subset of slot support_chunks plus
+  answer_chunks. If the slot cannot support a high-quality question, omit that
+  card rather than moving the question to a different chunk.
+- When planned slots provide question_style, question_way, evidence_type,
+  support_policy, temporal_role, target_ovo_task, legacy_family_id,
+  task_family, task_subtype, timing_type, readable_task_name, slot_group,
+  slot_subtype, temporal_bucket, benchmark_source, benchmark_task,
+  answer_behavior, question_goal, or placement_hint, copy them exactly into
+  the card and follow their intent.
+- For planned CRR1 status-probe slots, the emitted probe values must include
+  both "Yes" and "No". If every planned probe would truthfully be only "Yes" or
+  only "No", omit that slot rather than producing an all-one-label card.
+- For planned F7/SSR slots, emit exactly one Yes/No value at the planned
+  answer chunk. Do not create a multi_emit F7 card.
+- For planned CRR1 slots, values must be monotonic No...Yes...Yes. Never emit
+  "No" after a "Yes". The first planned probe should normally be "No"; the
+  first "Yes" should occur only when the resolving clue becomes visible. A
+  CRR1 card with all "Yes" values is invalid even if the question wording is
+  otherwise natural.
+- Treat the family as a reasoning type, then set support_policy precisely:
+  current_visual means the answer should be asked while support is within the
+  active visual window; historical_visual_recall means a concrete old visual
+  detail may need recall if asked after the window; historical_state_memory
+  means cumulative/state tracking such as REC/counting, not recall;
+  future_current_cue means FPD-style prediction from the current cue;
+  probe_status means SSR/CRR-style probe answers.
+- Set recall_eligible true only for concrete historical visual facts whose
+  evidence can be retrieved as frames. Keep F5/REC, F7/SSR, F6/FPD, PN1, and
+  ordinary status/state probes recall_eligible=false.
 - If producing multiple cards for this family, make them semantically diverse:
   use different events/chunks and different answer types within the family.
   Prefer one immediately visible/current-style card and one event-anchored
   historical-detail card when the evidence supports both. Do not make near
   duplicates with only different options.
+- {style_mix_doc}
+- benchmark_core should match OVO-Bench or StreamingBench-style wording and
+  answer format for this family. benchmark_variant must keep the same evidence
+  type and answer format, but use a different user phrasing pattern so the
+  model does not overfit benchmark templates. ours_unique is a style/source
+  label only; do not use it as a current/past/future timing label.
+- Set question_way/evidence_type more specifically than the family. Match
+  these benchmark question forms when evidence supports them:
+  current perception: object_attribute, action_recognition, text_readout,
+  spatial_relation, causal_intent, emotion_context; prior/history:
+  person_identity_interaction, temporal_order, causal_intent,
+  object_attribute, spatial_relation, unanswerable_absence; active state:
+  repeated_count, current_status_probe, evidence_sufficiency_probe;
+  proactive output: proactive_output; streaming sequential reference:
+  sequential_reference only when there is a stable earlier referent; source
+  discrimination: source_discrimination; multimodal consistency or
+  contradiction: multimodal_alignment.
 - Prefer questions whose evidence remains meaningful under harder placement:
   fine visual details, before/after state, event order, causal clue, OCR,
   object relation, or multi-chunk support when the family permits it.
@@ -689,7 +1115,8 @@ Rules:
 - For binary: canonical_answer ∈ {{"Yes", "No"}}.
 - For number: canonical_answer is a digit string.
 - For short_exact: canonical_answer is ≤ 4 words.
-- For descriptive: canonical_answer is 1-3 sentences grounded in evidence.
+- For descriptive: canonical_answer is one short grounded sentence, preferably
+  no more than 20 words.
 - If multiple answer forms are allowed and you produce more than one card,
   include at least one non-multiple-choice card when the evidence supports a
   concise literal or descriptive answer. Keep MC cards benchmark-like; keep
@@ -726,74 +1153,6 @@ Rules:
 - Use streaming-agent voice (concise, factual, present tense).
 
 Output the response text ONLY, no quotes or prefix:"""
-
-
-# ---------------------------------------------------------------------------
-# pass3c — recall_query generation prompt
-# ---------------------------------------------------------------------------
-
-
-def recall_query_prompt(
-    card: Dict,
-    *,
-    current_chunk: int | None = None,
-    mode: str = "answer",
-    reason: str = "",
-) -> str:
-    """Generate retrieval keywords for a historical visual-recall card.
-
-    ``mode='answer'`` is the normal recall+response path. Waiting/silent
-    recall probes are generated by a deterministic query builder to avoid
-    calling the teacher at every pending timestep.
-    """
-    grounding = card.get("grounding_frames") or []
-    if current_chunk is not None:
-        grounding = [g for g in grounding if int(g) < int(current_chunk)]
-    if grounding:
-        from ..config import AGENT_CHUNK_SEC
-        tr_start = int(min(grounding) * AGENT_CHUNK_SEC)
-        tr_end = int((max(grounding) + 1) * AGENT_CHUNK_SEC)
-        tr_repr = f"[{tr_start}, {tr_end}]"
-    else:
-        tr_repr = "[]"
-    current_doc = (
-        f"\nCurrent ask chunk: c{int(current_chunk)}" if current_chunk is not None else ""
-    )
-    reason_doc = f"\nRecall reason: {reason}" if reason else ""
-    hld_doc = ""
-    if card.get("family") == "HLD1":
-        hld_doc = (
-            "\nHLD/Unable case: the query should check historical evidence for "
-            "absence/unsupported status. Include the requested target object or "
-            "state plus broad scene anchors such as visible objects/location; "
-            "do not include 'Unable to answer' or any option letter."
-        )
-    return f"""Generate a retrieval query for this historical-recall question.
-
-Question: {card.get('question', '')}
-Approximate time range of evidence: {tr_repr if grounding else 'unknown'}
-Mode: {mode}{current_doc}{reason_doc}{hld_doc}
-
-The query is used only to FIND the past evidence. It must not contain the
-answer itself.
-
-Rules:
-- Output 3-5 discriminative keywords: visible entity descriptions, scene
-  anchors, object names, and actions near the evidence.
-- Do NOT include answer values, correct-option text, exact OCR/number/color
-  values being asked for, or words that trivially reveal the answer.
-- For cumulative or "so far" questions, search for the repeated action or
-  object being counted, not for the final count.
-- For status/history questions, search for the event or object whose earlier
-  occurrence determines the answer, not for "yes" or "no".
-- If the question asks "what text/number/color/state/count", query for the
-  surrounding object/action/location instead of the target value.
-- NO pronouns, NO articles, NO full sentence.
-- time_range must be the provided historical range and must end before the
-  current ask chunk.
-
-Output JSON ONLY (one line):
-{{"query": "keyword1 keyword2 keyword3", "time_range": {tr_repr}}}"""
 
 
 # ---------------------------------------------------------------------------
@@ -896,53 +1255,3 @@ def parse_card_response(raw: str, family: str) -> List[Dict]:
         c.update(family_taxonomy(family))
         valid.append(c)
     return valid
-
-
-def parse_recall_query_response(raw: str, fallback_time_range=None) -> Dict:
-    """Parse a teacher LLM's recall_query JSON response.
-
-    ``time_range`` is normalised to ``[int, int]`` array form. Accepts either
-    the new array form (``[20, 60]``) or the legacy ``"start-end"`` string
-    (``"20-60"``) for backward compatibility with pass3 data emitted before
-    the type unification.
-    """
-    empty: list[int] = []
-    fallback = fallback_time_range if fallback_time_range is not None else empty
-
-    def _normalise_time_range(v):
-        if isinstance(v, list) and len(v) == 2:
-            try:
-                return [int(v[0]), int(v[1])]
-            except (TypeError, ValueError):
-                return list(fallback)
-        if isinstance(v, str):
-            v = v.strip().strip("[]")
-            if "-" in v:
-                a, b = v.split("-", 1)
-                try:
-                    return [int(float(a)), int(float(b))]
-                except ValueError:
-                    return list(fallback)
-            if "," in v:
-                a, b = v.split(",", 1)
-                try:
-                    return [int(float(a)), int(float(b))]
-                except ValueError:
-                    return list(fallback)
-        return list(fallback)
-
-    if not raw:
-        return {"query": "", "time_range": list(fallback)}
-    text = raw.strip()
-    start = text.find("{")
-    end = text.rfind("}")
-    if start < 0 or end < 0:
-        return {"query": "", "time_range": list(fallback)}
-    try:
-        d = json.loads(text[start:end + 1])
-        return {
-            "query": str(d.get("query", "")),
-            "time_range": _normalise_time_range(d.get("time_range")),
-        }
-    except (json.JSONDecodeError, ValueError):
-        return {"query": "", "time_range": list(fallback)}

@@ -21,7 +21,7 @@ def test_active_query_renders_mcq_options_once():
                 style="paren",
             ),
             "answer_form": "multiple_choice",
-            "answer_style": "letter_only",
+            "answer_style": "letter_plus_text",
         }
     ])
 
@@ -29,7 +29,7 @@ def test_active_query_renders_mcq_options_once():
     assert block.count("Options:") == 1
     assert "A) red" in block
     assert "B) blue" in block
-    assert "Answer format: one letter only" in block
+    assert "Answer format: letter plus option text" in block
 
 
 def test_plain_baseline_prompt_labels_options_once():
@@ -77,7 +77,8 @@ def test_streaming_agent_contract_uses_bare_question_and_structured_meta():
     assert meta["answer_form"] == "multiple_choice"
     assert meta["correct_option"] == "C"
     assert meta["options"] == ["A) cup", "B) book", "C) phone", "D) bag"]
-    assert "one letter only" in meta["answer_instruction"]
+    assert meta["answer_style"] == "letter_plus_text"
+    assert "letter plus option text" in meta["answer_instruction"]
     assert block.count("Options:") == 1
     assert block.count("A) cup") == 1
 
@@ -94,6 +95,33 @@ def test_streaming_meta_strips_existing_option_labels():
 
     assert meta["options"] == ["A) cup", "B) book", "C) phone", "D) bag"]
     assert meta["correct_option"] == "C"
+
+
+def test_canonical_answer_instruction_normalizes_known_non_mc_forms():
+    from thinkstream.data.agent_protocol import (
+        canonical_answer_instruction,
+        format_queries_block,
+    )
+
+    q = {
+        "question": "How many cups have appeared so far?",
+        "ask_time": 5,
+        "status": "open",
+        "answer_form": "number",
+        "answer_instruction": "Integer count.",
+        "answers": [],
+    }
+
+    assert canonical_answer_instruction(q) == (
+        "Answer format: a number only, no explanation."
+    )
+    assert canonical_answer_instruction({
+        "answer_form": "literal",
+        "answer_instruction": "short answer",
+    }) == "Answer format: a concise exact phrase, no explanation."
+    block = format_queries_block([q])
+    assert "Answer format: a number only, no explanation." in block
+    assert "Integer count." not in block
 
 
 def test_shared_reward_eval_matcher_handles_all_answer_forms():
@@ -127,5 +155,6 @@ if __name__ == "__main__":
     test_plain_baseline_prompt_labels_options_once()
     test_streaming_agent_contract_uses_bare_question_and_structured_meta()
     test_streaming_meta_strips_existing_option_labels()
+    test_canonical_answer_instruction_normalizes_known_non_mc_forms()
     test_shared_reward_eval_matcher_handles_all_answer_forms()
     print("prompt/eval/reward contract tests passed")

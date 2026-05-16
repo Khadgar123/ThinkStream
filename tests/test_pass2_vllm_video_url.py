@@ -13,7 +13,7 @@ from scripts.agent_data.audit_pass2_stale import audit_rollouts
 from scripts.agent_data.cache_version import STAGE_VERSIONS
 
 
-def test_pass2_observation_uses_timestamped_image_window(tmp_path):
+def test_pass2_observation_uses_timestamped_current_chunk(tmp_path):
     frame_paths = []
     for idx in range(FRAMES_PER_CHUNK * 3):
         path = tmp_path / f"frame_{idx + 1:06d}.jpg"
@@ -30,18 +30,21 @@ def test_pass2_observation_uses_timestamped_image_window(tmp_path):
     content = req["messages"][0]["content"]
     assert [item["type"] for item in content] == [
         "text",
-        *sum((["text", "image_url"] for _ in range(FRAMES_PER_CHUNK * 3)), []),
+        *sum((["text", "image_url"] for _ in range(FRAMES_PER_CHUNK)), []),
     ]
     prompt = content[0]["text"]
     assert "CURRENT TASK FIRST" in prompt
     assert "timestamp-tagged image list" in prompt
     assert f"({FRAMES_PER_CHUNK} frames)" in prompt
     assert "History ledger below is archival memory for naming only" in prompt
+    assert '<m t="start-end">' in prompt
+    assert "<memory_think>" not in prompt
+    assert "<compressed>" not in prompt
     assert "only evidence for the current think" in prompt
     assert "Never copy or paraphrase any frame tag" in prompt
     assert "older context to the latest chunk" in prompt
     assert "<history_ledger>" in prompt
-    assert content[1]["text"] == '<frame ts="0.0" role="older context" />'
+    assert content[1]["text"] == '<frame ts="2.0" role="latest chunk" />'
     assert content[2]["image_url"]["url"].startswith("data:image/jpeg;base64,")
     assert content[-2]["text"] == '<frame ts="2.5" role="latest chunk" />'
     assert "media_io_kwargs" not in req
@@ -103,10 +106,10 @@ def test_memory_observation_prompt_uses_structured_history_ledger():
     memory.add_think(2, "A white bowl sits on the wooden counter.")
 
     text = memory.format_for_observation_prompt()
-    assert "<compressed>{" in text
-    assert "<memory_think>{" in text
-    assert '"time_range": [0, 1]' in text
-    assert '"time": "2-3"' in text
+    assert '<m t="0-1">A red-apron cook appears by the stove and lifts a silver pan.</m>' in text
+    assert '<m t="2-3">A white bowl sits on the wooden counter.</m>' in text
+    assert "<compressed>" not in text
+    assert "<memory_think>" not in text
     assert '[2-3]' not in text
 
 
@@ -115,9 +118,9 @@ def test_memory_repair_prompt_uses_structured_recent_history():
     for c in range(3):
         memory.add_think(c, f"Think {c}")
     text = memory.format_recent_for_repair_prompt(limit=2)
-    assert '<memory_think>{"time": "1-2", "text": "Think 1"}</memory_think>' in text
-    assert '<memory_think>{"time": "2-3", "text": "Think 2"}</memory_think>' in text
-    assert '"time": "0-1"' not in text
+    assert '<m t="1-2">Think 1</m>' in text
+    assert '<m t="2-3">Think 2</m>' in text
+    assert '<m t="0-1">' not in text
 
 
 def test_should_repair_observation_uses_evidence_drift():
@@ -250,20 +253,18 @@ def test_pass2_safe_token_estimate_counts_timestamped_image_frames(tmp_path):
         video_id="vid_test",
     )
     safe = _safe_max_tokens_for_pass2(req, configured_max=65536, floor=1)
-    expected_vision = FRAMES_PER_CHUNK * 2 * VISUAL_TOKENS_PER_FRAME_RUNTIME
+    expected_vision = FRAMES_PER_CHUNK * VISUAL_TOKENS_PER_FRAME_RUNTIME
     assert safe <= 65536 - expected_vision
 
 
 def test_pass2_cache_bump_invalidates_old_video_http_rollouts():
     assert STAGE_VERSIONS["1a"] == "v12.25"
     assert STAGE_VERSIONS["1b"] == "v12.25"
-    assert STAGE_VERSIONS["2"] == "v12.25"
-    # Downstream stages must not reuse cached samples after pass3 changed
-    # recall_silent into a non-terminal not_yet wait state.
-    assert STAGE_VERSIONS["3b"] == "v12.28"
-    assert STAGE_VERSIONS["3c"] == "v12.28"
-    assert STAGE_VERSIONS["4"] == "v12.28"
-    assert STAGE_VERSIONS["5"] == "v12.28"
+    assert STAGE_VERSIONS["2"] == "v12.106"
+    assert STAGE_VERSIONS["3b"] == "v12.106"
+    assert STAGE_VERSIONS["3c"] == "v12.107"
+    assert STAGE_VERSIONS["4"] == "v12.107"
+    assert STAGE_VERSIONS["5"] == "v12.107"
 
 
 def test_pass2_uses_pass1_observation_note_without_observation_call():

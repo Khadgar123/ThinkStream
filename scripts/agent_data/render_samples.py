@@ -18,8 +18,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Optional
 
-# v12 agentic protocol uses <answer> as the terminal tag.
-_ANSWER_RE = re.compile(r'<answer>(.*?)</answer>', re.DOTALL)
+_ANSWER_RE = re.compile(r'</Response>\s*(.*?)\s*$', re.DOTALL)
 
 from .config import (
     AGENT_CHUNK_SEC,
@@ -29,7 +28,8 @@ from thinkstream.data.agent_protocol import (
     build_recalled_frames_metadata,
     build_recall_result_metadata,
     canonical_answer_instruction,
-    select_recall_chunks,
+    parse_agent_output,
+    select_recall_chunks_uniform,
     system_prompt_for_frame_protocol,
 )
 
@@ -167,11 +167,11 @@ def _build_queries_input(queries_state: List[Dict]) -> List[Dict]:
     Without ask_time, the active query collapses to t=0 in the rendered query
     state block — train/infer divergence (runtime has real timestamps).
 
-    v12.13 fix (P0-3): also preserve `options` + `answer_form` so MC pending
-    queries can render their choices in the active-query block. forward
-    response chunks fire AFTER ask (no fresh user_input), so the model
-    only sees the active Q in query state — without options it cannot
-    choose from the listed options meaningfully.
+    Preserve `options` + `answer_form` + answer style so pending queries render
+    their choices and canonical Answer format line in the active-query block.
+    Forward response chunks fire AFTER ask (no fresh user_input), so the model
+    only sees the active Q in query state; output protocol must stay there, not
+    in the bare question text.
     """
     result = []
     for q in queries_state:
@@ -204,16 +204,16 @@ def _build_recalled_frames(
     Mirrors the inference-time logic in agent_loop.step (recall branch):
     given returned_chunks from a successful retrieval, derive the
     contiguous time_range, frame count, and per-chunk frame_paths so the
-    SFT sample renders <recalled_frames> + actual video frames. The companion
-    <recall_result> is metadata-only, so answer supervision cannot rely on
-    retrieved text snippets.
+    SFT sample renders the recall tool-response video frames. The companion
+    recall_result stays internal metadata, so answer supervision cannot rely
+    on retrieved text snippets.
 
     Returns None only for invalid/empty results. Both recall_response and
     recall_silent should carry frames when retrieval returns historical chunks.
     """
     if not recall_result or recall_result.get("source") != "historical_frames":
         return None
-    chunks = select_recall_chunks(recall_result.get("returned_chunks") or [])
+    chunks = select_recall_chunks_uniform(recall_result.get("returned_chunks") or [])
     if not chunks:
         return None
     paths = []
@@ -338,18 +338,25 @@ def render_sample(
     else:
         card = {}
     # Separate the two answer layers:
-    #   - sft_answer: exact target string inside <answer> for this row.
+    #   - sft_answer: exact target string after </Response> for this row.
     #   - gold_answer: semantic answer used by RL/eval scoring.
     # For MC, sft_answer may be "A", "A) red apron", or "red apron";
     # gold_answer remains the correct option text so downstream scoring
     # can accept all equivalent formats.
     canonical = card.get("canonical_answer", "")
     # v12: output may live in v12_assistant_turn_2 (multi-turn recall);
-    # otherwise it's in sample.output. Both use <answer>...</answer>.
+    # otherwise it's in sample.output. Current rows use </Response> / </Silence>.
     v12_text = (sample.get("v12_assistant_turn_2")
                 or sample.get("output", "") or "")
-    m = _ANSWER_RE.search(v12_text)
-    sft_answer = m.group(1).strip() if m else ""
+    parsed = parse_agent_output(v12_text)
+    if parsed.get("kind") == "answer":
+        sft_answer = str(parsed.get("answer_text") or "").strip()
+    else:
+        m = _ANSWER_RE.search(v12_text)
+        if m:
+            sft_answer = (m.group(1) or "").strip()
+        else:
+            sft_answer = ""
     gold_answer = _semantic_gold_answer(card, sft_answer)
     correct_letter, correct_answer_text = _mc_correct_letter_text(card)
     if card.get("answer_form") == "multiple_choice" and correct_answer_text:
@@ -387,6 +394,33 @@ def render_sample(
         "category": card.get("category", ""),
         "skill": card.get("skill", ""),
         "ours_unique": bool(card.get("ours_unique", False)),
+        "ovo_task": card.get("ovo_task", ""),
+        "target_ovo_task": card.get("target_ovo_task", card.get("ovo_task", "")),
+        "temporal_role": card.get("temporal_role", ""),
+        "support_policy": sample.get("support_policy") or card.get("support_policy", ""),
+        "card_support_policy": sample.get("card_support_policy") or card.get("support_policy", ""),
+        "allowed_support_policies": list(card.get("allowed_support_policies") or []),
+        "recall_eligible": bool(card.get("recall_eligible", False)),
+        "state_memory_required": bool(card.get("state_memory_required", False)),
+        "question_way": card.get("question_way", ""),
+        "evidence_type": card.get("evidence_type", ""),
+        "legacy_family_id": card.get("legacy_family_id", card.get("family", "")),
+        "task_family": card.get("task_family", card.get("slot_group", "")),
+        "task_subtype": card.get("task_subtype", card.get("slot_subtype", "")),
+        "timing_type": card.get("timing_type", card.get("temporal_bucket", "")),
+        "readable_task_name": card.get("readable_task_name", ""),
+        "slot_group": card.get("slot_group", ""),
+        "slot_subtype": card.get("slot_subtype", ""),
+        "temporal_bucket": card.get("temporal_bucket", ""),
+        "benchmark_source": card.get("benchmark_source", ""),
+        "benchmark_task": card.get("benchmark_task", ""),
+        "answer_behavior": card.get("answer_behavior", ""),
+        "question_goal": card.get("question_goal", ""),
+        "placement_hint": card.get("placement_hint", ""),
+        "legal_answer_modes": list(card.get("legal_answer_modes") or []),
+        "required_answer_mode": card.get("required_answer_mode", ""),
+        "forbidden_answer_modes": list(card.get("forbidden_answer_modes") or []),
+        "answer_mode_reason": card.get("answer_mode_reason", ""),
         "availability": sample.get("sequence_type", ""),
         "support_chunks": list(card.get("support_chunks")
                                or card.get("grounding_frames") or []),

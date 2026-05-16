@@ -171,11 +171,15 @@ def _strip_offline_compress_actions(gold_action: Any) -> Dict[str, str]:
         gold_action = gold_action.tolist()
     if not isinstance(gold_action, dict):
         return {}
-    return {
-        str(k): str(v)
-        for k, v in gold_action.items()
-        if str(v or "") != "compress"
-    }
+    out: Dict[str, str] = {}
+    for k, v in gold_action.items():
+        if v is None:
+            continue
+        action = str(v).strip()
+        if not action or action.lower() == "none" or action == "compress":
+            continue
+        out[str(k)] = action
+    return out
 
 
 def _coerce_int_list(value: Any) -> List[int]:
@@ -893,50 +897,36 @@ def _split_assistant_chunks(solution_str: str) -> List[str]:
     return chunks
 
 
-def _extract_answer_text_lenient(text: str, *, allow_bare_answer: bool = False) -> Optional[str]:
-    """Extract answer text for outcome scoring, allowing a missing response close.
-
-    Strict format rewards still use ``parse_agent_output`` without this lenient
-    option. This helper is only for content/action scoring so a truncated
-    ``<response>...`` does not look like a missed answer.
-    """
+def _extract_answer_text_current(text: str, *, allow_bare_answer: bool = False) -> Optional[str]:
+    """Extract answer text for outcome scoring using the current protocol only."""
     try:
         from thinkstream.data.agent_protocol import parse_agent_output
 
         parsed = parse_agent_output(
             text,
             allow_bare_answer=allow_bare_answer,
-            allow_unclosed_response=True,
         )
         if parsed.get("kind") == "answer":
             return (parsed.get("answer_text") or "").strip()
     except Exception:  # noqa: BLE001
         pass
 
-    m = re.search(
-        r"<response>(.*?)</response>|<answer>(.*?)</answer>",
-        text or "",
-        re.DOTALL,
-    )
+    m = re.search(r"</Response>\s*(.*?)\s*$", text or "", re.DOTALL)
     if m:
-        return (m.group(1) if m.group(1) is not None else m.group(2)).strip()
+        return (m.group(1) or "").strip()
     return None
 
 
 def _extract_final_answer(solution_str: str) -> Optional[str]:
-    """Return the last response, with unclosed-response and legacy fallback."""
+    """Return the last current-protocol response."""
     chunks = _split_assistant_chunks(solution_str)
     for chunk in reversed(chunks or [solution_str]):
-        ans = _extract_answer_text_lenient(chunk, allow_bare_answer=True)
+        ans = _extract_answer_text_current(chunk, allow_bare_answer=True)
         if ans:
             return ans.strip()
     matches = [
-        (m.group(1) if m.group(1) is not None else m.group(2)).strip()
-        for m in re.finditer(
-            r"<response>(.*?)</response>|<answer>(.*?)</answer>",
-            solution_str,
-            re.DOTALL,
-        )
+        (m.group(1) or "").strip()
+        for m in re.finditer(r"</Response>\s*(.*?)\s*$", solution_str, re.DOTALL)
     ]
     if not matches:
         return None
@@ -1025,7 +1015,7 @@ def _safe_list(v: Any) -> list:
 
 def _model_action_from_turn(kind: str, text: str) -> str:
     if kind == "answer":
-        ans = _extract_answer_text_lenient(text or "") or ""
+        ans = _extract_answer_text_current(text or "") or ""
         return "silent" if not ans else "response"
     if kind == "recall":
         return "recall"
@@ -1044,10 +1034,11 @@ def _per_chunk_action_avg(
     """Small action-alignment diagnostic aligned to turn-local metadata.
 
     Recall is **monitor-only** (P7): a `recall_audit` dict is written into
-    ``audit_out`` (keys ``recall_seen`` / ``recall_matched`` /
-    ``recall_align_rate``) for wandb telemetry, but recall alignment is
-    NOT pushed into the returned per-chunk action score — the correctness
-    reward of the answer that consumes recall results does that shaping.
+    ``audit_out`` for wandb telemetry, but recall alignment is NOT pushed into
+    the returned per-chunk action score — the correctness reward of the answer
+    that consumes recall results does that shaping. ``recall_align_rate`` is
+    gold-policy timing telemetry; ``recall_runtime_ok_rate`` only checks
+    whether emitted recall tool calls are legal and executable.
 
     Compression is also monitor-only by default. Set
     ``THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD=1`` only for an explicit
@@ -1066,7 +1057,13 @@ def _per_chunk_action_avg(
     scores: List[float] = []
     recall_seen_for_chunk: set[int] = set()
     recall_audit: Dict[str, int] = {"seen": 0, "matched": 0}
+    recall_runtime_audit: Dict[str, int] = {"seen": 0, "ok": 0}
     compress_audit: Dict[str, int] = {"seen": 0, "matched": 0}
+
+    try:
+        from thinkstream.data.agent_protocol import parse_agent_output
+    except Exception:
+        parse_agent_output = None
 
     for turn_i, kind_raw in enumerate(chunk_kinds):
         kind = str(kind_raw or "unknown")
@@ -1083,6 +1080,17 @@ def _per_chunk_action_avg(
 
         text = chunk_texts[turn_i] if turn_i < len(chunk_texts) else ""
         model_action = _model_action_from_turn(kind, str(text or ""))
+        if model_action == "recall":
+            recall_runtime_audit["seen"] += 1
+            if parse_agent_output is not None:
+                parsed = parse_agent_output(str(text or ""))
+                args = ((parsed.get("tool_call") or {}).get("arguments") or {})
+                if _tool_time_range_runtime_ok(
+                    "recall",
+                    args,
+                    current_chunk=_turn_current_chunk(extra, turn_i),
+                ):
+                    recall_runtime_audit["ok"] += 1
 
         if turn_kind == "compress":
             # Compression is system-triggered. Track whether the model
@@ -1147,6 +1155,13 @@ def _per_chunk_action_avg(
         audit_out["recall_align_rate"] = (
             float(matched) / float(seen) if seen > 0 else 0.0
         )
+        r_seen = recall_runtime_audit["seen"]
+        r_ok = recall_runtime_audit["ok"]
+        audit_out["recall_runtime_seen"] = r_seen
+        audit_out["recall_runtime_ok"] = r_ok
+        audit_out["recall_runtime_ok_rate"] = (
+            float(r_ok) / float(r_seen) if r_seen > 0 else 0.0
+        )
         c_seen = compress_audit["seen"]
         c_matched = compress_audit["matched"]
         audit_out["compress_seen"] = c_seen
@@ -1168,16 +1183,11 @@ def _coerce_float(v: Any) -> Optional[float]:
 
 
 def _parse_tool_time_range(kind: str, args: Dict[str, Any]) -> Optional[tuple[float, float]]:
-    tr = (args or {}).get("time_range")
     if kind == "recall":
-        if not isinstance(tr, str):
-            return None
-        m = re.fullmatch(r"\s*([0-9]+(?:\.[0-9]+)?)\s*-\s*([0-9]+(?:\.[0-9]+)?)\s*", tr)
-        if not m:
-            return None
-        start = _coerce_float(m.group(1))
-        end = _coerce_float(m.group(2))
+        start = _coerce_float((args or {}).get("start_time"))
+        end = _coerce_float((args or {}).get("end_time"))
     else:
+        tr = (args or {}).get("time_range")
         if not isinstance(tr, (list, tuple)) or len(tr) != 2:
             return None
         start = _coerce_float(tr[0])
@@ -1224,7 +1234,12 @@ def _tool_time_range_runtime_ok(
     if tr is None:
         return False
     start, end = tr
-    if start < 0 or end <= start:
+    if start < 0:
+        return False
+    if kind == "recall":
+        if end < start:
+            return False
+    elif end <= start:
         return False
     if current_chunk is None:
         return True
@@ -1233,9 +1248,11 @@ def _tool_time_range_runtime_ok(
         # strictly before current_chunk are in recent_thinks and safe to cover.
         compressible_end = max(0.0, float(current_chunk) * chunk_sec)
         return start >= 0.0 and end <= compressible_end
-    observed_start = 0.0
-    observed_end = max(0.0, (float(current_chunk) + 1.0) * chunk_sec)
-    return start < observed_end and end > observed_start
+    # Recall may query any already-observed historical span, but not future
+    # or the still-open current visual interval. The interval is closed, so
+    # end_time must be strictly earlier than the current chunk timestamp.
+    recallable_end = max(0.0, (float(current_chunk) * chunk_sec) - chunk_sec)
+    return start >= 0.0 and end <= recallable_end
 
 
 def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
@@ -1243,8 +1260,8 @@ def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
 
     Positive credit means the turn can be parsed and executed. Negative credit
     is reserved for failures that break or stall rollout: malformed v12 output,
-    illegal turn-local action, or tool time ranges that cannot touch observed
-    memory. It intentionally does not compare query text or time_range against
+    illegal turn-local action, or tool windows that cannot touch observed
+    memory. It intentionally does not compare recall start/end arguments against
     gold labels.
     """
     from thinkstream.data.agent_protocol import parse_agent_output
@@ -1260,7 +1277,7 @@ def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
         parsed = parse_agent_output(
             text,
             allow_bare_answer=turn_kind in {"recall_response", "post_recall"},
-            allow_malformed_tool_call=turn_kind == "compress",
+            allow_bare_memory=turn_kind == "compress",
         )
         action_error = (
             str(action_errors[turn_i] or "").strip()
@@ -1271,7 +1288,7 @@ def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
             scores.append(-1.0)
             continue
         kind = str(parsed.get("kind") or "")
-        if kind in {"recall", "compress"}:
+        if kind == "recall":
             args = (parsed.get("tool_call") or {}).get("arguments") or {}
             ok = _tool_time_range_runtime_ok(
                 kind,
@@ -1279,6 +1296,8 @@ def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
                 current_chunk=_turn_current_chunk(extra, turn_i),
             )
             scores.append(1.0 if ok else -1.0)
+        elif kind == "compress":
+            scores.append(1.0 if parsed.get("memory_text") else -1.0)
         else:
             scores.append(1.0)
     return min(scores) if any(s < 0.0 for s in scores) else 1.0
@@ -1363,7 +1382,7 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
     max_tokens = _safe_list(extra.get("ts_chunk_max_tokens"))
     hit_max_tokens = _safe_list(extra.get("ts_chunk_hit_max_tokens"))
     stop_reasons = _safe_list(extra.get("ts_chunk_stop_reasons"))
-    recall_query_ranges = _safe_list(extra.get("ts_recall_query_ranges"))
+    recall_time_ranges = _safe_list(extra.get("ts_recall_time_ranges"))
     recall_returned_chunks = _safe_list(extra.get("ts_recall_returned_chunks"))
     recall_result_sources = _safe_list(extra.get("ts_recall_result_sources"))
     compress_expected_chunks = _safe_list(extra.get("ts_compress_expected_chunks"))
@@ -1378,8 +1397,7 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
             parse_agent_output(
                 text,
                 allow_bare_answer=turn_kind in {"recall_response", "post_recall"},
-                allow_malformed_tool_call=turn_kind == "compress",
-                allow_unclosed_response=True,
+                allow_bare_memory=turn_kind == "compress",
             )
             if parse_agent_output
             else {}
@@ -1419,9 +1437,12 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
                 current_chunk=_turn_current_chunk(extra, i),
             )
             if kind == "recall":
-                item["query_time_range"] = (
-                    recall_query_ranges[i] if i < len(recall_query_ranges)
-                    else args.get("time_range", "")
+                item["requested_time_range"] = (
+                    recall_time_ranges[i] if i < len(recall_time_ranges)
+                    else {
+                        "start_time": args.get("start_time"),
+                        "end_time": args.get("end_time"),
+                    }
                 )
                 item["returned_chunks"] = _jsonable(
                     recall_returned_chunks[i]
@@ -2482,11 +2503,7 @@ def compute_score(
             answer_chunk = n_turns - 2
         else:
             for idx, chunk in enumerate(chunks):
-                if re.search(
-                    r"<response>(.+?)</response>|<answer>(.+?)</answer>",
-                    chunk,
-                    re.DOTALL,
-                ):
+                if re.search(r"</Response>\s*(.+?)\s*$", chunk, re.DOTALL):
                     answer_chunk = idx
     tool_counts = _count_tool_calls(trajectory_solution)
 
@@ -2586,7 +2603,7 @@ if __name__ == "__main__":
     # Smoke path: raw agent tags are preserved in solution_str.
     sample = (
         "<think>chunk 0 silent</think>"
-        "<think>chunk 1 final</think><answer>yes</answer>"
+        "<think>chunk 1 final</think></Response> yes"
     )
     gt = json.dumps({"gold_answer": "yes", "answer_form": "binary",
                      "ask_chunks": [1], "gold_action_per_chunk": {"1": "response"}})

@@ -170,8 +170,8 @@ THINK_TOKEN_AVG = 60                # was 70; new prompt midpoint
 # Token-based compression trigger with hysteresis.
 #
 # v12.14 (2026-05-12) — compression is keyed to the full visible text
-# memory, not raw observations only. This includes raw <memory_think> records
-# plus older <compressed> summaries, matching the prompt area the student
+# memory, not raw observations only. This includes raw <m> records
+# plus older compact <m> summaries, matching the prompt area the student
 # actually sees.
 #
 # 64K teacher/runtime allocation under 1s/chunk + tool protocol:
@@ -234,7 +234,8 @@ MAX_COMPRESSED_SEGMENTS = 5        # 最多保留 5 段压缩
 #
 # Instead of selecting one local range and writing a JSON summary tool call,
 # pass2 now asks the teacher to rewrite the whole visible text memory into a
-# compact <MEM> block. The next trajectory starts from that pure-text memory.
+# compact <m t="..."> memory lines. The next trajectory starts from that
+# pure-text memory.
 # Triggering is deliberately based on text memory only (old compact memory +
 # raw think/caption entries) so it is cheap and stable; visual/retrieval/output
 # budgets remain reserved outside this counter.
@@ -546,14 +547,14 @@ PASS_CONFIG = {
         # FAMILY_PROMPTS with explicit constraints; CoT was a marginal
         # quality lift, not a correctness floor. 16K max_tokens kept as
         # context budget (no truncation risk on dense evidence).
-        "max_tokens": 8192,
+        "max_tokens": _env_int("THINKSTREAM_PASS3A_MAX_TOKENS", 8192),
         "temperature": 0.7,
         "thinking": False,
         "concurrent": 1024,    # pure text; client_3a also serves verify
     },
     "pass3c": {
         # v12.5 (2026-04-30): thinking True → False per user audit. Generation
-        # tasks (response / recall_query / recall_hardening) are
+        # tasks (response / post_recall_think / recall_hardening) are
         # template-driven; CoT marginally improved quality but added latency
         # without floor-shifting correctness.
         "max_tokens": 8192,
@@ -561,9 +562,9 @@ PASS_CONFIG = {
         "thinking": False,
         "concurrent": 1024,
     },
-    # v11.3: pass3c split into per-call-type sub-configs so thinking can
-    # be controlled per call. The umbrella "pass3c" entry above stays as a
-    # legacy fallback — new code should read these specific sub-keys.
+    # pass3c split into per-call-type sub-configs so thinking can be controlled
+    # per call. Recall itself is rule-based time-range selection, not an LLM
+    # query-generation call.
     "pass3c_response": {
         # Descriptive responses are constrained to 1-2 sentences; MC/binary/
         # number/short_exact are deterministic and never call the teacher.
@@ -571,10 +572,12 @@ PASS_CONFIG = {
         "temperature": 0.3,
         "thinking": False,
     },
-    "pass3c_recall_query": {
-        # One-line JSON: {"query": "...", "time_range": [start, end]}.
-        "max_tokens": 1024,
-        "temperature": 0.3,
+    "pass3c_post_recall_think": {
+        # One short objective observation about returned visual evidence.
+        # It is wrapped by build_assistant_content; the teacher must not emit
+        # protocol tags or the final answer.
+        "max_tokens": 128,
+        "temperature": 0.7,
         "thinking": False,
     },
     "pass3c_recall_hardening": {
@@ -594,35 +597,19 @@ PASS_CONFIG = {
 # the v12 Qwen tool protocol. See thinkstream/data/agent_protocol.py for the
 # ordinary streaming prompt, the compression-only prompt, and turn-local tools.
 
-# Special tokens required by SFT init_processor (see sft_engineering.md §6.2)
-# Approach B: exact-match tags, attributes as JSON inside tags.
-#
-# CANONICAL SOURCE: thinkstream/sft/data_processor.py:SPECIAL_TOKENS_AGENT
-# (which mirrors thinkstream/data/agent_protocol.py).
-# The two lists below are kept here for documentation only — do NOT use them
-# to register tokens; the SFT entry point already does that. Any divergence
-# from the canonical source is a bug.
+# Canonical special-token registration lives in
+# thinkstream.data.agent_protocol.AGENT_SPECIAL_TOKENS and is applied by SFT,
+# eval, and RL rollout entry points. Keep this mirror documentation-only.
+# Do not reintroduce old paired response/action tag protocols.
 SPECIAL_TOKENS_BASE = [
-    "<silent>", "<response>", "<think>", "</think>",
-    "<action>", "</action>", "<query>", "</query>",
-    "</response>", "<recall_result>", "</recall_result>",
+    "<think>", "</think>", "</Response>", "</Silence>",
+    "<tool_call>", "</tool_call>",
 ]
-SPECIAL_TOKENS_PER_TIMESTEP = [
-    # Input structure tags
-    "<memory>", "</memory>",                    # wraps memory timeline
-    "<compressed>", "</compressed>",            # memory timeline: compressed segment (inline)
-    "<memory_think>", "</memory_think>",        # memory timeline: recent observation record
-    "<pending>", "</pending>",                  # memory timeline: pending question
-    "<visual_window>", "</visual_window>",      # visual window header
-    "<recalled_frames>", "</recalled_frames>",  # recalled frames header
-    "<user_input>", "</user_input>",            # wraps user input text
-    "<active_query>", "</active_query>",        # currently live question
-    "<response_history>", "</response_history>",# answers for active_query only
-    # Output payload (assistant)
-    "<summary>", "</summary>",                  # compress-action summary payload
-    # User input trigger
-    "<compress_trigger>", "</compress_trigger>",  # system compress trigger
-]
+SPECIAL_TOKENS_PER_TIMESTEP = []
+# Prompt/input structure delimiters such as <active_query> and
+# <response_history> are ordinary text. They must not be registered as
+# special tokens. Recall tool results use Qwen's tool-response wrapper with a
+# short plain status line plus recalled video blocks.
 
 # ---------------------------------------------------------------------------
 # 8. Teacher prompts (397B, hidden from student)
@@ -708,7 +695,7 @@ OBSERVATION_PROMPT = """You are a streaming video agent generating an observatio
 
 CURRENT TASK FIRST: inspect the timestamp-tagged image list for the sliding visual window t={window_start}-{window_end}s. The latest target chunk is ONLY t={start}-{end}s ({current_frame_count} frames) and is the primary evidence.
 
-History ledger below is archival memory for naming only. It may describe older frames and must not be copied if the latest frames differ. It contains tagged records such as <memory_think>{{"time": "...", "text": "..."}}</memory_think> for archived chunk observations or <compressed>{{"time_range": [...], "text": "..."}}</compressed> for older summaries; each `text` field is stale history wording, not current evidence.
+History ledger below is archival memory for naming only. It may describe older frames and must not be copied if the latest frames differ. It contains compact records like <m t="start-end">visible historical fact</m>; each line is stale history wording, not current evidence.
 <history_ledger>
 {recent_thinks}
 </history_ledger>
@@ -780,8 +767,7 @@ Tagged observations to compress:
 
 Rules:
 - Use coarse time sub-ranges: [X-Y]
-- Read <memory_think>{{"time": "...", "text": "..."}}</memory_think> as one archived chunk observation
-- Read <compressed>{{"time_range": [...], "text": "..."}}</compressed> as an older summary
+- Read each <m t="start-end">...</m> line as one historical observation or older summary
 - Keep ALL entities with their appearance descriptions
 - Keep ALL OCR content verbatim
 - Keep state changes as before→after
@@ -794,15 +780,14 @@ Do NOT output literal ellipsis, placeholder text, markdown, or analysis outside 
 
 COMPACT_MEMORY_UPDATE_SYSTEM_PROMPT = """You update compact video memory for training data.
 
-Return exactly one <MEM> block and no other text.
-The first non-whitespace characters of your response must be <MEM>.
-The final non-whitespace characters of your response must be </MEM>.
-Bare <m> lines without the enclosing <MEM>...</MEM> block are invalid.
-The block must contain 4 to 6 chronological lines:
-  <m t="start-end">one concise English event or state.</m>
-Every <m ...> line must have its own explicit closing </m> tag.
+Return only 4 to 6 chronological XML lines and no other text:
+<m t="start-end">one concise English event or state.</m>
+<m t="start-end">one concise English event or state.</m>
+<m t="start-end">one concise English event or state.</m>
+<m t="start-end">one concise English event or state.</m>
 
 Requirements:
+- Every <m ...> line must have its own explicit closing </m> tag.
 - Use only timestamps that appear in OLD_MEMORY or NEW_CAPTIONS.
 - Input is video memory only. Ignore and never reproduce questions, answers, active-query tags, or response-history tags if they appear.
 - If OLD_MEMORY contains any <m> lines, at least one output <m> must preserve useful historical information from OLD_MEMORY.
@@ -815,7 +800,7 @@ Requirements:
 - Prefer 5-6 lines when many named or OCR facts are present.
 - It is acceptable to compress repeated generic play-by-play, but not to drop all exact identifiers.
 - Merge adjacent repeated captions; split when the main object, action, scene, or state changes.
-- Do not answer questions, add analysis, describe future actions, or write text outside <MEM>."""
+- Do not answer questions, add analysis, describe future actions, or write text outside the <m> lines."""
 
 COMPACT_MEMORY_UPDATE_PROMPT = """OLD_MEMORY:
 {old_memory}
@@ -824,16 +809,18 @@ NEW_CAPTIONS:
 {new_captions}
 
 Covered latest span: t={start}-{end}
-Coverage check: include old memory if present and include the latest new captions if present.
-Output skeleton: copy the <MEM> wrapper literally and replace placeholder ranges/text with real input timestamps and concise events.
-<MEM>
-  <m t="start-end">one concise event or state.</m>
-  <m t="start-end">one concise event or state.</m>
-  <m t="start-end">one concise event or state.</m>
-  <m t="start-end">one concise event or state.</m>
-</MEM>
-Do not output NEW_MEMORY:, markdown, or bare <m> lines.
-Return NEW_MEMORY."""
+Coverage check:
+- If OLD_MEMORY has <m> lines, preserve useful old information in at least one output line.
+- If NEW_CAPTIONS has <c> lines, cover the latest new caption timestamps in at least one output line.
+
+Return only XML lines:
+<m t="start-end">one concise event or state.</m>
+<m t="start-end">one concise event or state.</m>
+<m t="start-end">one concise event or state.</m>
+<m t="start-end">one concise event or state.</m>
+
+Replace the placeholder line with 4-6 chronological <m> lines using real input timestamps.
+Do not output NEW_MEMORY, markdown, prose, analysis, or any text outside the <m> lines."""
 
 TASK_QUESTION_PROMPT = """Based on this visual evidence:
 Entity: {entity}
@@ -852,30 +839,20 @@ Requirements:
 
 Output JSON: {{"question": "...", "concise_answer": "...", "answer_type": "factoid|procedural|summary"}}"""
 
-RECALL_QUERY_PROMPT = """Generate a retrieval query for this scenario:
-- Question: "{question}"
-- Visible memory context: {visible_context}
-
-Based ONLY on the question and the visible memory context, generate 3-5 discriminative
-keywords that would help locate the relevant past observation.
-NO answer values, NO pronouns, NO articles.
-Include entity descriptions + action/attribute anchors from the question and context.
-
-Output JSON (one line): {{"query": "keyword1 keyword2 keyword3", "time_range": {time_range}}}"""
-
 POST_RECALL_THINK_PROMPT = """You are a streaming video agent that just received recall results.
 
 Question: "{question}"
-Recall result: {recall_result}
+Recall metadata: {recall_result}
 Recall source: {recall_source}
 
-Write a brief analysis (20-40 tokens) of the recall result in relation to the question.
-- If results are relevant: note what was found and how it relates to the question.
-- If results are irrelevant/empty: note the recall failed to find matching evidence.
+Write a brief post-recall thought (15-35 tokens) grounded in the recalled visual
+frames and the pending question.
+- If results are relevant: mention the non-answer visual evidence now available.
+- If results are irrelevant/empty: say the recalled frames do not settle it.
+- Do NOT include the final answer, option letter, exact count, or answer value.
 - NO meta-reasoning ("I think", "I notice"), NO sounds/smells/emotions.
-- Focus on factual assessment of the retrieved content.
 
-Output the analysis text only (20-40 tokens):"""
+Output the thought text only (15-35 tokens):"""
 
 RESPONSE_PROMPT = """Generate a response for this streaming video agent:
 - Question: "{question}"

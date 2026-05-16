@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.eval.v12_streaming_bench import (
     aggregate,
+    compute_benchmark_segment,
     compute_chunk_window,
     enrich_question_text,
     load_trajectories,
@@ -75,6 +76,20 @@ def test_compute_chunk_window():
     n = compute_chunk_window(traj, post_window=5)
     assert n == 17, f"expected 12+5=17, got {n}"
     print(f"  PASS compute_chunk_window={n}")
+
+
+def test_compute_benchmark_segment_uses_strict25_45_window():
+    traj = {
+        "questions": [
+            {"ask_chunks": [80], "answer_chunks": [80]},
+        ],
+        "stats": {"chunk_idx_max": 120},
+    }
+    segment = compute_benchmark_segment(traj, post_window=2)
+    assert segment["span_chunks"] == 45
+    assert 25 <= segment["span_chunks"] <= 45
+    assert segment["segment_start_chunk"] < 80 <= segment["segment_end_chunk"]
+    assert segment["question_on_start_boundary"] is False
 
 
 def test_run_streaming_eval_with_stub():
@@ -181,6 +196,7 @@ def main():
         test_load_trajectories_reads_gz,
         test_enrich_question_text,
         test_compute_chunk_window,
+        test_compute_benchmark_segment_uses_strict25_45_window,
         test_run_streaming_eval_with_stub,
         test_score_trajectory_silent_run,
         test_aggregate_combines_trajectories,

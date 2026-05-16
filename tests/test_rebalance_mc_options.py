@@ -23,11 +23,11 @@ def test_rebalance_uses_parent_card_id_for_row_metadata():
         "metadata": {
             "question": question,
             "answer_form": "multiple_choice",
-            "answer_style": "letter_only",
+            "answer_style": "letter_plus_text",
             "options": ["A) OXO", "B) IKEA", "C) CALPHALON", "D) CUISINART"],
             "correct_option": "A",
         },
-        "output": "<think>x</think><answer>A</answer>",
+        "output": "<think>x</think></Response> A",
     }
 
     changed = patch_row(row, _mapping(), {})
@@ -36,7 +36,8 @@ def test_rebalance_uses_parent_card_id_for_row_metadata():
     assert row["metadata"]["card_id"] == "card_b"
     assert row["metadata"]["options"] == ["A) XOX", "B) OXX", "C) XXO", "D) OXO"]
     assert row["metadata"]["correct_option"] == "D"
-    assert row["output"] == "<think>x</think><answer>D</answer>"
+    assert row["metadata"]["answer_style"] == "letter_plus_text"
+    assert row["output"] == "<think>x</think></Response> D) OXO"
 
 
 def test_rebalance_does_not_question_fallback_when_ambiguous():
@@ -46,7 +47,7 @@ def test_rebalance_does_not_question_fallback_when_ambiguous():
         "metadata": {
             "question": question,
             "answer_form": "multiple_choice",
-            "answer_style": "letter_only",
+            "answer_style": "letter_plus_text",
             "options": ["A) OXO", "B) IKEA", "C) CALPHALON", "D) CUISINART"],
             "correct_option": "A",
         },

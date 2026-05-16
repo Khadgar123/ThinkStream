@@ -33,6 +33,17 @@ from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
 )
 
 from thinkstream.trainer.audit import AuditWriter, resolve_audit_dir
+from thinkstream.sft.data_processor import (
+    LOSS_BUCKET_ACTION,
+    LOSS_BUCKET_IGNORE,
+    LOSS_BUCKET_TEXT,
+    LOSS_SUBBUCKET_ACT_RECALL,
+    LOSS_SUBBUCKET_ACT_RESPONSE,
+    LOSS_SUBBUCKET_ACT_SILENT,
+    LOSS_SUBBUCKET_TEXT_COMPRESSION,
+    LOSS_SUBBUCKET_TEXT_THINK,
+    LOSS_SUBBUCKET_NAMES,
+)
 from transformers.models.qwen3_vl.modeling_qwen3_vl import (
     Qwen3VLVisionModel,
     Qwen3VLModel,
@@ -160,11 +171,9 @@ def expected_v12_kind_for_eval(
 def _parse_eval_turn_output(output_text: str) -> Dict:
     """Parse one decoded assistant turn for SFT eval metrics.
 
-    The runtime protocol currently uses ``<silent>`` and ``<response>`` for
-    streaming turns, while older v12 eval code understood only
-    ``<answer>``/tool-call/MEM. Keep the old parser for tools and memory, then
-    add the streaming terminals here so multi-turn trajectory eval does not
-    collapse to ``unknown``.
+    The runtime protocol uses ``</Silence>`` and ``</Response>`` for streaming
+    turns. Old paired response/silent tags are intentionally rejected so eval
+    diagnostics match training and rollout.
     """
     from thinkstream.data.agent_protocol import (
         parse_agent_output,
@@ -201,9 +210,9 @@ def _parse_eval_turn_output(output_text: str) -> Dict:
             else "multiple <think> blocks"
         )
 
-    silent_matches = list(re.finditer(r"<silent>\s*", text, re.DOTALL))
+    silent_matches = list(re.finditer(r"</Silence>\s*", text, re.DOTALL))
     response_matches = list(
-        re.finditer(r"<response>(.*?)</response>", text, re.DOTALL)
+        re.finditer(r"</Response>\s*(.*?)\s*$", text, re.DOTALL)
     )
     n_terminals = len(silent_matches) + len(response_matches)
     if n_terminals == 0:
@@ -215,7 +224,7 @@ def _parse_eval_turn_output(output_text: str) -> Dict:
     terminal_match = silent_matches[0] if silent_matches else response_matches[0]
     result["kind"] = "answer"
     result["answer_text"] = (
-        "" if silent_matches else response_matches[0].group(1).strip()
+        "" if silent_matches else (response_matches[0].group(1) or "").strip()
     )
 
     if result["format_error"] is None and len(think_matches) == 1:
@@ -243,23 +252,18 @@ def _response_detail_flags(output_text: str, parsed=None) -> Dict[str, bool]:
     except Exception:
         text = output_text or ""
 
-    open_token = "<response>"
-    close_token = "</response>"
+    open_token = "</Response>"
     open_pos = text.find(open_token)
     response_open = open_pos >= 0
-    close_pos = (
-        text.find(close_token, open_pos + len(open_token))
-        if response_open else -1
-    )
-    response_close = response_open and close_pos >= 0
+    response_close = response_open
 
     payload = ""
     if response_open:
         payload_start = open_pos + len(open_token)
-        payload_end = close_pos if close_pos >= payload_start else len(text)
+        payload_end = len(text)
         for marker in (
             "<|im_end|>", "<|endoftext|>", "<tool_call>",
-            "<silent>", "<think>",
+            "</Silence>", "<think>",
         ):
             marker_pos = text.find(marker, payload_start, payload_end)
             if marker_pos >= 0:
@@ -267,7 +271,7 @@ def _response_detail_flags(output_text: str, parsed=None) -> Dict[str, bool]:
         payload = text[payload_start:payload_end]
 
     response_nonempty = bool(payload.strip())
-    silent = bool(re.search(r"<silent>\s*", text, re.DOTALL))
+    silent = bool(re.search(r"</Silence>\s*", text, re.DOTALL))
     parsed = parsed or {}
     parsed_response_nonempty = bool(parsed.get("answer_text"))
     format_valid = (
@@ -319,10 +323,17 @@ def _expected_kind_from_gold_turn(
     )
 
 
-def _behavior_bucket_for_expected_kind(expected_kind: str, fallback: str) -> str:
+def _behavior_bucket_for_expected_kind(
+    expected_kind: str,
+    fallback: str,
+    *,
+    post_recall_answer: bool = False,
+) -> str:
     if expected_kind == "answer_empty":
         return "silent"
     if expected_kind == "answer_nonempty":
+        if post_recall_answer:
+            return "response_post_recall"
         return "response"
     if expected_kind in {"recall", "compress"}:
         return expected_kind
@@ -465,6 +476,8 @@ class WeightedSFTTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
         sample_weights = inputs.pop("sample_weights", None)
         token_loss_weight = inputs.pop("token_loss_weight", None)
+        loss_bucket_ids = inputs.pop("loss_bucket_ids", None)
+        loss_subbucket_ids = inputs.pop("loss_subbucket_ids", None)
         sample_meta = inputs.pop("sample_meta", None)
         eval_meta = inputs.pop("eval_meta", None)
         # Keep input_ids handy for argmax-vs-gold accumulation during eval
@@ -504,50 +517,72 @@ class WeightedSFTTrainer(Trainer):
         loss = outputs.loss
         per_sample_loss_for_audit = None
 
-        if self.model.training and inputs.get("labels") is not None:
-            action_class_mode = self._get_action_class_mode()
-            if action_class_mode in {"inverse_freq", "focal"}:
-                # Both modes require explicit logits + per-token weighting and
-                # therefore cannot coexist with Liger fused linear-CE (which
-                # consumes hidden states directly and never materialises
-                # logits with grad). Fail loud at the entry of the override
-                # path so a misconfigured run does not silently degrade.
-                _assert_logits_have_grad(outputs.logits, action_class_mode)
-            if action_class_mode == "focal":
-                # focal-modulation focal loss replaces the per-sample CE path.
-                per_sample_loss_for_audit = self._per_sample_focal_loss(
+        if inputs.get("labels") is not None:
+            if self._get_loss_bucket_weighting():
+                if outputs.logits is None or not torch.is_tensor(outputs.logits):
+                    raise RuntimeError(
+                        "loss_bucket_weighting=True requires model.forward to "
+                        "return logits. Disable fused linear-CE or turn off "
+                        "loss_bucket_weighting."
+                    )
+                if self.model.training and not outputs.logits.requires_grad:
+                    raise RuntimeError(
+                        "loss_bucket_weighting=True requires logits with grad "
+                        "during training. Disable fused linear-CE before using "
+                        "the semantic bucket loss."
+                    )
+                loss, per_sample_loss_for_audit, bucket_metrics = self._bucketed_ce_loss(
                     outputs.logits,
                     inputs["labels"],
-                    token_loss_weight=token_loss_weight,
+                    loss_bucket_ids=loss_bucket_ids,
+                    loss_subbucket_ids=loss_subbucket_ids,
                 )
-            else:
-                # Default CE path; if action_class_mode == 'inverse_freq',
-                # the data collator already multiplied class weights into
-                # token_loss_weight, so we just pass it through.
-                per_sample_loss_for_audit = self._per_sample_ce_loss(
-                    outputs.logits,
-                    inputs["labels"],
-                    token_loss_weight=token_loss_weight,
+                if self.model.training:
+                    self._accumulate_loss_bucket_metrics(bucket_metrics)
+            elif self.model.training:
+                action_class_mode = self._get_action_class_mode()
+                if action_class_mode in {"inverse_freq", "focal"}:
+                    # Both modes require explicit logits + per-token weighting and
+                    # therefore cannot coexist with Liger fused linear-CE (which
+                    # consumes hidden states directly and never materialises
+                    # logits with grad). Fail loud at the entry of the override
+                    # path so a misconfigured run does not silently degrade.
+                    _assert_logits_have_grad(outputs.logits, action_class_mode)
+                if action_class_mode == "focal":
+                    # focal-modulation focal loss replaces the per-sample CE path.
+                    per_sample_loss_for_audit = self._per_sample_focal_loss(
+                        outputs.logits,
+                        inputs["labels"],
+                        token_loss_weight=token_loss_weight,
+                    )
+                else:
+                    # Default CE path; if action_class_mode == 'inverse_freq',
+                    # the data collator already multiplied class weights into
+                    # token_loss_weight, so we just pass it through.
+                    per_sample_loss_for_audit = self._per_sample_ce_loss(
+                        outputs.logits,
+                        inputs["labels"],
+                        token_loss_weight=token_loss_weight,
+                    )
+                # When action_class_mode != 'none' but sample_weights is not
+                # provided, override outputs.loss with our weighted per-sample
+                # mean so the actual update reflects the class balancing.
+                override_outputs_loss = (
+                    action_class_mode in {"inverse_freq", "focal"}
+                    and (sample_weights is None or sample_weights.numel() == 0)
                 )
-            # When action_class_mode != 'none' but sample_weights is not
-            # provided, override outputs.loss with our weighted per-sample
-            # mean so the actual update reflects the class balancing.
-            override_outputs_loss = (
-                action_class_mode in {"inverse_freq", "focal"}
-                and (sample_weights is None or sample_weights.numel() == 0)
-            )
-            if sample_weights is not None and sample_weights.numel() > 0:
-                weights = sample_weights.to(
-                    device=per_sample_loss_for_audit.device,
-                    dtype=per_sample_loss_for_audit.dtype,
-                ).view(-1)
-                if weights.numel() == per_sample_loss_for_audit.numel():
-                    loss = (
-                        per_sample_loss_for_audit * weights
-                    ).sum() / weights.sum().clamp_min(1e-6)
-            elif override_outputs_loss:
-                # Equal weight across samples; just mean.
-                loss = per_sample_loss_for_audit.mean()
+                if sample_weights is not None and sample_weights.numel() > 0:
+                    weights = sample_weights.to(
+                        device=per_sample_loss_for_audit.device,
+                        dtype=per_sample_loss_for_audit.dtype,
+                    ).view(-1)
+                    if weights.numel() == per_sample_loss_for_audit.numel():
+                        loss = (
+                            per_sample_loss_for_audit * weights
+                        ).sum() / weights.sum().clamp_min(1e-6)
+                elif override_outputs_loss:
+                    # Equal weight across samples; just mean.
+                    loss = per_sample_loss_for_audit.mean()
 
         # ── Eval-time accuracy accumulation (teacher-forced argmax) ──
         # Done before audit because audit guard requires model.training=True
@@ -568,7 +603,9 @@ class WeightedSFTTrainer(Trainer):
             try:
                 self._accumulate_train_metrics(
                     per_sample_loss=per_sample_loss_for_audit,
-                    sample_weights=sample_weights,
+                    sample_weights=(
+                        None if self._get_loss_bucket_weighting() else sample_weights
+                    ),
                     sample_meta=sample_meta,
                     eval_meta=eval_meta,
                     logits=outputs.logits if eval_meta is not None else None,
@@ -587,7 +624,9 @@ class WeightedSFTTrainer(Trainer):
                 self._write_sft_audit(
                     loss=loss,
                     per_sample_loss=per_sample_loss_for_audit,
-                    sample_weights=sample_weights,
+                    sample_weights=(
+                        None if self._get_loss_bucket_weighting() else sample_weights
+                    ),
                     token_loss_weight=token_loss_weight,
                     labels=inputs.get("labels"),
                     sample_meta=sample_meta,
@@ -645,6 +684,142 @@ class WeightedSFTTrainer(Trainer):
         if mode is None:
             return "none"
         return str(mode).strip().lower()
+
+    def _get_loss_bucket_weighting(self) -> bool:
+        data_args = getattr(self, "data_args", None)
+        if data_args is None:
+            return False
+        value = getattr(data_args, "loss_bucket_weighting", False)
+        if isinstance(value, str):
+            return value.strip().lower() not in {"", "0", "false", "no", "off"}
+        return bool(value)
+
+    def _loss_bucket_lambdas(self) -> Dict[str, float]:
+        data_args = getattr(self, "data_args", None)
+        return {
+            "action": float(getattr(data_args, "loss_bucket_action_weight", 1.0) or 0.0),
+            "key": float(getattr(data_args, "loss_bucket_key_weight", 1.0) or 0.0),
+            "text": float(getattr(data_args, "loss_bucket_text_weight", 1.0) or 0.0),
+            "answer": float(getattr(data_args, "loss_bucket_answer_weight", 1.0) or 0.0),
+        }
+
+    @staticmethod
+    def _loss_bucket_group_specs():
+        return {
+            "action": (
+                LOSS_BUCKET_ACTION,
+                [
+                    LOSS_SUBBUCKET_ACT_SILENT,
+                    LOSS_SUBBUCKET_ACT_RESPONSE,
+                    LOSS_SUBBUCKET_ACT_RECALL,
+                ],
+            ),
+            "text": (
+                LOSS_BUCKET_TEXT,
+                [
+                    LOSS_SUBBUCKET_TEXT_THINK,
+                    LOSS_SUBBUCKET_TEXT_COMPRESSION,
+                ],
+            ),
+        }
+
+    def _bucketed_ce_loss(
+        self,
+        logits,
+        labels,
+        *,
+        loss_bucket_ids,
+        loss_subbucket_ids,
+    ):
+        """Semantic bucket objective:
+
+            L = lambda_action * mean_present(action subbuckets)
+              + lambda_text   * mean_present(text subbuckets)
+
+        The current bucketizer intentionally maps the whole recall/response
+        language to action, and the whole think/memory language to text. Legacy
+        key/answer lambdas are kept as CLI-compatible no-ops.
+        """
+        if loss_bucket_ids is None or loss_subbucket_ids is None:
+            raise RuntimeError(
+                "loss_bucket_weighting=True but the batch has no "
+                "loss_bucket_ids/loss_subbucket_ids. The dataset must be "
+                "preprocessed with loss_bucket_weighting enabled."
+            )
+        shift_logits = logits[..., :-1, :].contiguous()
+        shift_labels = labels[..., 1:].contiguous()
+        shift_bucket = loss_bucket_ids[..., 1:].to(device=shift_labels.device)
+        shift_subbucket = loss_subbucket_ids[..., 1:].to(device=shift_labels.device)
+        valid = shift_labels.ne(IGNORE_INDEX) & shift_bucket.ne(LOSS_BUCKET_IGNORE)
+        if not valid.any():
+            zero = logits.sum() * 0.0
+            return zero, torch.zeros(labels.size(0), device=logits.device), {}
+
+        flat_loss = torch.nn.functional.cross_entropy(
+            shift_logits[valid],
+            shift_labels[valid],
+            reduction="none",
+        )
+        flat_bucket = shift_bucket[valid]
+        flat_subbucket = shift_subbucket[valid]
+        flat_sample = (
+            torch.arange(labels.size(0), device=labels.device)
+            .unsqueeze(-1)
+            .expand_as(shift_labels)[valid]
+        )
+
+        lambdas = self._loss_bucket_lambdas()
+        specs = self._loss_bucket_group_specs()
+        total = flat_loss.sum() * 0.0
+        metrics: Dict[str, float] = {}
+
+        for group, (bucket_id, subbucket_ids) in specs.items():
+            if lambdas.get(group, 0.0) == 0.0:
+                continue
+            sub_losses = []
+            group_mask = flat_bucket.eq(bucket_id)
+            for subbucket_id in subbucket_ids:
+                mask = group_mask & flat_subbucket.eq(subbucket_id)
+                if not bool(mask.any().item()):
+                    continue
+                mean_loss = flat_loss[mask].mean()
+                sub_losses.append(mean_loss)
+                sub_name = LOSS_SUBBUCKET_NAMES.get(int(subbucket_id), str(subbucket_id))
+                metrics[f"{group}/{sub_name}"] = float(mean_loss.detach().item())
+                metrics[f"{group}/{sub_name}_tokens"] = int(mask.sum().detach().item())
+            if not sub_losses:
+                continue
+            group_loss = torch.stack(sub_losses).mean()
+            metrics[group] = float(group_loss.detach().item())
+            total = total + float(lambdas[group]) * group_loss
+
+        per_sample = torch.zeros(labels.size(0), device=logits.device, dtype=flat_loss.dtype)
+        for b in range(labels.size(0)):
+            sample_total = flat_loss.new_tensor(0.0)
+            for group, (bucket_id, subbucket_ids) in specs.items():
+                if lambdas.get(group, 0.0) == 0.0:
+                    continue
+                sub_losses = []
+                sample_group = flat_sample.eq(b) & flat_bucket.eq(bucket_id)
+                for subbucket_id in subbucket_ids:
+                    mask = sample_group & flat_subbucket.eq(subbucket_id)
+                    if bool(mask.any().item()):
+                        sub_losses.append(flat_loss[mask].mean())
+                if sub_losses:
+                    sample_total = sample_total + float(lambdas[group]) * torch.stack(sub_losses).mean()
+            per_sample[b] = sample_total
+        metrics["total"] = float(total.detach().item())
+        return total, per_sample, metrics
+
+    def _accumulate_loss_bucket_metrics(self, metrics: Dict[str, float]) -> None:
+        if not metrics:
+            return
+        for key, value in metrics.items():
+            if key.endswith("_tokens"):
+                self._train_metrics["bucket_token_sum"][key[:-7]] += float(value)
+            else:
+                self._train_metrics["bucket_loss_sum"][key] += float(value)
+                self._train_metrics["bucket_loss_n"][key] += 1
 
     def _per_sample_focal_loss(self, logits, labels, token_loss_weight=None):
         """focal-modulation focal loss aggregated per sample.
@@ -877,8 +1052,8 @@ class WeightedSFTTrainer(Trainer):
     # Eval-time argmax accuracy (teacher-forced).
     #   - v12_argmax_match / v12_argmax_total : holistic argmax over the
     #     full assistant span [ans_start, ans_end]. Per-class breakdown by
-    #     sample_type. (v11's per-position metrics on <action>/<summary>/
-    #     <query>/<response> are gone — v12 has no fixed structural spans.)
+    #     sample_type. Old per-position structural metrics are gone because
+    #     v12 has no fixed structural spans.
     # -----------------------------------------------------------------
 
     def _reset_eval_accumulator(self):
@@ -991,9 +1166,18 @@ class WeightedSFTTrainer(Trainer):
                             )
                         except Exception:
                             pass
+                    post_recall_answer_turn_indices = {
+                        int(idx)
+                        for idx in (
+                            meta.get("post_recall_answer_turn_indices") or []
+                        )
+                    }
                     behavior_stype = _behavior_bucket_for_expected_kind(
                         expected_kind,
                         metric_stype,
+                        post_recall_answer=(
+                            turn_idx in post_recall_answer_turn_indices
+                        ),
                     )
 
                     # v12.1 BEHAVIORAL METRICS — decode argmax tokens →
@@ -1132,7 +1316,8 @@ class WeightedSFTTrainer(Trainer):
             tool_open_pos >= 0
             and re.search(r'"name"\s*:\s*"recall"', body)
             and re.search(r'"arguments"\s*:\s*\{', body)
-            and re.search(r'"query"\s*:\s*"', body)
+            and re.search(r'"start_time"\s*:', body)
+            and re.search(r'"end_time"\s*:', body)
         )
         if recall_emit_like:
             self._eval_acc["v12_observed_recall_toolaware"][stype] += 1
@@ -1380,10 +1565,10 @@ class WeightedSFTTrainer(Trainer):
 
         # v12.1 BEHAVIORAL METRICS (parsed from teacher-forced argmax)
         # — answers user-actionable questions about model behavior:
-        #   "Does silent emit empty <silent>?"  → v12_silent_empty_rate_silent
+        #   "Does silent emit empty </Silence>?"  → v12_silent_empty_rate_silent
         #   "Does compress emit compress tool_call?" → v12_compress_emit_rate_compress
         #   "Does recall emit recall tool_call?"   → v12_recall_emit_rate_recall_query
-        #   "Does response emit non-empty <response>?" → v12_answer_emit_rate_response
+        #   "Does response emit non-empty </Response>?" → v12_answer_emit_rate_response
         #   "Is the parsed format valid?"           → v12_format_valid_<stype>
         #   "Did the model pick the right kind?"    → v12_kind_match_<stype>
         kind_tot = self._eval_acc.get("v12_kind_total", {}).get("_all", 0)
@@ -1452,7 +1637,7 @@ class WeightedSFTTrainer(Trainer):
                 )
 
         # Response-only diagnostics. Denominator is gold non-empty response
-        # turns, so <silent> no longer inflates the answer-family emit signal.
+        # turns, so </Silence> no longer inflates the answer-family emit signal.
         for stype, tot in self._eval_acc.get("v12_response_detail_total", {}).items():
             if tot == 0:
                 continue
@@ -1538,6 +1723,9 @@ class WeightedSFTTrainer(Trainer):
             "loss_value_n": defaultdict(int),
             "loss_n":     defaultdict(int),
             "weight_sum": defaultdict(float),
+            "bucket_loss_sum": defaultdict(float),
+            "bucket_loss_n": defaultdict(int),
+            "bucket_token_sum": defaultdict(float),
         }
 
     def _accumulate_train_metrics(
@@ -1568,7 +1756,7 @@ class WeightedSFTTrainer(Trainer):
             self._train_metrics["weight_sum"][stype] += w
             self._train_metrics["weight_sum"]["_all"] += w
 
-        # v12: action_keyword_positions doesn't exist (no <action> vocab).
+        # v12: action_keyword_positions doesn't exist.
         # Per-class loss + weight is the only signal we accumulate here.
 
     def _flush_train_metrics(self) -> Dict[str, float]:
@@ -1591,6 +1779,15 @@ class WeightedSFTTrainer(Trainer):
             )
             if stype != "_all":
                 out[f"train/n_frac_{stype}"] = n / n_total
+        for name, n in self._train_metrics["bucket_loss_n"].items():
+            if n:
+                metric_name = name.replace("/", "_")
+                out[f"train/loss_bucket_{metric_name}"] = (
+                    self._train_metrics["bucket_loss_sum"][name] / n
+                )
+        for name, value in self._train_metrics["bucket_token_sum"].items():
+            metric_name = name.replace("/", "_")
+            out[f"train/loss_bucket_tokens_{metric_name}"] = value
         self._reset_train_metrics()
         return out
 

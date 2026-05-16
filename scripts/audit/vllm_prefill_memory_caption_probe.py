@@ -303,7 +303,7 @@ def build_stream_user(
     )
     content.append({"type": "text", "text": "\n".join([
         "</current_vision>",
-        "<query>",
+        "<active_query>",
         (
             f'  <q t="{row["current_time"]}">Write one concise English natural-language caption / observation '
             "for only the newest current video chunk inside <current_vision>. Describe visible people, objects, "
@@ -313,7 +313,7 @@ def build_stream_user(
             "Do not copy <memory>, historical visual memory, or earlier assistant captions. Output exactly: "
             "<think>English caption of the current chunk</think><answer></answer></q>"
         ),
-        "</query>",
+        "</active_query>",
     ])})
     return content
 
@@ -612,7 +612,7 @@ def run_stream(args: argparse.Namespace) -> Dict:
         "role": "system",
         "content": (
             "You are a streaming video captioning agent. Each current-caption user message has <memory>, "
-            "<current_vision>, and <query>. There is no <response> block. Caption only the newest "
+            "<current_vision>, and <active_query>. There is no <response> block. Caption only the newest "
             "<current_vision> chunk in English. Use <memory>, <vision_memory>, and <recent_vision_memory> "
             "only as historical context; never describe historical visual memory as the current frame."
         ),
@@ -749,13 +749,13 @@ def run_prefill_history_qa(args: argparse.Namespace) -> Dict:
     )})
     messages.append({"role": "user", "content": [
         {"type": "text", "text": "\n".join([
-            "<query>",
+            "<active_query>",
             (
                 f'  <q t="{args.history_check_time}">From the initialized historical memory only, '
                 f"describe what was visible around t={args.history_check_time}. "
                 "Answer with one concise English caption in <answer>...</answer>.</q>"
             ),
-            "</query>",
+            "</active_query>",
         ])},
     ]})
     response = call_model(args, messages)
@@ -843,14 +843,14 @@ def run_prefill_time_range_qa(args: argparse.Namespace) -> Dict:
     )})
     messages.append({"role": "user", "content": [
         {"type": "text", "text": "\n".join([
-            "<query>",
+            "<active_query>",
             (
                 f'  <q>From the initialized historical memory only, locate this past event: '
                 f"{query_spec['question']} Return the most specific historical time range in seconds. "
                 'Use format exactly: <answer>{"time_range":"start-end","evidence":"short reason"}</answer>.'
                 "</q>"
             ),
-            "</query>",
+            "</active_query>",
         ])},
     ]})
     response = call_model(args, messages)

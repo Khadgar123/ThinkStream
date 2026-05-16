@@ -1322,35 +1322,32 @@ def pad_and_cat(tensor_list):
 
 
 # ---------------------------------------------------------------------------
-# v9.0 token-type loss weighting (Agent-FLAN + T3S)
+# Legacy token-type loss weighting (Agent-FLAN + T3S ablation only)
 # ---------------------------------------------------------------------------
 #
-# Per-position loss weight by token-span type, applied at trainer.compute_loss.
-# Span detection: scan input_ids for paired open/close special token IDs.
+# Per-position loss weight by token-span type, applied at trainer.compute_loss
+# for archived flat-row ablations only. Current trajectory SFT uses
+# thinkstream.sft.data_processor plus thinkstream.sft.losses; it does not use
+# v11 paired action/query tags.
 #
 # Default (phase=None): legacy uniform weighting — returns None to short-circuit.
 #
 # Phase weights:
 #   default tokens      : 1.0
 #   <think>...</think>  : 1.0   (kept full, ppl-aware variant deferred)
-#   <action>...</action>: 2.0   (class imbalance: silent ~60% > response ~30%)
-#   <response>...</r..> : 1.0
-#   <query>...</query>  : 0.4   (structured, avoid overfitting teacher phrasing)
+#   </Response> answer : ordinary CE target; no paired close tag
 #   <summary>...</s..>  : 0.6 in C1 / 0.3 in C2
 
 _TOKEN_TYPE_WEIGHTS = {
-    "C1": {"think": 1.0, "action": 2.0, "response": 1.0, "query": 0.4, "summary": 0.6},
-    "C2": {"think": 1.0, "action": 2.0, "response": 1.0, "query": 0.4, "summary": 0.3},
+    "C1": {"think": 1.0, "response": 1.0, "summary": 0.6},
+    "C2": {"think": 1.0, "response": 1.0, "summary": 0.3},
     # Phase 1/2 (no compress yet) — same as C1 but summary weight irrelevant
-    "1":  {"think": 1.0, "action": 2.0, "response": 1.0, "query": 0.4, "summary": 0.6},
-    "2":  {"think": 1.0, "action": 2.0, "response": 1.0, "query": 0.4, "summary": 0.6},
+    "1":  {"think": 1.0, "response": 1.0, "summary": 0.6},
+    "2":  {"think": 1.0, "response": 1.0, "summary": 0.6},
 }
 
 _SPAN_OPEN_CLOSE = (
     ("think",    "<think>",    "</think>"),
-    ("action",   "<action>",   "</action>"),
-    ("response", "<response>", "</response>"),
-    ("query",    "<query>",    "</query>"),
     ("summary",  "<summary>",  "</summary>"),
 )
 

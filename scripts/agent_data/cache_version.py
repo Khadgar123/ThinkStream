@@ -82,7 +82,7 @@ STAGE_VERSIONS: Dict[str, str] = {
     #   v12.52 (2026-05-07): MC option rebalancing also rewrites
     #        per_emit_answers values in flat metadata and trajectory questions,
     #        keeping chunk-level RL gold answers aligned with the
-    #        rebalanced correct_option/options and rendered <answer>.
+    #        rebalanced correct_option/options and rendered </Response>.
     #   v12.53 (2026-05-07): pass3c recall hardening asks for multiple
     #        memory-novel replacement candidates per selected recall slot,
     #        ranks historical evidence by current-memory novelty, and repairs
@@ -151,10 +151,9 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        batch1-8 prompt audit, and pass3c teacher output caps are
     #        right-sized for response, recall-query, and recall-hardening calls.
     #   v12.68 (2026-05-10): pass3b preserves HLD/Unable recall evidence
-    #        checks instead of dropping them on BM25/memory-overlap filters;
-    #        pass3c rejects answer-leaking recall_query payloads; MC rebalance
-    #        validates every answer/options rewrite before final files are
-    #        accepted.
+    #        checks instead of dropping them on memory-overlap filters; MC
+    #        rebalance validates every answer/options rewrite before final
+    #        files are accepted.
     #   v12.69 (2026-05-10): pass3e requires returned historical chunks for
     #        every recall sample; pass5 hard-fails if
     #        active_query/options/answer-format are missing or rendered more
@@ -259,6 +258,186 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        with explicit video_metadata (`video_meta`). Pending queries now
     #        render Answer format instructions consistently across SFT, RL,
     #        and eval/test prompts.
+    #   v12.84 (2026-05-14): pass3c emits dense silent samples for
+    #        every non-active, non-compress chunk. final/*_trajectories.jsonl
+    #        gold_action_per_chunk is therefore a continuous chunk timeline
+    #        instead of the old sparsified patrol table, and new rows no
+    #        longer use "patrol" as a sample kind. Regenerate 3c and
+    #        downstream pass4/pass5.
+    #   v12.83 (2026-05-14): recall first-turn thinks no longer append generic
+    #        action-rationale templates such as "needed evidence is historical,
+    #        so I will recall". Keep the current visual observation and let the
+    #        tool_call supervise recall. Regenerate 3c and pass5 rendered rows.
+    #   v12.82 (2026-05-14): recall time_range is a closed integer-second
+    #        interval [start, end] across pass3c labels, rendered tool schema,
+    #        validation, and retriever filtering. Single-chunk recalls may use
+    #        [t, t]. Regenerate 3c and downstream.
+    #   v12.80 (2026-05-14): recall-query teacher prompts output only the
+    #        answer-safe query text. time_range is always injected from pass3c
+    #        placement/retrieval rules and any teacher-emitted time_range is
+    #        ignored. Regenerate 3c and downstream.
+    #   v12.79 (2026-05-14): post-recall response thoughts reject teacher
+    #        sentences that claim the recalled frames fail to specify a hidden
+    #        target value; that value is hidden only to prevent answer leakage.
+    #        Regenerate 3c and downstream.
+    #   v12.78 (2026-05-14): recall+silent wait queries also use the same
+    #        constrained LLM prompt variants. Their time_range remains only an
+    #        allowed search range before the current 8s visual window; rendered
+    #        prompts still expose the ordinary 8s visual window plus at most 4s
+    #        recalled evidence. Regenerate 3c and downstream.
+    #   v12.77 (2026-05-14): pass3c also uses LLM prompt variants for recall
+    #        query generation by default, including REC/CRR/SSR cases, rather
+    #        than deterministic keyword templates. Validation remains limited
+    #        to protocol/time-range and answer-space leakage. Regenerate 3c.
+    #   v12.76 (2026-05-14): pass3c uses a constrained LLM call for the
+    #        post-recall think sentence, with answer-space redaction and
+    #        protocol/leak validation. This diversifies recall-response
+    #        supervision while keeping the final answer only after </Response>.
+    #        Regenerate 3c and downstream.
+    #   v12.75 (2026-05-14): pass3c recall queries are answer-space-safe
+    #        visual search phrases, including short numeric/Yes-No/MC-letter
+    #        leak checks. Post-recall assistant thoughts now use non-answer
+    #        visual anchors from the recalled evidence when available instead
+    #        of only generic type templates. Regenerate 3c and downstream.
+    #   v12.86 (2026-05-14): pass3 is rebuilt around benchmark question-way
+    #        quotas: benchmark_core / benchmark_variant / ours_unique card
+    #        styles, current-vs-past-vs-future-vs-multi placement buckets,
+    #        support-bin caps, and recall only for selected historical visual
+    #        recall_demo slots. Regenerate pass3a/pass3b/pass3c and downstream.
+    #   v12.87 (2026-05-14): pass3 cards carry fine-grained question_way and
+    #        evidence_type fields aligned to OVO-Bench and StreamingBench
+    #        question forms. Historical questions asked inside the current
+    #        visual window count as past_direct rather than current_direct, and
+    #        production pass3A no longer falls back to template heuristic
+    #        questions/options unless explicitly enabled for offline tests.
+    #   v12.88 (2026-05-14): production pass3C no longer falls back to
+    #        deterministic recall-query or post-recall-think templates when a
+    #        teacher client is configured. Offline tests may opt in to those
+    #        fallbacks, but production refreshes must regenerate teacher
+    #        query/think text or fail instead of writing template traces.
+    #   v12.93 (2026-05-14): pass3B selection targets the benchmark timing mix
+    #        more directly: current_direct around 40%, multi_answer capped near
+    #        10-12% with a trajectory-level multi gate, and historical questions
+    #        split more evenly between past_direct and past_recall. HLD and
+    #        ours-unique reserves are reduced because StreamingBench has no
+    #        dedicated abstention task. Current-direct selection now runs before
+    #        past-direct fill, and unanswerable cards have their own cap.
+    #        Regenerate 3b and downstream from v12.87 cards.
+    #   v12.94 (2026-05-14): pass3A/3B add fine-grained question-way and
+    #        evidence-type balance targets, reduce HLD to a small negative
+    #        slice, and make F5/F7 multi-answer cards prefer 6-9 response
+    #        probes to match OVO REC/SSR rendered-row density. Regenerate
+    #        pass3a and all downstream stages.
+    #   v12.95 (2026-05-14): pass3A uses a deterministic slot plan before LLM
+    #        question generation. Slots fix family/question_way/evidence_type,
+    #        support chunks, answer/probe chunks, lifecycle, and support_policy;
+    #        LLM cards that move chunks away from their slot are rejected.
+    #        External batch-balanced slot plans can be injected through
+    #        THINKSTREAM_PASS3A_SLOT_PLAN_DIR. Regenerate pass3a and downstream.
+    #   v12.96 (2026-05-14): slot planner fixes single_emit support windows so
+    #        answer chunks are the latest support chunk, gives temporal/causal
+    #        families broader planned historical support, and makes M1 a single
+    #        global-summary slot instead of ordinary single-frame QA. Pass3A
+    #        prompts also harden P1/M1/CR2/CR4 slot adherence.
+    #   v12.97 (2026-05-14): pass3 timing buckets split old visual recall from
+    #        state-memory direct answers. EPM/ASI/HLD-style historical visual
+    #        slots are labeled past_visual_recall_candidate, while the old
+    #        past_direct quota becomes past_state_direct at about 10%.
+    #        Recall target/cap is raised to cover the OVO backward questions.
+    #   v12.98 (2026-05-15): recall is time-range-only. Tool calls no longer
+    #        emit keyword queries; pass3b/pass3c validate historical recall by
+    #        uniformly sampling up to 4 chunks (8 frames) from the requested
+    #        range, and post-recall teacher notes may inspect the returned frames.
+    #        Regenerate 3b/3c and downstream.
+    #   v12.100 (2026-05-15): model-visible prompts remove legacy
+    #        <memory>/<compressed>/<memory_think>/<visual_window> and
+    #        <recalled_frames>/<recall_result> wrappers. Memory is rendered as
+    #        bare <m t="..."> lines, current chunks as <t=N>, and recall tool
+    #        responses as a short Qwen tool-response status line plus frames.
+    #        Regenerate pass2 memory rollouts and all downstream SFT/RL/eval rows.
+    #   v12.101 (2026-05-15): recall tool calls use LongVT-style explicit
+    #        start_time/end_time absolute seconds instead of time_range arrays,
+    #        and the interval is closed: [start_time, end_time]. Single-second
+    #        recall may use start_time == end_time. Regenerate 3b/3c and
+    #        downstream SFT/RL/eval rows.
+    #   v12.103 (2026-05-15): streaming system prompt follows OVO/StreamingBench
+    #        timing semantics: prior/current, future/proactive, and count/status
+    #        probes are handled generically; unknown/abstain options are treated
+    #        as ordinary answer choices rather than a central policy branch.
+    #        Regenerate pass5 rendered SFT/RL/eval rows.
+    #   v12.104 (2026-05-15): compact-memory prompts are split by role:
+    #        pass2 teacher prompt keeps strict retention rules but repeats the
+    #        <m t="...">...</m> line template, while student-facing compact
+    #        prompts use a shorter imitation-oriented template with minimal
+    #        rules. Regenerate pass2 and downstream rendered SFT/RL/eval rows.
+    #   v12.105 (2026-05-15): student-facing compact-memory prompts keep the
+    #        concise imitation template but explicitly require preserving at
+    #        least one useful OLD_MEMORY line and at least one latest
+    #        NEW_CAPTIONS line when present, preventing memory updates from
+    #        collapsing to only the newest captions. Regenerate pass5 rendered
+    #        SFT/RL/eval rows.
+    #   v12.106 (2026-05-15): from_compress memory loading is canonicalized as
+    #        user(<m> lines) -> assistant("Memory loaded.") -> next visual user
+    #        turn. The streaming system prompt now describes this separate
+    #        memory-load prefill turn instead of saying memory lines may appear
+    #        directly before <t=N>. Regenerate downstream rendered rows.
+    #   v12.107 (2026-05-15): pass3c post-recall thoughts now train the model
+    #        to describe teacher-observed recall information before answering.
+    #        The prompt no longer redacts answer-bearing visual facts from the
+    #        recall window, retries teacher failures, and refuses to write empty
+    #        or template post-recall thinks when a teacher client is configured.
+    #        Regenerate pass3c and downstream rendered/eval rows.
+    #   v12.108 (2026-05-15): pass3c post-recall MC validation no longer rejects
+    #        a correct answer-bearing visual sentence just because a distractor
+    #        option is a short substring/prefix of the correct option. It still
+    #        rejects teacher notes that describe a distinct incorrect option.
+    #        Regenerate pass3c and downstream rendered/eval rows.
+    #   v12.109 (2026-05-15): pass3c extends that MC post-recall validation to
+    #        tolerate close lexical distractors when the teacher note clearly
+    #        states the correct visual fact, such as one-character name typos or
+    #        reversed-order paraphrases. Distinct incorrect options remain
+    #        rejected.
+    #   v12.111 (2026-05-15): pass3c MC post-recall validation only treats an
+    #        incorrect option as fatal when the teacher note does not already
+    #        state the correct visual fact. Context words from the question,
+    #        such as locations around an OCR target, no longer fail otherwise
+    #        valid direct visual observations. Regenerate pass3c and downstream.
+    #   v12.112 (2026-05-15): pass3c post-recall teacher filtering is reduced
+    #        to protocol/format checks by default, so valid teacher visual
+    #        descriptions are not dropped by distractor wording. Regenerate
+    #        pass3c and downstream.
+    #   v12.113 (2026-05-15): pass5/RL active-query injection becomes adaptive:
+    #        answer/probe chunks re-render the open query, cumulative count
+    #        questions refresh query+response_history after each answer, and
+    #        independent status probes suppress prior answer history.
+    #        Regenerate pass5 rendered SFT/RL/eval rows.
+    #   v12.114 (2026-05-15): pass3c post-recall teacher filtering also
+    #        removes content-contradiction / insufficient-evidence heuristics
+    #        from active filtering. Teacher thoughts keep protocol/format
+    #        checks without semantic rejection. Regenerate pass3c and downstream
+    #        rendered rows.
+    #   v12.115 (2026-05-15): pass3c source-framing cleanup is boundary-safe:
+    #        object phrases such as "trailer frame displays" are no longer
+    #        rejected as recall-source boilerplate, and suffixes like
+    #        "in the earlier frames" are stripped instead of failing the
+    #        teacher output. Regenerate pass3c and downstream.
+    #   v12.116 (2026-05-15): pass3c post-recall cleanup is salvage-first.
+    #        Active filtering no longer rejects MC distractor overlap,
+    #        insufficient/no-visible wording, source-framing wording, short
+    #        observations, or long observations. It strips protocol/source
+    #        wrappers, salvages JSON-wrapped sentences, keeps complete teacher
+    #        sentences without truncation, and only retries empty/protocol-only
+    #        text or explicit option-letter meta answers such as "the answer is A".
+    #   v12.117 (2026-05-15): pass3c no longer rewrites source-framed teacher
+    #        thoughts such as "the recalled frames show ...". Safe wrappers like
+    #        "in the earlier frames, ..." may be stripped, but source-as-subject
+    #        phrasing now retries the teacher prompt so SFT sees natural visual
+    #        thoughts instead of cleaned template variants.
+    #   v12.118 (2026-05-16): pass3A/3B move to batch-level response-row
+    #        budgets: per-video response rows target 12-15%, source rows are
+    #        allocated across the batch while preserving per-video totals, and
+    #        trajectory selection caps response rows instead of legacy question
+    #        count floors. Regenerate pass3a/pass3b and downstream.
     #   v12.25 (2026-05-05): pass1a emits a current-only `think`
     #        observation-note JSON field per chunk. This is supervised text,
     #        not Qwen/vLLM enable_thinking reasoning. pass2 consumes that
@@ -289,12 +468,12 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        from SFT target, and verifier/rebalance updates.
     "1a": "v12.25",
     "1b": "v12.25",
-    "2":  "v12.35",
-    "3a": "v12.73",
-    "3b": "v12.73",
-    "3c": "v12.73",
-    "4":  "v12.73",  # canonical key — verification/final split render
-    "5":  "v12.74",  # pass5 multi-turn trajectory render version
+    "2":  "v12.106",
+    "3a": "v12.118",
+    "3b": "v12.118",
+    "3c": "v12.117",
+    "4":  "v12.117",  # canonical key — verification/final split render
+    "5":  "v12.117",  # pass5 multi-turn trajectory render version
 }
 # v12.11 review-fix (2026-05-01): "3e" was added in audit-5 P1 #5 as a
 # semantic alias for verification, but STAGE_DIRS has no "3e" entry → any

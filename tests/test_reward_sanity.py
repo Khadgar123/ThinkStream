@@ -98,7 +98,7 @@ def test_correct_on_time_is_top_score():
         answer_chunk=5,
         visible_start_chunk=4,
         visible_end_chunk=6,
-        chunk_texts=["<think>spotted it</think><answer>red apron</answer>"],
+        chunk_texts=["<think>spotted it</think></Response> red apron"],
     )
     assert score > 1.3
 
@@ -112,7 +112,7 @@ def test_hallucinate_is_strictly_worse_than_silence():
         answer_chunk=None,
         visible_start_chunk=None,
         visible_end_chunk=None,
-        chunk_texts=["<think>nothing yet</think><answer></answer>"],
+        chunk_texts=["<think>nothing yet</think></Silence>"],
     )
     hallucinate_score = _weighted_score(
         final_answer="hallucinated",
@@ -122,7 +122,7 @@ def test_hallucinate_is_strictly_worse_than_silence():
         answer_chunk=2,
         visible_start_chunk=None,
         visible_end_chunk=None,
-        chunk_texts=["<think>guessing</think><answer>hallucinated</answer>"],
+        chunk_texts=["<think>guessing</think></Response> hallucinated"],
     )
     assert silent_score == 0.0
     assert hallucinate_score < silent_score
@@ -138,7 +138,7 @@ def test_missed_response_is_penalized():
         answer_chunk=None,
         visible_start_chunk=4,
         visible_end_chunk=6,
-        chunk_texts=["<think>didn't see</think><answer></answer>"],
+        chunk_texts=["<think>didn't see</think></Silence>"],
     )
     assert score <= -0.3
 
@@ -152,7 +152,7 @@ def test_wrong_answer_on_time_beats_silent_missed():
         answer_chunk=5,
         visible_start_chunk=4,
         visible_end_chunk=6,
-        chunk_texts=["<think>guess</think><answer>blue apron</answer>"],
+        chunk_texts=["<think>guess</think></Response> blue apron"],
     )
     silent_missed = _weighted_score(
         final_answer=None,
@@ -162,7 +162,7 @@ def test_wrong_answer_on_time_beats_silent_missed():
         answer_chunk=None,
         visible_start_chunk=4,
         visible_end_chunk=6,
-        chunk_texts=["<think>nothing</think><answer></answer>"],
+        chunk_texts=["<think>nothing</think></Silence>"],
     )
     assert wrong_on_time == 0.0
     assert wrong_on_time > silent_missed
@@ -177,7 +177,7 @@ def test_correct_beats_wrong_on_time():
         answer_chunk=5,
         visible_start_chunk=4,
         visible_end_chunk=6,
-        chunk_texts=["<think>seen</think><answer>red apron</answer>"],
+        chunk_texts=["<think>seen</think></Response> red apron"],
     )
     wrong_on_time = _weighted_score(
         final_answer="blue apron",
@@ -187,7 +187,7 @@ def test_correct_beats_wrong_on_time():
         answer_chunk=5,
         visible_start_chunk=4,
         visible_end_chunk=6,
-        chunk_texts=["<think>guess</think><answer>blue apron</answer>"],
+        chunk_texts=["<think>guess</think></Response> blue apron"],
     )
     assert correct - wrong_on_time >= 1.0
 
@@ -201,7 +201,7 @@ def test_early_correct_text_is_not_credited():
         answer_chunk=2,
         visible_start_chunk=4,
         visible_end_chunk=6,
-        chunk_texts=["<think>jumping</think><answer>red apron</answer>"],
+        chunk_texts=["<think>jumping</think></Response> red apron"],
     )
     correct_on_time = _weighted_score(
         final_answer="red apron",
@@ -211,7 +211,7 @@ def test_early_correct_text_is_not_credited():
         answer_chunk=5,
         visible_start_chunk=4,
         visible_end_chunk=6,
-        chunk_texts=["<think>seen</think><answer>red apron</answer>"],
+        chunk_texts=["<think>seen</think></Response> red apron"],
     )
     assert early < correct_on_time
     assert early <= -0.3
@@ -226,7 +226,7 @@ def test_spam_penalizes_excess_tools():
         answer_chunk=5,
         visible_start_chunk=4,
         visible_end_chunk=6,
-        chunk_texts=["<think>seen</think><answer>answer</answer>"],
+        chunk_texts=["<think>seen</think></Response> answer"],
         n_recall_calls=1,
         n_compress_calls=1,
     )
@@ -238,7 +238,7 @@ def test_spam_penalizes_excess_tools():
         answer_chunk=5,
         visible_start_chunk=4,
         visible_end_chunk=6,
-        chunk_texts=["<think>seen</think><answer>answer</answer>"],
+        chunk_texts=["<think>seen</think></Response> answer"],
         n_recall_calls=5,
         n_compress_calls=4,
     )
@@ -246,9 +246,9 @@ def test_spam_penalizes_excess_tools():
 
 
 def test_format_requires_think_block():
-    assert compute_format_reward(["<answer>answer</answer>"]) == 0.0
+    assert compute_format_reward(["</Response> answer"]) == 0.0
     assert compute_format_reward([
-        "<think>seen</think><answer>answer</answer>"
+        "<think>seen</think></Response> answer"
     ]) == 1.0
 
 

@@ -26,40 +26,28 @@ python scripts/eval/ovo/build_rl_trajectories.py \
   --benchmark-json /path/to/ovo_bench_new.json \
   --out-jsonl data/ovo_rl/ovo_trajectories.jsonl \
   --out-parquet data/ovo_rl/ovo_rl_multi_q.parquet \
-  --split-policy query_span \
-  --max-span-chunks 512 \
-  --pre-context-chunks 64 \
+  --split-policy strict25_45 \
   --post-context-chunks 2
 ```
 
-The converter packs non-overlapping questions from the same video and task into
-one trajectory, splits overlapping active-query intervals, and keeps each
-question's ask chunk and answer chunk in the same segment unless a single long
-OVO probe interval already exceeds the soft span limit. Use
-`--pack-across-tasks` only for throughput sweeps where mixed-task trajectory
-metrics are acceptable. The resulting parquet is intended for the same verl
-recurrent AgentLoop validation/test path as RL rollout, so KV window behaviour,
-recall payload handling, and reward parsing stay shared. The validation dump is
+The converter now keeps only the benchmark tracks that match the current RL
+rollout contract. The resulting parquet is intended for the same verl recurrent
+AgentLoop validation/test path as RL rollout, so KV window behaviour, recall
+payload handling, and reward parsing stay shared. The validation dump is
 summarized by `scripts/audit/summarize_rl_recurrent_validation.py` into
 `summary.json` under the output directory.
 
 Split policies:
 
-- `query_span`: current default; packs non-overlapping questions from the same
-  video/task and gives each group a dynamic segment around the required
-  ask/answer interval.
-- `casia`: matches the reference CASIA OVO conversion semantics: every
-  formatted probe is an independent row, `video_start/video_end` define the
-  segment, and the query fires at `video_end`.
-- `short20_40`: one question per row; short questions target
-  `--short-min-span-chunks` to `--short-max-span-chunks` chunks, while a single
-  inherently long question is allowed to exceed that target rather than cutting
-  out its required context.
-- `short20_40_stateful`: cut-plan mode for long questions. It first applies
-  `short20_40`, then splits any row above the short max into contiguous
-  stateful parts. Context-only parts intentionally carry no scored question;
-  this JSONL requires an evaluator/rollout that carries memory state across
-  `stateful_split_parent_id` parts before scoring.
+- `strict25_45`: one question per row in a strict 25-45 second/chunk window.
+  The builder keeps the question away from the segment start boundary whenever
+  earlier context exists.
+- `strict25_45_stateful`: cut-plan mode for long multi-emit questions. It
+  splits long rows into contiguous 25-45 second/chunk parts; context-only parts
+  intentionally carry no scored question, and scored parts carry only the
+  per-emit answers that fall inside that part. This JSONL is for compress +
+  re-prefill evaluation and should not be converted to parquet until the
+  evaluator carries memory state across `stateful_split_parent_id` parts.
 
 `summary.health` is the compact recurrent-rollout health block:
 

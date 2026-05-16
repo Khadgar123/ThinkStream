@@ -905,7 +905,16 @@ class FSDPEngineWithLMHead(FSDPEngine):
             if pad_mode == DatasetPadMode.NO_PADDING:
                 input_ids_rmpad = input_ids.values().unsqueeze(0)  # (1, total_nnz)
                 if position_ids.dim() == 3:
-                    position_ids_rmpad = position_ids.values().unsqueeze(1)  # (4, 1, total_nnz)
+                    position_ids_rmpad = tu.nested_position_ids_values(position_ids).unsqueeze(
+                        1
+                    )  # (mrope_dim, 1, total_nnz)
+                    position_ids_rmpad = tu.normalize_mrope_position_ids(position_ids_rmpad, expected_channels=3)
+                    if position_ids_rmpad.shape[-1] != input_ids_rmpad.shape[-1]:
+                        raise RuntimeError(
+                            "MRoPE position_ids length mismatch after remove-padding: "
+                            f"position_ids={tuple(position_ids_rmpad.shape)}, "
+                            f"input_ids={tuple(input_ids_rmpad.shape)}"
+                        )
                 else:
                     position_ids_rmpad = position_ids.values().unsqueeze(0)  # (1, total_nnz)
             else:
@@ -977,9 +986,10 @@ class FSDPEngineWithLMHead(FSDPEngine):
                 )
 
                 if position_ids.dim() == 3:
+                    mrope_dim = int(position_ids.shape[1])
                     position_ids = torch.nested.to_padded_tensor(
-                        position_ids, padding=0, output_size=(batch_size, 4, max_seq_len)
-                    ).transpose(0, 1)  # (4, batch_size, max_seq_len)
+                        position_ids, padding=0, output_size=(batch_size, mrope_dim, max_seq_len)
+                    ).transpose(0, 1)  # (mrope_dim, batch_size, max_seq_len)
                 else:
                     position_ids = torch.nested.to_padded_tensor(
                         position_ids, padding=0, output_size=(batch_size, max_seq_len)

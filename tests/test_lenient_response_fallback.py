@@ -4,7 +4,7 @@ from thinkstream.rl.thinkstream import _extract_final_answer
 from thinkstream.trainer.rewards import compute_format_reward
 
 
-def test_unclosed_response_default_strict_but_lenient_recovers_answer():
+def test_old_paired_response_tags_are_rejected_even_with_legacy_flag():
     text = "<think>answer now</think><response>B"
 
     strict = parse_agent_output(text)
@@ -12,28 +12,27 @@ def test_unclosed_response_default_strict_but_lenient_recovers_answer():
     assert strict["answer_text"] is None
     assert strict["format_error"]
 
-    lenient = parse_agent_output(text, allow_unclosed_response=True)
-    assert lenient["kind"] == "answer"
-    assert lenient["answer_text"] == "B"
-    assert lenient["lenient_unclosed_response"] is True
-    assert "missing </response>" in lenient["format_error"]
+    parsed = parse_agent_output(text, allow_unclosed_response=True)
+    assert parsed["kind"] == "unknown"
+    assert parsed["answer_text"] is None
+    assert parsed["lenient_unclosed_response"] is False
 
 
-def test_agent_loop_uses_lenient_response_for_action_but_format_reward_stays_strict():
+def test_agent_loop_and_format_reward_reject_old_response_tag():
     text = "<think>answer now</think><response>Yes"
 
     parsed = _parse_agent_output(text)
-    assert parsed["action"] == "response"
-    assert parsed["payload"]["response"] == "Yes"
-    assert parsed["lenient_unclosed_response"] is True
+    assert parsed["action"] == ""
+    assert parsed["payload"] == {}
+    assert parsed["lenient_unclosed_response"] is False
     assert parsed["format_error"]
 
     assert compute_format_reward([text]) == 0.0
 
 
-def test_final_answer_fallback_uses_last_unclosed_response():
+def test_final_answer_fallback_uses_current_response_only():
     text = (
-        "<think>not yet</think><silent>"
-        "<think>now answer</think><response>C"
+        "<think>not yet</think></Silence>"
+        "<think>now answer</think><response>C</response>"
     )
-    assert _extract_final_answer(text) == "C"
+    assert _extract_final_answer(text) is None

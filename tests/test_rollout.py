@@ -26,6 +26,7 @@ from thinkstream.trainer.rollout import (
     default_update_state,
     replicate_state_for_group,
 )
+from thinkstream.rl.streaming_agent_loop import _append_visible_think_to_state
 
 
 # =============================================================================
@@ -197,11 +198,31 @@ def test_replicate_state_independence():
     assert s.chunk_idx == 0
 
 
+def test_append_visible_think_updates_memory_and_recall_archive():
+    s = _make_state()
+    ok = _append_visible_think_to_state(
+        s,
+        7,
+        "The latest frames show a red grill with stuffed jalapenos.",
+    )
+
+    assert ok is True
+    assert s.recent_thinks == [
+        {
+            "chunk": 7,
+            "text": "The latest frames show a red grill with stuffed jalapenos.",
+        }
+    ]
+    assert s.think_archive == s.recent_thinks
+    s.recent_thinks[0]["text"] = "mutated visible memory"
+    assert s.think_archive[0]["text"].startswith("The latest frames")
+
+
 def test_default_update_state_silent_answer():
     """Empty answer = silent → state stays active, chunk_idx advances."""
     s = _make_state()
     out = default_update_state(
-        s, "<think>nothing yet</think><answer></answer>", chunk_idx=0,
+        s, "<think>nothing yet</think></Silence>", chunk_idx=0,
     )
     assert out.is_active is True
     assert out.is_done is False
@@ -213,7 +234,7 @@ def test_default_update_state_final_answer():
     """Non-empty answer → mark inactive + record."""
     s = _make_state()
     out = default_update_state(
-        s, "<think>I see red</think><answer>red</answer>", chunk_idx=2,
+        s, "<think>I see red</think></Response> red", chunk_idx=2,
     )
     assert out.is_active is False
     assert out.is_done is True
@@ -230,7 +251,7 @@ def test_default_update_state_recall_call():
     s = _make_state()
     response = (
         '<think>need more context</think>'
-        '<tool_call>{"name": "recall", "arguments": {"query": "earlier scene", "time_range": "0-2"}}</tool_call>'
+        '<tool_call>{"name": "recall", "arguments": {"start_time": 0, "end_time": 2}}</tool_call>'
     )
     out = default_update_state(s, response, chunk_idx=1)
     assert out.is_active is True
@@ -279,9 +300,9 @@ def test_chunklevel_rollout_loop_mock_terminates_on_answer():
         # Round 1 (call_counter==1): both silent
         # Round 2 (call_counter==2): both emit answer
         if call_counter["n"] == 1:
-            return ["<think>watching</think><answer></answer>"
+            return ["<think>watching</think></Silence>"
                     for _ in messages_batch]
-        return ["<think>got it</think><answer>red</answer>"
+        return ["<think>got it</think></Response> red"
                 for _ in messages_batch]
 
     def mock_build_messages(state, video_meta):
@@ -320,11 +341,11 @@ def test_chunklevel_rollout_loop_active_mask_skips_inactive():
         if call_log[-1] == 2:
             # First chunk: rollout 0 answers, rollout 1 silent
             return [
-                "<think>done</think><answer>red</answer>",
-                "<think>still watching</think><answer></answer>",
+                "<think>done</think></Response> red",
+                "<think>still watching</think></Silence>",
             ]
         # Subsequent calls: only 1 active rollout (rollout 1)
-        return ["<think>still watching</think><answer></answer>"]
+        return ["<think>still watching</think></Silence>"]
 
     def mock_build_messages(state, video_meta):
         return [{"role": "user", "content": "x"}]
@@ -389,7 +410,7 @@ def test_chunklevel_rollout_loop_max_chunks_terminates():
     cfg = ChunkLevelRolloutConfig(group_size=3, max_chunks_per_video=4)
 
     def mock_silent_generate(messages_batch, n=1):
-        return ["<think>nope</think><answer></answer>" for _ in messages_batch]
+        return ["<think>nope</think></Silence>" for _ in messages_batch]
 
     def mock_build_messages(state, video_meta):
         return [{"role": "user", "content": "x"}]

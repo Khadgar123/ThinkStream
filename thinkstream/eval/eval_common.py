@@ -280,7 +280,7 @@ def add_common_args(parser):
         default="system",
         choices=["system", "self"],
         help=(
-            "How <action>compress</action> is triggered (only used with "
+            "How memory compression is triggered (only used with "
             "--use_agent_loop). 'system' (default, SFT-trained ckpt): when "
             "memory.should_compress() fires, system inserts a "
             "bare <compress_trigger/> and the model emits the full compress "

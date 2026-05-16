@@ -148,7 +148,7 @@ class DataArguments:
             "help": "Ablation-only. When enabled for compress SFT rows, "
             "redistribute loss inside the assistant span between format/body/"
             "closing tokens. Default False keeps normal assistant-token CE so "
-            "the <MEM> body is trained with the same weight as the format."
+            "the compact-memory body is trained with the same weight as the format."
         },
     )
     compress_structure_token_weight: float = field(
@@ -185,7 +185,7 @@ class DataArguments:
         default="none",
         metadata={
             "help": "Action-start loss balancing mode for "
-            "{<silent>, <response>, optional compress/recall tool-name anchors}. "
+            "{</Silence>, </Response>, optional compress/recall tool-name anchors}. "
             "Response close tags and answer text are ordinary CE targets. "
             "'none' = no extra balancing (legacy behaviour). "
             "'inverse_freq' = inverse-frequency-weighted class-weighted CE applied via "
@@ -223,6 +223,33 @@ class DataArguments:
             "help": "Upper clamp for per-class weights. Default "
             "ce_weight clamp(0, 20)."
         },
+    )
+    loss_bucket_weighting: bool = field(
+        default=False,
+        metadata={
+            "help": "When enabled, replace ordinary assistant-token CE with "
+            "two explicit token buckets: action and text. The current "
+            "bucketizer maps response/answer/recall toolcall tokens to action "
+            "and think/compact-memory tokens to text. The trainer computes "
+            "L = lambda_action * mean(CE_action) + lambda_text * mean(CE_text). "
+            "Default False preserves the existing CE path."
+        },
+    )
+    loss_bucket_action_weight: float = field(
+        default=1.0,
+        metadata={"help": "lambda_action for loss_bucket_weighting."},
+    )
+    loss_bucket_key_weight: float = field(
+        default=1.0,
+        metadata={"help": "Legacy lambda_key; no-op for the current two-bucket loss."},
+    )
+    loss_bucket_text_weight: float = field(
+        default=1.0,
+        metadata={"help": "lambda_text for loss_bucket_weighting."},
+    )
+    loss_bucket_answer_weight: float = field(
+        default=1.0,
+        metadata={"help": "Legacy lambda_answer; no-op for the current two-bucket loss."},
     )
     # Audit / reviewable training logs
     audit_log_dir: Optional[str] = field(

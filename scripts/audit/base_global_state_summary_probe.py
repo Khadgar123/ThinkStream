@@ -40,7 +40,7 @@ def caption_system() -> Dict:
         "role": "system",
         "content": (
             "You are a streaming video captioning and memory agent. Each current turn may contain "
-            "<memory>, <current_vision>, and <query>. Caption only the newest <current_vision> chunk when asked. "
+            "<memory>, <current_vision>, and <active_query>. Caption only the newest <current_vision> chunk when asked. "
             "Use <memory> and <recent_vision_memory> only as historical context, never as the current caption."
         ),
     }
@@ -79,7 +79,7 @@ def parse_summary_entries(summary_text: str) -> List[Dict]:
 
 def build_summary_request() -> List[Dict]:
     return [{"type": "text", "text": "\n".join([
-        "<query>",
+        "<active_query>",
         (
             "  <q>From all previous streaming observations in this conversation, write a compact "
             "global_state_summary for the historical video segment. Output exactly this XML shape:\n"
@@ -91,7 +91,7 @@ def build_summary_request() -> List[Dict]:
             "captions; do not describe clothing/background unless essential; do not predict future actions; "
             "each entry must be <=25 English words.</q>"
         ),
-        "</query>",
+        "</active_query>",
     ])}]
 
 
@@ -198,13 +198,13 @@ def ask_time_range_from_memory(args: argparse.Namespace, case_name: str, init_us
     for query_name, query_spec in probe.TIME_RANGE_QUERIES.items():
         messages = [memory_system(), {"role": "user", "content": init_user}]
         messages.append({"role": "user", "content": [{"type": "text", "text": "\n".join([
-            "<query>",
+            "<active_query>",
             (
                 f'  <q>From the initialized historical memory only, locate this past event: '
                 f"{query_spec['question']} Return the most specific historical time range in seconds. "
                 'Use format exactly: <answer>{"time_range":"start-end","evidence":"short reason"}</answer>.</q>'
             ),
-            "</query>",
+            "</active_query>",
         ])}]})
         response = call_with_max_tokens(args, messages, args.qa_max_tokens)
         raw = response["choices"][0]["message"].get("content", "")

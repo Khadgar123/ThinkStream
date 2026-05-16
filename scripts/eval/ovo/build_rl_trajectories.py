@@ -31,7 +31,11 @@ BT_TASKS = {"EPM", "ASI", "HLD"}
 FT_TASKS = {"REC", "SSR", "CRR"}
 ALL_TASKS = RT_TASKS | BT_TASKS | FT_TASKS
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-SPLIT_POLICIES = {"query_span", "casia", "short20_40", "short20_40_stateful"}
+SPLIT_POLICIES = {
+    "strict25_45",
+    "strict25_45_stateful",
+}
+STRICT_BENCHMARK_POLICIES = {"strict25_45", "strict25_45_stateful"}
 
 
 @dataclass
@@ -147,19 +151,6 @@ def _crr_question(sample: Dict[str, Any]) -> str:
     )
 
 
-def _crr_casia_question(sample: Dict[str, Any]) -> str:
-    return (
-        "You're responsible of answering questions based on the video content. "
-        "The following question are relevant to the latest frames, i.e. the end "
-        "of the video.\n\n"
-        f"{sample.get('question', '')}\n\n"
-        "Decide whether existing visual content, especially latest frames, "
-        "i.e frames that near the end of the video, provide enough information "
-        "for answering the question.\nReturn \"Yes\" if existing visual content "
-        "has provided enough information;\nReturn \"No\" otherwise."
-    )
-
-
 def _base_question_payload(
     *,
     sample: Dict[str, Any],
@@ -255,10 +246,15 @@ def _units_for_sample(sample: Dict[str, Any], *, scoring: str) -> List[QuestionU
 
     if task == "REC":
         probes = list(sample.get("test_info") or [])
-        chunks = sorted(set(_time_to_chunk(p.get("realtime")) for p in probes))
+        count_by_chunk: Dict[int, int] = {}
+        for probe in probes:
+            chunk = _time_to_chunk(probe.get("realtime"))
+            count = int(probe.get("count", 0))
+            count_by_chunk[chunk] = max(count_by_chunk.get(chunk, count), count)
+        chunks = sorted(count_by_chunk)
         per_emit = [
-            {"chunk": _time_to_chunk(p.get("realtime")), "value": str(int(p.get("count", 0)))}
-            for p in probes
+            {"chunk": chunk, "value": str(count_by_chunk[chunk])}
+            for chunk in chunks
         ]
         q = _base_question_payload(
             sample=sample,
@@ -267,7 +263,7 @@ def _units_for_sample(sample: Dict[str, Any], *, scoring: str) -> List[QuestionU
             answer_form="number",
             ask_chunks=[0],
             answer_chunks=chunks,
-            gold_answer=str(int(probes[-1].get("count", 0))) if probes else "",
+            gold_answer=str(count_by_chunk[chunks[-1]]) if chunks else "",
             per_emit_answers=per_emit,
         )
         end = max(chunks or [0])
@@ -351,221 +347,7 @@ def _units_for_sample(sample: Dict[str, Any], *, scoring: str) -> List[QuestionU
     return []
 
 
-def _units_for_sample_casia(sample: Dict[str, Any]) -> List[QuestionUnit]:
-    """Build one independent unit per CASIA-formatted OVO datum.
-
-    The reference converter emits JSONL rows with explicit ``video_start`` and
-    ``video_end``. The query is injected at ``video_end`` and the streaming
-    engine resets per row. This helper keeps the same segmentation semantics
-    while preserving the ThinkStream RL multi-Q payload shape.
-    """
-    task = str(sample.get("task") or "")
-    video_path = str(sample.get("video") or "")
-    sample_id = str(sample.get("id", ""))
-    if not video_path or task not in ALL_TASKS:
-        return []
-
-    if task in RT_TASKS or task in BT_TASKS:
-        ask = _time_to_chunk(sample.get("realtime"))
-        correct = _correct_letter(sample)
-        options = label_mc_options(sample.get("options") or [], style="paren")
-        q = _base_question_payload(
-            sample=sample,
-            task=task,
-            question=str(sample.get("question") or ""),
-            answer_form="multiple_choice",
-            ask_chunks=[ask],
-            answer_chunks=[ask],
-            gold_answer=correct,
-            options=options,
-            correct_option=correct,
-            correct_answer_text=_correct_option_text(sample),
-            realtime=sample.get("realtime"),
-        )
-        return [QuestionUnit(
-            video_path=video_path,
-            task=task,
-            sample_id=sample_id,
-            unit_id=sample_id,
-            question=q,
-            interval_start=0,
-            interval_end=ask,
-            score_until=ask,
-            support_chunks=q["support_chunks"],
-        )]
-
-    if task == "REC":
-        units: List[QuestionUnit] = []
-        for probe_i, probe in enumerate(sample.get("test_info") or []):
-            chunk = _time_to_chunk(probe.get("realtime"))
-            gold = str(int(probe.get("count", 0)))
-            q = _base_question_payload(
-                sample=sample,
-                task=task,
-                question=_rec_question(sample),
-                answer_form="number",
-                ask_chunks=[chunk],
-                answer_chunks=[chunk],
-                gold_answer=gold,
-                per_emit_answers=[{"chunk": chunk, "value": gold}],
-                probe_index=probe_i,
-                realtime=probe.get("realtime"),
-            )
-            units.append(QuestionUnit(
-                video_path=video_path,
-                task=task,
-                sample_id=sample_id,
-                unit_id=f"{sample_id}:{probe_i}",
-                question=q,
-                interval_start=0,
-                interval_end=chunk,
-                score_until=chunk,
-                support_chunks=q["support_chunks"],
-            ))
-        return units
-
-    if task == "CRR":
-        units = []
-        start = _time_to_chunk(sample.get("ask_time"))
-        for probe_i, probe in enumerate(sample.get("test_info") or []):
-            chunk = _time_to_chunk(probe.get("realtime"))
-            gold = "Yes" if int(probe.get("type", 0) or 0) == 1 else "No"
-            q = _base_question_payload(
-                sample=sample,
-                task=task,
-                question=_crr_casia_question(sample),
-                answer_form="binary",
-                ask_chunks=[chunk],
-                answer_chunks=[chunk],
-                gold_answer=gold,
-                per_emit_answers=[{"chunk": chunk, "value": gold}],
-                probe_index=probe_i,
-                probe_type=int(probe.get("type", 0) or 0),
-                realtime=probe.get("realtime"),
-            )
-            units.append(QuestionUnit(
-                video_path=video_path,
-                task=task,
-                sample_id=sample_id,
-                unit_id=f"{sample_id}:{probe_i}",
-                question=q,
-                interval_start=start,
-                interval_end=chunk,
-                score_until=chunk,
-                support_chunks=q["support_chunks"],
-            ))
-        return units
-
-    if task == "SSR":
-        units = []
-        for probe_i, probe in enumerate(sample.get("test_info") or []):
-            chunk = _time_to_chunk(probe.get("realtime"))
-            gold = "Yes" if int(probe.get("type", 0) or 0) == 1 else "No"
-            q = _base_question_payload(
-                sample=sample,
-                task=task,
-                question=_ssr_question(str(probe.get("step") or "")),
-                answer_form="binary",
-                ask_chunks=[chunk],
-                answer_chunks=[chunk],
-                gold_answer=gold,
-                per_emit_answers=[{"chunk": chunk, "value": gold}],
-                probe_index=probe_i,
-                probe_type=int(probe.get("type", 0) or 0),
-                realtime=probe.get("realtime"),
-            )
-            units.append(QuestionUnit(
-                video_path=video_path,
-                task=task,
-                sample_id=sample_id,
-                unit_id=f"{sample_id}:{probe_i}",
-                question=q,
-                interval_start=0,
-                interval_end=chunk,
-                score_until=chunk,
-                support_chunks=q["support_chunks"],
-            ))
-        return units
-
-    return []
-
-
-def _overlaps(a: QuestionUnit, b: QuestionUnit) -> bool:
-    return not (a.interval_end < b.interval_start or b.interval_end < a.interval_start)
-
-
-def _pack_units(
-    units: List[QuestionUnit],
-    *,
-    max_questions_per_trajectory: int,
-    max_span_chunks: int,
-    pre_context_chunks: int,
-    post_context_chunks: int,
-) -> List[List[QuestionUnit]]:
-    groups: List[List[QuestionUnit]] = []
-    for unit in sorted(units, key=lambda u: (u.interval_start, u.interval_end, u.unit_id)):
-        best_i: Optional[int] = None
-        best_growth: Optional[int] = None
-        for i, group in enumerate(groups):
-            if len(group) >= max_questions_per_trajectory:
-                continue
-            if any(_overlaps(unit, other) for other in group):
-                continue
-            starts = [u.interval_start for u in group] + [unit.interval_start]
-            ends = [max(u.interval_end, u.score_until) for u in group] + [
-                max(unit.interval_end, unit.score_until)
-            ]
-            seg_start = max(0, min(starts) - pre_context_chunks)
-            seg_end = max(ends) + post_context_chunks
-            span = seg_end - seg_start + 1
-            if max_span_chunks > 0 and span > max_span_chunks:
-                continue
-            growth = span - (
-                max(max(u.interval_end, u.score_until) for u in group)
-                - max(0, min(u.interval_start for u in group) - pre_context_chunks)
-                + 1
-            )
-            if best_growth is None or growth < best_growth:
-                best_i = i
-                best_growth = growth
-        if best_i is None:
-            groups.append([unit])
-        else:
-            groups[best_i].append(unit)
-    return groups
-
-
-def _segment_bounds(
-    group: List[QuestionUnit],
-    *,
-    max_span_chunks: int,
-    pre_context_chunks: int,
-    post_context_chunks: int,
-) -> Tuple[int, int, bool]:
-    min_start = min(u.interval_start for u in group)
-    max_end = max(max(u.interval_end, u.score_until) for u in group)
-    start = max(0, min_start - pre_context_chunks)
-    end = max_end + post_context_chunks
-    exceeded = max_span_chunks > 0 and (end - start + 1) > max_span_chunks
-    if exceeded:
-        shifted = max(0, end - max_span_chunks + 1)
-        if shifted <= min_start:
-            start = shifted
-            exceeded = False
-    return start, end, exceeded
-
-
-def _segment_bounds_casia(
-    group: List[QuestionUnit],
-    *,
-    post_context_chunks: int,
-) -> Tuple[int, int, bool]:
-    min_start = min(u.interval_start for u in group)
-    max_end = max(max(u.interval_end, u.score_until) for u in group)
-    return max(0, min_start), max_end + post_context_chunks, False
-
-
-def _segment_bounds_short20_40(
+def _segment_bounds_strict25_45(
     group: List[QuestionUnit],
     *,
     min_span_chunks: int,
@@ -588,6 +370,16 @@ def _segment_bounds_short20_40(
         start = min_start
     if end - start + 1 < min_span_chunks:
         end = start + min_span_chunks - 1
+    starts_on_question = any(
+        int((u.question.get("ask_chunks") or [u.question.get("ask_chunk", -1)])[0]) == start
+        for u in group
+    )
+    if starts_on_question and start > 0:
+        if end - start + 1 < max_span_chunks:
+            start -= 1
+        elif end > max_end:
+            start -= 1
+            end -= 1
     return start, end, False
 
 
@@ -608,13 +400,8 @@ def _trajectory_from_group(
     short_min_span_chunks: int,
     short_max_span_chunks: int,
 ) -> Dict[str, Any]:
-    if split_policy == "casia":
-        segment_start, segment_end, span_exceeded = _segment_bounds_casia(
-            group,
-            post_context_chunks=post_context_chunks,
-        )
-    elif split_policy in {"short20_40", "short20_40_stateful"}:
-        segment_start, segment_end, span_exceeded = _segment_bounds_short20_40(
+    if split_policy in {"strict25_45", "strict25_45_stateful"}:
+        segment_start, segment_end, span_exceeded = _segment_bounds_strict25_45(
             group,
             min_span_chunks=short_min_span_chunks,
             max_span_chunks=short_max_span_chunks,
@@ -662,6 +449,11 @@ def _trajectory_from_group(
             "segment_start_chunk": int(segment_start),
             "segment_end_chunk": int(segment_end),
             "split_policy": split_policy,
+            "benchmark_track": (
+                "strict_window"
+                if split_policy == "strict25_45"
+                else "stateful_multi_emit_reprefill"
+            ),
             "max_span_chunks": int(max_span_chunks),
             "short_min_span_chunks": int(short_min_span_chunks),
             "short_max_span_chunks": int(short_max_span_chunks),
@@ -678,6 +470,11 @@ def _balanced_ranges(start: int, end: int, *, min_span: int, max_span: int) -> L
     max_span = max(min_span, int(max_span))
     if length <= max_span:
         return [(int(start), int(end))]
+
+    # Long benchmark rows are cut into non-overlapping recurrent parts. If the
+    # final tail would be shorter than min_span, merge it into the previous part
+    # instead of creating a too-short re-prefill segment; this can reasonably
+    # produce a part slightly above max_span (e.g. 49s for a 25-45 target).
     n_parts = (length + max_span - 1) // max_span
     while n_parts > 1 and (length / n_parts) < min_span:
         n_parts -= 1
@@ -713,7 +510,8 @@ def _filter_question_for_stateful_segment(
     if not answer_chunks:
         return None
 
-    per_emit = []
+    per_emit_by_chunk: Dict[int, Dict[str, Any]] = {}
+    answer_form = str(q.get("answer_form") or "")
     for item in q.get("per_emit_answers") or []:
         if not isinstance(item, dict):
             continue
@@ -724,11 +522,23 @@ def _filter_question_for_stateful_segment(
         if ck in answer_chunks:
             out = dict(item)
             out["chunk"] = ck
-            per_emit.append(out)
+            if answer_form == "number" and ck in per_emit_by_chunk:
+                try:
+                    prev = int(per_emit_by_chunk[ck].get("value", 0))
+                    cur = int(out.get("value", 0))
+                except (TypeError, ValueError):
+                    cur = 0
+                    prev = 0
+                if cur >= prev:
+                    per_emit_by_chunk[ck] = out
+            else:
+                per_emit_by_chunk[ck] = out
+    per_emit = [per_emit_by_chunk[ck] for ck in sorted(per_emit_by_chunk)]
 
     q_out = dict(q)
-    q_out["ask_chunk"] = int(segment_start)
-    q_out["ask_chunks"] = [int(segment_start)]
+    ask_chunk = int(answer_chunks[0])
+    q_out["ask_chunk"] = ask_chunk
+    q_out["ask_chunks"] = [ask_chunk]
     q_out["answer_chunks"] = answer_chunks
     q_out["per_emit_answers"] = per_emit
     support_chunks: List[int] = []
@@ -758,6 +568,11 @@ def _split_stateful_trajectory(
 ) -> List[Dict[str, Any]]:
     start = int(traj.get("segment_start_chunk", 0))
     end = int(traj.get("segment_end_chunk", start))
+    if end - start + 1 <= max_span_chunks:
+        meta = dict(traj.get("ovo_split_meta") or {})
+        meta["stateful_split"] = False
+        traj["ovo_split_meta"] = meta
+        return [traj]
     ranges = _balanced_ranges(
         start,
         end,
@@ -781,7 +596,17 @@ def _split_stateful_trajectory(
                 continue
 
     parts: List[Dict[str, Any]] = []
+    assigned_answer_chunks_by_card: Dict[str, set[int]] = defaultdict(set)
     for part_i, (seg_start, seg_end) in enumerate(ranges):
+        if seg_start > start:
+            starts_on_answer = any(
+                int(raw) == int(seg_start)
+                for q in parent_questions
+                for raw in (q.get("answer_chunks") or [])
+                if str(raw).lstrip("-").isdigit()
+            )
+            if starts_on_answer and (seg_end - seg_start + 1) < max_span_chunks:
+                seg_start -= 1
         part_questions: List[Dict[str, Any]] = []
         for q in parent_questions:
             q_part = _filter_question_for_stateful_segment(
@@ -792,6 +617,24 @@ def _split_stateful_trajectory(
                 total_parts=len(ranges),
             )
             if q_part is not None:
+                card_key = str(q.get("card_id") or q.get("question") or id(q))
+                assigned = assigned_answer_chunks_by_card[card_key]
+                fresh_answers = [
+                    int(ck) for ck in (q_part.get("answer_chunks") or [])
+                    if int(ck) not in assigned
+                ]
+                if not fresh_answers:
+                    continue
+                fresh_set = set(fresh_answers)
+                q_part["answer_chunks"] = fresh_answers
+                q_part["ask_chunk"] = fresh_answers[0]
+                q_part["ask_chunks"] = [fresh_answers[0]]
+                q_part["open_until"] = max(fresh_answers)
+                q_part["per_emit_answers"] = [
+                    item for item in (q_part.get("per_emit_answers") or [])
+                    if int(item.get("chunk", -1)) in fresh_set
+                ]
+                assigned.update(fresh_answers)
                 part_questions.append(q_part)
 
         gold_action = {}
@@ -815,7 +658,7 @@ def _split_stateful_trajectory(
         }
         part["ovo_split_meta"] = {
             **dict(traj.get("ovo_split_meta") or {}),
-            "split_policy": "short20_40_stateful",
+            "split_policy": "strict25_45_stateful",
             "stateful_split": True,
             "stateful_split_parent_id": base_id,
             "stateful_split_part_index": int(part_i),
@@ -842,7 +685,7 @@ def build_trajectories(
     pre_context_chunks: int = 64,
     post_context_chunks: int = 2,
     pack_across_tasks: bool = False,
-    split_policy: str = "query_span",
+    split_policy: str = "strict25_45",
     short_min_span_chunks: int = 20,
     short_max_span_chunks: int = 40,
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
@@ -856,11 +699,7 @@ def build_trajectories(
         task = str(sample.get("task") or "")
         if tasks and task not in tasks:
             continue
-        units = (
-            _units_for_sample_casia(sample)
-            if split_policy == "casia"
-            else _units_for_sample(sample, scoring=scoring)
-        )
+        units = _units_for_sample(sample, scoring=scoring)
         for unit in units:
             pack_key = "*" if pack_across_tasks else unit.task
             by_bucket[(unit.video_path, pack_key)].append(unit)
@@ -868,22 +707,18 @@ def build_trajectories(
 
     trajectories: List[Dict[str, Any]] = []
     span_exceeded = 0
+    strict_excluded_span_exceeded = 0
     group_counter_by_video: Counter = Counter()
     for video_path, _pack_key in sorted(by_bucket):
         units = by_bucket[(video_path, _pack_key)]
-        if split_policy in {"casia", "short20_40", "short20_40_stateful"}:
-            groups = [[unit] for unit in sorted(
-                units,
-                key=lambda u: (u.interval_start, u.interval_end, u.unit_id),
-            )]
-        else:
-            groups = _pack_units(
-                units,
-                max_questions_per_trajectory=max_questions_per_trajectory,
-                max_span_chunks=max_span_chunks,
-                pre_context_chunks=pre_context_chunks,
-                post_context_chunks=post_context_chunks,
-            )
+        if split_policy in STRICT_BENCHMARK_POLICIES:
+            short_min_span_chunks = 25
+            short_max_span_chunks = 45
+
+        groups = [[unit] for unit in sorted(
+            units,
+            key=lambda u: (u.interval_start, u.interval_end, u.unit_id),
+        )]
         for group in groups:
             group_i = int(group_counter_by_video[video_path])
             group_counter_by_video[video_path] += 1
@@ -898,12 +733,12 @@ def build_trajectories(
                 short_min_span_chunks=short_min_span_chunks,
                 short_max_span_chunks=short_max_span_chunks,
             )
-            if (
-                split_policy != "short20_40_stateful"
-                and (traj.get("ovo_split_meta") or {}).get("span_exceeded_soft_limit")
-            ):
+            if (traj.get("ovo_split_meta") or {}).get("span_exceeded_soft_limit"):
                 span_exceeded += 1
-            if split_policy == "short20_40_stateful":
+                if split_policy == "strict25_45":
+                    strict_excluded_span_exceeded += 1
+                    continue
+            if split_policy == "strict25_45_stateful":
                 split_parts = _split_stateful_trajectory(
                     traj,
                     min_span_chunks=short_min_span_chunks,
@@ -928,6 +763,12 @@ def build_trajectories(
         ),
         default=0,
     )
+    stateful_over_45_rows = sum(
+        1
+        for t in trajectories
+        if int(t.get("segment_end_chunk", 0)) - int(t.get("segment_start_chunk", 0)) + 1
+        > int(short_max_span_chunks)
+    )
     summary = {
         "input_samples": len(samples),
         "videos": len(set(video_path for video_path, _ in by_bucket)),
@@ -941,13 +782,19 @@ def build_trajectories(
         "post_context_chunks": post_context_chunks,
         "pack_across_tasks": bool(pack_across_tasks),
         "split_policy": split_policy,
+        "benchmark_tracks": [
+            "strict25_45",
+            "strict25_45_stateful",
+        ] if split_policy in STRICT_BENCHMARK_POLICIES else [],
         "short_min_span_chunks": int(short_min_span_chunks),
         "short_max_span_chunks": int(short_max_span_chunks),
         "span_exceeded_soft_limit": span_exceeded,
+        "strict_excluded_span_exceeded": strict_excluded_span_exceeded,
         "stateful_context_rows": stateful_context_rows,
         "stateful_scored_rows": len(trajectories) - stateful_context_rows,
         "stateful_split_parent_rows": stateful_split_parents,
         "stateful_max_part_span": stateful_max_part_span,
+        "stateful_over_45_rows": stateful_over_45_rows,
     }
     return trajectories, summary
 
@@ -991,14 +838,12 @@ def main() -> int:
     ap.add_argument("--post-context-chunks", type=int, default=2)
     ap.add_argument(
         "--split-policy",
-        default="query_span",
+        default="strict25_45",
         choices=sorted(SPLIT_POLICIES),
         help=(
-            "query_span=current question-aware packing; casia=match the "
-            "reference OVO video_start/video_end rows; short20_40=one question "
-            "per row with a target 20-40 chunk span unless the question itself "
-            "requires a longer interval; short20_40_stateful=also split long "
-            "intervals into a stateful chain of 20-40 chunk parts."
+            "strict25_45=one question per row in a strict 25-45s window; "
+            "strict25_45_stateful=split long multi-emit questions into "
+            "25-45s scored/context parts for compress and re-prefill evaluation."
         ),
     )
     ap.add_argument("--short-min-span-chunks", type=int, default=20)
@@ -1037,9 +882,9 @@ def main() -> int:
     out_jsonl = Path(args.out_jsonl)
     _write_jsonl(out_jsonl, trajectories)
     if args.out_parquet:
-        if args.split_policy == "short20_40_stateful":
+        if args.split_policy == "strict25_45_stateful":
             raise SystemExit(
-                "short20_40_stateful writes a stateful cut-plan JSONL; "
+                f"{args.split_policy} writes a stateful cut-plan JSONL; "
                 "do not request --out-parquet until the evaluator carries "
                 "student memory/state across split parts."
             )

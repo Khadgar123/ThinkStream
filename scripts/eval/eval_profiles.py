@@ -54,13 +54,11 @@ Compression behaviour (BOTH profiles, since the trigger is SFT-baked):
 
 Recall behaviour (BOTH profiles):
 
-  - Model emits <action>recall</action><query>{"query":"...","time_range":"..."}</query>.
-  - Retriever (BM25 or hybrid) searches the FULL retrieval_archive (raw
-    thinks, never compressed) for top-4 best matches.
-  - Returns historical frames plus metadata-only recall_result
-    (source/time/returned_chunks/status).
-  - Model gets a follow-up turn with <recalled_frames> visual evidence and
-    <recall_result> metadata, then emits its final response.
+  - Model emits a recall <tool_call>{"name":"recall", ...}</tool_call>.
+  - Retriever samples up to 4 chunks uniformly from the requested historical
+    start_time/end_time interval in the raw retrieval_archive.
+  - Returns a Qwen tool-response turn with a short plain status line plus
+    recalled visual evidence, then emits its final response.
 
 When to use which profile:
 

@@ -5,7 +5,7 @@
 # standard Qwen messages corpus:
 #   1. from_start streaming trajectories
 #   2. from_compress streaming trajectories with memory prefill
-#   3. compact_memory_update standalone <MEM> compression trajectories
+#   3. compact_memory_update standalone <m> compression trajectories
 #
 # Usage (production):
 #   bash scripts/sft_trajectory.sh
@@ -62,12 +62,22 @@
 #               - Reweighting strength and clamp.
 #   COMPRESS_TOKEN_WEIGHTING
 #               - False by default. Compress rows use normal assistant-token
-#                 CE so the <MEM> body is trained with the same weight as the
+#                 CE so the compact-memory body is trained with the same weight as the
 #                 surrounding format tokens. Enable only for ablations.
 #   COMPRESS_STRUCTURE_TOKEN_WEIGHT / COMPRESS_BODY_TOKEN_WEIGHT
 #   COMPRESS_CLOSE_TOKEN_WEIGHT / COMPRESS_CLOSE_TAIL_TOKENS
 #               - Ablation-only fine-grained compress token weights. Defaults:
 #                 structure=2.0, body=0.35, close=4.0, close_tail=24.
+#   LOSS_BUCKET_WEIGHTING
+#               - True by default for the current SFT recipe. When True, uses
+#                 the semantic bucket SFT
+#                 loss and ignores the older token/sample reweighting path:
+#                 L = action*L_action + text*L_text. Use False to restore
+#                 ordinary assistant-token CE.
+#   LOSS_BUCKET_ACTION_WEIGHT / LOSS_BUCKET_KEY_WEIGHT
+#   LOSS_BUCKET_TEXT_WEIGHT / LOSS_BUCKET_ANSWER_WEIGHT
+#               - Lambda weights for semantic bucket loss. key/answer are
+#                 legacy no-ops under the current two-bucket mapping.
 #   GROUP_BY_MODALITY
 #               - 1 by default. Keeps text-only compress rows and visual rows
 #                 in separate global batches to avoid ZeRO3 ranks taking
@@ -153,6 +163,11 @@ COMPRESS_STRUCTURE_TOKEN_WEIGHT="${COMPRESS_STRUCTURE_TOKEN_WEIGHT:-2.0}"
 COMPRESS_BODY_TOKEN_WEIGHT="${COMPRESS_BODY_TOKEN_WEIGHT:-0.35}"
 COMPRESS_CLOSE_TOKEN_WEIGHT="${COMPRESS_CLOSE_TOKEN_WEIGHT:-4.0}"
 COMPRESS_CLOSE_TAIL_TOKENS="${COMPRESS_CLOSE_TAIL_TOKENS:-24}"
+LOSS_BUCKET_WEIGHTING="${LOSS_BUCKET_WEIGHTING:-True}"
+LOSS_BUCKET_ACTION_WEIGHT="${LOSS_BUCKET_ACTION_WEIGHT:-1.0}"
+LOSS_BUCKET_KEY_WEIGHT="${LOSS_BUCKET_KEY_WEIGHT:-0.0}"
+LOSS_BUCKET_TEXT_WEIGHT="${LOSS_BUCKET_TEXT_WEIGHT:-1.0}"
+LOSS_BUCKET_ANSWER_WEIGHT="${LOSS_BUCKET_ANSWER_WEIGHT:-0.0}"
 GROUP_BY_MODALITY="${GROUP_BY_MODALITY:-1}"
 export THINKSTREAM_GROUP_BY_MODALITY="${GROUP_BY_MODALITY}"
 export THINKSTREAM_FRAME_PROTOCOL="${FRAME_PROTOCOL}"
@@ -194,6 +209,7 @@ eval_balance_target_ratios=${EVAL_BALANCE_TARGET_RATIOS:-}
 eval_balance_seed=${EVAL_BALANCE_SEED:-0}
 lr=${LR:-2e-5}; epochs=${EPOCHS:-2}
 run_name="${RUN_NAME:-agent-trajectory-sft-v12.26-${FRAME_PROTOCOL}}"
+load_best_model_at_end=${LOAD_BEST_MODEL_AT_END:-True}
 
 extra_args="--eval_dataset_use ${eval_datasets} \
     --eval_strategy steps \
@@ -202,7 +218,7 @@ extra_args="--eval_dataset_use ${eval_datasets} \
     --save_strategy steps \
     --save_steps ${EVAL_STEPS:-50} \
     --save_total_limit ${SAVE_LIMIT:-0} \
-    --load_best_model_at_end True \
+    --load_best_model_at_end ${load_best_model_at_end} \
     --metric_for_best_model eval_loss \
     --greater_is_better False"
 if [[ "${eval_n}" != "0" ]]; then
@@ -230,6 +246,11 @@ extra_args="${extra_args} --compress_structure_token_weight ${COMPRESS_STRUCTURE
 extra_args="${extra_args} --compress_body_token_weight ${COMPRESS_BODY_TOKEN_WEIGHT}"
 extra_args="${extra_args} --compress_close_token_weight ${COMPRESS_CLOSE_TOKEN_WEIGHT}"
 extra_args="${extra_args} --compress_close_tail_tokens ${COMPRESS_CLOSE_TAIL_TOKENS}"
+extra_args="${extra_args} --loss_bucket_weighting ${LOSS_BUCKET_WEIGHTING}"
+extra_args="${extra_args} --loss_bucket_action_weight ${LOSS_BUCKET_ACTION_WEIGHT}"
+extra_args="${extra_args} --loss_bucket_key_weight ${LOSS_BUCKET_KEY_WEIGHT}"
+extra_args="${extra_args} --loss_bucket_text_weight ${LOSS_BUCKET_TEXT_WEIGHT}"
+extra_args="${extra_args} --loss_bucket_answer_weight ${LOSS_BUCKET_ANSWER_WEIGHT}"
 if [[ "${TORCH_EMPTY_CACHE_STEPS}" =~ ^[1-9][0-9]*$ ]]; then
     extra_args="${extra_args} --torch_empty_cache_steps ${TORCH_EMPTY_CACHE_STEPS}"
 fi
@@ -252,6 +273,7 @@ echo "Action class loss mode: ${ACTION_CLASS_LOSS_MODE}"
 echo "Eval balance strategy: ${EVAL_BALANCE_STRATEGY:-none}"
 echo "Eval balance target ratios: ${EVAL_BALANCE_TARGET_RATIOS:-equal-present}"
 echo "Compress token weighting: ${COMPRESS_TOKEN_WEIGHTING} (structure=${COMPRESS_STRUCTURE_TOKEN_WEIGHT} body=${COMPRESS_BODY_TOKEN_WEIGHT} close=${COMPRESS_CLOSE_TOKEN_WEIGHT} tail=${COMPRESS_CLOSE_TAIL_TOKENS}; ignored unless enabled)"
+echo "Loss bucket weighting: ${LOSS_BUCKET_WEIGHTING} (action=${LOSS_BUCKET_ACTION_WEIGHT} text=${LOSS_BUCKET_TEXT_WEIGHT}; key=${LOSS_BUCKET_KEY_WEIGHT} answer=${LOSS_BUCKET_ANSWER_WEIGHT} legacy no-ops; ignores old weighting path when enabled)"
 echo "Group by modality: ${GROUP_BY_MODALITY}"
 echo "Attention: ${THINKSTREAM_ATTN_IMPLEMENTATION}"
 echo "Vision attention: ${THINKSTREAM_VISION_ATTN_IMPLEMENTATION}"
@@ -259,6 +281,7 @@ echo "Image pixels: ${IMAGE_MIN_PIXELS:-default} .. ${IMAGE_MAX_PIXELS:-default}
 echo "Video pixels: ${VIDEO_MIN_PIXELS} .. ${VIDEO_MAX_PIXELS}"
 echo "LR:       ${lr}"
 echo "Epochs:   ${epochs}"
+echo "Load best at end: ${load_best_model_at_end}"
 echo "Output:   ${output_dir}"
 echo "GPUs:     ${NPROC}"
 echo "Batch:    ${BSZ} × ${GRAD_ACCUM} accum"

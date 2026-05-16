@@ -56,6 +56,7 @@ def left_right_2_no_padding(data: TensorDict) -> TensorDict:
     input_ids_nested = torch.nested.nested_tensor_from_jagged(input_ids_rmpad.squeeze(-1), offsets=cu_seqlens)
 
     position_ids_list = []
+    position_ids_lengths = []
     for i in range(attention_mask.shape[0]):
         curr_mask = attention_mask[i].bool()
         curr_pos_ids = position_ids[i]
@@ -64,7 +65,25 @@ def left_right_2_no_padding(data: TensorDict) -> TensorDict:
         else:  # (4, seq_len)
             valid_ids = curr_pos_ids[:, curr_mask]
         position_ids_list.append(valid_ids)
-    position_ids_nested = torch.nested.as_nested_tensor(position_ids_list, layout=torch.jagged)
+        position_ids_lengths.append(valid_ids.shape[-1])
+    if position_ids_list and position_ids_list[0].dim() == 2:
+        position_ids_offsets = torch.zeros(
+            len(position_ids_lengths) + 1,
+            dtype=cu_seqlens.dtype,
+            device=cu_seqlens.device,
+        )
+        position_ids_offsets[1:] = torch.tensor(
+            position_ids_lengths,
+            dtype=cu_seqlens.dtype,
+            device=cu_seqlens.device,
+        ).cumsum(0)
+        position_ids_nested = torch.nested.nested_tensor_from_jagged(
+            torch.cat(position_ids_list, dim=1),
+            offsets=position_ids_offsets,
+            jagged_dim=2,
+        )
+    else:
+        position_ids_nested = torch.nested.as_nested_tensor(position_ids_list, layout=torch.jagged)
 
     data["input_ids"] = input_ids_nested
     data["position_ids"] = position_ids_nested

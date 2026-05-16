@@ -25,8 +25,15 @@ from ..config import AGENT_CHUNK_SEC, COMPRESS_HYSTERESIS_THRESHOLD
 from ..stable_hash import stable_seed
 from .cards import generate_cards
 from .design import (
-    PATROL_KEEP_RATE_EMPTY,
-    PATROL_KEEP_RATE_RICH,
+    _card_evidence_type,
+    _card_question_way,
+    _card_task_subtype,
+    _chunk_position_bin,
+    _placement_answer_mode,
+    _placement_message_cost,
+    _placement_response_bin,
+    _placement_response_source,
+    _placement_timing_bucket,
     adaptive_q_count,
     assign_recall_noise,
     place_card,
@@ -37,13 +44,6 @@ from .design import (
 )
 from .llm_prompts import family_taxonomy
 from .simulate import load_evidence, num_chunks_from
-
-
-SFT_SILENT_TO_ACTIVE_RATIO = 0.90
-SFT_PENDING_SILENT_FRACTION = 0.55
-SFT_POST_ANSWER_SILENT_FRACTION = 0.25
-SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO = 0.35
-MULTI_EMIT_FAMILIES = {"F5", "F7", "CRR1", "PN1"}
 
 
 def _parse_batches(raw: str) -> List[str]:
@@ -116,88 +116,12 @@ def _pct(counter: Counter) -> Dict[str, float]:
     }
 
 
-def _sft_balance_estimate(
-    *,
-    recall_rows: int,
-    compress_rows: int,
-    ordinary_response: int,
-    multi_emit_response: int,
-    silent_roles: Counter,
-) -> Dict[str, Any]:
-    """Mirror pass5 SFT balancing at count level for fast simulation."""
-    multi_keep = min(
-        int(multi_emit_response),
-        max(1, int(ordinary_response * SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO)),
-    ) if multi_emit_response else 0
-    active = int(recall_rows) + int(compress_rows) + int(ordinary_response) + multi_keep
-    pending = int(silent_roles.get("pending_question", 0))
-    post = int(silent_roles.get("post_answer", 0))
-    base = int(silent_roles.get("no_question", 0))
-    silent_total = pending + post + base
-    if not active:
-        return {
-            "before_total": active + silent_total,
-            "after_total": active + silent_total,
-            "after_action": {
-                "silent": silent_total,
-                "response": ordinary_response + multi_emit_response,
-                "recall": recall_rows,
-                "compress": compress_rows,
-            },
-        }
-
-    target_silent = min(silent_total, max(1, int(active * SFT_SILENT_TO_ACTIVE_RATIO)))
-    keep_pending = min(pending, int(target_silent * SFT_PENDING_SILENT_FRACTION))
-    keep_post = min(post, int(target_silent * SFT_POST_ANSWER_SILENT_FRACTION))
-    remaining = target_silent - keep_pending - keep_post
-    keep_base = min(base, max(0, remaining))
-    remaining -= keep_base
-    if remaining > 0:
-        extra_pending = min(pending - keep_pending, remaining)
-        keep_pending += extra_pending
-        remaining -= extra_pending
-    if remaining > 0:
-        extra_post = min(post - keep_post, remaining)
-        keep_post += extra_post
-        remaining -= extra_post
-    if remaining > 0:
-        keep_base += min(base - keep_base, remaining)
-
-    after_silent = keep_pending + keep_post + keep_base
-    after_action = Counter({
-        "silent": after_silent,
-        "response": ordinary_response + multi_keep,
-        "recall": recall_rows,
-        "compress": compress_rows,
-    })
-    before_action = Counter({
-        "silent": silent_total,
-        "response": ordinary_response + multi_emit_response,
-        "recall": recall_rows,
-        "compress": compress_rows,
-    })
-    return {
-        "before_total": int(sum(before_action.values())),
-        "after_total": int(sum(after_action.values())),
-        "before_action": _json_counter(before_action),
-        "before_action_pct": _pct(before_action),
-        "after_action": _json_counter(after_action),
-        "after_action_pct": _pct(after_action),
-        "active_kept": int(active),
-        "ordinary_response_kept": int(ordinary_response),
-        "multi_emit_response_before": int(multi_emit_response),
-        "multi_emit_response_kept": int(multi_keep),
-        "recall_kept": int(recall_rows),
-        "compress_kept": int(compress_rows),
-        "silent_before": int(silent_total),
-        "silent_kept": int(after_silent),
-        "pending_silent_before": int(pending),
-        "post_answer_silent_before": int(post),
-        "base_silent_before": int(base),
-        "pending_silent_kept": int(keep_pending),
-        "post_answer_silent_kept": int(keep_post),
-        "base_silent_kept": int(keep_base),
-    }
+def _length_bucket(num_chunks: int) -> str:
+    if int(num_chunks) < 64:
+        return "short"
+    if int(num_chunks) < 180:
+        return "mid"
+    return "long"
 
 
 def _is_rich_by_chunk(evidence: List[Dict]) -> Dict[int, bool]:
@@ -246,10 +170,10 @@ def _time_range_chunks(time_range: object) -> List[int]:
         start_s, end_s = float(time_range[0]), float(time_range[1])
     except (TypeError, ValueError):
         return []
-    if end_s <= start_s:
+    if end_s < start_s:
         return []
     start_chunk = int(start_s / float(AGENT_CHUNK_SEC))
-    end_chunk = int((end_s - 1e-6) / float(AGENT_CHUNK_SEC))
+    end_chunk = int(end_s / float(AGENT_CHUNK_SEC))
     return list(range(start_chunk, end_chunk + 1))
 
 
@@ -403,24 +327,22 @@ def _recall_audit(
     rollout: Dict[str, Any],
 ) -> Dict[str, Any]:
     # Import the pass3c production helpers here so the simulator audits the
-    # exact deterministic query/recall path without paying this import cost
+    # exact deterministic time-range recall path without paying this import cost
     # when rollout auditing is disabled.
     from ..pass3a_cards import _card_to_dict
     from ..pass3c_samples import (
-        RECALL_RETURN_CHUNKS,
         _current_context_text_for_chunk,
         _memory_text_for_chunk,
         _needs_recall_hardening,
+        _recall_chunks_for_request,
         _recall_query_available,
         _recall_query_for,
-        _recall_query_leaks_answer,
         _recall_result_for,
         _recall_wait_query_for,
         _repair_recall_query_for_response,
         _support_chunks_before,
         _valid_recall_query,
-        bm25_retrieve,
-        select_recall_chunks,
+        select_recall_chunks_uniform,
     )
 
     counters = Counter()
@@ -429,7 +351,7 @@ def _recall_audit(
     by_family = Counter()
     reasons = Counter()
     returned_counts: List[int] = []
-    bm25_raw_counts: List[int] = []
+    time_range_raw_counts: List[int] = []
     support_hit = 0
     support_miss = 0
     future_leak = 0
@@ -477,17 +399,12 @@ def _recall_audit(
             if not legal_query:
                 invalid_query += 1
                 continue
-            if _recall_query_leaks_answer(card, rq):
-                counters["recall_query_answer_leak"] += 1
-
-            archive = _archive_before(rollout, c)
-            retrieved = bm25_retrieve(rq, archive, max_results=RECALL_RETURN_CHUNKS)
-            raw_chunks = select_recall_chunks(retrieved.get("returned_chunks") or [])
-            bm25_raw_counts.append(len(raw_chunks))
+            raw_chunks = select_recall_chunks_uniform(_recall_chunks_for_request(rollout, rq, c))
+            time_range_raw_counts.append(len(raw_chunks))
             if raw_chunks:
-                counters["bm25_raw_nonempty"] += 1
+                counters["time_range_raw_nonempty"] += 1
             else:
-                counters["bm25_raw_empty"] += 1
+                counters["time_range_raw_empty"] += 1
 
             rr = _recall_result_for(
                 card,
@@ -507,7 +424,7 @@ def _recall_audit(
             if chunks and max(chunks) >= c:
                 future_leak += 1
             if raw_chunks and chunks != raw_chunks:
-                counters["bm25_adjusted_by_support_or_noise"] += 1
+                counters["time_range_adjusted_by_noise"] += 1
             elif not raw_chunks and chunks:
                 counters["fallback_filled_history_frames"] += 1
 
@@ -526,7 +443,7 @@ def _recall_audit(
         "recall_audit_by_family": dict(by_family),
         "recall_audit_reason": dict(reasons),
         "recall_returned_chunk_counts": returned_counts,
-        "recall_bm25_raw_chunk_counts": bm25_raw_counts,
+        "recall_time_range_raw_chunk_counts": time_range_raw_counts,
         "recall_support_hit": support_hit,
         "recall_support_miss": support_miss,
         "recall_future_leak": future_leak,
@@ -589,9 +506,21 @@ def _simulate_one(path_s: str, seed: int, audit_rollout: bool = True) -> Dict[st
     wait_phase = Counter()
     wait_phase_by_mechanism = Counter()
     sample_kind_by_mechanism = Counter()
-    sft_after_action = Counter()
-    sft_after_silent_role = Counter()
     mechanism = Counter()
+    timing_bucket = Counter()
+    question_style = Counter()
+    question_way = Counter()
+    evidence_type = Counter()
+    task_subtype = Counter()
+    family_source = Counter()
+    task_subtype_source = Counter()
+    question_way_source = Counter()
+    answer_mode = Counter()
+    task_mode = Counter()
+    ask_bin = Counter()
+    response_bin = Counter()
+    response_rows_by_source = Counter()
+    response_rows_by_task_source = Counter()
     family = Counter()
     answer_form = Counter()
     question_type = Counter()
@@ -608,6 +537,14 @@ def _simulate_one(path_s: str, seed: int, audit_rollout: bool = True) -> Dict[st
     wait_not_yet_per_forward: List[int] = []
     f5_recall_per_q: List[int] = []
     status_recall_per_q: List[int] = []
+    multi_response_counts: List[int] = []
+    multi_response_counts_by_family: Dict[str, List[int]] = {}
+    multi_answer_gaps: List[int] = []
+    multi_answer_spans: List[int] = []
+    multi_ask_to_first: List[int] = []
+    multi_answer_gaps_by_family: Dict[str, List[int]] = {}
+    future_ask_to_answer: List[int] = []
+    future_active_spans: List[int] = []
     q_with_recall = 0
     multi_recall_q = 0
     forward_recall_q = 0
@@ -615,7 +552,41 @@ def _simulate_one(path_s: str, seed: int, audit_rollout: bool = True) -> Dict[st
     for p in selected:
         card = cards_by_id[p.card_id]
         mechanism[p.mechanism] += 1
+        source = _placement_response_source(p, card)
+        cost = _placement_message_cost(p, card)
+        subtype = _card_task_subtype(card)
+        way = _card_question_way(card)
+        mode = _placement_answer_mode(p, card)
+        timing_bucket[_placement_timing_bucket(p, card)] += 1
+        question_style[str(getattr(card, "question_style", "") or "benchmark_core")] += 1
+        question_way[way] += 1
+        evidence_type[_card_evidence_type(card)] += 1
+        task_subtype[subtype] += 1
+        answer_mode[mode] += 1
+        task_mode[f"{subtype}|{mode}"] += 1
+        ask_bin[str(_chunk_position_bin(int(p.ask_chunk), num_chunks))] += 1
+        rb = _placement_response_bin(p, num_chunks)
+        if rb is not None:
+            response_bin[str(rb)] += 1
         family[card.family] += 1
+        family_source[f"{card.family}|{source}"] += 1
+        task_subtype_source[f"{subtype}|{source}"] += 1
+        question_way_source[f"{way}|{source}"] += 1
+        response_rows_by_source["direct"] += cost.direct_response_rows
+        response_rows_by_source["recall"] += cost.recall_response_rows
+        response_rows_by_source["hld_recall"] += cost.hld_recall_response_rows
+        response_rows_by_source["future"] += cost.future_response_rows
+        response_rows_by_source["multi"] += cost.multi_response_rows
+        if cost.direct_response_rows:
+            response_rows_by_task_source[f"{subtype}|direct"] += cost.direct_response_rows
+        if cost.recall_response_rows:
+            response_rows_by_task_source[f"{subtype}|recall"] += cost.recall_response_rows
+        if cost.hld_recall_response_rows:
+            response_rows_by_task_source[f"{subtype}|hld_recall"] += cost.hld_recall_response_rows
+        if cost.future_response_rows:
+            response_rows_by_task_source[f"{subtype}|future"] += cost.future_response_rows
+        if cost.multi_response_rows:
+            response_rows_by_task_source[f"{subtype}|multi"] += cost.multi_response_rows
         answer_form[card.answer_form] += 1
         question_type[card.question_type] += 1
         category[family_taxonomy(card.family).get("category", "Unknown")] += 1
@@ -653,6 +624,21 @@ def _simulate_one(path_s: str, seed: int, audit_rollout: bool = True) -> Dict[st
             elif p.mechanism == "multi_emit":
                 if int(p.ask_chunk) > first_response:
                     ask_answer["multi_emit_ask_after_first_answer"] += 1
+        if p.mechanism == "multi_emit":
+            multi_response_counts.append(len(response_chunks))
+            multi_response_counts_by_family.setdefault(card.family, []).append(len(response_chunks))
+            if response_chunks:
+                gaps = [
+                    response_chunks[i + 1] - response_chunks[i]
+                    for i in range(len(response_chunks) - 1)
+                ]
+                multi_answer_gaps.extend(gaps)
+                multi_answer_gaps_by_family.setdefault(card.family, []).extend(gaps)
+                multi_answer_spans.append(max(response_chunks) - min(response_chunks) + 1)
+                multi_ask_to_first.append(min(response_chunks) - int(p.ask_chunk))
+        if source == "future" and response_chunks:
+            future_ask_to_answer.append(min(response_chunks) - int(p.ask_chunk))
+            future_active_spans.append(max(response_chunks) - int(p.ask_chunk) + 1)
 
         if card.question_type == "single_emit":
             try:
@@ -716,10 +702,6 @@ def _simulate_one(path_s: str, seed: int, audit_rollout: bool = True) -> Dict[st
     query_status: Dict[str, str] = {}
     query_answers: Dict[str, int] = {}
     asked_cards: set[str] = set()
-    ordinary_response_rows = 0
-    multi_emit_response_rows = 0
-    recall_rows_for_sft = 0
-    compress_rows_for_sft = 0
 
     def add_open_queries(chunk: int) -> None:
         for p in placements_sorted:
@@ -751,7 +733,6 @@ def _simulate_one(path_s: str, seed: int, audit_rollout: bool = True) -> Dict[st
         c = int(ds.chunk_idx)
         add_open_queries(c)
         kind = str(ds.sample_kind)
-        card = cards_by_id.get(ds.card_id) if ds.card_id else None
         sample_kind_by_mechanism[f"{ds.mechanism}|{kind}"] += 1
         if kind in {"silent", "patrol"}:
             raw_action["silent"] += 1
@@ -765,24 +746,12 @@ def _simulate_one(path_s: str, seed: int, audit_rollout: bool = True) -> Dict[st
             wait_phase_by_mechanism[f"{ds.mechanism}|{phase}"] += 1
         elif kind == "compress_silent":
             raw_action["compress"] += 1
-            compress_rows_for_sft += 1
         elif kind == "response":
             raw_action["response"] += 1
-            is_multi = (
-                ds.mechanism == "multi_emit"
-                or (card and card.question_type == "multi_emit")
-                or (card and card.family in MULTI_EMIT_FAMILIES)
-            )
-            if is_multi:
-                multi_emit_response_rows += 1
-            else:
-                ordinary_response_rows += 1
         elif kind == "recall+response":
             raw_action["recall_response"] += 1
-            recall_rows_for_sft += 1
         elif kind == "recall+silent":
             raw_action["recall_silent"] += 1
-            recall_rows_for_sft += 1
             phase = phase_for_wait(ds)
             wait_phase[f"recall_silent:{phase}"] += 1
             wait_phase_by_mechanism[f"{ds.mechanism}|recall_silent:{phase}"] += 1
@@ -794,32 +763,32 @@ def _simulate_one(path_s: str, seed: int, audit_rollout: bool = True) -> Dict[st
             else:
                 query_status[ds.card_id] = "open"
 
-    sft_estimate = _sft_balance_estimate(
-        recall_rows=recall_rows_for_sft,
-        compress_rows=compress_rows_for_sft,
-        ordinary_response=ordinary_response_rows,
-        multi_emit_response=multi_emit_response_rows,
-        silent_roles=silent_role,
-    )
-    sft_after_action.update(sft_estimate.get("after_action") or {})
-    sft_after_silent_role.update({
-        "pending_question": int(sft_estimate.get("pending_silent_kept", 0)),
-        "post_answer": int(sft_estimate.get("post_answer_silent_kept", 0)),
-        "no_question": int(sft_estimate.get("base_silent_kept", 0)),
-    })
-
     ask_chunks = sorted(int(p.ask_chunk) for p in selected)
     intervals = [
         ask_chunks[i + 1] - ask_chunks[i] for i in range(len(ask_chunks) - 1)
     ]
+    total_rows = sum(sample.values())
+    total_response_rows = sample.get("response", 0) + sample.get("recall+response", 0)
     out = {
         "videos": 1,
+        "num_chunks": int(num_chunks),
+        "row_count": int(total_rows),
+        "response_row_count": int(total_response_rows),
+        "length_bucket": _length_bucket(num_chunks),
         "q_counts": [len(selected)],
         "q_intervals": intervals,
         "first_waits": first_waits,
         "wait_not_yet_per_forward": wait_not_yet_per_forward,
         "f5_recall_per_q": f5_recall_per_q,
         "status_recall_per_q": status_recall_per_q,
+        "multi_response_counts": multi_response_counts,
+        "multi_response_counts_by_family": multi_response_counts_by_family,
+        "multi_answer_gaps": multi_answer_gaps,
+        "multi_answer_spans": multi_answer_spans,
+        "multi_ask_to_first": multi_ask_to_first,
+        "multi_answer_gaps_by_family": multi_answer_gaps_by_family,
+        "future_ask_to_answer": future_ask_to_answer,
+        "future_active_spans": future_active_spans,
         "placements_total": len(selected),
         "questions_with_recall": q_with_recall,
         "multi_recall_questions": multi_recall_q,
@@ -830,10 +799,21 @@ def _simulate_one(path_s: str, seed: int, audit_rollout: bool = True) -> Dict[st
         "wait_phase": dict(wait_phase),
         "wait_phase_by_mechanism": dict(wait_phase_by_mechanism),
         "sample_kind_by_mechanism": dict(sample_kind_by_mechanism),
-        "sft_after_action": dict(sft_after_action),
-        "sft_after_silent_role": dict(sft_after_silent_role),
-        "sft_estimate": sft_estimate,
         "mechanism": dict(mechanism),
+        "timing_bucket": dict(timing_bucket),
+        "question_style": dict(question_style),
+        "question_way": dict(question_way),
+        "evidence_type": dict(evidence_type),
+        "task_subtype": dict(task_subtype),
+        "family_source": dict(family_source),
+        "task_subtype_source": dict(task_subtype_source),
+        "question_way_source": dict(question_way_source),
+        "answer_mode": dict(answer_mode),
+        "task_mode": dict(task_mode),
+        "ask_bin": dict(ask_bin),
+        "response_bin": dict(response_bin),
+        "response_rows_by_source": dict(response_rows_by_source),
+        "response_rows_by_task_source": dict(response_rows_by_task_source),
         "family": dict(family),
         "answer_form": dict(answer_form),
         "question_type": dict(question_type),
@@ -865,9 +845,21 @@ def _merge(results: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     wait_phase = Counter()
     wait_phase_by_mechanism = Counter()
     sample_kind_by_mechanism = Counter()
-    sft_after_action = Counter()
-    sft_after_silent_role = Counter()
     mechanism = Counter()
+    timing_bucket = Counter()
+    question_style = Counter()
+    question_way = Counter()
+    evidence_type = Counter()
+    task_subtype = Counter()
+    family_source = Counter()
+    task_subtype_source = Counter()
+    question_way_source = Counter()
+    answer_mode = Counter()
+    task_mode = Counter()
+    ask_bin = Counter()
+    response_bin = Counter()
+    response_rows_by_source = Counter()
+    response_rows_by_task_source = Counter()
     family = Counter()
     answer_form = Counter()
     question_type = Counter()
@@ -886,19 +878,30 @@ def _merge(results: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     timing = Counter()
     ask_answer = Counter()
     compression_violations = Counter()
+    length_bucket_videos = Counter()
+    length_bucket_rows = Counter()
+    length_bucket_response_rows = Counter()
     q_counts: List[float] = []
     q_intervals: List[float] = []
     first_waits: List[float] = []
     wait_not_yet: List[float] = []
     f5_recall: List[float] = []
     status_recall: List[float] = []
+    multi_response_counts: List[float] = []
+    multi_response_counts_by_family: Dict[str, List[float]] = {}
+    multi_answer_gaps: List[float] = []
+    multi_answer_spans: List[float] = []
+    multi_ask_to_first: List[float] = []
+    multi_answer_gaps_by_family: Dict[str, List[float]] = {}
+    future_ask_to_answer: List[float] = []
+    future_active_spans: List[float] = []
     comp_range_sizes: List[float] = []
     comp_duration_chunks: List[float] = []
     comp_trigger_lag_chunks: List[float] = []
     comp_post_tokens: List[float] = []
     comp_summary_words: List[float] = []
     recall_returned_counts: List[float] = []
-    recall_bm25_raw_counts: List[float] = []
+    recall_time_range_raw_counts: List[float] = []
     videos = placements_total = q_with_recall = 0
     multi_recall_q = forward_recall_q = overlap = 0
     rollout_present = rollout_missing = 0
@@ -911,6 +914,10 @@ def _merge(results: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
 
     for r in results:
         videos += int(r.get("videos", 0))
+        bucket = str(r.get("length_bucket") or _length_bucket(int(r.get("num_chunks", 0) or 0)))
+        length_bucket_videos[bucket] += int(r.get("videos", 0))
+        length_bucket_rows[bucket] += int(r.get("row_count", 0))
+        length_bucket_response_rows[bucket] += int(r.get("response_row_count", 0))
         placements_total += int(r.get("placements_total", 0))
         q_with_recall += int(r.get("questions_with_recall", 0))
         multi_recall_q += int(r.get("multi_recall_questions", 0))
@@ -922,22 +929,44 @@ def _merge(results: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
         wait_not_yet.extend(r.get("wait_not_yet_per_forward") or [])
         f5_recall.extend(r.get("f5_recall_per_q") or [])
         status_recall.extend(r.get("status_recall_per_q") or [])
+        multi_response_counts.extend(r.get("multi_response_counts") or [])
+        for family_name, counts in (r.get("multi_response_counts_by_family") or {}).items():
+            multi_response_counts_by_family.setdefault(str(family_name), []).extend(counts or [])
+        multi_answer_gaps.extend(r.get("multi_answer_gaps") or [])
+        multi_answer_spans.extend(r.get("multi_answer_spans") or [])
+        multi_ask_to_first.extend(r.get("multi_ask_to_first") or [])
+        for family_name, gaps in (r.get("multi_answer_gaps_by_family") or {}).items():
+            multi_answer_gaps_by_family.setdefault(str(family_name), []).extend(gaps or [])
+        future_ask_to_answer.extend(r.get("future_ask_to_answer") or [])
+        future_active_spans.extend(r.get("future_active_spans") or [])
         comp_range_sizes.extend(r.get("compression_range_sizes") or [])
         comp_duration_chunks.extend(r.get("compression_duration_chunks") or [])
         comp_trigger_lag_chunks.extend(r.get("compression_trigger_lag_chunks") or [])
         comp_post_tokens.extend(r.get("compression_post_tokens") or [])
         comp_summary_words.extend(r.get("compression_summary_words") or [])
         recall_returned_counts.extend(r.get("recall_returned_chunk_counts") or [])
-        recall_bm25_raw_counts.extend(r.get("recall_bm25_raw_chunk_counts") or [])
+        recall_time_range_raw_counts.extend(r.get("recall_time_range_raw_chunk_counts") or [])
         sample.update(r.get("sample") or {})
         raw_action.update(r.get("raw_action") or {})
         silent_role.update(r.get("silent_role") or {})
         wait_phase.update(r.get("wait_phase") or {})
         wait_phase_by_mechanism.update(r.get("wait_phase_by_mechanism") or {})
         sample_kind_by_mechanism.update(r.get("sample_kind_by_mechanism") or {})
-        sft_after_action.update(r.get("sft_after_action") or {})
-        sft_after_silent_role.update(r.get("sft_after_silent_role") or {})
         mechanism.update(r.get("mechanism") or {})
+        timing_bucket.update(r.get("timing_bucket") or {})
+        question_style.update(r.get("question_style") or {})
+        question_way.update(r.get("question_way") or {})
+        evidence_type.update(r.get("evidence_type") or {})
+        task_subtype.update(r.get("task_subtype") or {})
+        family_source.update(r.get("family_source") or {})
+        task_subtype_source.update(r.get("task_subtype_source") or {})
+        question_way_source.update(r.get("question_way_source") or {})
+        answer_mode.update(r.get("answer_mode") or {})
+        task_mode.update(r.get("task_mode") or {})
+        ask_bin.update(r.get("ask_bin") or {})
+        response_bin.update(r.get("response_bin") or {})
+        response_rows_by_source.update(r.get("response_rows_by_source") or {})
+        response_rows_by_task_source.update(r.get("response_rows_by_task_source") or {})
         family.update(r.get("family") or {})
         answer_form.update(r.get("answer_form") or {})
         question_type.update(r.get("question_type") or {})
@@ -975,6 +1004,27 @@ def _merge(results: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     rows = sum(sample.values())
     responses = sample.get("response", 0) + sample.get("recall+response", 0)
     recall_rows = sum(recall_kind.values())
+    raw_direct_answer_rows = int(sample.get("response", 0))
+    raw_recall_answer_rows = int(sample.get("recall+response", 0))
+    raw_answer_rows = raw_direct_answer_rows + raw_recall_answer_rows
+    normalized_response_source = Counter(response_rows_by_source)
+    if normalized_response_source.get("hld_recall"):
+        normalized_response_source["recall"] += normalized_response_source.pop("hld_recall")
+    response_by_length = {
+        bucket: {
+            "videos": int(length_bucket_videos.get(bucket, 0)),
+            "rows": int(length_bucket_rows.get(bucket, 0)),
+            "response_rows": int(length_bucket_response_rows.get(bucket, 0)),
+            "response_pct": round(
+                length_bucket_response_rows.get(bucket, 0)
+                / max(length_bucket_rows.get(bucket, 0), 1)
+                * 100.0,
+                2,
+            ),
+        }
+        for bucket in ("short", "mid", "long")
+        if length_bucket_videos.get(bucket, 0)
+    }
     return {
         "videos": videos,
         "questions_per_trajectory": _stats(q_counts),
@@ -985,6 +1035,33 @@ def _merge(results: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
             k: round(v / max(placements_total, 1) * 100, 2)
             for k, v in mechanism.items()
         },
+        "timing_bucket": _json_counter(timing_bucket),
+        "timing_bucket_pct": _pct(timing_bucket),
+        "question_style": _json_counter(question_style),
+        "question_style_pct": _pct(question_style),
+        "question_way": _json_counter(question_way),
+        "question_way_pct": _pct(question_way),
+        "evidence_type": _json_counter(evidence_type),
+        "evidence_type_pct": _pct(evidence_type),
+        "task_subtype": _json_counter(task_subtype),
+        "task_subtype_pct": _pct(task_subtype),
+        "question_source_by_family": _json_counter(family_source),
+        "question_source_by_task_subtype": _json_counter(task_subtype_source),
+        "question_source_by_question_way": _json_counter(question_way_source),
+        "answer_mode": _json_counter(answer_mode),
+        "answer_mode_pct": _pct(answer_mode),
+        "task_answer_mode": _json_counter(task_mode),
+        "task_answer_mode_pct": _pct(task_mode),
+        "ask_position_bin": _json_counter(ask_bin),
+        "ask_position_bin_pct": _pct(ask_bin),
+        "response_position_bin": _json_counter(response_bin),
+        "response_position_bin_pct": _pct(response_bin),
+        "response_rows_by_source": _json_counter(response_rows_by_source),
+        "response_rows_by_source_pct": _pct(response_rows_by_source),
+        "response_rows_by_source_normalized": _json_counter(normalized_response_source),
+        "response_rows_by_source_normalized_pct": _pct(normalized_response_source),
+        "response_rows_by_task_source": _json_counter(response_rows_by_task_source),
+        "response_rows_by_task_source_pct": _pct(response_rows_by_task_source),
         "selected_family": _json_counter(family),
         "selected_family_pct": _pct(family),
         "selected_answer_form": _json_counter(answer_form),
@@ -996,19 +1073,38 @@ def _merge(results: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
         "selected_family_mechanism_top": _json_counter(family_mechanism),
         "sample_kind": _json_counter(sample),
         "sample_kind_pct": _pct(sample),
-        "raw_single_step_action": _json_counter(raw_action),
-        "raw_single_step_action_pct": _pct(raw_action),
+        "raw_sample_action": _json_counter(raw_action),
+        "raw_sample_action_pct": _pct(raw_action),
         "raw_silent_role": _json_counter(silent_role),
         "raw_silent_role_pct": _pct(silent_role),
         "raw_wait_phase": _json_counter(wait_phase),
         "raw_wait_phase_pct": _pct(wait_phase),
         "raw_wait_phase_by_mechanism": _json_counter(wait_phase_by_mechanism),
         "sample_kind_by_mechanism": _json_counter(sample_kind_by_mechanism),
-        "sft_balanced_action_estimate": _json_counter(sft_after_action),
-        "sft_balanced_action_estimate_pct": _pct(sft_after_action),
-        "sft_balanced_silent_role_estimate": _json_counter(sft_after_silent_role),
-        "sft_balanced_silent_role_estimate_pct": _pct(sft_after_silent_role),
+        "answer_rows_direct_vs_recall_raw": {
+            "direct_answer_rows": raw_direct_answer_rows,
+            "recall_after_answer_rows": raw_recall_answer_rows,
+            "total_answer_rows": raw_answer_rows,
+            "direct_answer_pct": round(
+                raw_direct_answer_rows / max(raw_answer_rows, 1) * 100, 2
+            ),
+            "recall_after_answer_pct": round(
+                raw_recall_answer_rows / max(raw_answer_rows, 1) * 100, 2
+            ),
+        },
+        "questions_direct_vs_recall": {
+            "direct_or_no_recall_questions": int(placements_total - q_with_recall),
+            "recall_after_questions": int(q_with_recall),
+            "total_questions": int(placements_total),
+            "direct_or_no_recall_pct": round(
+                (placements_total - q_with_recall) / max(placements_total, 1) * 100, 2
+            ),
+            "recall_after_pct": round(
+                q_with_recall / max(placements_total, 1) * 100, 2
+            ),
+        },
         "response_pct": round(responses / max(rows, 1) * 100, 2),
+        "response_pct_by_length_bucket": response_by_length,
         "silent_pct": round((rows - responses) / max(rows, 1) * 100, 2),
         "recall_rows_total": int(recall_rows),
         "recall_row_pct_of_all_samples": round(recall_rows / max(rows, 1) * 100, 2),
@@ -1025,6 +1121,23 @@ def _merge(results: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
         "wait_not_yet_per_forward": _stats(wait_not_yet),
         "f5_recall_per_selected_f5": _stats(f5_recall),
         "status_recall_per_selected_status": _stats(status_recall),
+        "multi_emit_response_count": _stats(multi_response_counts),
+        "multi_emit_response_count_hist": _json_counter(
+            Counter(str(int(x)) for x in multi_response_counts)
+        ),
+        "multi_emit_response_count_by_family": {
+            family_name: _stats(counts)
+            for family_name, counts in sorted(multi_response_counts_by_family.items())
+        },
+        "multi_answer_gap_chunks": _stats(multi_answer_gaps),
+        "multi_answer_span_chunks": _stats(multi_answer_spans),
+        "multi_ask_to_first_answer_chunks": _stats(multi_ask_to_first),
+        "multi_answer_gap_chunks_by_family": {
+            family_name: _stats(gaps)
+            for family_name, gaps in sorted(multi_answer_gaps_by_family.items())
+        },
+        "future_ask_to_answer_chunks": _stats(future_ask_to_answer),
+        "future_active_span_chunks": _stats(future_active_spans),
         "overlap_violations": int(overlap),
         "timing_violations": _json_counter(timing),
         "ask_answer_violations": _json_counter(ask_answer),
@@ -1077,18 +1190,15 @@ def _merge(results: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
                 4,
             ),
             "pass3c_already_hard": int(recall_audit.get("pass3c_already_hard", 0)),
-            "bm25_raw_nonempty": int(recall_audit.get("bm25_raw_nonempty", 0)),
-            "bm25_raw_nonempty_rate": round(
-                int(recall_audit.get("bm25_raw_nonempty", 0))
+            "time_range_raw_nonempty": int(recall_audit.get("time_range_raw_nonempty", 0)),
+            "time_range_raw_nonempty_rate": round(
+                int(recall_audit.get("time_range_raw_nonempty", 0))
                 / max(int(recall_audit.get("recall_slots", 0)), 1),
                 4,
             ),
-            "bm25_raw_empty": int(recall_audit.get("bm25_raw_empty", 0)),
-            "recall_query_answer_leak": int(
-                recall_audit.get("recall_query_answer_leak", 0)
-            ),
-            "bm25_adjusted_by_support_or_noise": int(
-                recall_audit.get("bm25_adjusted_by_support_or_noise", 0)
+            "time_range_raw_empty": int(recall_audit.get("time_range_raw_empty", 0)),
+            "time_range_adjusted_by_noise": int(
+                recall_audit.get("time_range_adjusted_by_noise", 0)
             ),
             "fallback_filled_history_frames": int(
                 recall_audit.get("fallback_filled_history_frames", 0)
@@ -1097,7 +1207,7 @@ def _merge(results: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
                 recall_audit.get("history_frame_result_nonempty", 0)
             ),
             "returned_chunk_count": _stats(recall_returned_counts),
-            "bm25_raw_chunk_count": _stats(recall_bm25_raw_counts),
+            "time_range_raw_chunk_count": _stats(recall_time_range_raw_counts),
             "support_hit": int(recall_support_hit),
             "support_miss": int(recall_support_miss),
             "support_hit_rate": round(
@@ -1160,10 +1270,6 @@ def main() -> None:
         "recall_memory_gap_min_age": int(
             os.environ.get("THINKSTREAM_RECALL_MEMORY_GAP_MIN_AGE", "60")
         ),
-        "sft_silent_to_active_ratio": SFT_SILENT_TO_ACTIVE_RATIO,
-        "sft_pending_silent_fraction": SFT_PENDING_SILENT_FRACTION,
-        "sft_post_answer_silent_fraction": SFT_POST_ANSWER_SILENT_FRACTION,
-        "sft_multi_emit_to_other_response_ratio": SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO,
     }
     text = json.dumps(summary, indent=2, ensure_ascii=False)
     print(text)

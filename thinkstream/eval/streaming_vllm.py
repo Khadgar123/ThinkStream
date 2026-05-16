@@ -4,7 +4,7 @@ Replaces mcq_predict_streaming's per-sample sequential loop with a
 chunk-aligned cross-sample batch. At each chunk_idx all live samples
 build their per-step prompt, the batch is submitted to vLLM in one
 generate() call, then each sample's MemoryState is advanced
-independently. Samples that emit <action>response</action> are removed
+independently. Samples that emit </Response> are removed
 from the live set.
 
 Eval-mode constraints (matches mcq_predict_streaming + agent_loop semantics):
@@ -43,13 +43,15 @@ from thinkstream.data.agent_protocol import (
     build_recall_result_user_content,
     canonical_answer_instruction,
     diagnose_compress_output,
+    ensure_agent_special_tokens,
     normalize_frame_protocol,
     normalize_render_layout,
     query_is_complete,
     resolve_chunk_frame_paths,
-    select_recall_chunks,
+    select_recall_chunks_uniform,
     system_prompt_for_frame_protocol,
     tools_for_turn,
+    validate_agent_special_tokens,
 )
 from thinkstream.data.schema import DEFAULT_VIDEO_MAX_PIXELS, DEFAULT_VIDEO_MIN_PIXELS
 from thinkstream.models.agent_loop import (
@@ -59,6 +61,7 @@ from thinkstream.models.agent_loop import (
     MemoryState,
     _parse_agent_output,
     build_single_step_messages,
+    recall_query_available_for_chunk,
 )
 from thinkstream.eval.prompt_contract import build_streaming_query_meta
 
@@ -265,10 +268,10 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     # v12.6 #15: trajectory schema support — look up the per-chunk question
     # from the precomputed map. Falls back to legacy single-question
     # behavior (runner.query at runner.ask_chunk) when the map is empty.
-    # v12.13 fix (P0-1): runner.question_meta_at_chunk carries options +
-    # answer_form for the question at each ask_chunk. MemoryState.add_query
-    # stores them so format_queries_block renders MC Options for active
-    # queries. Falls back to {} for legacy runners without the field.
+    # runner.question_meta_at_chunk carries structured query metadata for each
+    # ask_chunk. MemoryState.add_query stores it so format_queries_block renders
+    # Options and the canonical Answer format line in <active_query>. Falls back
+    # to {} for legacy runners without the field.
     q_at_chunk = getattr(runner, "question_at_chunk", None) or {}
     q_meta_at_chunk = getattr(runner, "question_meta_at_chunk", None) or {}
     if q_at_chunk:
@@ -339,8 +342,8 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
 def _apply_step_output(runner: _SampleRunner, output_text: str) -> str:
     """Replicates the post-generate state update in StreamingAgentLoop.step().
 
-    Eval mode → recall path is dead (allow_recall=False at sampler level
-    AND we ignore <action>recall</action> if it slips through).
+    Eval mode → recall path is dead here; recall-capable streaming eval handles
+    current-protocol recall tool calls in the main loop.
     """
     parsed = _parse_agent_output(output_text)
     chunk_idx = runner.current_chunk
@@ -532,7 +535,7 @@ def streaming_predict_mcq_vllm(
     All samples advance one chunk per orchestration round. At each round
     every live sample contributes one prompt to a single llm.generate()
     call, then each parses its own output and advances state. Samples
-    that emit a final <answer> are removed from the live set.
+    that emit a final </Response> are removed from the live set.
 
     Returns: (predictions, datums) — sorted by original dataset index.
     """
@@ -548,6 +551,8 @@ def streaming_predict_mcq_vllm(
     )
 
     tokenizer = processor.tokenizer
+    ensure_agent_special_tokens(tokenizer)
+    validate_agent_special_tokens(tokenizer)
     frame_protocol = normalize_frame_protocol(frame_protocol)
     render_layout = normalize_render_layout(render_layout)
     runners = _build_runners(
@@ -669,7 +674,7 @@ def streaming_predict_mcq_vllm(
                     continue
                 r.current_chunk += 1
                 if r.current_chunk >= r.num_chunks:
-                    # Reached end without ever emitting <answer> (v12 response); mark done.
+                    # Reached end without ever emitting </Response> (v12 response); mark done.
                     r.done = True
 
         pbar.update(1)
@@ -784,7 +789,7 @@ class _RolloutRunner:
     question_at_chunk: Dict[int, str] = field(default_factory=dict)
     # v12.13 fix (P0-1): per-chunk options + answer_form for MC queries
     question_meta_at_chunk: Dict[int, Dict] = field(default_factory=dict)
-    # Per-runner retriever for recall tool execution (BM25 index per video).
+    # Per-runner retriever for recall tool execution.
     # None = recall second-pass disabled (vLLM legacy behavior pre-#15).
     retriever: Optional[object] = None
 
@@ -881,8 +886,9 @@ def _extract_question_at_chunk_map(raw_sample: Dict) -> Dict[int, str]:
     # Schema A: trajectory (v12.5+)
     if (isinstance(raw_sample.get("questions"), list)
             and isinstance(raw_sample.get("gold_action_per_chunk"), dict)):
-        # v12.13: options live ONLY in active-query state via format_queries_block.
-        # user_input/question_at_chunk carries the bare question text.
+        # Options and answer-format instructions live ONLY in active-query state
+        # via format_queries_block. user_input/question_at_chunk carries the bare
+        # question text.
         for q in raw_sample["questions"]:
             q_text = q.get("question") or q.get("gold_answer", "")
             for ac in q.get("ask_chunks") or []:
@@ -923,7 +929,7 @@ def _apply_rollout_output(
 
     Differs from _apply_step_output (eval) in two ways:
       1. Does NOT set runner.done on response — RL rolls a few chunks past
-         ask_chunk so the model emits the full <think> + <answer> (v12 response)
+         ask_chunk so the model emits the full <think> + </Response> (v12 response)
          under post-answer pressure (matches grpo.py legacy rollout).
       2. Records the legacy per-chunk dict (grpo.py:736-758 contract):
          action, think, payload, raw_output, generated_tokens,
@@ -1087,8 +1093,8 @@ def streaming_vllm_rollout(
         # the rollout horizon past the LATEST one so each fires its
         # response window.
         q_at_chunk = _extract_question_at_chunk_map(raw_sample)
-        # v12.13 fix (P0-1): build per-chunk meta map alongside question text
-        # so MC options and lifecycle metadata propagate to runtime queries.
+        # Build per-chunk meta alongside question text so options, answer
+        # format, and lifecycle metadata propagate to runtime active queries.
         q_meta_at_chunk: Dict[int, Dict] = {}
         # v12.13 fix (P0-3): track answer_chunks so rollout cap covers
         # forward / silent_then_response cards (lead 18-32 chunks).
@@ -1100,7 +1106,7 @@ def streaming_vllm_rollout(
                     "options": list(q.get("options") or []),
                     "answer_form": q.get("answer_form", ""),
                     "answer_style": (
-                        "letter_only"
+                        "letter_plus_text"
                         if q.get("answer_form") == "multiple_choice"
                         else q.get("answer_style", "")
                     ),
@@ -1148,13 +1154,13 @@ def streaming_vllm_rollout(
         )
 
         for g in range(group_size):
-            # v12.6 #15: per-runner BM25 retriever for recall tool execution.
+            # v12.6 #15: per-runner retriever for recall tool execution.
             # Each rollout has its own memory state → its own think archive →
             # its own retriever index. Only built if enable_recall=True.
             runner_retriever = None
             if enable_recall:
-                from thinkstream.models.retrieval import BM25Retriever
-                runner_retriever = BM25Retriever()
+                from thinkstream.models.retrieval import TimeRangeRetriever
+                runner_retriever = TimeRangeRetriever()
             runners.append(_RolloutRunner(
                 sample_idx=s_idx,
                 gen_idx=g,
@@ -1302,7 +1308,7 @@ def streaming_vllm_rollout(
         # ── Phase D: recall second-pass (batched vLLM generate) ──
         # For each recall-emitting runner, build the multi-turn prompt:
         #   [system, user(chunk N), assistant(recall tool_call),
-        #    user(<recalled_frames> + <recall_result>)]
+        #    tool(short recall status + recalled visual blocks)]
         # then generate the final answer turn. Mirrors agent_loop.step()'s
         # recall branch (lines 868-908) to maintain SFT/runtime parity.
         if recall_runners:
@@ -1311,16 +1317,39 @@ def streaming_vllm_rollout(
             for r, first_msgs, first_text in recall_runners:
                 try:
                     parsed = _parse_agent_output(first_text)
-                    query = parsed.get("payload", {}).get("query", {})
-                    if not query:
+                    recall_args = parsed.get("payload", {}).get("recall_args", {})
+                    if not recall_args:
                         # Malformed recall — record empty result + advance
                         r.chunk_results[-1]["recall_returned_chunks"] = []
                         r.current_chunk += 1
                         if r.current_chunk >= r.max_chunks:
                             r.done = True
                         continue
-                    raw_recall_result = r.retriever(query, r.memory.retrieval_archive)
-                    returned_chunks = select_recall_chunks(
+                    if recall_query_available_for_chunk(
+                        recall_args,
+                        r.current_chunk,
+                        AGENT_CHUNK_SEC,
+                    ):
+                        recall_archive = []
+                        for item in r.memory.retrieval_archive:
+                            try:
+                                item_chunk = int(item.get("chunk", -1))
+                            except (AttributeError, TypeError, ValueError):
+                                continue
+                            if item_chunk < int(r.current_chunk):
+                                recall_archive.append(item)
+                        raw_recall_result = r.retriever(
+                            recall_args,
+                            recall_archive,
+                        )
+                    else:
+                        raw_recall_result = {
+                            "source": "failure",
+                            "time": "",
+                            "text_content": "No valid historical recall range provided.",
+                            "returned_chunks": [],
+                        }
+                    returned_chunks = select_recall_chunks_uniform(
                         raw_recall_result.get("returned_chunks", [])
                     )
                     raw_recall_result["returned_chunks"] = returned_chunks
@@ -1464,7 +1493,7 @@ def streaming_vllm_rollout(
                             # MUST be ONLY the second-pass tokens. The
                             # previous concat (first + second) caused the
                             # loss-time merger to render an assistant turn
-                            # containing BOTH <tool_call> and <answer>,
+                            # containing BOTH <tool_call> and </Response>,
                             # which v12 parser flags as format_error. The
                             # first-pass tool_call already lives in
                             # step_messages; the loss reconstruction

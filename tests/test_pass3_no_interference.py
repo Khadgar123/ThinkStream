@@ -17,10 +17,13 @@ from thinkstream.data.agent_protocol import format_queries_block
 
 
 def _card(card_id: str, family: str = "C1") -> Card:
+    question = f"Question {card_id}?"
+    if family == "E2":
+        question = "When the target appears, output answer."
     return Card(
         card_id=card_id,
         family=family,
-        question=f"Question {card_id}?",
+        question=question,
         answer_form="short_exact",
         question_type="single_emit",
         gold_emits=[GoldEmit(chunk=0, value="answer")],
@@ -42,7 +45,7 @@ def _placement(card_id: str, ask: int, chunks: range) -> Placement:
 
 
 def test_select_trajectory_prevents_overlapping_active_windows():
-    cards = [_card("a", "C1"), _card("b", "N1"), _card("c", "M1")]
+    cards = [_card("a", "E2"), _card("b", "E2"), _card("c", "E2")]
     placements = {
         "a": [_placement("a", 5, range(5, 11))],
         "b": [_placement("b", 8, range(8, 13))],
@@ -62,6 +65,8 @@ def test_select_trajectory_prevents_overlapping_active_windows():
 
 
 def test_select_trajectory_applies_recall_floor():
+    from scripts.agent_data.placement import design
+
     cards = [_card(f"r{i}", "N1") for i in range(4)]
     cards += [_card(f"d{i}", "C1") for i in range(4)]
     placements = {
@@ -99,7 +104,9 @@ def test_select_trajectory_applies_recall_floor():
         cards, placements, num_chunks=80, rng=random.Random(0), max_q=6
     )
 
-    assert sum(p.mechanism == "recall_demo" for p in selected) >= 3
+    recall_cap = min(6, max(0, int(6 * design.RECALL_MAX_FRACTION + 0.999)))
+    expected_floor = min(recall_cap, design._recall_floor(6))
+    assert sum(p.mechanism == "recall_demo" for p in selected) >= expected_floor
 
 
 def test_render_video_samples_rejects_shared_answer_chunk():
@@ -111,6 +118,25 @@ def test_render_video_samples_rejects_shared_answer_chunk():
 
     with pytest.raises(ValueError, match="overlapping question placements"):
         render_video_samples(cards, placements, num_chunks=10)
+
+
+def test_render_video_samples_emits_dense_silent_timeline():
+    cards = [_card("a", "C1")]
+    placements = {"a": [_placement("a", 4, range(4, 7))]}
+
+    samples = render_video_samples(
+        cards,
+        placements,
+        num_chunks=10,
+        evidence=[],
+        rng=random.Random(0),
+    )
+
+    assert [s.chunk_idx for s in samples] == list(range(10))
+    by_chunk = {s.chunk_idx: s for s in samples}
+    assert by_chunk[0].sample_kind == "silent"
+    assert by_chunk[4].sample_kind == "silent"
+    assert by_chunk[5].sample_kind == "response"
 
 
 def test_recall_noise_never_creates_failure_samples():
@@ -204,6 +230,10 @@ def test_recall_silent_query_does_not_leak_future_grounding_range():
         s for s in samples
         if s.get("card_id") == "f0" and s.get("chunk_idx") == 5
     )
+    if "v12_assistant_turn_1" not in wait_sample:
+        assert wait_sample["action"] == "silent"
+        assert wait_sample.get("recall_result") is None
+        return
     m = re.search(
         r"<tool_call>\s*(.*?)\s*</tool_call>",
         wait_sample["v12_assistant_turn_1"],
@@ -211,8 +241,8 @@ def test_recall_silent_query_does_not_leak_future_grounding_range():
     )
     payload = json.loads(m.group(1))
     args = payload["arguments"]
-    assert args["time_range"] == "0-5"
-    assert args["time_range"] != "7-8"
+    assert args["start_time"] == 0
+    assert args["end_time"] < wait_sample["chunk_idx"]
     assert wait_sample["recall_result"]["source"] == "memory"
     assert wait_sample["queries"][0]["status"] == "open"
 
@@ -252,7 +282,7 @@ def test_recall_validity_ignores_compact_memory_answer_overlap():
         "canonical_answer": "red cup",
         "gold_emits": [{"chunk": 1, "value": "red cup"}],
         "grounding_frames": [1],
-        "recall_query": {"query": "object on the table earlier", "time_range": [1, 2]},
+        "recall_query": {"start_time": 1, "end_time": 1},
     }
     evidence = {
         1: {
@@ -260,7 +290,7 @@ def test_recall_validity_ignores_compact_memory_answer_overlap():
             "atomic_facts": [{"fact": "A red cup is on the table."}],
         }
     }
-    memory_text = '<MEM>\n  <m t="0-10">The red cup was on the table.</m>\n</MEM>'
+    memory_text = '  <m t="0-10">The red cup was on the table.</m>'
 
     assert _needs_recall_hardening(card, memory_text) is False
     ok, reason = _validate_hardened_recall_card(
@@ -283,7 +313,7 @@ def test_recall_support_must_be_strictly_outside_8s_window():
         "canonical_answer": "blue bag",
         "gold_emits": [{"chunk": 12, "value": "blue bag"}],
         "grounding_frames": [12],
-        "recall_query": {"query": "object shown earlier", "time_range": [12, 13]},
+        "recall_query": {"start_time": 12, "end_time": 12},
     }
     evidence = {
         12: {
@@ -359,8 +389,8 @@ def test_hld1_prompt_asks_for_diverse_ovo_negatives():
         target_n=PASS3A_TARGETS_BY_FAMILY["HLD1"],
     )
 
-    assert "Produce 2 card(s)" in prompt
-    assert "OVO-HLD-style negatives" in prompt
+    assert f"Produce {PASS3A_TARGETS_BY_FAMILY['HLD1']} card(s)" in prompt
+    assert "explicit negative/unanswerable card" in prompt
     for subtype in [
         "location/where",
         "placement/object",

@@ -64,10 +64,8 @@ PROSE_OBSERVATION_PROMPT = """You are a streaming video agent generating a think
 
 CURRENT TASK FIRST: inspect the timestamp-tagged image list for the sliding visual window t={window_start}-{window_end}s. The latest target chunk is ONLY t={start}-{end}s ({current_frame_count} frames) and is the primary evidence.
 
-Memory below is untrusted history for entity naming only. It may describe older frames and must not be copied if the latest frames differ.
-<memory>
+Compact memory below is untrusted history for entity naming only. It may describe older frames and must not be copied if the latest frames differ.
 {recent_thinks}
-</memory>
 
 Each image is preceded by a structural tag like <frame ts="12.5" role="latest chunk" />. These frame tags are routing metadata only, not answer text. Never copy or paraphrase any frame tag in the output.
 
@@ -175,7 +173,7 @@ STUDENT_TAGS_OBSERVATION_PROMPT = """You are a streaming video agent generating 
 
 CURRENT TASK FIRST: inspect the timestamp-tagged image list for the sliding visual window t={window_start}-{window_end}s. The latest target chunk is ONLY t={start}-{end}s ({current_frame_count} frames) and is the primary evidence.
 
-Past text memory is shown below. Each <memory t="...">...</memory> line is older text from earlier times and may be stale.
+Past text memory is shown below. Each <m t="...">...</m> line is older text from earlier times and may be stale.
 {recent_thinks}
 
 Each image is preceded by a structural tag like <frame ts="12.5" role="latest chunk" />. These frame tags are routing metadata only, not answer text. Never copy or paraphrase any frame tag in the output.
@@ -208,7 +206,7 @@ STUDENT_TAGS_OBSERVATION_PROMPT_MAX_STRICT = """You are a streaming video agent 
 
 CURRENT TASK FIRST: inspect the timestamp-tagged image list for the sliding visual window t={window_start}-{window_end}s. The latest target chunk is ONLY t={start}-{end}s ({current_frame_count} frames) and is the primary evidence.
 
-Past text memory is shown below. Each <memory t="...">...</memory> line is older text from earlier times and may be stale.
+Past text memory is shown below. Each <m t="...">...</m> line is older text from earlier times and may be stale.
 {recent_thinks}
 
 Each image is preceded by a structural tag like <frame ts="12.5" role="latest chunk" />. These frame tags are routing metadata only, not answer text. Never copy or paraphrase any frame tag in the output.
@@ -245,7 +243,7 @@ STUDENT_TAGS_OBSERVATION_PROMPT_MILD = """You are a streaming video agent genera
 
 CURRENT TASK FIRST: inspect the timestamp-tagged image list for the sliding visual window t={window_start}-{window_end}s. The latest target chunk is ONLY t={start}-{end}s ({current_frame_count} frames).
 
-Past text memory is shown below. Each <memory t="...">...</memory> line is older text from earlier times.
+Past text memory is shown below. Each <m t="...">...</m> line is older text from earlier times.
 {recent_thinks}
 
 Each image is preceded by a structural tag like <frame ts="12.5" role="latest chunk" />. These frame tags are routing metadata only, not answer text.

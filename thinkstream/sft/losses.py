@@ -1,9 +1,9 @@
 """Action-start loss balancing for streaming SFT.
 
 The only class-discriminative text tokens we balance are action-start anchors:
-``<silent>`` and ``<response>``. Response close tags and response body tokens
-stay ordinary CE targets so the model learns formatting/content without
-turning ``</response>`` into a second response-class vote.
+``</Silence>`` and ``</Response>``. Response body tokens stay ordinary CE
+targets so the model learns content without over-weighting answer text as the
+action decision.
 
 Two optional mechanisms are available via ``data_args.action_class_loss_mode``:
 
@@ -30,20 +30,17 @@ import torch.nn.functional as F
 
 # Action-start tokens whose imbalance we explicitly correct. ``<think>`` /
 # ``</think>`` appear on every assistant turn and are not class-discriminative.
-# ``</response>`` is deliberately excluded: a response turn has both
-# ``<response>`` and ``</response>``, while a silent turn has only
-# ``<silent>``. Balancing both response tags would make one response turn count
-# twice against one silent turn and would overweight format closure instead of
-# the action decision.
+# The response marker is single-token style (Streamo-like) and has no paired
+# close tag, so there is only one response-class vote per response turn.
 ACTION_TOKEN_NAMES: Tuple[str, ...] = (
-    "<silent>",
-    "<response>",
+    "</Silence>",
+    "</Response>",
 )
 
 # Tool names are NOT single tokens under default Qwen BPE — they typically
 # decode to multi-piece sequences. We detect them as token spans and treat
 # the FIRST token of each span as the discriminative anchor (same role as
-# <silent>/<response> action-start tokens above).
+# </Silence>/</Response> action-start tokens above).
 TOOL_NAME_NAMES: Tuple[str, ...] = (
     "compress",
     "recall",
@@ -235,7 +232,7 @@ def compute_inverse_frequency_weights(
         weight[c] = total_action_anchors / (num_classes * count[c] + eps)
 
     Action anchors come from two sources:
-      1. Single-token action-start ids (e.g. <silent>, <response>)
+      1. Single-token action-start ids (e.g. </Silence>, </Response>)
       2. Tool-name spans from ``tool_name_sequences`` (e.g. "compress",
          "recall"); the first token of each match is the anchor.
 

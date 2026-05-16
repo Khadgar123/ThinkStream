@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "verl"))
+sys.path.insert(1, str(Path(__file__).resolve().parents[1] / "verl"))
 
 import torch
 
@@ -118,16 +118,16 @@ def test_format_v12():
 
     # All turns parse
     outs = [
-        "<think>x</think><tool_call>\n{\"name\":\"recall\",\"arguments\":{\"query\":\"q\",\"time_range\":\"1-5\"}}\n</tool_call>",
-        "<think>y</think><answer>red</answer>",
+        "<think>x</think><tool_call>\n{\"name\":\"recall\",\"arguments\":{\"start_time\":1,\"end_time\":5}}\n</tool_call>",
+        "<think>y</think></Response> red",
     ]
     assert f(outs) == 1.0
 
     # Single turn parses
-    assert f(["<think>x</think><answer></answer>"]) == 1.0
+    assert f(["<think>x</think></Silence>"]) == 1.0
 
     # One bad → all fails
-    bad = ["<think>x</think><answer>red</answer>", "<think>y</think>"]  # second has no terminal
+    bad = ["<think>x</think></Response> red", "<think>y</think>"]  # second has no terminal
     assert f(bad) == 0.0
 
     # Bad JSON
@@ -135,14 +135,14 @@ def test_format_v12():
 
     # Bad tool schemas
     assert f([
-        '<think>x</think><tool_call>{"name":"recall","arguments":{"query":"q"}}</tool_call>'
+        '<think>x</think><tool_call>{"name":"recall","arguments":{"start_time":1}}</tool_call>'
     ]) == 0.0
     assert f([
         '<think>x</think><tool_call>{"name":"compress","arguments":{"time_range":"1-5","text":"s"}}</tool_call>'
     ]) == 0.0
 
     # Extra text outside the protocol skeleton is not valid format.
-    assert f(["<think>x</think><answer>red</answer>\nextra"]) == 0.0
+    assert f(["<think>x</think></Silence>\nextra"]) == 0.0
 
     # Empty
     assert f([]) == 0.0
@@ -644,7 +644,7 @@ def test_recipe_multi_q_reward_gates_each_question_independently():
         weights,
         questions,
         extra,
-        "<think>ok</think><answer>red</answer>",
+        "<think>ok</think></Response> red",
     )
 
     assert abs(res["outcome"] - (1 / 3)) < 1e-6, res
@@ -668,13 +668,13 @@ def test_recipe_action_shaping_scores_system_compress_only():
     extra = {
         "ts_chunk_kinds": ["answer", "compress", "answer"],
         "ts_chunk_asst_texts": [
-            "<think>x</think><answer>A</answer>",
+            "<think>x</think></Response> A",
             (
                 "<think>x</think><tool_call>"
                 '{"name":"compress","arguments":{"time_range":[0,1],"text":"x"}}'
                 "</tool_call>"
             ),
-            "<think>x</think><answer>B</answer>",
+            "<think>x</think></Response> B",
         ],
         "ts_chunk_video_indices": [0, -1, 2],
         "ts_chunk_turn_kinds": ["streaming", "compress", "streaming"],
@@ -695,6 +695,31 @@ def test_recipe_action_shaping_scores_system_compress_only():
             score_compress=True,
         )
         == 0.025
+    )
+
+
+def test_rl_recall_start_end_runtime_accepts_history_and_rejects_future():
+    from thinkstream.rl.thinkstream import _tool_time_range_runtime_ok
+
+    assert _tool_time_range_runtime_ok(
+        "recall",
+        {"start_time": 20, "end_time": 21},
+        current_chunk=31,
+    )
+    assert _tool_time_range_runtime_ok(
+        "recall",
+        {"start_time": 30, "end_time": 30},
+        current_chunk=31,
+    )
+    assert not _tool_time_range_runtime_ok(
+        "recall",
+        {"start_time": 31, "end_time": 31},
+        current_chunk=31,
+    )
+    assert not _tool_time_range_runtime_ok(
+        "recall",
+        {"start_time": 31, "end_time": 99},
+        current_chunk=31,
     )
 
 
@@ -754,12 +779,10 @@ def test_rl_compress_output_transfers_student_memory_state():
 
     student_output = (
         "<think>Compact my visible notes before continuing.</think>"
-        "<MEM>\n"
         "  <m t=\"0-7\">Student summary of the first scene.</m>\n"
         "  <m t=\"8-15\">Student summary of the second scene.</m>\n"
         "  <m t=\"16-23\">Student summary of the third scene.</m>\n"
         "  <m t=\"24-31\">Student summary of the latest scene.</m>\n"
-        "</MEM>"
     )
 
     new_state = default_update_state(state, student_output, chunk_idx=32)

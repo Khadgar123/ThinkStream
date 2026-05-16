@@ -46,8 +46,8 @@ def _make_minimal_v12_sample(chunk_idx, sample_type, video_id="vid_test",
         "output": (
             f'<think>chunk {chunk_idx} obs of {chunk_idx*2}+ duration entities visible '
             f'red apron and stove and pan and counter</think>'
-            + ('<answer></answer>' if sample_type == "silent"
-               else f'<answer>{gold_answer}</answer>')
+            + ('</Silence>' if sample_type == "silent"
+               else f'</Response> {gold_answer}')
         ),
         "metadata": {
             "gold_answer": gold_answer if sample_type == "response" else "",
@@ -101,7 +101,7 @@ def test_tag_samples_keeps_failures_with_reasons():
 
     bad_sample = _make_minimal_v12_sample(5, "response", gold_answer="answer")
     # Force a failure: empty think will trigger format/grounding check
-    bad_sample["output"] = "<answer>answer</answer>"   # no <think> tag
+    bad_sample["output"] = "</Response> answer"   # no <think> tag
     inputs = [_make_minimal_v12_sample(0, "silent"), bad_sample]
     out, stats = tag_samples(inputs)
     assert len(out) == 2, "failed sample must NOT be dropped"
@@ -130,8 +130,8 @@ def test_filter_samples_is_tag_only_legacy_name():
     print(f"  PASS filter_samples keeps all {len(out)} rows with tags")
 
 
-def test_recall_array_time_range_is_valid():
-    """Current recall tool schema uses [start, end], not legacy 'start-end'."""
+def test_recall_start_end_is_valid():
+    """Current recall tool schema uses explicit start_time/end_time."""
     from scripts.agent_data.pass3e_verify import verify_format
 
     sample = _make_minimal_v12_sample(5, "silent")
@@ -141,15 +141,15 @@ def test_recall_array_time_range_is_valid():
         "v12_assistant_turn_1": (
             '<think>need prior visual evidence</think>'
             '<tool_call>{"name":"recall","arguments":'
-            '{"query":"red apron","time_range":[1,4]}}</tool_call>'
+            '{"start_time":1,"end_time":5}}</tool_call>'
         ),
         "v12_assistant_turn_2": (
-            "<think>retrieved frames contain the answer</think><answer>red</answer>"
+            "<think>retrieved frames contain the answer</think></Response> red"
         ),
     })
     ok, reason = verify_format(sample)
     assert ok, reason
-    print("  PASS recall array time_range accepted")
+    print("  PASS recall start_time/end_time accepted")
 
 
 def test_think_checks_are_policy_skipped():
@@ -163,7 +163,7 @@ def test_think_checks_are_policy_skipped():
     sample["output"] = (
         "<think>"
         + " ".join(["noise"] * 200)
-        + "</think><answer></answer>"
+        + "</think></Silence>"
     )
     ok, reason = verify_grounding(sample)
     assert ok, reason
@@ -206,7 +206,8 @@ def main():
         test_tag_samples_attaches_verification,
         test_tag_samples_keeps_failures_with_reasons,
         test_filter_samples_is_tag_only_legacy_name,
-        test_recall_array_time_range_is_valid,
+        test_recall_start_end_is_valid,
+        test_legacy_recall_time_range_is_rejected,
         test_think_checks_are_policy_skipped,
         test_mc_answer_text_in_options_is_not_leakage,
         test_aggregate_stats_pass_rate,

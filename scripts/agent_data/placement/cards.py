@@ -53,12 +53,12 @@ def _ovo_option_count(*keys) -> int:
 #   total target                                                     20 cards
 FAMILY_BUDGET = {
     # backward MC
-    "N1":  1, "P1":  1, "HLD1": 1, "CR1": 1, "CR2": 1, "CR4": 1, "CR5": 1,
+    "N1":  3, "P1":  3, "HLD1": 1, "CR1": 3, "CR2": 3, "CR4": 3, "CR5": 3,
     # forward MC + binary
-    "E2":  1, "F6":  1, "F7":  1, "CRR1": 1,
+    "E2":  2, "F6":  2, "F7":  3, "CRR1": 2,
     # realtime MC + number + short_exact
-    "CR3": 1, "CR7": 1, "R1":  1, "ACR1": 1, "STU1": 1, "OJR1": 1,
-    "F5":  1, "C1":  2,
+    "CR3": 2, "CR7": 2, "R1":  2, "ACR1": 2, "STU1": 2, "OJR1": 2,
+    "F5":  2, "C1":  3,
     # multi_emit (PN1 50% adopt; F5 already realtime above)
     "PN1": 1,
     # backward descriptive
@@ -286,14 +286,12 @@ def gen_f7_status_flip(evidence: List[Dict], video_id: str) -> List[Card]:
     Old behavior: single_emit at change chunk with gold "Yes". This was
     "wait silent until event happens, then answer Yes once" — that's a
     forward task, not OVO SSR. SSR ("Same Sample Reasoning" / Status
-    Reasoning) expects the model to answer Yes/No at MULTIPLE chunks in
-    the trajectory, with the gold flipping at the change point.
+    Reasoning) expects the model to answer whether a concrete step/action is
+    currently being carried out at multiple probe chunks.
 
-    New: multi_emit binary card. Asks "Has X happened?" at every chunk
-    in [change_chunk - K, change_chunk + K]:
-      - chunks BEFORE change: gold = "No"
-      - chunks AT or AFTER change: gold = "Yes"
-    Per-emit reward (P0-2) scores each chunk's Yes/No against its gold.
+    New: multi_emit binary card around a current-status probe:
+      - chunks where the action is not currently visible: gold = "No"
+      - the state-change/current-action chunk: gold = "Yes"
 
     K is small (default 4) so the multi_emit doesn't span too many chunks
     (= many parallel pending queries simultaneously).
@@ -311,10 +309,9 @@ def gen_f7_status_flip(evidence: List[Dict], video_id: str) -> List[Card]:
         hi = min(n_chunks - 1, c + K)
         if hi - lo < 4:    # need ≥ 5 chunks for multi_emit to be meaningful
             continue
-        # Build per-chunk emits: "No" before change, "Yes" at and after.
         emits = []
         for ci in range(lo, hi + 1):
-            value = "No" if ci < c else "Yes"
+            value = "Yes" if ci == c else "No"
             emits.append(GoldEmit(chunk=ci, value=value))
         values = {e.value for e in emits}
         if not {"No", "Yes"}.issubset(values):
@@ -322,7 +319,7 @@ def gen_f7_status_flip(evidence: List[Dict], video_id: str) -> List[Card]:
         cards.append(Card(
             card_id=f"{video_id}_F7_{_hash_id(video_id, c, text)}",
             family="F7",
-            question=f"Has \"{text[:40]}\" happened by now?",
+            question=f"Is the person currently doing this step/action: \"{text[:60]}\"?",
             answer_form="binary",
             question_type="multi_emit",   # was single_emit
             gold_emits=emits,
@@ -362,7 +359,10 @@ def gen_crr_event_status(evidence: List[Dict], video_id: str) -> List[Card]:
         cards.append(Card(
             card_id=f"{video_id}_CRR1_{_hash_id(video_id, c, event)}",
             family="CRR1",
-            question=f"Has \"{event[:70]}\" happened yet?",
+            question=(
+                "Is there enough current visual evidence now to answer "
+                f"the event-resolution question about \"{event[:70]}\"?"
+            ),
             answer_form="binary",
             question_type="multi_emit",
             gold_emits=emits,

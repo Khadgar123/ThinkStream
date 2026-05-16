@@ -85,13 +85,15 @@ _SPLIT_CORE_WEIGHTS = {
     # All splits should see the same question distribution because RL/eval/test
     # measure benchmark-like ability, while SFT still needs enough questions to
     # learn the response semantics behind each action.
+    "rows": 6.0,
+    "length": 4.0,
     "questions": 3.0,
     "non_mcq_questions": 8.0,
     "recall_questions": 7.0,
     "multi_questions": 4.0,
     "response_rows": 1.5,
     "recall_rows": 2.5,
-    "silent_rows": 0.15,
+    "silent_rows": 1.0,
 }
 
 _SPLIT_DYNAMIC_PREFIX_WEIGHTS = {
@@ -155,6 +157,9 @@ def _video_split_profiles(samples: List[Dict]) -> Dict[str, Counter]:
             continue
         action = str(s.get("sample_type") or s.get("action") or "")
         profiles[vid]["rows"] += 1
+        chunk_idx = s.get("chunk_idx")
+        if isinstance(chunk_idx, int):
+            profiles[vid]["length"] = max(profiles[vid]["length"], chunk_idx + 1)
         if action:
             profiles[vid][f"{action}_rows"] += 1
 
@@ -219,9 +224,9 @@ def _balanced_video_buckets(
 ) -> Tuple[Dict[str, set], Dict[str, Dict[str, float]]]:
     """Split videos while balancing question/action profiles across splits."""
     n = len(video_ids)
-    train_end = int(n * 0.70)
-    val_end = int(n * 0.85)
-    sft_target = int(train_end * 0.50)
+    train_end = int(n * 0.80)
+    val_end = int(n * 0.90)
+    sft_target = int(round(train_end * (2.0 / 3.0)))
     targets = {
         "train_sft": sft_target,
         "train_rl": train_end - sft_target,
@@ -287,44 +292,45 @@ def _balanced_video_buckets(
         fill = (len(buckets[bucket]) + 1) / max(targets[bucket], 1)
         return err + 0.10 * fill
 
-    # SFT is the only split with direct compress-action supervision. Seed it
-    # with compress-rich videos before the general benchmark-style balancing so
-    # rare memory-maintenance behavior is not accidentally concentrated in
-    # RL/eval/test, where it is mostly a system-side runtime event.
-    sft_compress_target = float(target_profiles["train_sft"].get("compress_rows", 0.0))
-    if sft_compress_target > 0:
-        max_preseed = max(1, int(targets["train_sft"] * 0.25))
-        preseeded = set()
-        for vid in sorted(
-            order,
-            key=lambda v: (
-                -profiles.get(v, Counter()).get("compress_rows", 0),
-                -profiles.get(v, Counter()).get("questions", 0),
-                -profile_weight(v),
-            ),
-        ):
-            if len(buckets["train_sft"]) >= max_preseed:
+    # Keep video length/row count representative in every split first. A purely
+    # profile-greedy assignment can put long videos into val/test because those
+    # buckets are small and can absorb rare question profiles cheaply, which
+    # makes eval/test much longer than train. Assign labels inside length-sorted
+    # local blocks, then let the swap pass below improve benchmark/action
+    # distribution without breaking the coarse length stratification.
+    order.sort(
+        key=lambda v: (
+            profiles.get(v, Counter()).get("length", profiles.get(v, Counter()).get("rows", 0)),
+            profile_weight(v),
+            v,
+        )
+    )
+    remaining = dict(targets)
+    block_size = max(8, min(32, max(8, len(order) // 50)))
+    for start in range(0, len(order), block_size):
+        block = list(order[start:start + block_size])
+        labels: List[str] = []
+        for _ in block:
+            candidates = [
+                name for name, remaining_count in remaining.items()
+                if remaining_count > 0
+            ]
+            if not candidates:
                 break
-            if profiles.get(vid, Counter()).get("compress_rows", 0) <= 0:
-                break
-            buckets["train_sft"].append(vid)
-            bucket_profiles["train_sft"].update(profiles.get(vid, Counter()))
-            preseeded.add(vid)
-            if bucket_profiles["train_sft"].get("compress_rows", 0) >= sft_compress_target:
-                break
-        if preseeded:
-            order = [vid for vid in order if vid not in preseeded]
-
-    for vid in order:
-        candidates = [
-            name for name, size in targets.items()
-            if len(buckets[name]) < size
-        ]
-        if not candidates:
-            break
-        best = min(candidates, key=lambda name: (score(name, vid), name))
-        buckets[best].append(vid)
-        bucket_profiles[best].update(profiles.get(vid, Counter()))
+            label = max(
+                candidates,
+                key=lambda name: (
+                    remaining[name] / max(float(targets[name]), 1.0),
+                    remaining[name],
+                    name,
+                ),
+            )
+            labels.append(label)
+            remaining[label] -= 1
+        rng.shuffle(labels)
+        for vid, label in zip(block, labels):
+            buckets[label].append(vid)
+            bucket_profiles[label].update(profiles.get(vid, Counter()))
 
     # Greedy assignment can get trapped when compress-heavy videos also carry
     # skewed question profiles. A few deterministic pair-swap passes make the
@@ -1333,6 +1339,7 @@ async def run_pipeline(
     # =================================================================
     if 3 not in skip_pass:
         from .pass3a_cards import generate_cards, verify_cards, save_cards, load_cards
+        from .pass3_slot_planner import pass3a_batch_source_row_targets
 
         logger.info("=" * 60)
         logger.info("PASS 3-A: Task Card Generation")
@@ -1352,8 +1359,28 @@ async def run_pipeline(
         video_semaphore_3a = asyncio.Semaphore(VIDEO_CONCURRENCY_3A)
 
         uncached_3a = [v for v in videos if not load_cards(v["video_id"]) and v["video_id"] in evidence_map]
+        def _evidence_num_chunks(evidence: List[Dict]) -> int:
+            chunks = [
+                int(cap.get("chunk_idx", i))
+                for i, cap in enumerate(evidence or [])
+                if isinstance(cap, dict)
+            ]
+            return max(chunks, default=0) + 1
+
+        pass3a_source_rows_by_video = pass3a_batch_source_row_targets({
+            str(v["video_id"]): _evidence_num_chunks(evidence_map[str(v["video_id"])])
+            for v in videos
+            if str(v.get("video_id", "")) in evidence_map
+        })
+        source_row_totals = Counter()
+        for rows in pass3a_source_rows_by_video.values():
+            source_row_totals.update(rows)
         tracker_3a = ProgressTracker("pass3a", len(uncached_3a), AUDIT_DIR)
         logger.info(f"PASS 3-A: {len(uncached_3a)} uncached videos, video_concurrency={VIDEO_CONCURRENCY_3A}, family_concurrency={client_3a.max_concurrent}")
+        logger.info(
+            "PASS 3-A batch source-row targets: %s",
+            dict(sorted(source_row_totals.items())),
+        )
 
         async def process_video_3a(video):
             vid = video["video_id"]
@@ -1363,7 +1390,12 @@ async def run_pipeline(
             if vid not in evidence_map:
                 return vid, []
             async with video_semaphore_3a:
-                cards = await generate_cards(vid, evidence_map[vid], client_3a)
+                cards = await generate_cards(
+                    vid,
+                    evidence_map[vid],
+                    client_3a,
+                    source_row_targets=pass3a_source_rows_by_video.get(vid),
+                )
                 # Verify each card independently (still bound by client_3a cap).
                 cards = await verify_cards(vid, cards, evidence_map[vid], client_3a)
                 save_cards(vid, cards)
@@ -1503,6 +1535,7 @@ async def run_pipeline(
                     evidence=evidence_map[vid],
                     client=client_3c,
                     video_id=vid,
+                    all_frame_paths=video_frames.get(vid, []),
                 )
                 for traj in trajectories
             ]
@@ -1857,8 +1890,9 @@ async def run_pipeline(
     # for stable trajectory-level credit assignment.
     #
     # v12.0:
-    #   70/15/15 train/val/test  (more held-out for stable eval)
-    #   Within train: 50/50 SFT/RL  (RL needs as much volume as SFT)
+    #   80/10/10 train/val/test  (more training volume after final audit)
+    #   Within train: 2:1 SFT/RL  (SFT gets more teacher supervision while
+    #   preserving a substantial held-out RL trajectory pool)
     #   val/test: thin to BENCHMARK density (~1 traj/video, ≤3 Q)
     #             so eval distribution matches OVO-Bench / StreamingBench
     #             rather than train-time density (avoids train→eval shift).

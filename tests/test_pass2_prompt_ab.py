@@ -38,9 +38,9 @@ def test_serialize_memory_student_tags_uses_only_time_tags():
         recent_limit=2,
         include_summaries=True,
     )
-    assert '<memory t="0-1">' in text
-    assert '<memory t="1-2">' in text
-    assert '<memory t="2-3">' in text
+    assert '<m t="0-1">' in text
+    assert '<m t="2-3">' in text
+    assert "<memory " not in text
     assert '"kind"' not in text
     assert '"chunk"' not in text
     assert '"history_only"' not in text
@@ -53,9 +53,9 @@ def test_serialize_memory_student_tags_full_timeline_keeps_all_memory():
         recent_limit=None,
         include_summaries=True,
     )
-    assert '<memory t="0-1">' in text
-    assert '<memory t="2-3">' in text
-    assert text.count("<memory ") == 2
+    assert '<m t="0-1">' in text
+    assert '<m t="2-3">' in text
+    assert text.count("<m ") == 2
 
 
 def test_serialize_memory_student_tags_summaries_first_reorders_memory():
@@ -67,8 +67,8 @@ def test_serialize_memory_student_tags_summaries_first_reorders_memory():
         memory_order="summaries_first",
     )
     lines = text.splitlines()
-    assert lines[0].startswith('<memory t="0-1">')
-    assert lines[1].startswith('<memory t="2-3">')
+    assert lines[0].startswith('<m t="0-1">')
+    assert lines[1].startswith('<m t="2-3">')
 
 
 def test_variant_request_can_put_images_first_and_reverse(tmp_path):
@@ -90,7 +90,7 @@ def test_variant_request_can_put_images_first_and_reverse(tmp_path):
     assert content[0]["text"] == '<frame ts="1.5" role="latest chunk" />'
     assert content[1]["type"] == "image_url"
     assert content[-1]["type"] == "text"
-    assert "CURRENT TASK FIRST" in content[-1]["text"]
+    assert "current 1 second" in content[-1]["text"]
 
 
 def test_variant_request_can_prepend_latest_chunk_before_window(tmp_path):
@@ -111,7 +111,7 @@ def test_variant_request_can_prepend_latest_chunk_before_window(tmp_path):
     content = req["messages"][0]["content"]
     assert content[1]["text"] == '<frame ts="1.0" role="latest chunk" />'
     assert content[3]["text"] == '<frame ts="1.5" role="latest chunk" />'
-    assert content[5]["text"] == '<frame ts="0.0" role="older context" />'
+    assert content[5]["text"] == '<frame ts="1.0" role="latest chunk" />'
 
 
 def test_variant_repair_request_can_be_current_visual_only(tmp_path):

@@ -31,6 +31,8 @@
 #                     and 32768 in stitched mode.
 #   MAX_ACTION_TOKENS — per-action streaming/recall generation cap (256)
 #   MAX_COMPRESS_ACTION_TOKENS — per-action compression generation cap (512)
+#   TOP_K           — rollout sampler top-k (50). Required for true-KV
+#                     rollout because verl's -1 default becomes invalid.
 #   MAX_CHUNKS      — max turns per video (120 by default; use recurrent for 240+)
 #   GPU_MEM_UTIL    — kept for verl config compatibility (0.55).
 #   MM_CACHE_GB     — kept for legacy config compatibility.
@@ -111,8 +113,10 @@ if [[ -z "${MAX_NEW_TOKEN:-}" ]]; then
         MAX_NEW_TOKEN=32768
     fi
 fi
+MAX_MODEL_LEN=${MAX_MODEL_LEN:-49152}
 MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-256}
 MAX_COMPRESS_ACTION_TOKENS=${MAX_COMPRESS_ACTION_TOKENS:-512}
+TOP_K=${TOP_K:-50}
 MAX_CHUNKS=${MAX_CHUNKS:-120}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
 auto_mm_cache_gb() {
@@ -336,9 +340,11 @@ echo "TP size:           ${TP_SIZE}"
 echo "Group size G:      ${GROUP_SIZE}"
 echo "Max chunks:        ${MAX_CHUNKS}"
 echo "Max prompt len:    ${MAXLEN}"
+echo "Max model len:     ${MAX_MODEL_LEN}"
 echo "Max new tokens:    ${MAX_NEW_TOKEN}"
 echo "Max action tokens: ${MAX_ACTION_TOKENS}"
 echo "Max compress toks: ${MAX_COMPRESS_ACTION_TOKENS}"
+echo "Top-k:             ${TOP_K}"
 echo "GPU mem util:      ${GPU_MEM_UTIL}"
 echo "MM cache GB:       ${MM_CACHE_GB}"
 echo "Image limit:       ${LIMIT_IMAGES}"
@@ -380,6 +386,10 @@ export THINKSTREAM_TRAJ_INDEX_PATH="${TRAIN_JSONL}"
 # streaming agent loop reads this to inject per-chunk visual frames every
 # turn. Empty / unset → loop falls back to text-only RL.
 FRAMES_ROOT="${FRAMES_ROOT:-${AGENT_DATA_ROOT}/frames}"
+case "${FRAMES_ROOT}" in
+    /*) ;;
+    *) FRAMES_ROOT="${PROJECT_DIR}/${FRAMES_ROOT}" ;;
+esac
 export THINKSTREAM_FRAMES_ROOT="${FRAMES_ROOT}"
 export THINKSTREAM_MAX_TOKENS_PER_ACTION="${MAX_ACTION_TOKENS}"
 export THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION="${MAX_COMPRESS_ACTION_TOKENS}"
@@ -417,9 +427,11 @@ export GPU_MEM_UTIL="${GPU_MEM_UTIL}"
 export LIMIT_IMAGES="${LIMIT_IMAGES}"
 export LIMIT_VIDEOS="${LIMIT_VIDEOS}"
 export MAX_PROMPT_LEN="${MAXLEN}"
+export MAX_MODEL_LEN="${MAX_MODEL_LEN}"
 export MAX_RESP_LEN="${MAX_NEW_TOKEN}"
 export MAX_ACTION_TOKENS="${MAX_ACTION_TOKENS}"
 export MAX_COMPRESS_ACTION_TOKENS="${MAX_COMPRESS_ACTION_TOKENS}"
+export TOP_K="${TOP_K}"
 export MAX_TURNS="${MAX_CHUNKS}"
 export PROJECT_NAME="${WANDB_PROJECT}"
 export EXPERIMENT_NAME="${RUN_NAME}"

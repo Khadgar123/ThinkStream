@@ -44,7 +44,7 @@ SCHEMA_VERSION = "trajectory_bank.v1"
 DEFAULT_SPLITS = ("train_sft", "train_rl", "val", "test")
 _SAFE_RE = re.compile(r"[^A-Za-z0-9_.@-]+")
 _TOOL_JSON_RE = re.compile(r"<tool_call>\s*(\{.*?\})\s*</tool_call>", re.S)
-_ANSWER_RE = re.compile(r"<answer>(.*?)</answer>", re.S)
+_ANSWER_RE = re.compile(r"</Response>\s*(.*?)\s*$", re.S)
 
 
 def _resolve_data_dir(raw: Optional[str]) -> Path:
@@ -92,7 +92,7 @@ def _append_jsonl(path: Path, rows: Iterable[Dict[str, Any]]) -> int:
 
 def _extract_answer(text: str) -> str:
     m = _ANSWER_RE.search(text or "")
-    return m.group(1).strip() if m else ""
+    return (m.group(1) or "").strip() if m else ""
 
 
 def _extract_tool_call(text: str) -> Dict[str, Any]:
@@ -106,15 +106,15 @@ def _extract_tool_call(text: str) -> Dict[str, Any]:
     return obj if isinstance(obj, dict) else {}
 
 
-def _extract_recall_query(sample: Dict[str, Any]) -> Dict[str, Any]:
-    """Return structured recall query from a merged v12 recall sample."""
+def _extract_recall_args(sample: Dict[str, Any]) -> Dict[str, Any]:
+    """Return structured recall start/end args from a merged v12 recall sample."""
     turn1 = sample.get("v12_assistant_turn_1") or ""
     tool = _extract_tool_call(turn1)
     args = tool.get("arguments") if isinstance(tool, dict) else None
     if isinstance(args, dict):
         return {
-            "query": str(args.get("query", "")).strip(),
-            "time_range": args.get("time_range", ""),
+            "start_time": args.get("start_time"),
+            "end_time": args.get("end_time"),
         }
     return {}
 
@@ -210,13 +210,13 @@ def _recall_events(traj: Dict[str, Any]) -> List[Dict[str, Any]]:
         if s.get("sample_type") != "recall":
             continue
         rr = s.get("recall_result") or {}
-        q = _extract_recall_query(s)
+        recall_args = _extract_recall_args(s)
         out.append({
             "chunk_idx": int(s.get("chunk_idx", -1)),
             "card_id": s.get("card_id", ""),
             "action": s.get("action", ""),
             "sequence_type": s.get("sequence_type", ""),
-            "query": q,
+            "recall_args": recall_args,
             "returned_chunks": list(rr.get("returned_chunks") or []),
             "result_time": rr.get("time", ""),
             "answer": _extract_answer(

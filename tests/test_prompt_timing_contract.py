@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 
 from scripts.agent_data.pass5_messages import build_messages
@@ -19,12 +18,6 @@ def _join_user_text(content):
         for item in content
         if item.get("type") == "text"
     )
-
-
-def _visual_window_payload(text: str) -> dict:
-    start = text.index("<visual_window>") + len("<visual_window>")
-    end = text.index("</visual_window>")
-    return json.loads(text[start:end])
 
 
 def test_zero_based_chunks_map_to_ffmpeg_one_based_filenames(tmp_path: Path):
@@ -66,13 +59,13 @@ def test_shared_renderer_query_last_and_integer_times():
         "question": "Which object is on the table?",
         "options": ["A) cup", "B) book", "C) phone", "D) key"],
         "answer_form": "multiple_choice",
-        "answer_style": "letter_only",
+        "answer_style": "letter_plus_text",
         "ask_time": 3.0,
         "answer_chunks": [5],
         "answers": [],
     }
     content = build_user_content(
-        "<memory_think>{\"time\":2,\"text\":\"setup\"}</memory_think>",
+        '<m t="2-3">setup</m>',
         chunk_idx=3,
         video_path="/unused.mp4",
         user_input=query["question"],
@@ -83,16 +76,11 @@ def test_shared_renderer_query_last_and_integer_times():
     )
     text = _join_user_text(content)
     assert "<user_input>" not in text
-    assert text.index("<memory>") < text.index("<visual_window>")
-    assert text.index("<visual_window>") < text.index("<active_query>")
+    assert text.index('<m t="2-3">setup</m>') < text.index("<t=3>")
+    assert text.index("<t=3>") < text.index("<active_query>")
     assert text.count("<active_query>") == 1
     assert text.count("Options:") == 1
     assert text.count("Answer format:") == 1
-    vw = _visual_window_payload(text)
-    assert isinstance(vw["start"], int)
-    assert isinstance(vw["end"], int)
-    assert isinstance(vw["current_time"], int)
-    assert vw["current_time"] == 3
     videos = [item for item in content if item.get("type") == "video"]
     assert len(videos) == 1
     assert [Path(p).name for p in videos[0]["video"]] == [
@@ -100,6 +88,21 @@ def test_shared_renderer_query_last_and_integer_times():
         "frame_000008.jpg",
     ]
     assert videos[0]["video_metadata"]["frames_indices"] == [6, 7]
+
+
+def test_shared_renderer_empty_frame_paths_and_empty_video_path_is_text_only():
+    content = build_user_content(
+        "",
+        chunk_idx=108,
+        video_path="",
+        queries=[],
+        frame_paths=[],
+        frame_protocol="video_meta",
+        render_layout="standard_query_last",
+    )
+    text = _join_user_text(content)
+    assert "<t=108>" in text
+    assert not [item for item in content if item.get("type") == "video"]
 
 
 def test_recall_result_is_metadata_only_in_shared_renderer():
@@ -132,9 +135,10 @@ def test_recall_result_is_metadata_only_in_shared_renderer():
         render_layout="standard_query_last",
     )
     text = _join_user_text(content)
-    assert "<recalled_frames>" in text
-    assert "<recall_result>" in text
-    assert "returned_chunks" in text
+    assert "The recall tool returned historical video frames for t=4-6." in text
+    assert "<recall_result>" not in text
+    assert "<recalled_frames>" not in text
+    assert "returned_chunks" not in text
     assert "leaking textual answer" not in text
     assert '"text"' not in text
 
@@ -163,9 +167,11 @@ def test_runtime_post_recall_has_no_current_visual_window():
     user_text = _join_user_text(messages[1]["content"])
     assert "streaming video assistant" in system_text.lower()
     assert "<visual_window>" not in user_text
+    assert "<t=" not in user_text
     assert "<active_query>" not in user_text
-    assert "<recalled_frames>" in user_text
-    assert "<recall_result>" in user_text
+    assert "The recall tool returned historical video frames for t=4-6." in user_text
+    assert "<recalled_frames>" not in user_text
+    assert "<recall_result>" not in user_text
     assert "leaking textual answer" not in user_text
 
 
@@ -202,7 +208,7 @@ def test_pass5_and_runtime_builders_match_query_last_contract(tmp_path: Path):
                 ],
             },
         },
-        "output": "<think>x</think><answer></answer>",
+        "output": "<think>x</think></Silence>",
     }
     pass5_messages = build_messages(
         sample,
@@ -227,9 +233,9 @@ def test_pass5_and_runtime_builders_match_query_last_contract(tmp_path: Path):
         user = next(m for m in messages if m["role"] == "user")
         text = _join_user_text(user["content"])
         assert "<user_input>" not in text
-        assert text.index("<memory>") < text.index("<visual_window>")
-        assert text.index("<visual_window>") < text.index("<active_query>")
-        assert _visual_window_payload(text)["current_time"] == 3
+        assert "<memory>" not in text
+        assert "<visual_window>" not in text
+        assert text.index("<t=3>") < text.index("<active_query>")
         assert text.count("Answer format:") == 1
 
 
@@ -273,8 +279,8 @@ def test_pass5_answer_contract_rejects_wrong_mc_response():
         "metadata": {
             "question": "Which color?",
             "answer_form": "multiple_choice",
-            "answer_style": "letter_only",
-            "answer_instruction": "Answer format: one letter only (A, B, C, or D).",
+            "answer_style": "letter_plus_text",
+            "answer_instruction": "Answer format: letter plus option text, e.g. A) option text.",
             "options": ["A) red", "B) blue", "C) green", "D) yellow"],
             "correct_option": "B",
             "gold_answer": "blue",
@@ -282,7 +288,7 @@ def test_pass5_answer_contract_rejects_wrong_mc_response():
         },
     }
     messages = [
-        {"role": "assistant", "content": [{"type": "text", "text": "<think>x</think><answer>A</answer>"}]},
+        {"role": "assistant", "content": [{"type": "text", "text": "<think>x</think></Response> A"}]},
     ]
     try:
         validate_answer_render_contract(sample, messages)
@@ -292,7 +298,7 @@ def test_pass5_answer_contract_rejects_wrong_mc_response():
         raise AssertionError("wrong MC response should fail pass5 answer contract")
 
 
-def test_pass5_query_contract_uses_e_option_in_answer_format():
+def test_pass5_query_contract_uses_letter_plus_option_text_format():
     from scripts.agent_data.pass5_messages import validate_query_render_contract
     from thinkstream.data.agent_protocol import format_queries_block
 
@@ -302,12 +308,13 @@ def test_pass5_query_contract_uses_e_option_in_answer_format():
         "status": "open",
         "options": ["A) brush", "B) spoon", "C) cup", "D) book", "E) plate"],
         "answer_form": "multiple_choice",
-        "answer_style": "letter_only",
-        "answer_instruction": "Answer format: one letter only (A, B, C, or D).",
+        "answer_style": "letter_plus_text",
+        "answer_instruction": "Answer format: letter plus option text, e.g. A) option text.",
         "answers": [],
     }
     text = format_queries_block([q])
-    assert "A, B, C, D, or E" in text
+    assert "letter plus option text" in text
+    assert "one letter only" not in text
     validate_query_render_contract(
         {"sample_id": "mcq-e", "input": {"queries": [q]}},
         [{"role": "user", "content": [{"type": "text", "text": text}]}],

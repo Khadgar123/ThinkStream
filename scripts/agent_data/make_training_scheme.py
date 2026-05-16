@@ -642,7 +642,9 @@ def _write_trajectory_files(
             if not traj:
                 missing.append(vid)
                 continue
-            rows.append(traj)
+            traj_out = dict(traj)
+            traj_out["split"] = split
+            rows.append(traj_out)
         if missing:
             raise ValueError(f"missing source trajectories for {split}: {missing[:5]}")
         counts[filename] = _write_jsonl(final / filename, rows)
@@ -888,11 +890,6 @@ def main() -> None:
     )
     parser.add_argument("--no-render", action="store_true", help="Only write split trajectories/reports.")
     parser.add_argument("--no-parquet", action="store_true", help="Skip RL parquet generation.")
-    parser.add_argument(
-        "--no-balance-sft",
-        action="store_true",
-        help="Deprecated no-op; SFT rendering is trajectory-based and not downsampled here.",
-    )
     parser.add_argument(
         "--train-allocation",
         choices=["balanced", "weighted", "stratified"],

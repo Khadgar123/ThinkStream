@@ -333,7 +333,10 @@ def chunk_tensordict(td: TensorDict, chunks: int) -> list[TensorDict]:
             lengths = offsets.diff().tolist()
             for i, chunk_td in enumerate(tds):
                 chunk_lengths = lengths[i * chunk_size : (i + 1) * chunk_size]
-                chunk_tensors = [padded_chunks[i][j, :seq_len] for j, seq_len in enumerate(chunk_lengths)]
+                if nt.dim() == 3:
+                    chunk_tensors = [padded_chunks[i][j, :, :seq_len] for j, seq_len in enumerate(chunk_lengths)]
+                else:
+                    chunk_tensors = [padded_chunks[i][j, :seq_len] for j, seq_len in enumerate(chunk_lengths)]
                 chunk_td[key] = torch.nested.as_nested_tensor(chunk_tensors, layout=torch.jagged)
             continue
 
@@ -456,15 +459,50 @@ def index_select_tensor_dict(batch: TensorDict, indices: torch.Tensor | list[int
     data_dict = {}
     batch_size = indices.shape[0]
 
+    def _index_select_nested_tensor(tensor: torch.Tensor, select_indices: torch.Tensor) -> torch.Tensor:
+        offsets = tensor.offsets()
+        values = tensor.values()
+        ragged_idx = int(getattr(tensor, "_ragged_idx", 1))
+        values_ragged_dim = ragged_idx - 1
+        selected_chunks = []
+        selected_lengths = []
+
+        for idx in select_indices.detach().cpu().tolist():
+            start = int(offsets[idx].item())
+            end = int(offsets[idx + 1].item())
+            length = end - start
+            selected_lengths.append(length)
+            selected_chunks.append(values.narrow(values_ragged_dim, start, length))
+
+        if selected_chunks:
+            selected_values = torch.cat(selected_chunks, dim=values_ragged_dim)
+        else:
+            selected_values = values.narrow(values_ragged_dim, 0, 0)
+        selected_offsets = torch.zeros(
+            len(selected_lengths) + 1,
+            dtype=offsets.dtype,
+            device=offsets.device,
+        )
+        if selected_lengths:
+            selected_offsets[1:] = torch.tensor(
+                selected_lengths,
+                dtype=offsets.dtype,
+                device=offsets.device,
+            ).cumsum(0)
+        selected = torch.nested.nested_tensor_from_jagged(
+            selected_values,
+            offsets=selected_offsets,
+            jagged_dim=ragged_idx,
+        )
+        selected._ragged_idx = ragged_idx
+        return selected
+
     if batch is not None:
         for key, tensor in batch.items():
             if isinstance(tensor, torch.Tensor) and not tensor.is_nested:
                 data_dict[key] = tensor[indices]
             elif isinstance(tensor, torch.Tensor) and tensor.is_nested:
-                tensor_lst = tensor.unbind()  # for performance
-                data_dict[key] = torch.nested.as_nested_tensor(
-                    [tensor_lst[idx] for idx in indices], layout=torch.jagged
-                )
+                data_dict[key] = _index_select_nested_tensor(tensor, indices)
             else:
                 # This handles NonTensorStack (indexable by batch dim) and NonTensorData (scalar metadata).
                 if tensor.shape:
@@ -880,4 +918,105 @@ def maybe_fix_3d_position_ids(data: TensorDict):
     # will incur indexing error for ragged tensor. This only happens when using 3D position ids in VLMs.
     # This is likely a bug in tensordict. As a workaround, we manually set _ragged_index.
     if "position_ids" in data.keys() and data["position_ids"].dim() == 3 and data["position_ids"].is_nested:
-        data["position_ids"]._ragged_idx = 2
+        position_ids = data["position_ids"]
+        values = position_ids.values()
+        try:
+            mrope_dim = int(position_ids.shape[1])
+        except Exception:
+            mrope_dim = None
+
+        if mrope_dim is not None and values.dim() == 2 and values.shape[0] == mrope_dim:
+            position_ids._ragged_idx = 2
+            return
+
+        try:
+            chunks = list(position_ids.unbind(0))
+        except RuntimeError:
+            padded = position_ids.to_padded_tensor(0)
+            lengths = position_ids.offsets().diff().detach().cpu().tolist()
+            chunks = [padded[i, :, :seq_len] for i, seq_len in enumerate(lengths)]
+
+        if not chunks or chunks[0].dim() != 2:
+            position_ids._ragged_idx = 2
+            return
+
+        lengths = [int(chunk.shape[-1]) for chunk in chunks]
+        offsets = torch.zeros(
+            len(lengths) + 1,
+            dtype=position_ids.offsets().dtype,
+            device=values.device,
+        )
+        offsets[1:] = torch.tensor(lengths, dtype=offsets.dtype, device=offsets.device).cumsum(0)
+        fixed = torch.nested.nested_tensor_from_jagged(
+            torch.cat(chunks, dim=1),
+            offsets=offsets,
+            jagged_dim=2,
+        )
+        fixed._ragged_idx = 2
+        data["position_ids"] = fixed
+
+
+def nested_position_ids_values(position_ids: torch.Tensor) -> torch.Tensor:
+    """Return remove-padding position ids with shape (mrope_dim, total_len).
+
+    3D jagged position ids should store each sample as (mrope_dim, seq_len).
+    Some TensorDict/NestedTensor paths can expose flattened values with batch
+    folded into the first dimension, which breaks Qwen-VL MRoPE. Rebuild from
+    per-sample slices when the nested values do not already have the channel
+    count in dim 0.
+    """
+    if not position_ids.is_nested:
+        return position_ids
+
+    values = position_ids.values()
+    if position_ids.dim() != 3:
+        return values
+
+    mrope_dim = None
+    try:
+        mrope_dim = int(position_ids.shape[1])
+    except Exception:
+        pass
+
+    if mrope_dim is not None and values.dim() == 2 and values.shape[0] == mrope_dim:
+        return values
+
+    try:
+        chunks = list(position_ids.unbind(0))
+    except RuntimeError:
+        padded = position_ids.to_padded_tensor(0)
+        lengths = position_ids.offsets().diff().detach().cpu().tolist()
+        chunks = [padded[i, :, :seq_len] for i, seq_len in enumerate(lengths)]
+
+    if chunks and chunks[0].dim() == 2:
+        return torch.cat(chunks, dim=1)
+
+    return values
+
+
+def normalize_mrope_position_ids(position_ids: torch.Tensor, expected_channels: int) -> torch.Tensor:
+    """Repair MRoPE channel/batch folding before passing ids to HF models.
+
+    When all sequence lengths in a nested batch are equal, PyTorch can represent
+    ``[(C, L), ...]`` jagged tensors as values with shape ``(B*C, L)``. Qwen3-VL
+    expects the channel dimension to stay exactly ``C=3``.
+    """
+    if expected_channels <= 0 or position_ids.dim() not in (2, 3):
+        return position_ids
+
+    channels = int(position_ids.shape[0])
+    if channels == expected_channels or channels % expected_channels != 0:
+        return position_ids
+
+    if position_ids.dim() == 2:
+        groups = channels // expected_channels
+        return (
+            position_ids.reshape(groups, expected_channels, position_ids.shape[-1])
+            .transpose(0, 1)
+            .reshape(expected_channels, groups * position_ids.shape[-1])
+        )
+
+    if int(position_ids.shape[1]) != 1:
+        return position_ids
+
+    return normalize_mrope_position_ids(position_ids.squeeze(1), expected_channels).unsqueeze(1)

@@ -178,7 +178,7 @@ def stream_segment(args: argparse.Namespace, rows: List[Dict]) -> Tuple[List[Dic
 
 def build_generated_qa_prompt(question_count: int, start: int, end_exclusive: int) -> List[Dict]:
     return [{"type": "text", "text": "\n".join([
-        "<query>",
+        "<active_query>",
         (
             f"  <q>Create {question_count} historical time-localization QA items for the segment "
             f"t={start}-{end_exclusive - 1}. Use only events visible in the previous streaming observations. "
@@ -188,7 +188,7 @@ def build_generated_qa_prompt(question_count: int, start: int, end_exclusive: in
             '{"questions":[{"id":"q1","question":"When ...?","expected_range":"start-end","evidence":"short visible evidence"}]}'
             "</q>"
         ),
-        "</query>",
+        "</active_query>",
     ])}]
 
 
@@ -227,13 +227,13 @@ def answer_qa_from_messages(args: argparse.Namespace, case: str, init_messages: 
     for item in questions:
         messages = deepcopy(init_messages)
         messages.append({"role": "user", "content": [{"type": "text", "text": "\n".join([
-            "<query>",
+            "<active_query>",
             (
                 f'  <q>From initialized historical memory only, answer this time-localization question: '
                 f"{item['question']} Return the most specific historical time range in seconds. "
                 'Use format exactly: <answer>{"time_range":"start-end","evidence":"short reason"}</answer>.</q>'
             ),
-            "</query>",
+            "</active_query>",
         ])}]})
         response = base_probe.call_with_max_tokens(args, messages, args.qa_answer_max_tokens)
         raw = response["choices"][0]["message"].get("content", "")
@@ -319,14 +319,14 @@ def generate_summary(
     if source == "kv":
         messages = deepcopy(stream_messages)
         messages.append({"role": "user", "content": [{"type": "text", "text": "\n".join([
-            "<query>",
+            "<active_query>",
             (
                 "  <q>From all previous streaming observations in this conversation, produce compact "
                 "global_state_summary. Use low-anchor abstract state wording, not dense captions. "
                 f"Output exactly {slot_count} entries covering t={start}-{end_exclusive - 1}; no extra entries. "
                 "Output XML <global_state_summary><m t=\"start-end\">...</m></global_state_summary>.</q>"
             ),
-            "</query>",
+            "</active_query>",
         ])}]})
     elif source == "kv_explicit_text":
         messages = deepcopy(stream_messages)

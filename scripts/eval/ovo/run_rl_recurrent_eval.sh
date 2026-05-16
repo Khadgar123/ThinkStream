@@ -21,14 +21,17 @@ FRAMES_ROOT=${FRAMES_ROOT:-${THINKSTREAM_FRAMES_ROOT:-}}
 TASKS=${TASKS:-}
 SCORING=${SCORING:-strict}
 OUT_DIR=${OUT_DIR:-}
+PREBUILT_TRAJ_JSONL=${PREBUILT_TRAJ_JSONL:-}
+PREBUILT_PARQUET=${PREBUILT_PARQUET:-}
+PREBUILT_BUILD_SUMMARY=${PREBUILT_BUILD_SUMMARY:-}
 MAX_QUESTIONS_PER_TRAJECTORY=${MAX_QUESTIONS_PER_TRAJECTORY:-16}
 MAX_SPAN_CHUNKS=${MAX_SPAN_CHUNKS:-512}
 PRE_CONTEXT_CHUNKS=${PRE_CONTEXT_CHUNKS:-64}
 POST_CONTEXT_CHUNKS=${POST_CONTEXT_CHUNKS:-2}
 PACK_ACROSS_TASKS=${PACK_ACROSS_TASKS:-false}
-SPLIT_POLICY=${SPLIT_POLICY:-query_span}
-SHORT_MIN_SPAN_CHUNKS=${SHORT_MIN_SPAN_CHUNKS:-20}
-SHORT_MAX_SPAN_CHUNKS=${SHORT_MAX_SPAN_CHUNKS:-40}
+SPLIT_POLICY=${SPLIT_POLICY:-strict25_45}
+SHORT_MIN_SPAN_CHUNKS=${SHORT_MIN_SPAN_CHUNKS:-25}
+SHORT_MAX_SPAN_CHUNKS=${SHORT_MAX_SPAN_CHUNKS:-45}
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -38,6 +41,9 @@ while [[ $# -gt 0 ]]; do
         --tasks) TASKS="$2"; shift 2 ;;
         --scoring) SCORING="$2"; shift 2 ;;
         --out_dir|--out-dir) OUT_DIR="$2"; shift 2 ;;
+        --traj_jsonl|--traj-jsonl) PREBUILT_TRAJ_JSONL="$2"; shift 2 ;;
+        --parquet) PREBUILT_PARQUET="$2"; shift 2 ;;
+        --build_summary|--build-summary) PREBUILT_BUILD_SUMMARY="$2"; shift 2 ;;
         --max_questions_per_trajectory|--max-questions-per-trajectory)
             MAX_QUESTIONS_PER_TRAJECTORY="$2"; shift 2 ;;
         --max_span_chunks|--max-span-chunks) MAX_SPAN_CHUNKS="$2"; shift 2 ;;
@@ -51,11 +57,16 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [[ -z "${CKPT}" || -z "${BENCHMARK_JSON}" || -z "${FRAMES_ROOT}" ]]; then
-    echo "ERROR: --ckpt, --benchmark_json, and --frames_root are required" >&2
+USING_PREBUILT=false
+if [[ -n "${PREBUILT_TRAJ_JSONL}" || -n "${PREBUILT_PARQUET}" ]]; then
+    USING_PREBUILT=true
+fi
+
+if [[ -z "${CKPT}" || -z "${FRAMES_ROOT}" || ( "${USING_PREBUILT}" != "true" && -z "${BENCHMARK_JSON}" ) ]]; then
+    echo "ERROR: --ckpt and --frames_root are required; --benchmark_json is required unless --traj_jsonl/--parquet are provided" >&2
     exit 1
 fi
-if [[ ! -f "${BENCHMARK_JSON}" ]]; then
+if [[ "${USING_PREBUILT}" != "true" && ! -f "${BENCHMARK_JSON}" ]]; then
     echo "ERROR: benchmark JSON not found: ${BENCHMARK_JSON}" >&2
     exit 1
 fi
@@ -73,9 +84,9 @@ if [[ -z "${OUT_DIR}" ]]; then
 fi
 mkdir -p "${OUT_DIR}/input" "${OUT_DIR}/validation"
 
-TRAJ_JSONL="${OUT_DIR}/input/ovo_trajectories.jsonl"
-PARQUET="${OUT_DIR}/input/ovo_rl_multi_q.parquet"
-SUMMARY_JSON="${OUT_DIR}/input/build_summary.json"
+TRAJ_JSONL="${PREBUILT_TRAJ_JSONL:-${OUT_DIR}/input/ovo_trajectories.jsonl}"
+PARQUET="${PREBUILT_PARQUET:-${OUT_DIR}/input/ovo_rl_multi_q.parquet}"
+SUMMARY_JSON="${PREBUILT_BUILD_SUMMARY:-${OUT_DIR}/input/build_summary.json}"
 VAL_DUMP_DIR="${OUT_DIR}/validation/generations"
 SUMMARY_OUT="${OUT_DIR}/summary.json"
 
@@ -100,23 +111,43 @@ echo "  post ctx:   ${POST_CONTEXT_CHUNKS}"
 echo "  pack tasks: ${PACK_ACROSS_TASKS}"
 echo "  split:      ${SPLIT_POLICY}"
 echo "  short span: ${SHORT_MIN_SPAN_CHUNKS}-${SHORT_MAX_SPAN_CHUNKS}"
+if [[ "${USING_PREBUILT}" == "true" ]]; then
+    echo "  prebuilt:   ${TRAJ_JSONL}"
+    echo "  parquet:    ${PARQUET}"
+    echo "  build sum:  ${SUMMARY_JSON}"
+fi
 [ -n "${TASKS}" ] && echo "  tasks:      ${TASKS}"
 echo "============================================================"
 
-"${PYTHON_BIN:-python}" scripts/eval/ovo/build_rl_trajectories.py \
-    --benchmark-json "${BENCHMARK_JSON}" \
-    --out-jsonl "${TRAJ_JSONL}" \
-    --out-parquet "${PARQUET}" \
-    --scoring "${SCORING}" \
-    --max-questions-per-trajectory "${MAX_QUESTIONS_PER_TRAJECTORY}" \
-    --max-span-chunks "${MAX_SPAN_CHUNKS}" \
-    --pre-context-chunks "${PRE_CONTEXT_CHUNKS}" \
-    --post-context-chunks "${POST_CONTEXT_CHUNKS}" \
-    --split-policy "${SPLIT_POLICY}" \
-    --short-min-span-chunks "${SHORT_MIN_SPAN_CHUNKS}" \
-    --short-max-span-chunks "${SHORT_MAX_SPAN_CHUNKS}" \
-    --summary-out "${SUMMARY_JSON}" \
-    "${BUILD_ARGS[@]}"
+if [[ "${USING_PREBUILT}" == "true" ]]; then
+    if [[ ! -f "${TRAJ_JSONL}" ]]; then
+        echo "ERROR: prebuilt trajectory JSONL not found: ${TRAJ_JSONL}" >&2
+        exit 1
+    fi
+    if [[ ! -f "${PARQUET}" ]]; then
+        echo "ERROR: prebuilt parquet not found: ${PARQUET}" >&2
+        exit 1
+    fi
+    if [[ ! -f "${SUMMARY_JSON}" ]]; then
+        echo "ERROR: prebuilt build summary not found: ${SUMMARY_JSON}" >&2
+        exit 1
+    fi
+else
+    "${PYTHON_BIN:-python}" scripts/eval/ovo/build_rl_trajectories.py \
+        --benchmark-json "${BENCHMARK_JSON}" \
+        --out-jsonl "${TRAJ_JSONL}" \
+        --out-parquet "${PARQUET}" \
+        --scoring "${SCORING}" \
+        --max-questions-per-trajectory "${MAX_QUESTIONS_PER_TRAJECTORY}" \
+        --max-span-chunks "${MAX_SPAN_CHUNKS}" \
+        --pre-context-chunks "${PRE_CONTEXT_CHUNKS}" \
+        --post-context-chunks "${POST_CONTEXT_CHUNKS}" \
+        --split-policy "${SPLIT_POLICY}" \
+        --short-min-span-chunks "${SHORT_MIN_SPAN_CHUNKS}" \
+        --short-max-span-chunks "${SHORT_MAX_SPAN_CHUNKS}" \
+        --summary-out "${SUMMARY_JSON}" \
+        "${BUILD_ARGS[@]}"
+fi
 
 # MAX_CHUNKS is an absolute chunk cap in the AgentLoop, not the segment span.
 # OVO contains late probes, so keep this above the largest absolute chunk id.
@@ -146,6 +177,7 @@ export GROUP_SIZE="${GROUP_SIZE:-1}"
 export NPROC="${NPROC:-8}"
 export MAX_NEW_TOKEN="${MAX_NEW_TOKEN:-4096}"
 export OUTPUT_DIR="${OUT_DIR}/verl"
+export THINKSTREAM_OUTPUT_DIR="${OUTPUT_DIR}"
 export RUNTIME_ROOT="${RUNTIME_ROOT:-${OUT_DIR}/runtime}"
 
 bash scripts/grpo_train_verl.sh

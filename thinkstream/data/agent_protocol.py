@@ -14,6 +14,7 @@ train/inference format identity.
 import json
 import os
 import re
+import html
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence
 
@@ -189,21 +190,20 @@ def user_input_should_prepend(
     return position == "front" or (position == "compress_front" and inter_chunk)
 
 
-def select_recall_chunks(
+def select_recall_chunks_uniform(
     chunks: Optional[Sequence[Any]],
     max_chunks: Optional[int] = None,
 ) -> List[int]:
-    """Canonical recall chunk post-processing.
+    """De-duplicate and uniformly sample recall chunks over their time span.
 
-    Retrieval ranks candidate chunks first; every SFT/RL/eval caller then
-    de-duplicates, caps to top-K, and sorts the selected chunk ids before
-    rendering frames. This prevents any path from expanding a recall time range
-    into an unbounded number of visual frames.
+    Time-range recall has no query ranking, so "top K" is not meaningful.
+    Select evenly spaced chunks instead, preserving the first and last chunks
+    whenever the range is larger than the recall visual budget.
     """
     limit = RECALL_RETURN_CHUNKS if max_chunks is None else int(max_chunks)
     if limit <= 0:
         return []
-    selected: List[int] = []
+    clean: List[int] = []
     seen = set()
     for raw in chunks or []:
         try:
@@ -212,11 +212,36 @@ def select_recall_chunks(
             continue
         if chunk < 0 or chunk in seen:
             continue
-        selected.append(chunk)
         seen.add(chunk)
-        if len(selected) >= limit:
-            break
-    return sorted(selected)
+        clean.append(chunk)
+    clean = sorted(clean)
+    if len(clean) <= limit:
+        return clean
+    if limit == 1:
+        return [clean[0]]
+    n = len(clean)
+    idxs = [
+        int(round(i * (n - 1) / float(limit - 1)))
+        for i in range(limit)
+    ]
+    out: List[int] = []
+    used = set()
+    for idx in idxs:
+        idx = min(max(0, idx), n - 1)
+        val = clean[idx]
+        if val not in used:
+            used.add(val)
+            out.append(val)
+    # Rounding can collide for small ranges; fill deterministically.
+    if len(out) < limit:
+        for val in clean:
+            if val in used:
+                continue
+            used.add(val)
+            out.append(val)
+            if len(out) >= limit:
+                break
+    return sorted(out)
 
 
 def recall_time_range_for_chunks(
@@ -224,12 +249,12 @@ def recall_time_range_for_chunks(
     *,
     chunk_sec: float = AGENT_CHUNK_SEC,
 ) -> Optional[List[int]]:
-    """Return the exclusive-end video time range covered by selected chunks."""
-    selected = select_recall_chunks(chunks)
+    """Return the closed timestamp span reported for selected recall chunks."""
+    selected = select_recall_chunks_uniform(chunks)
     if not selected:
         return None
     start = min(selected) * float(chunk_sec)
-    end = (max(selected) + 1) * float(chunk_sec)
+    end = max(selected) * float(chunk_sec)
     return [int(start), int(end)]
 
 
@@ -261,14 +286,88 @@ RECALL_VISUAL_LAYOUT_PACKED = "packed"
 AGENT_SPECIAL_TOKENS = (
     "<think>",
     "</think>",
-    "<response>",
-    "</response>",
-    "<silent>",
+    "</Response>",
+    "</Silence>",
     "<tool_call>",
     "</tool_call>",
-    "<MEM>",
-    "</MEM>",
 )
+
+WRONG_RESPONSE_SPECIAL_TOKENS = (
+    "<response>",
+    "</response>",
+    "<answer>",
+    "</answer>",
+)
+
+
+def missing_agent_special_tokens(tokenizer) -> List[str]:
+    """Return canonical agent tags that are not registered as special tokens."""
+    vocab = set(getattr(tokenizer, "get_vocab", lambda: {})().keys())
+    special = set(getattr(tokenizer, "all_special_tokens", []) or [])
+    return [
+        tok for tok in AGENT_SPECIAL_TOKENS
+        if tok not in vocab or tok not in special
+    ]
+
+
+def ensure_agent_special_tokens(tokenizer, model: Optional[Any] = None) -> int:
+    """Register the current Streamo-style agent tags on a tokenizer.
+
+    This intentionally registers ``</Response>`` and ``</Silence>`` as the
+    action tokens. It never registers old paired tags such as
+    ``<response>...</response>`` or ``<answer>...</answer>``.
+    """
+    existing = list(getattr(tokenizer, "additional_special_tokens", []) or [])
+    filtered_existing: List[str] = []
+    seen = set()
+    for tok in existing:
+        if tok in WRONG_RESPONSE_SPECIAL_TOKENS or tok in seen:
+            continue
+        filtered_existing.append(tok)
+        seen.add(tok)
+    merged = list(filtered_existing)
+    for tok in AGENT_SPECIAL_TOKENS:
+        if tok not in seen:
+            merged.append(tok)
+            seen.add(tok)
+
+    missing = missing_agent_special_tokens(tokenizer)
+    has_wrong_registered = any(tok in WRONG_RESPONSE_SPECIAL_TOKENS for tok in existing)
+    if not missing and not has_wrong_registered and merged == existing:
+        return 0
+    old_size = len(tokenizer)
+    added = int(tokenizer.add_special_tokens({
+        "additional_special_tokens": merged,
+    }, replace_additional_special_tokens=True))
+    if model is not None:
+        try:
+            emb = model.get_input_embeddings()
+            model_vocab_size = int(getattr(getattr(emb, "weight", None), "shape", [0])[0])
+        except Exception:
+            model_vocab_size = 0
+        if model_vocab_size and len(tokenizer) > model_vocab_size:
+            model.resize_token_embeddings(len(tokenizer))
+    return added
+
+
+def validate_agent_special_tokens(tokenizer) -> None:
+    """Fail fast when the active action tags are not single special tokens."""
+    for tok in ("</Response>", "</Silence>", "</think>"):
+        ids = tokenizer.encode(tok, add_special_tokens=False)
+        if len(ids) != 1:
+            raise RuntimeError(
+                f"{tok!r} must be one tokenizer token; got token ids={ids}. "
+                "Register AGENT_SPECIAL_TOKENS before training/eval/rollout."
+            )
+    wrong = sorted(
+        set(getattr(tokenizer, "additional_special_tokens", []) or [])
+        & set(WRONG_RESPONSE_SPECIAL_TOKENS)
+    )
+    if wrong:
+        raise RuntimeError(
+            "Old paired response/action tags are registered as special tokens: "
+            f"{wrong}. Use AGENT_SPECIAL_TOKENS with </Response>/</Silence> only."
+        )
 
 
 def normalize_recall_visual_layout(value: Optional[str] = None) -> str:
@@ -292,12 +391,12 @@ def build_recalled_frames_metadata(
     chunk_sec: float = AGENT_CHUNK_SEC,
     frames_per_chunk: int = FRAMES_PER_CHUNK,
 ) -> Optional[Dict[str, Any]]:
-    """Build the canonical <recalled_frames> metadata block.
+    """Build canonical internal recalled-frame metadata.
 
     When frame_paths are supplied, callers should build them from the same
-    selected chunks returned by select_recall_chunks().
+    selected chunks returned by select_recall_chunks_uniform().
     """
-    selected = select_recall_chunks(chunks)
+    selected = select_recall_chunks_uniform(chunks)
     if not selected:
         return None
     tr = recall_time_range_for_chunks(selected, chunk_sec=chunk_sec)
@@ -319,15 +418,16 @@ def build_recall_result_metadata(
     recall_result: Optional[Dict[str, Any]] = None,
     recalled_frames: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    """Return the model-visible <recall_result> metadata only.
+    """Return compact recall metadata for diagnostics/legacy callers.
 
     The retriever may keep text_content/text internally for debugging and hit
     attribution, but the agent prompt must not expose retrieved textual
-    summaries as evidence. The post-recall answer should be grounded in
-    <recalled_frames> visual evidence plus this routing metadata.
+    summaries as evidence. Current prompts carry recall metadata inside the
+    tool-response visual frames. This function is internal metadata only; the
+    prompt renderer does not expose a JSON/XML recall header.
     """
     rr = dict(recall_result or {})
-    returned_chunks = select_recall_chunks(rr.get("returned_chunks") or [])
+    returned_chunks = select_recall_chunks_uniform(rr.get("returned_chunks") or [])
     out: Dict[str, Any] = {
         "source": rr.get("source", ""),
         "time": rr.get("time", ""),
@@ -741,6 +841,12 @@ def _coerce_memory_think(item: Any) -> Dict[str, Any]:
     if isinstance(item, dict):
         text = str(item.get("text", item.get("obs", ""))).strip()
         tr = item.get("time_range")
+        if isinstance(tr, (list, tuple)) and len(tr) >= 2:
+            tr = prompt_time_range(tr)
+            return {
+                "time": f"{tr[0]}-{tr[1]}",
+                "text": text,
+            }
         chunks = item.get("chunks") or []
         use_range = bool(item.get("range_merged")) or (
             isinstance(chunks, list) and len(chunks) > 1
@@ -762,15 +868,35 @@ def _coerce_memory_think(item: Any) -> Dict[str, Any]:
     return {"time": "", "text": str(item).strip()}
 
 
+def _memory_line_sort_key(time_value: Any) -> tuple:
+    text = str(time_value or "").strip()
+    nums = re.findall(r"-?\d+(?:\.\d+)?", text)
+    if not nums:
+        return (float("inf"), float("inf"), text)
+    start = float(nums[0])
+    end = float(nums[-1]) if len(nums) > 1 else start
+    return (start, end, text)
+
+
+def _memory_line(time_value: Any, text: Any) -> str:
+    ts = str(time_value or "").strip()
+    body = " ".join(str(text or "").strip().split())
+    if not ts or not body:
+        return ""
+    return f'<m t="{ts}">{body}</m>'
+
+
 def format_memory_block(memory: Dict) -> str:
-    """Format memory state as text with tags.
+    """Format memory state as bare compact-memory lines.
 
     Input can be either:
     - A snapshot dict with "compressed_segments", "recent_thinks"
     - A pre-structured dict with "compressed", "recent_thinks"
       (as used in per-timestep pipeline samples)
 
-    Both paths produce identical output text.
+    Both paths produce identical output text:
+      <m t="start-end">summary text</m>
+      <m t="N-N+1">archived observation text</m>
 
     Pending status is NOT rendered here — it lives in
     `format_queries_block` as a query entry with empty answers list.
@@ -780,25 +906,29 @@ def format_memory_block(memory: Dict) -> str:
     any future caller accidentally populating it fails loudly instead
     of injecting an OOD tag the model can't interpret.
     """
-    parts = []
+    entries = []
 
     # Compressed segments
     compressed = memory.get("compressed_segments", memory.get("compressed", []))
     for seg in compressed:
-        seg_json = json.dumps(
-            {"time_range": prompt_time_range(seg["time_range"]), "text": seg["text"]},
-            ensure_ascii=False,
-        )
-        parts.append(f"<compressed>{seg_json}</compressed>")
+        tr = prompt_time_range(seg.get("time_range"))
+        if isinstance(tr, (list, tuple)) and len(tr) >= 2:
+            t_value = f"{tr[0]}-{tr[1]}"
+        else:
+            t_value = str(tr or "").strip()
+        line = _memory_line(t_value, seg.get("text", ""))
+        if line:
+            entries.append((_memory_line_sort_key(t_value), line))
 
-    # Archived chunk observations. Render as tagged JSON records rather than prose lines so
-    # the model treats them as archival memory, not a continuation template.
+    # Archived chunk observations. Render them with the same compact <m> form
+    # as compression output so streaming turns never expose old JSON tags.
     recent = memory.get("recent_thinks", memory.get("recent_observations", []))
     for item in recent:
         rec = _coerce_memory_think(item)
         if rec.get("text"):
-            rec_json = json.dumps(rec, ensure_ascii=False)
-            parts.append(f"<memory_think>{rec_json}</memory_think>")
+            line = _memory_line(rec.get("time", ""), rec.get("text", ""))
+            if line:
+                entries.append((_memory_line_sort_key(rec.get("time", "")), line))
 
     # Defensive: SFT data has no <pending> tags; runtime no longer
     # populates pending_questions. If anyone smuggles in a non-empty
@@ -812,7 +942,8 @@ def format_memory_block(memory: Dict) -> str:
             f"via a memory field. Caller must migrate."
         )
 
-    return "\n".join(parts)
+    entries.sort(key=lambda item: item[0])
+    return "\n".join(line for _, line in entries)
 
 
 def build_recall_result_user_content(
@@ -825,29 +956,48 @@ def build_recall_result_user_content(
     render_layout: Optional[str] = None,
     recall_visual_layout: Optional[str] = None,
 ) -> List[Dict]:
-    """Build the second user payload after a recall tool call."""
+    """Build the visual payload returned by the recall tool.
+
+    Keep the model-visible result LongVT/Qwen-like: a short plain status line
+    followed by recalled video blocks. Structured recall metadata stays in the
+    sample dict for audits and masking; it is not exposed as XML/JSON prompt
+    text.
+    """
     normalize_render_layout(render_layout)
     visual_layout = normalize_recall_visual_layout(recall_visual_layout)
     user_content: List[Dict] = []
-    if recalled_frames:
-        returned_chunks = select_recall_chunks(
-            recalled_frames.get("returned_chunks")
+    effective_frames = recalled_frames or {}
+    if effective_frames:
+        returned_chunks = select_recall_chunks_uniform(
+            effective_frames.get("returned_chunks")
             or (recall_result or {}).get("returned_chunks")
             or []
         )
-        rf_header = json.dumps({
-            "time_range": prompt_time_range(recalled_frames["time_range"]),
-            "source": recalled_frames.get("source", "historical_frames"),
-            "n_frames": recalled_frames.get("n_frames", 4),
-            "returned_chunks": returned_chunks,
-        })
+        tr = prompt_time_range(effective_frames["time_range"])
+        if isinstance(tr, (list, tuple)) and len(tr) >= 2:
+            range_text = f"t={tr[0]}-{tr[1]}"
+        else:
+            range_text = "the requested historical range"
+        status = (recall_result or {}).get(
+            "status", "ok" if returned_chunks else "empty"
+        )
+        if status == "ok" and effective_frames.get("frame_paths"):
+            result_text = (
+                "The recall tool returned historical video frames for "
+                f"{range_text}."
+            )
+        else:
+            result_text = (
+                "The recall tool returned no historical video frames for "
+                f"{range_text}."
+            )
         user_content.append({
             "type": "text",
-            "text": f"<recalled_frames>{rf_header}</recalled_frames>",
+            "text": result_text,
             "kv_scope": "recall",
         })
-        if recalled_frames.get("frame_paths"):
-            paths = list(recalled_frames["frame_paths"])
+        if effective_frames.get("frame_paths"):
+            paths = list(effective_frames["frame_paths"])
             frames_per_chunk = int(FRAMES_PER_CHUNK)
             split_by_chunk = (
                 visual_layout == RECALL_VISUAL_LAYOUT_CHUNKED
@@ -859,24 +1009,6 @@ def build_recall_result_user_content(
                     chunk_paths = paths[
                         i * frames_per_chunk:(i + 1) * frames_per_chunk
                     ]
-                    chunk_tr = recall_time_range_for_chunks(
-                        [chunk], chunk_sec=AGENT_CHUNK_SEC
-                    )
-                    chunk_header = {
-                        "chunk": int(chunk),
-                        "time_range": prompt_time_range(chunk_tr)
-                        if chunk_tr else [],
-                        "n_frames": len(chunk_paths),
-                    }
-                    user_content.append({
-                        "type": "text",
-                        "text": (
-                            "<recalled_chunk>"
-                            f"{json.dumps(chunk_header)}"
-                            "</recalled_chunk>"
-                        ),
-                        "kv_scope": "recall",
-                    })
                     append_visual_frames(
                         user_content,
                         chunk_paths,
@@ -890,27 +1022,36 @@ def build_recall_result_user_content(
                         kv_scope="recall",
                     )
             else:
-                tr_start, tr_end = recalled_frames["time_range"]
+                tr_start, tr_end = effective_frames["time_range"]
+                fps = float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC))
                 append_visual_frames(
                     user_content,
                     paths,
                     frame_protocol=frame_protocol,
-                    fps=float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
-                    start_frame_index=int(float(tr_start)) * FRAMES_PER_CHUNK,
-                    total_num_frames=int(float(tr_end)) * FRAMES_PER_CHUNK,
+                    fps=fps,
+                    start_frame_index=int(float(tr_start) * fps),
+                    total_num_frames=int((float(tr_end) + AGENT_CHUNK_SEC) * fps),
                     context_label="recalled frame",
                     min_pixels=min_pixels,
                     max_pixels=max_pixels,
                     kv_scope="recall",
                 )
-    if recall_result:
-        rr_json = json.dumps(
-            build_recall_result_metadata(recall_result, recalled_frames),
-            ensure_ascii=False,
+    elif recall_result:
+        returned_chunks = select_recall_chunks_uniform(
+            (recall_result or {}).get("returned_chunks") or []
         )
+        tr = recall_time_range_for_chunks(returned_chunks)
+        tr = prompt_time_range(tr) if tr else []
+        if isinstance(tr, (list, tuple)) and len(tr) >= 2:
+            range_text = f"t={tr[0]}-{tr[1]}"
+        else:
+            range_text = "the requested historical range"
         user_content.append({
             "type": "text",
-            "text": f"<recall_result>{rr_json}</recall_result>",
+            "text": (
+                "The recall tool returned no historical video frames for "
+                f"{range_text}."
+            ),
             "kv_scope": "recall",
         })
     return user_content
@@ -923,7 +1064,7 @@ def build_recall_result_user_content(
 #   - QUERIES_HISTORY_CAP is a defensive bound for unexpected concurrent open
 #     queries. Production pass3 enforces one active question at a time.
 #   - RECALL_TEXT_MAX_CHARS is legacy/no-op for prompts; recall_result is
-#     metadata-only and recalled_frames carry visual evidence.
+#     internal metadata and recalled_frames carry visual evidence.
 # These are upper-bound guards; SFT samples normally have a single active query.
 # The "32k" eval profile (scripts/eval/eval_profiles.py) loosens further.
 QUERY_HISTORY_POLICY = "recent_k"
@@ -947,57 +1088,56 @@ def answer_format_instruction(
     style = str(answer_style or "").strip().lower()
 
     if form == "multiple_choice":
-        if style == "letter_plus_text":
-            return "Answer format: letter plus option text, e.g. A) option text."
-        if style == "text_only":
-            return "Answer format: answer text only, no option letter."
-        # Default and OvO-compatible style.
-        n_opts = len(list(options or []))
-        letters = [chr(ord("A") + i) for i in range(max(2, min(n_opts or 4, 26)))]
-        if len(letters) == 1:
-            letter_text = letters[0]
-        else:
-            letter_text = ", ".join(letters[:-1]) + f", or {letters[-1]}"
-        return f"Answer format: one letter only ({letter_text})."
+        # Project style: keep the option letter attached to the option
+        # text so the supervised target carries semantic content.
+        return "Answer format: letter plus option text, e.g. A) option text."
     if form == "binary":
-        return "Answer format: a concise binary answer such as Yes or No."
+        return "Answer format: Yes or No only."
     if form == "number":
         return "Answer format: a number only, no explanation."
-    if form == "short_exact":
+    if form in {"short_exact", "literal"}:
         return "Answer format: a concise exact phrase, no explanation."
     if form == "descriptive":
-        return "Answer format: a short natural-language answer."
+        return "Answer format: one concise sentence, no extra explanation."
     return ""
 
 
 def canonical_answer_instruction(question: Dict[str, Any]) -> str:
     """Return the canonical model-visible answer-format instruction.
 
-    Older generated rows may carry stale MC instructions such as A-D after a
-    later pass expands options to A-E. For MC questions the structured options
-    are the source of truth; the stored text is only used to infer legacy style.
+    Older generated rows may carry stale/free-form instructions such as
+    "letter only", "Integer count.", or a custom binary phrase. For known
+    answer_form values, structured metadata is the source of truth and the
+    returned line always uses the canonical "Answer format:" surface. Unknown
+    legacy forms fall back to the stored instruction.
     """
     if not isinstance(question, dict):
         return ""
     answer_form = str(question.get("answer_form") or "").strip()
+    if not answer_form and question.get("options"):
+        answer_form = "multiple_choice"
     answer_style = str(question.get("answer_style") or "").strip()
     provided = str(question.get("answer_instruction") or "").strip()
 
-    if answer_form.lower() != "multiple_choice":
-        return provided or answer_format_instruction(
-            answer_form,
-            answer_style=answer_style,
+    if answer_form.lower() == "multiple_choice":
+        return answer_format_instruction(
+            "multiple_choice",
+            # Keep MCQ surface protocol uniform across generated data, SFT, RL,
+            # and eval. The semantic matcher still accepts the bare letter for
+            # robustness, but prompts should train on letter + option text.
+            answer_style="letter_plus_text",
             options=question.get("options") or [],
         )
 
-    return answer_format_instruction(
-        "multiple_choice",
-        # Keep MCQ surface protocol uniform across generated data, SFT, RL,
-        # and eval. The semantic matcher still accepts text/letter+text for
-        # robustness, but prompts should always ask for the official letter.
-        answer_style="letter_only",
+    instruction = answer_format_instruction(
+        answer_form,
+        answer_style=answer_style,
         options=question.get("options") or [],
     )
+    if instruction:
+        return instruction
+    # Unknown legacy forms may still carry a usable explicit instruction.
+    return provided
 
 
 def _env_int(name: str, default: int) -> int:
@@ -1049,6 +1189,9 @@ def _query_time_key(q: Dict) -> float:
 
 _OPEN_QUERY_STATUSES = {"open", "pending", "active"}
 _CLOSED_QUERY_STATUSES = {"answered", "closed", "done", "replaced"}
+
+QUERY_RESPONSE_HISTORY_INCLUDE = "include"
+QUERY_RESPONSE_HISTORY_OMIT = "omit"
 
 
 def _query_expected_answer_count(q: Dict) -> int:
@@ -1116,6 +1259,63 @@ def query_completed_answer_count(q: Dict) -> int:
 
 def query_is_complete(q: Dict) -> bool:
     return query_completed_answer_count(q) >= _query_expected_answer_count(q)
+
+
+def query_response_history_policy(q: Dict) -> str:
+    """Return whether prior answers should be rendered for this open query.
+
+    Cumulative/counting questions need their previous emitted counts in
+    ``<response_history>``. Independent probe questions, such as current-status
+    or evidence-sufficiency checks at repeated timestamps, should see the
+    active question again but not prior answers because each probe is local to
+    the current timestep.
+    """
+    explicit = str(
+        q.get("response_history_policy")
+        or q.get("query_response_history_policy")
+        or ""
+    ).strip().lower().replace("-", "_")
+    if explicit in {"include", "show", "history", "with_history", "cumulative"}:
+        return QUERY_RESPONSE_HISTORY_INCLUDE
+    if explicit in {"omit", "hide", "none", "no_history", "independent_probe"}:
+        return QUERY_RESPONSE_HISTORY_OMIT
+
+    answer_form = str(q.get("answer_form") or "").strip().lower()
+    question_type = str(q.get("question_type") or "").strip().lower()
+    question_way = str(q.get("question_way") or "").strip().lower()
+    evidence_type = str(q.get("evidence_type") or "").strip().lower()
+    fields = " ".join(
+        str(q.get(k) or "")
+        for k in (
+            "family",
+            "task",
+            "source_task",
+            "ovo_task",
+            "mechanism",
+            "question_way",
+            "evidence_type",
+        )
+    ).upper()
+    tokens = {tok for tok in re.split(r"[^A-Z0-9]+", fields) if tok}
+
+    if (
+        answer_form == "number"
+        or question_way == "repeated_count"
+        or {"F5", "REC"} & tokens
+    ):
+        return QUERY_RESPONSE_HISTORY_INCLUDE
+
+    if (
+        question_way in {"current_status_probe", "evidence_sufficiency_probe"}
+        or evidence_type == "status_probe_stream"
+        or {"F7", "CRR1", "CRR", "SSR"} & tokens
+    ):
+        return QUERY_RESPONSE_HISTORY_OMIT
+
+    if question_type == "multi_emit" and answer_form in {"binary", "yes_no", "yes/no"}:
+        return QUERY_RESPONSE_HISTORY_OMIT
+
+    return QUERY_RESPONSE_HISTORY_INCLUDE
 
 
 def classify_query_answer_timing(q: Dict, response_chunk: int) -> Dict[str, Any]:
@@ -1288,8 +1488,8 @@ def format_queries_block(
     The prompt has two separate query zones:
     - <active_query>: the currently live question, including options and answer
       format derived from question type.
-    - <response_history>: non-empty answers already emitted for that same active
-      query. Answers from closed/older questions are not shown.
+    - <response_history>: prior answers for that same active query when the
+      query is cumulative. Independent probe queries keep the block empty.
 
     If no query is open, this returns an empty string so the next timestep after
     a final answer cannot see stale historical Q&A.
@@ -1320,7 +1520,8 @@ def format_queries_block(
     question = str(q.get("question", ""))
 
     active_lines = [f"{prefix} Q: {question}" if prefix else f"Q: {question}"]
-    if q.get("answer_form") == "multiple_choice" and q.get("options"):
+    answer_form = str(q.get("answer_form") or "").strip()
+    if (answer_form == "multiple_choice" or (not answer_form and q.get("options"))) and q.get("options"):
         opts = " ".join(str(opt) for opt in q.get("options") or [])
         active_lines.append(
             f"{prefix} Options: {opts}" if prefix else f"Options: {opts}"
@@ -1330,14 +1531,15 @@ def format_queries_block(
         active_lines.append(f"{prefix} {instruction}" if prefix else instruction)
 
     answers = []
-    for ans in q.get("answers", []) or []:
-        if isinstance(ans, dict):
-            if ans.get("counts_for_completion") is False:
-                continue
-            answers.append((ans.get("time", ask_t), str(ans.get("text", ""))))
-        else:
-            answers.append((q.get("response_time", ask_t), str(ans)))
-    answers.sort(key=lambda x: _query_time_key({"time": x[0]}))
+    if query_response_history_policy(q) != QUERY_RESPONSE_HISTORY_OMIT:
+        for ans in q.get("answers", []) or []:
+            if isinstance(ans, dict):
+                if ans.get("counts_for_completion") is False:
+                    continue
+                answers.append((ans.get("time", ask_t), str(ans.get("text", ""))))
+            else:
+                answers.append((q.get("response_time", ask_t), str(ans)))
+        answers.sort(key=lambda x: _query_time_key({"time": x[0]}))
     response_lines = []
     for t, text in answers:
         aprefix = _format_query_time_prefix(t)
@@ -1403,12 +1605,12 @@ def build_user_content(
     """Build the user content list for a single-step message.
 
     Ordinary streaming ordering:
-    <user_input> → <memory> → current <visual_window> + video_meta chunk →
-    <active_query>/<response_history>.
+    <user_input> -> bare <m t="..."> memory lines -> current <t=N> +
+    video_meta chunk -> <active_query>/<response_history>.
 
     The fresh user event stays at the front, historical text memory appears
     before vision, and the active query/answer format appears after the visual
-    window so the model sees the latest evidence before the final task.
+    timestamp so the model sees the latest evidence before the final task.
 
     Pre-extracted frames are rendered by the active frame protocol. The
     supported production setting is ``video_meta``: one Qwen video block with
@@ -1470,10 +1672,12 @@ def build_user_content(
     query_last = layout == RENDER_LAYOUT_STANDARD_QUERY_LAST
 
     def append_memory_block() -> None:
+        text = str(memory_text or "").strip()
+        if not text:
+            return
         user_content.append({
             "type": "text",
-            "text": f"\n<memory>\n{memory_text}\n</memory>" if user_content
-            else f"<memory>\n{memory_text}\n</memory>",
+            "text": f"\n{text}" if user_content else text,
         })
 
     def append_queries_block() -> None:
@@ -1500,18 +1704,10 @@ def build_user_content(
         video_start = chunk_idx * chunk_sec
         video_end = video_start + chunk_sec
         current_start = chunk_idx * chunk_sec
-        current_end = current_start + chunk_sec
-        n_frames = FRAMES_PER_CHUNK
-
-        vw_header = json.dumps({
-            "start": prompt_time_value(video_start),
-            "end": prompt_time_value(video_end),
-            "frames": n_frames,
-            "current_time": prompt_time_value(current_start),
-        })
+        t_marker = f"<t={prompt_time_value(current_start)}>"
         user_content.append({
             "type": "text",
-            "text": f"\n<visual_window>{vw_header}</visual_window>",
+            "text": f"\n{t_marker}" if user_content else t_marker,
         })
 
         if frame_paths:
@@ -1528,7 +1724,7 @@ def build_user_content(
                 max_pixels=max_pixels,
                 kv_scope="ordinary",
             )
-        else:
+        elif video_path:
             user_content.append({
                 "type": "video",
                 "video": video_path,
@@ -1572,11 +1768,10 @@ def build_user_content(
 # Output Parsing
 # ---------------------------------------------------------------------------
 # Architecture:
-#   response terminal   = <response>text</response> or <silent>
+#   response terminal   = </Response> text or </Silence>
 #   tool (recall)       = <tool_call>{"name":"recall","arguments":{...}}</tool_call>
 #   compress turn       = stage-marked memory update. The assistant emits
-#                         <MEM>...</MEM> with compact <m> entries; legacy
-#                         compress tool_call parsing is retained for older data.
+#                         bare compact <m> entries only.
     # Tools registered via system <tools> block (auto-rendered by chat_template
 # when tools=tools is passed to apply_chat_template).
 
@@ -1815,7 +2010,7 @@ def tools_for_turn(
     """Return the Qwen tool schema valid for one generation turn.
 
     - streaming turns expose recall only;
-    - compression turns expose no tools; compact memory is raw <MEM> content;
+    - compression turns expose no tools; compact memory is raw <m> content;
     - recall-result answer turns expose no tools.
     """
     kind = normalize_tool_turn_kind(
@@ -1826,7 +2021,7 @@ def tools_for_turn(
     if kind == "streaming":
         return STREAMING_TOOLS_SCHEMA
     if kind == "compress":
-        # Compact-memory update is plain assistant content (<MEM>...</MEM>),
+        # Compact-memory update is plain assistant content (<m> lines),
         # not a function call. Keep legacy compress tool schema defined above
         # for old cached data, but do not expose it in new turns.
         return None
@@ -1897,30 +2092,37 @@ def build_assistant_content(
     """Build assistant message content in canonical v12 format.
 
     Returns a single string with <think>...</think> followed by exactly one
-    of: <tool_call>{...}</tool_call> | <response>...</response> | <silent>.
+    of: recall <tool_call>{...}</tool_call> | </Response> answer | </Silence>.
+    For ``kind="compress"``, returns bare compact-memory ``<m>`` lines only.
 
     Args:
         think: think content (40-80 tokens recommended).
         kind: which terminal to emit.
-        answer_text: text inside <response>...</response> (empty for silent).
-        recall_query: dict with "query" + "time_range" keys.
+        answer_text: text after </Response> (empty for silent).
+        recall_query: dict with "start_time" and "end_time" keys. Recall tool
+            calls intentionally omit text queries; the retriever samples from
+            the requested historical video interval.
         compress_summary: dict with "time_range" (list) + "text" keys.
     """
-    parts = [f"<think>{think}</think>"]
-
     if kind == "answer":
+        parts = [f"<think>{think}</think>"]
         if str(answer_text or "").strip():
-            parts.append(f"<response>{answer_text}</response>")
+            parts.append(f"</Response> {str(answer_text).strip()}")
         else:
-            parts.append("<silent>")
+            parts.append("</Silence>")
     elif kind == "recall":
+        parts = [f"<think>{think}</think>"]
         if not recall_query:
             raise ValueError("kind='recall' requires recall_query dict")
+        start_time = recall_query.get("start_time")
+        end_time = recall_query.get("end_time")
+        if start_time is None or end_time is None:
+            raise ValueError("kind='recall' requires start_time and end_time")
         tool_call = {
             "name": "recall",
             "arguments": {
-                "query": recall_query.get("query", ""),
-                "time_range": recall_query.get("time_range", ""),
+                "start_time": prompt_time_value(start_time),
+                "end_time": prompt_time_value(end_time),
             },
         }
         parts.append(
@@ -1929,62 +2131,50 @@ def build_assistant_content(
     elif kind == "compress":
         if not compress_summary:
             raise ValueError("kind='compress' requires compress_summary dict")
-        tool_call = {
-            "name": "compress",
-            "arguments": {
-                "time_range": compress_summary.get("time_range", []),
-                "text": compress_summary.get("text", ""),
-            },
-        }
-        parts.append(
-            f'<tool_call>\n{json.dumps(tool_call, ensure_ascii=False)}\n</tool_call>'
-        )
+        memory_text = str(compress_summary.get("memory_text") or "").strip()
+        if memory_text:
+            return memory_text
+        time_range = compress_summary.get("time_range", [])
+        if isinstance(time_range, (list, tuple)) and len(time_range) >= 2:
+            start, end = time_range[0], time_range[1]
+        else:
+            start, end = 0, 0
+        try:
+            start_i = int(float(start))
+            end_i = int(float(end))
+        except (TypeError, ValueError):
+            start_i, end_i = 0, 0
+        if end_i < start_i:
+            start_i, end_i = end_i, start_i
+        text = html.escape(str(compress_summary.get("text", "")).strip(), quote=False)
+        return f'<m t="{start_i}-{end_i}">{text}</m>'
     else:
         raise ValueError(f"Unknown kind: {kind!r}. Expected answer|recall|compress.")
 
     return "".join(parts)
 
 
-# Legacy "start-end" string form (pass3 / older training data). Kept ONLY as
-# a backward-compat fallback for old SFT data that emitted the string form;
-# new code emits the canonical two-int array form.
-_LEGACY_RECALL_TIME_RANGE_RE = re.compile(
-    r"^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$"
-)
-
-
 def _validate_recall_tool_args(args: Any) -> Optional[str]:
     """Validate recall tool_call arguments.
 
-    Canonical form (aligned with compress): ``time_range: [start, end]``
-    (two non-negative numbers, end > start). The legacy ``"start-end"``
-    string form is still accepted for backward compatibility with pass3
-    samples generated before the type unification.
+    Canonical form: ``start_time`` and ``end_time`` absolute seconds. The
+    interval is closed: [start_time, end_time].
     """
     if not isinstance(args, dict):
         return "recall arguments must be an object"
-    query = args.get("query")
-    if not isinstance(query, str) or not query.strip():
-        return "recall query must be a non-empty string"
-    time_range = args.get("time_range")
-    if isinstance(time_range, list):
-        if (
-            len(time_range) != 2
-            or not all(isinstance(v, (int, float)) for v in time_range)
-        ):
-            return "recall time_range must be a two-number array [start, end]"
-        if float(time_range[1]) <= float(time_range[0]):
-            return "recall time_range end must be greater than start"
-        return None
-    # Legacy string fallback.
-    if isinstance(time_range, str):
-        m = _LEGACY_RECALL_TIME_RANGE_RE.fullmatch(time_range)
-        if not m:
-            return "recall time_range must be a [start, end] array (legacy 'start-end' string also accepted)"
-        if float(m.group(2)) <= float(m.group(1)):
-            return "recall time_range end must be greater than start"
-        return None
-    return "recall time_range must be a two-number array [start, end]"
+    allowed = {"start_time", "end_time"}
+    extra = sorted(str(k) for k in args.keys() if k not in allowed)
+    if extra:
+        return f"recall arguments only support start_time and end_time; got extra keys: {extra}"
+    start_time = args.get("start_time")
+    end_time = args.get("end_time")
+    if not isinstance(start_time, (int, float)) or not isinstance(end_time, (int, float)):
+        return "recall start_time and end_time must be numbers"
+    if float(start_time) < 0:
+        return "recall start_time must be non-negative"
+    if float(end_time) < float(start_time):
+        return "recall end_time must be greater than or equal to start_time"
+    return None
 
 
 def _validate_compress_tool_args(args: Any) -> Optional[str]:
@@ -2151,16 +2341,16 @@ def diagnose_compress_output(output_text: str) -> Dict[str, Any]:
     """Diagnose partial compact-memory output structure."""
     text = strip_chat_template_boundary_tokens(output_text or "")
     think_closed = bool(re.search(r"<think>.*?</think>", text, re.DOTALL))
-    mem_open_pos = text.find("<MEM>")
-    mem_close_pos = text.find("</MEM>")
-    mem_open = mem_open_pos >= 0
-    mem_closed = mem_close_pos > mem_open_pos >= 0
-    mem_body = text[mem_open_pos + len("<MEM>"):mem_close_pos if mem_closed else None] if mem_open else ""
+    mem_body = re.sub(r"</?MEM>", "", text, flags=re.IGNORECASE).strip()
     mem_lines = re.findall(r'<m\s+t="[^"]+"\s*>.*?</m>', mem_body, flags=re.DOTALL | re.IGNORECASE)
     mem_entry_count_ok = 4 <= len(mem_lines) <= 6
-    if mem_open:
-        raw_mem_prefix = not text[:mem_open_pos].strip()
-        front_prefix_ok = bool(mem_open and len(mem_lines) >= 1 and (think_closed or raw_mem_prefix))
+    if mem_lines:
+        first_line = re.search(r'<m\s+t="[^"]+"\s*>', mem_body, flags=re.IGNORECASE)
+        raw_mem_prefix = bool(first_line and not mem_body[:first_line.start()].strip())
+        front_prefix_ok = bool(len(mem_lines) >= 1 and (think_closed or raw_mem_prefix))
+        open_m = len(re.findall(r"<m\b", mem_body, flags=re.IGNORECASE))
+        close_m = len(re.findall(r"</m>", mem_body, flags=re.IGNORECASE))
+        mem_closed = open_m == close_m and open_m > 0
         likely_truncated = bool(front_prefix_ok and not mem_closed)
         label = (
             "complete"
@@ -2182,7 +2372,7 @@ def diagnose_compress_output(output_text: str) -> Dict[str, Any]:
             "text_closed": mem_closed,
             "json_complete": False,
             "tool_call_closed": False,
-            "mem_open": mem_open,
+            "mem_open": True,
             "mem_closed": mem_closed,
             "mem_entry_count": len(mem_lines),
             "mem_entry_count_ok": mem_entry_count_ok,
@@ -2318,10 +2508,11 @@ def parse_agent_output(
     output_text: str,
     *,
     allow_bare_answer: bool = False,
+    allow_bare_memory: bool = True,
     allow_malformed_tool_call: bool = False,
     allow_unclosed_response: bool = False,
 ) -> Dict:
-    """Parse agent output (think + response/silent/tool_call/MEM).
+    """Parse agent output (think + response/silent/tool_call/compact memory).
 
     Returns:
         {
@@ -2329,10 +2520,10 @@ def parse_agent_output(
             "think": str,
             "kind": "answer" | "recall" | "compress" | "unknown",
             "answer_text": str | None,         # set when kind=answer
-            "tool_call": dict | None,          # parsed JSON when kind=recall|legacy compress
-            "memory_text": str | None,         # parsed <MEM> when kind=compress
+            "tool_call": dict | None,          # parsed JSON when kind=recall
+            "memory_text": str | None,         # parsed <m> lines when kind=compress
             "format_error": str | None,        # set when parsing fails
-            "lenient_unclosed_response": bool, # true when answer recovered from <response> without close
+            "lenient_unclosed_response": bool, # kept false; old paired response tags are invalid
         }
     """
     output_text = strip_chat_template_boundary_tokens(output_text or "")
@@ -2358,38 +2549,23 @@ def parse_agent_output(
             else "multiple <think> blocks"
         )
 
-    response_matches = list(re.finditer(r'<response>(.*?)</response>', output_text, re.DOTALL))
-    silent_matches = list(re.finditer(r'<silent>\s*(?:</silent>)?', output_text, re.DOTALL))
-    # Legacy compatibility only. New generated/rendered data must use
-    # <response> for answers and <silent> for empty turns.
-    answer_matches = list(re.finditer(r'<answer>(.*?)</answer>', output_text, re.DOTALL))
+    response_matches = list(re.finditer(r'</Response>\s*(.*?)\s*$', output_text, re.DOTALL))
+    silent_matches = list(re.finditer(r'</Silence>\s*', output_text, re.DOTALL))
     tool_matches = list(re.finditer(r'<tool_call>(.*?)</tool_call>', output_text, re.DOTALL))
     mem_matches = list(re.finditer(r'<MEM>\s*(.*?)\s*</MEM>', output_text, re.DOTALL | re.IGNORECASE))
-    response_match = (
-        response_matches[0]
-        if response_matches else None
-    )
-    silent_match = (
-        silent_matches[0]
-        if silent_matches else None
-    )
-    answer_match = (
-        answer_matches[0]
-        if answer_matches else None
-    )
-    tool_match = (
-        tool_matches[0]
-        if tool_matches else None
-    )
-    mem_match = (
-        mem_matches[0]
-        if mem_matches else None
-    )
+    bare_m_matches = list(re.finditer(
+        r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>(.*?)</m>',
+        output_text,
+        re.DOTALL | re.IGNORECASE,
+    ))
+    response_match = response_matches[0] if response_matches else None
+    silent_match = silent_matches[0] if silent_matches else None
+    tool_match = tool_matches[0] if tool_matches else None
+    mem_match = mem_matches[0] if mem_matches else None
 
     n_terminals = (
         int(response_match is not None)
         + int(silent_match is not None)
-        + int(answer_match is not None)
         + int(tool_match is not None)
         + int(mem_match is not None)
     )
@@ -2397,19 +2573,16 @@ def parse_agent_output(
         result["format_error"] = "multiple terminal blocks present"
         return result
     if len(response_matches) > 1:
-        result["format_error"] = "multiple <response> blocks"
+        result["format_error"] = "multiple response terminal blocks"
         return result
     if len(silent_matches) > 1:
-        result["format_error"] = "multiple <silent> blocks"
-        return result
-    if len(answer_matches) > 1:
-        result["format_error"] = "multiple legacy <answer> blocks"
+        result["format_error"] = "multiple silent terminal blocks"
         return result
     if len(tool_matches) > 1:
         result["format_error"] = "multiple <tool_call> blocks"
         return result
     if len(mem_matches) > 1:
-        result["format_error"] = "multiple <MEM> blocks"
+        result["format_error"] = "multiple legacy <MEM> blocks"
         return result
 
     if (
@@ -2417,7 +2590,7 @@ def parse_agent_output(
         and len(think_matches) == 1
         and n_terminals == 1
     ):
-        terminal_match = response_match or silent_match or answer_match or tool_match or mem_match
+        terminal_match = response_match or silent_match or tool_match or mem_match
         assert terminal_match is not None
         think_match = think_matches[0]
         if think_match.start() > terminal_match.start():
@@ -2443,11 +2616,6 @@ def parse_agent_output(
         result["answer_text"] = ""
         return result
 
-    if answer_match:
-        result["kind"] = "answer"
-        result["answer_text"] = answer_match.group(1).strip()
-        return result
-
     if mem_match:
         body = mem_match.group(1).strip()
         line_matches = list(re.finditer(
@@ -2455,18 +2623,19 @@ def parse_agent_output(
             body,
             re.DOTALL | re.IGNORECASE,
         ))
-        if not (4 <= len(line_matches) <= 6):
-            result["format_error"] = f"memory update must contain 4-6 <m> lines, got {len(line_matches)}"
+        if not line_matches:
+            result["format_error"] = "memory update must contain at least one <m> line"
             return result
         if any(not (m.group(3) or "").strip() for m in line_matches):
             result["format_error"] = "memory update contains empty <m> line"
             return result
+        memory_text = "\n".join(m.group(0).strip() for m in line_matches)
         result["kind"] = "compress"
-        result["memory_text"] = mem_match.group(0).strip()
+        result["memory_text"] = memory_text
         result["format_error"] = None
         result["tool_call"] = {
             "name": "memory_update",
-            "arguments": {"memory_text": result["memory_text"]},
+            "arguments": {"memory_text": memory_text},
         }
         return result
 
@@ -2479,42 +2648,6 @@ def parse_agent_output(
 
         return _finish_tool_call_parse(result, tool_obj)
 
-    if allow_unclosed_response and len(think_matches) == 1 and n_terminals == 0:
-        response_open_matches = list(re.finditer(r'<response>', output_text))
-        if len(response_open_matches) == 1 and '</response>' not in output_text:
-            think_match = think_matches[0]
-            response_open = response_open_matches[0]
-            if response_open.start() >= think_match.end():
-                outside_before_response = (
-                    output_text[:think_match.start()]
-                    + output_text[think_match.end():response_open.start()]
-                )
-                body = output_text[response_open.end():].strip()
-                nested_terminal = any(
-                    marker in body
-                    for marker in (
-                        "<silent",
-                        "<tool_call",
-                        "</tool_call",
-                        "<MEM",
-                        "</MEM",
-                        "<answer",
-                        "</answer",
-                        "<think>",
-                        "</think>",
-                    )
-                )
-                if not outside_before_response.strip() and not nested_terminal:
-                    result["kind"] = "answer"
-                    result["answer_text"] = body
-                    result["lenient_unclosed_response"] = True
-                    missing_close = "missing </response> closing tag"
-                    if result["format_error"]:
-                        result["format_error"] = f"{result['format_error']}; {missing_close}"
-                    else:
-                        result["format_error"] = missing_close
-                    return result
-
     if allow_malformed_tool_call and len(think_matches) == 1:
         tool_body = _extract_malformed_tool_call_body(output_text, think_matches[0])
         if tool_body:
@@ -2524,6 +2657,23 @@ def parse_agent_output(
                 result["format_error"] = f"tool_call JSON parse error: {e}"
                 return result
             return _finish_tool_call_parse(result, tool_obj)
+
+    if allow_bare_memory and bare_m_matches:
+        if not bare_m_matches:
+            result["format_error"] = "memory update must contain at least one <m> line"
+            return result
+        if any(not (m.group(3) or "").strip() for m in bare_m_matches):
+            result["format_error"] = "memory update contains empty <m> line"
+            return result
+        memory_text = "\n".join(m.group(0).strip() for m in bare_m_matches)
+        result["kind"] = "compress"
+        result["memory_text"] = memory_text
+        result["format_error"] = None
+        result["tool_call"] = {
+            "name": "memory_update",
+            "arguments": {"memory_text": memory_text},
+        }
+        return result
 
     if allow_bare_answer and len(think_matches) == 1:
         think_match = think_matches[0]
@@ -2542,7 +2692,7 @@ def parse_agent_output(
             result["format_error"] = None
             return result
 
-    result["format_error"] = "neither <response>/<silent> nor <tool_call> nor <MEM> emitted"
+    result["format_error"] = "neither </Response>/</Silence> nor recall <tool_call> nor compact-memory <m> lines emitted"
     return result
 
 
@@ -2561,11 +2711,8 @@ def _finish_tool_call_parse(result: Dict[str, Any], tool_obj: Any) -> Dict[str, 
             return result
         result["kind"] = "recall"
     elif name == "compress":
-        schema_error = _validate_compress_tool_args(args)
-        if schema_error:
-            result["format_error"] = schema_error
-            return result
-        result["kind"] = "compress"
+        result["format_error"] = "compress tool_call is not allowed; emit bare compact-memory <m> lines"
+        return result
     else:
         result["format_error"] = f"unknown tool name: {name!r}"
         return result
@@ -2602,10 +2749,9 @@ def _loads_tool_call_json_lenient(raw: str) -> Dict:
     (``\'``). That sequence is invalid JSON because apostrophes do not need
     escaping, but the intended value is unambiguous.
 
-    Compression summaries also occasionally contain raw OCR quotes/newlines, or
-    a duplicated ``<tool_call>`` prefix inside the summary text. For that case,
-    recover only the known ``compress`` object shape and leave other malformed
-    JSON strict.
+    Recall tool calls may be truncated or lightly malformed in rollout probes;
+    recover only the known recall object shape and leave other malformed JSON
+    strict. Compress no longer has a tool-call representation.
     """
     try:
         return json.loads(raw)
@@ -2681,33 +2827,25 @@ def _parse_tool_call_json_fallback(raw: str) -> Optional[Dict[str, Any]]:
         return None
     name = names[-1]
 
-    if name == "compress":
-        ranges = list(re.finditer(
-            r'"time_range"\s*:\s*\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]',
+    if name == "recall":
+        starts = list(re.finditer(
+            r'"start_time"\s*:\s*(-?\d+(?:\.\d+)?)',
             text,
             re.DOTALL,
         ))
-        if not ranges:
+        ends = list(re.finditer(
+            r'"end_time"\s*:\s*(-?\d+(?:\.\d+)?)',
+            text,
+            re.DOTALL,
+        ))
+        if not starts or not ends:
             return None
-        start_raw, end_raw = ranges[-1].group(1), ranges[-1].group(2)
-        summary = _extract_json_string_value_lenient(text, "text", last=True)
-        if summary is None or not summary.strip():
-            return None
+        start_raw, end_raw = starts[-1].group(1), ends[-1].group(1)
         start = float(start_raw) if "." in start_raw else int(start_raw)
         end = float(end_raw) if "." in end_raw else int(end_raw)
         return {
-            "name": "compress",
-            "arguments": {"time_range": [start, end], "text": summary.strip()},
-        }
-
-    if name == "recall":
-        query = _extract_json_string_value_lenient(text, "query", last=True)
-        time_range = _extract_json_string_value_lenient(text, "time_range", last=True)
-        if query is None or time_range is None:
-            return None
-        return {
             "name": "recall",
-            "arguments": {"query": query.strip(), "time_range": time_range.strip()},
+            "arguments": {"start_time": start, "end_time": end},
         }
 
     return None
@@ -2725,10 +2863,9 @@ def has_compress_trigger(user_text: str) -> bool:
 def extract_compress_trigger_range(user_text: str) -> Optional[List[int]]:
     """Extract a legacy trigger range if present.
 
-    Current v12 data uses boolean ``<compress_trigger/>`` and puts the gold
-    range only in the assistant compress tool_call. This parser is retained
-    for archived v11/v12.0 samples and eval fixtures that still carry a
-    range attribute.
+    Current v12 data uses boolean ``<compress_trigger/>`` and the assistant
+    emits compact-memory ``<m>`` lines. This parser is retained for archived
+    v11/v12.0 samples and eval fixtures that still carry a range attribute.
     """
     m = re.search(
         r"<compress_trigger\s+range\s*=\s*['\"]?(\d+)\s*-\s*(\d+)['\"]?\s*/?>",

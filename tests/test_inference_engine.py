@@ -201,6 +201,9 @@ class WindowedResetTests(unittest.TestCase):
             def __init__(self):
                 self.cache = _StubCache(num_layers=2, batch_size=batch_size, initial=200)
 
+            def reset_slots(self, slot_ids):
+                self.cache.cache_seqlens[:, slot_ids] = 0
+
         stub = StreamingWindowInferenceEngine.__new__(StreamingWindowInferenceEngine)
         stub.batch_size = batch_size
         stub.video_flex_window_size = window_size
@@ -255,6 +258,23 @@ class WindowedResetTests(unittest.TestCase):
             stub._window_starts[1], torch.tensor([11, 0, 0, 0], dtype=torch.long)
         ))
         self.assertTrue(torch.equal(stub._window_count, keep_w))
+
+    def test_reset_slots_clears_only_selected_window_row(self):
+        stub = self._make_windowed_stub(batch_size=2, window_size=4, init_count=[4, 3])
+        from thinkstream.models.inference import StreamingWindowInferenceEngine
+
+        StreamingWindowInferenceEngine.reset_slots(stub, [1])
+
+        self.assertTrue(torch.equal(
+            stub._window_starts[0], torch.tensor([10, 20, 30, 40], dtype=torch.long)
+        ))
+        self.assertTrue(torch.equal(
+            stub._window_ends[0], torch.tensor([15, 25, 35, 45], dtype=torch.long)
+        ))
+        self.assertEqual(stub._window_count[0].item(), 4)
+        self.assertTrue(torch.all(stub._window_starts[1] == 0))
+        self.assertTrue(torch.all(stub._window_ends[1] == 0))
+        self.assertEqual(stub._window_count[1].item(), 0)
 
 
 class RecallSidecarWindowTests(unittest.TestCase):
@@ -383,6 +403,56 @@ class RecallSidecarWindowTests(unittest.TestCase):
         self.assertTrue(torch.equal(calls[0][1], torch.tensor([106])))
         self.assertTrue(torch.equal(calls[1][0], torch.tensor([80])))
         self.assertTrue(torch.equal(calls[1][1], torch.tensor([90])))
+
+    def test_post_recall_delete_previous_span_respects_active_mask(self):
+        from thinkstream.models import inference as inference_mod
+
+        stub = self._make_windowed_generate_stub()
+        stub.batch_size = 2
+        stub.decoder.cache.batch_size = 2
+        stub.decoder.cache.cache_seqlens = torch.tensor([[100, 200]], dtype=torch.int32)
+        stub._window_starts = torch.tensor([[10, 20], [30, 40]], dtype=torch.long)
+        stub._window_ends = torch.tensor([[15, 25], [35, 45]], dtype=torch.long)
+        stub._window_count = torch.tensor([2, 2], dtype=torch.long)
+        stub._window_is_recall = torch.tensor(
+            [[False, False], [False, False]], dtype=torch.bool
+        )
+        stub._window_recall_ttl = torch.tensor([[-1, -1], [-1, -1]], dtype=torch.long)
+        stub._last_generation_starts = torch.tensor([80, 180], dtype=torch.long)
+        stub._last_generation_ends = torch.tensor([90, 190], dtype=torch.long)
+        input_ids = torch.tensor(
+            [[1, 99, 99, 2, 99, 3], [0, 0, 0, 0, 0, 0]],
+            dtype=torch.long,
+        )
+        attention_mask = torch.tensor(
+            [[1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 0]],
+            dtype=torch.long,
+        )
+        position_ids = torch.arange(input_ids.shape[1]).unsqueeze(0).repeat(2, 1)
+
+        with patch.object(
+            inference_mod.StreamingInferenceEngine,
+            "generate",
+            new=self._fake_parent_generate,
+        ):
+            inference_mod.StreamingWindowInferenceEngine.generate(
+                stub,
+                input_ids=input_ids,
+                attention_mask=attention_mask,
+                position_ids=position_ids,
+                max_new_tokens=4,
+                turn_kind="post_recall",
+                recall_kv_policy="next_turn",
+                delete_previous_assistant_kv=True,
+                active_mask=torch.tensor([True, False]),
+            )
+
+        calls = stub._cache_eviction.calls
+        self.assertEqual(len(calls), 2)
+        self.assertTrue(torch.equal(calls[0][0], torch.tensor([100, 0])))
+        self.assertTrue(torch.equal(calls[0][1], torch.tensor([106, 0])))
+        self.assertTrue(torch.equal(calls[1][0], torch.tensor([80, 0])))
+        self.assertTrue(torch.equal(calls[1][1], torch.tensor([90, 0])))
 
     def test_streaming_visual_turn_still_slides_ordinary_window(self):
         from thinkstream.models import inference as inference_mod

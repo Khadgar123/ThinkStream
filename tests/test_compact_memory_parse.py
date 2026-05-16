@@ -13,7 +13,7 @@ def _compact_meta():
     }
 
 
-def test_compact_memory_parser_wraps_bare_m_lines():
+def test_compact_memory_parser_keeps_bare_m_lines():
     raw = """
   <m t="0-1">A red title card appears.</m>
   <m t="2-3">Players enter the cricket field.</m>
@@ -28,8 +28,8 @@ def test_compact_memory_parser_wraps_bare_m_lines():
     parsed = parse_compress_result(raw, _compact_meta())
     assert parsed["parse_success"] is True
     assert parsed["format_repaired"] is True
-    assert parsed["text"].startswith("<MEM>")
-    assert parsed["text"].endswith("</MEM>")
+    assert parsed["text"].lstrip().startswith("<m ")
+    assert "<MEM>" not in parsed["text"]
 
 
 def test_compact_memory_parser_closes_line_separated_m_tags():

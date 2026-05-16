@@ -73,8 +73,8 @@ def _refine_selected_recall_with_rollout(
 
     # Local import avoids making pass3b import pass3c at module load time.
     from .pass3c_samples import (
-        RECALL_RETURN_CHUNKS,
         _is_unanswerable_card,
+        _recall_chunks_for_request,
         _recall_query_available,
         _recall_query_for,
         _recall_result_for,
@@ -83,28 +83,8 @@ def _refine_selected_recall_with_rollout(
         _support_chunks,
         _support_chunks_before,
         _valid_recall_query,
-        bm25_retrieve,
-        select_recall_chunks,
+        select_recall_chunks_uniform,
     )
-
-    def archive_before(current_chunk: int) -> List[Dict]:
-        archive: List[Dict] = []
-        for think in rollout.get("thinks") or []:
-            try:
-                ci = int(think.get("chunk_idx", think.get("chunk", -1)))
-            except (AttributeError, TypeError, ValueError):
-                continue
-            if ci < 0 or ci >= int(current_chunk):
-                continue
-            text = str(think.get("think", think.get("text", "")) or "").strip()
-            if not text:
-                continue
-            archive.append({
-                "chunk": ci,
-                "time": f"{ci}-{ci + 1}",
-                "text": text,
-            })
-        return archive
 
     def has_kv_age_gap(chunks: List[int], current_chunk: int) -> bool:
         """True when any chunk is strictly older than the visual KV window."""
@@ -117,14 +97,14 @@ def _refine_selected_recall_with_rollout(
                 return True
         return False
 
-    def raw_bm25_chunks(query: Dict, current_chunk: int) -> List[int]:
-        retrieved = bm25_retrieve(
+    def raw_time_range_chunks(query: Dict, current_chunk: int) -> List[int]:
+        retrieved_chunks = _recall_chunks_for_request(
+            rollout,
             query,
-            archive_before(current_chunk),
-            max_results=RECALL_RETURN_CHUNKS,
+            current_chunk,
         )
         out: List[int] = []
-        for c in select_recall_chunks(retrieved.get("returned_chunks") or []):
+        for c in select_recall_chunks_uniform(retrieved_chunks):
             try:
                 out.append(int(c))
             except (TypeError, ValueError):
@@ -154,7 +134,7 @@ def _refine_selected_recall_with_rollout(
                     stats["dropped_invalid_query"] += 1
                     drop_slot(p, int(c), "invalid_wait_query")
                     continue
-                chunks = raw_bm25_chunks(rq, int(c))
+                chunks = raw_time_range_chunks(rq, int(c))
                 if not chunks:
                     stats["dropped_empty_history"] += 1
                     drop_slot(p, int(c), "empty_wait_history")
@@ -180,7 +160,7 @@ def _refine_selected_recall_with_rollout(
                 drop_slot(p, int(c), "invalid_response_query")
                 continue
             absence_check = _is_unanswerable_card(card)
-            chunks = raw_bm25_chunks(rq, int(c))
+            chunks = raw_time_range_chunks(rq, int(c))
             if not chunks:
                 if absence_check:
                     rr = _recall_result_for(
@@ -190,7 +170,7 @@ def _refine_selected_recall_with_rollout(
                         current_chunk=int(c),
                         recall_query=rq,
                     )
-                    chunks = select_recall_chunks(rr.get("returned_chunks") or [])
+                    chunks = select_recall_chunks_uniform(rr.get("returned_chunks") or [])
                 if not chunks:
                     stats["dropped_empty_history"] += 1
                     drop_slot(p, int(c), "empty_response_history")
@@ -304,6 +284,7 @@ def _placement_to_dict(p: Placement) -> Dict:
         "mechanism": p.mechanism,
         "difficulty_mode": getattr(p, "difficulty_mode", ""),
         "recall_need": getattr(p, "recall_need", ""),
+        "support_policy": getattr(p, "support_policy", ""),
         "chunk_actions": {str(k): list(v) for k, v in p.chunk_actions.items()},
         "recall_at": {str(k): v for k, v in p.recall_at.items()},
         "recall_reason_at": {str(k): v for k, v in p.recall_reason_at.items()},
@@ -317,6 +298,7 @@ def _dict_to_placement(d: Dict) -> Placement:
         mechanism=d["mechanism"],
         difficulty_mode=d.get("difficulty_mode", ""),
         recall_need=d.get("recall_need", ""),
+        support_policy=d.get("support_policy", ""),
         chunk_actions={int(k): tuple(v) for k, v in d.get("chunk_actions", {}).items()},
         recall_at={int(k): v for k, v in d.get("recall_at", {}).items()},
         recall_reason_at={int(k): v for k, v in d.get("recall_reason_at", {}).items()},
@@ -339,6 +321,34 @@ def _placement_crosses_compress_boundary(
     ask = int(placement.ask_chunk)
     last_answer = max(response_chunks)
     return any(ask < int(boundary) <= last_answer for boundary in compression_boundaries)
+
+
+def _drop_degraded_recall_placements(
+    placements: List[Placement],
+) -> Tuple[List[Placement], int]:
+    """Remove recall_demo placements whose recall slot was later rejected.
+
+    _refine_selected_recall_with_rollout may drop recall_at entries when the
+    time-range sampler cannot return valid historical frames. Keeping such a
+    placement would render a plain response with sequence_type=recall_success,
+    which teaches the wrong action form. Prefer losing that question over
+    writing inconsistent supervision.
+    """
+    kept: List[Placement] = []
+    dropped = 0
+    for p in placements:
+        if p.mechanism != "recall_demo":
+            kept.append(p)
+            continue
+        response_chunks = [
+            int(c) for c, action in p.chunk_actions.items()
+            if action and str(action[0]) == "response"
+        ]
+        if any(int(c) in p.recall_at for c in response_chunks):
+            kept.append(p)
+        else:
+            dropped += 1
+    return kept, dropped
 
 
 # ---------------------------------------------------------------------------
@@ -449,6 +459,14 @@ def plan_trajectories(
         rollout,
         video_id=video_id,
     )
+    selected, dropped_degraded = _drop_degraded_recall_placements(selected)
+    if dropped_degraded:
+        logger.info(
+            "[%s] dropped %d recall_demo placements with no valid recall "
+            "response after rollout refine",
+            video_id,
+            dropped_degraded,
+        )
 
     if not selected:
         return []

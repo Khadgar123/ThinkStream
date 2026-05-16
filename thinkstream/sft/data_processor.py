@@ -7,7 +7,8 @@ Legacy flat per-step rows remain supported for ablations.
 
 Key differences from standard VLM SFT:
 - Input is pre-rendered ShareGPT messages, not ad-hoc flat JSON
-- Messages contain <memory>, <visual_window>, <recalled_frames> tags
+- Streaming messages use bare <m t="..."> memory lines, <t=N> timestamps,
+  Qwen tool_call/tool-response turns, and visual items carrying kv_scope
 - Labels mask prompt/tool/user tokens and train only assistant spans
 - Trajectory rows may contain many assistant turns; labels train selected
   assistant turns only.
@@ -35,12 +36,51 @@ import transformers
 from .data_list import data_list
 from thinkstream.data.rope2d import get_rope_index_25, get_rope_index_3
 from thinkstream.data.schema import (
+    MEMORY_LOAD_ACK,
     TRAJ_TYPE_COMPACT_MEMORY_UPDATE,
     TRAJ_TYPE_FROM_COMPRESS,
     TRAJ_TYPE_FROM_START,
 )
 
 IGNORE_INDEX = -100
+
+LOSS_BUCKET_IGNORE = 0
+LOSS_BUCKET_ACTION = 1
+LOSS_BUCKET_KEY = 2
+LOSS_BUCKET_TEXT = 3
+LOSS_BUCKET_ANSWER = 4
+
+LOSS_BUCKET_NAMES = {
+    LOSS_BUCKET_IGNORE: "ignore",
+    LOSS_BUCKET_ACTION: "action",
+    LOSS_BUCKET_KEY: "key",
+    LOSS_BUCKET_TEXT: "text",
+    LOSS_BUCKET_ANSWER: "answer",
+}
+
+LOSS_SUBBUCKET_IGNORE = 0
+LOSS_SUBBUCKET_ACT_SILENT = 1
+LOSS_SUBBUCKET_ACT_RESPONSE = 2
+LOSS_SUBBUCKET_ACT_RECALL = 3
+LOSS_SUBBUCKET_KEY_RECALL_TIME = 4
+LOSS_SUBBUCKET_KEY_MEMORY = 5
+LOSS_SUBBUCKET_KEY_STRUCTURE = 6
+LOSS_SUBBUCKET_TEXT_THINK = 7
+LOSS_SUBBUCKET_TEXT_COMPRESSION = 8
+LOSS_SUBBUCKET_ANSWER_BODY = 9
+
+LOSS_SUBBUCKET_NAMES = {
+    LOSS_SUBBUCKET_IGNORE: "ignore",
+    LOSS_SUBBUCKET_ACT_SILENT: "act_silent",
+    LOSS_SUBBUCKET_ACT_RESPONSE: "act_response",
+    LOSS_SUBBUCKET_ACT_RECALL: "act_recall",
+    LOSS_SUBBUCKET_KEY_RECALL_TIME: "key_recall_time",
+    LOSS_SUBBUCKET_KEY_MEMORY: "key_memory",
+    LOSS_SUBBUCKET_KEY_STRUCTURE: "key_structure",
+    LOSS_SUBBUCKET_TEXT_THINK: "text_think",
+    LOSS_SUBBUCKET_TEXT_COMPRESSION: "text_compression",
+    LOSS_SUBBUCKET_ANSWER_BODY: "answer_body",
+}
 
 local_rank = None
 
@@ -235,6 +275,32 @@ def _post_recall_span_pairs(
         final_start, final_end = assistant_spans[-1]
         pairs.append((query_start, query_end, final_start, final_end))
     return pairs
+
+
+def _post_recall_answer_turn_indices(
+    *,
+    assistant_spans: Sequence[Tuple[int, int]],
+    sample: Dict,
+    messages: Optional[Sequence[Dict]] = None,
+) -> List[int]:
+    """Return assistant turn indices for final answers after recall."""
+    pairs = _post_recall_span_pairs(
+        assistant_spans=assistant_spans,
+        sample=sample,
+        messages=messages,
+    )
+    if not pairs:
+        return []
+    span_to_idx = {
+        (int(start), int(end)): idx
+        for idx, (start, end) in enumerate(assistant_spans)
+    }
+    out: List[int] = []
+    for _query_start, _query_end, final_start, final_end in pairs:
+        idx = span_to_idx.get((int(final_start), int(final_end)))
+        if idx is not None:
+            out.append(idx)
+    return out
 
 
 def _add_post_recall_text_kv_mask(
@@ -855,8 +921,6 @@ def update_processor_pixels(processor, data_args):
 
 from thinkstream.data.agent_protocol import tools_for_turn
 
-_MEMORY_LOAD_ACK = "Memory loaded."
-
 def _resolve_media_path(value, base_path: Path):
     if isinstance(value, str) and value and not Path(value).is_absolute():
         return str(base_path / value)
@@ -1158,6 +1222,253 @@ def _char_span_to_token_span(tokenizer, text: str, span: Tuple[int, int]) -> Opt
     return prefix_len, min(prefix_len + body_len, total_len), total_len
 
 
+def _bool_arg(value: Any) -> bool:
+    if isinstance(value, str):
+        return value.strip().lower() not in {"", "0", "false", "no", "off"}
+    return bool(value)
+
+
+def _decode_token_ids_no_cleanup(tokenizer, token_ids: Sequence[int]) -> str:
+    try:
+        return tokenizer.decode(
+            list(token_ids),
+            skip_special_tokens=False,
+            clean_up_tokenization_spaces=False,
+        )
+    except TypeError:
+        try:
+            return tokenizer.decode(list(token_ids), skip_special_tokens=False)
+        except Exception:
+            return ""
+    except Exception:
+        return ""
+
+
+def _mark_char_bucket(
+    *,
+    bucket: List[int],
+    subbucket: List[int],
+    tokenizer,
+    text: str,
+    span: Tuple[int, int],
+    bucket_id: int,
+    subbucket_id: int,
+) -> int:
+    mapped = _char_span_to_token_span(tokenizer, text, span)
+    if mapped is None:
+        return 0
+    token_start, token_end, total_tokens = mapped
+    if total_tokens != len(bucket):
+        return 0
+    token_start = max(0, min(int(token_start), len(bucket)))
+    token_end = max(token_start, min(int(token_end), len(bucket)))
+    for i in range(token_start, token_end):
+        bucket[i] = int(bucket_id)
+        subbucket[i] = int(subbucket_id)
+    return max(0, token_end - token_start)
+
+
+def _mark_literal_bucket(
+    *,
+    bucket: List[int],
+    subbucket: List[int],
+    tokenizer,
+    text: str,
+    literal: str,
+    start_at: int = 0,
+    bucket_id: int,
+    subbucket_id: int,
+) -> int:
+    count = 0
+    pos = max(0, int(start_at))
+    while True:
+        found = text.find(literal, pos)
+        if found < 0:
+            return count
+        count += _mark_char_bucket(
+            bucket=bucket,
+            subbucket=subbucket,
+            tokenizer=tokenizer,
+            text=text,
+            span=(found, found + len(literal)),
+            bucket_id=bucket_id,
+            subbucket_id=subbucket_id,
+        )
+        pos = found + len(literal)
+
+
+_MEM_LINE_RE = re.compile(r"(<m\b[^>]*>)(.*?)(</m>)", re.DOTALL | re.IGNORECASE)
+_THINK_RE = re.compile(r"<think>(.*?)</think>", re.DOTALL)
+_TOOL_CALL_RE = re.compile(r"(<tool_call>)(.*?)(</tool_call>)", re.DOTALL)
+_RECALL_NAME_RE = re.compile(r'"name"\s*:\s*"recall"')
+_RECALL_TIME_RE = re.compile(
+    r'"(?:start_time|end_time)"\s*:\s*[-+]?(?:\d+(?:\.\d*)?|\.\d+)'
+)
+
+
+def _build_loss_bucket_ids(
+    *,
+    input_ids: torch.Tensor,
+    labels: torch.Tensor,
+    loss_spans: Sequence[Tuple[int, int]],
+    tokenizer,
+) -> Tuple[torch.Tensor, torch.Tensor, Dict[str, Any]]:
+    """Assign every labeled assistant token to the current action/text buckets.
+
+    The mapping is intentionally based on the final rendered assistant span
+    rather than raw messages. That matters for Qwen tool calls: the on-disk
+    message can store ``tool_calls`` separately, but the chat template expands
+    it into a literal ``<tool_call>{...}</tool_call>`` assistant span.
+    """
+    bucket_ids = torch.zeros_like(labels, dtype=torch.long)
+    subbucket_ids = torch.zeros_like(labels, dtype=torch.long)
+    diagnostics: Dict[str, Any] = {
+        "enabled": True,
+        "aligned_spans": 0,
+        "unaligned_spans": 0,
+        "tokens_by_bucket": Counter(),
+        "tokens_by_subbucket": Counter(),
+    }
+    if input_ids.ndim != 2 or labels.ndim != 2 or input_ids.shape[0] != 1:
+        diagnostics["unaligned_spans"] = len(list(loss_spans or []))
+        return bucket_ids, subbucket_ids, diagnostics
+
+    flat_ids = input_ids[0].tolist()
+    for ans_start, ans_end in loss_spans or []:
+        ans_start = int(ans_start)
+        ans_end = int(ans_end)
+        if ans_start < 0 or ans_end <= ans_start or ans_start >= len(flat_ids):
+            continue
+        text_end = min(ans_end, len(flat_ids))
+        span_ids = flat_ids[ans_start:text_end]
+        if not span_ids:
+            continue
+        rendered_text = _decode_token_ids_no_cleanup(tokenizer, span_ids)
+        rendered_ids = _token_ids_no_special(tokenizer, rendered_text) if rendered_text else []
+        aligned = bool(rendered_ids) and list(rendered_ids) == list(span_ids)
+        if not aligned:
+            diagnostics["unaligned_spans"] += 1
+            valid = labels[0, ans_start:ans_end + 1].ne(IGNORE_INDEX)
+            bucket_slice = bucket_ids[0, ans_start:ans_end + 1]
+            subbucket_slice = subbucket_ids[0, ans_start:ans_end + 1]
+            bucket_slice[valid] = LOSS_BUCKET_TEXT
+            subbucket_slice[valid] = LOSS_SUBBUCKET_TEXT_THINK
+            continue
+
+        diagnostics["aligned_spans"] += 1
+        # Default to the text bucket so we do not create a separate "format"
+        # objective for stray assistant tokens. The explicit rules below
+        # group whole semantic objects together:
+        #   - <think>...</think> and <m ...>...</m> are text/memory learning
+        #   - </Response> answer, </Silence>, and recall tool calls are
+        #     action/answer learning
+        local_bucket = [LOSS_BUCKET_TEXT] * len(span_ids)
+        local_subbucket = [LOSS_SUBBUCKET_TEXT_THINK] * len(span_ids)
+
+        for match in _THINK_RE.finditer(rendered_text):
+            # Include the <think> tags in the same bucket as the body. Splitting
+            # tags from content made the model learn formatting separately from
+            # the observation text.
+            _mark_char_bucket(
+                bucket=local_bucket,
+                subbucket=local_subbucket,
+                tokenizer=tokenizer,
+                text=rendered_text,
+                span=match.span(0),
+                bucket_id=LOSS_BUCKET_TEXT,
+                subbucket_id=LOSS_SUBBUCKET_TEXT_THINK,
+            )
+
+        for match in _MEM_LINE_RE.finditer(rendered_text):
+            # Treat the whole memory line, including t="start-end" and XML
+            # tags, as one memory-text target. The range/type syntax is part
+            # of the memory language, not a separate key-format reward.
+            _mark_char_bucket(
+                bucket=local_bucket,
+                subbucket=local_subbucket,
+                tokenizer=tokenizer,
+                text=rendered_text,
+                span=match.span(0),
+                bucket_id=LOSS_BUCKET_TEXT,
+                subbucket_id=LOSS_SUBBUCKET_TEXT_COMPRESSION,
+            )
+
+        response_pos = rendered_text.find("</Response>")
+        if response_pos >= 0:
+            # The response decision token and answer text must learn together.
+            # For MC this prevents the model from learning only the terminal
+            # marker while treating the semantic option text as a separate,
+            # lower-priority objective.
+            _mark_char_bucket(
+                bucket=local_bucket,
+                subbucket=local_subbucket,
+                tokenizer=tokenizer,
+                text=rendered_text,
+                span=(response_pos, len(rendered_text)),
+                bucket_id=LOSS_BUCKET_ACTION,
+                subbucket_id=LOSS_SUBBUCKET_ACT_RESPONSE,
+            )
+
+        _mark_literal_bucket(
+            bucket=local_bucket,
+            subbucket=local_subbucket,
+            tokenizer=tokenizer,
+            text=rendered_text,
+            literal="</Silence>",
+            bucket_id=LOSS_BUCKET_ACTION,
+            subbucket_id=LOSS_SUBBUCKET_ACT_SILENT,
+        )
+
+        for tool_match in _TOOL_CALL_RE.finditer(rendered_text):
+            block_start, block_end = tool_match.span(0)
+            block_text = rendered_text[block_start:block_end]
+            if not _RECALL_NAME_RE.search(block_text):
+                continue
+            _mark_char_bucket(
+                bucket=local_bucket,
+                subbucket=local_subbucket,
+                tokenizer=tokenizer,
+                text=rendered_text,
+                span=(block_start, block_end),
+                bucket_id=LOSS_BUCKET_ACTION,
+                subbucket_id=LOSS_SUBBUCKET_ACT_RECALL,
+            )
+
+        abs_end = ans_start + len(span_ids)
+        bucket_ids[0, ans_start:abs_end] = torch.tensor(
+            local_bucket,
+            dtype=bucket_ids.dtype,
+            device=bucket_ids.device,
+        )
+        subbucket_ids[0, ans_start:abs_end] = torch.tensor(
+            local_subbucket,
+            dtype=subbucket_ids.dtype,
+            device=subbucket_ids.device,
+        )
+        if ans_end < labels.shape[1] and labels[0, ans_end].item() != IGNORE_INDEX:
+            last_idx = max(ans_start, abs_end - 1)
+            bucket_ids[0, ans_end] = bucket_ids[0, last_idx]
+            subbucket_ids[0, ans_end] = subbucket_ids[0, last_idx]
+
+    valid = labels.ne(IGNORE_INDEX) & bucket_ids.ne(LOSS_BUCKET_IGNORE)
+    if bool(valid.any().item()):
+        for bucket_id, name in LOSS_BUCKET_NAMES.items():
+            if bucket_id == LOSS_BUCKET_IGNORE:
+                continue
+            diagnostics["tokens_by_bucket"][name] = int(
+                ((bucket_ids == bucket_id) & valid).sum().item()
+            )
+        for subbucket_id, name in LOSS_SUBBUCKET_NAMES.items():
+            if subbucket_id == LOSS_SUBBUCKET_IGNORE:
+                continue
+            diagnostics["tokens_by_subbucket"][name] = int(
+                ((subbucket_ids == subbucket_id) & valid).sum().item()
+            )
+    diagnostics["tokens_by_bucket"] = dict(diagnostics["tokens_by_bucket"])
+    diagnostics["tokens_by_subbucket"] = dict(diagnostics["tokens_by_subbucket"])
+    return bucket_ids, subbucket_ids, diagnostics
+
+
 def _apply_compress_token_loss_weights(
     *,
     token_loss_weight: torch.Tensor,
@@ -1190,7 +1501,10 @@ def _apply_compress_token_loss_weights(
         if turn_idx >= len(assistant_texts):
             continue
         assistant_text = assistant_texts[turn_idx]
-        is_compact_mem = "<MEM>" in assistant_text
+        is_compact_mem = bool(
+            re.search(r"<MEM\b", assistant_text, re.IGNORECASE)
+            or re.search(r'<m\s+t="', assistant_text, re.IGNORECASE)
+        )
         if "compress" not in assistant_text and not is_compact_mem:
             continue
 
@@ -1210,7 +1524,7 @@ def _apply_compress_token_loss_weights(
         else:
             token_loss_weight[0, ans_end] = close_w
 
-        if is_compact_mem:
+        if is_compact_mem and re.search(r"<MEM\b", assistant_text, re.IGNORECASE):
             mem_start = assistant_text.find("<MEM>")
             mem_end = assistant_text.find("</MEM>")
             body_span = (
@@ -1218,6 +1532,8 @@ def _apply_compress_token_loss_weights(
                 if mem_start >= 0 and mem_end > mem_start
                 else None
             )
+        elif is_compact_mem:
+            body_span = (0, len(assistant_text))
         else:
             body_span = _find_json_string_value_span(assistant_text)
         assistant_ids = _token_ids_no_special(tokenizer, assistant_text)
@@ -1381,7 +1697,7 @@ def preprocess_trajectory_sample(sample: Dict, processor, data_args=None) -> Dic
         loss_spec is None
         and trajectory_type == TRAJ_TYPE_FROM_COMPRESS
         and assistant_texts
-        and assistant_texts[0].strip() == _MEMORY_LOAD_ACK
+        and assistant_texts[0].strip() == MEMORY_LOAD_ACK
     ):
         loss_spec = list(range(1, len(assistant_spans)))
     loss_spans, loss_turn_indices = _select_loss_assistant_spans(
@@ -1395,24 +1711,36 @@ def preprocess_trajectory_sample(sample: Dict, processor, data_args=None) -> Dic
 
     loss_class = sample.get("_loss_class") or _sample_loss_class(sample)
     compress_weight_diag: Optional[Dict[str, Any]] = None
+    loss_bucket_diag: Optional[Dict[str, Any]] = None
     if data_args is not None:
+        loss_bucket_weighting = _bool_arg(
+            getattr(data_args, "loss_bucket_weighting", False)
+        )
+        if loss_bucket_weighting:
+            loss_bucket_ids, loss_subbucket_ids, loss_bucket_diag = _build_loss_bucket_ids(
+                input_ids=input_ids,
+                labels=labels,
+                loss_spans=loss_spans,
+                tokenizer=processor.tokenizer,
+            )
+            full_result["loss_bucket_ids"] = loss_bucket_ids
+            full_result["loss_subbucket_ids"] = loss_subbucket_ids
+
         raw_enabled = getattr(data_args, "compress_token_weighting", False)
-        if isinstance(raw_enabled, str):
-            compress_token_weighting = raw_enabled.strip().lower() not in {
-                "0", "false", "no", "off",
-            }
-        else:
-            compress_token_weighting = bool(raw_enabled)
+        compress_token_weighting = _bool_arg(raw_enabled)
         action_class_mode = str(
             getattr(data_args, "action_class_loss_mode", "none") or "none"
         ).strip().lower()
-        if compress_token_weighting or action_class_mode == "inverse_freq":
+        if (
+            not loss_bucket_weighting
+            and (compress_token_weighting or action_class_mode == "inverse_freq")
+        ):
             # Always attach a token_loss_weight tensor when any weighting is
             # enabled. Mixed batches would otherwise drop token weights if
             # only some rows carried the key.
             token_loss_weight = torch.ones_like(labels, dtype=torch.float32)
             # Compact-memory rows can opt into the old compress-internal
-            # weighting ablation; production leaves it disabled so <MEM> body
+            # weighting ablation; production leaves it disabled so compact-memory body
             # and format tokens use ordinary assistant CE.
             if (
                 (not is_streaming_trajectory_row or is_compact_memory_row)
@@ -1434,7 +1762,7 @@ def preprocess_trajectory_sample(sample: Dict, processor, data_args=None) -> Dic
                 # existing compress redistribution. Per-token, not per-sample.
                 #
                 # Anchors come from two sources:
-                #   1. Single-token action-start ids (<silent>, <response>)
+                #   1. Single-token action-start ids (</Silence>, </Response>)
                 #   2. Tool-name BPE spans inside <tool_call> JSON body
                 #      ("compress", "recall"). First span token is the anchor.
                 from thinkstream.sft.losses import (
@@ -1503,6 +1831,11 @@ def preprocess_trajectory_sample(sample: Dict, processor, data_args=None) -> Dic
     # in eval. The first span is kept for backward compat; ans_spans is the
     # canonical multi-span view (used by ALL eval / metric code in v12.11+).
     ans_start, ans_end = assistant_spans[0]
+    post_recall_answer_turn_indices = _post_recall_answer_turn_indices(
+        assistant_spans=assistant_spans,
+        sample=sample,
+        messages=messages,
+    )
     full_result["eval_meta"] = {
         "sample_id": sample.get("sample_id") or sample.get("trajectory_id"),
         "video_id": (
@@ -1524,12 +1857,14 @@ def preprocess_trajectory_sample(sample: Dict, processor, data_args=None) -> Dic
         "loss_ans_spans": list(loss_spans),
         "loss_assistant_turn_indices": list(loss_turn_indices),
         "loss_assistant_turns": sample.get("loss_assistant_turns", "all"),
+        "post_recall_answer_turn_indices": post_recall_answer_turn_indices,
         "n_assistant_turns": len(assistant_spans),
         "trajectory_type": trajectory_type,
         "is_streaming_trajectory": is_streaming_trajectory_row,
         "is_compact_memory_update": is_compact_memory_row,
         "sft_subtype": sample.get("sft_subtype", ""),
         "compress_token_weighting": compress_weight_diag,
+        "loss_bucket_weighting": loss_bucket_diag,
     }
     return full_result
 
@@ -1897,6 +2232,28 @@ class TrajectorySFTDataCollator:
         else:
             token_loss_weight = None
 
+        loss_bucket_tensors = [
+            inst["loss_bucket_ids"].squeeze(0) for inst in instances
+            if "loss_bucket_ids" in inst
+        ]
+        loss_subbucket_tensors = [
+            inst["loss_subbucket_ids"].squeeze(0) for inst in instances
+            if "loss_subbucket_ids" in inst
+        ]
+        if (
+            len(loss_bucket_tensors) == len(instances)
+            and len(loss_subbucket_tensors) == len(instances)
+        ):
+            loss_bucket_ids = torch.nn.utils.rnn.pad_sequence(
+                loss_bucket_tensors, batch_first=True, padding_value=LOSS_BUCKET_IGNORE,
+            )
+            loss_subbucket_ids = torch.nn.utils.rnn.pad_sequence(
+                loss_subbucket_tensors, batch_first=True, padding_value=LOSS_SUBBUCKET_IGNORE,
+            )
+        else:
+            loss_bucket_ids = None
+            loss_subbucket_ids = None
+
         # P0-4: Do NOT truncate here. Overlong samples must be filtered in
         # Dataset init. Right-truncation would silently destroy output labels,
         # making the model train on input-only samples (all IGNORE_INDEX).
@@ -1954,6 +2311,9 @@ class TrajectorySFTDataCollator:
             )
         if token_loss_weight is not None:
             batch["token_loss_weight"] = token_loss_weight
+        if loss_bucket_ids is not None and loss_subbucket_ids is not None:
+            batch["loss_bucket_ids"] = loss_bucket_ids
+            batch["loss_subbucket_ids"] = loss_subbucket_ids
 
         sample_weights = [
             inst["sample_weights"].reshape(()) for inst in instances

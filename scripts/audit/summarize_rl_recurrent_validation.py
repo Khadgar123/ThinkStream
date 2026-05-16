@@ -34,6 +34,7 @@ METRIC_KEYS = (
     "per_q_reward_max",
     "per_chunk_action_avg",
     "recall_align_rate",
+    "recall_runtime_ok_rate",
     "action_space",
 )
 
@@ -230,6 +231,7 @@ def summarize(
             },
             "recall": {
                 "align_rate": overall_final.get("recall_align_rate_mean", None),
+                "runtime_ok_rate": overall_final.get("recall_runtime_ok_rate_mean", None),
             },
         },
     }

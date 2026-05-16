@@ -30,12 +30,12 @@ def _synthetic_pass4_record(video_id: str, with_compress: bool = True):
     samples = [
         {
             "chunk_idx": 0, "sample_type": "silent",
-            "output": "<think>start</think><answer></answer>",
+            "output": "<think>start</think></Silence>",
             "trajectory_id": f"{video_id}_traj_0",
         },
         {
             "chunk_idx": 1, "sample_type": "response",
-            "output": "<think>I see it</think><answer>A</answer>",
+            "output": "<think>I see it</think></Response> A",
             "trajectory_id": f"{video_id}_traj_0",
             "card_id": "c1",
         },
@@ -55,7 +55,7 @@ def _synthetic_pass4_record(video_id: str, with_compress: bool = True):
         })
         samples.append({
             "chunk_idx": 3, "sample_type": "silent",
-            "output": "<think>x</think><answer></answer>",
+            "output": "<think>x</think></Silence>",
             "trajectory_id": f"{video_id}_traj_0",
         })
     return {
@@ -153,7 +153,7 @@ def test_convert_file_smoke():
         assert vid_a_rows[0]["chunk_end"] == 1
         assert vid_a_rows[0]["compress_event"] is None
         assert vid_a_rows[1]["trajectory_type"] == "compact_memory_update"
-        assert vid_a_rows[1]["compress_event"]["summary_text"].startswith("<MEM>")
+        assert vid_a_rows[1]["compress_event"]["summary_text"].startswith("<m ")
         assert vid_a_rows[2]["trajectory_type"] == "from_compress"
         assert vid_a_rows[2]["chunk_start"] == 3
 

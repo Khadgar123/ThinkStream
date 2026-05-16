@@ -93,12 +93,12 @@ def text_part_counts(tokenizer, messages: List[Dict[str, Any]]) -> Dict[str, int
     assistant_text = msg_text(messages, "assistant")
     parts = {
         "system_text": system_text,
-        "memory_text": "".join(re.findall(r"<memory>.*?</memory>", user_text, re.DOTALL)),
+        "memory_text": "".join(re.findall(r"<m\s+t=\"[^\"]+\">.*?</m>", user_text, re.DOTALL)),
         "active_query_text": "".join(re.findall(r"<active_query>.*?</active_query>", user_text, re.DOTALL)),
         "response_history_text": "".join(re.findall(r"<response_history>.*?</response_history>", user_text, re.DOTALL)),
-        "recall_text": "".join(re.findall(r"<recalled_frames>.*?</recalled_frames>|<recall_result>.*?</recall_result>", user_text, re.DOTALL)),
+        "recall_text": "".join(re.findall(r"The recall tool returned [^\n]*", user_text)),
         "user_input_text": "".join(re.findall(r"<user_input>.*?</user_input>", user_text, re.DOTALL)),
-        "visual_tag_text": "".join(re.findall(r"</?(?:VISUAL_CHUNK|RECALLED_CHUNK)[^>]*>", user_text)),
+        "visual_tag_text": "".join(re.findall(r"<t=\d+>", user_text)),
         "assistant_text": assistant_text,
     }
     return {name: token_len(tokenizer, text) for name, text in parts.items()}

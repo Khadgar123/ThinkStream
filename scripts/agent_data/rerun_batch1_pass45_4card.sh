@@ -84,9 +84,9 @@ wc -l \
   "${BATCH_ROOT}/final/train_rl_trajectories.jsonl" \
   "${BATCH_ROOT}/final/val_trajectories.jsonl" \
   "${BATCH_ROOT}/final/test_trajectories.jsonl" \
-  "${BATCH_ROOT}/rendered/video_meta_standard_query_last/train_sft_messages.jsonl" \
-  "${BATCH_ROOT}/rendered/video_meta_standard_query_last/val_messages.jsonl" \
-  "${BATCH_ROOT}/rendered/video_meta_standard_query_last/test_messages.jsonl" \
+  "${BATCH_ROOT}/rendered/trajectory/train_sft_trajectory.jsonl" \
+  "${BATCH_ROOT}/rendered/trajectory/val_trajectory.jsonl" \
+  "${BATCH_ROOT}/rendered/trajectory/test_trajectory.jsonl" \
   "${BATCH_ROOT}/trajectory_bank/video_stats.jsonl" \
   "${BATCH_ROOT}/trajectory_bank/trajectory_stats.jsonl" \
   2>&1 | tee -a "${LOG}"

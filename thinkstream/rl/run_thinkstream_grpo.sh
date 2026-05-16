@@ -39,6 +39,8 @@
 #                           per-action streaming/recall generation cap
 #   MAX_COMPRESS_ACTION_TOKENS [512]
 #                           per-action compression generation cap
+#   TOP_K [50]              sampler top-k. Do not leave verl's -1 default for
+#                           true-KV rollout; FlashInfer treats top_k=0 badly.
 #   MAX_TURNS [120]   (covers batch1 max=95 + headroom. Stitched ceiling
 #                       ~180; for 240+ chunks see
 #                       docs/v12.14_recurrent_design.md for the recurrent
@@ -190,8 +192,11 @@ if [[ -z "${MAX_RESP_LEN:-}" ]]; then
         MAX_RESP_LEN=32768
     fi
 fi
+MAX_MODEL_LEN=${MAX_MODEL_LEN:-49152}
 MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-256}
 MAX_COMPRESS_ACTION_TOKENS=${MAX_COMPRESS_ACTION_TOKENS:-512}
+TOP_K=${TOP_K:-50}
+export THINKSTREAM_ROLLOUT_DEFAULT_TOP_K="${THINKSTREAM_ROLLOUT_DEFAULT_TOP_K:-${TOP_K}}"
 # Default 120 chunks comfortably covers all of current batch1 (max=95) and
 # the lower tier of batch2's 120-240s videos. Bump to 180 for batch2
 # coverage; for 240+ chunks switch to v12.14 recurrent rollout.
@@ -253,6 +258,12 @@ fi
 if [[ -n "${ROLLOUT_DATA_DIR}" ]]; then
     ROLLOUT_DATA_DIR="$(abspath_from_home "${ROLLOUT_DATA_DIR}")"
 fi
+if [[ -n "${THINKSTREAM_ROLLOUT_TRACE_JSONL:-}" ]]; then
+    export THINKSTREAM_ROLLOUT_TRACE_JSONL="$(abspath_from_home "${THINKSTREAM_ROLLOUT_TRACE_JSONL}")"
+fi
+if [[ -n "${THINKSTREAM_ROLLOUT_TIMING_JSONL:-}" ]]; then
+    export THINKSTREAM_ROLLOUT_TIMING_JSONL="$(abspath_from_home "${THINKSTREAM_ROLLOUT_TIMING_JSONL}")"
+fi
 PARAM_OFFLOAD=${PARAM_OFFLOAD:-true}
 OPTIMIZER_OFFLOAD=${OPTIMIZER_OFFLOAD:-true}
 FREEZE_VISION_TOWER=${FREEZE_VISION_TOWER:-true}
@@ -309,7 +320,7 @@ fi
 # v12.13: ThinkStream-specific multi_turn config (verl's MultiTurnConfig
 # rejects custom keys, so we pass them as env vars; streaming_agent_loop.py
 # reads them in __init__ at line 316+). frames_root="" → text-only run.
-export THINKSTREAM_FRAMES_ROOT="${THINKSTREAM_FRAMES_ROOT:-${THINKSTREAM_DATA_ROOT}/frames}"
+export THINKSTREAM_FRAMES_ROOT="$(abspath_from_home "${THINKSTREAM_FRAMES_ROOT:-${THINKSTREAM_DATA_ROOT}/frames}")"
 export THINKSTREAM_FRAME_PROTOCOL
 export THINKSTREAM_RENDER_LAYOUT
 export THINKSTREAM_MEMORY_POSITION="${THINKSTREAM_MEMORY_POSITION:-before_visual}"
@@ -377,6 +388,33 @@ VAL_MAX_SAMPLES_ARGS=()
 if [[ -n "${VAL_MAX_SAMPLES:-}" ]]; then
     VAL_MAX_SAMPLES_ARGS=(data.val_max_samples=${VAL_MAX_SAMPLES})
 fi
+TRACE_ENV_ARGS=()
+for _ts_env_name in \
+    THINKSTREAM_AGENT_TRACE \
+    THINKSTREAM_AGENT_TRACE_JSONL \
+    THINKSTREAM_ROLLOUT_DEBUG \
+    THINKSTREAM_ROLLOUT_TRACE_JSONL \
+    THINKSTREAM_ROLLOUT_TIMING_JSONL \
+    THINKSTREAM_ALLOW_LEGACY_AGENT_TOKENS \
+    THINKSTREAM_ROLLOUT_STRICT_DELTA \
+    THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE \
+    THINKSTREAM_COMPRESS_THRESHOLD \
+    THINKSTREAM_COMPRESS_RANGE_MIN \
+    THINKSTREAM_COMPRESS_RANGE_MAX \
+    THINKSTREAM_RECALL_VISUAL_LAYOUT \
+    THINKSTREAM_RL_ROLLOUT_AUDIT \
+    THINKSTREAM_RL_ROLLOUT_AUDIT_PATH \
+    THINKSTREAM_RL_ROLLOUT_AUDIT_PROB \
+    THINKSTREAM_RL_ROLLOUT_AUDIT_MAX \
+    THINKSTREAM_RL_ROLLOUT_AUDIT_FINAL_ONLY \
+    THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_TURNS \
+    THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_CHARS \
+    THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_QUESTIONS
+do
+    if [[ -n "${!_ts_env_name:-}" ]]; then
+        TRACE_ENV_ARGS+=("+ray_kwargs.ray_init.runtime_env.env_vars.${_ts_env_name}='${!_ts_env_name}'")
+    fi
+done
 
 PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     --config-path="${THINKSTREAM_HOME}/thinkstream/rl/configs" \
@@ -402,6 +440,7 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     +ray_kwargs.ray_init.runtime_env.env_vars.TORCH_HOME="${TORCH_HOME}" \
     +ray_kwargs.ray_init.runtime_env.env_vars.TRITON_CACHE_DIR="${TRITON_CACHE_DIR}" \
     +ray_kwargs.ray_init.runtime_env.env_vars.XDG_CACHE_HOME="${XDG_CACHE_HOME}" \
+    "${TRACE_ENV_ARGS[@]}" \
     algorithm.adv_estimator=grpo \
     algorithm.kl_ctrl.kl_coef=0.0 \
     actor_rollout_ref.model.path="${HF_MODEL_PATH}" \
@@ -436,8 +475,10 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.enable_chunked_prefill=True \
     actor_rollout_ref.rollout.enable_prefix_caching=True \
     +actor_rollout_ref.rollout.engine_kwargs.vllm.mm_processor_cache_gb=${MM_CACHE_GB} \
+    actor_rollout_ref.rollout.max_model_len=${MAX_MODEL_LEN} \
     actor_rollout_ref.rollout.response_length=${MAX_RESP_LEN} \
     actor_rollout_ref.rollout.prompt_length=${MAX_PROMPT_LEN} \
+    actor_rollout_ref.rollout.top_k=${TOP_K} \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.rollout.log_prob_use_dynamic_bsz=True \
     actor_rollout_ref.rollout.log_prob_max_token_len_per_gpu=${LOG_PROB_MAX_TOKEN_LEN_PER_GPU} \

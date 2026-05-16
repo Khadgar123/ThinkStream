@@ -36,6 +36,7 @@ import argparse
 import json
 import gzip
 import os
+import re
 import sys
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Tuple
@@ -86,7 +87,7 @@ def _canonical_instruction(q: Dict[str, Any]) -> str:
 
 def _canonical_answer_style(q: Dict[str, Any]) -> str:
     if str(q.get("answer_form") or "").strip() == "multiple_choice":
-        return "letter_only"
+        return "letter_plus_text"
     return str(q.get("answer_style") or "")
 
 
@@ -128,7 +129,7 @@ def _offline_compress_chunks_from_samples(traj: Dict[str, Any]) -> List[int]:
             (sample.get("metadata") or {}).get("gold_action") or ""
         ).strip().lower()
         text = str(sample.get("output") or sample.get("gold_caption") or "")
-        is_compact_mem = "<MEM>" in text and "</MEM>" in text
+        is_compact_mem = bool(re.search(r'<m\s+t="[^"]+"\s*>.*?</m>', text, re.S | re.I))
         if (
             sample_type != "compress"
             and action != "compress"

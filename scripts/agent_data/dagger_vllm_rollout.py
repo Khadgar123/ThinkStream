@@ -156,7 +156,7 @@ def _patch_sample_from_question(
             value = q.get(key)
             meta[key] = list(value) if isinstance(value, list) else value
     if q.get("answer_form") == "multiple_choice":
-        meta["answer_style"] = "letter_only"
+        meta["answer_style"] = "letter_plus_text"
     instruction = canonical_answer_instruction(meta)
     if instruction:
         meta["answer_instruction"] = instruction

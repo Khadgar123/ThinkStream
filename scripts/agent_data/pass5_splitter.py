@@ -12,9 +12,9 @@ Output: list of ``TrajectoryRow``-shaped dicts, one per (sub-)trajectory
 Design choices (anchored to the v2 design doc, simplified per user feedback):
 - Each compress event becomes a trajectory boundary (hard split, no merging).
 - First (sub-)trajectory is ``from_start``; subsequent are ``from_compress``
-  with a text-only raw <MEM> re-prefill user message followed by
+  with a text-only raw <m> re-prefill user message followed by
   assistant("Memory loaded.") before the next visual turn.
-- Compact-memory samples use a standalone <MEM> assistant action and do not
+- Compact-memory samples use standalone bare <m> assistant lines and do not
   expose a compress tool.
 - Recall samples (multi-turn within one chunk) render as a single
   ``TurnSpec`` carrying the tool-2-turn pattern.
@@ -22,6 +22,7 @@ Design choices (anchored to the v2 design doc, simplified per user feedback):
 """
 from __future__ import annotations
 
+import os
 import json
 import re
 import html
@@ -30,6 +31,7 @@ from typing import Callable, Dict, List, Optional, Tuple
 from thinkstream.data.agent_protocol import (
     build_recall_result_user_content,
     canonical_answer_instruction,
+    query_response_history_policy,
 )
 from thinkstream.data.agent_protocol import is_inter_chunk as sample_is_inter_chunk
 from thinkstream.data.schema import (
@@ -43,6 +45,7 @@ from thinkstream.data.schema import (
     COMPACT_MEMORY_SYSTEM_PROMPT,
     DEFAULT_VIDEO_MAX_PIXELS,
     DEFAULT_VIDEO_MIN_PIXELS,
+    MEMORY_LOAD_ACK,
     MemoryEntry,
     QuerySpec,
     TOOL_NAME_COMPRESS,
@@ -59,7 +62,26 @@ from thinkstream.data.schema import (
 # Runtime visual KV window size. Trajectory headers never bulk-load old
 # visual chunks; they only prefill text memory.
 SLIDING_WINDOW_CHUNKS = 8
-MEMORY_LOAD_ACK = "Memory loaded."
+QUERY_POLICY_CURRENT_ASK_BOUNDARY = "current_ask_boundary"
+QUERY_POLICY_ASK_ANSWER = "ask_answer"
+QUERY_POLICY_ASK_WINDOW4_ANSWER = "ask_window4_answer"
+QUERY_POLICY_ASK_WINDOW8_ANSWER = "ask_window8_answer"
+QUERY_POLICY_PERIODIC8_ANSWER = "periodic8_answer"
+QUERY_POLICY_SUPPORT_ANSWER = "support_answer"
+QUERY_POLICY_EVERY_ACTIVE = "every_active"
+QUERY_POLICY_ADAPTIVE = "adaptive"
+VALID_QUERY_INJECTION_POLICIES = {
+    QUERY_POLICY_CURRENT_ASK_BOUNDARY,
+    QUERY_POLICY_ASK_ANSWER,
+    QUERY_POLICY_ASK_WINDOW4_ANSWER,
+    QUERY_POLICY_ASK_WINDOW8_ANSWER,
+    QUERY_POLICY_PERIODIC8_ANSWER,
+    QUERY_POLICY_SUPPORT_ANSWER,
+    QUERY_POLICY_EVERY_ACTIVE,
+    QUERY_POLICY_ADAPTIVE,
+}
+DEFAULT_QUERY_INJECTION_POLICY = QUERY_POLICY_ADAPTIVE
+ADAPTIVE_QUERY_REFRESH_PERIOD = int(os.environ.get("THINKSTREAM_QUERY_REFRESH_PERIOD", "8"))
 
 
 # ---------------------------------------------------------------------------
@@ -67,7 +89,13 @@ MEMORY_LOAD_ACK = "Memory loaded."
 # ---------------------------------------------------------------------------
 
 _THINK_RE = re.compile(r"<think>(.*?)</think>", re.DOTALL)
-_ANSWER_RE = re.compile(r"<(?:answer|response)>(.*?)</(?:answer|response)>", re.DOTALL)
+_ANSWER_RE = re.compile(r"</Response>\s*(.*?)\s*$", re.DOTALL)
+_LEGACY_ANSWER_RE = re.compile(
+    r"<(?:answer|response)>\s*(.*?)\s*</(?:answer|response)>\s*$",
+    re.DOTALL | re.IGNORECASE,
+)
+_SILENCE_RE = re.compile(r"</Silence>\s*$", re.DOTALL)
+_LEGACY_SILENCE_RE = re.compile(r"<silent>\s*$", re.DOTALL | re.IGNORECASE)
 _TOOL_CALL_RE = re.compile(r"<tool_call>\s*(\{.*?\})\s*</tool_call>", re.DOTALL)
 _MEM_RE = re.compile(r"<MEM>\s*(.*?)\s*</MEM>", re.DOTALL | re.IGNORECASE)
 _OPTION_LABEL_RE = re.compile(r"^\s*(?:\(([A-Z])\)|([A-Z])[\).:])\s*(.*)\s*$", re.DOTALL)
@@ -95,13 +123,33 @@ def _normalise_time_range_arg(value):
     return value
 
 
+def _normalise_recall_time_arg(value):
+    try:
+        num = float(value)
+    except (TypeError, ValueError):
+        return value
+    return int(num) if num.is_integer() else num
+
+
+def _normalise_recall_args(args: Dict) -> Dict:
+    start = _normalise_recall_time_arg(args.get("start_time"))
+    end = _normalise_recall_time_arg(args.get("end_time"))
+    if start is None or end is None:
+        raise ValueError(
+            "recall tool_call requires start_time and end_time; "
+            "legacy time_range/time arguments are obsolete"
+        )
+    return {"start_time": start, "end_time": end}
+
+
 def parse_assistant_output_to_spec(text: str, chunk_idx: int) -> AssistantSpec:
     """Parse a pass3-format assistant output string into a v2 AssistantSpec.
 
     Pass3 emits ``<think>...</think>`` plus ONE of:
-    - ``<answer>X</answer>``       — non-empty: response action with answer X
-    - ``<answer></answer>``        — empty: silent action
-    - ``<tool_call>{...}</tool_call>`` — compress or recall tool_call
+    - ``</Response> X``            — non-empty: response action with answer X
+    - ``</Silence>``               — empty: silent action
+    - ``<tool_call>{...}</tool_call>`` — recall tool_call
+    - bare ``<m t="...">...</m>`` lines — compact-memory update
 
     Tool call ids are minted deterministically from ``chunk_idx`` so the
     same sample always produces the same id (useful for diffing).
@@ -118,30 +166,9 @@ def parse_assistant_output_to_spec(text: str, chunk_idx: int) -> AssistantSpec:
         name = (tool_obj.get("name") or "").strip()
         args = tool_obj.get("arguments") or {}
         if name == TOOL_NAME_COMPRESS:
-            # Pass3-format compress carries (time_range, text) in one call.
-            # Map to the canonical two-step form: this AssistantSpec
-            # represents the Step-1 select tool_call (with time_range
-            # only). The Step-2 summary <m> emit is produced separately
-            # by ``build_compress_two_step_turns`` using the text in args.
-            tr = _normalise_time_range_arg(args.get("time_range"))
-            return AssistantSpec(
-                think=think,
-                action_type=ACTION_COMPRESS_SELECT,
-                tool_call_id=f"comp_{chunk_idx}",
-                tool_arguments={
-                    "time_range": tr,
-                    # Stash the gold summary text on the spec so the
-                    # caller can build the Step-2 emit; it is dropped at
-                    # render time for the Step-1 tool_call payload.
-                    "_gold_summary_text": (args.get("text") or args.get("summary") or "").strip(),
-                },
-            )
+            raise ValueError("compress tool_call is obsolete; emit bare <m> compact-memory lines")
         if name == TOOL_NAME_RECALL:
-            recall_args = dict(args)
-            if "time_range" in recall_args:
-                recall_args["time_range"] = _normalise_time_range_arg(
-                    recall_args.get("time_range")
-                )
+            recall_args = _normalise_recall_args(args)
             return AssistantSpec(
                 think=think,
                 action_type=ACTION_RECALL,
@@ -153,7 +180,7 @@ def parse_assistant_output_to_spec(text: str, chunk_idx: int) -> AssistantSpec:
         return AssistantSpec(think=think, action_type=ACTION_SILENT)
 
     mem_match = _MEM_RE.search(text)
-    if mem_match:
+    if mem_match or _M_LINE_RE.search(text or ""):
         mem_text = _normalise_mem_block(text)
         return AssistantSpec(
             think=think,
@@ -162,17 +189,36 @@ def parse_assistant_output_to_spec(text: str, chunk_idx: int) -> AssistantSpec:
         )
 
     ans_match = _ANSWER_RE.search(text)
-    ans_text = ans_match.group(1).strip() if ans_match else ""
-    if ans_text:
+    if ans_match and ans_match.group(1).strip():
         return AssistantSpec(
-            think=think, action_type=ACTION_RESPONSE, response_text=ans_text,
+            think=think,
+            action_type=ACTION_RESPONSE,
+            response_text=ans_match.group(1).strip(),
         )
+    legacy_ans_match = _LEGACY_ANSWER_RE.search(text)
+    if legacy_ans_match and legacy_ans_match.group(1).strip():
+        return AssistantSpec(
+            think=think,
+            action_type=ACTION_RESPONSE,
+            response_text=legacy_ans_match.group(1).strip(),
+        )
+    if _SILENCE_RE.search(text) or _LEGACY_SILENCE_RE.search(text):
+        return AssistantSpec(think=think, action_type=ACTION_SILENT)
     return AssistantSpec(think=think, action_type=ACTION_SILENT)
 
 
 # ---------------------------------------------------------------------------
 # Question metadata → QuerySpec map
 # ---------------------------------------------------------------------------
+
+def _query_answer_instruction(question: Dict) -> Optional[str]:
+    """Return the model-visible answer-format line for a structured question."""
+    instruction = canonical_answer_instruction(question)
+    if instruction:
+        return instruction
+    fallback = str(question.get("answer_instruction") or "").strip()
+    return fallback or None
+
 
 def build_question_metadata(questions_list: List[Dict]) -> List[Dict]:
     """Per-question metadata for cross-segment inheritance tracking.
@@ -185,7 +231,7 @@ def build_question_metadata(questions_list: List[Dict]) -> List[Dict]:
     segments — questions whose ``ask_chunk`` is in a prior segment but
     whose answers extend into (or past) the new segment must be carried
     across the compress boundary, otherwise the model in the from_compress
-    segment sees a gold ``<response>X</response>`` token at some chunk
+    segment sees a gold ``</Response> X`` token at some chunk
     with no upstream query as context.
     """
     out: List[Dict] = []
@@ -202,19 +248,182 @@ def build_question_metadata(questions_list: List[Dict]) -> List[Dict]:
         )
         if not answer_chunks:
             answer_chunks = [int(ask)]
+        support_chunks = sorted(
+            int(c) for c in (q.get("support_chunks") or [])
+            if isinstance(c, int) and int(c) >= 0
+        )
         options = q.get("options") or None
-        instruction = (q.get("answer_instruction") or "").strip() or None
+        instruction = _query_answer_instruction(q)
+        history_policy = query_response_history_policy(q)
         out.append({
             "ask_chunk": int(ask),
             "answer_chunks": answer_chunks,
             "max_answer_chunk": max(answer_chunks),
+            "support_chunks": support_chunks,
+            "response_history_policy": history_policy,
+            "answer_form": q.get("answer_form", ""),
+            "question_type": q.get("question_type", ""),
+            "question_way": q.get("question_way", ""),
+            "evidence_type": q.get("evidence_type", ""),
+            "family": q.get("family", q.get("task", "")),
+            "task": q.get("task", ""),
             "spec": QuerySpec(
                 text=text,
                 options=list(options) if options else None,
                 answer_format=instruction,
+                answer_form=q.get("answer_form", ""),
+                answer_style=q.get("answer_style", ""),
+                response_history_policy=history_policy,
             ),
         })
     return out
+
+
+def normalize_query_injection_policy(policy: Optional[str] = None) -> str:
+    value = (
+        policy
+        or os.environ.get("THINKSTREAM_QUERY_INJECTION_POLICY")
+        or DEFAULT_QUERY_INJECTION_POLICY
+    )
+    value = str(value or "").strip().lower().replace("-", "_")
+    aliases = {
+        "default": DEFAULT_QUERY_INJECTION_POLICY,
+        "adaptive": QUERY_POLICY_ADAPTIVE,
+        "auto": QUERY_POLICY_ADAPTIVE,
+        "current": QUERY_POLICY_CURRENT_ASK_BOUNDARY,
+        "ask_only": QUERY_POLICY_CURRENT_ASK_BOUNDARY,
+        "ask_once": QUERY_POLICY_CURRENT_ASK_BOUNDARY,
+        "ask_boundary": QUERY_POLICY_CURRENT_ASK_BOUNDARY,
+        "answer": QUERY_POLICY_ASK_ANSWER,
+        "force_answer": QUERY_POLICY_ASK_ANSWER,
+        "window4": QUERY_POLICY_ASK_WINDOW4_ANSWER,
+        "direct4": QUERY_POLICY_ASK_WINDOW4_ANSWER,
+        "window8": QUERY_POLICY_ASK_WINDOW8_ANSWER,
+        "direct8": QUERY_POLICY_ASK_WINDOW8_ANSWER,
+        "periodic8": QUERY_POLICY_PERIODIC8_ANSWER,
+        "support": QUERY_POLICY_SUPPORT_ANSWER,
+        "every": QUERY_POLICY_EVERY_ACTIVE,
+    }
+    value = aliases.get(value, value)
+    if value not in VALID_QUERY_INJECTION_POLICIES:
+        raise ValueError(
+            f"unknown query_injection_policy={policy!r}; valid="
+            f"{sorted(VALID_QUERY_INJECTION_POLICIES)}"
+        )
+    return value
+
+
+def _query_active_at(q_meta: Dict, chunk_idx: int) -> bool:
+    return int(q_meta["ask_chunk"]) <= int(chunk_idx) <= int(q_meta["max_answer_chunk"])
+
+
+def _query_uses_response_history(q_meta: Dict) -> bool:
+    return str(q_meta.get("response_history_policy") or "include").lower() != "omit"
+
+
+def _is_cumulative_count_query(q_meta: Dict) -> bool:
+    if _query_uses_response_history(q_meta) is False:
+        return False
+    answer_form = str(q_meta.get("answer_form") or "").strip().lower()
+    question_way = str(q_meta.get("question_way") or "").strip().lower()
+    fields = " ".join(
+        str(q_meta.get(k) or "")
+        for k in ("family", "task", "question_way", "evidence_type")
+    ).upper()
+    tokens = {tok for tok in re.split(r"[^A-Z0-9]+", fields) if tok}
+    return (
+        answer_form == "number"
+        or question_way == "repeated_count"
+        or bool({"F5", "REC"} & tokens)
+    )
+
+
+def _should_force_query_adaptive(q_meta: Dict, chunk_idx: int) -> bool:
+    ask = int(q_meta["ask_chunk"])
+    final = int(q_meta["max_answer_chunk"])
+    chunk = int(chunk_idx)
+    if not (ask < chunk <= final):
+        return False
+    answer_chunks = {int(c) for c in (q_meta.get("answer_chunks") or [])}
+    if chunk in answer_chunks:
+        return True
+    if _is_cumulative_count_query(q_meta) and (chunk - 1) in answer_chunks:
+        # After a count response, immediately refresh the same question plus
+        # response_history so the next timestep carries the updated running
+        # state instead of relying on a distant KV trace.
+        return True
+    period = max(0, int(ADAPTIVE_QUERY_REFRESH_PERIOD))
+    if period and chunk > ask and (chunk - ask) % period == 0:
+        return True
+    return False
+
+
+def _should_force_query_at_chunk(q_meta: Dict, chunk_idx: int, policy: str) -> bool:
+    ask = int(q_meta["ask_chunk"])
+    final = int(q_meta["max_answer_chunk"])
+    chunk = int(chunk_idx)
+    if not (ask <= chunk <= final):
+        return False
+    answer_chunks = set(int(c) for c in (q_meta.get("answer_chunks") or []))
+    if policy == QUERY_POLICY_ADAPTIVE:
+        return _should_force_query_adaptive(q_meta, chunk_idx)
+    if policy == QUERY_POLICY_CURRENT_ASK_BOUNDARY:
+        return False
+    if policy == QUERY_POLICY_ASK_ANSWER:
+        return chunk in answer_chunks
+    if policy == QUERY_POLICY_ASK_WINDOW4_ANSWER:
+        return chunk in answer_chunks or ask < chunk <= min(final, ask + 3)
+    if policy == QUERY_POLICY_ASK_WINDOW8_ANSWER:
+        return chunk in answer_chunks or ask < chunk <= min(final, ask + 7)
+    if policy == QUERY_POLICY_PERIODIC8_ANSWER:
+        return chunk in answer_chunks or (chunk > ask and (chunk - ask) % 8 == 0)
+    if policy == QUERY_POLICY_SUPPORT_ANSWER:
+        support_chunks = set(int(c) for c in (q_meta.get("support_chunks") or []))
+        return chunk in answer_chunks or chunk in support_chunks
+    if policy == QUERY_POLICY_EVERY_ACTIVE:
+        return chunk > ask
+    return False
+
+
+def _prior_responses_for_question(
+    q_meta: Dict,
+    chunk_idx: int,
+    responses_at_chunk: Dict[int, str],
+) -> List[Tuple[int, str]]:
+    if not _query_uses_response_history(q_meta):
+        return []
+    inherited_r: List[Tuple[int, str]] = []
+    for ans_chunk in q_meta.get("answer_chunks") or []:
+        ans_chunk = int(ans_chunk)
+        if ans_chunk < int(chunk_idx) and ans_chunk in responses_at_chunk:
+            inherited_r.append((ans_chunk, responses_at_chunk[ans_chunk]))
+    return sorted(inherited_r)
+
+
+def _append_inherited_query_once(
+    user: ChunkUserSpec,
+    q_meta: Dict,
+    responses: List[Tuple[int, str]],
+) -> None:
+    ask_chunk = int(q_meta["ask_chunk"])
+    spec = q_meta["spec"]
+    existing = list(user.inherited_queries or [])
+    if not any(
+        int(old_ask) == ask_chunk
+        and getattr(old_spec, "text", "") == getattr(spec, "text", "")
+        for old_ask, old_spec in existing
+    ):
+        existing.append((ask_chunk, spec))
+        user.inherited_queries = sorted(existing, key=lambda item: int(item[0]))
+    if responses:
+        current = list(user.inherited_responses or [])
+        seen = {(int(t), str(v)) for t, v in current}
+        for item in responses:
+            key = (int(item[0]), str(item[1]))
+            if key not in seen:
+                current.append(item)
+                seen.add(key)
+        user.inherited_responses = sorted(current)
 
 
 def build_questions_by_chunk(questions_list: List[Dict]) -> Dict[int, List[QuerySpec]]:
@@ -240,11 +449,14 @@ def build_questions_by_chunk(questions_list: List[Dict]) -> Dict[int, List[Query
         if not text:
             continue
         options = q.get("options") or None
-        instruction = (q.get("answer_instruction") or "").strip() or None
+        instruction = _query_answer_instruction(q)
         spec = QuerySpec(
             text=text,
             options=list(options) if options else None,
             answer_format=instruction,
+            answer_form=q.get("answer_form", ""),
+            answer_style=q.get("answer_style", ""),
+            response_history_policy=query_response_history_policy(q),
         )
         out.setdefault(ask, []).append(spec)
     return out
@@ -285,7 +497,7 @@ def _mc_accepted_answers(options: List[str], correct: str) -> List[str]:
 
 
 def _normalise_mc_question_for_render(question: Dict) -> Dict:
-    """Keep rendered MC prompts, metadata, and SFT targets on letter-only."""
+    """Keep rendered MC prompts, metadata, and SFT targets on letter+text."""
     if str(question.get("answer_form") or "").strip() != "multiple_choice":
         return question
     out = dict(question)
@@ -295,10 +507,11 @@ def _normalise_mc_question_for_render(question: Dict) -> Dict:
         return out
     if not (0 <= ord(correct) - ord("A") < len(options)):
         return out
-    out["correct_option"] = correct
-    out["answer_style"] = "letter_only"
-    out["answer_instruction"] = canonical_answer_instruction(out)
     correct_text = _mc_correct_text(out)
+    target = f"{correct}) {correct_text}" if correct_text else correct
+    out["correct_option"] = correct
+    out["answer_style"] = "letter_plus_text"
+    out["answer_instruction"] = canonical_answer_instruction(out)
     if correct_text:
         out["gold_answer"] = correct_text
         out["canonical_answer"] = correct_text
@@ -309,18 +522,18 @@ def _normalise_mc_question_for_render(question: Dict) -> Dict:
         if isinstance(emit, dict):
             e = dict(emit)
             if str(e.get("value") or "").strip():
-                e["value"] = correct
+                e["value"] = target
             emits.append(e)
         else:
             emits.append(emit)
     if emits:
         out["per_emit_answers"] = emits
-    out["sft_answer"] = correct
+    out["sft_answer"] = target
     return out
 
 
 def _build_mc_response_targets_by_chunk(questions_list: List[Dict]) -> Dict[int, str]:
-    """Map MC answer chunks to the canonical one-letter SFT surface form."""
+    """Map MC answer chunks to the canonical letter+text SFT surface form."""
     targets: Dict[int, str] = {}
     for q in questions_list:
         if str(q.get("answer_form") or "").strip() != "multiple_choice":
@@ -329,6 +542,8 @@ def _build_mc_response_targets_by_chunk(questions_list: List[Dict]) -> Dict[int,
         options = list(q.get("options") or [])
         if len(correct) != 1 or not (0 <= ord(correct) - ord("A") < len(options)):
             continue
+        correct_text = _mc_correct_text(q)
+        target = f"{correct}) {correct_text}" if correct_text else correct
         chunks = []
         for emit in q.get("per_emit_answers") or []:
             if isinstance(emit, dict) and "chunk" in emit:
@@ -341,7 +556,7 @@ def _build_mc_response_targets_by_chunk(questions_list: List[Dict]) -> Dict[int,
         if not chunks and isinstance(q.get("ask_chunk"), int):
             chunks = [int(q["ask_chunk"])]
         for chunk in chunks:
-            targets.setdefault(chunk, correct)
+            targets.setdefault(chunk, target)
 
     return targets
 
@@ -365,25 +580,24 @@ def _format_recall_result_for_tool_response(
 ) -> str:
     """Format a pass3 recall_result dict into a tool_response content string.
 
-    The original pass3 schema stuffs frame metadata + retrieved memory text
-    into recall_result. For SFT we render it as a short JSON-flavoured text
-    body so the tool turn always renders deterministically.
+    The original pass3 schema may contain retrieved memory text. Keep it out
+    of the model-visible tool response; the answer should be grounded in
+    returned frames when they exist.
     """
     if not recall_result:
         return "(no recall hits)"
-    keep_keys = ("time_range", "source", "n_frames", "text", "preview")
-    body = {k: recall_result[k] for k in keep_keys if k in recall_result}
-    if not body:
-        return json.dumps(recall_result, ensure_ascii=False)[:400]
-    return json.dumps(body, ensure_ascii=False)
+    time_range = recall_result.get("time_range") or recall_result.get("time")
+    if time_range:
+        return f"The recall tool returned no historical video frames for t={time_range}."
+    return "The recall tool returned no historical video frames."
 
 
 def _build_recall_tool_response_content(sample: Dict):
     """Build the Shape-B recall tool payload.
 
-    The tool response must carry recalled visual frames when available; the
-    companion ``<recall_result>`` stays metadata-only so answer supervision is
-    grounded in the returned frames rather than retrieved text.
+    The tool response must carry recalled visual frames when available. Any
+    retriever text stays out of the prompt so answer supervision is grounded
+    in the returned frames rather than retrieved text.
     """
     recall_result = (
         sample.get("recall_result")
@@ -420,7 +634,7 @@ def translate_recall_sample(
     a1 = parse_assistant_output_to_spec(turn1_text, chunk_idx)
     # Force the first assistant turn to be a tool_call; if the upstream
     # parsing somehow yielded a silent/response, repair it conservatively.
-    if a1.action_type not in (ACTION_COMPRESS_SELECT, ACTION_RECALL):
+    if a1.action_type != ACTION_RECALL:
         # Treat as silent fallback; tool_response/followup will be skipped.
         return TurnSpec(user=user, assistant=a1)
 
@@ -469,23 +683,19 @@ def translate_sample_to_turn(
     """
     chunk_idx = int(sample.get("chunk_idx", 0))
     sample_type = sample.get("sample_type", ACTION_SILENT)
-    is_inter_chunk = sample_is_inter_chunk(sample)
+    if is_compress_sample(sample):
+        raise ValueError(
+            "compact-memory/compress samples must render as standalone "
+            "compact_memory_update rows, not streaming trajectory turns"
+        )
 
-    if is_inter_chunk:
-        # Legacy compact rows are rendered outside the streaming trajectory.
-        # This fallback should only be reached for archived data.
-        user = ChunkUserSpec(
-            chunk_idx=chunk_idx,
-            frame_paths=[],
-        )
-    else:
-        queries_here = questions_by_chunk.get(chunk_idx) or []
-        active = queries_here[0] if queries_here else None
-        user = ChunkUserSpec(
-            chunk_idx=chunk_idx,
-            frame_paths=list(frame_resolver(chunk_idx)),
-            active_query=active,
-        )
+    queries_here = questions_by_chunk.get(chunk_idx) or []
+    active = queries_here[0] if queries_here else None
+    user = ChunkUserSpec(
+        chunk_idx=chunk_idx,
+        frame_paths=list(frame_resolver(chunk_idx)),
+        active_query=active,
+    )
 
     if sample_type == "recall":
         return translate_recall_sample(sample, user, response_override)
@@ -496,6 +706,11 @@ def translate_sample_to_turn(
         parse_assistant_output_to_spec(output_text, chunk_idx),
         response_override,
     )
+    if assistant.action_type == ACTION_COMPRESS_SELECT:
+        raise ValueError(
+            "compress tool calls are not valid streaming actions; rerun pass3 "
+            "so compact memory is emitted as standalone compact_memory_update"
+        )
     return TurnSpec(user=user, assistant=assistant)
 
 
@@ -553,12 +768,11 @@ def _sample_sort_key(sample: Dict) -> Tuple[int, int]:
 
 
 def parse_mem_block_to_entries(mem_text: str) -> List[MemoryEntry]:
-    """Parse assistant <MEM> update into inherited <memory> entries."""
+    """Parse compact-memory <m> lines into inherited memory entries."""
     m = _MEM_RE.search(mem_text or "")
-    if not m:
-        return []
+    body = m.group(1) if m else str(mem_text or "")
     entries: List[MemoryEntry] = []
-    for line in _M_LINE_RE.finditer(m.group(1)):
+    for line in _M_LINE_RE.finditer(body):
         start = line.group(1)
         end = line.group(2)
         time_str = f"{int(start)}-{int(end)}" if end is not None else str(int(start))
@@ -569,9 +783,7 @@ def parse_mem_block_to_entries(mem_text: str) -> List[MemoryEntry]:
 
 
 def entries_to_mem_block(entries: List[MemoryEntry]) -> str:
-    lines = ["<MEM>"]
-    lines.extend(e.to_text() for e in sorted(entries, key=lambda x: (x.start_sec, x.end_sec)))
-    lines.append("</MEM>")
+    lines = [e.to_text() for e in sorted(entries, key=lambda x: (x.start_sec, x.end_sec))]
     return "\n".join(lines)
 
 
@@ -589,19 +801,19 @@ def extract_compress_summary(compress_sample: Dict) -> Tuple[str, List[int]]:
         body = str(raw_text or "").strip()
         if not body:
             return body
-        if body.startswith("<MEM>"):
+        if _M_LINE_RE.search(body):
             return _normalise_mem_block(body)
         if raw_chunks:
             start, end = min(raw_chunks), max(raw_chunks)
         else:
             start = end = int(compress_sample.get("chunk_idx", 0))
         safe = html.escape(body, quote=False)
-        return f'<MEM>\n  <m t="{start}-{end}">{safe}</m>\n</MEM>'
+        return f'  <m t="{start}-{end}">{safe}</m>'
 
     text = (compress_sample.get("gold_caption") or "").strip()
     chunks = list(compress_sample.get("gold_compress_chunks") or [])
     if text:
-        if text.startswith("<MEM>") and not chunks:
+        if _M_LINE_RE.search(text) and not chunks:
             for entry in parse_mem_block_to_entries(text):
                 chunks.extend(range(entry.start_sec, entry.end_sec + 1))
         return _wrap_legacy_summary(text, sorted(set(int(c) for c in chunks))), chunks
@@ -630,12 +842,16 @@ def extract_compress_summary(compress_sample: Dict) -> Tuple[str, List[int]]:
 
 
 def _normalise_mem_block(mem_text: str) -> str:
-    """Return the raw <MEM> block from text, stripping only outside whitespace."""
+    """Return compact-memory text, preferring normalized <m> lines."""
     raw = str(mem_text or "").strip()
-    m = re.search(r"<MEM>\s*.*?</MEM>", raw, re.DOTALL | re.IGNORECASE)
-    if not m:
+    matches = list(re.finditer(
+        r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>.*?</m>',
+        raw,
+        re.DOTALL | re.IGNORECASE,
+    ))
+    if not matches:
         return raw
-    return m.group(0).strip()
+    return "\n".join(m.group(0).strip() for m in matches)
 
 
 def _memory_update_input_from_sample(compress_sample: Dict) -> str:
@@ -672,9 +888,20 @@ def _memory_update_input_from_sample(compress_sample: Dict) -> str:
             text = str(item.get("text") or item.get("think") or "").strip()
             if text:
                 think_lines.append(f'  <c t="{t}">{text}</c>')
-    old_block = "<MEM>\n" + "\n".join(old_lines) + "\n</MEM>" if old_lines else "<MEM>\n</MEM>"
+    old_block = "\n".join(old_lines) if old_lines else "(empty)"
     new_block = "\n".join(think_lines) if think_lines else "(no recent captions available)"
-    return f"OLD_MEMORY:\n{old_block}\n\nNEW_CAPTIONS:\n{new_block}\n\nReturn NEW_MEMORY."
+    return (
+        f"OLD_MEMORY:\n{old_block}\n\n"
+        f"NEW_CAPTIONS:\n{new_block}\n\n"
+        "Return only compact-memory XML lines:\n"
+        "<m t=\"start-end\">one concise summary for that exact source range.</m>\n\n"
+        "Use real input timestamps. If OLD_MEMORY is not empty, keep useful old "
+        "memory in at least one line. If NEW_CAPTIONS is not empty, cover the "
+        "latest new captions. If the source provides one contiguous summary range, "
+        "keep it as one line; do not invent finer timestamp segments. Do not "
+        "output NEW_MEMORY, markdown, prose, "
+        "analysis, or any text outside the <m> lines."
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -684,6 +911,7 @@ def _memory_update_input_from_sample(compress_sample: Dict) -> str:
 def render_trajectory_record_to_rows(
     traj_record: Dict,
     frame_resolver: FrameResolver,
+    query_injection_policy: Optional[str] = None,
 ) -> List[Dict]:
     """Render one pass4 trajectory_record into a list of v2 trajectory rows.
 
@@ -692,21 +920,26 @@ def render_trajectory_record_to_rows(
     raw range (``max(gold_compress_chunks) == chunk_idx - 1``). The boundaries are:
       - sub-trajectory 0: from_start, visual chunks before K1.
         Then a standalone compact-memory row:
-        system(compact prompt) -> user(old memory + captions) -> asst(<MEM>).
+        system(compact prompt) -> user(old memory + captions) -> asst(<m> lines).
       - sub-trajectory 1: from_compress, chunks K1..K2-1.
-        Prefix: user(<MEM>...</MEM>) -> assistant("Memory loaded."), then the first real
+        Prefix: user(<m> lines) -> assistant("Memory loaded."), then the first real
         visual turn for chunk K1.
       - sub-trajectory 2..N: same as #1.
 
-    Memory state is replaced by the parsed <MEM> block at each boundary; the
-    exact raw <MEM> text is reused for re-prefill.
+    Memory state is replaced by parsed <m> lines at each boundary; the exact
+    raw <m> text is reused for re-prefill.
     """
     raw_samples = traj_record.get("samples") or []
     if not raw_samples:
         return []
+    query_policy = normalize_query_injection_policy(query_injection_policy)
     samples = sorted(raw_samples, key=_sample_sort_key)
     segments = split_samples_by_compress(samples)
-    questions_raw = traj_record.get("questions") or []
+    questions_raw = [
+        _normalise_mc_question_for_render(q)
+        for q in (traj_record.get("questions") or [])
+        if isinstance(q, dict)
+    ]
     questions_by_chunk = build_questions_by_chunk(questions_raw)
     mc_response_targets = _build_mc_response_targets_by_chunk(questions_raw)
     # Per-question metadata + per-chunk emitted response, indexed once for
@@ -719,19 +952,17 @@ def render_trajectory_record_to_rows(
             continue
         c = int(s.get("chunk_idx", 0))
         output_text = s.get("output", "") or ""
-        m = _ANSWER_RE.search(output_text)
-        if m:
-            text = m.group(1).strip()
-            if text:
-                responses_at_chunk[c] = mc_response_targets.get(c, text)
+        spec = parse_assistant_output_to_spec(output_text, c)
+        if spec.action_type == ACTION_RESPONSE and spec.response_text:
+            responses_at_chunk[c] = mc_response_targets.get(c, spec.response_text)
 
     video_id = traj_record.get("video_id", "")
     parent_traj_id = traj_record.get("trajectory_id", "")
 
     # Accumulated memory state across all sub-trajectories of this video.
-    # ``memory_prefill_text`` is the exact <MEM> block injected into the next
+    # ``memory_prefill_text`` is the exact compact-memory text injected into the next
     # trajectory. ``memory_state`` is only parsed diagnostics / fallback state;
-    # rendering does not parse and rewrite the <MEM> text.
+    # rendering does not parse and rewrite that text.
     memory_state: List[MemoryEntry] = []
     memory_prefill_text: Optional[str] = None
 
@@ -740,8 +971,20 @@ def render_trajectory_record_to_rows(
         traj_type = (
             TRAJ_TYPE_FROM_START if seg_idx == 0 else TRAJ_TYPE_FROM_COMPRESS
         )
-        terminal_compress = seg_samples[-1] if is_compress_sample(seg_samples[-1]) else None
+        terminal_compress = (
+            seg_samples[-1] if is_compress_sample(seg_samples[-1]) else None
+        )
         stream_samples = seg_samples[:-1] if terminal_compress else seg_samples
+        leaked_compress = [
+            s.get("sample_id") or s.get("chunk_idx")
+            for s in stream_samples
+            if is_compress_sample(s)
+        ]
+        if leaked_compress:
+            raise ValueError(
+                "compact-memory/compress samples leaked into streaming segment: "
+                + ", ".join(str(x) for x in leaked_compress[:5])
+            )
 
         # Snapshot memory state BEFORE consuming this segment. The exact text
         # snapshot is what the model inherits at the trajectory boundary.
@@ -770,7 +1013,7 @@ def render_trajectory_record_to_rows(
         # Attach open queries / prior responses to the FIRST real turn of a
         # from_compress segment. Compact memory itself is inserted later as a
         # separate text-only user prefill followed by a short assistant ack. Do
-        # not also render it as <memory> on the visual turn, and do not bulk
+        # not also render it as wrapped memory on the visual turn, and do not bulk
         # load prior visual chunks here; the runtime KV starts from text
         # compact state and then receives the next current chunk.
         # Uses the pre-loop snapshot for memory so the model sees only what
@@ -782,8 +1025,8 @@ def render_trajectory_record_to_rows(
             head_chunk = int(stream_samples[0].get("chunk_idx", 0))
             open_qs = [
                 q for q in question_metadata
-                if q["ask_chunk"] < head_chunk
-                and q["max_answer_chunk"] >= head_chunk
+                if int(q["ask_chunk"]) < head_chunk
+                and int(q["max_answer_chunk"]) >= head_chunk
             ]
             if open_qs:
                 turns[0].user.inherited_queries = [
@@ -791,6 +1034,8 @@ def render_trajectory_record_to_rows(
                 ]
                 inherited_r: List[Tuple[int, str]] = []
                 for q in open_qs:
+                    if not _query_uses_response_history(q):
+                        continue
                     for ans_chunk in q["answer_chunks"]:
                         if (ans_chunk < head_chunk
                                 and ans_chunk in responses_at_chunk):
@@ -800,14 +1045,45 @@ def render_trajectory_record_to_rows(
                 if inherited_r:
                     turns[0].user.inherited_responses = sorted(inherited_r)
 
+        # Adaptive query refresh. The first ask chunk is already carried by
+        # ``active_query``. Later chunks re-render the open question at expected
+        # answer/probe chunks, periodically during long waits, and right after
+        # cumulative count answers so response_history is near the next step.
+        if query_policy != QUERY_POLICY_CURRENT_ASK_BOUNDARY:
+            for turn in turns:
+                chunk_idx = int(turn.user.chunk_idx)
+                if turn.user.active_query is not None:
+                    continue
+                active_qs = [
+                    q for q in question_metadata
+                    if _query_active_at(q, chunk_idx)
+                    and _should_force_query_at_chunk(q, chunk_idx, query_policy)
+                ]
+                if not active_qs:
+                    continue
+                # Pass3 enforces one active question. If a legacy row overlaps,
+                # keep the newest open query, matching format_queries_block().
+                q = sorted(active_qs, key=lambda item: int(item["ask_chunk"]))[-1]
+                _append_inherited_query_once(
+                    turn.user,
+                    q,
+                    _prior_responses_for_question(q, chunk_idx, responses_at_chunk),
+                )
+
         if turns and stream_samples:
             chunk_start = int(stream_samples[0].get("chunk_idx", 0))
             chunk_end = int(stream_samples[-1].get("chunk_idx", 0))
             loss_class = traj_type
+            memory_prefill = (
+                inherited_mem_text
+                if traj_type == TRAJ_TYPE_FROM_COMPRESS and inherited_mem_text
+                else None
+            )
             spec = TrajectorySpec(
                 trajectory_type=traj_type,
                 turns=turns,
                 available_tools=(TOOL_NAME_RECALL,),
+                memory_prefill_text=memory_prefill,
                 trajectory_idx=len(rows),
                 video_id=video_id,
                 chunk_start=chunk_start,
@@ -815,26 +1091,13 @@ def render_trajectory_record_to_rows(
             )
             messages, tools = render_trajectory_messages(spec)
             loss_assistant_indices = None
-            memory_prefill = None
-            if traj_type == TRAJ_TYPE_FROM_COMPRESS and inherited_mem_text:
-                memory_prefill = inherited_mem_text
-                messages = (
-                    messages[:1]
-                    + [
-                        {
-                            "role": "user",
-                            "content": [{"type": "text", "text": memory_prefill}],
-                        },
-                        {"role": "assistant", "content": MEMORY_LOAD_ACK},
-                    ]
-                    + messages[1:]
-                )
+            if memory_prefill:
                 assistant_count = sum(1 for m in messages if m.get("role") == "assistant")
                 loss_assistant_indices = list(range(1, assistant_count))
 
             questions_here = [
-                _normalise_mc_question_for_render(q)
-                for q in (traj_record.get("questions") or [])
+                q
+                for q in questions_raw
                 if chunk_start <= int(q.get("ask_chunk", -1)) <= chunk_end
             ]
 
@@ -918,7 +1181,7 @@ def render_trajectory_record_to_rows(
                     ],
                 },
             })
-            if mem_text.startswith("<MEM>"):
+            if mem_text.strip():
                 memory_prefill_text = mem_text
             if entries:
                 memory_state = entries

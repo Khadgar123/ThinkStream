@@ -284,8 +284,8 @@ def build_stream_prompt(
         "max_pixels": max_pixels,
     }
     query_text = (
-        f'<query><q t="{current_time}">Caption only the newest current video chunk. '
-        "Do not copy earlier captions. Output one concise English sentence.</q></query>"
+        f'<active_query><q t="{current_time}">Caption only the newest current video chunk. '
+        "Do not copy earlier captions. Output one concise English sentence.</q></active_query>"
     )
     if prompt_style == "schema":
         user_content = [

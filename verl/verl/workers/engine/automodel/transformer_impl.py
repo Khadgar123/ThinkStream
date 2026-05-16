@@ -504,7 +504,8 @@ class AutomodelEngineWithLMHead(AutomodelEngine):
             if pad_mode == DatasetPadMode.NO_PADDING:
                 input_ids_rmpad = input_ids.values().unsqueeze(0)
                 if position_ids.dim() == 3:
-                    position_ids_rmpad = position_ids.values().unsqueeze(1)
+                    position_ids_rmpad = tu.nested_position_ids_values(position_ids).unsqueeze(1)
+                    position_ids_rmpad = tu.normalize_mrope_position_ids(position_ids_rmpad, expected_channels=3)
                 else:
                     position_ids_rmpad = position_ids.values().unsqueeze(0)
             else:
@@ -551,8 +552,9 @@ class AutomodelEngineWithLMHead(AutomodelEngine):
                 )
 
                 if position_ids.dim() == 3:
+                    mrope_dim = int(position_ids.shape[1])
                     position_ids = torch.nested.to_padded_tensor(
-                        position_ids, padding=0, output_size=(batch_size, 4, max_seq_len)
+                        position_ids, padding=0, output_size=(batch_size, mrope_dim, max_seq_len)
                     ).transpose(0, 1)
                 else:
                     position_ids = torch.nested.to_padded_tensor(

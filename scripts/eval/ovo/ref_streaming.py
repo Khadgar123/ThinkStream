@@ -55,13 +55,16 @@ SYSTEM_PROMPT = (
     "Based on the user's query and the video content, first output your internal "
     "reasoning enclosed in <think>...</think> tags. "
     "Then, if you determine that a response is needed at this moment, output "
-    "<response> followed by the content. "
-    "If no response is needed, output <silent>. "
+    "</Response> followed by the content. "
+    "If no response is needed, output </Silence>. "
     "Your generated thoughts and responses should be continuous and fluent across "
     "the video chunks."
 )
 
-OVO_OPTIONS = ["No", "Yes", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E"]
+BINARY_OPTIONS = ["No", "Yes"]
+COUNT_OPTIONS = [str(i) for i in range(11)]
+LETTER_OPTIONS = list("ABCDE")
+OVO_OPTIONS = BINARY_OPTIONS + COUNT_OPTIONS + LETTER_OPTIONS
 
 
 class TeeWriter:
@@ -149,15 +152,18 @@ class MCQDataset(Dataset):
 
 
 def _ensure_control_tokens(model, processor):
+    from thinkstream.data.agent_protocol import (
+        ensure_agent_special_tokens,
+        validate_agent_special_tokens,
+    )
+
     tokenizer = processor.tokenizer
-    missing = [tok for tok in ("<silent>", "<response>") if tokenizer.convert_tokens_to_ids(tok) is None]
-    if missing:
-        tokenizer.add_special_tokens({"additional_special_tokens": missing})
-        model.resize_token_embeddings(len(tokenizer))
+    ensure_agent_special_tokens(tokenizer, model=model)
+    validate_agent_special_tokens(tokenizer)
     return {
         "think_end_token_id": tokenizer.convert_tokens_to_ids("</think>"),
-        "silent_token_id": tokenizer.convert_tokens_to_ids("<silent>"),
-        "response_token_id": tokenizer.convert_tokens_to_ids("<response>"),
+        "silent_token_id": tokenizer.convert_tokens_to_ids("</Silence>"),
+        "response_token_id": tokenizer.convert_tokens_to_ids("</Response>"),
         "eos_token_id": tokenizer.convert_tokens_to_ids("<|im_end|>"),
         "video_token_id": tokenizer.convert_tokens_to_ids("<|video_pad|>"),
     }
@@ -190,13 +196,80 @@ def build_query(datum: dict, question_prefix: str, question_postfix: str) -> str
     return question_prefix + datum["question"]
 
 
-def parse_answer_token(gen_tokens: torch.Tensor, response_token_id: int, strict_option_ids: list[int]) -> int:
+def allowed_options_for_datum(datum: dict) -> list[str]:
+    task = str(datum.get("task") or "")
+    if task in {"CRR", "SSR"}:
+        return list(BINARY_OPTIONS)
+    if task == "REC":
+        return list(COUNT_OPTIONS)
+    options = datum.get("options") or []
+    if options:
+        return LETTER_OPTIONS[: min(len(options), len(LETTER_OPTIONS))]
+    answer = str(datum.get("answer") or "").strip()
+    if answer in BINARY_OPTIONS:
+        return list(BINARY_OPTIONS)
+    if answer.isdigit():
+        return list(COUNT_OPTIONS)
+    if answer in LETTER_OPTIONS:
+        return list(LETTER_OPTIONS)
+    return list(OVO_OPTIONS)
+
+
+def option_token_ids(tokenizer, options: list[str]) -> list[int]:
+    ids: list[int] = []
+    for opt in options:
+        tokenized = tokenizer(opt, add_special_tokens=False).input_ids
+        if not tokenized:
+            raise ValueError(f"No token id resolved for option={opt!r}")
+        ids.append(int(tokenized[-1]))
+    return ids
+
+
+def parse_answer_token(
+    gen_tokens: torch.Tensor,
+    response_token_id: int,
+    strict_option_ids: list[int],
+    allowed_options: list[str],
+) -> str:
     try:
         resp_pos = (gen_tokens == response_token_id).nonzero(as_tuple=True)[0][0].item()
         ans_token = gen_tokens[resp_pos + 1].item()
-        return strict_option_ids.index(ans_token)
+        return allowed_options[strict_option_ids.index(ans_token)]
     except Exception:
-        return random.randint(0, len(strict_option_ids) - 1)
+        return random.choice(allowed_options)
+
+
+def result_response_for_prediction(pred: str, datum: dict) -> str:
+    """Return the value scored by the OVO evaluator.
+
+    Formatted OVO rows use letters for MC tasks. Raw/debug rows sometimes keep
+    option text as the answer, so map letter predictions back to option text
+    only for that case.
+    """
+    answer = str(datum.get("answer") or "").strip()
+    options = datum.get("options") or []
+    if pred in LETTER_OPTIONS and options and answer and answer not in LETTER_OPTIONS:
+        idx = LETTER_OPTIONS.index(pred)
+        if idx < len(options):
+            opt = str(options[idx])
+            for prefix in (f"{pred}.", f"{pred})", f"{pred}:"):
+                if opt.startswith(prefix):
+                    return opt[len(prefix):].strip()
+            return opt
+    return pred
+
+
+def is_correct_response(result: dict) -> bool:
+    answer = str(result.get("answer") or "").strip()
+    response = str(result.get("response") or "").strip()
+    if (
+        result.get("task") in {"CRR", "SSR", "REC"}
+        or answer in BINARY_OPTIONS
+        or answer in LETTER_OPTIONS
+        or answer.isdigit()
+    ):
+        return response == answer
+    return response[: len(answer)] == answer
 
 
 @torch.inference_mode()
@@ -232,17 +305,13 @@ def predict(args):
         persistent_workers=args.num_workers > 0,
     )
 
-    strict_option_ids = [
-        processor.tokenizer(opt, add_special_tokens=False).input_ids[-1]
-        for opt in OVO_OPTIONS
-    ]
-    sample_kwargs = {
+    option_ids_by_tuple: dict[tuple[str, ...], list[int]] = {}
+    base_sample_kwargs = {
         "think_end_token_id": token_ids["think_end_token_id"],
         "max_think_tokens": args.think_budget,
         "eos_token_id": token_ids["eos_token_id"],
         "silent_token_id": token_ids["silent_token_id"],
         "response_token_id": token_ids["response_token_id"],
-        "restricted_token_ids": strict_option_ids,
     }
     text_cfg = get_text_config(model.config)
     head_dim = getattr(
@@ -274,7 +343,17 @@ def predict(args):
                 query_ts = float(preloaded.get("original_video_end", query_ts))
                 run_video_end = float(preloaded["video_end"])
             query = build_query(datum, args.question_prefix, args.question_postfix)
-            pred_idx = None
+            allowed_options = allowed_options_for_datum(datum)
+            option_key = tuple(allowed_options)
+            strict_option_ids = option_ids_by_tuple.get(option_key)
+            if strict_option_ids is None:
+                strict_option_ids = option_token_ids(processor.tokenizer, allowed_options)
+                option_ids_by_tuple[option_key] = strict_option_ids
+            sample_kwargs = {
+                **base_sample_kwargs,
+                "restricted_token_ids": strict_option_ids,
+            }
+            pred = None
             decoded = ""
             for result in streaming_video_chat(
                 engine=engine,
@@ -299,23 +378,34 @@ def predict(args):
             ):
                 if result["is_answer"]:
                     gen_tokens = result["generated_tokens"][0]
-                    pred_idx = parse_answer_token(gen_tokens, token_ids["response_token_id"], strict_option_ids)
+                    pred = parse_answer_token(
+                        gen_tokens,
+                        token_ids["response_token_id"],
+                        strict_option_ids,
+                        allowed_options,
+                    )
                     decoded = processor.decode(gen_tokens)
                     break
-            if pred_idx is None:
-                pred_idx = random.randint(0, len(OVO_OPTIONS) - 1)
+            if pred is None:
+                pred = random.choice(allowed_options)
             results.append({
                 "idx": int(idx),
                 **datum,
-                "response": OVO_OPTIONS[pred_idx],
+                "response": result_response_for_prediction(pred, datum),
+                "response_token": pred,
+                "allowed_options": allowed_options,
                 "success": True,
                 "generated": decoded,
             })
         except Exception as exc:
+            allowed_options = allowed_options_for_datum(datum)
+            pred = random.choice(allowed_options)
             results.append({
                 "idx": int(idx),
                 **datum,
-                "response": random.choice(OVO_OPTIONS),
+                "response": result_response_for_prediction(pred, datum),
+                "response_token": pred,
+                "allowed_options": allowed_options,
                 "success": False,
                 "error": repr(exc),
             })
@@ -331,7 +421,7 @@ def evaluate_ovobench_results(results: list[dict]):
         task = result["task"]
         task_to_counts.setdefault(task, {"correct": 0, "total": 0})
         task_to_counts[task]["total"] += 1
-        if str(result["response"])[: len(str(result["answer"]))] == str(result["answer"]):
+        if is_correct_response(result):
             task_to_counts[task]["correct"] += 1
 
     rt_accs, bt_accs, fr_accs = [], [], []

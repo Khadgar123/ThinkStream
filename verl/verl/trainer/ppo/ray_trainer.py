@@ -630,10 +630,17 @@ class RayPPOTrainer:
             }
             print(f"test_gen_batch meta info: {test_gen_batch.meta_info}")
 
-            # pad to be divisible by dp_size
-            size_divisor = self.config.actor_rollout_ref.rollout.agent.num_workers
-            test_gen_batch_padded, pad_size = pad_dataproto_to_divisor(test_gen_batch, size_divisor)
-            test_output_gen_batch_padded = self.async_rollout_manager.generate_sequences(test_gen_batch_padded)
+            if str(self.config.actor_rollout_ref.rollout.name) == "streaming":
+                # True-KV rollout owns physical KV state per trajectory. Repeating
+                # validation rows just to fill AgentLoop workers is unnecessary
+                # and can replay the same long video multiple times on one server.
+                test_output_gen_batch_padded = self.async_rollout_manager.generate_sequences(test_gen_batch)
+                pad_size = 0
+            else:
+                # pad to be divisible by dp_size
+                size_divisor = self.config.actor_rollout_ref.rollout.agent.num_workers
+                test_gen_batch_padded, pad_size = pad_dataproto_to_divisor(test_gen_batch, size_divisor)
+                test_output_gen_batch_padded = self.async_rollout_manager.generate_sequences(test_gen_batch_padded)
 
             recurrent_val = _is_recurrent_rollout_batch(test_output_gen_batch_padded)
             reward_target_padded = (
@@ -1238,6 +1245,7 @@ class RayPPOTrainer:
             batch_td = left_right_2_no_padding(batch_td)
             # step 3: add meta info
             metadata = {"calculate_entropy": False, "compute_loss": False}
+            metadata["temperature"] = self.config.actor_rollout_ref.rollout.temperature
             if self.ref_in_actor:
                 metadata["no_lora_adapter"] = True
             tu.assign_non_tensor(batch_td, **metadata)
@@ -1265,7 +1273,12 @@ class RayPPOTrainer:
             # step 2: convert from padding to nopadding
             batch_td = left_right_2_no_padding(batch_td)
             # step 3: add meta info
-            tu.assign_non_tensor(batch_td, calculate_entropy=True, compute_loss=False)
+            tu.assign_non_tensor(
+                batch_td,
+                calculate_entropy=True,
+                compute_loss=False,
+                temperature=self.config.actor_rollout_ref.rollout.temperature,
+            )
             output = self.actor_rollout_wg.compute_log_prob(batch_td)
             # gather output
             entropy = tu.get(output, "entropy")
@@ -1320,6 +1333,7 @@ class RayPPOTrainer:
                 seed=seed,
                 dataloader_kwargs={"shuffle": shuffle},
                 compute_loss=True,
+                temperature=rollout_config.temperature,
             )
             actor_output = self.actor_rollout_wg.update_actor(batch_td)
             actor_output = tu.get(actor_output, "metrics")

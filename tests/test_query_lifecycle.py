@@ -14,3 +14,37 @@ def test_new_query_replaces_previous_open_query():
     rendered = format_queries_block(memory.queries)
     assert "second question" in rendered
     assert "first question" not in rendered
+
+
+def test_count_query_renders_response_history():
+    rendered = format_queries_block([{
+        "question": "How many cups have appeared so far?",
+        "ask_time": 5,
+        "status": "open",
+        "answer_form": "number",
+        "question_type": "multi_emit",
+        "question_way": "repeated_count",
+        "answer_chunks": [10, 15],
+        "answers": [{"time": 10, "text": "1", "expected_chunk": 10}],
+    }])
+
+    assert "<response_history>" in rendered
+    assert "[10s] A: 1" in rendered
+
+
+def test_status_probe_omits_response_history_answers():
+    rendered = format_queries_block([{
+        "question": "Is the door currently open?",
+        "ask_time": 5,
+        "status": "open",
+        "answer_form": "binary",
+        "question_type": "multi_emit",
+        "question_way": "current_status_probe",
+        "evidence_type": "status_probe_stream",
+        "answer_chunks": [5, 10],
+        "answers": [{"time": 5, "text": "Yes", "expected_chunk": 5}],
+    }])
+
+    assert "<active_query>" in rendered
+    assert "<response_history>" in rendered
+    assert "[5s] A: Yes" not in rendered

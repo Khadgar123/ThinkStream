@@ -136,7 +136,7 @@ class VLLMClient:
             )
             transport = httpx.AsyncHTTPTransport(limits=limits)
             sdk_httpx = httpx.AsyncClient(
-                transport=transport, timeout=self.timeout,
+                transport=transport, timeout=self.timeout, trust_env=False,
             )
             self._client = AsyncOpenAI(
                 base_url=self.api_base,
@@ -167,6 +167,7 @@ class VLLMClient:
                 base_url=self.api_base, timeout=self.timeout,
                 headers={"Authorization": f"Bearer {self.api_key}"},
                 limits=limits,
+                trust_env=False,
             )
         return self._httpx_client
 
@@ -205,7 +206,21 @@ class VLLMClient:
             body["media_io_kwargs"] = dict(media_io_kwargs)
         client = await self._get_httpx_client()
         resp = await client.post("/chat/completions", json=body)
-        resp.raise_for_status()
+        if resp.status_code >= 400:
+            try:
+                detail = json.dumps(resp.json(), ensure_ascii=False)
+            except Exception:
+                detail = resp.text
+            prompt_chars = sum(
+                len(str(m.get("content", "")))
+                for m in messages
+                if isinstance(m, dict)
+            )
+            raise RuntimeError(
+                f"{request_id}: HTTP {resp.status_code} from vLLM; "
+                f"prompt_chars={prompt_chars} max_tokens={max_tokens} "
+                f"body={detail[:1200]}"
+            )
         data = resp.json()
         choice = data["choices"][0]
         finish_reason = choice.get("finish_reason")

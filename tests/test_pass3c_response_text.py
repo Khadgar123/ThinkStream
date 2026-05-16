@@ -8,7 +8,7 @@ from scripts.agent_data.pass3c_samples import (
 )
 
 
-def test_mc_response_uses_correct_option_text_not_gold_emit_fragment():
+def test_mc_response_uses_correct_option_letter_and_text_not_gold_emit_fragment():
     card = {
         "answer_form": "multiple_choice",
         "question_type": "single_emit",
@@ -27,11 +27,11 @@ def test_mc_response_uses_correct_option_text_not_gold_emit_fragment():
         "Artist's hand enters frame and points at the blank white can",
     )
 
-    assert text.startswith("The artist points at the canvas")
+    assert text.startswith("D) The artist points at the canvas")
     assert "blank white can" not in text
 
 
-def test_mc_response_can_use_letter_only_style():
+def test_mc_response_ignores_legacy_letter_only_style():
     card = {
         "answer_form": "multiple_choice",
         "answer_style": "letter_only",
@@ -39,7 +39,7 @@ def test_mc_response_can_use_letter_only_style():
         "correct_option": "C",
     }
 
-    assert _response_text_for(card, "ignored") == "C"
+    assert _response_text_for(card, "ignored") == "C) green"
 
 
 def test_mc_response_can_use_letter_plus_text_style():

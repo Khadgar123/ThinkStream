@@ -1,44 +1,18 @@
-"""PASS 5 — Convert single-step samples to LLaMA-Factory ShareGPT messages format.
+"""Legacy flat-row PASS 5 helpers.
 
-Reads pass4 outputs and emits one row per sample in the multi-turn messages
-format used by LLaMA-Factory / DeepEyesV2 / VST. Each row is a stand-alone
-training sample matching fresh-KV-per-chunk inference: every sample's
-user.content carries the full state for ordinary visual turns (user_input +
-memory + visual_window + active_query; recalled frames are only in the recall
-tool-response turn) so the model trains under
-the exact same input distribution it sees at inference.
-
-Three sample shapes preserved (canonical pass/SFT/RL/eval video_meta protocol):
-  A. Single-turn       (silent / response / lonely recall / inter-chunk compress)
-  B. Multi-turn recall (recall_query → tool turn → final answer, within one chunk)
-  C. Inter-chunk compact-memory update (text-only system turn, no
-     visual_window/images/videos because compression is between chunks)
-
-Self-contained: imports only stdlib + thinkstream.data.agent_protocol (which
-itself is stdlib-only). No transformers required.
-
-INPUT
-  data/agent_v5/final/{train_sft_full,val,test}.jsonl   (flat single-step rows)
-  data/agent_v5/final/{train_sft,...}_trajectories.jsonl (samples nested)
-
-OUTPUT
-  data/agent_v5/final/{train_sft,val,test}_messages.jsonl
-  data/agent_v5/final/dataset_info.json   (LLaMA-Factory entry stub)
-
-Usage:
-  python -m scripts.agent_data.pass5_messages
-  python -m scripts.agent_data.pass5_messages --input flat
-  python -m scripts.agent_data.pass5_messages --input traj
+The runnable flat/single-step renderer has been retired. Current SFT/RL/eval
+data must be rendered through ``scripts.agent_data.pass5`` into
+``rendered/trajectory/*_trajectory.jsonl`` so each row is a recurrent
+multi-turn video trajectory. This module keeps importable helper functions for
+older audits/tests that compare prompt construction, but its CLI now exits with
+a clear error instead of writing ``*_messages.jsonl``.
 """
 from __future__ import annotations
 
-import argparse
-import hashlib
 import json
 import logging
 import os
 import re
-from collections import Counter
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
@@ -52,15 +26,14 @@ from thinkstream.data.agent_protocol import (
     format_user_input_block,
     append_visual_frames,
     build_recalled_frames_metadata,
-    build_recall_result_metadata,
     build_recall_result_user_content,
     canonical_answer_instruction,
     chunk_frame_filenames,
     is_inter_chunk,
     normalize_frame_protocol,
-    prompt_time_range,
+    parse_agent_output,
     prompt_time_value,
-    select_recall_chunks,
+    select_recall_chunks_uniform,
     system_prompt_for_frame_protocol,
     user_input_is_active_query_duplicate,
 )
@@ -68,9 +41,20 @@ from thinkstream.data.agent_protocol import (
 logger = logging.getLogger(__name__)
 
 RENDER_LAYOUT_QUERY_LAST = RENDER_LAYOUT_STANDARD_QUERY_LAST
-RESPONSE_BLOCK_RE = re.compile(r"<response>(.*?)</response>", flags=re.DOTALL)
+RESPONSE_BLOCK_RE = re.compile(
+    r"</Response>\s*(.*?)\s*$|<response>(.*?)</response>",
+    flags=re.DOTALL,
+)
 ANSWER_BLOCK_RE = re.compile(r"<answer>(.*?)</answer>", flags=re.DOTALL)
-SILENT_BLOCK_RE = re.compile(r"<silent>\s*(?:</silent>)?", flags=re.DOTALL)
+SILENT_BLOCK_RE = re.compile(
+    r"</Silence>\s*|<silent>\s*(?:</silent>)?",
+    flags=re.DOTALL,
+)
+STREAMING_TERMINAL_RE = re.compile(
+    r"</Response>\s*.*$|</Silence>\s*|<response>.*?</response>|"
+    r"<answer>.*?</answer>|<silent>\s*(?:</silent>)?",
+    flags=re.DOTALL,
+)
 ACTIVE_QUERY_BLOCK_RE = re.compile(
     r"<active_query>\s*(.*?)\s*</active_query>",
     flags=re.DOTALL,
@@ -120,28 +104,6 @@ except Exception:
     if DEFAULT_DATA_DIR.name == "final":
         DEFAULT_DATA_DIR = DEFAULT_DATA_DIR.parent
 FINAL_DIR = DEFAULT_DATA_DIR / "final"
-
-SPLITS = [
-    ("train_sft_full", "train_sft_trajectories", "train_sft_messages"),
-    ("val", "val_trajectories", "val_messages"),
-    ("test", "test_trajectories", "test_messages"),
-]
-
-# SFT rows are independent fresh-KV snapshots, unlike RL/eval trajectories
-# which must keep a complete replay timeline. Keep all high-information
-# actions, then downsample low-information patrol silence so SFT still learns
-# silence without drowning recall/compress/answer actions.
-SFT_SILENT_TO_ACTIVE_RATIO = 0.90
-SFT_PENDING_SILENT_FRACTION = 0.55
-SFT_POST_ANSWER_SILENT_FRACTION = 0.25
-SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO = 0.35
-SFT_PENDING_TEMPORAL_FLOORS = {
-    "ask_edge": 0.32,
-    "answer_edge": 0.25,
-    "near_ask": 0.08,
-    "near_answer": 0.12,
-}
-
 
 # ---------------------------------------------------------------------------
 # Messages construction (self-contained mirror of data_processor logic)
@@ -195,7 +157,7 @@ def _chunks_from_recalled_time_range(rf: Dict, chunk_sec: float) -> List[int]:
         return []
     try:
         start = int(float(tr[0]) / float(chunk_sec))
-        end = int((float(tr[1]) - float(chunk_sec)) / float(chunk_sec))
+        end = int(float(tr[1]) / float(chunk_sec))
     except (TypeError, ValueError, ZeroDivisionError):
         return []
     if end < start:
@@ -203,12 +165,16 @@ def _chunks_from_recalled_time_range(rf: Dict, chunk_sec: float) -> List[int]:
     return list(range(max(0, start), end + 1))
 
 
-def _normalise_recalled_frames(inp: Dict, chunk_sec: float) -> Optional[Dict]:
+def _normalise_recalled_frames(
+    inp: Dict,
+    chunk_sec: float,
+    recall_result: Optional[Dict] = None,
+) -> Optional[Dict]:
     """Cap recalled frames with the same helper used by RL/eval/runtime."""
     rf = inp.get("recalled_frames") or {}
     if not rf:
         return None
-    rr = inp.get("recall_result") or {}
+    rr = recall_result or inp.get("recall_result") or {}
     original_chunks: List[int] = []
     for raw in rr.get("returned_chunks") or []:
         try:
@@ -217,7 +183,7 @@ def _normalise_recalled_frames(inp: Dict, chunk_sec: float) -> Optional[Dict]:
             continue
     if not original_chunks:
         original_chunks = _chunks_from_recalled_time_range(rf, chunk_sec)
-    selected_chunks = select_recall_chunks(original_chunks)
+    selected_chunks = select_recall_chunks_uniform(original_chunks)
     if not selected_chunks:
         return None
 
@@ -245,7 +211,7 @@ def _normalise_recalled_frames(inp: Dict, chunk_sec: float) -> Optional[Dict]:
 
 
 def _compress_management_think_from_output(output: str) -> str:
-    if re.search(r"<MEM>\s*.*?</MEM>", output or "", re.DOTALL | re.IGNORECASE):
+    if re.search(r'<m\s+t="[^"]+"\s*>.*?</m>', output or "", re.DOTALL | re.IGNORECASE):
         return (
             "Memory is near budget, so I should update the compact memory "
             "from old memory and recent observations."
@@ -326,6 +292,8 @@ def _per_emit_target(question: Dict[str, Any], chunk_idx: Any) -> str:
 
 def _mc_target_for_question(question: Dict[str, Any], chunk_idx: Any) -> str:
     letter, text = _mc_letter_text(question)
+    if letter and text:
+        return f"{letter}) {text}"
     return letter or text
 
 
@@ -336,22 +304,83 @@ def _canonical_answer_target(sample: Dict[str, Any]) -> str:
     return _per_emit_target(question, sample.get("chunk_idx"))
 
 
+def _normalise_mc_query_for_prompt(query: Dict[str, Any]) -> Dict[str, Any]:
+    if not isinstance(query, dict):
+        return query
+    if query.get("answer_form") != "multiple_choice":
+        return query
+    out = dict(query)
+    out["answer_style"] = "letter_plus_text"
+    instruction = canonical_answer_instruction(out)
+    if instruction:
+        out["answer_instruction"] = instruction
+    target = _mc_target_for_question(out, None)
+    if target:
+        emits = []
+        for emit in out.get("per_emit_answers") or []:
+            if isinstance(emit, dict):
+                e = dict(emit)
+                if str(e.get("value") or "").strip():
+                    e["value"] = target
+                emits.append(e)
+            else:
+                emits.append(emit)
+        if emits:
+            out["per_emit_answers"] = emits
+
+        answers = []
+        for ans in out.get("answers") or []:
+            if isinstance(ans, dict):
+                a = dict(ans)
+                if str(a.get("text") or "").strip():
+                    a["text"] = target
+                answers.append(a)
+            elif str(ans or "").strip():
+                answers.append(target)
+            else:
+                answers.append(ans)
+        if answers:
+            out["answers"] = answers
+        out["sft_answer"] = target
+    letter, correct_text = _mc_letter_text(out)
+    if correct_text:
+        out["correct_answer_text"] = correct_text
+        out["canonical_answer"] = correct_text
+        out["gold_answer"] = correct_text
+    if letter:
+        out["correct_option"] = letter
+    out["accepted_answers"] = _accepted_answers_for_question(out)
+    return out
+
+
+def _normalise_queries_for_prompt(queries: Any) -> List[Dict[str, Any]]:
+    return [
+        _normalise_mc_query_for_prompt(q)
+        for q in (queries or [])
+        if isinstance(q, dict)
+    ]
+
+
 def _canonicalize_response_tags(text: str, target: str = "") -> str:
     target = str(target or "").strip()
 
+    def _terminal(value: str) -> str:
+        value = str(value or "").strip()
+        return f"</Response> {value}" if value else "</Silence>"
+
     def legacy_repl(match: re.Match) -> str:
         value = target if target and match.group(1).strip() else match.group(1).strip()
-        return f"<response>{value}</response>" if value else "<silent>"
+        return _terminal(value)
 
     if target:
-        response_match = RESPONSE_BLOCK_RE.search(text)
-        if response_match:
-            return RESPONSE_BLOCK_RE.sub(
-                f"<response>{target}</response>", text, count=1
-            )
-        if SILENT_BLOCK_RE.search(text):
-            return SILENT_BLOCK_RE.sub(f"<response>{target}</response>", text, count=1)
+        if STREAMING_TERMINAL_RE.search(text):
+            return STREAMING_TERMINAL_RE.sub(_terminal(target), text, count=1)
     text = ANSWER_BLOCK_RE.sub(legacy_repl, text)
+    text = RESPONSE_BLOCK_RE.sub(
+        lambda m: _terminal((m.group(1) if m.group(1) is not None else m.group(2)).strip()),
+        text,
+    )
+    text = SILENT_BLOCK_RE.sub(_terminal(""), text)
     return text
 
 
@@ -359,9 +388,13 @@ def _normalise_assistant_output(sample: Dict, output: Optional[str] = None) -> s
     output = str(sample.get("output", "") if output is None else output)
     if sample.get("sample_type") != "compress":
         return _canonicalize_response_tags(output, _canonical_answer_target(sample))
-    mem = re.search(r"<MEM>\s*.*?</MEM>", output or "", re.DOTALL | re.IGNORECASE)
-    if mem:
-        return mem.group(0).strip()
+    m_lines = list(re.finditer(
+        r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>.*?</m>',
+        output or "",
+        re.DOTALL | re.IGNORECASE,
+    ))
+    if m_lines:
+        return "\n".join(m.group(0).strip() for m in m_lines)
     think = _compress_management_think_from_output(output)
     replacement = f"<think>{think}</think>"
     if re.search(r"<think>.*?</think>", output, flags=re.DOTALL):
@@ -437,6 +470,7 @@ def build_messages(
         explicit_post_recall
         or (bool(inp.get("recall_result")) and not is_recall_multiturn and sample_type != "recall")
     )
+    queries_for_prompt = _normalise_queries_for_prompt(inp.get("queries", []))
 
     messages: List[Dict] = [
         {
@@ -467,7 +501,7 @@ def build_messages(
 
     # Compact memory update is no longer a streaming visual turn. Render it as
     # one text-only system turn: user(old memory + recent captions) ->
-    # assistant(<MEM>...</MEM>).
+    # assistant(bare <m> lines).
     if inter_chunk:
         update_input = (
             sample.get("memory_update_input")
@@ -476,12 +510,20 @@ def build_messages(
         )
         if not str(update_input or "").strip():
             memory_text = format_memory_block(inp.get("memory", {}))
-            old_memory = memory_text or "<MEM>\n</MEM>"
+            m_lines = list(re.finditer(
+                r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>.*?</m>',
+                memory_text or "",
+                re.DOTALL | re.IGNORECASE,
+            ))
+            old_memory = "\n".join(m.group(0).strip() for m in m_lines) if m_lines else "(empty)"
             update_input = (
                 "OLD_MEMORY:\n"
                 f"{old_memory}\n\n"
                 "NEW_CAPTIONS:\n(no recent captions available)\n\n"
-                "Return NEW_MEMORY."
+                "Return only compact-memory XML lines. If the source provides "
+                "one contiguous summary range, keep it as one <m t=\"start-end\">...</m> "
+                "line; do not invent finer timestamp segments. Do not output "
+                "NEW_MEMORY, markdown, prose, analysis, or any text outside the <m> lines."
             )
         messages.append({
             "role": "user",
@@ -502,43 +544,26 @@ def build_messages(
     # recall evidence; never add a fresh current visual window under the
     # post-recall system prompt.
     if legacy_post_recall and not is_recall_multiturn and not inter_chunk:
-        queries = inp.get("queries", [])
+        queries = queries_for_prompt
         qt = format_queries_block(queries)
         if qt:
             user_content.append({"type": "text", "text": qt})
 
-        rf = _normalise_recalled_frames(inp, chunk_sec) or inp.get("recalled_frames")
+        rf = _normalise_recalled_frames(
+            inp,
+            chunk_sec,
+            inp.get("recall_result") or sample.get("recall_result"),
+        ) or inp.get("recalled_frames")
         if rf:
-            rf_header = json.dumps({
-                "time_range": prompt_time_range(rf["time_range"]),
-                "source": rf.get("source", "historical_frames"),
-                "n_frames": rf["n_frames"],
-            })
-            user_content.append({
-                "type": "text",
-                "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
-                "kv_scope": "recall",
-            })
             if "frame_paths" in rf:
-                tr0, tr1 = rf["time_range"]
                 try:
                     from scripts.agent_data.config import (
                         RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
                     )
                 except ImportError:
                     _RTKW = {"min_pixels": 200_704, "max_pixels": 401_408}
-                append_visual_frames(
-                    user_content,
-                    _resolve_paths(rf["frame_paths"], base_path, data_dir),
-                    frame_protocol=frame_protocol,
-                    fps=float(FRAMES_PER_CHUNK / chunk_sec),
-                    start_frame_index=int(tr0 * FRAMES_PER_CHUNK),
-                    total_num_frames=int(tr1 * FRAMES_PER_CHUNK),
-                    context_label="recalled frame",
-                    min_pixels=_RTKW["min_pixels"],
-                    max_pixels=_RTKW["max_pixels"],
-                    kv_scope="recall",
-                )
+                rf = dict(rf)
+                rf["frame_paths"] = _resolve_paths(rf["frame_paths"], base_path, data_dir)
             elif video_path:
                 user_content.append({
                     "type": "video", "video": video_path,
@@ -546,16 +571,24 @@ def build_messages(
                     "video_end": prompt_time_value(rf["time_range"][1]),
                     "kv_scope": "recall",
                 })
-
-        rr_json = json.dumps(
-            build_recall_result_metadata(inp.get("recall_result") or {}, rf),
-            ensure_ascii=False,
+        try:
+            from scripts.agent_data.config import (
+                RUNTIME_MM_PROCESSOR_KWARGS as _RTKW,
+            )
+        except ImportError:
+            _RTKW = {"min_pixels": 200_704, "max_pixels": 401_408}
+        recall_payload = build_recall_result_user_content(
+            rf,
+            inp.get("recall_result") or {},
+            frame_protocol=frame_protocol,
+            min_pixels=_RTKW["min_pixels"],
+            max_pixels=_RTKW["max_pixels"],
+            render_layout=render_layout,
         )
-        user_content.append({
-            "type": "text",
-            "text": f"\n<recall_result>{rr_json}</recall_result>",
-            "kv_scope": "recall",
-        })
+        if recall_payload and user_content and recall_payload[0].get("type") == "text":
+            recall_payload = [dict(recall_payload[0]), *recall_payload[1:]]
+            recall_payload[0]["text"] = "\n" + str(recall_payload[0].get("text", ""))
+        user_content.extend(recall_payload)
         messages.append({"role": "user", "content": user_content})
         messages.append({
             "role": "assistant",
@@ -567,7 +600,7 @@ def build_messages(
     raw_user_input = inp.get("user_input", "")
     if user_input_is_active_query_duplicate(
         raw_user_input,
-        inp.get("queries", []),
+        queries_for_prompt,
         inter_chunk=inter_chunk,
     ):
         raw_user_input = ""
@@ -583,16 +616,16 @@ def build_messages(
 
     # ── Memory block ───────────────────────────────────────────────────
     memory_text = format_memory_block(inp.get("memory", {}))
-    user_content.append({
-        "type": "text",
-        "text": f"\n<memory>\n{memory_text}\n</memory>" if user_content
-        else f"<memory>\n{memory_text}\n</memory>",
-    })
+    if str(memory_text or "").strip():
+        user_content.append({
+            "type": "text",
+            "text": f"\n{memory_text.strip()}" if user_content else memory_text.strip(),
+        })
 
     query_last = render_layout == RENDER_LAYOUT_QUERY_LAST
 
     # ── Active query + response history for that same query ─────────────
-    queries = inp.get("queries", [])
+    queries = queries_for_prompt
     if queries and not inter_chunk and not query_last:
         qt = format_queries_block(queries)
         if qt:
@@ -607,15 +640,10 @@ def build_messages(
         vw = inp["visual_window"]
         current_start = chunk_idx * chunk_sec
         current_end = current_start + chunk_sec
-        vw_header = json.dumps({
-            "start": prompt_time_value(current_start),
-            "end": prompt_time_value(current_end),
-            "frames": FRAMES_PER_CHUNK,
-            "current_time": prompt_time_value(current_start),
-        })
+        t_marker = f"<t={prompt_time_value(current_start)}>"
         user_content.append({
             "type": "text",
-            "text": f"\n<visual_window>{vw_header}</visual_window>",
+            "text": f"\n{t_marker}" if user_content else t_marker,
         })
 
         # Pass4 flat files may omit frame_paths — infer the current chunk by
@@ -677,7 +705,11 @@ def build_messages(
     if not is_recall_multiturn and not inter_chunk and (
         inp.get("recalled_frames") or inp.get("recall_result")
     ):
-        rf = _normalise_recalled_frames(inp, chunk_sec) or inp.get("recalled_frames")
+        rf = _normalise_recalled_frames(
+            inp,
+            chunk_sec,
+            inp.get("recall_result") or sample.get("recall_result"),
+        ) or inp.get("recalled_frames")
         if rf and rf.get("frame_paths"):
             rf = dict(rf)
             rf["frame_paths"] = _resolve_paths(rf["frame_paths"], base_path, data_dir)
@@ -710,11 +742,10 @@ def build_messages(
             "content": [{"type": "text", "text": sample["v12_assistant_turn_1"]}],
         })
 
-        # Tool turn — recall_result + optional historical frames.
-        # Keep this renderer byte-aligned with runtime/eval:
-        # <recalled_frames> + per-chunk evidence blocks + <recall_result>.
+        # Tool turn — short recall status + optional historical frames.
+        # Keep this renderer byte-aligned with runtime/eval.
         rr = sample.get("recall_result") or inp.get("recall_result") or {}
-        rf = _normalise_recalled_frames(inp, chunk_sec)
+        rf = _normalise_recalled_frames(inp, chunk_sec, rr)
         if rf:
             rf = dict(rf)
             if rf.get("frame_paths"):
@@ -818,7 +849,7 @@ def _iter_trajectories(path: Path) -> Iterable[Dict]:
                             value = q.get(key)
                             meta[key] = list(value) if isinstance(value, list) else value
                     if q.get("answer_form") == "multiple_choice":
-                        meta["answer_style"] = "letter_only"
+                        meta["answer_style"] = "letter_plus_text"
                     instruction = canonical_answer_instruction(meta)
                     if instruction:
                         meta["answer_instruction"] = instruction
@@ -914,25 +945,36 @@ def _with_sft_turn_policy(
 
 
 def _recall_action_think_for_sample(sample: Dict, visual_think: str = "") -> str:
-    """Action-aware first-turn think for recall_query SFT rows."""
-    base = str(visual_think or "").strip()
-    low = base.lower()
-    if "visible evidence" in low and "recall" in low:
-        return base
-    if sample.get("action") == "silent" or sample.get("base_role") == "recall_silent":
-        decision = (
-            "Current visible evidence is insufficient to "
-            "answer the active query. The answer may not have appeared yet, "
-            "so I will recall elapsed history once and stay silent if still "
-            "unsupported."
-        )
-    else:
-        decision = (
-            "Current visible evidence is insufficient to answer the active "
-            "query because the needed evidence is historical, so I will "
-            "recall the earlier window rather than guess."
-        )
-    return f"{base} {decision}".strip()
+    """First-turn think for recall_query SFT rows.
+
+    Keep the current visual observation only. The tool_call itself teaches the
+    recall action; appending a generic recall rationale caused SFT models to
+    overfit fixed action text.
+    """
+    return _strip_recall_action_boilerplate(visual_think)
+
+
+_RECALL_ACTION_BOILERPLATE_RE = re.compile(
+    r"\s*(?:"
+    r"Current visible evidence is insufficient|"
+    r"The active query depends on elapsed context|"
+    r"A related moment may have occurred earlier|"
+    r"Before answering the pending query|"
+    r"The query has stayed open long enough|"
+    r"The current moment is relevant, but the answer also depends|"
+    r"The status question depends on an event"
+    r").*$",
+    re.IGNORECASE | re.DOTALL,
+)
+
+
+def _strip_recall_action_boilerplate(text: str) -> str:
+    """Remove old recall-action rationale templates from first-turn thinks."""
+    cleaned = str(text or "").strip()
+    if not cleaned:
+        return ""
+    cleaned = _RECALL_ACTION_BOILERPLATE_RE.sub("", cleaned).strip()
+    return re.sub(r"\s+", " ", cleaned).strip()
 
 
 def _extract_first_think(text: str) -> str:
@@ -1206,7 +1248,12 @@ def _assistant_answer_blocks(messages: List[Dict]) -> List[str]:
             )
         else:
             text = str(content or "")
-        out.extend(m.group(1).strip() for m in RESPONSE_BLOCK_RE.finditer(text))
+        parsed = parse_agent_output(text)
+        if parsed.get("kind") == "answer":
+            out.append(str(parsed.get("answer_text") or "").strip())
+            continue
+        for m in RESPONSE_BLOCK_RE.finditer(text):
+            out.append((m.group(1) if m.group(1) is not None else m.group(2)).strip())
         out.extend(m.group(1).strip() for m in ANSWER_BLOCK_RE.finditer(text))
     return out
 
@@ -1235,7 +1282,7 @@ def validate_answer_render_contract(sample: Dict, messages: List[Dict]) -> None:
     if not nonempty:
         if sample_type == "response" or action == "response":
             raise QueryRenderContractError(
-                f"sample={sample_id}: response row rendered empty/no <response>"
+                f"sample={sample_id}: response row rendered empty/no </Response>"
             )
         return
 
@@ -1384,430 +1431,6 @@ def build_sft_rows(
     return [row]
 
 
-def _sample_rank(sample: Dict, idx: int) -> str:
-    key = "|".join([
-        str(sample.get("video_id", "")),
-        str(sample.get("trajectory_id", "")),
-        str(sample.get("sample_id", "")),
-        str(sample.get("chunk_idx", "")),
-        str(idx),
-    ])
-    return hashlib.sha1(key.encode("utf-8")).hexdigest()
-
-
-def _silent_role(sample: Dict) -> str:
-    """Classify silent rows by training value.
-
-    pending_question:
-      The model has an open query and must intentionally wait.
-    post_answer:
-      The model has just answered or the query is already closed; this teaches
-      not to repeat answers.
-    no_question:
-      Background/patrol silence; useful but low information in bulk.
-    """
-    if sample.get("sample_type") != "silent" or sample.get("action") != "silent":
-        return ""
-    queries = list(sample.get("queries") or [])
-    card_id = str(sample.get("card_id") or "")
-    if queries:
-        related = [
-            q for q in queries
-            if not card_id or str(q.get("card_id") or "") == card_id
-        ]
-        if not related:
-            related = queries
-        has_open = any(
-            str(q.get("status", "")).lower() in {"open", "pending", "active"}
-            for q in related
-        )
-        if has_open:
-            return "pending_question"
-        has_answer = any(q.get("answers") for q in related)
-        if has_answer:
-            return "post_answer"
-    meta = sample.get("metadata") or {}
-    if card_id or meta.get("question"):
-        return "pending_question"
-    return "no_question"
-
-
-def _choose_ranked(items: List[tuple[int, Dict]], n: int) -> List[tuple[int, Dict]]:
-    if n <= 0:
-        return []
-    return sorted(items, key=lambda x: _sample_rank(x[1], x[0]))[:n]
-
-
-def _int_list(value: Any) -> List[int]:
-    if value is None:
-        return []
-    if hasattr(value, "tolist"):
-        value = value.tolist()
-    if not isinstance(value, (list, tuple)):
-        value = [value]
-    out: List[int] = []
-    for item in value:
-        try:
-            out.append(int(item))
-        except (TypeError, ValueError):
-            continue
-    return out
-
-
-def _answer_chunks_from_metadata(meta: Dict[str, Any]) -> List[int]:
-    chunks: List[int] = []
-    chunks.extend(_int_list(meta.get("answer_chunks")))
-    chunks.extend(_int_list(meta.get("expected_answer_chunks")))
-    for item in meta.get("per_emit_answers") or []:
-        if not isinstance(item, dict):
-            continue
-        try:
-            chunks.append(int(item.get("chunk")))
-        except (TypeError, ValueError):
-            continue
-    return sorted(set(c for c in chunks if c >= 0))
-
-
-def _pending_silent_temporal_bucket(sample: Dict) -> str:
-    """Locate a pending silent row within its query waiting interval."""
-    if _silent_role(sample) != "pending_question":
-        return "none"
-    meta = sample.get("metadata") or {}
-    try:
-        chunk_idx = int(sample.get("chunk_idx"))
-    except (TypeError, ValueError):
-        return "unknown"
-    try:
-        ask_chunk = int(meta.get("ask_chunk"))
-    except (TypeError, ValueError):
-        ask_chunk = None
-
-    future_answers = [
-        c for c in _answer_chunks_from_metadata(meta)
-        if c >= chunk_idx
-    ]
-    next_answer = min(future_answers) if future_answers else None
-    distance_to_answer = (
-        next_answer - chunk_idx if next_answer is not None else None
-    )
-
-    if ask_chunk is not None:
-        distance_from_ask = chunk_idx - ask_chunk
-        if 0 <= distance_from_ask <= 1:
-            return "ask_edge"
-    if distance_to_answer is not None and 0 <= distance_to_answer <= 1:
-        return "answer_edge"
-    if ask_chunk is not None and 2 <= chunk_idx - ask_chunk <= 3:
-        return "near_ask"
-    if distance_to_answer is not None and 2 <= distance_to_answer <= 3:
-        return "near_answer"
-    if ask_chunk is None and distance_to_answer is None:
-        return "unknown"
-    return "middle"
-
-
-def _silent_diversity_weight(sample: Dict) -> int:
-    bucket = _pending_silent_temporal_bucket(sample)
-    if bucket in {"ask_edge", "answer_edge"}:
-        return 4
-    if bucket in {"near_ask", "near_answer"}:
-        return 2
-    return 1
-
-
-def _silent_diversity_key(sample: Dict) -> str:
-    role = _silent_role(sample)
-    meta = sample.get("metadata") or {}
-    family = str(meta.get("family") or "none")
-    answer_form = str(meta.get("answer_form") or "none")
-    availability = str(
-        meta.get("availability")
-        or sample.get("sequence_type")
-        or "none"
-    )
-    question_type = str(meta.get("question_type") or "single_emit")
-    base_role = str(sample.get("base_role") or "")
-
-    if role == "pending_question":
-        if base_role == "recall_wait_no_history":
-            subtype = "recall_wait_no_history"
-        elif availability == "event_watch":
-            subtype = "future_event_wait"
-        elif availability == "multi_response" or question_type == "multi_emit":
-            subtype = "multi_emit_wait"
-        elif availability == "recall_success":
-            subtype = "recall_answer_pending"
-        elif availability == "memory_response":
-            subtype = "memory_answer_pending"
-        elif availability == "immediate_response":
-            subtype = "immediate_boundary_wait"
-        else:
-            subtype = availability or "pending"
-        temporal = _pending_silent_temporal_bucket(sample)
-        return f"{role}|{subtype}|{family}|{answer_form}|{question_type}|{temporal}"
-
-    if role == "post_answer":
-        return f"{role}|{family}|{answer_form}|{question_type}"
-    return f"{role}|{base_role or 'patrol'}"
-
-
-def _choose_diverse_silent(
-    items: List[tuple[int, Dict]],
-    n: int,
-) -> List[tuple[int, Dict]]:
-    """Deterministically sample silent rows while preserving boundary variety."""
-    if n <= 0 or not items:
-        return []
-    by_key: Dict[str, List[tuple[int, Dict]]] = {}
-    for item in items:
-        by_key.setdefault(_silent_diversity_key(item[1]), []).append(item)
-    for key in by_key:
-        by_key[key] = _choose_ranked(by_key[key], len(by_key[key]))
-    key_weights = {
-        key: max(_silent_diversity_weight(sample) for _idx, sample in bucket)
-        for key, bucket in by_key.items()
-    }
-
-    selected: List[tuple[int, Dict]] = []
-    cursors = {key: 0 for key in by_key}
-    keys = sorted(by_key, key=lambda k: (-key_weights[k], -len(by_key[k]), k))
-    while len(selected) < n:
-        progressed = False
-        for key in keys:
-            for _ in range(max(1, key_weights[key])):
-                cur = cursors[key]
-                bucket = by_key[key]
-                if cur >= len(bucket):
-                    break
-                selected.append(bucket[cur])
-                cursors[key] += 1
-                progressed = True
-                if len(selected) >= n:
-                    break
-            if len(selected) >= n:
-                break
-        if not progressed:
-            break
-    return selected
-
-
-def _choose_pending_silent(
-    items: List[tuple[int, Dict]],
-    n: int,
-) -> List[tuple[int, Dict]]:
-    if n <= 0 or not items:
-        return []
-    by_temporal: Dict[str, List[tuple[int, Dict]]] = {}
-    for item in items:
-        by_temporal.setdefault(
-            _pending_silent_temporal_bucket(item[1]),
-            [],
-        ).append(item)
-
-    selected: List[tuple[int, Dict]] = []
-    used: set[int] = set()
-    for bucket, ratio in SFT_PENDING_TEMPORAL_FLOORS.items():
-        bucket_items = by_temporal.get(bucket, [])
-        target = min(len(bucket_items), int(n * ratio))
-        if target <= 0:
-            continue
-        picked = _choose_diverse_silent(bucket_items, target)
-        selected.extend(picked)
-        used.update(i for i, _s in picked)
-
-    if len(selected) < n:
-        remaining = [
-            (i, s) for i, s in items
-            if i not in used
-        ]
-        selected.extend(
-            _choose_diverse_silent(remaining, n - len(selected))
-        )
-    return selected[:n]
-
-
-def _is_multi_emit_response(sample: Dict) -> bool:
-    if sample.get("sample_type") != "response":
-        return False
-    meta = sample.get("metadata") or {}
-    return (
-        meta.get("question_type") == "multi_emit"
-        or meta.get("family") in {"F5", "F7", "CRR1", "PN1"}
-    )
-
-
-def _choose_multi_emit_response(
-    items: List[tuple[int, Dict]],
-    n: int,
-) -> List[tuple[int, Dict]]:
-    if n <= 0:
-        return []
-    by_key: Dict[str, List[tuple[int, Dict]]] = {}
-    for item in items:
-        meta = item[1].get("metadata") or {}
-        key = "|".join([
-            str(meta.get("family") or "unknown"),
-            str(meta.get("answer_form") or "unknown"),
-            str(meta.get("availability") or item[1].get("sequence_type") or "unknown"),
-        ])
-        by_key.setdefault(key, []).append(item)
-    for key in by_key:
-        by_key[key] = _choose_ranked(by_key[key], len(by_key[key]))
-
-    selected: List[tuple[int, Dict]] = []
-    cursors = {key: 0 for key in by_key}
-    keys = sorted(by_key)
-    while len(selected) < n:
-        progressed = False
-        for key in keys:
-            cur = cursors[key]
-            bucket = by_key[key]
-            if cur >= len(bucket):
-                continue
-            selected.append(bucket[cur])
-            cursors[key] += 1
-            progressed = True
-            if len(selected) >= n:
-                break
-        if not progressed:
-            break
-    return selected
-
-
-def balance_sft_samples(samples: List[Dict]) -> tuple[List[Dict], Dict[str, int]]:
-    """Balance only the SFT messages split.
-
-    Policy:
-      - keep every recall / compress row;
-      - keep ordinary response rows;
-      - cap multi-emit response rows so F5/PN1 do not dominate SFT;
-      - keep enough silent rows to make silent roughly 40-45% of SFT;
-      - prefer pending-query and post-answer silent rows over patrol/background
-        rows so SFT learns answer timing boundaries instead of just idle chunks.
-    """
-    indexed = list(enumerate(samples))
-    recall_rows = [
-        (i, s) for i, s in indexed
-        if s.get("sample_type") == "recall"
-    ]
-    compress_rows = [
-        (i, s) for i, s in indexed
-        if s.get("sample_type") == "compress"
-    ]
-    multi_emit_response = [
-        (i, s) for i, s in indexed if _is_multi_emit_response(s)
-    ]
-    ordinary_response = [
-        (i, s) for i, s in indexed
-        if s.get("sample_type") == "response" and not _is_multi_emit_response(s)
-    ]
-    other_active = [
-        (i, s) for i, s in indexed
-        if s.get("sample_type") not in {"silent", "response", "recall", "compress"}
-    ]
-    multi_limit = min(
-        len(multi_emit_response),
-        max(1, int(len(ordinary_response) * SFT_MULTI_EMIT_TO_OTHER_RESPONSE_RATIO)),
-    )
-    response_rows = (
-        ordinary_response
-        + other_active
-        + _choose_multi_emit_response(multi_emit_response, multi_limit)
-    )
-    active = (
-        recall_rows
-        + compress_rows
-        + response_rows
-    )
-    pending_silent = [
-        (i, s) for i, s in indexed if _silent_role(s) == "pending_question"
-    ]
-    post_answer_silent = [
-        (i, s) for i, s in indexed if _silent_role(s) == "post_answer"
-    ]
-    base_silent = [(i, s) for i, s in indexed if _silent_role(s) == "no_question"]
-    if not active:
-        return samples, {"before": len(samples), "after": len(samples)}
-
-    target_silent = min(
-        len(pending_silent) + len(post_answer_silent) + len(base_silent),
-        max(1, int(len(active) * SFT_SILENT_TO_ACTIVE_RATIO)),
-    )
-    target_pending = min(
-        len(pending_silent),
-        int(target_silent * SFT_PENDING_SILENT_FRACTION),
-    )
-    target_post_answer = min(
-        len(post_answer_silent),
-        int(target_silent * SFT_POST_ANSWER_SILENT_FRACTION),
-    )
-    kept_silent = (
-        _choose_pending_silent(pending_silent, target_pending)
-        + _choose_diverse_silent(post_answer_silent, target_post_answer)
-    )
-    remaining = target_silent - len(kept_silent)
-    if remaining > 0:
-        kept_silent.extend(_choose_diverse_silent(base_silent, remaining))
-    if len(kept_silent) < target_silent:
-        used = {i for i, _s in kept_silent}
-        rest = [
-            (i, s) for bucket in (pending_silent, post_answer_silent, base_silent)
-            for i, s in bucket
-            if i not in used
-        ]
-        kept_silent.extend(_choose_diverse_silent(rest, target_silent - len(kept_silent)))
-
-    selected = active + kept_silent
-    selected.sort(key=lambda x: x[0])
-    out = [s for _i, s in selected]
-    if sum(1 for s in out if s.get("sample_type") == "recall") != len(recall_rows):
-        raise RuntimeError("SFT balancing must not drop recall samples")
-    if sum(1 for s in out if s.get("sample_type") == "compress") != len(compress_rows):
-        raise RuntimeError("SFT balancing must not drop compress samples")
-    pending_temporal_before = Counter(
-        _pending_silent_temporal_bucket(s) for _i, s in pending_silent
-    )
-    pending_temporal_kept = Counter(
-        _pending_silent_temporal_bucket(s)
-        for _i, s in kept_silent
-        if _silent_role(s) == "pending_question"
-    )
-    stats = {
-        "before": len(samples),
-        "after": len(out),
-        "active_kept": len(active),
-        "ordinary_response_kept": len(ordinary_response),
-        "multi_emit_response_before": len(multi_emit_response),
-        "multi_emit_response_kept": min(len(multi_emit_response), multi_limit),
-        "recall_kept": len(recall_rows),
-        "compress_before": len(compress_rows),
-        "compress_kept": len(compress_rows),
-        "recall_compress_kept": len(recall_rows) + len(compress_rows),
-        "silent_before": len(pending_silent) + len(post_answer_silent) + len(base_silent),
-        "silent_kept": len(kept_silent),
-        "pending_silent_before": len(pending_silent),
-        "post_answer_silent_before": len(post_answer_silent),
-        "base_silent_before": len(base_silent),
-        "pending_silent_kept": sum(
-            1 for _i, s in kept_silent if _silent_role(s) == "pending_question"
-        ),
-        "post_answer_silent_kept": sum(
-            1 for _i, s in kept_silent if _silent_role(s) == "post_answer"
-        ),
-        "base_silent_kept": sum(
-            1 for _i, s in kept_silent if _silent_role(s) == "no_question"
-        ),
-    }
-    for bucket in ("ask_edge", "answer_edge", "near_ask", "near_answer", "middle", "unknown"):
-        stats[f"pending_silent_{bucket}_before"] = int(
-            pending_temporal_before.get(bucket, 0)
-        )
-        stats[f"pending_silent_{bucket}_kept"] = int(
-            pending_temporal_kept.get(bucket, 0)
-        )
-    return out, stats
-
-
 def convert(
     src: Path,
     dst: Path,
@@ -1820,215 +1443,19 @@ def convert(
     frame_protocol: str = "video_meta",
     render_layout: str = RENDER_LAYOUT_QUERY_LAST,
 ) -> Dict[str, int]:
-    data_dir = data_dir or DEFAULT_DATA_DIR
-    iter_fn = _iter_trajectories if is_trajectory else _iter_flat
-    counts = {"ok": 0, "failed": 0, "marked": 0}
-    by_type: Dict[str, int] = {}
-    balance_stats: Dict[str, int] = {}
-    sample_iter: Iterable[Dict]
-    if balance_sft:
-        materialized = list(iter_fn(src))
-        materialized, balance_stats = balance_sft_samples(materialized)
-        sample_iter = materialized
-    else:
-        sample_iter = iter_fn(src)
-
-    dst.parent.mkdir(parents=True, exist_ok=True)
-    with dst.open("w") as out:
-        for i, sample in enumerate(sample_iter):
-            if limit and counts["ok"] >= limit:
-                break
-            try:
-                messages = build_messages(
-                    sample,
-                    base_path,
-                    data_dir=data_dir,
-                    frame_protocol=frame_protocol,
-                    render_layout=render_layout,
-                )
-            except (KeyError, ValueError) as exc:
-                counts["failed"] += 1
-                if counts["failed"] <= 5:
-                    sid = sample.get("sample_id") or sample.get("trajectory_id") or i
-                    logger.warning(f"[{src.name}] sample {sid} skipped: {exc}")
-                continue
-
-            marked = False
-            for validator in (
-                validate_query_render_contract,
-                validate_answer_render_contract,
-            ):
-                try:
-                    validator(sample, messages)
-                except QueryRenderContractError as exc:
-                    _mark_render_contract_failure(sample, str(exc))
-                    marked = True
-            if marked:
-                counts["marked"] += 1
-
-            for row in build_sft_rows(
-                sample,
-                messages,
-                frame_protocol=frame_protocol,
-                render_layout=render_layout,
-            ):
-                if limit and counts["ok"] >= limit:
-                    break
-                row["render_layout"] = render_layout
-                meta = dict(row.get("metadata") or {})
-                meta["render_layout"] = render_layout
-                row["metadata"] = meta
-                out.write(json.dumps(row, ensure_ascii=False) + "\n")
-                counts["ok"] += 1
-                by_type[row["sample_type"]] = by_type.get(row["sample_type"], 0) + 1
-
-    counts["by_type"] = by_type
-    if balance_stats:
-        counts["balance"] = balance_stats
-    return counts
-
-
-def write_dataset_info(out_dir: Path, splits_done: List[str]) -> None:
-    """LLaMA-Factory entry stub. Aligns with DeepEyesV2 (system/user/assistant only)."""
-    entries = {}
-    for stem in splits_done:
-        entries[f"thinkstream_{stem}"] = {
-            "file_name": f"{stem}_messages.jsonl",
-            "formatting": "sharegpt",
-            "columns": {"messages": "messages", "videos": "videos"},
-            "tags": {
-                "role_tag": "role",
-                "content_tag": "content",
-                "user_tag": "user",
-                "assistant_tag": "assistant",
-                "system_tag": "system",
-            },
-        }
-    (out_dir / "dataset_info.json").write_text(
-        json.dumps(entries, ensure_ascii=False, indent=2)
+    raise RuntimeError(
+        "pass5_messages.convert is retired with flat/single-step rendering. "
+        "Use scripts.agent_data.pass5.convert_file/convert_dir for trajectory SFT."
     )
 
 
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--input", choices=["flat", "traj", "auto"], default="traj",
-        help=(
-            "'flat' = *_full.jsonl single-step rows, "
-            "'traj' = *_trajectories.jsonl (default — matches main pipeline), "
-            "'auto' = prefer flat (legacy; can produce data inconsistent with "
-            "the main `pipeline.py` invocation which forces --input traj). "
-            "v12.11 audit-5 P1 #4 fix (2026-05-01): default flipped from auto "
-            "→ traj to match pipeline.py:1266."
-        ),
+    raise SystemExit(
+        "pass5_messages.py flat/single-step rendering is retired. "
+        "Use `python -m scripts.agent_data.pass5` to render "
+        "rendered/trajectory/*_trajectory.jsonl."
     )
-    parser.add_argument("--final-dir", default=str(FINAL_DIR))
-    parser.add_argument(
-        "--output-dir",
-        default="",
-        help=(
-            "Directory for rendered *_messages.jsonl outputs. Defaults to "
-            "--final-dir. New training/eval runs should use "
-            "rendered/video_meta_standard_query_last."
-        ),
-    )
-    parser.add_argument(
-        "--frame-protocol",
-        default=os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta"),
-        choices=["video_meta"],
-        help=(
-            "Student/eval visual carrier. The supported project entry uses "
-            "video_meta plus the selected render layout."
-        ),
-    )
-    parser.add_argument(
-        "--render-layout",
-        default=RENDER_LAYOUT_QUERY_LAST,
-        choices=[RENDER_LAYOUT_QUERY_LAST],
-        help=(
-            "Prompt layout. standard_query_last keeps memory before visual and "
-            "places active_query after the current visual window."
-        ),
-    )
-    parser.add_argument("--base-path", default=str(PROJECT_ROOT),
-                        help="Project root for resolving relative video/frame paths. "
-                        "Generated samples store frame paths relative to the repo "
-                        "or absolute paths under the batch root. The batch root "
-                        "for frame lookup is inferred from --final-dir.")
-    parser.add_argument("--limit", type=int, default=0, help="Per-split sample cap (0 = unlimited).")
-    parser.add_argument("--no-balance-sft", action="store_true",
-                        help="Disable train_sft_messages silent downsampling.")
-    args = parser.parse_args()
-
-    final_dir = _resolve_cli_path(args.final_dir)
-    output_dir = _resolve_cli_path(args.output_dir) if args.output_dir else final_dir
-    base_path = _resolve_cli_path(args.base_path)
-    data_dir = final_dir.parent if final_dir.name == "final" else DEFAULT_DATA_DIR
-    frame_protocol = normalize_frame_protocol(args.frame_protocol)
-    render_layout = str(args.render_layout or RENDER_LAYOUT_QUERY_LAST)
-    if frame_protocol != "video_meta":
-        raise SystemExit(
-            f"--render-layout {render_layout} requires --frame-protocol video_meta"
-        )
-    if not final_dir.exists():
-        raise SystemExit(f"final dir not found: {final_dir}")
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    splits_done: List[str] = []
-    for flat_stem, traj_stem, out_stem in SPLITS:
-        flat_path = final_dir / f"{flat_stem}.jsonl"
-        traj_path = final_dir / f"{traj_stem}.jsonl"
-
-        if args.input == "flat":
-            src, is_traj = flat_path, False
-        elif args.input == "traj":
-            src, is_traj = traj_path, True
-        else:
-            if flat_path.exists():
-                src, is_traj = flat_path, False
-            elif traj_path.exists():
-                src, is_traj = traj_path, True
-            else:
-                logger.warning(f"No input found for split {flat_stem}/{traj_stem}, skipping.")
-                continue
-
-        if not src.exists():
-            logger.warning(f"Input missing: {src}, skipping.")
-            continue
-
-        dst = output_dir / f"{out_stem}.jsonl"
-        logger.info(
-            f"Converting {src.name} → {dst} "
-            f"(is_trajectory={is_traj}, frame_protocol={frame_protocol}, "
-            f"render_layout={render_layout})"
-        )
-        balance = out_stem == "train_sft_messages" and not args.no_balance_sft
-        counts = convert(src, dst, is_trajectory=is_traj, base_path=base_path,
-                         data_dir=data_dir,
-                         limit=args.limit or None, balance_sft=balance,
-                         frame_protocol=frame_protocol,
-                         render_layout=render_layout)
-        logger.info(
-            f"  ok={counts['ok']} failed={counts['failed']} "
-            f"marked={counts.get('marked', 0)} by_type={counts['by_type']}"
-        )
-        if counts.get("balance"):
-            logger.info(f"  SFT balance: {counts['balance']}")
-        splits_done.append(out_stem.replace("_messages", ""))
-
-    if splits_done:
-        write_dataset_info(output_dir, splits_done)
-        (output_dir / "render_manifest.json").write_text(json.dumps({
-            "generated_by": "pass5_messages.py",
-            "source_final_dir": str(final_dir),
-            "output_dir": str(output_dir),
-            "frame_protocol": frame_protocol,
-            "render_layout": render_layout,
-            "splits": splits_done,
-        }, ensure_ascii=False, indent=2))
-        logger.info(f"Wrote dataset_info.json → {output_dir / 'dataset_info.json'}")
 
 
 if __name__ == "__main__":

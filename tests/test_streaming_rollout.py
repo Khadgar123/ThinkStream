@@ -24,6 +24,7 @@ from thinkstream.models.streaming_rollout import (  # noqa: E402
     TurnResult,
     _infer_stop_reason,
 )
+from verl.workers.rollout.streaming_rollout import _inspect_streaming_delta_text  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -259,6 +260,50 @@ class StopReasonInferenceTests(unittest.TestCase):
             _infer_stop_reason([], primary_eos_token_id=1002, max_new_tokens=10),
             "empty",
         )
+
+
+class TrueKVDeltaInspectionTests(unittest.TestCase):
+    def test_post_recall_delta_allows_recall_tool_response(self):
+        text = (
+            "<|im_start|>tool\n"
+            "<tool_response>\n"
+            "The recall tool returned historical video frames for t=1-3."
+            "<|vision_start|><|video_pad|><|vision_end|>"
+            "\n</tool_response>"
+            "<|im_end|>\n<|im_start|>assistant\n"
+        )
+        self.assertEqual(
+            _inspect_streaming_delta_text(text, turn_kind="post_recall"),
+            [],
+        )
+
+    def test_next_streaming_delta_rejects_recall_evidence_and_tool_call(self):
+        text = (
+            "<|im_start|>user\n"
+            "<t=4>"
+            "<tool_response>The recall tool returned historical video frames for t=1-3.</tool_response>"
+            "<tool_call>{}</tool_call>"
+            "<|im_end|>\n<|im_start|>assistant\n"
+        )
+        flags = _inspect_streaming_delta_text(
+            text,
+            turn_kind="streaming",
+            after_post_recall=True,
+        )
+        self.assertIn("tool_response_in_non_post_recall_delta", flags)
+        self.assertIn("tool_call_in_non_post_recall_delta", flags)
+        self.assertIn("post_recall_evidence_leaked_to_next_streaming_delta", flags)
+        self.assertIn("post_recall_tool_call_leaked_to_next_streaming_delta", flags)
+
+    def test_delta_rejects_repeated_system_and_tool_schema(self):
+        text = (
+            "<|im_start|>system\n# Tools\n<tools>{}</tools><|im_end|>\n"
+            "<|im_start|>user\n<t=1><t=2><|im_end|>"
+        )
+        flags = _inspect_streaming_delta_text(text, turn_kind="streaming")
+        self.assertIn("repeated_system_prompt", flags)
+        self.assertIn("repeated_tool_schema", flags)
+        self.assertIn("multiple_current_timestamps", flags)
 
 
 if __name__ == "__main__":

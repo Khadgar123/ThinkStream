@@ -36,7 +36,12 @@ sys.path.insert(0, str(project_root))
 from thinkstream.sft.trainer import WeightedSFTTrainer
 from thinkstream.sft.data_processor import make_trajectory_data_module
 from thinkstream.sft.args import ModelArguments, DataArguments, TrainingArguments
-from thinkstream.data.agent_protocol import AGENT_SPECIAL_TOKENS
+from thinkstream.data.agent_protocol import (
+    AGENT_SPECIAL_TOKENS,
+    WRONG_RESPONSE_SPECIAL_TOKENS,
+    ensure_agent_special_tokens,
+    validate_agent_special_tokens,
+)
 # Patch lce_forward to accept video_mask and build the FlexAttention
 # block mask (no-op when attn_implementation != "streaming_attention").
 # Importing the module triggers the patch.
@@ -65,17 +70,7 @@ def safe_save_model_for_hf_trainer(trainer: transformers.Trainer, output_dir: st
 
 def _register_agent_special_tokens(tokenizer) -> int:
     """Register canonical agent tags as indivisible special tokens."""
-    existing_vocab = tokenizer.get_vocab()
-    already_special = set(getattr(tokenizer, "all_special_tokens", []) or [])
-    to_add = [
-        tok for tok in AGENT_SPECIAL_TOKENS
-        if tok not in existing_vocab or tok not in already_special
-    ]
-    if not to_add:
-        return 0
-    return int(tokenizer.add_special_tokens({
-        "additional_special_tokens": list(AGENT_SPECIAL_TOKENS),
-    }))
+    return ensure_agent_special_tokens(tokenizer)
 
 
 def _resize_and_init_new_embeddings(model, old_vocab_size: int, new_vocab_size: int):
@@ -278,6 +273,7 @@ def train(attn_implementation="flash_attention_2"):
     n_added = _register_agent_special_tokens(processor.tokenizer)
     new_vocab_size = len(processor.tokenizer)
     _resize_and_init_new_embeddings(model, old_vocab_size, new_vocab_size)
+    validate_agent_special_tokens(processor.tokenizer)
     rank0_print(
         "[v12] agent special tokens registered: "
         f"added={n_added}, vocab={old_vocab_size}->{new_vocab_size}, "
@@ -308,10 +304,15 @@ def train(attn_implementation="flash_attention_2"):
     _register_agent_special_tokens(tokenizer)
     # Sync special tokens added to processor's tokenizer
     tokenizer.add_tokens(
-        [t for t in processor.tokenizer.get_added_vocab().keys()
-         if t not in tokenizer.get_vocab()],
+        [
+            t for t in processor.tokenizer.get_added_vocab().keys()
+            if t not in tokenizer.get_vocab()
+            and t not in WRONG_RESPONSE_SPECIAL_TOKENS
+        ],
         special_tokens=True,
     )
+    ensure_agent_special_tokens(tokenizer)
+    validate_agent_special_tokens(tokenizer)
 
     # ── Trainable parameters ──
     if training_args.lora_enable:
@@ -365,6 +366,33 @@ def train(attn_implementation="flash_attention_2"):
         trainer.train(resume_from_checkpoint=True)
     else:
         trainer.train()
+
+    final_eval_enabled = os.environ.get("THINKSTREAM_FINAL_EVAL", "0").lower() in {
+        "1",
+        "true",
+        "yes",
+    }
+    if final_eval_enabled and trainer.eval_dataset is not None:
+        rank0_print("Running final evaluation")
+        metrics = trainer.evaluate(metric_key_prefix="eval_final")
+        trainer.log_metrics("eval_final", metrics)
+        trainer.save_metrics("eval_final", metrics)
+
+    final_checkpoint_enabled = os.environ.get(
+        "THINKSTREAM_SAVE_FINAL_CHECKPOINT", "0",
+    ).lower() in {"1", "true", "yes"}
+    if final_checkpoint_enabled:
+        final_checkpoint_dir = (
+            Path(training_args.output_dir)
+            / f"{PREFIX_CHECKPOINT_DIR}-{trainer.state.global_step}"
+        )
+        rank0_print(f"Saving final checkpoint to {final_checkpoint_dir}")
+        safe_save_model_for_hf_trainer(
+            trainer=trainer,
+            output_dir=str(final_checkpoint_dir),
+        )
+        if trainer.is_world_process_zero():
+            trainer.state.save_to_json(str(final_checkpoint_dir / "trainer_state.json"))
 
     trainer.save_state()
 

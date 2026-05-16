@@ -1,135 +1,76 @@
-"""Regression test for pass3c v12.5 recall-pair merge bug.
+"""Regression tests for the current pass3c v12 multi-turn recall shape.
 
-The bug: `_merge_recall_pairs` was called inside `generate_base_samples`,
-which never contains recall pairs (those live in `generate_trajectory_samples`).
-Result: 0 multi-turn samples produced despite v12 protocol claiming support
-for them. Fixed by moving the merge to `generate_trajectory_samples`'
-final return path.
-
-Run: python tests/test_pass3c_recall_merge.py
+The old v12.5 path built separate recall_query / recall_response rows and then
+merged them. Current pass3c emits one sample_type='recall' row directly, with
+v12_assistant_turn_1 for the tool call and v12_assistant_turn_2 for the
+post-recall answer or silence.
 """
 
-import os
-import sys
+import ast
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-# Set env BEFORE importing pass3c (PROTOCOL_VERSION reads at module load)
-os.environ.setdefault("THINKSTREAM_PROTOCOL", "v12")
+def test_recall_response_sample_is_direct_multiturn():
+    from scripts.agent_data.pass3c_samples import _recall_response_sample
 
+    sample = _recall_response_sample(
+        5,
+        "current view lacks the old detail",
+        "red",
+        queries=[{"question": "What color was the apron?", "answers": []}],
+        recall_query={"start_time": 2, "end_time": 3},
+        recall_result={"source": "historical_frames", "returned_chunks": [2, 3], "time": "2-3"},
+        trajectory_id="t0",
+        card_id="c1",
+        sequence_type="recall_success",
+        card={"answer_form": "short_exact", "canonical_answer": "red"},
+    )
 
-def test_merge_pairs_collapses_recall_at_same_chunk():
-    """Two samples (recall_query + recall_response) at same (traj, card,
-    chunk) → one merged sample with v12_assistant_turn_1/2."""
-    from scripts.agent_data.pass3c_samples import _merge_recall_pairs
-    samples = [
-        {"sample_type": "recall_query", "trajectory_id": "t0",
-         "card_id": "c1", "chunk_idx": 5, "output": "<tool_call>...</tool_call>"},
-        {"sample_type": "recall_response", "trajectory_id": "t0",
-         "card_id": "c1", "chunk_idx": 5, "output": "<answer>red</answer>",
-         "recall_result": {"chunks": [3, 4]}},
-        {"sample_type": "silent", "trajectory_id": "t0",
-         "card_id": "c1", "chunk_idx": 0, "output": "<answer></answer>"},
-    ]
-    merged = _merge_recall_pairs(samples)
-    # 1 silent (untouched) + 1 merged "recall" (was 2)
-    assert len(merged) == 2, f"expected 2 samples after merge, got {len(merged)}"
-    recall_samples = [s for s in merged if s["sample_type"] == "recall"]
-    assert len(recall_samples) == 1
-    r = recall_samples[0]
-    assert r.get("v12_assistant_turn_1") == "<tool_call>...</tool_call>"
-    assert r.get("v12_assistant_turn_2") == "<answer>red</answer>"
-    assert r.get("recall_result") == {"chunks": [3, 4]}
-    assert "output" not in r  # legacy single-output dropped
-    print(f"  PASS merge produces 1 multi-turn 'recall' from rq+rr pair")
+    assert sample["sample_type"] == "recall"
+    assert sample["output"] == sample["v12_assistant_turn_2"]
+    assert "<tool_call>" in sample["v12_assistant_turn_1"]
+    assert '"name":"recall"' in sample["v12_assistant_turn_1"].replace(" ", "")
+    assert "needed evidence is historical" not in sample["v12_assistant_turn_1"]
+    assert "I will recall" not in sample["v12_assistant_turn_1"]
+    assert "</Response> red" in sample["v12_assistant_turn_2"]
+    assert sample["recall_result"]["returned_chunks"] == [2, 3]
 
 
-def test_merge_handles_recall_silent():
-    """recall_query + recall_silent → merged with empty answer."""
-    from scripts.agent_data.pass3c_samples import _merge_recall_pairs
-    samples = [
-        {"sample_type": "recall_query", "trajectory_id": "t0",
-         "card_id": "c1", "chunk_idx": 5, "output": "<tool_call>...</tool_call>"},
-        {"sample_type": "recall_silent", "trajectory_id": "t0",
-         "card_id": "c1", "chunk_idx": 5, "output": "<answer></answer>"},
-    ]
-    merged = _merge_recall_pairs(samples)
-    assert len(merged) == 1
-    r = merged[0]
-    assert r["sample_type"] == "recall"
-    assert r["v12_assistant_turn_2"] == "<answer></answer>"
-    assert r.get("v12_post_recall_was_silent") is True
-    print("  PASS merge handles recall_silent (post_recall_was_silent=True)")
+def test_recall_silent_sample_is_direct_multiturn():
+    from scripts.agent_data.pass3c_samples import _recall_silent_multiturn_sample
+
+    sample = _recall_silent_multiturn_sample(
+        5,
+        "current view lacks the future detail",
+        queries=[{"question": "What happens next?", "answers": []}],
+        recall_query={"start_time": 0, "end_time": 1},
+        recall_result={"source": "historical_frames", "returned_chunks": [0, 1], "time": "0-1"},
+        trajectory_id="t0",
+        card_id="c1",
+        sequence_type="event_watch",
+    )
+
+    assert sample["sample_type"] == "recall"
+    assert sample["action"] == "silent"
+    assert sample["output"] == sample["v12_assistant_turn_2"]
+    assert "<tool_call>" in sample["v12_assistant_turn_1"]
+    assert "I will recall" not in sample["v12_assistant_turn_1"]
+    assert "</Silence>" in sample["v12_assistant_turn_2"]
+    assert sample["base_role"] == "recall_silent"
 
 
-def test_merge_unpaired_recall_response_promoted():
-    """Lonely recall_response (no recall_query at same chunk) → promoted to
-    plain response."""
-    from scripts.agent_data.pass3c_samples import _merge_recall_pairs
-    samples = [
-        {"sample_type": "recall_response", "trajectory_id": "t0",
-         "card_id": "c1", "chunk_idx": 5, "output": "<answer>red</answer>"},
-    ]
-    merged = _merge_recall_pairs(samples)
-    assert len(merged) == 1
-    assert merged[0]["sample_type"] == "response"
-    print("  PASS lonely recall_response promoted to 'response'")
-
-
-def test_call_site_is_in_generate_trajectory_samples():
-    """AST: ensure the merge call lives in generate_trajectory_samples,
-    NOT in generate_base_samples (which would be a no-op)."""
-    import ast
+def test_legacy_merge_path_is_removed():
     src = Path(__file__).resolve().parents[1] / "scripts" / "agent_data" / "pass3c_samples.py"
     tree = ast.parse(src.read_text())
 
-    fn_calling_merge = []
-    for node in ast.walk(tree):
-        if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            continue
-        for sub in ast.walk(node):
-            if isinstance(sub, ast.Call):
-                f = sub.func
-                if isinstance(f, ast.Name) and f.id == "_merge_recall_pairs":
-                    fn_calling_merge.append(node.name)
-                    break
+    function_names = {
+        node.name for node in ast.walk(tree)
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+    }
+    called_names = {
+        sub.func.id for sub in ast.walk(tree)
+        if isinstance(sub, ast.Call) and isinstance(sub.func, ast.Name)
+    }
 
-    # generate_base_samples MUST NOT call merge (no-op)
-    assert "generate_base_samples" not in fn_calling_merge, (
-        "REGRESSION: _merge_recall_pairs still called from "
-        "generate_base_samples (where there are no recall pairs)"
-    )
-    # generate_trajectory_samples MUST call merge
-    assert "generate_trajectory_samples" in fn_calling_merge, (
-        "merge must be called from generate_trajectory_samples (where "
-        "recall pairs actually live)"
-    )
-    print(f"  PASS merge call site: {fn_calling_merge}")
-
-
-def main():
-    tests = [
-        test_merge_pairs_collapses_recall_at_same_chunk,
-        test_merge_handles_recall_silent,
-        test_merge_unpaired_recall_response_promoted,
-        test_call_site_is_in_generate_trajectory_samples,
-    ]
-    failures = []
-    for t in tests:
-        try:
-            t()
-        except AssertionError as e:
-            failures.append((t.__name__, str(e)))
-            print(f"  FAIL  {t.__name__}: {e}")
-        except Exception as e:
-            failures.append((t.__name__, f"{type(e).__name__}: {e}"))
-            print(f"  ERR   {t.__name__}: {type(e).__name__}: {e}")
-
-    print(f"\n{len(tests) - len(failures)}/{len(tests)} tests passed")
-    if failures:
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    main()
+    assert "_merge_recall_pairs" not in function_names
+    assert "_merge_recall_pairs" not in called_names
