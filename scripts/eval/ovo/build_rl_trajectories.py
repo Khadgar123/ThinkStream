@@ -129,7 +129,7 @@ def _rec_question(sample: Dict[str, Any]) -> str:
         "You're watching a video where people may perform a certain action "
         "repetitively. The performer is referred to as 'they'.\n"
         f"How many times have they {activity} so far?\n"
-        "Your response type should be INT, for example, 0/1/2/3."
+        "Return one integer only, such as 0, 1, 2, or 3."
     )
 
 
@@ -256,12 +256,13 @@ def _units_for_sample(sample: Dict[str, Any], *, scoring: str) -> List[QuestionU
             {"chunk": chunk, "value": str(count_by_chunk[chunk])}
             for chunk in chunks
         ]
+        ask_chunk = chunks[0] if chunks else 0
         q = _base_question_payload(
             sample=sample,
             task=task,
             question=_rec_question(sample),
             answer_form="number",
-            ask_chunks=[0],
+            ask_chunks=[ask_chunk],
             answer_chunks=chunks,
             gold_answer=str(count_by_chunk[chunks[-1]]) if chunks else "",
             per_emit_answers=per_emit,
@@ -536,11 +537,41 @@ def _filter_question_for_stateful_segment(
     per_emit = [per_emit_by_chunk[ck] for ck in sorted(per_emit_by_chunk)]
 
     q_out = dict(q)
-    ask_chunk = int(answer_chunks[0])
+    # Re-open a long multi-emit question at the beginning of each scored part.
+    # Only cumulative count tasks receive earlier emitted answers as
+    # response_history; independent status/probe tasks must be judged from the
+    # current visible state.
+    ask_chunk = int(segment_start)
     q_out["ask_chunk"] = ask_chunk
     q_out["ask_chunks"] = [ask_chunk]
     q_out["answer_chunks"] = answer_chunks
     q_out["per_emit_answers"] = per_emit
+    family = str(q.get("family") or q.get("ovo_task") or q.get("task") or "").upper()
+    answer_form = str(q.get("answer_form") or "").strip().lower()
+    uses_response_history = family == "REC" or answer_form == "number"
+    if uses_response_history:
+        initial_history: List[Dict[str, Any]] = []
+        for item in q.get("per_emit_answers") or []:
+            if not isinstance(item, dict):
+                continue
+            try:
+                ck = int(item.get("chunk"))
+            except (TypeError, ValueError):
+                continue
+            if ck >= int(segment_start):
+                continue
+            initial_history.append({
+                "chunk": ck,
+                "time": ck,
+                "text": str(item.get("value", "")),
+                "expected_chunk": ck,
+                "counts_for_completion": True,
+                "stateful_seed": True,
+            })
+        if initial_history:
+            q_out["initial_response_history"] = initial_history
+            q_out["stateful_seed_response_history"] = initial_history
+            q_out["response_history_policy"] = "include"
     support_chunks: List[int] = []
     for raw in q.get("support_chunks") or []:
         try:
@@ -627,8 +658,6 @@ def _split_stateful_trajectory(
                     continue
                 fresh_set = set(fresh_answers)
                 q_part["answer_chunks"] = fresh_answers
-                q_part["ask_chunk"] = fresh_answers[0]
-                q_part["ask_chunks"] = [fresh_answers[0]]
                 q_part["open_until"] = max(fresh_answers)
                 q_part["per_emit_answers"] = [
                     item for item in (q_part.get("per_emit_answers") or [])
@@ -882,12 +911,6 @@ def main() -> int:
     out_jsonl = Path(args.out_jsonl)
     _write_jsonl(out_jsonl, trajectories)
     if args.out_parquet:
-        if args.split_policy == "strict25_45_stateful":
-            raise SystemExit(
-                f"{args.split_policy} writes a stateful cut-plan JSONL; "
-                "do not request --out-parquet until the evaluator carries "
-                "student memory/state across split parts."
-            )
         summary["parquet_rows"] = _write_parquet(
             out_jsonl,
             Path(args.out_parquet),

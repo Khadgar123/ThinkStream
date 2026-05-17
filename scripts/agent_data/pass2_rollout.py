@@ -1012,6 +1012,124 @@ def _entries_to_mem_text(entries: List[Dict]) -> str:
     return "\n".join(lines)
 
 
+def _balanced_compact_target_ranges(source_chunks: List[int]) -> List[List[int]]:
+    """Return 4-6 near-equal inclusive chunk ranges for compact memory.
+
+    Compact memory is a full visible-memory rewrite, so the teacher should not
+    keep producing a giant old prefix such as ``0-92`` plus tiny recent ranges.
+    These ranges are deliberately time-balanced and are supplied to the prompt
+    as exact output slots.
+    """
+    chunks = sorted({int(c) for c in source_chunks})
+    if not chunks:
+        return []
+    start, end = chunks[0], chunks[-1]
+    total = end - start + 1
+    if total <= 0:
+        return []
+    if total <= 6:
+        n_segments = 1
+    elif total <= 36:
+        n_segments = 4
+    elif total <= 72:
+        n_segments = 5
+    else:
+        n_segments = 6
+    n_segments = max(1, min(n_segments, total))
+    base, rem = divmod(total, n_segments)
+    ranges: List[List[int]] = []
+    cur = start
+    for i in range(n_segments):
+        span = base + (1 if i < rem else 0)
+        ranges.append([cur, cur + span - 1])
+        cur += span
+    return ranges
+
+
+def _format_target_ranges_for_prompt(target_ranges: List[List[int]]) -> str:
+    if not target_ranges:
+        return '(none)'
+    return "\n".join(
+        f'  <m t="{int(start)}-{int(end)}">...</m>'
+        for start, end in target_ranges
+    )
+
+
+def _compact_input_record(item: Dict) -> Optional[Dict]:
+    chunks = _item_source_chunks(item)
+    text = str(item.get("text", "")).strip()
+    if not chunks or not text:
+        return None
+    return {
+        "type": item.get("type", "summary"),
+        "start": min(chunks),
+        "end": max(chunks),
+        "text": text,
+        "source_chunks": sorted(set(int(c) for c in chunks)),
+    }
+
+
+def _compact_meta_target_ranges(meta: Dict) -> List[List[int]]:
+    out: List[List[int]] = []
+    for item in meta.get("target_ranges") or []:
+        if not (isinstance(item, list) and len(item) == 2):
+            continue
+        try:
+            start, end = int(item[0]), int(item[1])
+        except (TypeError, ValueError):
+            continue
+        if end < start:
+            start, end = end, start
+        out.append([start, end])
+    if out:
+        return out
+    chunks = sorted(int(c) for c in (meta.get("chunks") or []))
+    return _balanced_compact_target_ranges(chunks)
+
+
+def _compact_ranges_exact(entries: List[Dict], target_ranges: List[List[int]]) -> bool:
+    if not target_ranges:
+        return True
+    if len(entries) != len(target_ranges):
+        return False
+    for entry, target in zip(entries, target_ranges):
+        tr = entry.get("time_range") or []
+        if len(tr) != 2:
+            return False
+        if [int(tr[0]), int(tr[1])] != [int(target[0]), int(target[1])]:
+            return False
+    return True
+
+
+def _compact_entries_cover_new(entries: List[Dict], raw_think_chunks: List[int]) -> bool:
+    if not raw_think_chunks:
+        return True
+    new_start, new_end = min(raw_think_chunks), max(raw_think_chunks)
+    for entry in entries:
+        tr = entry.get("time_range") or []
+        if len(tr) != 2:
+            continue
+        start, end = int(tr[0]), int(tr[1])
+        if end >= new_start and start <= new_end:
+            return True
+    return False
+
+
+def _compact_entries_parse_warning(entries: List[Dict], meta: Dict) -> str:
+    """Return a warning string when compact output should use fallback."""
+    if not entries:
+        return "no_entries"
+    target_ranges = _compact_meta_target_ranges(meta)
+    if target_ranges and not _compact_ranges_exact(entries, target_ranges):
+        return "target_ranges_mismatch"
+    raw_think_chunks = [int(c) for c in (meta.get("raw_think_chunks") or [])]
+    if not _compact_entries_cover_new(entries, raw_think_chunks):
+        return "missing_latest_new_captions"
+    if not target_ranges and len(entries) > 6:
+        return "too_many_entries"
+    return ""
+
+
 # Compression scoring weights (configurable, sum ≈ 1.0)
 COMPRESS_W_CONTENT  = 0.30  # content importance → avoid compressing
 COMPRESS_W_MERGE    = 0.20  # re-compression penalty → avoid
@@ -1237,15 +1355,23 @@ def build_compress_request(
             if isinstance(item.get("chunk"), int) or str(item.get("chunk", "")).isdigit()
         ]
         compress_chunks = _range_source_chunks(source_items)
+        target_ranges = _balanced_compact_target_ranges(compress_chunks)
+        if target_ranges:
+            first_time, last_time = target_ranges[0][0], target_ranges[-1][1]
         merge_level = (
             max((int(item.get("merge_level", 0)) for item in source_items), default=0)
             + 1
         )
         old_memory_text = _format_compact_memory_block(source_items)
         new_captions_text = _format_new_captions_block(source_items)
+        input_records = [
+            record for record in (_compact_input_record(item) for item in source_items)
+            if record is not None
+        ]
         prompt = COMPACT_MEMORY_UPDATE_PROMPT.format(
             old_memory=old_memory_text,
             new_captions=new_captions_text,
+            target_ranges=_format_target_ranges_for_prompt(target_ranges),
             start=int(first_time),
             end=int(last_time),
         )
@@ -1263,12 +1389,16 @@ def build_compress_request(
                 "selected_indices": selected_indices,
                 "chunks": compress_chunks,
                 "raw_think_chunks": raw_think_chunks,
+                "target_ranges": target_ranges,
+                "target_range_count": len(target_ranges),
+                "input_records": input_records,
                 "merge_level": merge_level,
                 "teacher_policy": {
                     "mode": "compact_memory_update",
                     "timeline_size": len(pre_action_timeline),
                     "n_new_captions": len(raw_think_items),
                     "n_old_memory": sum(1 for item in pre_action_timeline if item.get("type") == "summary"),
+                    "target_ranges": target_ranges,
                 },
                 "overlap_chunks": [],
                 "has_visual_context": False,
@@ -1356,24 +1486,40 @@ def _fallback_compress_text(meta: Dict) -> str:
 
 def _fallback_compact_entries(meta: Dict, target_lines: int = 5) -> List[Dict]:
     """Deterministic compact-memory fallback when teacher output is invalid."""
-    records: List[Dict] = []
-    obs = meta.get("observations_text", "")
-    for m in re.finditer(
-        r'<m\s+t="([^"]+)"\s*>(.*?)</m>',
-        obs,
-        flags=re.DOTALL | re.IGNORECASE,
-    ):
-        text = str(m.group(2)).strip()
-        if not text:
-            continue
-        nums = [int(x) for x in re.findall(r"\d+", str(m.group(1)))]
-        if nums:
-            start, end = nums[0], nums[-1]
-        else:
-            start, end = meta.get("time_range", [0, 0])
-        if end < start:
-            start, end = end, start
-        records.append({"start": int(start), "end": int(end), "text": text})
+    records: List[Dict] = [
+        {
+            "start": int(r["start"]),
+            "end": int(r["end"]),
+            "text": str(r.get("text", "")).strip(),
+            "source_chunks": [int(c) for c in (r.get("source_chunks") or [])],
+        }
+        for r in (meta.get("input_records") or [])
+        if isinstance(r, dict) and str(r.get("text", "")).strip()
+    ]
+
+    if not records:
+        obs = meta.get("observations_text", "")
+        for m in re.finditer(
+            r'<m\s+t="([^"]+)"\s*>(.*?)</m>',
+            obs,
+            flags=re.DOTALL | re.IGNORECASE,
+        ):
+            text = str(m.group(2)).strip()
+            if not text:
+                continue
+            nums = [int(x) for x in re.findall(r"\d+", str(m.group(1)))]
+            if nums:
+                start, end = nums[0], nums[-1]
+            else:
+                start, end = meta.get("time_range", [0, 0])
+            if end < start:
+                start, end = end, start
+            records.append({
+                "start": int(start),
+                "end": int(end),
+                "text": text,
+                "source_chunks": list(range(int(start), int(end) + 1)),
+            })
 
     if not records:
         start, end = meta.get("time_range", [0, 0])
@@ -1381,35 +1527,61 @@ def _fallback_compact_entries(meta: Dict, target_lines: int = 5) -> List[Dict]:
             "start": int(start),
             "end": int(end),
             "text": _fallback_compress_text(meta),
+            "source_chunks": list(range(int(start), int(end) + 1)),
         }]
 
     records.sort(key=lambda r: (r["start"], r["end"]))
-    if len(records) <= 6:
-        groups = [[r] for r in records]
-    else:
-        n_groups = max(4, min(6, int(target_lines)))
-        groups = []
-        for gi in range(n_groups):
-            lo = round(gi * len(records) / n_groups)
-            hi = round((gi + 1) * len(records) / n_groups)
-            groups.append(records[lo:hi])
+    target_ranges = _compact_meta_target_ranges(meta)
+    if not target_ranges:
+        if len(records) <= 6:
+            target_ranges = [[r["start"], r["end"]] for r in records]
+        else:
+            n_groups = max(4, min(6, int(target_lines)))
+            all_chunks = sorted({c for r in records for c in (r.get("source_chunks") or [])})
+            target_ranges = _balanced_compact_target_ranges(all_chunks)
+            if not target_ranges:
+                target_ranges = []
+                for gi in range(n_groups):
+                    lo = round(gi * len(records) / n_groups)
+                    hi = round((gi + 1) * len(records) / n_groups)
+                    group = records[lo:hi]
+                    if group:
+                        target_ranges.append([
+                            min(r["start"] for r in group),
+                            max(r["end"] for r in group),
+                        ])
+
+    def _overlaps(record: Dict, start: int, end: int) -> bool:
+        return int(record["end"]) >= start and int(record["start"]) <= end
+
+    def _record_weight(record: Dict, start: int, end: int) -> Tuple[int, int]:
+        overlap = max(0, min(int(record["end"]), end) - max(int(record["start"]), start) + 1)
+        midpoint_dist = abs(((int(record["start"]) + int(record["end"])) / 2.0) - ((start + end) / 2.0))
+        return overlap, -int(midpoint_dist * 1000)
 
     entries: List[Dict] = []
-    for group in groups:
-        group = [r for r in group if r]
+    for start, end in target_ranges:
+        start, end = int(start), int(end)
+        group = [r for r in records if _overlaps(r, start, end)]
         if not group:
-            continue
-        start = min(r["start"] for r in group)
-        end = max(r["end"] for r in group)
+            # Keep the fallback non-empty without inventing visual facts.
+            nearest = max(records, key=lambda r: _record_weight(r, start, end))
+            group = [nearest]
         text = " ".join(r["text"] for r in group)
         text = re.sub(r"\s+", " ", text).strip()
         if len(text) > 260:
             text = text[:260].rsplit(" ", 1)[0].rstrip(".;,") + "."
+        source_chunks = sorted({
+            c for r in group for c in (r.get("source_chunks") or range(r["start"], r["end"] + 1))
+            if start <= int(c) <= end
+        })
+        if not source_chunks:
+            source_chunks = list(range(start, end + 1))
         entries.append({
             "type": "summary",
             "time_range": [start, end],
             "text": text,
-            "source_chunks": list(range(start, end + 1)),
+            "source_chunks": source_chunks,
             "merge_level": int(meta.get("merge_level", 1) or 1),
             "compact_memory": True,
         })
@@ -1452,8 +1624,10 @@ def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
         literal_mem = _MEM_BLOCK_RE.search(raw_no_think)
         mem_block = _extract_mem_block(raw_no_think)
         entries = parse_compact_memory_entries(raw_no_think)
-        if not entries:
+        parse_warning = _compact_entries_parse_warning(entries, meta)
+        if parse_warning:
             default["_raw"] = raw_no_think[:4000]
+            default["parse_warning"] = parse_warning
             return default
         n_entries = len(entries)
         time_range = [
@@ -1476,11 +1650,8 @@ def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
         literal_block = literal_mem.group(0).strip() if literal_mem else raw_no_think
         raw_open_m = len(re.findall(r"<m\b", literal_block, flags=re.IGNORECASE))
         raw_close_m = len(re.findall(r"</m>", literal_block, flags=re.IGNORECASE))
-        if (not literal_mem) or raw_open_m != raw_close_m:
+        if raw_open_m != raw_close_m:
             out["format_repaired"] = True
-        if not parse_success:
-            out["_raw"] = raw_no_think[:4000]
-            out["parse_warning"] = "expected_4_to_6_entries"
         return out
 
     default = {

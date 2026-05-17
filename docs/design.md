@@ -243,8 +243,9 @@ response_ids = 所有 assistant action stitched 起来。Reward 在 trajectory
 2. **LIFO**: 同 chunk 多 emit → 后 emit 优先（最新答案覆盖）
 3. **FIFO 兜底**: 跨 window emit 按到达顺序分给未填 Q
 
-最终结果通过 `ts_per_q_answer_chunk[]` + `ts_per_q_answer_text[]` extras
-传给 `compute_score`，后者按 `answer_form` 分发到 5 种 matcher。
+最终结果通过 `ts_per_q_answer_chunk[]` + `ts_per_q_answer_text[]` +
+`ts_per_q_answers[]` extras 传给 `compute_score`，后者按 `answer_form`
+分发到 5 种 matcher，并在 trajectory 级别按预期答案槽位加权平均。
 
 ### 8.4 Reward 8 路 column（v11.4 设计 + v12 协议适配）
 
@@ -299,7 +300,7 @@ bash verl/recipe_thinkstream/run_thinkstream_grpo.sh
      tile across response_length × response_mask
 
 **不严格等价 stitched**：
-- format/spam 只算 final action 的 solution_str（不是 stitched trajectory）
+- format 只算 final action 的 solution_str（不是 stitched trajectory）
 - non-final actions 的 score 进 telemetry（`recurrent/nonfinal_action_score_*`）
   但不参与 advantage
 - 必须 `rollout.n ≥ 2`，n=1 退化为 singleton GRPO 组

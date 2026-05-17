@@ -673,7 +673,12 @@ class StreamingRolloutServer:
 
         pixel_chunks: list[torch.Tensor] = []
         grid_chunks: list[torch.Tensor] = []
-        for slot, item in per_slot_inputs.items():
+        # Qwen's batched video processor consumes video features in the same
+        # order as video tokens appear when scanning the batch rows. The rows
+        # below are indexed by streaming slot, so multimodal payloads must be
+        # concatenated in ascending slot order, not in async arrival order.
+        for slot in sorted(per_slot_inputs):
+            item = per_slot_inputs[slot]
             slot = int(slot)
             ids = item["input_ids"].to(self._device)
             attn = item["attention_mask"].to(self._device)

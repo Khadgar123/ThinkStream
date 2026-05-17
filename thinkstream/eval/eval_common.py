@@ -268,7 +268,7 @@ def add_common_args(parser):
         action="store_true",
         help=(
             "Drive eval through StreamingAgentLoop (per-timestep, system "
-            "compress_trigger injection, recall orchestration) — matches "
+            "compression-turn orchestration, recall orchestration) — matches "
             "the SFT/RL training format byte-for-byte. Required for v12 "
             "models. Kept as opt-in for legacy reasons; the eval entry "
             "scripts (eval_ovo / eval_rtvu) ignore this flag and always "
@@ -282,9 +282,9 @@ def add_common_args(parser):
         help=(
             "How memory compression is triggered (only used with "
             "--use_agent_loop). 'system' (default, SFT-trained ckpt): when "
-            "memory.should_compress() fires, system inserts a "
-            "bare <compress_trigger/> and the model emits the full compress "
-            "tool_call, including its selected time_range and summary. 'self' "
+            "memory.should_compress() fires, the controller starts a "
+            "compression turn via metadata and the model emits compact-memory "
+            "<m> lines. 'self' "
             "(post-GDPO RL ckpt): system never inserts a trigger; the model decides "
             "autonomously when to compress and which range to summarize. "
             "Pure-SFT ckpts under 'self' will likely never compress and "

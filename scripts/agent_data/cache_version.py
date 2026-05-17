@@ -50,9 +50,7 @@ STAGE_VERSIONS: Dict[str, str] = {
     #        grammars. Regenerate all *_messages.jsonl and RL parquets that
     #        freeze prompts.
     #   v12.41 (2026-05-06): pass5/rendered messages use separate ordinary
-    #        streaming and compression-only system prompts. Compression turns
-    #        keep only a bare <compress_trigger/> in user_input while the
-    #        compression rules move to the system prompt. Regenerate all
+    #        streaming and compression-only system prompts. Regenerate all
     #        *_messages.jsonl and RL parquets that freeze prompts.
     #   v12.44 (2026-05-07): pass3 redesign updates card generation,
     #        placement/sample construction, and verification-facing metadata.

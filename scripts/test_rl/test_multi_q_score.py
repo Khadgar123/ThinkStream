@@ -6,7 +6,7 @@ thinkstream/rl/thinkstream.py:compute_score.
 
 Coverage:
   - All-correct rollout → outcome 1.0
-  - First-Q-wrong rollout → outcome (n-1)/n (mean aggregation)
+  - First-Q-wrong rollout → answer-weighted partial outcome
   - All-unanswered rollout → outcome 0.0, n_answered 0.0
   - liberal MCQ matching: option letter, option text, gold_answer fallback
 """
@@ -71,7 +71,9 @@ def main() -> int:
     # have ask_chunk << answer_chunks[0].
     per_q_chunk = []
     for q in questions:
-        answer_chunks = q.get("answer_chunks") or []
+        answer_chunks = q.get("answer_chunks")
+        if answer_chunks is None:
+            answer_chunks = []
         if hasattr(answer_chunks, "tolist"):
             answer_chunks = answer_chunks.tolist()
         if answer_chunks:
@@ -103,7 +105,11 @@ def main() -> int:
     r2 = rt.compute_score(
         "thinkstream_v12_streaming_multi_q", solution, gt_str, extra_in,
     )
-    expected = (n_q - 1) / n_q
+    answer_weights = [rt._answer_weight_for_question(q) for q in questions]
+    expected = (
+        (sum(answer_weights) - answer_weights[0]) / max(sum(answer_weights), 1.0)
+        if answer_weights else 0.0
+    )
     assert abs(r2["outcome"] - expected) < 1e-6, f"partial: got {r2['outcome']} expected {expected}"
     print(f"  ✓ first-wrong: outcome={r2['outcome']:.3f} (expected {expected:.3f})")
 
@@ -135,6 +141,9 @@ def main() -> int:
         ("Eggplant.", [], "", "eggplant", True),
         # Single-letter ma against text-heavy options (the bug we fixed)
         ("B", ["on the table", "in the cabinet", "on the counter", "on the sink"], 0, "", False),
+        # If an explicit option label is present, it must be the gold letter.
+        ("B) Unable to answer", ["Unable to answer", "Unable to answer"], "A", "Unable to answer", False),
+        ("I cannot infer it. B) Unable to answer", ["Unable to answer", "Unable to answer"], "A", "Unable to answer", False),
     ]
     for ma, opts, co, ga, exp in cases:
         got = rt._match_mcq_answer(ma, opts, co, ga)

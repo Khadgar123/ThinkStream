@@ -19,7 +19,10 @@ This trainer supports model-agonistic model initialization with huggingface
 """
 
 import json
+import html
+import math
 import os
+import re
 import uuid
 from collections import defaultdict
 from copy import deepcopy
@@ -73,6 +76,32 @@ from verl.utils.torch_functional import masked_mean
 from verl.utils.tracking import ValidationGenerationsLogger
 from verl.workers.config import DistillationConfig, EngineConfig
 from verl.workers.utils.padding import left_right_2_no_padding, no_padding_2_padding
+
+
+def _parse_generation_output_for_dump(raw_output: str) -> dict[str, str]:
+    """Parse dumped assistant text without making verl depend on ThinkStream at import time."""
+    try:
+        from thinkstream.data.agent_protocol import parse_agent_output
+
+        parsed = parse_agent_output(
+            str(raw_output or ""),
+            allow_bare_answer=True,
+            allow_bare_memory=True,
+        )
+    except Exception as exc:  # pragma: no cover - dump parsing must never break training.
+        return {
+            "parsed_kind": "",
+            "parsed_response": "",
+            "parsed_format_error": f"parse_unavailable: {exc}",
+        }
+
+    return {
+        "parsed_kind": str(parsed.get("kind") or ""),
+        "parsed_response": str(parsed.get("answer_text") or ""),
+        "parsed_think": str(parsed.get("think") or ""),
+        "parsed_memory": str(parsed.get("memory_text") or ""),
+        "parsed_format_error": str(parsed.get("format_error") or ""),
+    }
 
 
 def apply_kl_penalty(data: DataProto, kl_ctrl: core_algos.AdaptiveKLController, kl_penalty="kl"):
@@ -174,6 +203,555 @@ def _make_action_token_scores(batch: DataProto, trajectory_rewards: torch.Tensor
     return token_scores * response_mask.to(dtype=torch.float32)
 
 
+def _plain_value(value: Any) -> Any:
+    if hasattr(value, "tolist"):
+        value = value.tolist()
+    return value
+
+
+def _safe_float(value: Any, default: float = 0.0) -> float:
+    value = _plain_value(value)
+    try:
+        out = float(value)
+    except (TypeError, ValueError):
+        return default
+    if not math.isfinite(out):
+        return default
+    return out
+
+
+def _safe_int(value: Any, default: int = -1) -> int:
+    value = _plain_value(value)
+    try:
+        return int(float(value))
+    except (TypeError, ValueError):
+        return default
+
+
+def _row_value(batch: DataProto, key: str, row: int, default: Any = None) -> Any:
+    values = batch.non_tensor_batch.get(key)
+    if values is None:
+        return default
+    try:
+        return _plain_value(values[row])
+    except Exception:
+        return default
+
+
+def _row_action_value(batch: DataProto, key: str, row: int, action_idx: int, default: Any = None) -> Any:
+    seq = _row_value(batch, key, row, default)
+    seq = _plain_value(seq)
+    if isinstance(seq, (list, tuple)) and 0 <= action_idx < len(seq):
+        return _plain_value(seq[action_idx])
+    return default
+
+
+def _int_chunks_from_value(value: Any) -> set[int]:
+    value = _plain_value(value)
+    if isinstance(value, (list, tuple, set)):
+        out: set[int] = set()
+        for item in value:
+            try:
+                out.add(int(float(item)))
+            except (TypeError, ValueError):
+                continue
+        return out
+    try:
+        return {int(float(value))}
+    except (TypeError, ValueError):
+        return set()
+
+
+def _chunks_from_memory_text(memory_text: str) -> set[int]:
+    chunks: set[int] = set()
+    for m in re.finditer(
+        r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>',
+        str(memory_text or ""),
+        re.DOTALL | re.IGNORECASE,
+    ):
+        start = int(m.group(1))
+        end = int(m.group(2) or m.group(1))
+        if end < start:
+            start, end = end, start
+        chunks.update(range(start, end + 1))
+    return chunks
+
+
+_TS_MEMORY_ENTRY_RE = re.compile(
+    r'<m\s+t="(-?\d+(?:\.\d+)?)(?:\s*-\s*(-?\d+(?:\.\d+)?))?"\s*>(.*?)</m>',
+    re.DOTALL | re.IGNORECASE,
+)
+_TS_CAPTION_ENTRY_RE = re.compile(
+    r'<c\s+t="(-?\d+(?:\.\d+)?)"\s*>(.*?)</c>',
+    re.DOTALL | re.IGNORECASE,
+)
+_TS_WORD_RE = re.compile(r"[a-z0-9]+(?:'[a-z0-9]+)?", re.IGNORECASE)
+
+
+def _ts_range_to_interval(start_raw: Any, end_raw: Any = None) -> tuple[float, float] | None:
+    try:
+        start = float(start_raw)
+        end = float(start_raw if end_raw in (None, "") else end_raw)
+    except (TypeError, ValueError):
+        return None
+    if end < start:
+        start, end = end, start
+    return start, end + 1.0
+
+
+def _ts_clean_xml_text(text: Any) -> str:
+    body = html.unescape(str(text or ""))
+    body = re.sub(r"<[^>]+>", " ", body)
+    return " ".join(body.split())
+
+
+def _ts_memory_entries_from_text(memory_text: str) -> list[tuple[float, float, str]]:
+    entries: list[tuple[float, float, str]] = []
+    for match in _TS_MEMORY_ENTRY_RE.finditer(str(memory_text or "")):
+        interval = _ts_range_to_interval(match.group(1), match.group(2))
+        body = _ts_clean_xml_text(match.group(3))
+        if interval is not None and body:
+            entries.append((interval[0], interval[1], body))
+    return entries
+
+
+def _ts_compact_memory_output_is_clean(output_text: str) -> bool:
+    text = str(output_text or "")
+    think_matches = list(re.finditer(r"<think>.*?</think>", text, re.DOTALL | re.IGNORECASE))
+    if len(think_matches) > 1:
+        return False
+    text = re.sub(r"<think>.*?</think>", " ", text, count=1, flags=re.DOTALL | re.IGNORECASE)
+    text = _TS_MEMORY_ENTRY_RE.sub(" ", text)
+    text = re.sub(r"</?MEM>", " ", text, flags=re.IGNORECASE)
+    return not text.strip()
+
+
+def _ts_source_entries_from_text(
+    source_text: str,
+    expected_chunks: set[int] | None = None,
+) -> list[tuple[float, float, str]]:
+    entries = _ts_memory_entries_from_text(source_text)
+    for match in _TS_CAPTION_ENTRY_RE.finditer(str(source_text or "")):
+        interval = _ts_range_to_interval(match.group(1), match.group(1))
+        body = _ts_clean_xml_text(match.group(2))
+        if interval is not None and body:
+            entries.append((interval[0], interval[1], body))
+    if entries:
+        return entries
+    return [
+        (float(chunk), float(chunk) + 1.0, "")
+        for chunk in sorted(expected_chunks or [])
+    ]
+
+
+def _ts_interval_len(interval: tuple[float, float]) -> float:
+    return max(0.0, float(interval[1]) - float(interval[0]))
+
+
+def _ts_interval_overlap(
+    left: tuple[float, float],
+    right: tuple[float, float],
+) -> float:
+    return max(0.0, min(left[1], right[1]) - max(left[0], right[0]))
+
+
+def _ts_interval_iou(
+    left: tuple[float, float],
+    right: tuple[float, float],
+) -> float:
+    inter = _ts_interval_overlap(left, right)
+    if inter <= 0.0:
+        return 0.0
+    union = _ts_interval_len(left) + _ts_interval_len(right) - inter
+    return inter / union if union > 0.0 else 0.0
+
+
+def _ts_content_words(text: Any) -> set[str]:
+    return {
+        word.lower()
+        for word in _TS_WORD_RE.findall(_ts_clean_xml_text(text))
+        if len(word) > 1 or word.isdigit()
+    }
+
+
+def _ts_compress_time_score(
+    output_entries: list[tuple[float, float, str]],
+    source_entries: list[tuple[float, float, str]],
+) -> float:
+    if not output_entries or not source_entries:
+        return 0.0
+    horizon_start = min(entry[0] for entry in source_entries)
+    horizon_end = max(entry[1] for entry in source_entries)
+    horizon_len = horizon_end - horizon_start
+    if horizon_len <= 0.0:
+        return 0.0
+    emitted = [(entry[0], entry[1]) for entry in output_entries]
+    best = 0.0
+    for k in (4, 5, 6):
+        width = horizon_len / float(k)
+        if width <= 0.0:
+            continue
+        part_scores = []
+        for idx in range(k):
+            ideal = (
+                horizon_start + idx * width,
+                horizon_start + (idx + 1) * width,
+            )
+            part_scores.append(max(_ts_interval_iou(ideal, seg) for seg in emitted))
+        best = max(best, sum(part_scores) / float(k))
+    count = len(output_entries)
+    count_score = 1.0 if count <= 6 else (6.0 / float(count)) ** 2
+    return max(0.0, min(1.0, best * count_score))
+
+
+def _ts_compress_valid_time_score(
+    output_entries: list[tuple[float, float, str]],
+    source_entries: list[tuple[float, float, str]],
+) -> float:
+    if not output_entries or not source_entries:
+        return 0.0
+    horizon = (
+        min(entry[0] for entry in source_entries),
+        max(entry[1] for entry in source_entries),
+    )
+    emitted_len = sum(_ts_interval_len((entry[0], entry[1])) for entry in output_entries)
+    if emitted_len <= 0.0:
+        return 0.0
+    in_horizon = sum(
+        _ts_interval_overlap((entry[0], entry[1]), horizon)
+        for entry in output_entries
+    )
+    return max(0.0, min(1.0, in_horizon / emitted_len))
+
+
+def _ts_compress_source_precision(
+    output_entries: list[tuple[float, float, str]],
+    source_entries: list[tuple[float, float, str]],
+) -> float:
+    if not output_entries or not source_entries:
+        return 0.0
+    scores: list[float] = []
+    all_source_words = _ts_content_words(" ".join(entry[2] for entry in source_entries))
+    for out_start, out_end, out_text in output_entries:
+        output_words = _ts_content_words(out_text)
+        if not output_words:
+            scores.append(0.0)
+            continue
+        ref_text = " ".join(
+            src_text
+            for src_start, src_end, src_text in source_entries
+            if _ts_interval_overlap((out_start, out_end), (src_start, src_end)) > 0.0
+        )
+        ref_words = _ts_content_words(ref_text) or all_source_words
+        if not ref_words:
+            scores.append(0.0)
+            continue
+        scores.append(len(output_words & ref_words) / float(len(output_words)))
+    return float(sum(scores) / len(scores)) if scores else 0.0
+
+
+def _ts_compress_source_grounding_gate(source_precision: float) -> float:
+    return max(0.0, min(1.0, float(source_precision) / 0.5))
+
+
+def _ts_score_compress_memory_update(
+    output_text: str,
+    source_text: str,
+    expected_chunks: set[int] | None = None,
+    *,
+    action_error: str = "",
+    hit_max_tokens: bool = False,
+) -> tuple[float, str, dict[str, float]]:
+    try:
+        from thinkstream.data.agent_protocol import parse_agent_output
+    except Exception:
+        return 0.0, "parse_unavailable", {}
+
+    if str(action_error or "").strip():
+        return 0.0, "action_error", {"valid_format": 0.0, "source_grounding": 0.0}
+    parsed = parse_agent_output(str(output_text or ""), allow_bare_memory=True)
+    if parsed.get("format_error") or parsed.get("kind") != "compress":
+        return 0.0, "invalid", {"valid_format": 0.0, "source_grounding": 0.0}
+    output_entries = _ts_memory_entries_from_text(str(parsed.get("memory_text") or ""))
+    if not output_entries:
+        return 0.0, "missing", {"valid_format": 0.0, "source_grounding": 0.0}
+    if not _ts_compact_memory_output_is_clean(output_text):
+        return 0.0, "invalid", {
+            "valid_format": 0.0,
+            "source_grounding": 0.0,
+            "item_count": float(len(output_entries)),
+        }
+    source_entries = _ts_source_entries_from_text(source_text, expected_chunks)
+    if not source_entries:
+        return 0.0, "no_source", {
+            "valid_format": 1.0,
+            "valid_time": 0.0,
+            "time_score": 0.0,
+            "source_precision": 0.0,
+            "source_grounding": 0.0,
+            "item_count": float(len(output_entries)),
+        }
+
+    valid_time = _ts_compress_valid_time_score(output_entries, source_entries)
+    time_score = _ts_compress_time_score(output_entries, source_entries)
+    source_precision = _ts_compress_source_precision(output_entries, source_entries)
+    source_grounding = _ts_compress_source_grounding_gate(source_precision)
+    score = valid_time * source_grounding * (0.85 * time_score + 0.15 * source_precision)
+    reason = "ok"
+    if hit_max_tokens:
+        score = 0.0
+        reason = "hit_max"
+    return max(0.0, min(1.0, float(score))), reason, {
+        "valid_format": 1.0,
+        "valid_time": float(valid_time),
+        "time_score": float(time_score),
+        "source_precision": float(source_precision),
+        "source_grounding": float(source_grounding),
+        "item_count": float(len(output_entries)),
+    }
+
+
+def _parse_weight_overrides(defaults: dict[str, float]) -> dict[str, float]:
+    raw = os.environ.get("THINKSTREAM_HDPO_WEIGHTS", "").strip()
+    if not raw:
+        return dict(defaults)
+    weights = dict(defaults)
+    try:
+        parsed = json.loads(raw)
+        if isinstance(parsed, dict):
+            for key, value in parsed.items():
+                if key in weights:
+                    weights[key] = float(value)
+            return weights
+    except Exception:
+        pass
+    for item in raw.split(","):
+        if "=" not in item:
+            continue
+        key, value = item.split("=", 1)
+        key = key.strip()
+        if key not in weights:
+            continue
+        try:
+            weights[key] = float(value)
+        except ValueError:
+            continue
+    return weights
+
+
+def _reward_component_tensor(
+    reward_extra_infos_dict: dict[str, Any],
+    key: str,
+    n_items: int,
+    device: torch.device,
+    *,
+    default: torch.Tensor | None = None,
+) -> torch.Tensor:
+    values = reward_extra_infos_dict.get(key)
+    if values is None:
+        if default is not None:
+            return default.to(device=device, dtype=torch.float32)
+        return torch.zeros(n_items, device=device, dtype=torch.float32)
+    arr = np.asarray(values, dtype=object)
+    out = torch.zeros(n_items, device=device, dtype=torch.float32)
+    for i in range(min(n_items, len(arr))):
+        out[i] = _safe_float(arr[i], 0.0)
+    return out
+
+
+def _gate_positive_component(component: torch.Tensor, gate: torch.Tensor) -> torch.Tensor:
+    return torch.where(component > 0.0, component * gate, component)
+
+
+def _compress_score_for_action_row(batch: DataProto, row: int) -> tuple[float, float, str, dict[str, float]]:
+    action_idx = _safe_int(_row_value(batch, "ts_action_index", row, -1), -1)
+    turn_kind = str(_row_action_value(batch, "ts_chunk_turn_kinds", row, action_idx, "") or "")
+    if turn_kind != "compress":
+        return 0.0, 0.0, "", {}
+
+    expected = _int_chunks_from_value(
+        _row_action_value(batch, "ts_compress_expected_chunks", row, action_idx, [])
+    )
+    if not expected:
+        return 0.0, 0.0, "", {}
+
+    action_error = str(
+        _row_action_value(batch, "ts_chunk_action_space_errors", row, action_idx, "") or ""
+    ).strip()
+    text = str(_row_action_value(batch, "ts_chunk_asst_texts", row, action_idx, "") or "")
+    source_text = str(
+        _row_action_value(batch, "ts_compress_source_texts", row, action_idx, "") or ""
+    )
+    score, reason, details = _ts_score_compress_memory_update(
+        text,
+        source_text,
+        expected,
+        action_error=action_error,
+        hit_max_tokens=bool(_row_action_value(batch, "ts_chunk_hit_max_tokens", row, action_idx, False)),
+    )
+    return score, 1.0, reason, details
+
+
+def _conditional_group_advantage(
+    scores: torch.Tensor,
+    groups: list[Any],
+    mask: torch.Tensor,
+    *,
+    use_adv: bool,
+    epsilon: float = 1e-6,
+) -> torch.Tensor:
+    adv = torch.zeros_like(scores, dtype=torch.float32)
+    grouped: dict[Any, list[int]] = defaultdict(list)
+    with torch.no_grad():
+        for i, group in enumerate(groups):
+            if mask[i].item() > 0.0:
+                grouped[group].append(i)
+        for indices in grouped.values():
+            if len(indices) < 2:
+                continue
+            vals = scores[indices]
+            mean = vals.mean()
+            if use_adv:
+                std = vals.std()
+                if not torch.isfinite(std) or std <= epsilon:
+                    continue
+                adv[indices] = (vals - mean) / (std + epsilon)
+            else:
+                adv[indices] = vals - mean
+    return adv * mask.to(dtype=torch.float32)
+
+
+def _compute_action_compress_advantage(
+    batch: DataProto,
+    *,
+    use_adv: bool,
+) -> tuple[torch.Tensor, dict[str, float]]:
+    response_mask = batch.batch["response_mask"]
+    device = response_mask.device
+    n_rows = response_mask.size(0)
+    scores = torch.zeros(n_rows, device=device, dtype=torch.float32)
+    mask = torch.zeros(n_rows, device=device, dtype=torch.float32)
+    groups: list[str] = []
+    reasons: defaultdict[str, int] = defaultdict(int)
+    detail_sums: defaultdict[str, float] = defaultdict(float)
+    detail_count = 0
+
+    for row in range(n_rows):
+        if response_mask[row].sum().item() <= 0:
+            groups.append(f"pad::{row}")
+            continue
+        score, active, reason, details = _compress_score_for_action_row(batch, row)
+        if active > 0.0 and score > 0.0:
+            gate = max(0.0, min(1.0, _safe_float(_row_value(batch, "outcome_gate", row, 1.0), 1.0)))
+            score *= gate
+        scores[row] = score
+        mask[row] = active
+        if reason:
+            reasons[reason] += 1
+        if active > 0.0:
+            detail_count += 1
+            for key in (
+                "valid_format",
+                "valid_time",
+                "time_score",
+                "source_precision",
+                "source_grounding",
+                "item_count",
+            ):
+                detail_sums[key] += _safe_float(details.get(key), 0.0)
+        uid = str(_row_value(batch, "uid", row, _safe_int(batch.batch["sample_index"][row], row)))
+        event_chunk = _safe_int(_row_value(batch, "ts_action_event_chunk_idx", row, -1), -1)
+        groups.append(f"{uid}::compress::{event_chunk}")
+
+    adv = _conditional_group_advantage(scores, groups, mask, use_adv=use_adv)
+    active_scores = scores[mask > 0.0]
+    metrics = {
+        "recurrent/gdpo/compress_rows": float(mask.sum().item()),
+        "recurrent/gdpo/compress_score_mean": (
+            float(active_scores.mean().item()) if active_scores.numel() else 0.0
+        ),
+        "recurrent/gdpo/compress_adv_std": (
+            float(adv[mask > 0.0].std().item()) if int(mask.sum().item()) > 1 else 0.0
+        ),
+    }
+    if detail_count:
+        for key, value in detail_sums.items():
+            metrics[f"recurrent/gdpo/compress_{key}_mean"] = float(value / detail_count)
+    for reason, count in reasons.items():
+        metrics[f"recurrent/gdpo/compress_reason/{reason}"] = float(count)
+    return adv, metrics
+
+
+def _compute_recurrent_gdpo_advantages(
+    batch: DataProto,
+    reward_tensor: torch.Tensor,
+    reward_extra_infos_dict: dict[str, Any],
+    reward_index: Any,
+    *,
+    use_adv: bool,
+) -> tuple[torch.Tensor, dict[str, float]]:
+    response_mask = batch.batch["response_mask"]
+    device = response_mask.device
+    n_traj = reward_tensor.size(0)
+    sample_index = batch.batch["sample_index"].long().to(device)
+    response_length = batch.batch["responses"].size(-1)
+
+    total_score = reward_tensor.sum(dim=-1).to(device=device, dtype=torch.float32)
+    outcome = _reward_component_tensor(
+        reward_extra_infos_dict, "outcome", n_traj, device, default=total_score
+    )
+    gate = _reward_component_tensor(
+        reward_extra_infos_dict, "outcome_gate", n_traj, device, default=outcome.clamp(0.0, 1.0)
+    ).clamp(0.0, 1.0)
+    components = {
+        "outcome": outcome,
+        "answer_decision": _gate_positive_component(
+            _reward_component_tensor(reward_extra_infos_dict, "answer_decision", n_traj, device),
+            gate,
+        ),
+        "format": _gate_positive_component(
+            _reward_component_tensor(reward_extra_infos_dict, "format", n_traj, device),
+            gate,
+        ),
+    }
+    weights = _parse_weight_overrides({
+        "outcome": 1.0,
+        "answer_decision": 0.3,
+        "format": 0.1,
+        "compress_quality": 0.1,
+    })
+
+    weighted_action_adv = torch.zeros(response_mask.size(0), device=device, dtype=torch.float32)
+    metrics: dict[str, float] = {}
+    for key, scores in components.items():
+        weight = float(weights.get(key, 0.0))
+        adv_scalar = compute_1D_grpo_advantage(
+            token_level_rewards=scores,
+            index=reward_index,
+            use_adv=use_adv,
+        ).to(device=device, dtype=torch.float32)
+        weighted_action_adv = weighted_action_adv + weight * adv_scalar[sample_index]
+        metrics[f"recurrent/gdpo/{key}_weight"] = weight
+        metrics[f"recurrent/gdpo/{key}_score_mean"] = float(scores.mean().item()) if scores.numel() else 0.0
+        metrics[f"recurrent/gdpo/{key}_adv_std"] = (
+            float(adv_scalar.std().item()) if adv_scalar.numel() > 1 else 0.0
+        )
+
+    advantages = weighted_action_adv.unsqueeze(-1).tile([1, response_length]) * response_mask
+
+    compress_weight = float(weights.get("compress_quality", 0.0))
+    compress_adv, compress_metrics = _compute_action_compress_advantage(batch, use_adv=use_adv)
+    if compress_weight:
+        advantages = advantages + (
+            compress_weight
+            * compress_adv.unsqueeze(-1).tile([1, response_length])
+            * response_mask
+        )
+    metrics.update(compress_metrics)
+    metrics["recurrent/gdpo/compress_quality_weight"] = compress_weight
+    return advantages, metrics
+
+
 def _attach_action_reward_extras(
     batch: DataProto,
     reward_extra_infos_dict: dict[str, Any],
@@ -200,6 +778,17 @@ def _zero_padded_response_rows(batch: DataProto, pad_size: int) -> None:
         response_mask = batch.batch["response_mask"].clone()
         response_mask[-pad_size:] = 0
         batch.batch["response_mask"] = response_mask
+
+
+def _recurrent_actor_update_divisor(config, world_size: int) -> int:
+    """Return the global batch divisor required by recurrent actor updates."""
+
+    if world_size <= 0:
+        raise ValueError(f"world_size must be positive, got {world_size}")
+    actor_mini_batch_size = int(config.actor_rollout_ref.actor.get("ppo_mini_batch_size", 1))
+    rollout_n = int(config.actor_rollout_ref.rollout.get("n", 1))
+    actor_global_mini_batch_size = max(1, actor_mini_batch_size * rollout_n)
+    return math.lcm(int(world_size), actor_global_mini_batch_size)
 
 
 def compute_advantage(
@@ -470,7 +1059,17 @@ class RayPPOTrainer:
         except Exception as e:
             print(f"Warning: Could not set total_training_steps in config. Structure missing? Error: {e}")
 
-    def _dump_generations(self, inputs, outputs, gts, scores, reward_extra_infos_dict, dump_path):
+    def _dump_generations(
+        self,
+        inputs,
+        outputs,
+        gts,
+        scores,
+        reward_extra_infos_dict,
+        dump_path,
+        raw_inputs=None,
+        raw_outputs=None,
+    ):
         """Dump rollout/validation samples as JSONL."""
         os.makedirs(dump_path, exist_ok=True)
         filename = os.path.join(dump_path, f"{self.global_steps}.jsonl")
@@ -483,6 +1082,19 @@ class RayPPOTrainer:
             "score": scores,
             "step": [self.global_steps] * n,
         }
+        if raw_inputs is not None and len(raw_inputs) == n:
+            base_data["raw_input"] = raw_inputs
+        if raw_outputs is not None and len(raw_outputs) == n:
+            base_data["raw_output"] = raw_outputs
+            parsed_rows = [_parse_generation_output_for_dump(text) for text in raw_outputs]
+            for key in (
+                "parsed_kind",
+                "parsed_response",
+                "parsed_think",
+                "parsed_memory",
+                "parsed_format_error",
+            ):
+                base_data[key] = [row.get(key, "") for row in parsed_rows]
 
         for k, v in reward_extra_infos_dict.items():
             if len(v) == n:
@@ -509,14 +1121,18 @@ class RayPPOTrainer:
             rollout_data_dir (str): Directory path to save the rollout data
         """
         with marked_timer("dump_rollout_generations", timing_raw, color="green"):
-            inputs = self.tokenizer.batch_decode(batch.batch["prompts"], skip_special_tokens=True)
-            outputs = self.tokenizer.batch_decode(batch.batch["responses"], skip_special_tokens=True)
+            prompts = batch.batch["prompts"]
+            responses = batch.batch["responses"]
+            inputs = self.tokenizer.batch_decode(prompts, skip_special_tokens=True)
+            outputs = self.tokenizer.batch_decode(responses, skip_special_tokens=True)
+            raw_inputs = self.tokenizer.batch_decode(prompts, skip_special_tokens=False)
+            raw_outputs = self.tokenizer.batch_decode(responses, skip_special_tokens=False)
             scores = batch.batch["token_level_scores"].sum(-1).cpu().tolist()
             sample_gts = [item.non_tensor_batch.get("reward_model", {}).get("ground_truth", None) for item in batch]
 
             reward_extra_infos_to_dump = reward_extra_infos_dict.copy()
             if "request_id" in batch.non_tensor_batch:
-                reward_extra_infos_dict.setdefault(
+                reward_extra_infos_to_dump.setdefault(
                     "request_id",
                     batch.non_tensor_batch["request_id"].tolist(),
                 )
@@ -528,6 +1144,8 @@ class RayPPOTrainer:
                 scores=scores,
                 reward_extra_infos_dict=reward_extra_infos_to_dump,
                 dump_path=rollout_data_dir,
+                raw_inputs=raw_inputs,
+                raw_outputs=raw_outputs,
             )
 
     def _maybe_log_val_generations(self, inputs, outputs, scores):
@@ -596,6 +1214,8 @@ class RayPPOTrainer:
         # Lists to collect samples for the table
         sample_inputs = []
         sample_outputs = []
+        sample_raw_inputs = []
+        sample_raw_outputs = []
         sample_gts = []
         sample_scores = []
         sample_turns = []
@@ -667,7 +1287,9 @@ class RayPPOTrainer:
             # Store generated outputs
             output_ids = test_output_gen_batch.batch["responses"]
             output_texts = [self.tokenizer.decode(ids, skip_special_tokens=True) for ids in output_ids]
+            raw_output_texts = [self.tokenizer.decode(ids, skip_special_tokens=False) for ids in output_ids]
             sample_outputs.extend(output_texts)
+            sample_raw_outputs.extend(raw_output_texts)
 
             if recurrent_val:
                 test_batch = test_output_gen_batch
@@ -679,7 +1301,9 @@ class RayPPOTrainer:
             input_ids = test_batch.batch["prompts"]
             # TODO: Can we keep special tokens except for padding tokens?
             input_texts = [self.tokenizer.decode(ids, skip_special_tokens=True) for ids in input_ids]
+            raw_input_texts = [self.tokenizer.decode(ids, skip_special_tokens=False) for ids in input_ids]
             sample_inputs.extend(input_texts)
+            sample_raw_inputs.extend(raw_input_texts)
             if "uid" in test_batch.non_tensor_batch:
                 sample_uids.extend(test_batch.non_tensor_batch["uid"])
             else:
@@ -718,6 +1342,8 @@ class RayPPOTrainer:
                 scores=sample_scores,
                 reward_extra_infos_dict=reward_extra_infos_dict,
                 dump_path=val_data_dir,
+                raw_inputs=sample_raw_inputs,
+                raw_outputs=sample_raw_outputs,
             )
 
         for key_info, lst in reward_extra_infos_dict.items():
@@ -1513,8 +2139,10 @@ class RayPPOTrainer:
                     # repeat to align with repeated responses in rollout
                     recurrent_rollout = _is_recurrent_rollout_batch(gen_batch_output)
                     recurrent_reward_tensor = None
+                    recurrent_reward_extra_infos_dict = None
                     recurrent_reward_index = None
                     recurrent_pad_size = 0
+                    recurrent_pad_divisor = 0
                     if recurrent_rollout:
                         original_batch = batch.repeat(
                             repeat_times=self.config.actor_rollout_ref.rollout.n,
@@ -1566,16 +2194,18 @@ class RayPPOTrainer:
                                 )
                             reward_tensor, reward_extra_infos_dict = extract_reward(reward_batch)
                             recurrent_reward_tensor = reward_tensor
+                            recurrent_reward_extra_infos_dict = dict(reward_extra_infos_dict)
                             recurrent_reward_index = reward_batch.non_tensor_batch.get("uid")
                             reward_extra_infos_dict = _attach_action_reward_extras(
                                 batch,
                                 reward_extra_infos_dict,
                             )
 
-                            batch, recurrent_pad_size = pad_dataproto_to_divisor(
-                                batch,
+                            recurrent_pad_divisor = _recurrent_actor_update_divisor(
+                                self.config,
                                 self.actor_rollout_wg.world_size,
                             )
+                            batch, recurrent_pad_size = pad_dataproto_to_divisor(batch, recurrent_pad_divisor)
                             _zero_padded_response_rows(batch, recurrent_pad_size)
                             if reward_extra_infos_dict:
                                 reward_extra_infos_dict = {
@@ -1667,16 +2297,23 @@ class RayPPOTrainer:
                         # we combine with rule-based rm
                         reward_extra_infos_dict: dict[str, list]
                         if recurrent_rollout:
-                            if self.config.algorithm.adv_estimator not in (AdvantageEstimator.GRPO, "grpo"):
+                            if self.config.algorithm.adv_estimator not in (
+                                AdvantageEstimator.GRPO,
+                                "grpo",
+                                AdvantageEstimator.GDPO,
+                                "gdpo",
+                            ):
                                 raise NotImplementedError(
-                                    "recurrent ThinkStream rollout currently supports GRPO only"
+                                    "recurrent ThinkStream rollout currently supports GRPO/GDPO-style advantage only"
                                 )
                             if self.config.algorithm.use_kl_in_reward:
                                 raise NotImplementedError(
                                     "KL-in-reward is not implemented for recurrent rollout"
-                                )
+                            )
                             if recurrent_reward_tensor is None or recurrent_reward_index is None:
                                 raise ValueError("missing recurrent trajectory reward state")
+                            if recurrent_reward_extra_infos_dict is None:
+                                recurrent_reward_extra_infos_dict = {}
 
                             batch.batch["token_level_scores"] = _make_action_token_scores(
                                 batch,
@@ -1687,23 +2324,40 @@ class RayPPOTrainer:
                             norm_adv_by_std_in_grpo = self.config.algorithm.get(
                                 "norm_adv_by_std_in_grpo", True
                             )
-                            adv_scalar = compute_1D_grpo_advantage(
-                                token_level_rewards=recurrent_reward_tensor,
-                                index=recurrent_reward_index,
-                                use_adv=norm_adv_by_std_in_grpo,
-                            )
-                            sample_index = batch.batch["sample_index"].long()
-                            adv_per_action = adv_scalar.to(sample_index.device)[sample_index]
-                            response_length = batch.batch["responses"].size(-1)
-                            response_mask = batch.batch["response_mask"]
-                            advantages = (
-                                adv_per_action.unsqueeze(-1).tile([1, response_length])
-                                * response_mask
-                            )
+                            recurrent_adv_mode = os.environ.get(
+                                "THINKSTREAM_RECURRENT_ADVANTAGE_MODE",
+                                "gdpo_hdpo",
+                            ).strip().lower()
+                            if recurrent_adv_mode in {"legacy", "legacy_grpo", "trajectory_grpo"}:
+                                adv_scalar = compute_1D_grpo_advantage(
+                                    token_level_rewards=recurrent_reward_tensor,
+                                    index=recurrent_reward_index,
+                                    use_adv=norm_adv_by_std_in_grpo,
+                                )
+                                sample_index = batch.batch["sample_index"].long()
+                                adv_per_action = adv_scalar.to(sample_index.device)[sample_index]
+                                response_length = batch.batch["responses"].size(-1)
+                                response_mask = batch.batch["response_mask"]
+                                advantages = (
+                                    adv_per_action.unsqueeze(-1).tile([1, response_length])
+                                    * response_mask
+                                )
+                                metrics["recurrent/gdpo/mode_enabled"] = 0.0
+                            else:
+                                advantages, gdpo_metrics = _compute_recurrent_gdpo_advantages(
+                                    batch,
+                                    recurrent_reward_tensor,
+                                    recurrent_reward_extra_infos_dict,
+                                    recurrent_reward_index,
+                                    use_adv=norm_adv_by_std_in_grpo,
+                                )
+                                metrics.update(gdpo_metrics)
+                                metrics["recurrent/gdpo/mode_enabled"] = 1.0
                             batch.batch["advantages"] = advantages
                             batch.batch["returns"] = advantages
                             metrics["recurrent/expanded_rows"] = float(len(batch) - recurrent_pad_size)
                             metrics["recurrent/pad_size"] = float(recurrent_pad_size)
+                            metrics["recurrent/pad_divisor"] = float(recurrent_pad_divisor)
                             metrics["recurrent/n_trajectories"] = float(len(recurrent_reward_tensor))
                             metrics["recurrent/avg_actions_per_traj"] = float(
                                 (len(batch) - recurrent_pad_size) / max(1, len(recurrent_reward_tensor))

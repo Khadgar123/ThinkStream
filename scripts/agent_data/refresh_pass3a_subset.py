@@ -376,11 +376,27 @@ async def _run(args: argparse.Namespace) -> None:
                 }
 
     ok = 0
+    ok_batches: Set[str] = set()
     with report_path.open("w") as report:
         for result in await asyncio.gather(*(wrapped(row) for row in rows)):
             ok += int(bool(result.get("ok")))
+            if result.get("ok") and result.get("batch"):
+                ok_batches.add(str(result["batch"]))
             report.write(json.dumps(result, ensure_ascii=False) + "\n")
     logger.info("refresh_pass3a_subset complete: ok=%d/%d report=%s", ok, len(rows), report_path)
+    if ok == len(rows) and not args.dry_run and not families and (
+        args.all_selected or args.write_version
+    ):
+        from scripts.agent_data.cache_version import STAGE_DIRS, write_stage_version
+
+        original_task_cards_dir = STAGE_DIRS["3a"]
+        try:
+            for batch in sorted(ok_batches):
+                STAGE_DIRS["3a"] = root / batch / "task_cards"
+                write_stage_version("3a")
+                logger.info("[%s] wrote pass3a version marker", batch)
+        finally:
+            STAGE_DIRS["3a"] = original_task_cards_dir
     if ok < len(rows) and not args.allow_partial:
         raise SystemExit(
             f"pass3A refresh incomplete: ok={ok}/{len(rows)}; "
@@ -399,6 +415,15 @@ def main() -> None:
             "Refresh every video listed in each requested batch's "
             "selected_videos.jsonl/video_registry.jsonl instead of reading "
             "a rebuild plan."
+        ),
+    )
+    parser.add_argument(
+        "--write-version",
+        action="store_true",
+        help=(
+            "Write the pass3a cache version marker after a successful subset "
+            "refresh. Use only when the subset completes a batch whose other "
+            "task_cards are already from the same pass3a version."
         ),
     )
     parser.add_argument("--decisions", default="inspect,rerun_3a_then_3bc")

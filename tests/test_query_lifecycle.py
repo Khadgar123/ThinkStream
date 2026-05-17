@@ -32,6 +32,22 @@ def test_count_query_renders_response_history():
     assert "[10s] A: 1" in rendered
 
 
+def test_count_query_response_history_canonicalizes_number_surface():
+    rendered = format_queries_block([{
+        "question": "How many paper pieces have appeared so far?",
+        "ask_time": 0,
+        "status": "open",
+        "answer_form": "number",
+        "question_type": "multi_emit",
+        "question_way": "repeated_count",
+        "answer_chunks": [5, 10],
+        "answers": [{"time": 5, "text": "1/1", "expected_chunk": 5}],
+    }])
+
+    assert "[5s] A: 1" in rendered
+    assert "1/1" not in rendered
+
+
 def test_status_probe_omits_response_history_answers():
     rendered = format_queries_block([{
         "question": "Is the door currently open?",

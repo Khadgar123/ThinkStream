@@ -10,8 +10,8 @@ from the live set.
 Eval-mode constraints (matches mcq_predict_streaming + agent_loop semantics):
 - allow_recall=False: no recall second-pass per step → exactly one
   generate per chunk per sample.
-- compress_mode="system": system inserts <compress_trigger> when the
-  memory threshold fires; the model only writes the summary.
+- compress_mode="system": controller metadata starts a compression turn when
+  the memory threshold fires; the model only writes the summary.
 - Each sample's prompt is rebuilt from scratch per chunk (no KV reuse),
   so vLLM batching is safe without prefix-cache invariants.
 """
@@ -212,17 +212,13 @@ def _compress_trigger_diagnostic(memory: MemoryState) -> Dict[str, Any]:
     }
 
 
-def _maybe_compress_trigger(memory: MemoryState, chunk_idx: int) -> str:
-    """Return <compress_trigger/> if memory threshold fires, else "".
+def _maybe_compress_trigger(memory: MemoryState, chunk_idx: int) -> bool:
+    """Return whether the memory threshold fires.
 
-    v11.3: range was selected by select_compress_range_by_tokens.
-    v12.12 (2026-05-02): trigger emits NO range. Model must derive the
-    range from <memory> contents and emit it inside the assistant
-    tool_call. This matches pass3c_samples._compress_sample (no range
-    in the SFT input) and the eventual RL upgrade where the trigger
-    itself is removed (model decides when AND what to compress).
+    The trigger is controller metadata only. It is intentionally not rendered
+    as a model-visible <compress_trigger/> sentinel.
     """
-    return "<compress_trigger/>" if _compress_trigger_diagnostic(memory)["triggered"] else ""
+    return bool(_compress_trigger_diagnostic(memory)["triggered"])
 
 
 def _compress_trigger_for_runner(runner: Any, chunk_idx: int) -> Dict[str, Any]:
@@ -300,15 +296,15 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     runner._last_compress_trigger_diagnostic = _compress_trigger_for_runner(
         runner, chunk_idx
     )
-    compress_trigger = (
-        "<compress_trigger/>"
-        if runner._last_compress_trigger_diagnostic.get("triggered")
-        else ""
+    compress_triggered = bool(
+        runner._last_compress_trigger_diagnostic.get("triggered")
     )
-    runner._last_trigger = bool(compress_trigger)
+    runner._last_trigger = compress_triggered
 
-    if compress_trigger:
-        user_input = compress_trigger
+    if compress_triggered:
+        # Compression is signalled by inter_chunk/turn_kind metadata. Do not
+        # expose the legacy <compress_trigger/> sentinel to the model.
+        user_input = ""
     elif user_question:
         user_input = user_question
     else:
@@ -317,7 +313,7 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     # Memory-compaction turns are text-only inter-chunk actions: suppress
     # visual_window, query/recalled-answer context, and expose compress-only
     # instructions/tools.
-    is_inter_chunk = bool(compress_trigger)
+    is_inter_chunk = compress_triggered
     runner._last_turn_kind = "compress" if is_inter_chunk else "streaming"
 
     frame_paths = _resolve_frame_paths(

@@ -229,11 +229,17 @@ MESSAGE_RESPONSE_ROW_MAX_FRACTION = float(
 MESSAGE_DIRECT_RESPONSE_ROW_TARGET_FRACTION = float(
     os.environ.get("THINKSTREAM_MESSAGE_DIRECT_RESPONSE_ROW_TARGET_FRACTION", "0.525")
 )
+MESSAGE_DIRECT_RESPONSE_ROW_MIN_FRACTION = float(
+    os.environ.get("THINKSTREAM_MESSAGE_DIRECT_RESPONSE_ROW_MIN_FRACTION", "0.50")
+)
 MESSAGE_DIRECT_RESPONSE_ROW_MAX_FRACTION = float(
     os.environ.get("THINKSTREAM_MESSAGE_DIRECT_RESPONSE_ROW_MAX_FRACTION", "0.55")
 )
 MESSAGE_RECALL_RESPONSE_ROW_TARGET_FRACTION = float(
     os.environ.get("THINKSTREAM_MESSAGE_RECALL_RESPONSE_ROW_TARGET_FRACTION", "0.275")
+)
+MESSAGE_RECALL_RESPONSE_ROW_MIN_FRACTION = float(
+    os.environ.get("THINKSTREAM_MESSAGE_RECALL_RESPONSE_ROW_MIN_FRACTION", "0.25")
 )
 MESSAGE_RECALL_RESPONSE_ROW_MAX_FRACTION = float(
     os.environ.get("THINKSTREAM_MESSAGE_RECALL_RESPONSE_ROW_MAX_FRACTION", "0.30")
@@ -251,7 +257,7 @@ MESSAGE_MULTI_RESPONSE_ROW_MAX_FRACTION = float(
     os.environ.get("THINKSTREAM_MESSAGE_MULTI_RESPONSE_ROW_MAX_FRACTION", "0.15")
 )
 MESSAGE_MULTI_RESPONSE_ROW_MIN_CAP = int(
-    os.environ.get("THINKSTREAM_MESSAGE_MULTI_RESPONSE_ROW_MIN_CAP", "2")
+    os.environ.get("THINKSTREAM_MESSAGE_MULTI_RESPONSE_ROW_MIN_CAP", "4")
 )
 MESSAGE_MULTI_RESPONSE_ROW_ABS_CAP = int(
     os.environ.get("THINKSTREAM_MESSAGE_MULTI_RESPONSE_ROW_ABS_CAP", "0")
@@ -512,6 +518,11 @@ TASK_SUBTYPE_TARGET_FRACTION = {
     "emotion_context_current": 0.025,
     "scene_understanding_current": 0.04,
     "person_identity_interaction": 0.02,
+    "epm_event_entity_memory": 0.025,
+    "epm_event_location_memory": 0.035,
+    "epm_event_count_memory": 0.025,
+    "asi_adjacent_action_after": 0.035,
+    "asi_adjacent_action_before": 0.025,
     "sequential_reference": 0.025,
     "source_discrimination": 0.025,
     "multimodal_alignment": 0.025,
@@ -529,6 +540,11 @@ TASK_SUBTYPE_MAX_FRACTION = {
     "contextual_misleading_or_anomaly": 0.06,
     "emotion_context_current": 0.045,
     "sequential_reference": 0.045,
+    "epm_event_entity_memory": 0.06,
+    "epm_event_location_memory": 0.07,
+    "epm_event_count_memory": 0.06,
+    "asi_adjacent_action_after": 0.07,
+    "asi_adjacent_action_before": 0.06,
     "source_discrimination": 0.045,
     "multimodal_alignment": 0.045,
     "delayed_clue_resolution": 0.065,
@@ -699,6 +715,17 @@ HARD_RECALL_FAMILIES = {
     "CR1", "CR2", "CR4", "CR5", "M1",
     "C1", "STU1", "OJR1", "CR7", "ACR1", "HLD1",
 }
+TARGETED_VISUAL_RECALL_SUBTYPES = {
+    "epm_event_entity_memory",
+    "epm_event_location_memory",
+    "epm_event_count_memory",
+    "asi_adjacent_action_after",
+    "asi_adjacent_action_before",
+    "temporal_order_history",
+    "cross_event_reasoning",
+    "causal_context_history",
+    "delayed_clue_resolution",
+}
 SIMPLE_MEMORY_FAMILIES = {
     "N1", "P1", "R1", "CR3", "ACR1", "HLD1",
 }
@@ -811,6 +838,8 @@ FAMILY_SELECTION_BOOST = {
     "ACR1": 4.0,   # action/causal reasoning should stay near OVO scale
     "N1": 1.5,
     "P1": 1.5,
+    "CR2": 2.0,
+    "CR4": 2.0,
 }
 
 # Keep HLD / "Unable to answer" abstention negatives near the previous
@@ -1568,7 +1597,16 @@ def _select_multi_emit_subset(card: Card) -> List[GoldEmit]:
     emits = sorted(card.gold_emits, key=lambda e: e.chunk)
     if card.family == "F5":
         best: List[GoldEmit] = []
-        best_key: Tuple[int, int, int, int] = (-1, -1, -10**9, -10**9)
+        best_key: Tuple[int, int, int, int, int, int, int, int] = (
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -10**9,
+            -10**9,
+            -10**9,
+        )
         min_responses = min(MIN_BENCH_MULTI_EMIT_RESPONSES, MAX_REC_EMIT_RESPONSES)
         for i, start in enumerate(emits):
             cur = [
@@ -1578,13 +1616,22 @@ def _select_multi_emit_subset(card: Card) -> List[GoldEmit]:
             if len(cur) < 2:
                 continue
             span = cur[-1].chunk - cur[0].chunk
-            # Prefer more cumulative probes, then a compact span, then earlier
-            # placement. The answer values remain the original cumulative
-            # counts, so this still trains state memory without holding a query
-            # open from frame 0 across the whole video.
+            nums = [_parse_count_value(e.value) for e in cur]
+            nums = [n for n in nums if n is not None]
+            repeats = sum(1 for a, b in zip(nums, nums[1:]) if b == a)
+            has_zero = int(any(n == 0 for n in nums))
+            grows = int(len(nums) >= 2 and max(nums) > min(nums))
+            start_count = nums[0] if nums else 10**9
+            # OVO REC is probe-based, not event-only: probes may answer 0,
+            # and later probes may repeat the same cumulative count. Prefer
+            # those shapes before compact strictly-increasing count snippets.
             key = (
+                has_zero,
+                min(repeats, 3),
+                grows,
                 1 if len(cur) >= min_responses else 0,
                 len(cur),
+                -start_count,
                 -span,
                 -cur[0].chunk,
             )
@@ -1722,6 +1769,85 @@ def _select_multi_emit_subset(card: Card) -> List[GoldEmit]:
     return best
 
 
+def _parse_count_value(value: str) -> Optional[int]:
+    try:
+        text = str(value).strip()
+        if text.endswith(".0"):
+            text = text[:-2]
+        return int(text)
+    except (TypeError, ValueError):
+        return None
+
+
+def _augment_f5_probe_emits(
+    selected: List[GoldEmit],
+    all_emits: List[GoldEmit],
+    *,
+    ask_chunk: int,
+    max_chunk: int,
+    max_responses: int,
+) -> List[GoldEmit]:
+    """Add REC-style probe answers without asking the teacher for new cards.
+
+    F5 cards often mark event/count update points. OVO REC instead probes the
+    open cumulative count at selected times, so valid answers can be 0 before
+    the first event or the same count after an event when nothing new happened.
+    These synthetic probes are placed between known count updates, where the
+    cumulative count is unchanged.
+    """
+    if not selected:
+        return []
+    max_responses = max(2, int(max_responses))
+    by_chunk: Dict[int, GoldEmit] = {
+        int(e.chunk): GoldEmit(int(e.chunk), str(e.value))
+        for e in selected
+    }
+    all_sorted = sorted(
+        {int(e.chunk): GoldEmit(int(e.chunk), str(e.value)) for e in all_emits}.values(),
+        key=lambda e: int(e.chunk),
+    )
+    selected_sorted = sorted(by_chunk.values(), key=lambda e: int(e.chunk))
+    if len(by_chunk) >= max_responses:
+        return selected_sorted[:max_responses]
+
+    candidates: List[Tuple[int, int, str]] = []
+
+    def add_candidate(priority: int, chunk: int, value: str) -> None:
+        chunk = int(chunk)
+        if chunk < int(ask_chunk) or chunk > int(max_chunk) or chunk in by_chunk:
+            return
+        candidates.append((int(priority), chunk, str(value)))
+
+    first = selected_sorted[0]
+    first_value = _parse_count_value(first.value)
+    previous_full = [
+        e for e in all_sorted
+        if int(e.chunk) < int(first.chunk) and _parse_count_value(e.value) is not None
+    ]
+    if int(first.chunk) - int(ask_chunk) >= 2 and first_value is not None:
+        if previous_full:
+            prev_value = str(previous_full[-1].value)
+        else:
+            prev_value = str(max(0, first_value - 1))
+        probe = max(int(ask_chunk), int(first.chunk) - min(6, max(1, (int(first.chunk) - int(ask_chunk)) // 2)))
+        add_candidate(0 if prev_value == "0" else 2, probe, prev_value)
+
+    for cur, nxt in zip(selected_sorted, selected_sorted[1:]):
+        gap = int(nxt.chunk) - int(cur.chunk)
+        if gap >= 3:
+            add_candidate(1, int(cur.chunk) + min(2, gap - 1), str(cur.value))
+
+    last = selected_sorted[-1]
+    if int(last.chunk) + 2 <= int(max_chunk):
+        add_candidate(3, int(last.chunk) + 2, str(last.value))
+
+    for _priority, chunk, value in sorted(candidates):
+        if len(by_chunk) >= max_responses:
+            break
+        by_chunk.setdefault(int(chunk), GoldEmit(int(chunk), str(value)))
+    return sorted(by_chunk.values(), key=lambda e: int(e.chunk))
+
+
 def _select_f5_global_query_subset(card: Card) -> List[GoldEmit]:
     """Prefix-style REC subset for OVO's chunk-0 cumulative-count protocol."""
     emits = sorted(
@@ -1796,6 +1922,16 @@ def place_multi_emit(card: Card, num_chunks: int, rng: random.Random) -> List[Pl
     else:
         lead = _randint_safe(rng, ME_LEAD_RANGE[0], min(ME_LEAD_RANGE[1], first))
         ask = max(0, first - lead)
+    if card.family == "F5":
+        emits = _augment_f5_probe_emits(
+            emits,
+            sorted(card.gold_emits, key=lambda e: int(e.chunk)),
+            ask_chunk=ask,
+            max_chunk=max(0, num_chunks - 1),
+            max_responses=MAX_REC_GLOBAL_EMIT_RESPONSES if f5_global else MAX_REC_EMIT_RESPONSES,
+        )
+        first = min(e.chunk for e in emits)
+        last = max(e.chunk for e in emits)
     emit_by_chunk = {e.chunk: e.value for e in emits}
     end = min(num_chunks - 1, last + 1)
     actions: Dict[int, Tuple[GoldKind, str]] = {}
@@ -1942,7 +2078,16 @@ def refine_placements_with_evidence(
         current_text = _evidence_text_for_chunks(
             evidence_by_chunk, range(current_lo, int(p.ask_chunk) + 1)
         )
+        hard_visual_recall = (
+            card.family in HARD_RECALL_FAMILIES
+            or _support_span(card) > 4
+            or _card_task_subtype(card) in TARGETED_VISUAL_RECALL_SUBTYPES
+        )
         if _answer_terms_present(card, current_text):
+            if hard_visual_recall:
+                p.recall_need = p.recall_need or "current_text_overlap_but_hard_visual"
+                refined.append(p)
+                continue
             # This historical recall candidate is low value: the answer text
             # already appears in the current model-visible context. Do not
             # relabel it as memory_direct, because memory_direct is reserved
@@ -1969,7 +2114,7 @@ def refine_placements_with_evidence(
 
         # Keep as recall. Hard families and multi-support questions are the
         # main source of temporal/order/causal/fine-grained recall difficulty.
-        if card.family in HARD_RECALL_FAMILIES or _support_span(card) > 4:
+        if hard_visual_recall:
             p.recall_need = p.recall_need or "hard_historical_visual"
         refined.append(p)
     return _dedupe_placements(refined)
@@ -2258,6 +2403,10 @@ def _placement_answer_mode(p: Placement, card: Optional[Card] = None) -> str:
 
 
 def _placement_mode_allowed_by_card(p: Placement, card: Card) -> bool:
+    if card.answer_form == "multiple_choice":
+        option_count = len(card.options or [])
+        if option_count not in (4, 5):
+            return False
     mode = _placement_answer_mode(p, card)
     constraints = infer_card_answer_mode_constraints(card)
     legal = _normalize_answer_modes(
@@ -2847,17 +2996,17 @@ def select_trajectory(
             ),
         }
         rows["multi"] = max(
-            1 if total_rows >= 10 else 0,
+            1 if total_rows >= 6 else 0,
             total_rows - sum(rows.values()),
         )
-        if total_rows < 10:
+        if total_rows < 6:
             rows["direct"] += rows["multi"]
             rows["multi"] = 0
         floors = {
             "direct": 1 if total_rows > 0 else 0,
             "recall": 1 if total_rows >= 4 else 0,
             "future": 1 if total_rows >= 6 else 0,
-            "multi": 1 if total_rows >= 10 else 0,
+            "multi": 1 if total_rows >= 6 else 0,
         }
         while sum(rows.values()) > total_rows:
             for source in ("direct", "recall", "multi", "future"):
@@ -2872,7 +3021,7 @@ def select_trajectory(
                 eligible_sources.append("recall")
             if total_rows >= 6:
                 eligible_sources.append("future")
-            if total_rows >= 10:
+            if total_rows >= 6:
                 eligible_sources.append("multi")
             source = min(
                 eligible_sources,
@@ -2899,26 +3048,26 @@ def select_trajectory(
         answer_row_cap,
         max(
             direct_response_row_target,
-            _floor_fraction(answer_row_cap, MESSAGE_DIRECT_RESPONSE_ROW_MAX_FRACTION),
+            _ceil_fraction(answer_row_target, MESSAGE_DIRECT_RESPONSE_ROW_MAX_FRACTION),
         ),
     )
     recall_response_row_target = min(answer_row_cap, planned_source_rows["recall"])
     recall_response_row_cap = max(
         recall_response_row_target,
-        _ceil_fraction(answer_row_cap, MESSAGE_RECALL_RESPONSE_ROW_MAX_FRACTION),
+        _ceil_fraction(answer_row_target, MESSAGE_RECALL_RESPONSE_ROW_MAX_FRACTION),
     )
     if RECALL_MAX_PER_TRAJECTORY > 0:
         recall_response_row_cap = min(recall_response_row_cap, RECALL_MAX_PER_TRAJECTORY)
     future_response_row_target = min(answer_row_cap, planned_source_rows["future"])
     future_response_row_cap = max(
         future_response_row_target,
-        _ceil_fraction(answer_row_cap, MESSAGE_FUTURE_RESPONSE_ROW_MAX_FRACTION),
+        _ceil_fraction(answer_row_target, MESSAGE_FUTURE_RESPONSE_ROW_MAX_FRACTION),
     )
     multi_response_row_target = min(answer_row_cap, planned_source_rows["multi"])
     multi_response_row_cap = max(
         MESSAGE_MULTI_RESPONSE_ROW_MIN_CAP,
         multi_response_row_target,
-        _ceil_fraction(answer_row_cap, MESSAGE_MULTI_RESPONSE_ROW_MAX_FRACTION),
+        _ceil_fraction(answer_row_target, MESSAGE_MULTI_RESPONSE_ROW_MAX_FRACTION),
     )
     if MESSAGE_MULTI_RESPONSE_ROW_ABS_CAP > 0:
         multi_response_row_cap = min(multi_response_row_cap, MESSAGE_MULTI_RESPONSE_ROW_ABS_CAP)
@@ -3731,6 +3880,22 @@ def select_trajectory(
     ):
         pass
 
+    # If semantic/task buckets consumed the first-pass recall slots, repair the
+    # source-row mix before generic direct density fill. This still respects
+    # row caps, no-overlap, card uniqueness, family repeat caps, and timing.
+    while (
+        len(selected) < density_selection_q
+        and selected_source_response_rows("recall") < recall_response_row_target
+        and take_best(
+            lambda p, card: is_normal_recall_placement(p, card),
+            allow_family_repeat=True,
+            relax_semantic_caps=True,
+            relax_ask_gap=True,
+            family_repeat_cap=RAW_RESPONSE_DENSITY_FAMILY_REPEAT_CAP,
+        )
+    ):
+        pass
+
     if reserve_unanswerable and len(selected) < max_q:
         take_best(lambda p, card: p.mechanism == "recall_demo" and _is_unanswerable_card(card))
 
@@ -3868,7 +4033,7 @@ def select_trajectory(
         return max(
             raw_source_target(source),
             _ceil_fraction(
-                raw_density_cap_rows,
+                raw_density_target_rows,
                 RAW_RESPONSE_SOURCE_MAX_FRACTION.get(source, 0.0),
             ),
         )
@@ -3955,6 +4120,107 @@ def select_trajectory(
             relax_semantic_caps=True,
         )
     ):
+        pass
+
+    def take_best_recall_swap() -> bool:
+        total_rows = int(selected_message_cost["response_rows"])
+        if total_rows <= 0:
+            return False
+        recall_floor_rows = _ceil_fraction(
+            total_rows,
+            MESSAGE_RECALL_RESPONSE_ROW_MIN_FRACTION,
+        )
+        if source_response_rows("recall") >= recall_floor_rows:
+            return False
+        direct_floor_rows = _ceil_fraction(
+            total_rows,
+            MESSAGE_DIRECT_RESPONSE_ROW_MIN_FRACTION,
+        )
+        best_score = -1e9
+        best_idx = -1
+        best_selected_idx = -1
+        selected_card_ids = {old.card_id for old in selected}
+        for i, (p, card) in enumerate(pool):
+            if not is_normal_recall_placement(p, card):
+                continue
+            new_cost = _placement_message_cost(p, card)
+            if source_cost_rows(new_cost, "recall") <= 0:
+                continue
+            if (
+                source_response_rows("recall")
+                + source_cost_rows(new_cost, "recall")
+                > recall_response_row_cap
+            ):
+                continue
+            candidate_chunks = _placement_chunks(p)
+            for selected_idx, old in enumerate(selected):
+                if p.card_id in selected_card_ids and p.card_id != old.card_id:
+                    continue
+                old_card = cards_by_id.get(old.card_id)
+                if old_card is None or raw_quota_source(old, old_card) != "direct":
+                    continue
+                old_cost = _placement_message_cost(old, old_card)
+                old_direct_rows = source_cost_rows(old_cost, "direct")
+                if old_direct_rows <= 0:
+                    continue
+                new_total_rows = (
+                    total_rows
+                    - int(old_cost.response_rows)
+                    + int(new_cost.response_rows)
+                )
+                new_direct_floor_rows = _ceil_fraction(
+                    new_total_rows,
+                    MESSAGE_DIRECT_RESPONSE_ROW_MIN_FRACTION,
+                )
+                if (
+                    source_response_rows("direct") - old_direct_rows
+                    < new_direct_floor_rows
+                ):
+                    continue
+                old_chunks = _placement_chunks(old)
+                if candidate_chunks & (used_chunks - old_chunks):
+                    continue
+                other_asks = [
+                    int(a) for a in used_ask
+                    if int(a) != int(old.ask_chunk)
+                ]
+                if other_asks and min(abs(int(p.ask_chunk) - a) for a in other_asks) < max(0, RAW_RESPONSE_DENSITY_ASK_GAP_CHUNKS):
+                    continue
+                s = score(p, card, allow_family_repeat=True)
+                if p.difficulty_mode == "recall_deep":
+                    s += 1.0
+                elif p.difficulty_mode == "recall_mid":
+                    s += 0.6
+                # Prefer replacing lower-value direct rows when multiple
+                # victims can free the same legal recall placement.
+                s -= 0.15 * score(old, old_card, allow_family_repeat=True)
+                if s > best_score:
+                    best_score = s
+                    best_idx = i
+                    best_selected_idx = selected_idx
+        if best_idx < 0 or best_selected_idx < 0:
+            return False
+
+        p, card = pool.pop(best_idx)
+        old = selected[best_selected_idx]
+        old_card = cards_by_id.get(old.card_id)
+        selected[best_selected_idx] = p
+        used_chunks.difference_update(_placement_chunks(old))
+        used_chunks.update(_placement_chunks(p))
+        try:
+            used_ask.remove(old.ask_chunk)
+        except ValueError:
+            pass
+        used_ask.append(p.ask_chunk)
+        if old_card is not None:
+            selected_message_cost.subtract(
+                _placement_message_cost(old, old_card).as_counter()
+            )
+        selected_message_cost.update(_placement_message_cost(p, card).as_counter())
+        seen_mechs.add(p.mechanism)
+        return True
+
+    while take_best_recall_swap():
         pass
 
     return selected

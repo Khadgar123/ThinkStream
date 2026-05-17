@@ -780,14 +780,19 @@ Do NOT output literal ellipsis, placeholder text, markdown, or analysis outside 
 
 COMPACT_MEMORY_UPDATE_SYSTEM_PROMPT = """You update compact video memory for training data.
 
-Return only 4 to 6 chronological XML lines and no other text:
-<m t="start-end">one concise English event or state.</m>
-<m t="start-end">one concise English event or state.</m>
-<m t="start-end">one concise English event or state.</m>
-<m t="start-end">one concise English event or state.</m>
+Return only the TARGET_RANGES as chronological XML lines and no other text:
+<m t="exact-start-exact-end">one concise English event or state.</m>
+<m t="exact-start-exact-end">one concise English event or state.</m>
+<m t="exact-start-exact-end">one concise English event or state.</m>
+<m t="exact-start-exact-end">one concise English event or state.</m>
 
 Requirements:
+- Output exactly one <m> line for each TARGET_RANGES line from the user prompt.
+- Use the exact t="start-end" values from TARGET_RANGES. Do not split, merge, skip, repeat, or invent ranges.
+- Each output line must summarize only OLD_MEMORY or NEW_CAPTIONS whose timestamps overlap that target range.
+- The output ranges must be evenly coarse: no per-second caption copying and no giant old-memory prefix followed by tiny recent ranges.
 - Every <m ...> line must have its own explicit closing </m> tag.
+- A response that omits </m> on any line is invalid; do not leave tags open, including the final line.
 - Use only timestamps that appear in OLD_MEMORY or NEW_CAPTIONS.
 - Input is video memory only. Ignore and never reproduce questions, answers, active-query tags, or response-history tags if they appear.
 - If OLD_MEMORY contains any <m> lines, at least one output <m> must preserve useful historical information from OLD_MEMORY.
@@ -797,7 +802,7 @@ Requirements:
 - Preserve exact visible names, jersey numbers, team labels, scoreboard values, OCR strings, sponsor/ad text, and distinctive colors when present.
 - Do not replace all older memory with a generic event line if OLD_MEMORY contains named players, OCR, or scoreboard values.
 - When NEW_CAPTIONS contains names, OCR, or scoreboard text, include the most important ones in the output.
-- Prefer 5-6 lines when many named or OCR facts are present.
+- If one input memory line overlaps several TARGET_RANGES, carry only the relevant high-level facts into each affected output line; do not copy the same sentence into every line.
 - It is acceptable to compress repeated generic play-by-play, but not to drop all exact identifiers.
 - Merge adjacent repeated captions; split when the main object, action, scene, or state changes.
 - Do not answer questions, add analysis, describe future actions, or write text outside the <m> lines."""
@@ -809,17 +814,19 @@ NEW_CAPTIONS:
 {new_captions}
 
 Covered latest span: t={start}-{end}
+TARGET_RANGES:
+{target_ranges}
+
 Coverage check:
-- If OLD_MEMORY has <m> lines, preserve useful old information in at least one output line.
-- If NEW_CAPTIONS has <c> lines, cover the latest new caption timestamps in at least one output line.
+- Output exactly the TARGET_RANGES above, in the same order and with the same t values.
+- Each TARGET_RANGES line must be filled with a concise factual summary from overlapping OLD_MEMORY and NEW_CAPTIONS.
+- If OLD_MEMORY has <m> lines, preserve useful old information in the target ranges it overlaps.
+- If NEW_CAPTIONS has <c> lines, cover the latest new caption timestamps in the target ranges they overlap.
+- Do not output a single broad old range like <m t="0-60"> when TARGET_RANGES asks for smaller balanced ranges.
+- Do not output one line per second or copy raw captions nearly verbatim.
+- Every returned line must end with </m>; do not omit closing tags.
 
-Return only XML lines:
-<m t="start-end">one concise event or state.</m>
-<m t="start-end">one concise event or state.</m>
-<m t="start-end">one concise event or state.</m>
-<m t="start-end">one concise event or state.</m>
-
-Replace the placeholder line with 4-6 chronological <m> lines using real input timestamps.
+Return only the filled XML lines from TARGET_RANGES.
 Do not output NEW_MEMORY, markdown, prose, analysis, or any text outside the <m> lines."""
 
 TASK_QUESTION_PROMPT = """Based on this visual evidence:

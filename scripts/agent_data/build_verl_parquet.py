@@ -103,6 +103,15 @@ _QUESTION_OPTIONAL_KEYS = (
     "ovo_clue_time",
     "ovo_support_intervals",
     "ovo_score_mode",
+    "response_history_policy",
+    "initial_response_history",
+    "stateful_seed_response_history",
+    "stateful_split_parent_card_id",
+    "stateful_split_part_index",
+    "stateful_split_total_parts",
+    "stateful_split_original_ask_chunks",
+    "stateful_split_original_answer_chunks",
+    "stateful_split_original_per_emit_answers",
 )
 
 

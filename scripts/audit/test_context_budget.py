@@ -149,8 +149,7 @@ def build_worst_case_sample(*, with_recall: bool, inter_chunk: bool) -> Dict:
         "queries": queries if not inter_chunk else [],
         "recall_result": None,
         "recalled_frames": None,
-        "user_input": "<compress_trigger/>" if inter_chunk
-                      else "What's happening with the bowl now?",
+        "user_input": "" if inter_chunk else "What's happening with the bowl now?",
     }
 
     if with_recall and not inter_chunk:

@@ -769,7 +769,7 @@ class _VllmAgentRunner:
                     open_until=meta.get("open_until"),
                 )
 
-        compress_trigger = ""
+        compress_triggered = False
         compress_telemetry = None
         if (
             self.compress_mode == "system"
@@ -783,7 +783,7 @@ class _VllmAgentRunner:
             oldest = self.memory.recent_thinks[:n] if n > 0 else []
             if oldest:
                 chunks = [t["chunk"] for t in oldest]
-                compress_trigger = "<compress_trigger/>"
+                compress_triggered = True
                 compress_telemetry = {
                     "thinks_count_at_trigger": len(self.memory.recent_thinks),
                     "thinks_token_count": self.memory.count_recent_tokens(),
@@ -801,8 +801,8 @@ class _VllmAgentRunner:
                     ),
                 }
 
-        user_input = compress_trigger or user_question or ""
-        is_inter_chunk = bool(compress_trigger)
+        user_input = "" if compress_triggered else (user_question or "")
+        is_inter_chunk = compress_triggered
         snapshot = (
             full_snapshot if is_inter_chunk
             else _ordinary_prompt_snapshot(self.memory_mode, full_snapshot)

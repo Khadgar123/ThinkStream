@@ -2,7 +2,7 @@
 
 The initial RL objective is intentionally small:
 
-  outcome + answer_decision + format - spam
+  outcome + answer_decision + format
 
 Positive auxiliary rewards are gated by answer correctness in the scorer, so
 wrong answers cannot earn reward just by being timely or well-formatted. This
@@ -24,7 +24,6 @@ from thinkstream.trainer.rewards import (
     compute_answer_decision_reward,
     compute_format_reward,
     compute_outcome_reward,
-    compute_spam_score,
 )
 
 
@@ -38,8 +37,6 @@ def _weighted_score(
     visible_start_chunk,
     visible_end_chunk,
     chunk_texts,
-    n_recall_calls=0,
-    n_compress_calls=0,
 ):
     """Mirror thinkstream.rl.thinkstream._combine_reward_parts."""
     del gold_action
@@ -66,17 +63,12 @@ def _weighted_score(
         has_answer=bool(final_answer),
     )
     fmt = compute_format_reward(chunk_texts)
-    spam = compute_spam_score(
-        n_recall_calls=n_recall_calls,
-        n_compress_calls=n_compress_calls,
-    )
 
     gate = max(0.0, min(1.0, float(outcome)))
     score = w["outcome"] * outcome
     for key, value in (
         ("answer_decision", answer_decision),
         ("format", fmt),
-        ("spam", spam),
     ):
         weighted = w[key] * value
         score += gate * weighted if weighted > 0 else weighted
@@ -84,7 +76,7 @@ def _weighted_score(
 
 
 def test_reward_keys_minimal():
-    expected = {"outcome", "answer_decision", "format", "spam"}
+    expected = {"outcome", "answer_decision", "format"}
     assert set(V12_REWARD_DICT_KEYS) == expected
     assert set(V12_DEFAULT_REWARD_WEIGHTS) == expected
 
@@ -217,34 +209,6 @@ def test_early_correct_text_is_not_credited():
     assert early <= -0.3
 
 
-def test_spam_penalizes_excess_tools():
-    one_each = _weighted_score(
-        final_answer="answer",
-        gold_answer="answer",
-        answer_form="literal",
-        gold_action="response",
-        answer_chunk=5,
-        visible_start_chunk=4,
-        visible_end_chunk=6,
-        chunk_texts=["<think>seen</think></Response> answer"],
-        n_recall_calls=1,
-        n_compress_calls=1,
-    )
-    spammy = _weighted_score(
-        final_answer="answer",
-        gold_answer="answer",
-        answer_form="literal",
-        gold_action="response",
-        answer_chunk=5,
-        visible_start_chunk=4,
-        visible_end_chunk=6,
-        chunk_texts=["<think>seen</think></Response> answer"],
-        n_recall_calls=5,
-        n_compress_calls=4,
-    )
-    assert one_each > spammy
-
-
 def test_format_requires_think_block():
     assert compute_format_reward(["</Response> answer"]) == 0.0
     assert compute_format_reward([
@@ -261,7 +225,6 @@ def main():
         test_missed_response_is_penalized,
         test_wrong_answer_on_time_beats_silent_missed,
         test_early_correct_text_is_not_credited,
-        test_spam_penalizes_excess_tools,
         test_format_requires_think_block,
     ]
     failures = []

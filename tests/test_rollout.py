@@ -26,7 +26,10 @@ from thinkstream.trainer.rollout import (
     default_update_state,
     replicate_state_for_group,
 )
-from thinkstream.rl.streaming_agent_loop import _append_visible_think_to_state
+from thinkstream.rl.streaming_agent_loop import (
+    _append_visible_think_to_state,
+    _recall_chunks_from_time_range,
+)
 
 
 # =============================================================================
@@ -218,6 +221,15 @@ def test_append_visible_think_updates_memory_and_recall_archive():
     assert s.think_archive[0]["text"].startswith("The latest frames")
 
 
+def test_sliced_recall_maps_absolute_time_to_source_chunks():
+    chunks = _recall_chunks_from_time_range((17, 34), chunk_sec=1.0, current_chunk=136)
+    assert chunks[0] == 17
+    assert chunks[-1] == 34
+
+    # Future/current chunks remain unavailable even when requested explicitly.
+    assert _recall_chunks_from_time_range((134, 140), chunk_sec=1.0, current_chunk=136) == [134, 135]
+
+
 def test_default_update_state_silent_answer():
     """Empty answer = silent → state stays active, chunk_idx advances."""
     s = _make_state()
@@ -260,7 +272,7 @@ def test_default_update_state_recall_call():
 
 
 def test_default_update_state_compress_call():
-    """compress tool_call records summary + drops thinks in range."""
+    """bare compact-memory <m> records summary and replaces recent thinks."""
     s = _make_state()
     s.recent_thinks = [
         {"chunk": 1, "text": "ann"},
@@ -269,8 +281,7 @@ def test_default_update_state_compress_call():
     ]
     response = (
         '<think>old context</think>'
-        '<tool_call>{"name": "compress", "arguments": '
-        '{"time_range": [0, 6], "text": "early scene summary"}}</tool_call>'
+        '<m t="0-6">early scene summary</m>'
     )
     out = default_update_state(s, response, chunk_idx=7)
     assert out.n_compress_calls == 1
@@ -278,11 +289,7 @@ def test_default_update_state_compress_call():
     summary = out.compressed_summaries[0]
     assert summary["time_range"] == [0, 6]
     assert summary["text"] == "early scene summary"
-    # Chunk-1 and chunk-5 should be dropped (in [0,6]); chunk-10 retained
-    remaining_chunks = [t.get("chunk") for t in out.recent_thinks]
-    assert 1 not in remaining_chunks
-    assert 5 not in remaining_chunks
-    assert 10 in remaining_chunks
+    assert out.recent_thinks == []
 
 
 def test_chunklevel_rollout_loop_mock_terminates_on_answer():

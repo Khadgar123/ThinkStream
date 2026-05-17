@@ -194,10 +194,33 @@ ANSWER_FORM_VARIANTS = {
 
 
 FAMILY_EXTRA_RULES = {
+    "N1": """
+- N1 asks which entity/person appeared or interacted in the video.
+- If task_subtype is epm_event_entity_memory, mirror OVO EPM event-property
+  memory. Ask what or who was involved in a completed past event, such as
+  what was put on a surface, which tool was used, who picked something up, or
+  what object was removed. The answer must be tied to that event in the
+  planned support chunks. Do not answer with a current-frame object unless it
+  participated in the named event. A "nothing"/"none" option is allowed only
+  when the support chunks establish that no object/person was involved.
+- If task_subtype is person_identity_interaction, ask a person/entity
+  interaction question similar to StreamingBench sequential QA, but do not
+  require an actual previous question unless the wording is self-contained.
+- If task_subtype is sequential_reference, use follow-up-style wording with a
+  stable earlier referent, e.g. "the person/object just referred to" or
+  "that same item", but include enough visual anchor text that the card can be
+  rendered independently in pass3C.""",
     "P1": """
-- P1 asks for a visible object attribute such as color, material, state, or
-  appearance. Do not turn P1 into OCR/text/brand reading; those belong to C1.
-- Keep question_way="object_attribute" and evidence_type="object_attribute_visual".
+- P1 normally asks for a visible object attribute such as color, material,
+  state, or appearance. Do not turn ordinary P1 into OCR/text/brand reading;
+  those belong to C1.
+- If task_subtype is epm_event_location_memory, mirror OVO EPM where-memory:
+  ask where an object was picked from, placed, removed from, left, or used
+  during a completed past event. The answer must be the location/relation from
+  the planned support chunks, not a current-frame location guess.
+- Keep the answer as a multiple-choice option of the same semantic type as
+  the question: all locations for where questions, all attributes for
+  attribute questions.
 - The correct answer must be directly visible in the planned support chunks.""",
     "HLD1": """
 - HLD1 is an explicit negative/unanswerable card.
@@ -285,15 +308,6 @@ FAMILY_EXTRA_RULES = {
   object state, action context, or scene description match or contradict each
   other. Keep it grounded in the planned visual chunks; do not require audio
   if the evidence does not contain audio facts.""",
-    "N1": """
-- N1 asks which entity/person appeared or interacted in the video.
-- If task_subtype is person_identity_interaction, ask a person/entity
-  interaction question similar to StreamingBench sequential QA, but do not
-  require an actual previous question unless the wording is self-contained.
-- If task_subtype is sequential_reference, use follow-up-style wording with a
-  stable earlier referent, e.g. "the person/object just referred to" or
-  "that same item", but include enough visual anchor text that the card can be
-  rendered independently in pass3C.""",
     "M1": """
 - M1 is a global/scene-summary style question, not OCR, brand recall, or a
   single-object attribute question.
@@ -378,6 +392,15 @@ FAMILY_EXTRA_RULES = {
 - MC distractors should be alternate orders using the same observed events.
 - Use only the planned support chunks to establish the before/after relation,
   and emit the answer exactly at the planned answer chunk.
+- If task_subtype is asi_adjacent_action_after, ask "what does/did the person
+  do after <anchor action>?" The correct option must be the immediate next
+  action after the anchor in the support chunks. Include the anchor action as
+  a plausible distractor only if it is clearly wrong.
+- If task_subtype is asi_adjacent_action_before, ask "what does/did the person
+  do before <anchor action>?" The correct option must be the immediate
+  previous action before the anchor in the support chunks.
+- For ASI adjacent-action variants, do not make the correct answer the anchor
+  action, and do not use a later/current visible step just because it is easy.
 - Do not add new unplanned future chunks to grounding_frames or gold_emits.""",
     "CR4": """
 - CR4 should require combining at least two separated observations. Avoid cards
@@ -387,6 +410,11 @@ FAMILY_EXTRA_RULES = {
   visual clues.
 - grounding_frames should include the minimal separated chunks needed for the
   multi-evidence answer.
+- If task_subtype is epm_event_count_memory, mirror OVO EPM count memory:
+  ask how many objects/actions were involved in a completed bounded event
+  such as put/remove/pick/move/use. The answer should be a multiple-choice
+  count or quantity, not a running REC-style multi-emit count. Use
+  "nothing"/"none" only when the support chunks establish zero.
 - If task_subtype is contextual_misleading_or_anomaly, mirror
   StreamingBench contextual/anomaly style: ask what is actually happening or
   what context is misleading/abnormal, using concrete visual evidence rather
@@ -920,7 +948,7 @@ Slot intent guidance:
     options_block = ""
     if "multiple_choice" in allowed_answer_forms:
         options_block = """
-  "options": ["A) ...", "B) ...", "..."],                # required only when answer_form == "multiple_choice"; 2-5 plausible options
+  "options": ["A) ...", "B) ...", "..."],                # required only when answer_form == "multiple_choice"; 4 or 5 plausible options
   "correct_option": "A" | "B" | "C" | "D" | "E",          # required only when answer_form == "multiple_choice"; the gold letter"""
 
     if qtype == "multi_emit":
@@ -1111,7 +1139,9 @@ Rules:
   correct answer: all locations, all objects, all actions, all counts, or all
   state phrases. Avoid synonyms of the correct answer, "all/none of the above",
   joke options, length giveaways, or one option that is much more specific than
-  the others. Exactly one option should be correct.
+  the others. Exactly one option should be correct. Use 4 options by default;
+  use 5 only when a real unknown/abstain choice is needed. Do not encode a
+  Yes/No task as a two-option MCQ; use binary with no options instead.
 - For binary: canonical_answer ∈ {{"Yes", "No"}}.
 - For number: canonical_answer is a digit string.
 - For short_exact: canonical_answer is ≤ 4 words.

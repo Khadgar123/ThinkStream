@@ -148,10 +148,10 @@ algorithm:
 # verl.experimental.reward_loop.reward_manager already merges
 # tool_extra_fields (the agent loop's extra_fields) into compute_score's
 # extra_info — that's how `ts_chunk_kinds`, `ts_chunk_asst_texts` etc.
-# reach our compute_score. The new framework only places ONE scalar at
-# the trajectory's last assistant token, so per-chunk shaping is folded
-# into compute_score's returned `score` (GDPO α-mix of outcome + state_avg)
-# rather than broadcast to per-chunk token positions.
+# reach our compute_score. In recurrent mode, ray_trainer keeps that scalar
+# for monitoring but trains with branch-normalized GDPO/HDPO-style advantages:
+# outcome + answer_decision + format are normalized at trajectory level, and
+# compress_quality is normalized only on compress action rows.
 reward:
   num_workers: 8
   custom_reward_function:

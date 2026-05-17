@@ -101,7 +101,7 @@ if __name__ == "__main__":
     options = ["A", "B", "C", "D"]
 
     # StreamingAgentLoop matches the SFT/RL training format byte-for-byte,
-    # including system-side bare <compress_trigger/> memory-pressure turns.
+    # including controller-triggered compact-memory turns.
     # The legacy mcq_predict_streaming path was v11-only and has been removed.
     from eval_common import MCQDataset
     dataset = MCQDataset(benchmark_path)

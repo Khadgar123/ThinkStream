@@ -37,7 +37,7 @@
 #   MAX_RESP_LEN [32768]    total stitched response buffer
 #   MAX_ACTION_TOKENS [256]
 #                           per-action streaming/recall generation cap
-#   MAX_COMPRESS_ACTION_TOKENS [512]
+#   MAX_COMPRESS_ACTION_TOKENS [1536]
 #                           per-action compression generation cap
 #   TOP_K [50]              sampler top-k. Do not leave verl's -1 default for
 #                           true-KV rollout; FlashInfer treats top_k=0 badly.
@@ -80,6 +80,14 @@
 #                            format. Raw timing/silent_quality and
 #                            step/action/tool rewards are telemetry unless an
 #                            ablation opts in.
+#   THINKSTREAM_RECURRENT_ADVANTAGE_MODE [gdpo_hdpo]
+#                            recurrent training computes independent
+#                            outcome/answer_decision/format/compress advantages
+#                            before weighted aggregation. Set legacy_grpo to
+#                            recover trajectory-scalar GRPO.
+#   THINKSTREAM_HDPO_WEIGHTS [outcome=1.0,answer_decision=0.3,format=0.1,compress_quality=0.1]
+#                            weights for the branch-normalized recurrent
+#                            advantage path.
 #   THINKSTREAM_ROLLOUT_ENGINE [streaming]
 #                            local HF/CASIA-style rollout backend with visual
 #                            KV eviction. Full-prompt/vLLM rollout is disabled
@@ -194,7 +202,7 @@ if [[ -z "${MAX_RESP_LEN:-}" ]]; then
 fi
 MAX_MODEL_LEN=${MAX_MODEL_LEN:-49152}
 MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-256}
-MAX_COMPRESS_ACTION_TOKENS=${MAX_COMPRESS_ACTION_TOKENS:-512}
+MAX_COMPRESS_ACTION_TOKENS=${MAX_COMPRESS_ACTION_TOKENS:-1536}
 TOP_K=${TOP_K:-50}
 export THINKSTREAM_ROLLOUT_DEFAULT_TOP_K="${THINKSTREAM_ROLLOUT_DEFAULT_TOP_K:-${TOP_K}}"
 # Default 120 chunks comfortably covers all of current batch1 (max=95) and
@@ -296,6 +304,8 @@ export THINKSTREAM_RL_ROLLOUT_AUDIT_PROB="${THINKSTREAM_RL_ROLLOUT_AUDIT_PROB:-0
 export THINKSTREAM_RL_ROLLOUT_AUDIT_MAX="${THINKSTREAM_RL_ROLLOUT_AUDIT_MAX:-2000}"
 export THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE="${THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE:-offline_pass2_boundaries}"
 export THINKSTREAM_RL_REWARD_PROFILE="${THINKSTREAM_RL_REWARD_PROFILE:-initial_outcome_time_format_decision}"
+export THINKSTREAM_RECURRENT_ADVANTAGE_MODE="${THINKSTREAM_RECURRENT_ADVANTAGE_MODE:-gdpo_hdpo}"
+export THINKSTREAM_HDPO_WEIGHTS="${THINKSTREAM_HDPO_WEIGHTS:-outcome=1.0,answer_decision=0.3,format=0.1,compress_quality=0.1}"
 export THINKSTREAM_ENABLE_STEP_ACTION_REWARD="${THINKSTREAM_ENABLE_STEP_ACTION_REWARD:-0}"
 export THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD="${THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD:-0}"
 export THINKSTREAM_ROLLOUT_ENGINE="${THINKSTREAM_ROLLOUT_ENGINE:-streaming}"
@@ -325,6 +335,8 @@ export THINKSTREAM_FRAME_PROTOCOL
 export THINKSTREAM_RENDER_LAYOUT
 export THINKSTREAM_MEMORY_POSITION="${THINKSTREAM_MEMORY_POSITION:-before_visual}"
 export THINKSTREAM_FRAMES_PER_CHUNK="${THINKSTREAM_FRAMES_PER_CHUNK:-2}"
+export THINKSTREAM_PREFER_PATH_FRAME_INDEX="${THINKSTREAM_PREFER_PATH_FRAME_INDEX:-0}"
+export THINKSTREAM_CHUNK_SEC="${THINKSTREAM_CHUNK_SEC:-1.0}"
 # Match SFT and DEFAULT_VIDEO_FLEX_WINDOW_SIZE: 8 ordinary chunks × 2 frames.
 export THINKSTREAM_VISUAL_WINDOW_CHUNKS="${THINKSTREAM_VISUAL_WINDOW_CHUNKS:-8}"
 export THINKSTREAM_RECALL_STUB="${THINKSTREAM_RECALL_STUB:-(no relevant past observation found)}"
@@ -395,6 +407,26 @@ for _ts_env_name in \
     THINKSTREAM_ROLLOUT_DEBUG \
     THINKSTREAM_ROLLOUT_TRACE_JSONL \
     THINKSTREAM_ROLLOUT_TIMING_JSONL \
+    THINKSTREAM_FRAMES_ROOT \
+    THINKSTREAM_FRAME_PROTOCOL \
+    THINKSTREAM_RENDER_LAYOUT \
+    THINKSTREAM_FRAMES_PER_CHUNK \
+    THINKSTREAM_SOURCE_FRAMES_PER_CHUNK \
+    THINKSTREAM_SOURCE_FRAME_FPS \
+    THINKSTREAM_VIDEO_ROOT \
+    THINKSTREAM_PREFER_PATH_FRAME_INDEX \
+    THINKSTREAM_VISUAL_WINDOW_CHUNKS \
+    THINKSTREAM_VISUAL_WINDOW_MODE \
+    THINKSTREAM_CHUNK_SEC \
+    THINKSTREAM_MEMORY_POSITION \
+    THINKSTREAM_MAX_TOKENS_PER_ACTION \
+    THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION \
+    THINKSTREAM_MAX_RECALL_PER_CHUNK \
+    THINKSTREAM_TRUE_KV_MEMORY_MODE \
+    THINKSTREAM_RECURRENT_MODE \
+    THINKSTREAM_ROLLOUT_ENGINE \
+    THINKSTREAM_STREAMING_SLOTS_PER_GPU \
+    THINKSTREAM_STREAMING_BATCH_DELAY_MS \
     THINKSTREAM_ALLOW_LEGACY_AGENT_TOKENS \
     THINKSTREAM_ROLLOUT_STRICT_DELTA \
     THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE \

@@ -64,6 +64,20 @@ def _counter_pct(counter: Counter, *, limit: int = 12) -> str:
     return " ".join(parts)
 
 
+def _recall_bucket_line(name: str, bucket: Counter) -> str:
+    recall_q = bucket["recall_questions"]
+    no_recall_q = bucket["no_recall_questions"]
+    return (
+        f"  {name}: n={bucket['questions']} "
+        f"recall_q={recall_q}({_pct(recall_q, bucket['questions'])}) "
+        f"range_hit/recall={_pct(bucket['range_hit'], recall_q)} "
+        f"returned_hit/recall={_pct(bucket['return_hit'], recall_q)} "
+        f"correct_if_recall={_pct(bucket['recall_correct'], recall_q)} "
+        f"correct_no_recall={_pct(bucket['no_recall_correct'], no_recall_q)} "
+        f"overall_correct={_pct(bucket['correct'], bucket['questions'])}"
+    )
+
+
 def _norm_text(value: Any) -> str:
     text = "" if value is None else str(value)
     text = text.strip().lower()
@@ -317,6 +331,10 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
     c = Counter()
     by_form = defaultdict(Counter)
     by_family = defaultdict(Counter)
+    recall_by_family = defaultdict(Counter)
+    recall_by_form = defaultdict(Counter)
+    recall_by_evidence = defaultdict(Counter)
+    recall_by_wait = defaultdict(Counter)
     question_mix = defaultdict(Counter)
     recall_support_jaccards: list[float] = []
     recall_support_coverages: list[float] = []
@@ -523,6 +541,8 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
             family = str(q.get("family") or "unknown")
             qtype = str(q.get("question_type") or "unknown")
             availability = str(q.get("availability") or "unknown")
+            wait_bucket = _question_wait_bucket(q)
+            evidence_bucket = _question_evidence_bucket(q)
             options = _safe_list(q.get("options"))
             c["questions"] += 1
             by_form[form]["questions"] += 1
@@ -531,8 +551,8 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
             question_mix["answer_form"][form] += 1
             question_mix["question_type"][qtype] += 1
             question_mix["availability"][availability] += 1
-            question_mix["wait_bucket"][_question_wait_bucket(q)] += 1
-            question_mix["evidence_bucket"][_question_evidence_bucket(q)] += 1
+            question_mix["wait_bucket"][wait_bucket] += 1
+            question_mix["evidence_bucket"][evidence_bucket] += 1
             if form == "multiple_choice":
                 question_mix["mc_option_count"][str(len(options))] += 1
                 question_mix["mc_correct_option"][
@@ -556,15 +576,38 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
             c["correct_questions"] += int(correct)
             by_form[form]["correct"] += int(correct)
             by_family[family]["correct"] += int(correct)
-            bucket = q_with_prior_recall if q_recall_before_answer.get(key) else q_without_prior_recall
+            had_recall = bool(q_recall_before_answer.get(key))
+            range_hit = bool(q_range_hit_before_answer.get(key))
+            return_hit = bool(q_return_hit_before_answer.get(key))
+            bucket = q_with_prior_recall if had_recall else q_without_prior_recall
             bucket["questions"] += 1
             bucket["answered"] += int(answered)
             bucket["correct"] += int(correct)
-            if q_range_hit_before_answer.get(key):
+            for dim_table, dim_key in (
+                (recall_by_family, family),
+                (recall_by_form, form),
+                (recall_by_evidence, evidence_bucket),
+                (recall_by_wait, wait_bucket),
+            ):
+                dim_bucket = dim_table[dim_key]
+                dim_bucket["questions"] += 1
+                dim_bucket["answered"] += int(answered)
+                dim_bucket["correct"] += int(correct)
+                if had_recall:
+                    dim_bucket["recall_questions"] += 1
+                    dim_bucket["recall_answered"] += int(answered)
+                    dim_bucket["recall_correct"] += int(correct)
+                else:
+                    dim_bucket["no_recall_questions"] += 1
+                    dim_bucket["no_recall_answered"] += int(answered)
+                    dim_bucket["no_recall_correct"] += int(correct)
+                dim_bucket["range_hit"] += int(range_hit)
+                dim_bucket["return_hit"] += int(return_hit)
+            if range_hit:
                 q_with_range_hit_recall["questions"] += 1
                 q_with_range_hit_recall["answered"] += int(answered)
                 q_with_range_hit_recall["correct"] += int(correct)
-            if q_return_hit_before_answer.get(key):
+            if return_hit:
                 q_with_return_hit_recall["questions"] += 1
                 q_with_return_hit_recall["answered"] += int(answered)
                 q_with_return_hit_recall["correct"] += int(correct)
@@ -573,6 +616,10 @@ def summarize_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "counts": c,
         "by_form": by_form,
         "by_family": by_family,
+        "recall_by_family": recall_by_family,
+        "recall_by_form": recall_by_form,
+        "recall_by_evidence": recall_by_evidence,
+        "recall_by_wait": recall_by_wait,
         "question_mix": question_mix,
         "reward_mean": mean(reward_scores) if reward_scores else 0.0,
         "chunk_units_mean": mean(chunk_unit_counts) if chunk_unit_counts else 0.0,
@@ -692,6 +739,21 @@ def print_report(train_steps: list[dict[str, float]], audit_rows: list[dict[str,
             f"correct={_pct(bucket['correct'], bucket['questions'])} "
             f"correct/answered={_pct(bucket['correct'], bucket['answered'])}"
         )
+
+    for title, table, limit in [
+        ("recall by family", s.get("recall_by_family", {}), 20),
+        ("recall by answer_form", s.get("recall_by_form", {}), 12),
+        ("recall by evidence_bucket", s.get("recall_by_evidence", {}), 12),
+        ("recall by wait_bucket", s.get("recall_by_wait", {}), 12),
+    ]:
+        if table:
+            print(f"\n{title}:")
+            rows = sorted(
+                table.items(),
+                key=lambda kv: (-kv[1]["recall_questions"], -kv[1]["questions"], str(kv[0])),
+            )[:limit]
+            for name, bc in rows:
+                print(_recall_bucket_line(str(name), bc))
 
     timing = {k.split("/", 1)[1]: v for k, v in c.items() if k.startswith("answer_timing/")}
     if timing:

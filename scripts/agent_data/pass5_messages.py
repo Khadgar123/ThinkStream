@@ -21,6 +21,7 @@ from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
     RENDER_LAYOUT_STANDARD_QUERY_LAST,
+    format_compact_memory_update_input,
     format_memory_block,
     format_queries_block,
     format_user_input_block,
@@ -509,22 +510,7 @@ def build_messages(
             or inp.get("memory_update_input")
         )
         if not str(update_input or "").strip():
-            memory_text = format_memory_block(inp.get("memory", {}))
-            m_lines = list(re.finditer(
-                r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>.*?</m>',
-                memory_text or "",
-                re.DOTALL | re.IGNORECASE,
-            ))
-            old_memory = "\n".join(m.group(0).strip() for m in m_lines) if m_lines else "(empty)"
-            update_input = (
-                "OLD_MEMORY:\n"
-                f"{old_memory}\n\n"
-                "NEW_CAPTIONS:\n(no recent captions available)\n\n"
-                "Return only compact-memory XML lines. If the source provides "
-                "one contiguous summary range, keep it as one <m t=\"start-end\">...</m> "
-                "line; do not invent finer timestamp segments. Do not output "
-                "NEW_MEMORY, markdown, prose, analysis, or any text outside the <m> lines."
-            )
+            update_input = format_compact_memory_update_input(inp.get("memory", {}))
         messages.append({
             "role": "user",
             "content": [{"type": "text", "text": str(update_input).strip()}],

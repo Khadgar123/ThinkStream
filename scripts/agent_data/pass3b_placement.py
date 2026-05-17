@@ -42,6 +42,19 @@ logger = logging.getLogger(__name__)
 RECALL_MEMORY_GAP_MIN_AGE = int(
     os.environ.get("THINKSTREAM_RECALL_MEMORY_GAP_MIN_AGE", str(VISUAL_WINDOW_CHUNKS + 1))
 )
+MULTI_COMPRESSION_RESCUE_FAMILIES = {"F5", "CRR1", "PN1"}
+MULTI_COMPRESSION_RESCUE_MIN_RESPONSES = int(
+    os.environ.get("THINKSTREAM_MULTI_COMPRESSION_RESCUE_MIN_RESPONSES", "2")
+)
+MULTI_COMPRESSION_RESCUE_MAX_RESPONSES = int(
+    os.environ.get("THINKSTREAM_MULTI_COMPRESSION_RESCUE_MAX_RESPONSES", "4")
+)
+MULTI_COMPRESSION_RESCUE_MAX_SPAN = int(
+    os.environ.get("THINKSTREAM_MULTI_COMPRESSION_RESCUE_MAX_SPAN", "72")
+)
+MULTI_COMPRESSION_RESCUE_ASK_LEAD = int(
+    os.environ.get("THINKSTREAM_MULTI_COMPRESSION_RESCUE_ASK_LEAD", "2")
+)
 
 
 def _refine_selected_recall_with_rollout(
@@ -323,6 +336,343 @@ def _placement_crosses_compress_boundary(
     return any(ask < int(boundary) <= last_answer for boundary in compression_boundaries)
 
 
+def _placement_touches_compress_boundary(
+    placement: Placement,
+    compression_boundaries: List[int],
+) -> bool:
+    if not compression_boundaries:
+        return False
+    boundaries = {int(b) for b in compression_boundaries}
+    return any(int(chunk) in boundaries for chunk in placement.chunk_actions)
+
+
+def _compression_segments(
+    num_chunks: int,
+    compression_boundaries: List[int],
+) -> List[Tuple[int, int]]:
+    """Return chunk ranges that do not straddle a compact-memory trigger."""
+    boundaries = sorted(
+        {
+            int(b)
+            for b in compression_boundaries
+            if 0 <= int(b) < int(num_chunks)
+        }
+    )
+    segments: List[Tuple[int, int]] = []
+    start = 0
+    for boundary in boundaries:
+        end = boundary - 1
+        if start <= end:
+            segments.append((start, end))
+        # The trigger chunk itself renders a compact-memory row. Keep rescued
+        # question rows strictly between compression turns.
+        start = boundary + 1
+    if start <= int(num_chunks) - 1:
+        segments.append((start, int(num_chunks) - 1))
+    return segments
+
+
+def _placement_response_pairs(placement: Placement) -> List[Tuple[int, str]]:
+    return sorted(
+        (
+            (int(c), str(action[1]))
+            for c, action in placement.chunk_actions.items()
+            if action and str(action[0]) == "response"
+        ),
+        key=lambda item: item[0],
+    )
+
+
+def _candidate_multi_emits(card, placement: Placement) -> List[Tuple[int, str]]:
+    """Use card-level emits so pass3b can re-place without re-running pass3a."""
+    pairs: Dict[int, str] = {}
+    for emit in getattr(card, "gold_emits", []) or []:
+        try:
+            chunk = int(emit.chunk)
+        except (TypeError, ValueError):
+            continue
+        pairs[chunk] = str(emit.value)
+    if not pairs:
+        for chunk, value in _placement_response_pairs(placement):
+            pairs[int(chunk)] = str(value)
+    return sorted(pairs.items(), key=lambda item: item[0])
+
+
+def _compact_emit_subset(
+    emits: List[Tuple[int, str]],
+    *,
+    family: str,
+) -> List[Tuple[int, str]]:
+    """Keep a short, row-budget-friendly subset inside one compression segment."""
+    min_responses = max(2, MULTI_COMPRESSION_RESCUE_MIN_RESPONSES)
+    max_responses = max(min_responses, MULTI_COMPRESSION_RESCUE_MAX_RESPONSES)
+    best: List[Tuple[int, str]] = []
+    best_key: Tuple[int, int, int, int, int, int, int, int, int] = (
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -10**9,
+        -10**9,
+        -10**9,
+    )
+    for i, (start_chunk, _value) in enumerate(emits):
+        cur = [
+            (chunk, value)
+            for chunk, value in emits[i:]
+            if int(chunk) - int(start_chunk) <= MULTI_COMPRESSION_RESCUE_MAX_SPAN
+        ][:max_responses]
+        if len(cur) < min_responses:
+            continue
+        vals = {str(value).strip().lower() for _chunk, value in cur}
+        span = int(cur[-1][0]) - int(cur[0][0])
+        transition = int(family == "CRR1" and {"no", "yes"}.issubset(vals))
+        positive_status = int(family == "CRR1" and "yes" in vals)
+        numeric_growth = 0
+        zero_probe = 0
+        repeated_count = 0
+        start_count = 10**9
+        if family == "F5":
+            nums: List[int] = []
+            for _chunk, value in cur:
+                try:
+                    nums.append(int(str(value).strip()))
+                except ValueError:
+                    continue
+            numeric_growth = int(len(nums) >= 2 and max(nums) > min(nums))
+            zero_probe = int(any(n == 0 for n in nums))
+            repeated_count = sum(1 for a, b in zip(nums, nums[1:]) if b == a)
+            if nums:
+                start_count = nums[0]
+        key = (
+            transition,
+            positive_status,
+            zero_probe,
+            min(repeated_count, 3),
+            numeric_growth,
+            len(cur),
+            -start_count,
+            -span,
+            -int(cur[0][0]),
+        )
+        if key > best_key:
+            best_key = key
+            best = cur
+    return best
+
+
+def _augment_f5_tuple_probes(
+    selected: List[Tuple[int, str]],
+    all_emits: List[Tuple[int, str]],
+    *,
+    ask: int,
+    seg_end: int,
+    max_responses: int,
+) -> List[Tuple[int, str]]:
+    """Add REC-style zero/repeated-count probes inside one compression segment."""
+    if not selected:
+        return []
+    max_responses = max(2, int(max_responses))
+    by_chunk: Dict[int, str] = {int(chunk): str(value) for chunk, value in selected}
+    if len(by_chunk) >= max_responses:
+        return sorted(by_chunk.items())
+
+    def parse_int(value: str) -> Optional[int]:
+        try:
+            text = str(value).strip()
+            if text.endswith(".0"):
+                text = text[:-2]
+            return int(text)
+        except (TypeError, ValueError):
+            return None
+
+    ordered = sorted((int(c), str(v)) for c, v in by_chunk.items())
+    all_ordered = sorted((int(c), str(v)) for c, v in all_emits)
+    candidates: List[Tuple[int, int, str]] = []
+
+    def add(priority: int, chunk: int, value: str) -> None:
+        chunk = int(chunk)
+        if chunk < int(ask) or chunk > int(seg_end) or chunk in by_chunk:
+            return
+        candidates.append((int(priority), chunk, str(value)))
+
+    first_chunk, first_value_raw = ordered[0]
+    first_value = parse_int(first_value_raw)
+    if first_chunk - int(ask) >= 2 and first_value is not None:
+        previous = [
+            (chunk, value)
+            for chunk, value in all_ordered
+            if chunk < first_chunk and parse_int(value) is not None
+        ]
+        if previous:
+            prev_value = previous[-1][1]
+        else:
+            prev_value = str(max(0, first_value - 1))
+        probe = max(int(ask), first_chunk - min(6, max(1, (first_chunk - int(ask)) // 2)))
+        add(0 if prev_value == "0" else 2, probe, prev_value)
+
+    for (cur_chunk, cur_value), (next_chunk, _next_value) in zip(ordered, ordered[1:]):
+        gap = int(next_chunk) - int(cur_chunk)
+        if gap >= 3:
+            add(1, int(cur_chunk) + min(2, gap - 1), cur_value)
+
+    last_chunk, last_value = ordered[-1]
+    if int(last_chunk) + 2 <= int(seg_end):
+        add(3, int(last_chunk) + 2, last_value)
+
+    for _priority, chunk, value in sorted(candidates):
+        if len(by_chunk) >= max_responses:
+            break
+        by_chunk.setdefault(int(chunk), str(value))
+    return sorted(by_chunk.items())
+
+
+def _rescue_multi_across_compression(
+    placement: Placement,
+    card,
+    num_chunks: int,
+    compression_boundaries: List[int],
+) -> Optional[Placement]:
+    """Re-place F5/CRR1/PN1 multi rows inside a single compression segment.
+
+    pass3a cards often contain enough emits, but a preselected multi episode may
+    cross a pass2 compression boundary. Instead of dropping it, choose a compact
+    same-segment emit subset and rebuild the placement window.
+    """
+    family = str(getattr(card, "family", "") or "")
+    if placement.mechanism != "multi_emit" or family not in MULTI_COMPRESSION_RESCUE_FAMILIES:
+        return None
+    segments = _compression_segments(num_chunks, compression_boundaries)
+    if not segments:
+        return None
+    all_emits = _candidate_multi_emits(card, placement)
+    if len(all_emits) < max(2, MULTI_COMPRESSION_RESCUE_MIN_RESPONSES):
+        return None
+
+    best: Optional[Tuple[List[Tuple[int, str]], int, int]] = None
+    original_response_chunks = {
+        chunk for chunk, _value in _placement_response_pairs(placement)
+    }
+    best_key: Tuple[int, int, int, int, int, int, int, int, int, int] = (
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -10**9,
+        -1,
+        -10**9,
+        -10**9,
+    )
+    for seg_start, seg_end in segments:
+        seg_emits = [
+            (chunk, value)
+            for chunk, value in all_emits
+            if int(seg_start) <= int(chunk) <= int(seg_end)
+        ]
+        if len(seg_emits) < max(2, MULTI_COMPRESSION_RESCUE_MIN_RESPONSES):
+            continue
+        subset = _compact_emit_subset(seg_emits, family=family)
+        if not subset:
+            continue
+        vals = {str(value).strip().lower() for _chunk, value in subset}
+        span = int(subset[-1][0]) - int(subset[0][0])
+        contains_original_response = int(
+            bool({chunk for chunk, _value in subset} & original_response_chunks)
+        )
+        transition = int(family == "CRR1" and {"no", "yes"}.issubset(vals))
+        positive_status = int(family == "CRR1" and "yes" in vals)
+        numeric_growth = 0
+        zero_probe = 0
+        repeated_count = 0
+        start_count = 10**9
+        if family == "F5":
+            nums: List[int] = []
+            for _chunk, value in subset:
+                try:
+                    nums.append(int(str(value).strip()))
+                except ValueError:
+                    continue
+            numeric_growth = int(len(nums) >= 2 and max(nums) > min(nums))
+            zero_probe = int(any(n == 0 for n in nums))
+            repeated_count = sum(1 for a, b in zip(nums, nums[1:]) if b == a)
+            if nums:
+                start_count = nums[0]
+        key = (
+            transition,
+            positive_status,
+            zero_probe,
+            min(repeated_count, 3),
+            numeric_growth,
+            len(subset),
+            -start_count,
+            contains_original_response,
+            -span,
+            -int(subset[0][0]),
+        )
+        if key > best_key:
+            best_key = key
+            best = (subset, int(seg_start), int(seg_end))
+
+    if best is None:
+        return None
+    subset, seg_start, seg_end = best
+    first = int(subset[0][0])
+    last = int(subset[-1][0])
+    if family == "CRR1":
+        ask = first
+        difficulty_mode = "status_probe"
+    elif family == "F5":
+        ask = max(int(seg_start), first - max(0, MULTI_COMPRESSION_RESCUE_ASK_LEAD))
+        difficulty_mode = (
+            "ovo_rec_cumulative_segment"
+            if int(ask) > 0 and placement.difficulty_mode == "ovo_rec_cumulative_from_start"
+            else (placement.difficulty_mode or "ovo_rec_cumulative")
+        )
+    else:
+        ask = max(int(seg_start), first - max(0, MULTI_COMPRESSION_RESCUE_ASK_LEAD))
+        difficulty_mode = placement.difficulty_mode or "multi_emit"
+    if ask > first:
+        return None
+    if family == "F5":
+        subset = _augment_f5_tuple_probes(
+            subset,
+            all_emits,
+            ask=int(ask),
+            seg_end=int(seg_end),
+            max_responses=max(
+                MULTI_COMPRESSION_RESCUE_MIN_RESPONSES,
+                MULTI_COMPRESSION_RESCUE_MAX_RESPONSES,
+            ),
+        )
+        first = int(subset[0][0])
+        last = int(subset[-1][0])
+
+    emit_by_chunk = {int(chunk): str(value) for chunk, value in subset}
+    end = min(int(num_chunks) - 1, int(seg_end), last + 1)
+    actions: Dict[int, Tuple[str, str]] = {}
+    for chunk in range(int(ask), int(end) + 1):
+        if chunk in emit_by_chunk:
+            actions[chunk] = ("response", emit_by_chunk[chunk])
+        else:
+            actions[chunk] = ("silent", "")
+    rescued = Placement(
+        card_id=placement.card_id,
+        ask_chunk=int(ask),
+        mechanism="multi_emit",
+        difficulty_mode=difficulty_mode,
+        recall_need=placement.recall_need,
+        support_policy=placement.support_policy,
+        chunk_actions=actions,
+    )
+    if _placement_crosses_compress_boundary(rescued, compression_boundaries):
+        return None
+    return rescued
+
+
 def _drop_degraded_recall_placements(
     placements: List[Placement],
 ) -> Tuple[List[Placement], int]:
@@ -433,6 +783,31 @@ def plan_trajectories(
         if not card:
             continue
         for p in plcs:
+            if (
+                p.mechanism == "multi_emit"
+                and _placement_touches_compress_boundary(p, compression_boundaries)
+            ):
+                rescued = _rescue_multi_across_compression(
+                    p,
+                    card,
+                    num_chunks,
+                    compression_boundaries,
+                )
+                if rescued is not None:
+                    ok, reason = placement_timing_verdict(card, rescued)
+                    if ok:
+                        filtered_by_card.setdefault(cid, []).append(rescued)
+                        rejected["rescued_multi_compress_boundary"] = (
+                            rejected.get("rescued_multi_compress_boundary", 0) + 1
+                        )
+                        continue
+                    rejected[f"rescued_multi_invalid:{reason}"] = (
+                        rejected.get(f"rescued_multi_invalid:{reason}", 0) + 1
+                    )
+                rejected["multi_touches_compress_boundary"] = (
+                    rejected.get("multi_touches_compress_boundary", 0) + 1
+                )
+                continue
             if _placement_crosses_compress_boundary(p, compression_boundaries):
                 rejected["crosses_compress_boundary"] = (
                     rejected.get("crosses_compress_boundary", 0) + 1

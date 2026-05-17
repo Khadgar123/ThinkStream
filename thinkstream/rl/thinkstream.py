@@ -21,6 +21,7 @@
 from __future__ import annotations
 
 import io
+import html
 import json
 import logging
 import os
@@ -103,7 +104,6 @@ def _load_thinkstream_rewards():
             compute_timing_reward,
             compute_answer_decision_reward,
             compute_format_reward,
-            compute_spam_score,
             compute_silent_quality,
         )
         from thinkstream.trainer.gdpo_advantage import (  # type: ignore
@@ -114,7 +114,6 @@ def _load_thinkstream_rewards():
             "timing": compute_timing_reward,
             "answer_decision": compute_answer_decision_reward,
             "format": compute_format_reward,
-            "spam": compute_spam_score,
             "silent_quality": compute_silent_quality,
         }
         _ts_weights = dict(V12_DEFAULT_REWARD_WEIGHTS)
@@ -933,22 +932,6 @@ def _extract_final_answer(solution_str: str) -> Optional[str]:
     return matches[-1].strip()
 
 
-def _count_tool_calls(solution_str: str) -> Dict[str, int]:
-    n_recall = 0
-    n_compress = 0
-    for m in re.finditer(r"<tool_call>\s*(\{.*?\})\s*</tool_call>", solution_str, re.S):
-        try:
-            tc = json.loads(m.group(1))
-        except json.JSONDecodeError:
-            continue
-        name = tc.get("name", "")
-        if name == "recall":
-            n_recall += 1
-        elif name == "compress":
-            n_compress += 1
-    return {"recall": n_recall, "compress": n_compress}
-
-
 def _coerce_ground_truth(ground_truth: Any) -> Dict[str, Any]:
     """verl's reward_model.ground_truth comes in as either a JSON-encoded
     string (our parquet builder writes it that way to round-trip nested
@@ -1274,6 +1257,11 @@ def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
     scores: List[float] = []
     for turn_i, text in enumerate(chunks):
         turn_kind = str(turn_kinds[turn_i] or "") if turn_i < len(turn_kinds) else ""
+        # Compression has its own branch-local validity and quality reward.
+        # Keeping it out of the trajectory format branch avoids double-counting
+        # the same malformed compact-memory turn in GDPO/HDPO.
+        if turn_kind == "compress":
+            continue
         parsed = parse_agent_output(
             text,
             allow_bare_answer=turn_kind in {"recall_response", "post_recall"},
@@ -1301,6 +1289,393 @@ def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
         else:
             scores.append(1.0)
     return min(scores) if any(s < 0.0 for s in scores) else 1.0
+
+
+def _int_chunks_from_value(value: Any) -> List[int]:
+    value = _jsonable(value)
+    if isinstance(value, (list, tuple, set)):
+        out: List[int] = []
+        for item in value:
+            try:
+                out.append(int(float(item)))
+            except (TypeError, ValueError):
+                continue
+        return sorted(set(out))
+    try:
+        return [int(float(value))]
+    except (TypeError, ValueError):
+        return []
+
+
+def _chunks_from_memory_text(memory_text: str) -> set[int]:
+    chunks: set[int] = set()
+    for m in re.finditer(
+        r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>',
+        str(memory_text or ""),
+        re.DOTALL | re.IGNORECASE,
+    ):
+        start = int(m.group(1))
+        end = int(m.group(2) or m.group(1))
+        if end < start:
+            start, end = end, start
+        chunks.update(range(start, end + 1))
+    return chunks
+
+
+_MEMORY_ENTRY_RE = re.compile(
+    r'<m\s+t="(-?\d+(?:\.\d+)?)(?:\s*-\s*(-?\d+(?:\.\d+)?))?"\s*>(.*?)</m>',
+    re.DOTALL | re.IGNORECASE,
+)
+_CAPTION_ENTRY_RE = re.compile(
+    r'<c\s+t="(-?\d+(?:\.\d+)?)"\s*>(.*?)</c>',
+    re.DOTALL | re.IGNORECASE,
+)
+_WORD_RE = re.compile(r"[a-z0-9]+(?:'[a-z0-9]+)?", re.IGNORECASE)
+
+
+def _range_to_interval(start_raw: Any, end_raw: Any = None) -> Optional[tuple[float, float]]:
+    try:
+        start = float(start_raw)
+        end = float(start_raw if end_raw in (None, "") else end_raw)
+    except (TypeError, ValueError):
+        return None
+    if end < start:
+        start, end = end, start
+    return start, end + 1.0
+
+
+def _clean_xml_text(text: Any) -> str:
+    body = html.unescape(str(text or ""))
+    body = re.sub(r"<[^>]+>", " ", body)
+    return " ".join(body.split())
+
+
+def _memory_entries_from_text(memory_text: str) -> List[tuple[float, float, str]]:
+    entries: List[tuple[float, float, str]] = []
+    for match in _MEMORY_ENTRY_RE.finditer(str(memory_text or "")):
+        interval = _range_to_interval(match.group(1), match.group(2))
+        body = _clean_xml_text(match.group(3))
+        if interval is not None and body:
+            entries.append((interval[0], interval[1], body))
+    return entries
+
+
+def _compact_memory_output_is_clean(output_text: str) -> bool:
+    text = str(output_text or "")
+    think_matches = list(re.finditer(r"<think>.*?</think>", text, re.DOTALL | re.IGNORECASE))
+    if len(think_matches) > 1:
+        return False
+    text = re.sub(r"<think>.*?</think>", " ", text, count=1, flags=re.DOTALL | re.IGNORECASE)
+    text = _MEMORY_ENTRY_RE.sub(" ", text)
+    text = re.sub(r"</?MEM>", " ", text, flags=re.IGNORECASE)
+    return not text.strip()
+
+
+def _source_entries_from_text(
+    source_text: str,
+    expected_chunks: Optional[set[int]] = None,
+) -> List[tuple[float, float, str]]:
+    entries = _memory_entries_from_text(source_text)
+    for match in _CAPTION_ENTRY_RE.finditer(str(source_text or "")):
+        interval = _range_to_interval(match.group(1), match.group(1))
+        body = _clean_xml_text(match.group(2))
+        if interval is not None and body:
+            entries.append((interval[0], interval[1], body))
+    if entries:
+        return entries
+    return [
+        (float(chunk), float(chunk) + 1.0, "")
+        for chunk in sorted(expected_chunks or [])
+    ]
+
+
+def _interval_len(interval: tuple[float, float]) -> float:
+    return max(0.0, float(interval[1]) - float(interval[0]))
+
+
+def _interval_overlap(
+    left: tuple[float, float],
+    right: tuple[float, float],
+) -> float:
+    return max(0.0, min(left[1], right[1]) - max(left[0], right[0]))
+
+
+def _interval_iou(
+    left: tuple[float, float],
+    right: tuple[float, float],
+) -> float:
+    inter = _interval_overlap(left, right)
+    if inter <= 0.0:
+        return 0.0
+    union = _interval_len(left) + _interval_len(right) - inter
+    return inter / union if union > 0.0 else 0.0
+
+
+def _content_words(text: Any) -> set[str]:
+    return {
+        word.lower()
+        for word in _WORD_RE.findall(_clean_xml_text(text))
+        if len(word) > 1 or word.isdigit()
+    }
+
+
+def _compress_time_score(
+    output_entries: List[tuple[float, float, str]],
+    source_entries: List[tuple[float, float, str]],
+) -> float:
+    if not output_entries or not source_entries:
+        return 0.0
+    horizon_start = min(entry[0] for entry in source_entries)
+    horizon_end = max(entry[1] for entry in source_entries)
+    horizon_len = horizon_end - horizon_start
+    if horizon_len <= 0.0:
+        return 0.0
+    emitted = [(entry[0], entry[1]) for entry in output_entries]
+    best = 0.0
+    for k in (4, 5, 6):
+        width = horizon_len / float(k)
+        if width <= 0.0:
+            continue
+        part_scores = []
+        for idx in range(k):
+            ideal = (
+                horizon_start + idx * width,
+                horizon_start + (idx + 1) * width,
+            )
+            part_scores.append(max(_interval_iou(ideal, seg) for seg in emitted))
+        best = max(best, sum(part_scores) / float(k))
+    # Too-few ranges are already penalized by partition IoU. Only suppress
+    # over-fragmentation, which can otherwise cherry-pick ideal sub-ranges.
+    count = len(output_entries)
+    count_score = 1.0 if count <= 6 else (6.0 / float(count)) ** 2
+    return max(0.0, min(1.0, best * count_score))
+
+
+def _compress_valid_time_score(
+    output_entries: List[tuple[float, float, str]],
+    source_entries: List[tuple[float, float, str]],
+) -> float:
+    if not output_entries or not source_entries:
+        return 0.0
+    horizon = (
+        min(entry[0] for entry in source_entries),
+        max(entry[1] for entry in source_entries),
+    )
+    emitted_len = sum(_interval_len((entry[0], entry[1])) for entry in output_entries)
+    if emitted_len <= 0.0:
+        return 0.0
+    in_horizon = sum(
+        _interval_overlap((entry[0], entry[1]), horizon)
+        for entry in output_entries
+    )
+    return max(0.0, min(1.0, in_horizon / emitted_len))
+
+
+def _compress_source_precision(
+    output_entries: List[tuple[float, float, str]],
+    source_entries: List[tuple[float, float, str]],
+) -> float:
+    if not output_entries or not source_entries:
+        return 0.0
+    scores: List[float] = []
+    all_source_text = " ".join(entry[2] for entry in source_entries)
+    all_source_words = _content_words(all_source_text)
+    for out_start, out_end, out_text in output_entries:
+        output_words = _content_words(out_text)
+        if not output_words:
+            scores.append(0.0)
+            continue
+        ref_text = " ".join(
+            src_text
+            for src_start, src_end, src_text in source_entries
+            if _interval_overlap((out_start, out_end), (src_start, src_end)) > 0.0
+        )
+        ref_words = _content_words(ref_text) or all_source_words
+        if not ref_words:
+            scores.append(0.0)
+            continue
+        scores.append(len(output_words & ref_words) / float(len(output_words)))
+    return float(sum(scores) / len(scores)) if scores else 0.0
+
+
+def _compress_source_grounding_gate(source_precision: float) -> float:
+    return max(0.0, min(1.0, float(source_precision) / 0.5))
+
+
+def _score_compress_memory_update(
+    output_text: str,
+    source_text: str,
+    expected_chunks: Optional[set[int]] = None,
+    *,
+    action_error: str = "",
+    hit_max_tokens: bool = False,
+) -> tuple[float, str, Dict[str, float]]:
+    try:
+        from thinkstream.data.agent_protocol import parse_agent_output
+    except Exception:  # noqa: BLE001
+        return 0.0, "parse_unavailable", {
+            "valid_format": 0.0,
+            "valid_time": 0.0,
+            "time_score": 0.0,
+            "source_precision": 0.0,
+            "source_grounding": 0.0,
+            "item_count": 0.0,
+        }
+
+    if str(action_error or "").strip():
+        return 0.0, "action_error", {
+            "valid_format": 0.0,
+            "valid_time": 0.0,
+            "time_score": 0.0,
+            "source_precision": 0.0,
+            "source_grounding": 0.0,
+            "item_count": 0.0,
+        }
+    parsed = parse_agent_output(str(output_text or ""), allow_bare_memory=True)
+    if parsed.get("format_error") or parsed.get("kind") != "compress":
+        return 0.0, "invalid", {
+            "valid_format": 0.0,
+            "valid_time": 0.0,
+            "time_score": 0.0,
+            "source_precision": 0.0,
+            "source_grounding": 0.0,
+            "item_count": 0.0,
+        }
+    output_entries = _memory_entries_from_text(str(parsed.get("memory_text") or ""))
+    if not output_entries:
+        return 0.0, "missing", {
+            "valid_format": 0.0,
+            "valid_time": 0.0,
+            "time_score": 0.0,
+            "source_precision": 0.0,
+            "source_grounding": 0.0,
+            "item_count": 0.0,
+        }
+    if not _compact_memory_output_is_clean(output_text):
+        return 0.0, "invalid", {
+            "valid_format": 0.0,
+            "valid_time": 0.0,
+            "time_score": 0.0,
+            "source_precision": 0.0,
+            "source_grounding": 0.0,
+            "item_count": float(len(output_entries)),
+        }
+    source_entries = _source_entries_from_text(source_text, expected_chunks)
+    if not source_entries:
+        return 0.0, "no_source", {
+            "valid_format": 1.0,
+            "valid_time": 0.0,
+            "time_score": 0.0,
+            "source_precision": 0.0,
+            "source_grounding": 0.0,
+            "item_count": float(len(output_entries)),
+        }
+
+    valid_time = _compress_valid_time_score(output_entries, source_entries)
+    time_score = _compress_time_score(output_entries, source_entries)
+    source_precision = _compress_source_precision(output_entries, source_entries)
+    source_grounding = _compress_source_grounding_gate(source_precision)
+    score = valid_time * source_grounding * (0.85 * time_score + 0.15 * source_precision)
+    reason = "ok"
+    if hit_max_tokens:
+        score = 0.0
+        reason = "hit_max"
+    details = {
+        "valid_format": 1.0,
+        "valid_time": float(valid_time),
+        "time_score": float(time_score),
+        "source_precision": float(source_precision),
+        "source_grounding": float(source_grounding),
+        "item_count": float(len(output_entries)),
+    }
+    return float(max(0.0, min(1.0, score))), reason, details
+
+
+def _compute_compress_quality(extra: Dict[str, Any]) -> Dict[str, float]:
+    """Low-complexity compression branch signal.
+
+    Scores whether compact-memory output is parseable, stays inside the source
+    history, forms a selectable time partition, and uses words grounded in the
+    corresponding OLD_MEMORY/NEW_CAPTIONS input. This is monitor-only in the
+    scalar reward; recurrent GDPO applies the same formula per compress row.
+    """
+    texts = _safe_list(extra.get("ts_chunk_asst_texts"))
+    turn_kinds = _safe_list(extra.get("ts_chunk_turn_kinds"))
+    action_errors = _safe_list(extra.get("ts_chunk_action_space_errors"))
+    expected_by_turn = _safe_list(extra.get("ts_compress_expected_chunks"))
+    hit_max_tokens = _safe_list(extra.get("ts_chunk_hit_max_tokens"))
+    source_texts = _safe_list(extra.get("ts_compress_source_texts"))
+
+    scores: List[float] = []
+    valid_formats: List[float] = []
+    valid_times: List[float] = []
+    time_scores: List[float] = []
+    source_precisions: List[float] = []
+    source_groundings: List[float] = []
+    item_counts: List[float] = []
+    reasons: Dict[str, int] = {}
+    n = max(len(texts), len(turn_kinds), len(expected_by_turn))
+    for i in range(n):
+        turn_kind = str(turn_kinds[i] or "") if i < len(turn_kinds) else ""
+        if turn_kind != "compress":
+            continue
+        expected = set(
+            _int_chunks_from_value(expected_by_turn[i])
+            if i < len(expected_by_turn) else []
+        )
+        if not expected:
+            continue
+        action_error = (
+            str(action_errors[i] or "").strip()
+            if i < len(action_errors) else ""
+        )
+        text = str(texts[i] or "") if i < len(texts) else ""
+        source_text = str(source_texts[i] or "") if i < len(source_texts) else ""
+        score, reason, details = _score_compress_memory_update(
+            text,
+            source_text,
+            expected,
+            action_error=action_error,
+            hit_max_tokens=bool(hit_max_tokens[i]) if i < len(hit_max_tokens) else False,
+        )
+        scores.append(score)
+        valid_formats.append(float(details.get("valid_format", 0.0)))
+        valid_times.append(float(details.get("valid_time", 0.0)))
+        time_scores.append(float(details.get("time_score", 0.0)))
+        source_precisions.append(float(details.get("source_precision", 0.0)))
+        source_groundings.append(float(details.get("source_grounding", 0.0)))
+        item_counts.append(float(details.get("item_count", 0.0)))
+        reasons[reason] = reasons.get(reason, 0) + 1
+
+    count = float(len(scores))
+    if count <= 0:
+        return {
+            "compress_quality": 0.0,
+            "compress_quality_count": 0.0,
+            "compress_quality_parse_ok": 0.0,
+            "compress_quality_cover_ok": 0.0,
+            "compress_quality_old_only": 0.0,
+            "compress_quality_valid_time": 0.0,
+            "compress_quality_time_score": 0.0,
+            "compress_quality_source_precision": 0.0,
+            "compress_quality_source_grounding": 0.0,
+            "compress_quality_item_count": 0.0,
+        }
+    out = {
+        "compress_quality": float(sum(scores) / len(scores)),
+        "compress_quality_count": count,
+        "compress_quality_parse_ok": float(sum(valid_formats) / len(scores)),
+        "compress_quality_cover_ok": float(sum(1.0 for x in time_scores if x > 0.5) / len(scores)),
+        "compress_quality_old_only": float(reasons.get("no_source", 0) / len(scores)),
+        "compress_quality_valid_time": float(sum(valid_times) / len(scores)),
+        "compress_quality_time_score": float(sum(time_scores) / len(scores)),
+        "compress_quality_source_precision": float(sum(source_precisions) / len(scores)),
+        "compress_quality_source_grounding": float(sum(source_groundings) / len(scores)),
+        "compress_quality_item_count": float(sum(item_counts) / len(scores)),
+    }
+    for reason, reason_count in reasons.items():
+        out[f"compress_quality_reason_{reason}"] = float(reason_count / len(scores))
+    return out
 
 
 _RL_ROLLOUT_AUDIT_COUNT = 0
@@ -1387,7 +1762,9 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
     recall_result_sources = _safe_list(extra.get("ts_recall_result_sources"))
     compress_expected_chunks = _safe_list(extra.get("ts_compress_expected_chunks"))
     compress_emitted_ranges = _safe_list(extra.get("ts_compress_emitted_ranges"))
+    compress_source_texts = _safe_list(extra.get("ts_compress_source_texts"))
     max_turns = _env_int("THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_TURNS", 240)
+    max_source_chars = _env_int("THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_SOURCE_CHARS", 8000)
 
     out: List[Dict[str, Any]] = []
     for i, raw in enumerate(texts[:max_turns]):
@@ -1453,15 +1830,33 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
                     if i < len(recall_result_sources) else ""
                 )
             elif kind == "compress":
-                item["expected_compressed_chunks"] = _jsonable(
+                expected_chunks_raw = (
                     compress_expected_chunks[i]
                     if i < len(compress_expected_chunks) else []
                 )
+                source_text = (
+                    str(compress_source_texts[i] or "")
+                    if i < len(compress_source_texts) else ""
+                )
+                expected_chunks = set(_int_chunks_from_value(expected_chunks_raw))
+                score, reason, details = _score_compress_memory_update(
+                    text,
+                    source_text,
+                    expected_chunks,
+                    action_error=str(action_errors[i] or "") if i < len(action_errors) else "",
+                    hit_max_tokens=bool(hit_max_tokens[i]) if i < len(hit_max_tokens) else False,
+                )
+                item["expected_compressed_chunks"] = _jsonable(expected_chunks_raw)
                 item["emitted_time_range"] = _jsonable(
                     compress_emitted_ranges[i]
                     if i < len(compress_emitted_ranges)
                     else args.get("time_range")
                 )
+                item["compress_source_text"] = _short_text(source_text, max_source_chars)
+                item["compress_source_text_chars"] = len(source_text)
+                item["compress_quality_score"] = score
+                item["compress_quality_reason"] = reason
+                item["compress_quality_details"] = _jsonable(details)
         out.append(item)
     if len(texts) > max_turns:
         out.append({"truncated_turns": len(texts) - max_turns})
@@ -1508,12 +1903,6 @@ def _audit_reasons(result: Dict[str, float], extra: Dict[str, Any]) -> List[str]
                 reasons.append("non_counted_answer")
                 break
 
-    n_recall = float(extra.get("ts_n_recall") or 0.0)
-    n_compress = float(extra.get("ts_n_compress") or 0.0)
-    if n_recall > _env_float("THINKSTREAM_RL_AUDIT_RECALL_SPAM", 12.0):
-        reasons.append("recall_spam")
-    if n_compress > _env_float("THINKSTREAM_RL_AUDIT_COMPRESS_SPAM", 8.0):
-        reasons.append("compress_spam")
     if _safe_list(extra.get("ts_budget_abort_events")):
         reasons.append("budget_abort")
     if any(bool(x) for x in _safe_list(extra.get("ts_chunk_hit_max_tokens"))):
@@ -1606,6 +1995,7 @@ def _maybe_audit_rl_rollout(
         "reward": _jsonable(result),
         "counts": {
             "n_questions": result.get("n_questions"),
+            "n_answers": result.get("n_answers"),
             "n_answered": result.get("n_answered"),
             "n_recall": extra.get("ts_n_recall"),
             "n_compress": extra.get("ts_n_compress"),
@@ -1687,7 +2077,7 @@ def _active_reward_keys() -> set[str]:
         or "initial_outcome_time_format_decision"
     ).strip().lower()
     if profile in {"legacy", "full", "v12_full", "all"}:
-        return {"outcome", "timing", "format", "spam", "silent_quality"}
+        return {"outcome", "timing", "format", "silent_quality"}
     if profile in {"answer_only", "outcome_only"}:
         return {"outcome"}
     if profile in {"initial_outcome_time_format", "casia"}:
@@ -1751,18 +2141,105 @@ def _combine_reward_parts(
     return outcome_total + aux_total, gate
 
 
+def _weighted_mean(values: List[float], weights: List[float]) -> float:
+    if not values:
+        return 0.0
+    clean_weights: List[float] = []
+    for i in range(len(values)):
+        try:
+            w = float(weights[i])
+        except (IndexError, TypeError, ValueError):
+            w = 1.0
+        clean_weights.append(w if w > 0.0 else 1.0)
+    denom = sum(clean_weights)
+    if denom <= 0.0:
+        return sum(float(v) for v in values) / len(values)
+    return sum(float(v) * w for v, w in zip(values, clean_weights)) / denom
+
+
+def _answer_weight_for_question(q: Dict[str, Any]) -> float:
+    """Number of expected answer slots represented by a question."""
+    per_emit = _safe_list(q.get("per_emit_answers"))
+    emit_chunks: List[int] = []
+    for item in per_emit:
+        if hasattr(item, "tolist"):
+            item = item.tolist()
+        if not isinstance(item, dict) or item.get("chunk") is None:
+            continue
+        try:
+            emit_chunks.append(int(item["chunk"]))
+        except (TypeError, ValueError):
+            continue
+    if emit_chunks:
+        return float(max(1, len(set(emit_chunks))))
+
+    answer_chunks = _safe_list(q.get("answer_chunks"))
+    answer_chunks_int: List[int] = []
+    for x in answer_chunks:
+        try:
+            answer_chunks_int.append(int(x))
+        except (TypeError, ValueError):
+            continue
+    if answer_chunks_int:
+        return float(max(1, len(set(answer_chunks_int))))
+    return 1.0
+
+
+def _question_answer_opportunity_chunks(q: Dict[str, Any]) -> List[int]:
+    """Return chunks where a question can first be fairly scored."""
+    chunks: List[int] = []
+    for item in _safe_list(q.get("per_emit_answers")):
+        if hasattr(item, "tolist"):
+            item = item.tolist()
+        if not isinstance(item, dict) or item.get("chunk") is None:
+            continue
+        try:
+            chunks.append(int(item["chunk"]))
+        except (TypeError, ValueError):
+            continue
+    for raw in _safe_list(q.get("answer_chunks")):
+        try:
+            chunks.append(int(raw))
+        except (TypeError, ValueError):
+            continue
+    return sorted(set(c for c in chunks if c >= 0))
+
+
+def _observed_horizon_chunk(extra: Dict[str, Any]) -> Optional[int]:
+    """Highest video chunk actually rolled out for this trajectory."""
+    observed: List[int] = []
+    for raw in _safe_list(extra.get("ts_chunk_video_indices")):
+        try:
+            ci = int(raw)
+        except (TypeError, ValueError):
+            continue
+        if ci >= 0:
+            observed.append(ci)
+    if observed:
+        return max(observed)
+    try:
+        chunks_used = int(float(extra.get("ts_chunks_used", 0) or 0))
+    except (TypeError, ValueError):
+        chunks_used = 0
+    if chunks_used > 0:
+        return chunks_used - 1
+    return None
+
+
 def _combine_multi_q_reward_parts(
     weights: Dict[str, float],
     per_question_parts: List[Dict[str, float]],
     trajectory_parts: Dict[str, float],
+    question_weights: Optional[List[float]] = None,
 ) -> tuple[float, float, List[float]]:
-    """Combine multi-question rewards at question granularity.
+    """Combine multi-question rewards at expected-answer granularity.
 
     ``per_question_parts`` contains outcome/timing plus monitor-only fields
     such as silent_quality. Each question gates its own positive auxiliary
-    rewards, then the question scores are averaged. Trajectory-level format is
-    applied once. Tool/step fields remain in diagnostics unless the reward
-    profile explicitly enables them.
+    rewards, then question scores are averaged with the number of expected
+    answer slots as weight. Trajectory-level format is applied once. Tool/step
+    fields remain in diagnostics unless the reward profile explicitly enables
+    them.
     """
     if not per_question_parts:
         total, gate = _combine_reward_parts(weights, trajectory_parts)
@@ -1775,8 +2252,9 @@ def _combine_multi_q_reward_parts(
         per_question_scores.append(q_score)
         per_question_gates.append(q_gate)
 
-    total = sum(per_question_scores) / len(per_question_scores)
-    gate = sum(per_question_gates) / len(per_question_gates)
+    q_weights = question_weights or [1.0] * len(per_question_parts)
+    total = _weighted_mean(per_question_scores, q_weights)
+    gate = _weighted_mean(per_question_gates, q_weights)
     active_keys = _active_reward_keys()
 
     for key, value in trajectory_parts.items():
@@ -2221,6 +2699,129 @@ def _score_one_question_events(
     }
 
 
+def _safe_float_or_none(value: Any) -> Optional[float]:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _mean_or_zero(values: List[float]) -> float:
+    return float(sum(values) / len(values)) if values else 0.0
+
+
+def _recall_range_and_post_answer_stats(
+    extra: Dict[str, Any],
+    questions: List[Dict[str, Any]],
+    per_q_answers: List[Any],
+) -> Dict[str, float]:
+    """Monitor recall ranges and the first answer after each recall call."""
+    chunk_kinds = [str(x or "") for x in _safe_list(extra.get("ts_chunk_kinds"))]
+    video_indices = _safe_list(extra.get("ts_chunk_video_indices"))
+    recall_ranges = _safe_list(extra.get("ts_recall_time_ranges"))
+    returned_chunks_all = _safe_list(extra.get("ts_recall_returned_chunks"))
+
+    request_spans: List[float] = []
+    returned_spans: List[float] = []
+    returned_counts: List[float] = []
+    back_gaps: List[float] = []
+    recall_chunks: List[int] = []
+
+    for i, kind in enumerate(chunk_kinds):
+        if kind != "recall":
+            continue
+        try:
+            current_chunk = int(video_indices[i]) if i < len(video_indices) else i
+        except (TypeError, ValueError):
+            current_chunk = i
+        recall_chunks.append(current_chunk)
+
+        raw_range = recall_ranges[i] if i < len(recall_ranges) else None
+        if isinstance(raw_range, dict):
+            start = _safe_float_or_none(raw_range.get("start_time"))
+            end = _safe_float_or_none(raw_range.get("end_time"))
+            if start is not None and end is not None:
+                request_spans.append(max(0.0, end - start))
+
+        raw_returned = returned_chunks_all[i] if i < len(returned_chunks_all) else []
+        returned: List[int] = []
+        for raw in _safe_list(raw_returned):
+            try:
+                returned.append(int(raw))
+            except (TypeError, ValueError):
+                continue
+        if returned:
+            returned = sorted(set(returned))
+            returned_counts.append(float(len(returned)))
+            returned_spans.append(float(max(returned) - min(returned) + 1))
+            back_gaps.append(float(current_chunk - max(returned)))
+        else:
+            returned_counts.append(0.0)
+
+    answer_events: List[Dict[str, Any]] = []
+    for q_idx, raw_events in enumerate(per_q_answers[:len(questions)]):
+        events = _safe_list(raw_events)
+        q = questions[q_idx]
+        per_emit = _safe_list(q.get("per_emit_answers"))
+        chunk_gold = {
+            int(e["chunk"]): str(e.get("value", q.get("gold_answer", "") or ""))
+            for e in per_emit
+            if isinstance(e, dict) and e.get("chunk") is not None
+        }
+        for ev in events:
+            if not isinstance(ev, dict):
+                continue
+            text = str(ev.get("text", "")).strip()
+            if not text:
+                continue
+            try:
+                chunk = int(ev.get("chunk", -1))
+            except (TypeError, ValueError):
+                chunk = -1
+            try:
+                expected_chunk = int(ev.get("expected_chunk"))
+            except (TypeError, ValueError):
+                expected_chunk = chunk
+            gold = chunk_gold.get(expected_chunk, str(q.get("gold_answer", "") or ""))
+            outcome = float(_score_outcome_by_form(
+                text,
+                options=_safe_list(q.get("options")),
+                correct_option=q.get("correct_option", ""),
+                gold_answer=gold,
+                answer_form=q.get("answer_form", "") or "",
+            ))
+            answer_events.append({
+                "chunk": chunk,
+                "q_idx": q_idx,
+                "outcome": outcome,
+            })
+    answer_events.sort(key=lambda x: (int(x.get("chunk", -1)), int(x.get("q_idx", -1))))
+
+    post_outcomes: List[float] = []
+    for recall_chunk in recall_chunks:
+        ev = next(
+            (x for x in answer_events if int(x.get("chunk", -1)) >= recall_chunk),
+            None,
+        )
+        if ev is not None:
+            post_outcomes.append(float(ev.get("outcome", 0.0)))
+
+    recall_count = float(len(recall_chunks))
+    post_count = float(len(post_outcomes))
+    return {
+        "recall_call_count": recall_count,
+        "recall_request_span_mean": _mean_or_zero(request_spans),
+        "recall_returned_span_mean": _mean_or_zero(returned_spans),
+        "recall_returned_count_mean": _mean_or_zero(returned_counts),
+        "recall_back_gap_mean": _mean_or_zero(back_gaps),
+        "post_recall_answer_count": post_count,
+        "post_recall_answer_rate": (
+            post_count / recall_count if recall_count > 0.0 else 0.0
+        ),
+        "post_recall_outcome_mean": _mean_or_zero(post_outcomes),
+    }
+
+
 def _compute_score_multi_q(
     rewards: Dict[str, Any],
     weights: Dict[str, float],
@@ -2228,14 +2829,15 @@ def _compute_score_multi_q(
     extra: Dict[str, Any],
     solution_str: str,
 ) -> Dict[str, float]:
-    """Score a multi-Q trajectory. Aggregate per-Q rewards by mean."""
+    """Score a multi-Q trajectory. Aggregate by expected answer slot."""
     trajectory_solution = _trajectory_solution_text(extra, solution_str)
     n_q = len(questions)
     if n_q == 0:
         return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
-                "answer_decision": 0.0, "format": 0.0, "spam": 0.0,
+                "answer_decision": 0.0, "format": 0.0,
                 "silent_quality": 0.0,
-                "n_questions": 0.0, "n_answered": 0.0}
+                "compress_quality": 0.0,
+                "n_questions": 0.0, "n_answers": 0.0, "n_answered": 0.0}
 
     # Per-Q answer attribution from the agent loop's extra_fields.
     per_q_chunk_raw = _safe_list(extra.get("ts_per_q_answer_chunk"))
@@ -2244,6 +2846,15 @@ def _compute_score_multi_q(
     per_q_chunk = list(per_q_chunk_raw) + [-1] * (n_q - len(per_q_chunk_raw))
     per_q_text = list(per_q_text_raw) + [""] * (n_q - len(per_q_text_raw))
     per_q_answers = list(per_q_answers_raw) + [[]] * (n_q - len(per_q_answers_raw))
+    horizon_chunk = _observed_horizon_chunk(extra)
+    scored_question_indices: List[int] = []
+    excluded_future = 0
+    for q_idx, q in enumerate(questions):
+        opportunity_chunks = _question_answer_opportunity_chunks(q)
+        if horizon_chunk is not None and opportunity_chunks and min(opportunity_chunks) > horizon_chunk:
+            excluded_future += 1
+            continue
+        scored_question_indices.append(q_idx)
 
     # Per-Q scoring.
     per_q_outcome: List[float] = []
@@ -2251,8 +2862,17 @@ def _compute_score_multi_q(
     per_q_decision: List[float] = []
     per_q_silent: List[float] = []
     per_q_parts: List[Dict[str, float]] = []
+    per_q_weights: List[float] = []
     n_answered = 0
-    for q_idx, q in enumerate(questions):
+    n_answered_total = 0
+    for answer_events_raw in per_q_answers[:n_q]:
+        if hasattr(answer_events_raw, "tolist"):
+            answer_events_raw = answer_events_raw.tolist()
+        if isinstance(answer_events_raw, (list, tuple)) and answer_events_raw:
+            n_answered_total += 1
+    for q_idx in scored_question_indices:
+        q = questions[q_idx]
+        per_q_weights.append(_answer_weight_for_question(q))
         answer_events = per_q_answers[q_idx]
         if hasattr(answer_events, "tolist"):
             answer_events = answer_events.tolist()
@@ -2281,36 +2901,28 @@ def _compute_score_multi_q(
             n_answered += 1
 
     # Trajectory-level aggregates.
-    avg_outcome = sum(per_q_outcome) / n_q
-    avg_timing = sum(per_q_timing) / n_q
-    avg_decision = sum(per_q_decision) / n_q
-    avg_silent = sum(per_q_silent) / n_q
+    avg_outcome = _weighted_mean(per_q_outcome, per_q_weights)
+    avg_timing = _weighted_mean(per_q_timing, per_q_weights)
+    avg_decision = _weighted_mean(per_q_decision, per_q_weights)
+    avg_silent = _weighted_mean(per_q_silent, per_q_weights)
 
-    # Format + spam are trajectory-level (not per-Q). Format is a minimal
+    # Format is trajectory-level (not per-Q). It is a minimal
     # framework-executability signal: parse/action-space/runtime time_range
     # validity, without gold range/query matching.
     fmt = float(_framework_format_score(extra, trajectory_solution))
-    tool_counts = _count_tool_calls(trajectory_solution)
-    try:
-        spam = float(rewards["spam"](
-            n_recall_calls=tool_counts["recall"],
-            n_compress_calls=tool_counts["compress"],
-        ))
-    except Exception:
-        spam = 0.0
 
     parts = {
         "outcome": avg_outcome,
         "answer_decision": avg_decision,
         "timing": avg_timing,
         "format": fmt,
-        "spam": spam,
         "silent_quality": avg_silent,
     }
     total, gate, per_q_scores = _combine_multi_q_reward_parts(
         weights,
         per_q_parts,
-        {"format": fmt, "spam": spam},
+        {"format": fmt},
+        question_weights=per_q_weights,
     )
     gold_action_per_chunk = extra.get("gold_action_per_chunk") or {}
     if not gold_action_per_chunk and extra.get("video_id"):
@@ -2332,6 +2944,12 @@ def _compute_score_multi_q(
     # Recall monitor — wandb-only, not reward (P7).
     for k, v in recall_audit.items():
         parts[k] = float(v)
+    parts.update(_recall_range_and_post_answer_stats(
+        extra,
+        questions,
+        per_q_answers,
+    ))
+    parts.update(_compute_compress_quality(extra))
 
     action_space_errors = [
         str(x) for x in _safe_list(extra.get("ts_chunk_action_space_errors"))
@@ -2349,11 +2967,16 @@ def _compute_score_multi_q(
         "score": total,
         **{k: float(v) for k, v in parts.items()},
         "outcome_gate": float(gate),
-        "n_questions": float(n_q),
+        "n_questions": float(len(scored_question_indices)),
+        "n_questions_total": float(n_q),
+        "n_questions_excluded_future": float(excluded_future),
+        "horizon_chunk": float(horizon_chunk if horizon_chunk is not None else -1),
+        "n_answers": float(sum(per_q_weights)),
         "n_answered": float(n_answered),
-        "per_q_outcome_min": float(min(per_q_outcome)),
-        "per_q_outcome_max": float(max(per_q_outcome)),
-        "trajectory_all_correct": float(min(per_q_outcome)),
+        "n_answered_total": float(n_answered_total),
+        "per_q_outcome_min": float(min(per_q_outcome)) if per_q_outcome else 0.0,
+        "per_q_outcome_max": float(max(per_q_outcome)) if per_q_outcome else 0.0,
+        "trajectory_all_correct": float(min(per_q_outcome)) if per_q_outcome else 0.0,
         "trajectory_mean_correct": float(avg_outcome),
         "per_q_reward_min": float(min(per_q_scores)) if per_q_scores else 0.0,
         "per_q_reward_max": float(max(per_q_scores)) if per_q_scores else 0.0,
@@ -2370,20 +2993,21 @@ def compute_score(
 
     Two modes, switched by data_source:
       - thinkstream_v12_streaming_multi_q: multi-Q trajectory; score every
-        question independently, aggregate by mean. Aligns with OVOBench
-        eval form.
+        question independently, aggregate by expected answer slot. Aligns
+        with OVOBench eval form.
       - thinkstream_v12_streaming (legacy): single (video, question)
         flatten; score one question with v12 5-component reward.
 
     Returns a dict so verl logs per-component rewards to wandb:
         {"score": <total>, "outcome": ..., "answer_decision": ...,
-         "timing": ..., "format": ..., "spam": ..., "silent_quality": ...}
+         "timing": ..., "format": ..., "silent_quality": ...,
+         "compress_quality": ...}
     """
     rewards, weights = _load_thinkstream_rewards()
     if not rewards:
         return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
-                "answer_decision": 0.0, "format": 0.0, "spam": 0.0,
-                "silent_quality": 0.0}
+                "answer_decision": 0.0, "format": 0.0,
+                "silent_quality": 0.0, "compress_quality": 0.0}
 
     extra = extra_info or {}
 
@@ -2505,8 +3129,6 @@ def compute_score(
             for idx, chunk in enumerate(chunks):
                 if re.search(r"</Response>\s*(.+?)\s*$", chunk, re.DOTALL):
                     answer_chunk = idx
-    tool_counts = _count_tool_calls(trajectory_solution)
-
     parts: Dict[str, float] = {}
     try:
         parts["outcome"] = rewards["outcome"](
@@ -2526,10 +3148,6 @@ def compute_score(
             has_answer=final_answer is not None and bool(str(final_answer).strip()),
         )
         parts["format"] = _framework_format_score(extra, trajectory_solution)
-        parts["spam"] = rewards["spam"](
-            n_recall_calls=tool_counts["recall"],
-            n_compress_calls=tool_counts["compress"],
-        )
         gold_action = ""
         if answer_chunk is not None:
             gold_action = (gold_action_per_chunk or {}).get(str(answer_chunk), "")
@@ -2539,8 +3157,8 @@ def compute_score(
     except Exception as e:
         logger.warning("v12 reward component failed: %s", e)
         return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
-                "answer_decision": 0.0, "format": 0.0, "spam": 0.0,
-                "silent_quality": 0.0}
+                "answer_decision": 0.0, "format": 0.0,
+                "silent_quality": 0.0, "compress_quality": 0.0}
 
     total, gate = _combine_reward_parts(weights, parts)
 
@@ -2557,6 +3175,7 @@ def compute_score(
     # Recall monitor — wandb-only, not reward (P7).
     for k, v in recall_audit.items():
         parts[k] = float(v)
+    parts.update(_compute_compress_quality(extra))
 
     action_space_errors = [
         str(x) for x in _safe_list(extra.get("ts_chunk_action_space_errors"))

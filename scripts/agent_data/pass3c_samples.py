@@ -85,6 +85,40 @@ PASS3C_POST_RECALL_THINK_ATTEMPTS = max(
 )
 
 
+def _use_post_recall_think_fallback(
+    *,
+    card: Dict,
+    recall_result: Dict,
+    response: str,
+    video_id: str,
+    chunk_idx: int,
+    action: str,
+) -> str:
+    """Deterministic fallback for post-recall visual thoughts.
+
+    This is deliberately narrower than falling back from a bad recall query or
+    empty recall result: the historical evidence has already been validated,
+    only the optional teacher-generated bridge sentence failed cleaning.
+    """
+    card_id = str((card or {}).get("card_id") or "")
+    fallback = _post_recall_think_for(
+        card or {},
+        recall_result or {},
+        response,
+        card_id=card_id,
+        chunk_idx=chunk_idx,
+    )
+    logger.warning(
+        "[%s] 3c post-recall think using deterministic fallback for "
+        "card=%s chunk=%s action=%s",
+        video_id,
+        card_id,
+        chunk_idx,
+        action,
+    )
+    return fallback
+
+
 # ---------------------------------------------------------------------------
 # Helpers — think text + response/recall payload generation
 # ---------------------------------------------------------------------------
@@ -2611,12 +2645,14 @@ async def generate_trajectory_samples(
                 not post_recall_think
                 and client is not None
                 and PASS3C_ENABLE_LLM_POST_RECALL_THINK
-                and not PASS3C_ALLOW_POST_RECALL_THINK_FALLBACK
             ):
-                raise ValueError(
-                    f"[{video_id}] teacher failed to generate non-empty "
-                    f"post-recall think for recall+silent card={card_id!r} "
-                    f"chunk={c}. Refusing to write empty/template think."
+                post_recall_think = _use_post_recall_think_fallback(
+                    card=card or {},
+                    recall_result=rr,
+                    response="",
+                    video_id=video_id,
+                    chunk_idx=c,
+                    action="silent",
                 )
             raw.append(_recall_silent_multiturn_sample(
                 c, _think_for_chunk(rollout, c), queries_state,
@@ -2696,12 +2732,14 @@ async def generate_trajectory_samples(
                 not post_recall_think
                 and client is not None
                 and PASS3C_ENABLE_LLM_POST_RECALL_THINK
-                and not PASS3C_ALLOW_POST_RECALL_THINK_FALLBACK
             ):
-                raise ValueError(
-                    f"[{video_id}] teacher failed to generate non-empty "
-                    f"post-recall think for recall+response card={card_id!r} "
-                    f"chunk={c}. Refusing to write empty/template think."
+                post_recall_think = _use_post_recall_think_fallback(
+                    card=card or {},
+                    recall_result=rr,
+                    response=resp,
+                    video_id=video_id,
+                    chunk_idx=c,
+                    action="response",
                 )
             raw.append(_recall_response_sample(
                 c, _think_for_chunk(rollout, c), resp, queries_state,

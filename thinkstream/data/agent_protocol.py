@@ -135,7 +135,11 @@ def _contains_compress_trigger(user_text: str) -> bool:
 
 
 def build_compress_trigger_user_input() -> str:
-    """Legacy marker for archived compression-trigger samples."""
+    """Legacy marker for archived compression-trigger samples.
+
+    New runtime/SFT paths keep compression triggers in controller metadata and
+    must not render this marker into model-visible user text.
+    """
     return COMPRESS_TRIGGER_TAG
 
 
@@ -816,7 +820,7 @@ _RECENT_THINK_LINE_RE = re.compile(r"^\s*\[([^\]]+)\]\s*(.*)$", re.DOTALL)
 
 
 def _memory_time_point(value: Any) -> Any:
-    text = str(value or "").strip()
+    text = "" if value is None else str(value).strip()
     if not text:
         return ""
     if "-" in text:
@@ -869,7 +873,7 @@ def _coerce_memory_think(item: Any) -> Dict[str, Any]:
 
 
 def _memory_line_sort_key(time_value: Any) -> tuple:
-    text = str(time_value or "").strip()
+    text = "" if time_value is None else str(time_value).strip()
     nums = re.findall(r"-?\d+(?:\.\d+)?", text)
     if not nums:
         return (float("inf"), float("inf"), text)
@@ -879,7 +883,7 @@ def _memory_line_sort_key(time_value: Any) -> tuple:
 
 
 def _memory_line(time_value: Any, text: Any) -> str:
-    ts = str(time_value or "").strip()
+    ts = "" if time_value is None else str(time_value).strip()
     body = " ".join(str(text or "").strip().split())
     if not ts or not body:
         return ""
@@ -944,6 +948,85 @@ def format_memory_block(memory: Dict) -> str:
 
     entries.sort(key=lambda item: item[0])
     return "\n".join(line for _, line in entries)
+
+
+def _xml_prompt_text(text: Any) -> str:
+    """Escape text embedded inside XML-ish memory-update prompt tags."""
+    return html.escape(" ".join(str(text or "").strip().split()), quote=False)
+
+
+def format_compact_memory_update_input(
+    memory: Dict,
+    *,
+    covered_range: Optional[Sequence[Any]] = None,
+) -> str:
+    """Format the text-only compact-memory update user payload.
+
+    Streaming turns render recent observations as historical ``<m>`` memory.
+    Compression turns are different: SFT trains them as
+    ``OLD_MEMORY`` + ``NEW_CAPTIONS`` where raw recent observations are ``<c>``
+    lines. Keeping that distinction prevents the model from treating new
+    captions as already-preserved old memory.
+    """
+    old_lines: List[str] = []
+    compressed = memory.get("compressed_segments", memory.get("compressed", []))
+    for seg in compressed or []:
+        if not isinstance(seg, dict):
+            continue
+        tr = prompt_time_range(seg.get("time_range", seg.get("t", "")))
+        if isinstance(tr, (list, tuple)) and len(tr) >= 2:
+            t_value = f"{tr[0]}-{tr[1]}"
+        else:
+            t_value = str(tr or "").strip()
+        body = _xml_prompt_text(seg.get("text", ""))
+        if t_value and body:
+            old_lines.append(f'  <m t="{t_value}">{body}</m>')
+    old_block = "<MEM>\n" + "\n".join(old_lines) + "\n</MEM>"
+
+    caption_lines: List[str] = []
+    caption_times: List[float] = []
+    recent = memory.get("recent_thinks", memory.get("recent_observations", []))
+    for item in recent or []:
+        rec = _coerce_memory_think(item)
+        body = _xml_prompt_text(rec.get("text", ""))
+        if not body:
+            continue
+        t_value = _memory_time_point(rec.get("time", ""))
+        if t_value == "":
+            continue
+        caption_lines.append(f'  <c t="{t_value}">{body}</c>')
+        try:
+            caption_times.append(float(t_value))
+        except (TypeError, ValueError):
+            pass
+    captions_block = "<NEW_CAPTIONS>\n" + "\n".join(caption_lines) + "\n</NEW_CAPTIONS>"
+
+    start: Any = ""
+    end: Any = ""
+    if covered_range is not None and len(covered_range) >= 2:
+        start = prompt_time_value(covered_range[0])
+        end = prompt_time_value(covered_range[1])
+    elif caption_times:
+        start_f = min(caption_times)
+        end_f = max(caption_times)
+        start = int(start_f) if start_f.is_integer() else start_f
+        end = int(end_f) if end_f.is_integer() else end_f
+    else:
+        start = end = 0
+
+    return (
+        "OLD_MEMORY:\n"
+        f"{old_block}\n\n"
+        "NEW_CAPTIONS:\n"
+        f"{captions_block}\n\n"
+        f"Covered latest span: t={start}-{end}\n"
+        "Coverage check: preserve useful OLD_MEMORY and cover the listed "
+        "NEW_CAPTIONS using their real timestamps.\n"
+        "Return only compact-memory XML lines:\n"
+        '<m t="start-end">one concise event or state.</m>\n'
+        "Do not output NEW_MEMORY:, markdown, prose, analysis, or any text "
+        "outside the <m> lines."
+    )
 
 
 def build_recall_result_user_content(
@@ -1477,6 +1560,29 @@ def _select_queries_for_prompt(
     return [q for _, q in selected[-limit:]]
 
 
+_HISTORY_NUM_RE = re.compile(r"-?\d+(?:\.\d+)?")
+
+
+def _response_history_answer_text(q: Dict, answer_text: str) -> str:
+    """Render prior answers in the active-query history.
+
+    The history is a model-visible control signal, not the raw audit log. For
+    cumulative numeric queries, keep it in the same surface form the active
+    query asks for: one number only. This prevents malformed outputs such as
+    ``1/1`` from becoming the next turn's exemplar.
+    """
+    text = str(answer_text or "").strip()
+    if str(q.get("answer_form") or "").strip().lower() != "number":
+        return text
+    match = _HISTORY_NUM_RE.search(text)
+    if not match:
+        return text
+    value = match.group(0)
+    if value.endswith(".0"):
+        value = value[:-2]
+    return value
+
+
 def format_queries_block(
     queries: List[Dict],
     *,
@@ -1536,9 +1642,15 @@ def format_queries_block(
             if isinstance(ans, dict):
                 if ans.get("counts_for_completion") is False:
                     continue
-                answers.append((ans.get("time", ask_t), str(ans.get("text", ""))))
+                answers.append((
+                    ans.get("time", ask_t),
+                    _response_history_answer_text(q, str(ans.get("text", ""))),
+                ))
             else:
-                answers.append((q.get("response_time", ask_t), str(ans)))
+                answers.append((
+                    q.get("response_time", ask_t),
+                    _response_history_answer_text(q, str(ans)),
+                ))
         answers.sort(key=lambda x: _query_time_key({"time": x[0]}))
     response_lines = []
     for t, text in answers:
@@ -2852,10 +2964,10 @@ def _parse_tool_call_json_fallback(raw: str) -> Optional[Dict[str, Any]]:
 
 
 def has_compress_trigger(user_text: str) -> bool:
-    """Check if a user message contains a system-injected <compress_trigger/>.
+    """Check if a user message contains a legacy <compress_trigger/>.
 
-    Used by training/eval to verify trigger→tool_call binding, and by the
-    rollout controller to know whether the assistant must emit compress.
+    Retained for archived data/parquet compatibility. New runtime/eval uses
+    explicit turn_kind/inter_chunk metadata instead of model-visible markers.
     """
     return _contains_compress_trigger(user_text)
 
@@ -2863,9 +2975,8 @@ def has_compress_trigger(user_text: str) -> bool:
 def extract_compress_trigger_range(user_text: str) -> Optional[List[int]]:
     """Extract a legacy trigger range if present.
 
-    Current v12 data uses boolean ``<compress_trigger/>`` and the assistant
-    emits compact-memory ``<m>`` lines. This parser is retained for archived
-    v11/v12.0 samples and eval fixtures that still carry a range attribute.
+    This parser is retained for archived v11/v12.0 samples and eval fixtures
+    that still carry a range attribute.
     """
     m = re.search(
         r"<compress_trigger\s+range\s*=\s*['\"]?(\d+)\s*-\s*(\d+)['\"]?\s*/?>",

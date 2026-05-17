@@ -7,7 +7,6 @@ Production components matching V12_REWARD_DICT_KEYS in gdpo_advantage.py:
 - outcome           binary correctness
 - answer_decision   answer/no-answer timing decision at answer slots
 - format            binary tag/JSON well-formedness
-- spam              additive penalty for excess tool calls
 
 ``timing`` and ``silent_quality`` remain as telemetry/back-compat helpers.
 
@@ -55,7 +54,7 @@ def compute_outcome_reward(
     can override the default fuzzy matcher.
 
     Anti-hacking: if final_answer length > 1000 chars, force 0
-    (DeepEyesV2 vl_agent.py:256 same defense vs reward-judge spam).
+    (same defense as DeepEyesV2 against judge manipulation).
     """
     if final_answer is None:
         return 0.0
@@ -170,24 +169,6 @@ def compute_format_reward(assistant_outputs: List[str]) -> float:
         if parsed.get("format_error"):
             return 0.0
     return 1.0
-
-
-def compute_spam_score(
-    n_recall_calls: int,
-    n_compress_calls: int,
-    *,
-    recall_budget: int = 1,
-    compress_budget: int = 1,
-) -> float:
-    """v12 spam SCORE (positive number; negate via weight).
-
-    Linear additive over budget (NOT super-linear) for stability.
-    Weight in V12_DEFAULT_REWARD_WEIGHTS["spam"] is NEGATIVE so this
-    score enters the final reward as a subtraction.
-    """
-    excess_recall = max(0, n_recall_calls - recall_budget)
-    excess_compress = max(0, n_compress_calls - compress_budget)
-    return 0.5 * excess_recall + 0.3 * excess_compress
 
 
 # compute_compress_quality_v12 / compute_recall_quality_v12 removed (v12.6).
@@ -581,8 +562,8 @@ def aggregate_advantages(
 
     outcome_advantage: GRPO-norm of `outcome` reward, grouped by video_uid
                        (broadcast: every chunk of one video gets same value)
-    state_advantage:   GRPO-norm of weighted sum of (answer_decision + format
-                       − spam), grouped per (uid, chunk_idx)
+    state_advantage:   GRPO-norm of weighted sum of (answer_decision + format),
+                       grouped per (uid, chunk_idx)
 
     α=0.7 default (ReMemR1's 0.8 is HotpotQA — ThinkStream skews lower
     because per-step signal is denser).
@@ -600,9 +581,7 @@ def aggregate_advantages(
     # so support_chunks-poor families (CR3/CR6/CR7) aren't masked-out.
     # compress_quality / recall_quality functions remain in this module for
     # legacy callers but are not aggregated into state advantage anymore.
-    state_components = [
-        "answer_decision", "format", "spam",
-    ]
+    state_components = ["answer_decision", "format"]
     state_sum = torch.zeros_like(outcome_adv)
     for k in state_components:
         if k not in rewards_per_func:

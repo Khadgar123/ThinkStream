@@ -36,15 +36,10 @@ import torch
 # Multi-level GRPO advantage aggregation (ReMemR1 ICLR'26 pattern):
 #   final_advantage = α · outcome_advantage + (1−α) · state_advantage
 #   outcome_advantage   = GRPO-norm(correctness, group_by=video_uid)
-#   state_advantage     = GRPO-norm(answer_decision + format − spam,
+#   state_advantage     = GRPO-norm(answer_decision + format,
 #                                   group_by=(video_uid, chunk_idx))
 #   default α = 0.7 (ReMemR1 default 0.8 is HotpotQA — ThinkStream has
 #   stronger per-step signal so we skew toward state).
-#
-# IMPORTANT — spam is ADDITIVE, NOT MULTIPLICATIVE.
-# DeepEyesV2's `(1 - search_penalty) * acc` shape under-penalises when
-# acc=0 (spam free) and over-penalises when acc=1 (already getting full
-# reward). Linear additive `−spam_w * spam_score` decouples cleanly.
 # v12.3 (Apr 2026) — REWARD STACK SIMPLIFICATION
 #
 # Audit driven by user pushback (chunk-level support_chunks gold loses
@@ -81,7 +76,6 @@ V12_REWARD_DICT_KEYS: tuple = (
     "outcome",          # 0/1 per-question correctness; dominant signal
     "answer_decision",  # slot/event answer timing: no reward for ordinary silence
     "format",           # 0/1 — tags balanced, JSON parses, exactly one terminal
-    "spam",             # >=0 — penalty for excess tool calls (additive)
 )
 
 _V12_PRODUCTION_WEIGHTS: Dict[str, float] = {
@@ -89,7 +83,6 @@ _V12_PRODUCTION_WEIGHTS: Dict[str, float] = {
     "answer_decision":  0.3,    # answer/no-answer timing decision at slots/events
     "format":           0.1,    # weak — gate-like; per DeepEyesV2 0.2 but lower since
                                 # answer_decision already shapes streaming timing
-    "spam":            -0.2,    # NEGATIVE — over-budget tool penalty (additive)
 }
 
 

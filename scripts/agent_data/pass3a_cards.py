@@ -92,7 +92,7 @@ BASIC_POST_VERIFY = (
 MAX_SLOT_RETRIES = int(os.environ.get("THINKSTREAM_PASS3A_MAX_SLOT_RETRIES", "1"))
 
 MC_OPTION_LETTERS = "ABCDE"
-MC_OPTION_COUNTS = {2, 3, 4, 5}
+MC_OPTION_COUNTS = {4, 5}
 _OPTION_LABEL_RE = re.compile(r"^\s*(?:\([A-E]\)|[A-E][\).:])\s*")
 _TEXT_TOKEN_RE = re.compile(r"[a-z0-9]+")
 _INTERNAL_TIME_REF_RE = re.compile(
@@ -869,7 +869,7 @@ def _verify_card_layers(
 
     Layer 1 — schema sanity:
       - has card_id, family, question, answer_form, gold_emits / canonical_answer
-      - MC: options is list of length 2-5; correct_option matches an option;
+      - MC: options is list of length 4-5; correct_option matches an option;
             options match the correct_option index
       - binary: gold_emits values in {Yes, No, yes, no}
       - number: gold_emits values are digit strings

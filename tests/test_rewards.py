@@ -1,15 +1,14 @@
 """v12.0 RL reward function smoke tests.
 
-Tests the 5 v12 reward components from thinkstream/trainer/grpo.py:
+Tests the v12 reward components from thinkstream/trainer/rewards.py:
 - outcome (binary correctness with anti-hacking)
+- answer_decision (answer/no-answer timing decision)
 - timing (bucket: early/-1, on-time/+1, late_partial/+0.5, missed/-0.5)
 - format (binary: all turns parse cleanly)
-- spam (additive penalty for excess tool calls)
-- compress_quality (range_iou + text_match for compress turns)
 
 Plus the multi-level GRPO advantage aggregation.
 
-Run: python tests/test_v12_rewards.py
+Run: python tests/test_rewards.py
 """
 
 import sys
@@ -150,30 +149,6 @@ def test_format_v12():
     print("✓ format_v12")
 
 
-def test_spam_v12():
-    from thinkstream.trainer.rewards import compute_spam_score as f
-
-    # Within budget: 0
-    assert f(n_recall_calls=1, n_compress_calls=1) == 0.0
-    assert f(n_recall_calls=0, n_compress_calls=0) == 0.0
-
-    # Excess recall: 0.5 each
-    assert f(n_recall_calls=2, n_compress_calls=1) == 0.5
-    assert f(n_recall_calls=3, n_compress_calls=1) == 1.0
-
-    # Excess compress: 0.3 each
-    assert f(n_recall_calls=1, n_compress_calls=2) == 0.3
-    assert f(n_recall_calls=1, n_compress_calls=3) == 0.6
-
-    # Both excess
-    assert f(n_recall_calls=2, n_compress_calls=2) == 0.8
-
-    # Custom budgets
-    assert f(n_recall_calls=2, n_compress_calls=0, recall_budget=2) == 0.0
-
-    print("✓ spam_v12")
-
-
 def test_v12_advantage_aggregation():
     """Test multi-level GRPO advantage: 2 videos × 4 rollouts each, 3 chunks per rollout."""
     from thinkstream.trainer.rewards import aggregate_advantages
@@ -204,7 +179,7 @@ def test_v12_advantage_aggregation():
             answer_decision[row] = 1.0
 
     rewards = {"outcome": outcome, "answer_decision": answer_decision,
-               "format": torch.ones(B), "spam": torch.zeros(B),
+               "format": torch.ones(B),
                "compress_quality": torch.zeros(B)}
     masks = {k: torch.ones(B) for k in rewards}
     masks["compress_quality"] = torch.zeros(B)  # no compress in test
@@ -257,8 +232,6 @@ def test_v12_reward_keys_match():
         f"key/weight mismatch: keys-only={keys_set - weights_set}, "
         f"weights-only={weights_set - keys_set}"
     )
-    # spam weight must be negative (additive penalty)
-    assert V12_DEFAULT_REWARD_WEIGHTS["spam"] < 0
     print("✓ v12 reward keys + weights consistency")
 
 
@@ -501,13 +474,11 @@ def test_recipe_reward_gates_positive_auxiliary_on_correct_answer():
         "outcome": 1.0,
         "answer_decision": 0.3,
         "format": 0.1,
-        "spam": -0.2,
     }
     parts = {
         "outcome": 0.0,
         "answer_decision": 1.0,
         "format": 1.0,
-        "spam": 0.0,
         "timing": 1.0,
         "silent_quality": 0.3,
     }
@@ -524,20 +495,17 @@ def test_recipe_reward_keeps_negative_auxiliary_when_answer_wrong():
         "outcome": 1.0,
         "answer_decision": 0.3,
         "format": 0.1,
-        "spam": -0.2,
     }
     parts = {
         "outcome": 0.0,
         "answer_decision": -1.0,
         "format": 1.0,
-        "spam": 2.0,
         "timing": -1.0,
         "silent_quality": -0.6,
     }
 
     score, gate = _combine_reward_parts(weights, parts)
     assert gate == 0.0
-    # Default initial profile excludes spam/tool shaping from the scalar reward.
     assert abs(score - (-0.3)) < 1e-6
 
 
@@ -548,13 +516,11 @@ def test_recipe_reward_allows_auxiliary_when_answer_correct():
         "outcome": 1.0,
         "answer_decision": 0.3,
         "format": 0.1,
-        "spam": -0.2,
     }
     parts = {
         "outcome": 1.0,
         "answer_decision": 1.0,
         "format": 1.0,
-        "spam": 0.0,
         "timing": 1.0,
         "silent_quality": 0.3,
     }
@@ -571,13 +537,11 @@ def test_recipe_reward_scales_auxiliary_on_partial_outcome():
         "outcome": 1.0,
         "answer_decision": 0.3,
         "format": 0.1,
-        "spam": -0.2,
     }
     parts = {
         "outcome": 0.5,
         "answer_decision": 1.0,
         "format": 1.0,
-        "spam": 0.0,
         "timing": 1.0,
         "silent_quality": 0.3,
     }
@@ -600,14 +564,12 @@ def test_recipe_multi_q_reward_gates_each_question_independently():
         "outcome": 1.0,
         "answer_decision": 0.3,
         "format": 0.1,
-        "spam": -0.2,
     }
     rewards = {
         "outcome": lambda *a, **k: 0.0,
         "timing": compute_timing_reward,
         "answer_decision": compute_answer_decision_reward,
         "format": lambda chunks: 1.0,
-        "spam": lambda **kwargs: 0.0,
         "silent_quality": compute_silent_quality,
     }
     questions = [
@@ -648,7 +610,7 @@ def test_recipe_multi_q_reward_gates_each_question_independently():
     )
 
     assert abs(res["outcome"] - (1 / 3)) < 1e-6, res
-    # Raw timing remains the mean over questions: Q1=1, Q2=1, Q3=-0.5.
+    # Raw timing is answer-weighted; here each question has one answer slot.
     assert abs(res["timing"] - 0.5) < 1e-6, res
     # answer_decision does not award dense normal silence; missed slots are -1.
     assert abs(res["answer_decision"] - (1 / 3)) < 1e-6, res
@@ -660,6 +622,132 @@ def test_recipe_multi_q_reward_gates_each_question_independently():
     # Mean question score = (1.3 + 0 - 0.3) / 3, plus format 0.1 * 1/3.
     expected = ((1.3 + 0.0 - 0.3) / 3.0) + (0.1 / 3.0)
     assert abs(res["score"] - expected) < 1e-6, res
+
+
+def test_recipe_multi_q_aggregates_by_expected_answer_slot():
+    from thinkstream.rl.thinkstream import _compute_score_multi_q
+    from thinkstream.trainer.rewards import (
+        compute_timing_reward,
+        compute_answer_decision_reward,
+        compute_silent_quality,
+    )
+
+    weights = {
+        "outcome": 1.0,
+        "answer_decision": 0.3,
+        "format": 0.1,
+    }
+    rewards = {
+        "outcome": lambda *a, **k: 0.0,
+        "timing": compute_timing_reward,
+        "answer_decision": compute_answer_decision_reward,
+        "format": lambda chunks: 1.0,
+        "silent_quality": compute_silent_quality,
+    }
+    questions = [
+        {
+            "gold_answer": "",
+            "answer_form": "short_exact",
+            "ask_chunks": [5],
+            "answer_chunks": [5, 10],
+            "per_emit_answers": [
+                {"chunk": 5, "value": "red"},
+                {"chunk": 10, "value": "blue"},
+            ],
+        },
+        {
+            "gold_answer": "yes",
+            "answer_form": "binary",
+            "ask_chunks": [20],
+            "answer_chunks": [20],
+        },
+    ]
+    extra = {
+        "ts_per_q_answer_chunk": [-1, 20],
+        "ts_per_q_answer_text": ["", "no"],
+        "ts_per_q_answers": [
+            [
+                {"chunk": 5, "text": "red"},
+                {"chunk": 10, "text": "wrong"},
+            ],
+            [{"chunk": 20, "text": "no"}],
+        ],
+    }
+
+    res = _compute_score_multi_q(
+        rewards,
+        weights,
+        questions,
+        extra,
+        "<think>ok</think></Response> no",
+    )
+
+    assert res["n_questions"] == 2.0, res
+    assert res["n_answers"] == 3.0, res
+    # Q1 has two answer slots with outcomes [1, 0], Q2 has one wrong answer.
+    assert abs(res["outcome"] - (1.0 / 3.0)) < 1e-6, res
+    assert abs(res["answer_decision"] - 1.0) < 1e-6, res
+    assert abs(res["outcome_gate"] - (1.0 / 3.0)) < 1e-6, res
+    # Per-answer score: (correct 1.3 + wrong 0 + wrong 0) / 3,
+    # plus trajectory format 0.1 gated by the answer-weighted outcome gate.
+    expected = (1.3 / 3.0) + (0.1 / 3.0)
+    assert abs(res["score"] - expected) < 1e-6, res
+
+
+def test_recipe_multi_q_ignores_future_questions_past_rollout_horizon():
+    from thinkstream.rl.thinkstream import _compute_score_multi_q
+    from thinkstream.trainer.rewards import (
+        compute_timing_reward,
+        compute_answer_decision_reward,
+        compute_silent_quality,
+    )
+
+    weights = {
+        "outcome": 1.0,
+        "answer_decision": 0.3,
+        "format": 0.1,
+    }
+    rewards = {
+        "outcome": lambda *a, **k: 0.0,
+        "timing": compute_timing_reward,
+        "answer_decision": compute_answer_decision_reward,
+        "format": lambda chunks: 1.0,
+        "silent_quality": compute_silent_quality,
+    }
+    questions = [
+        {
+            "gold_answer": "red",
+            "answer_form": "short_exact",
+            "ask_chunks": [5],
+            "answer_chunks": [5],
+        },
+        {
+            "gold_answer": "blue",
+            "answer_form": "short_exact",
+            "ask_chunks": [90],
+            "answer_chunks": [90],
+        },
+    ]
+    extra = {
+        "ts_chunk_video_indices": [0, 1, 2, 3, 4, 5],
+        "ts_per_q_answer_chunk": [5, -1],
+        "ts_per_q_answer_text": ["red", ""],
+        "ts_per_q_answers": [[], []],
+    }
+
+    res = _compute_score_multi_q(
+        rewards,
+        weights,
+        questions,
+        extra,
+        "<think>ok</think></Response> red",
+    )
+
+    assert res["n_questions"] == 1.0, res
+    assert res["n_questions_total"] == 2.0, res
+    assert res["n_questions_excluded_future"] == 1.0, res
+    assert res["n_answered"] == 1.0, res
+    assert res["outcome"] == 1.0, res
 
 
 def test_recipe_action_shaping_scores_system_compress_only():
@@ -721,6 +809,53 @@ def test_rl_recall_start_end_runtime_accepts_history_and_rejects_future():
         {"start_time": 31, "end_time": 99},
         current_chunk=31,
     )
+
+
+def test_segment_runtime_bounds_keep_late_absolute_chunks():
+    from thinkstream.rl.streaming_agent_loop import _runtime_chunk_bounds
+
+    # Full-video mode keeps the historical prefix cap semantics.
+    assert _runtime_chunk_bounds(
+        max_chunks=64,
+        n_chunks_dataset=200,
+        latest_ask_chunk=140,
+    ) == (0, 64)
+
+    # Segment mode uses absolute source-video chunk ids. MAX_CHUNKS is not an
+    # absolute time ceiling, otherwise a late segment would collapse to chunk 63
+    # and all current/recall frame paths would be resolved against the wrong
+    # part of the video.
+    assert _runtime_chunk_bounds(
+        max_chunks=64,
+        n_chunks_dataset=200,
+        segment_start_chunk=132,
+        segment_end_chunk=178,
+        latest_ask_chunk=140,
+    ) == (132, 179)
+
+    # Correctness-first windows that exceed segment_max_chunks should still be
+    # honored by runtime once the dataset has materialized them.
+    assert _runtime_chunk_bounds(
+        max_chunks=64,
+        n_chunks_dataset=200,
+        segment_start_chunk=0,
+        segment_end_chunk=198,
+    ) == (0, 199)
+
+
+def test_segment_recall_direct_frame_range_uses_absolute_past_chunks():
+    from thinkstream.rl.streaming_agent_loop import _recall_chunks_from_time_range
+
+    assert _recall_chunks_from_time_range(
+        (20, 24),
+        chunk_sec=1.0,
+        current_chunk=132,
+    ) == [20, 21, 22, 23, 24]
+    assert _recall_chunks_from_time_range(
+        (130, 140),
+        chunk_sec=1.0,
+        current_chunk=132,
+    ) == [130, 131]
 
 
 def _single_q_dataset_stub():
@@ -959,7 +1094,6 @@ if __name__ == "__main__":
     test_timing_v12()
     test_answer_decision_v12()
     test_format_v12()
-    test_spam_v12()
     test_silent_quality_v12()
     test_trajectory_outcome_v124_single_question()
     test_trajectory_outcome_v124_multi_question_mixed()
@@ -975,6 +1109,8 @@ if __name__ == "__main__":
     test_recipe_reward_allows_auxiliary_when_answer_correct()
     test_recipe_reward_scales_auxiliary_on_partial_outcome()
     test_recipe_multi_q_reward_gates_each_question_independently()
+    test_recipe_multi_q_aggregates_by_expected_answer_slot()
+    test_recipe_multi_q_ignores_future_questions_past_rollout_horizon()
     test_recipe_action_shaping_scores_system_compress_only()
     test_rl_episode_mode_segment_alias()
     test_rl_dataset_recovers_legacy_offline_compress_boundaries()

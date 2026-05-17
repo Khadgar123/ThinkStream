@@ -17,7 +17,7 @@ Public entry point:
     score_outcome_by_form(model_answer, *, options, correct_option,
                           gold_answer, answer_form) -> float (0.0/1.0)
 
-The dispatcher applies anti-spam guards (empty / >1000 chars → 0).
+The dispatcher applies anti-hacking guards (empty / >1000 chars → 0).
 
 Usage in eval:
     from thinkstream.trainer.outcome_match import (
@@ -63,6 +63,7 @@ def normalize_answer(s: str) -> str:
 
 
 _OPTION_LABEL_RE = re.compile(r"^\s*[A-Z][\).:]\s*")
+_EXPLICIT_OPTION_RE = re.compile(r"(?<![A-Za-z])[\(\[]?\s*([A-Z])\s*(?:[\)\]\.:]|$)")
 
 
 def _strip_option_label(s: str) -> str:
@@ -80,8 +81,9 @@ def match_mcq_answer(
 ) -> bool:
     """Liberal MCQ answer match. 4 strategies, short-circuit on first hit:
 
-    1. Leading character is the correct letter (e.g., "C", "C.", "(C)",
-       "C: option text"). Rejects "Cake" because the second char is alpha.
+    1. Explicit option label is the correct letter (e.g., "C", "C.",
+       "(C)", "C: option text"). A wrong explicit label is final, even if
+       its option text is shared with the gold option.
     2. Model output equals the correct option text, OR the correct
        option text appears as a substring of the model output.
        (One-way: ma in correct_text would let "b" match "ta**b**le".)
@@ -119,9 +121,29 @@ def match_mcq_answer(
     if correct_idx is not None and 0 <= correct_idx < len(options):
         correct_text = normalize_answer(_strip_option_label(options[correct_idx]))
 
-    # Strategy 1: exact / option-text-in-model-output.
+    if options:
+        n_valid_letters = len(options)
+    elif correct_idx is not None and correct_idx >= 0:
+        n_valid_letters = correct_idx + 1
+    else:
+        n_valid_letters = 0
+    valid_letters = {
+        chr(ord("a") + i)
+        for i in range(min(max(n_valid_letters, 0), 26))
+    }
+
+    # Strategy 1: explicit option-letter output. If the model emits an option
+    # label, that label is the answer; do not let shared option text such as
+    # "Unable to answer" override a wrong letter.
+    explicit = _EXPLICIT_OPTION_RE.search(str(model_answer or ""))
+    if explicit:
+        letter = explicit.group(1).lower()
+        if letter in valid_letters and correct_letter:
+            return letter == correct_letter
+
+    # Strategy 2: exact / option-text-in-model-output.
     #
-    # Do this before leading-letter matching. Some correct option texts start
+    # Do this after explicit-label matching. Some correct option texts start
     # with an article or literal capital letter, e.g. "A money bag". Treating
     # the leading "A " as an option-letter prediction would incorrectly reject
     # the gold text when the correct option is not A.
@@ -135,27 +157,6 @@ def match_mcq_answer(
         if ga and len(ga) >= 2 and (ma == ga or ga in ma):
             return True
         if ga and len(ga) < 2 and ma == ga:
-            return True
-
-    # Strategy 2: leading-letter match.
-    leading = ma.lstrip("([").lstrip()
-    # Legacy/generated edge case: a MCQ row may carry only correct_option
-    # without the full options list. Letter matching must still work so old
-    # rows do not fall through to descriptive matching.
-    if options:
-        n_valid_letters = len(options)
-    elif correct_idx is not None and correct_idx >= 0:
-        n_valid_letters = correct_idx + 1
-    else:
-        n_valid_letters = 0
-    valid_letters = {
-        chr(ord("a") + i)
-        for i in range(min(max(n_valid_letters, 0), 26))
-    }
-    if leading and correct_letter and leading[0] in valid_letters:
-        if len(leading) == 1 or not leading[1].isalpha():
-            if leading[0] != correct_letter:
-                return False
             return True
 
     # Strategy 3: any option's text matches.

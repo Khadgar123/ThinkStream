@@ -23,7 +23,6 @@ METRIC_KEYS = (
     "answer_decision",
     "timing",
     "format",
-    "spam",
     "silent_quality",
     "outcome_gate",
     "trajectory_all_correct",
@@ -35,6 +34,14 @@ METRIC_KEYS = (
     "per_chunk_action_avg",
     "recall_align_rate",
     "recall_runtime_ok_rate",
+    "recall_call_count",
+    "recall_request_span_mean",
+    "recall_returned_span_mean",
+    "recall_returned_count_mean",
+    "recall_back_gap_mean",
+    "post_recall_answer_count",
+    "post_recall_answer_rate",
+    "post_recall_outcome_mean",
     "action_space",
 )
 
@@ -84,6 +91,42 @@ def _questions_from_row(row: Dict[str, Any]) -> List[Dict[str, Any]]:
     return []
 
 
+def _response_for_audit(row: Dict[str, Any]) -> tuple[str, str, str]:
+    """Return response text used for audit summaries.
+
+    New validation dumps store raw assistant text plus parser output. For those
+    rows, audit reports must use ``parsed_response`` only. Legacy dumps did not
+    preserve raw tags, so they are marked separately instead of being presented
+    as parsed protocol output.
+    """
+    if "parsed_response" in row or "parsed_kind" in row:
+        return (
+            str(row.get("parsed_response") or ""),
+            "parsed_response",
+            str(row.get("parsed_format_error") or ""),
+        )
+
+    raw_output = row.get("raw_output")
+    if raw_output is not None:
+        try:
+            from thinkstream.data.agent_protocol import parse_agent_output
+
+            parsed = parse_agent_output(
+                str(raw_output or ""),
+                allow_bare_answer=True,
+                allow_bare_memory=True,
+            )
+            return (
+                str(parsed.get("answer_text") or ""),
+                "parsed_raw_output",
+                str(parsed.get("format_error") or ""),
+            )
+        except Exception as exc:  # pragma: no cover - summary should remain usable.
+            return "", "parse_unavailable", str(exc)
+
+    return "", "legacy_no_parsed_response", ""
+
+
 def _task_for_questions(questions: List[Dict[str, Any]]) -> str:
     if not questions:
         return "unknown"
@@ -107,6 +150,9 @@ def _new_bucket() -> Dict[str, Any]:
         "trajectories": 0,
         "questions": 0,
         "answered": 0.0,
+        "parsed_response_nonempty": 0,
+        "parsed_format_error": 0,
+        "response_text_source": defaultdict(int),
         "metric_values": defaultdict(list),
         "metric_weighted_sum": defaultdict(float),
         "metric_weight": defaultdict(float),
@@ -118,6 +164,12 @@ def _add(bucket: Dict[str, Any], row: Dict[str, Any], n_questions: int) -> None:
     bucket["trajectories"] += 1
     bucket["questions"] += weight
     bucket["answered"] += _as_float(row.get("n_answered"), 0.0)
+    response_text, response_source, parse_error = _response_for_audit(row)
+    bucket["response_text_source"][response_source] += 1
+    if response_text.strip():
+        bucket["parsed_response_nonempty"] += 1
+    if parse_error:
+        bucket["parsed_format_error"] += 1
     for key in METRIC_KEYS:
         if key not in row:
             continue
@@ -140,6 +192,15 @@ def _finalize_bucket(bucket: Dict[str, Any]) -> Dict[str, Any]:
             float(bucket["answered"]) / float(bucket["questions"])
             if bucket["questions"] else 0.0
         ),
+        "parsed_response_rate": (
+            float(bucket["parsed_response_nonempty"]) / float(bucket["trajectories"])
+            if bucket["trajectories"] else 0.0
+        ),
+        "parsed_format_error_rate": (
+            float(bucket["parsed_format_error"]) / float(bucket["trajectories"])
+            if bucket["trajectories"] else 0.0
+        ),
+        "response_text_source": dict(bucket["response_text_source"]),
     }
     for key, values in bucket["metric_values"].items():
         out[f"{key}_mean"] = _mean([float(v) for v in values])
@@ -222,16 +283,26 @@ def summarize(
                 "content_acc": overall_final.get("trajectory_mean_correct_question_weighted", 0.0),
                 "all_correct_rate": overall_final.get("trajectory_all_correct_mean", 0.0),
                 "answered_rate": overall_final.get("answered_rate", 0.0),
+                "parsed_response_rate": overall_final.get("parsed_response_rate", 0.0),
+                "response_text_source": overall_final.get("response_text_source", {}),
                 "answer_decision": overall_final.get("answer_decision_question_weighted", 0.0),
             },
             "format_runtime": {
                 "format": overall_final.get("format_mean", 0.0),
                 "action_space": overall_final.get("action_space_mean", 0.0),
                 "per_chunk_action_avg": overall_final.get("per_chunk_action_avg_mean", None),
+                "parsed_format_error_rate": overall_final.get("parsed_format_error_rate", 0.0),
             },
             "recall": {
                 "align_rate": overall_final.get("recall_align_rate_mean", None),
                 "runtime_ok_rate": overall_final.get("recall_runtime_ok_rate_mean", None),
+                "call_count_mean": overall_final.get("recall_call_count_mean", None),
+                "request_span_mean": overall_final.get("recall_request_span_mean_mean", None),
+                "returned_span_mean": overall_final.get("recall_returned_span_mean_mean", None),
+                "returned_count_mean": overall_final.get("recall_returned_count_mean_mean", None),
+                "back_gap_mean": overall_final.get("recall_back_gap_mean_mean", None),
+                "post_answer_rate": overall_final.get("post_recall_answer_rate_mean", None),
+                "post_outcome": overall_final.get("post_recall_outcome_mean_mean", None),
             },
         },
     }

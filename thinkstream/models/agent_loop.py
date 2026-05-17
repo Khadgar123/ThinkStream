@@ -30,6 +30,7 @@ from thinkstream.data.agent_protocol import (
     build_recall_result_user_content,
     build_user_content,
     canonical_answer_instruction,
+    format_compact_memory_update_input,
     format_memory_block,
     normalize_frame_protocol,
     normalize_render_layout,
@@ -681,7 +682,10 @@ def build_single_step_messages(
     recalled-answer context and the visual sliding window.
     """
     layout = normalize_render_layout(render_layout)
-    memory_text = format_memory_block(snapshot)
+    if inter_chunk:
+        memory_text = format_compact_memory_update_input(snapshot)
+    else:
+        memory_text = format_memory_block(snapshot)
     post_recall = bool(recall_result or recalled_frames) and not inter_chunk
     if post_recall:
         # A post-recall turn has no new current chunk. It contains only the
@@ -1013,10 +1017,10 @@ class StreamingAgentLoop:
                          thinkstream.models.retrieval. Takes precedence over
                          retrieve_fn.
             compress_mode: "system" (default, used by SFT eval) — when
-                memory.should_compress() fires, system inserts a bare
-                <compress_trigger/> as a memory-pressure signal; the compact
-                memory turn uses its own system prompt and emits bare
-                <m t="...">...</m> lines.
+                memory.should_compress() fires, the controller starts a
+                compact-memory turn with its own system prompt; the trigger is
+                metadata only and the model emits bare <m t="...">...</m>
+                lines.
                 "self" (used by RL eval after GDPO) — system never
                 inserts a trigger; the model decides autonomously when
                 to emit a compress tool call and which range to
@@ -1226,10 +1230,10 @@ class StreamingAgentLoop:
         # v11.3: range size is token-driven via select_compress_range_by_tokens
         # (was hardcoded to COMPRESS_RANGE_MIN=4). Pass2 already enumerated
         # variable ranges in [4, 8] via score_range_for_compression; agent_loop
-        # now matches that variability so inference and training agree on
-        # the policy. v12.12+ injects only a bare <compress_trigger/>; the
-        # model derives and emits time_range inside the compress tool_call.
-        compress_trigger = ""
+        # now matches that variability so inference and training agree on the
+        # policy. The trigger is controller metadata only; compact-memory turns
+        # must not expose a model-visible <compress_trigger/> sentinel.
+        compress_triggered = False
         # v9.4.2: telemetry for streaming eval — record state at the moment
         # compression FIRES so eval can stat: how many thinks were buffered
         # (vs the 480-tok / 4-think threshold) and which chunks got rolled
@@ -1247,11 +1251,11 @@ class StreamingAgentLoop:
             oldest = self.memory.recent_thinks[:n_to_compress] if n_to_compress > 0 else []
             if oldest:
                 chunks = self.memory.chunks_for_items(oldest)
-                # Trigger carries no range. The compact-memory system prompt
-                # sees the visible <m> lines and emits replacement <m> lines.
-                # Telemetry still uses `chunks` computed by the system range
-                # policy as the oracle target.
-                compress_trigger = "<compress_trigger/>"
+                # The compact-memory system prompt sees the visible <m> lines
+                # and emits replacement <m> lines. Telemetry still uses
+                # `chunks` computed by the system range policy as the oracle
+                # target.
+                compress_triggered = True
                 _compress_telemetry = {
                     "thinks_count_at_trigger": len(self.memory.recent_thinks),
                     "thinks_token_count": self.memory.count_recent_tokens(),
@@ -1277,19 +1281,19 @@ class StreamingAgentLoop:
 
         # 3. Determine user_input
         user_input = ""
-        if compress_trigger:
+        if compress_triggered:
             # Compression is a system memory-management turn. It preempts
             # visual/question turns and does not consume the current video
             # chunk; callers that maintain their own chunk cursor should retry
             # this chunk after a successful compression.
-            user_input = compress_trigger
+            user_input = ""
         elif user_question:
             user_input = user_question
 
         # 4. Build single-step messages (matching training format).
         # When compression fires, mark inter_chunk=True so the prompt uses the
         # compression-only system prompt and omits query/visual context.
-        is_inter_chunk = bool(compress_trigger)
+        is_inter_chunk = compress_triggered
         snapshot = (
             full_snapshot
             if is_inter_chunk
@@ -1620,10 +1624,10 @@ class StreamingAgentLoop:
                 format_ok = bool(payload.get("memory_entries") or payload.get("memory_text"))
         parsed["format_ok"] = format_ok
 
-        # 4. compress_succeeded: when a <compress_trigger> was injected, did
-        #    the model emit action=compress with valid compact memory? Failure =
-        #    trigger ignored or summary unparseable. Only meaningful when
-        #    compress_telemetry is set.
+        # 4. compress_succeeded: when controller-triggered compression fires,
+        #    did the model emit action=compress with valid compact memory?
+        #    Failure = trigger ignored or summary unparseable. Only meaningful
+        #    when compress_telemetry is set.
         if _compress_telemetry is not None:
             parsed["compress_succeeded"] = (
                 action == "compress"

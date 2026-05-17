@@ -91,7 +91,7 @@ class VideoTrajectoryState:
     # Question/answer tracking
     pending_queries: List[Dict] = field(default_factory=list)  # {q, ask_chunk}
     answered_queries: List[Dict] = field(default_factory=list) # {q, a, ask, resp_chunk}
-    # Tool usage tracking (for spam reward + diagnostic)
+    # Tool usage tracking for diagnostics.
     n_recall_calls: int = 0
     n_compress_calls: int = 0
     # Final answer + when emitted (for outcome+timing reward)
@@ -140,7 +140,7 @@ class ChunkLevelRolloutLoop:
             For real training, wraps vLLM.generate. For tests, returns canned strings.
         build_messages_fn(state, video_meta) -> messages list for chat_template.
             For v12, this includes <visual_window>, <memory>, active-query state,
-            optional <compress_trigger>, and the user_input for any pending Q.
+            compression-turn metadata, and the user_input for any pending Q.
         update_state_fn(state, response_text, chunk_idx) -> updated state.
             Parses the response (parse_agent_output), updates memory based
             on action kind. Pure function over input state.
@@ -275,7 +275,7 @@ def default_update_state(
         # injected into memory (recent_thinks or a new "recall_result"
         # field) for the NEXT chunk's prompt. That side-effect is the
         # caller's responsibility (see eval/streaming_vllm.py). Here we
-        # only track the call count for spam reward.
+        # only track the call count for diagnostics.
 
     elif kind == "compress":
         new_state.n_compress_calls += 1

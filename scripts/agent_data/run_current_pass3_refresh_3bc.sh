@@ -170,6 +170,8 @@ for batch in ${BATCHES}; do
     echo "run_id=${RUN_ID}"
     echo "force_rerun_from=3b"
     echo "skip_pass=1 2"
+    echo "allow_stale_pass2_cache=1"
+    echo "allow_stale_pass3_cache=1"
     echo "run_pass45=${RUN_PASS45}"
   } | tee "${batch_log}"
 
@@ -179,6 +181,8 @@ for batch in ${BATCHES}; do
     "THINKSTREAM_DATA_ROOT=${batch_root}"
     "AGENT_DATA_DIR=${batch_root}"
     "THINKSTREAM_BATCH=${batch}"
+    "THINKSTREAM_ALLOW_STALE_PASS2_CACHE=1"
+    "THINKSTREAM_ALLOW_STALE_PASS3_CACHE=1"
   )
   if [[ "${RUN_PASS45}" != "1" ]]; then
     pipeline_env+=("SKIP_PASS45=1")

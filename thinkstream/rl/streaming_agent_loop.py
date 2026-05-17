@@ -63,8 +63,8 @@
 #      Qwen video block with explicit video_metadata. Both carry real time.
 #   3. Frame timestamps/metadata use frame_idx / fps, where
 #      frame_idx = window_start*FPC + i.
-#   4. Compress turn uses a compression-only system prompt plus bare
-#      <compress_trigger/> (v12.12: no range). It carries memory only:
+#   4. Compress turn uses a compression-only system prompt. It carries memory
+#      only:
 #      active_query, current timestamp, and media carriers are suppressed so
 #      SFT/RL/eval share the same text-only compression payload.
 #   5. Recall tool result renders one short plain status line followed by
@@ -92,9 +92,13 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 import os
 import re
+import subprocess
+import html
 from copy import deepcopy
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 from uuid import uuid4
@@ -102,8 +106,8 @@ from uuid import uuid4
 from thinkstream.data.agent_protocol import (
     RECALL_RETURN_CHUNKS,
     build_recalled_frames_metadata,
+    project_frame_filename,
     recall_time_string_for_chunks,
-    resolve_chunk_frame_paths,
     select_recall_chunks_uniform,
 )
 
@@ -165,17 +169,169 @@ def _resolve_frame_dir(video_path: str, frames_root: str) -> Optional[Path]:
     # Batch frames normally live at frames/<video_stem>/, while OVO keeps the
     # original relative layout, e.g. frames/Ego4D/clips/<video_stem>/.
     candidates = [
-        root / vp.parent,
         root / vp.with_suffix(""),
         root / vp.stem,
         root / vp.with_suffix("").name,
+        root / vp.parent,
     ]
     for c in candidates:
-        if c.exists() and c.is_dir():
+        if c.exists() and c.is_dir() and any(c.glob("frame_*.jpg")):
             return c
     if any(root.glob("frame_*.jpg")):
         return root
     return None
+
+
+def _resolve_video_file(video_path: str, frames_root: str) -> Optional[Path]:
+    """Find the source video file when a pre-extracted frame cache needs FPS inference."""
+    if not video_path:
+        return None
+    vp = Path(video_path)
+    candidates: List[Path] = []
+    if vp.is_absolute():
+        candidates.append(vp)
+    else:
+        for root_value in (
+            os.environ.get("THINKSTREAM_VIDEO_ROOT", ""),
+            os.environ.get("VIDEO_ROOT", ""),
+        ):
+            if root_value:
+                candidates.append(Path(root_value) / vp)
+        if frames_root:
+            root = Path(frames_root)
+            candidates.extend([
+                root.parent / vp,
+                root.parent / "videos" / vp,
+                root.parent / "chunked_videos" / vp,
+                root.parent.parent / vp,
+            ])
+    for candidate in candidates:
+        if candidate.exists() and candidate.is_file():
+            return candidate
+    return None
+
+
+@lru_cache(maxsize=4096)
+def _frame_cache_max_number(frame_dir: str) -> int:
+    max_no = 0
+    for fp in Path(frame_dir).glob("frame_*.jpg"):
+        raw = fp.stem[6:] if fp.stem.startswith("frame_") else fp.stem
+        if raw.isdigit():
+            max_no = max(max_no, int(raw))
+    return max_no
+
+
+@lru_cache(maxsize=4096)
+def _video_duration_seconds(video_path: str) -> float:
+    try:
+        proc = subprocess.run(
+            [
+                "ffprobe",
+                "-v",
+                "error",
+                "-show_entries",
+                "format=duration",
+                "-of",
+                "default=nw=1:nk=1",
+                video_path,
+            ],
+            check=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+            timeout=5,
+        )
+        if proc.returncode == 0:
+            return float((proc.stdout or "").strip() or 0.0)
+    except Exception:
+        return 0.0
+    return 0.0
+
+
+def _configured_source_frames_per_chunk(chunk_sec: float) -> int:
+    raw = os.environ.get("THINKSTREAM_SOURCE_FRAMES_PER_CHUNK", "")
+    try:
+        value = int(raw or "0")
+    except ValueError:
+        value = 0
+    if value > 0:
+        return value
+    raw_fps = os.environ.get("THINKSTREAM_SOURCE_FRAME_FPS", "")
+    try:
+        fps = float(raw_fps or "0")
+    except ValueError:
+        fps = 0.0
+    if fps > 0:
+        return max(1, min(8, int(round(fps * float(chunk_sec)))))
+    return 0
+
+
+def _effective_source_frames_per_chunk(
+    video_path: str,
+    frames_root: str,
+    frame_dir: Path,
+    *,
+    chunk_idx: int,
+    target_frames_per_chunk: int,
+    chunk_sec: float,
+) -> int:
+    configured = _configured_source_frames_per_chunk(chunk_sec)
+    if configured > 0:
+        return configured
+
+    fps_marker = frame_dir / ".fps"
+    if fps_marker.exists():
+        try:
+            fps = float(fps_marker.read_text().strip())
+            if fps > 0:
+                return max(1, min(8, int(round(fps * float(chunk_sec)))))
+        except Exception:
+            pass
+
+    max_frame_no = _frame_cache_max_number(str(frame_dir))
+    video_file = _resolve_video_file(video_path, frames_root)
+    duration = _video_duration_seconds(str(video_file)) if video_file else 0.0
+    if duration > 0 and max_frame_no > 0:
+        fps = max_frame_no / duration
+        return max(1, min(8, int(round(fps * float(chunk_sec)))))
+
+    # Last-resort inference is only safe once the configured target FPC would
+    # already run past the cache. Early chunks can otherwise make 1fps caches
+    # look like high-fps caches.
+    target_fpc = max(1, int(target_frames_per_chunk))
+    if max_frame_no > 0:
+        need_default = int(chunk_idx) * target_fpc + target_fpc
+        if max_frame_no < need_default:
+            ratio = max_frame_no / max(1, int(chunk_idx) + 1)
+            return max(1, min(8, int(round(ratio))))
+    return target_fpc
+
+
+def _selected_source_frame_offsets(
+    source_frames_per_chunk: int,
+    target_frames_per_chunk: int,
+) -> List[int]:
+    source_fpc = max(1, int(source_frames_per_chunk))
+    target_fpc = max(1, int(target_frames_per_chunk))
+    if target_fpc == 1:
+        return [source_fpc // 2]
+    return [
+        min(source_fpc - 1, int(round(i * (source_fpc - 1) / max(1, target_fpc - 1))))
+        for i in range(target_fpc)
+    ]
+
+
+def _resolve_source_frame(frame_dir: Path, zero_idx: int) -> Optional[Path]:
+    candidates = [
+        frame_dir / project_frame_filename(zero_idx, width=6),
+        frame_dir / project_frame_filename(zero_idx, width=5),
+        frame_dir / project_frame_filename(zero_idx, width=4),
+        frame_dir / f"frame_{zero_idx:06d}.jpg",
+        frame_dir / f"frame_{zero_idx:05d}.jpg",
+        frame_dir / f"{zero_idx:06d}.jpg",
+        frame_dir / f"{zero_idx:05d}.jpg",
+    ]
+    return next((p for p in candidates if p.exists()), None)
 
 
 def _chunk_frame_paths(
@@ -183,21 +339,31 @@ def _chunk_frame_paths(
     frames_root: str,
     chunk_idx: int,
     frames_per_chunk: int = 2,
+    chunk_sec: float = 1.0,
 ) -> List[str]:
     """Return absolute frame_path strings for chunk `chunk_idx`.
 
-    Frame numbering matches SFT (pass5_messages.py:134, pipeline.py:321):
-      frame_{ci * FPC + fi + 1:06d}.jpg     (1-indexed!)
-    Returns [] if any frame is missing — caller falls back to text-only.
+    The logical runtime chunk is always `chunk_idx`, but OVO frame caches may be
+    1fps while SFT/RL caches are normally 2fps. Infer the source cache FPC per
+    video and sample/duplicate frames into the target runtime FPC.
     """
     frame_dir = _resolve_frame_dir(video_path, frames_root)
     if frame_dir is None:
         return []
-    return resolve_chunk_frame_paths(
+    source_fpc = _effective_source_frames_per_chunk(
+        video_path,
+        frames_root,
         frame_dir,
-        chunk_idx,
-        frames_per_chunk=frames_per_chunk,
+        chunk_idx=chunk_idx,
+        target_frames_per_chunk=frames_per_chunk,
+        chunk_sec=chunk_sec,
     )
+    out: List[str] = []
+    for offset in _selected_source_frame_offsets(source_fpc, frames_per_chunk):
+        fp = _resolve_source_frame(frame_dir, int(chunk_idx) * source_fpc + offset)
+        if fp is not None:
+            out.append(str(fp))
+    return out
 
 
 def _build_visual_window(
@@ -215,11 +381,168 @@ def _build_visual_window(
       flat_paths:     current chunk frame paths only (2 frames)
       window_start_chunk, window_end_chunk
     """
-    del visual_window_chunks, chunk_sec, mode
-    cf = _chunk_frame_paths(video_path, frames_root, chunk_idx, frames_per_chunk)
+    del visual_window_chunks, mode
+    cf = _chunk_frame_paths(
+        video_path,
+        frames_root,
+        chunk_idx,
+        frames_per_chunk,
+        chunk_sec,
+    )
     if not cf:
         return [], chunk_idx, chunk_idx
     return list(cf), chunk_idx, chunk_idx
+
+
+def _fallback_compress_memory_text(
+    output_text: str,
+    compress_range: Optional[Tuple[int, int]],
+) -> Optional[str]:
+    """Coerce common malformed compress outputs into one compact-memory line.
+
+    This is intentionally a runtime parser fallback, not a new target format:
+    if a compress turn emits a plain English summary, optionally with a stray
+    closing ``</m>``, use the controller-known compress range to wrap it in
+    canonical compact-memory XML so the rollout can continue.
+    """
+    if compress_range is None:
+        return None
+    text = str(output_text or "").strip()
+    if not text:
+        return None
+
+    # Drop chat-template sentinels and protocol wrappers that sometimes leak
+    # into failed compress generations. Keep the semantic summary text.
+    text = re.sub(r"<\|[^>]+?\|>", " ", text)
+    text = re.sub(r"<think>(.*?)</think>", r" \1 ", text, flags=re.DOTALL | re.IGNORECASE)
+    text = re.sub(r"</?MEM>", " ", text, flags=re.IGNORECASE)
+    text = re.sub(r"</?m\b[^>]*>", " ", text, flags=re.IGNORECASE)
+    text = re.sub(r"</?(?:Response|Silence)>", " ", text, flags=re.IGNORECASE)
+    text = re.sub(r"<compress_trigger\s*/?>", " ", text, flags=re.IGNORECASE)
+    text = re.sub(r"<tool_call>.*?</tool_call>", " ", text, flags=re.DOTALL | re.IGNORECASE)
+    text = " ".join(text.split())
+    if not text:
+        return None
+
+    start, end = int(compress_range[0]), int(compress_range[1])
+    if end < start:
+        start, end = end, start
+    return f'<m t="{start}-{end}">{html.escape(text, quote=False)}</m>'
+
+
+_COMPACT_MEMORY_LINE_RE = re.compile(
+    r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>(.*?)</m>',
+    re.DOTALL | re.IGNORECASE,
+)
+_COMPACT_MEMORY_OPEN_RE = re.compile(
+    r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>',
+    re.IGNORECASE,
+)
+_COMPACT_MEMORY_ANY_LINE_RE = re.compile(
+    r"<m\b[^>]*>(.*?)</m>",
+    re.DOTALL | re.IGNORECASE,
+)
+
+
+def _clean_repaired_memory_body(text: str) -> str:
+    """Clean a truncated compact-memory body before re-closing its tag."""
+    body = str(text or "").strip()
+    if not body:
+        return ""
+    for marker in (
+        "<|im_end|>",
+        "<|endoftext|>",
+        "<|im_start|>",
+        "</Response>",
+        "</Silence>",
+        "<tool_call>",
+        "</MEM>",
+    ):
+        pos = body.find(marker)
+        if pos >= 0:
+            body = body[:pos]
+    body = re.sub(r"<\|[^>]+?\|>", " ", body)
+    body = re.sub(r"</?MEM>", " ", body, flags=re.IGNORECASE)
+    body = re.sub(r"</?m\b[^>]*>", " ", body, flags=re.IGNORECASE)
+    body = re.sub(r"</?(?:Response|Silence)>", " ", body, flags=re.IGNORECASE)
+    body = re.sub(r"<tool_call>.*", " ", body, flags=re.DOTALL | re.IGNORECASE)
+    body = " ".join(body.split())
+    return html.escape(body, quote=False)
+
+
+def _repair_compact_memory_text(
+    output_text: str,
+    compress_range: Optional[Tuple[int, int]] = None,
+) -> Optional[str]:
+    """Return valid bare ``<m>`` lines, repairing one truncated tail line.
+
+    ``parse_agent_output(..., allow_bare_memory=True)`` accepts any complete
+    compact-memory lines it can find. With max-token truncation, that silently
+    drops the last unclosed ``<m>`` line. This helper keeps the complete prefix
+    and closes a final still-open compact-memory line so state transfer receives
+    the latest generated memory instead of only the prefix.
+    """
+    text = str(output_text or "").strip()
+    if not text:
+        return None
+
+    line_matches = list(_COMPACT_MEMORY_LINE_RE.finditer(text))
+    canonical_spans = {match.span() for match in line_matches}
+    lines: List[str] = []
+    seen = set()
+    for match in line_matches:
+        if not (match.group(3) or "").strip():
+            continue
+        line = match.group(0).strip()
+        if line not in seen:
+            lines.append(line)
+            seen.add(line)
+
+    tail_start = line_matches[-1].end() if line_matches else 0
+    tail = text[tail_start:]
+    open_match: Optional[re.Match[str]] = None
+    for candidate in _COMPACT_MEMORY_OPEN_RE.finditer(tail):
+        suffix = tail[candidate.end():]
+        if "</m>" not in suffix.lower():
+            open_match = candidate
+    if open_match is not None:
+        body = _clean_repaired_memory_body(tail[open_match.end():])
+        if body:
+            start = int(open_match.group(1))
+            end = int(open_match.group(2) if open_match.group(2) is not None else start)
+            if end < start:
+                start, end = end, start
+            repaired_line = f'<m t="{start}-{end}">{body}</m>'
+            if repaired_line not in seen:
+                lines.append(repaired_line)
+
+    if compress_range is not None:
+        start, end = int(compress_range[0]), int(compress_range[1])
+        if end < start:
+            start, end = end, start
+        malformed_tail_start = tail_start
+        for match in _COMPACT_MEMORY_ANY_LINE_RE.finditer(text):
+            if match.span() in canonical_spans or match.start() < malformed_tail_start:
+                continue
+            body = _clean_repaired_memory_body(match.group(1))
+            if not body:
+                continue
+            repaired_line = f'<m t="{start}-{end}">{body}</m>'
+            if repaired_line not in seen:
+                lines.append(repaired_line)
+                seen.add(repaired_line)
+
+    return "\n".join(lines) if lines else None
+
+
+def _coerce_compress_memory_text(
+    output_text: str,
+    compress_range: Optional[Tuple[int, int]],
+) -> Optional[str]:
+    repaired = _repair_compact_memory_text(output_text, compress_range)
+    if repaired:
+        return repaired
+    return _fallback_compress_memory_text(output_text, compress_range)
 
 
 # ---------------------------------------------------------------------------
@@ -293,6 +616,89 @@ def _retrieve_from_memory(
         "text": result.get("text_content", ""),
         "returned_chunks": returned_chunks,
     }
+
+
+def _recall_chunks_from_time_range(
+    time_range: Optional[Tuple[float, float]],
+    *,
+    chunk_sec: float = 1.0,
+    current_chunk: Optional[int] = None,
+) -> List[int]:
+    """Map an absolute closed recall time range to source-video chunk ids.
+
+    Sliced benchmark rows stream only a short segment, but recall arguments are
+    absolute source-video seconds. When the segment-local think archive cannot
+    cover an earlier requested range, the recall tool must still be able to
+    retrieve source-video frames directly from the frame cache.
+    """
+    if time_range is None:
+        return []
+    try:
+        chunk_width = float(chunk_sec)
+        start_time = float(time_range[0])
+        end_time = float(time_range[1])
+    except (TypeError, ValueError, IndexError):
+        return []
+    if chunk_width <= 0 or start_time < 0 or end_time < start_time:
+        return []
+
+    start_chunk = max(0, int(math.floor(start_time / chunk_width)))
+    end_chunk = max(start_chunk, int(math.floor(end_time / chunk_width)))
+    if current_chunk is not None:
+        try:
+            end_chunk = min(end_chunk, int(current_chunk) - 1)
+        except (TypeError, ValueError):
+            pass
+    if end_chunk < start_chunk:
+        return []
+    return list(range(start_chunk, end_chunk + 1))
+
+
+def _runtime_chunk_bounds(
+    *,
+    max_chunks: int,
+    n_chunks_dataset: int,
+    segment_start_chunk: int = 0,
+    segment_end_chunk: Optional[int] = None,
+    latest_ask_chunk: Optional[int] = None,
+) -> Tuple[int, int]:
+    """Return absolute [start, end_exclusive) chunk bounds for a rollout.
+
+    Full-video rollouts use max_chunks as the ordinary prefix cap from chunk 0.
+    Sliced single-question rows already carry absolute segment_start/end
+    chunk ids; in that mode max_chunks must not be interpreted as an absolute
+    video-time ceiling, or late segments collapse onto the wrong early chunks.
+    """
+    total = max(0, int(n_chunks_dataset or 0))
+    max_chunks = max(0, int(max_chunks or 0))
+    start = max(0, int(segment_start_chunk or 0))
+
+    if segment_end_chunk is not None:
+        try:
+            end = int(segment_end_chunk)
+        except (TypeError, ValueError):
+            end = start
+        if total > 0:
+            start = min(start, total - 1)
+            end = min(max(start, end), total - 1)
+        else:
+            end = max(start, end)
+        return start, max(start + 1, end + 1)
+
+    end_exclusive = min(max_chunks, total) if total > 0 else max_chunks
+    if latest_ask_chunk is not None:
+        try:
+            end_exclusive = max(end_exclusive, int(latest_ask_chunk) + 1)
+        except (TypeError, ValueError):
+            pass
+    if max_chunks > 0:
+        end_exclusive = min(end_exclusive, max_chunks)
+    if total > 0:
+        end_exclusive = min(end_exclusive, total)
+    if end_exclusive <= 0:
+        return 0, 0
+    start = min(start, end_exclusive - 1)
+    return start, end_exclusive
 
 
 def _count_recent_thinks_tokens(
@@ -402,6 +808,7 @@ def _register_streaming_agent_loop():
         build_recall_result_user_content,
         canonical_answer_instruction,
         decode_agent_output_tokens,
+        format_compact_memory_update_input,
         normalize_frame_protocol,
         normalize_render_layout,
         parse_agent_output,
@@ -477,16 +884,29 @@ def _register_streaming_agent_loop():
             expected = query_expected_answer_chunks(q)
             if chunk in expected:
                 return True
-            if _is_cumulative_count_query(q) and (chunk - 1) in set(
-                query_completed_answer_chunks(q)
-            ):
-                return True
+            if expected:
+                # Explicit answer slots are the only moments when a scheduled
+                # multi-emit query should be re-rendered. Re-injecting the
+                # same open query immediately after a valid answer, or on a
+                # blind periodic timer, causes REC/CRR to over-emit answers
+                # between benchmark probes.
+                continue
             ask_chunk = _query_ask_chunk(q, chunk_sec)
             final_chunk = max(expected) if expected else ask_chunk
             if (
                 period
                 and ask_chunk < chunk <= final_chunk
                 and (chunk - ask_chunk) % period == 0
+            ):
+                return True
+        return False
+
+    def _has_open_scheduled_query(queries: List[Dict[str, Any]]) -> bool:
+        for q in queries or []:
+            if (
+                isinstance(q, dict)
+                and not query_is_complete(q)
+                and query_expected_answer_chunks(q)
             ):
                 return True
         return False
@@ -508,8 +928,8 @@ def _register_streaming_agent_loop():
                 os.environ.get("THINKSTREAM_MAX_TOKENS_PER_ACTION", "256") or 256
             )
             self.max_tokens_per_compress_action = int(
-                os.environ.get("THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION", "512")
-                or 512
+                os.environ.get("THINKSTREAM_COMPRESS_MAX_TOKENS_PER_ACTION", "1536")
+                or 1536
             )
             self.frame_protocol = normalize_frame_protocol(
                 os.environ.get("THINKSTREAM_FRAME_PROTOCOL", "video_meta")
@@ -695,9 +1115,9 @@ def _register_streaming_agent_loop():
             """Build the user content list for chunk N.
 
             inter_chunk=True marks a compression turn. It is text-only:
-            user_input carries the bare compress trigger and memory carries
-            the compression target. Queries, recall-answer context, visual
-            window, and frame carriers are suppressed to match pass5/runtime.
+            turn metadata carries the trigger and memory carries the
+            compression target. Queries, recall-answer context, visual window,
+            and frame carriers are suppressed to match pass5/runtime.
 
             Mirrors the shared SFT/runtime layout in
             thinkstream.data.agent_protocol.build_user_content EXACTLY:
@@ -710,7 +1130,11 @@ def _register_streaming_agent_loop():
             maintains the physical visual window itself.
             """
             if compress_trigger_range is not None:
-                user_input_text = "<compress_trigger/>"
+                # Compression is signalled by the controller through
+                # turn_kind/inter_chunk metadata. Do not expose the legacy
+                # <compress_trigger/> sentinel to the model; it can be copied
+                # into the assistant output and pollute compact memory.
+                user_input_text = ""
             else:
                 user_input_text = self._format_user_input(
                     chunk_idx, question, ask_chunks, triggered_questions,
@@ -727,7 +1151,13 @@ def _register_streaming_agent_loop():
                     "compressed": visible_compressed,
                     "recent_thinks": visible_recent,
                 }
-                mem_text = format_memory_block(mem_snapshot)
+                if inter_chunk:
+                    mem_text = format_compact_memory_update_input(
+                        mem_snapshot,
+                        covered_range=compress_trigger_range,
+                    )
+                else:
+                    mem_text = format_memory_block(mem_snapshot)
             except Exception:
                 mem_snapshot = {
                     "compressed_segments": [],
@@ -817,12 +1247,23 @@ def _register_streaming_agent_loop():
                 text_result = {"source": "memory", "time": "", "text": "(retrieval error)"}
 
             # ── Historical frame extraction (D1) ───────────────────────
-            # Text retrieval chooses candidate chunks first, then we cap to
-            # top-K and render only those chunks. Do not expand the model's
-            # requested start/end window into an unbounded frame interval.
+            # Prefer segment-local think-archive hits when available. In
+            # sliced eval rows the archive starts at segment_start_chunk, but
+            # recall arguments are absolute source-video seconds; if the model
+            # asks for earlier history, sample source-video frames directly.
             selected_chunks = select_recall_chunks_uniform(
                 text_result.get("returned_chunks") or []
             )
+            direct_frame_range = False
+            if not selected_chunks and tr_tuple is not None:
+                selected_chunks = select_recall_chunks_uniform(
+                    _recall_chunks_from_time_range(
+                        tr_tuple,
+                        chunk_sec=self.chunk_sec,
+                        current_chunk=current_chunk,
+                    )
+                )
+                direct_frame_range = bool(selected_chunks)
             recalled_frame_paths: List[str] = []
             frame_chunks: List[int] = []
             if selected_chunks and self.frames_root and video_path:
@@ -830,25 +1271,30 @@ def _register_streaming_agent_loop():
                     cf = _chunk_frame_paths(
                         video_path, self.frames_root, ci,
                         self.frames_per_chunk,
+                        self.chunk_sec,
                     )
                     if cf:
                         frame_chunks.append(ci)
                         recalled_frame_paths.extend(cf)
 
-            time_text = recall_time_string_for_chunks(selected_chunks) or (
+            returned_chunks = frame_chunks if recalled_frame_paths else selected_chunks
+            time_text = recall_time_string_for_chunks(returned_chunks) or (
                 text_result.get("time", "") or ""
             )
-            success = bool(selected_chunks) or bool(text_result.get("text"))
+            success = bool(recalled_frame_paths) or bool(text_result.get("text"))
             raw_recall_result = {
                 "source": "historical_frames" if recalled_frame_paths else (
-                    text_result.get("source", "memory") if success else "failure"
+                    "direct_frame_range" if direct_frame_range else (
+                        text_result.get("source", "memory") if success else "failure"
+                    )
                 ),
                 "text_content": text_result.get("text", "")
                                 if success else "No matching results found.",
                 "text": text_result.get("text", "")
                         if success else "No matching results found.",
-                "returned_chunks": selected_chunks,
+                "returned_chunks": returned_chunks,
                 "time": time_text,
+                "status": "ok" if recalled_frame_paths else "empty",
             }
             recalled_frames = build_recalled_frames_metadata(
                 frame_chunks,
@@ -1051,7 +1497,6 @@ def _register_streaming_agent_loop():
             video_id = extra_info.get("video_id") or extra_info.get("index", "")
             video_path = extra_info.get("video_path", "")
             n_chunks_dataset = int(extra_info.get("n_chunks") or 0)
-            n_chunks = min(self.max_chunks, n_chunks_dataset) if n_chunks_dataset else self.max_chunks
             segment_start_chunk = int(extra_info.get("segment_start_chunk") or 0)
             segment_end_raw = extra_info.get("segment_end_chunk")
             segment_end_chunk: Optional[int] = None
@@ -1085,6 +1530,7 @@ def _register_streaming_agent_loop():
             # indices that should fire at that chunk. Pre-compute once
             # rather than scanning N questions on every chunk iteration.
             ask_at_chunk: Dict[int, List[int]] = {}
+            latest_ask_chunk: Optional[int] = None
             if multi_q_list:
                 for q_idx, q in enumerate(multi_q_list):
                     aks = q.get("ask_chunks") or (
@@ -1096,15 +1542,18 @@ def _register_streaming_agent_loop():
                         except (TypeError, ValueError):
                             continue
                         ask_at_chunk.setdefault(ck_int, []).append(q_idx)
-                # Ensure rollout reaches at least the latest ask_chunk.
-                if ask_at_chunk:
-                    n_chunks = max(n_chunks, max(ask_at_chunk.keys()) + 1)
-                    n_chunks = min(self.max_chunks, n_chunks)
+                        latest_ask_chunk = (
+                            ck_int if latest_ask_chunk is None
+                            else max(latest_ask_chunk, ck_int)
+                        )
 
-            if segment_end_chunk is not None:
-                segment_end_chunk = max(segment_start_chunk, segment_end_chunk)
-                n_chunks = min(n_chunks, segment_end_chunk + 1)
-            segment_start_chunk = max(0, min(segment_start_chunk, max(0, n_chunks - 1)))
+            segment_start_chunk, n_chunks = _runtime_chunk_bounds(
+                max_chunks=self.max_chunks,
+                n_chunks_dataset=n_chunks_dataset,
+                segment_start_chunk=segment_start_chunk,
+                segment_end_chunk=segment_end_chunk,
+                latest_ask_chunk=latest_ask_chunk,
+            )
             offline_compress_chunks: List[int] = []
             for raw in self._as_plain_list(extra_info.get("offline_compress_chunks")):
                 try:
@@ -1219,6 +1668,7 @@ def _register_streaming_agent_loop():
             chunk_recall_result_sources: List[str] = []
             chunk_compress_expected_chunks: List[List[int]] = []
             chunk_compress_emitted_ranges: List[Any] = []
+            chunk_compress_source_texts: List[str] = []
             budget_abort_events: List[Dict[str, Any]] = []
             # P1.7 fix (post-review 2026-05-01): chunk_kinds/spans/texts
             # are appended on EVERY assistant turn including inter-chunk
@@ -1359,6 +1809,42 @@ def _register_streaming_agent_loop():
                                     ans_chunks_int.append(int(x))
                                 except (TypeError, ValueError):
                                     continue
+                            seeded_answers: List[Dict[str, Any]] = []
+                            response_history_policy = query_response_history_policy(q_obj)
+                            seed_raw: Any = []
+                            if response_history_policy != "omit":
+                                seed_raw = (
+                                    q_obj.get("initial_response_history")
+                                    or q_obj.get("stateful_seed_response_history")
+                                    or []
+                                )
+                            if hasattr(seed_raw, "tolist"):
+                                seed_raw = seed_raw.tolist()
+                            if isinstance(seed_raw, (list, tuple)):
+                                for item in seed_raw:
+                                    if not isinstance(item, dict):
+                                        continue
+                                    try:
+                                        seed_chunk = int(
+                                            item.get("chunk", item.get("expected_chunk", -1))
+                                        )
+                                    except (TypeError, ValueError):
+                                        seed_chunk = -1
+                                    seed_time = item.get("time")
+                                    if seed_time is None and seed_chunk >= 0:
+                                        seed_time = seed_chunk * self.chunk_sec
+                                    seeded_answers.append({
+                                        "time": seed_time if seed_time is not None else "",
+                                        "chunk": seed_chunk,
+                                        "text": str(
+                                            item.get("text", item.get("value", ""))
+                                        ),
+                                        "expected_chunk": item.get("expected_chunk", seed_chunk),
+                                        "counts_for_completion": bool(
+                                            item.get("counts_for_completion", True)
+                                        ),
+                                        "stateful_seed": True,
+                                    })
                             query_log.append({
                                 "question": q_obj.get("question", ""),
                                 "options": list(q_obj.get("options") or []),
@@ -1380,14 +1866,14 @@ def _register_streaming_agent_loop():
                                 "family": q_obj.get("family", q_obj.get("task", "")),
                                 "task": q_obj.get("task", ""),
                                 "source_task": q_obj.get("source_task", ""),
-                                "response_history_policy": query_response_history_policy(q_obj),
+                                "response_history_policy": response_history_policy,
                                 "ask_time": chunk_idx * self.chunk_sec,
                                 "open_until": (
                                     max(ans_chunks_int) * self.chunk_sec
                                     if ans_chunks_int else chunk_idx * self.chunk_sec
                                 ),
                                 "status": "open",
-                                "answers": [],
+                                "answers": seeded_answers,
                             })
                     # Push triggered Qs into the pending queue so the
                 # NEXT assistant turn's </Response> is assigned to them.
@@ -1436,6 +1922,13 @@ def _register_streaming_agent_loop():
                     true_kv_delta=has_memory_prefill,
                     seed_memory=not has_memory_prefill,
                 )
+                compress_source_text = ""
+                if inter_chunk:
+                    compress_source_text = "\n".join(
+                        str(item.get("text") or "")
+                        for item in replay_user_content
+                        if isinstance(item, dict) and item.get("type") == "text"
+                    ).strip()
                 stream_user_content = replay_user_content
                 if (
                     not inter_chunk
@@ -1447,12 +1940,11 @@ def _register_streaming_agent_loop():
                         chunk_idx,
                         chunk_sec=self.chunk_sec,
                     )
-                    if (
-                        query_block
-                        and not force_query_refresh
-                        and query_block == last_stream_query_block
-                    ):
-                        stream_queries = []
+                    if query_block and not force_query_refresh:
+                        if _has_open_scheduled_query(query_log):
+                            stream_queries = []
+                        elif query_block == last_stream_query_block:
+                            stream_queries = []
                     stream_user_content = self._build_chunk_user_content(
                         state=state,
                         chunk_idx=chunk_idx,
@@ -1885,11 +2377,41 @@ def _register_streaming_agent_loop():
                         self.tokenizer,
                         assistant_ids,
                     )
+                    raw_response_text = response_text
+                    response_text_for_state = response_text
+                    response_text_for_score = response_text
                     parsed = parse_agent_output(
                         response_text,
                         allow_bare_answer=(turn_kind == "post_recall"),
                         allow_bare_memory=(turn_kind == "compress"),
                     )
+                    compress_fallback_used = False
+                    if turn_kind == "compress":
+                        fallback_memory_text = _coerce_compress_memory_text(
+                            raw_response_text,
+                            compress_range,
+                        )
+                        parsed_memory_text = str(parsed.get("memory_text") or "").strip()
+                        parsed_kind = parsed.get("kind")
+                        fallback_changed = (
+                            bool(parsed.get("format_error"))
+                            or (
+                                parsed_kind == "compress"
+                                and bool(fallback_memory_text)
+                                and fallback_memory_text.strip() != parsed_memory_text
+                            )
+                        )
+                        if fallback_memory_text and fallback_changed:
+                            fallback_parsed = parse_agent_output(
+                                fallback_memory_text,
+                                allow_bare_memory=True,
+                            )
+                            if not fallback_parsed.get("format_error"):
+                                parsed = fallback_parsed
+                                parsed["compress_fallback"] = True
+                                response_text_for_state = fallback_memory_text
+                                response_text_for_score = fallback_memory_text
+                                compress_fallback_used = True
                     kind = parsed.get("kind", "unknown")
                     action_error = action_space_error_for_turn(kind, turn_kind)
                     if action_error:
@@ -1902,7 +2424,7 @@ def _register_streaming_agent_loop():
                     chunk_kinds.append(kind)
                     chunk_turn_kinds.append(turn_kind)
                     chunk_action_space_errors.append(action_error)
-                    chunk_asst_texts.append(response_text)
+                    chunk_asst_texts.append(response_text_for_score)
                     if debug_trace_enabled:
                         try:
                             stream_delta_text = self.tokenizer.decode(
@@ -1937,7 +2459,11 @@ def _register_streaming_agent_loop():
                             "answer_text": _short_text(parsed.get("answer_text"), 1000),
                             "tool_args": tool_args,
                             "stream_delta_text": _short_text(stream_delta_text, 5000),
-                            "assistant_text": _short_text(response_text, 5000),
+                            "assistant_text": _short_text(raw_response_text, 5000),
+                            "effective_assistant_text": _short_text(
+                                response_text_for_score, 5000,
+                            ),
+                            "compress_fallback": bool(compress_fallback_used),
                             "recent_thinks_tail_before_update": [
                                 dict(x) for x in list(getattr(state, "recent_thinks", []) or [])[-4:]
                                 if isinstance(x, dict)
@@ -1960,8 +2486,10 @@ def _register_streaming_agent_loop():
                         chunk_compress_expected_chunks.append(
                             list(range(int(compress_range[0]), int(compress_range[1]) + 1))
                         )
+                        chunk_compress_source_texts.append(compress_source_text)
                     else:
                         chunk_compress_expected_chunks.append([])
+                        chunk_compress_source_texts.append("")
                     if kind == "compress":
                         mem_entries = tool_args.get("memory_text")
                         chunk_compress_emitted_ranges.append(
@@ -2218,7 +2746,11 @@ def _register_streaming_agent_loop():
                     # The local cursor advances below to keep rollout moving.
                     state.chunk_idx = chunk_idx + 1
                 else:
-                    state = default_update_state(state, response_text, chunk_idx)
+                    state = default_update_state(
+                        state,
+                        response_text_for_state,
+                        chunk_idx,
+                    )
                     if inter_chunk:
                         # System event — don't consume a video chunk.
                         state.chunk_idx = pre_chunk_idx
@@ -2348,6 +2880,7 @@ def _register_streaming_agent_loop():
                 "ts_recall_result_sources": chunk_recall_result_sources,
                 "ts_compress_expected_chunks": chunk_compress_expected_chunks,
                 "ts_compress_emitted_ranges": chunk_compress_emitted_ranges,
+                "ts_compress_source_texts": chunk_compress_source_texts,
                 "ts_compress_trigger_source": (
                     "offline_pass2_boundaries"
                     if use_offline_compress else "runtime_memory_threshold"

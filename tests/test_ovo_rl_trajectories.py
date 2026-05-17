@@ -128,11 +128,15 @@ def test_ovo_builder_coalesces_duplicate_rec_probe_chunks():
     )
 
     q = rows[0]["questions"][0]
+    assert q["ask_chunks"] == [5]
+    assert q["ask_chunk"] == 5
     assert q["answer_chunks"] == [5, 20]
     assert q["per_emit_answers"] == [
         {"chunk": 5, "value": "2"},
         {"chunk": 20, "value": "3"},
     ]
+    assert "0/1/2/3" not in q["question"]
+    assert "Return one integer only" in q["question"]
 
 
 def test_ovo_builder_stateful_policy_keeps_context_parts_for_long_ssr():
@@ -242,6 +246,7 @@ def test_ovo_segment_fields_survive_verl_parquet_rows(tmp_path):
 def test_rl_frame_resolver_supports_ovo_nested_frame_layout(tmp_path):
     frame_dir = tmp_path / "Ego4D" / "clips" / "abc"
     frame_dir.mkdir(parents=True)
+    (frame_dir / "frame_000001.jpg").write_bytes(b"fake-jpeg")
     assert _resolve_frame_dir("Ego4D/clips/abc.mp4", str(tmp_path)) == frame_dir
 
 

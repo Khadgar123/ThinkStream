@@ -101,6 +101,7 @@ export NPROC="${NPROC:-8}"
 export MAX_NEW_TOKEN="${MAX_NEW_TOKEN:-4096}"
 export MAX_CHUNKS="${MAX_CHUNKS:-2048}"
 export OUTPUT_DIR="${OUT_DIR}/verl"
+export THINKSTREAM_OUTPUT_DIR="${THINKSTREAM_OUTPUT_DIR:-${OUT_DIR}/verl}"
 export RUNTIME_ROOT="${RUNTIME_ROOT:-${OUT_DIR}/runtime}"
 
 bash scripts/grpo_train_verl.sh

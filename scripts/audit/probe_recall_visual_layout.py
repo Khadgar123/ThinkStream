@@ -103,7 +103,7 @@ def _gold(q: dict[str, Any]) -> str:
 
 def _extract_pred(text: str, options: list[Any]) -> str:
     s = str(text or "").strip()
-    m = re.search(r"\b([A-D])\b", s, re.I)
+    m = re.search(r"\b([A-Z])\b", s, re.I)
     if m:
         return m.group(1).upper()
     if re.search(r"\byes\b", s, re.I):
@@ -111,7 +111,7 @@ def _extract_pred(text: str, options: list[Any]) -> str:
     if re.search(r"\bno\b", s, re.I):
         return "No"
     for i, opt in enumerate(options or []):
-        raw = re.sub(r"^[A-D]\)\s*", "", str(opt).strip(), flags=re.I)
+        raw = re.sub(r"^[A-Z]\)\s*", "", str(opt).strip(), flags=re.I)
         if raw and raw.lower() in s.lower():
             return chr(65 + i)
     return s[:32]

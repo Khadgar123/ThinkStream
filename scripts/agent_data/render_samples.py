@@ -273,7 +273,9 @@ def render_sample(
             inter_chunk=inter_chunk,
         ),
         "memory": _build_memory_from_snapshot(snapshot),
-        "user_input": sample.get("user_input", ""),
+        # Compression triggers are controller metadata. Do not render the
+        # legacy <compress_trigger/> sentinel into model-visible SFT input.
+        "user_input": "" if inter_chunk else sample.get("user_input", ""),
     }
     rf = None
     if not inter_chunk:
@@ -291,11 +293,9 @@ def render_sample(
             )
             inp["recall_result"] = model_visible_recall_result
 
-    # For compress samples, remember the gold compressed-chunks set so
-    # RL/eval can score the model's <summary> time_range against the
-    # teacher's choice. pass3c injects only the boolean
-    # ``<compress_trigger/>`` signal into sample.user_input; the gold range
-    # lives in the assistant tool_call output and must be derived from memory.
+    # For compress samples, remember the gold compressed-chunks set so RL/eval
+    # can score the model's compact-memory range against the teacher's choice.
+    # The trigger itself is controller metadata and is not model-visible.
     gold_compress_chunks: List[int] = []
     memory_update_input = str(sample.get("memory_update_input") or "").strip()
     if sample.get("action") == "compress":

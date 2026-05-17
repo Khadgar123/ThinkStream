@@ -30,7 +30,7 @@
 #   MAX_NEW_TOKEN   — response buffer. Defaults to 4096 in recurrent mode
 #                     and 32768 in stitched mode.
 #   MAX_ACTION_TOKENS — per-action streaming/recall generation cap (256)
-#   MAX_COMPRESS_ACTION_TOKENS — per-action compression generation cap (512)
+#   MAX_COMPRESS_ACTION_TOKENS — per-action compression generation cap (1536)
 #   TOP_K           — rollout sampler top-k (50). Required for true-KV
 #                     rollout because verl's -1 default becomes invalid.
 #   MAX_CHUNKS      — max turns per video (120 by default; use recurrent for 240+)
@@ -115,7 +115,7 @@ if [[ -z "${MAX_NEW_TOKEN:-}" ]]; then
 fi
 MAX_MODEL_LEN=${MAX_MODEL_LEN:-49152}
 MAX_ACTION_TOKENS=${MAX_ACTION_TOKENS:-256}
-MAX_COMPRESS_ACTION_TOKENS=${MAX_COMPRESS_ACTION_TOKENS:-512}
+MAX_COMPRESS_ACTION_TOKENS=${MAX_COMPRESS_ACTION_TOKENS:-1536}
 TOP_K=${TOP_K:-50}
 MAX_CHUNKS=${MAX_CHUNKS:-120}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.55}
@@ -144,6 +144,13 @@ LIMIT_VIDEOS=${LIMIT_VIDEOS:-2}
 TP_SIZE=${TP_SIZE:-1}
 BATCH_SIZE=${BATCH_SIZE:-4}
 PPO_MINI_BS=${PPO_MINI_BS:-${BATCH_SIZE}}
+if [[ -z "${THINKSTREAM_STREAMING_SLOTS_PER_GPU:-}" ]]; then
+    _ts_slots=$(( (BATCH_SIZE + NPROC - 1) / NPROC ))
+    if (( _ts_slots < 1 )); then
+        _ts_slots=1
+    fi
+    THINKSTREAM_STREAMING_SLOTS_PER_GPU="${_ts_slots}"
+fi
 LR=${LR:-5e-7}
 EPOCHS=${EPOCHS:-1}
 MAX_STEPS=${MAX_STEPS:-}
@@ -356,6 +363,7 @@ echo "Val only:          ${VAL_ONLY}"
 [ -n "${VALIDATION_DATA_DIR}" ] && echo "Val dump dir:      ${VALIDATION_DATA_DIR}"
 echo "PPO mini bs:       ${PPO_MINI_BS}"
 echo "Batch size:        ${BATCH_SIZE}"
+echo "Streaming slots/GPU: ${THINKSTREAM_STREAMING_SLOTS_PER_GPU}"
 echo "PPO max tok/GPU:   ${PPO_MAX_TOKEN_LEN_PER_GPU}"
 echo "Logprob max tok/GPU: ${LOG_PROB_MAX_TOKEN_LEN_PER_GPU}"
 echo "Freeze vision:     ${FREEZE_VISION_TOWER}"
@@ -421,6 +429,7 @@ export GEN_TP="${TP_SIZE}"
 export GROUP_SIZE="${GROUP_SIZE}"
 export BATCH_SIZE="${BATCH_SIZE}"
 export PPO_MINI_BS="${PPO_MINI_BS}"
+export THINKSTREAM_STREAMING_SLOTS_PER_GPU="${THINKSTREAM_STREAMING_SLOTS_PER_GPU}"
 export LR="${LR}"
 export EPOCHS="${EPOCHS}"
 export GPU_MEM_UTIL="${GPU_MEM_UTIL}"

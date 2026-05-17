@@ -98,6 +98,9 @@ PASS3A_MULTI_SOURCE_TARGET_FRACTION = float(
 PASS3A_SLOT_RETRY_HEADROOM_FRACTION = float(
     os.environ.get("THINKSTREAM_PASS3A_SLOT_RETRY_HEADROOM_FRACTION", "0.25")
 )
+PASS3A_RECALL_SLOT_RETRY_HEADROOM_FRACTION = float(
+    os.environ.get("THINKSTREAM_PASS3A_RECALL_SLOT_RETRY_HEADROOM_FRACTION", "0.50")
+)
 PASS3A_DIRECT_MIN_RETRY_SLOTS = int(
     os.environ.get("THINKSTREAM_PASS3A_DIRECT_MIN_RETRY_SLOTS", "1")
 )
@@ -557,11 +560,18 @@ SLOT_VARIANT_OVERRIDES: Dict[str, Dict[int, Dict[str, str]]] = {
     },
     "N1": {
         1: {
-            "slot_subtype": "person_identity_interaction",
+            "slot_subtype": "epm_event_entity_memory",
             "question_way": QUESTION_WAY_PERSON_IDENTITY,
             "evidence_type": EVIDENCE_PERSON_RELATION,
-            "benchmark_source": "streamingbench_sequential_reference_variant",
-            "question_goal": "Ask about which person/entity interacted with another entity in a past or current event.",
+            "benchmark_source": "ovo_epm_event_entity_memory",
+            "benchmark_task": "EPM",
+            "answer_behavior": "single_mcq_event_memory",
+            "question_goal": (
+                "Ask an OVO EPM-style past event-property question: what/who "
+                "was involved in a completed action such as put, pick, remove, "
+                "use, hand, carry, or place. The answer must be the event "
+                "participant from the support chunks, not the currently visible object."
+            ),
         },
         2: {
             "slot_subtype": "sequential_reference",
@@ -574,13 +584,37 @@ SLOT_VARIANT_OVERRIDES: Dict[str, Dict[int, Dict[str, str]]] = {
             ),
         },
     },
+    "P1": {
+        1: {
+            "slot_subtype": "epm_event_location_memory",
+            "question_way": QUESTION_WAY_SPATIAL_RELATION,
+            "evidence_type": EVIDENCE_SPATIAL_RELATION,
+            "benchmark_source": "ovo_epm_event_location_memory",
+            "benchmark_task": "EPM",
+            "answer_behavior": "single_mcq_event_memory",
+            "question_goal": (
+                "Ask an OVO EPM-style where/location question about a completed "
+                "event, e.g. where an object was picked from, placed, removed "
+                "from, or left. The answer must come from the past support "
+                "chunks and should not be a current-frame location guess."
+            ),
+        },
+    },
     "CR4": {
         1: {
-            "slot_subtype": "contextual_misleading_or_anomaly",
-            "question_way": QUESTION_WAY_CAUSAL_INTENT,
-            "evidence_type": EVIDENCE_CAUSAL_CONTEXT,
-            "benchmark_source": "streamingbench_contextual_understanding",
-            "question_goal": "Ask a contextual/anomaly-style MCQ that requires comparing the apparent context with actual visual evidence.",
+            "slot_subtype": "epm_event_count_memory",
+            "question_way": QUESTION_WAY_REPEATED_COUNT,
+            "evidence_type": EVIDENCE_REPEATED_EVENT,
+            "benchmark_source": "ovo_epm_event_count_memory",
+            "benchmark_task": "EPM",
+            "answer_behavior": "single_mcq_event_count",
+            "question_goal": (
+                "Ask an OVO EPM-style count/quantity question about a completed "
+                "bounded event, such as how many items were put on, removed "
+                "from, picked up, or moved. The correct MC option is the final "
+                "event count, including none/nothing only when the support "
+                "chunks establish that no item was involved."
+            ),
         },
         2: {
             "slot_subtype": "source_discrimination",
@@ -590,6 +624,41 @@ SLOT_VARIANT_OVERRIDES: Dict[str, Dict[int, Dict[str, str]]] = {
             "question_goal": (
                 "Ask which visual source, cue, or observed evidence supports the "
                 "answer, distinguishing visible evidence from inferred background context."
+            ),
+        },
+        3: {
+            "slot_subtype": "contextual_misleading_or_anomaly",
+            "question_way": QUESTION_WAY_CAUSAL_INTENT,
+            "evidence_type": EVIDENCE_CAUSAL_CONTEXT,
+            "benchmark_source": "streamingbench_contextual_understanding",
+            "question_goal": "Ask a contextual/anomaly-style MCQ that requires comparing the apparent context with actual visual evidence.",
+        },
+    },
+    "CR2": {
+        1: {
+            "slot_subtype": "asi_adjacent_action_after",
+            "question_way": QUESTION_WAY_TEMPORAL_ORDER,
+            "evidence_type": EVIDENCE_TEMPORAL_ORDER,
+            "benchmark_source": "ovo_asi_adjacent_step_after",
+            "benchmark_task": "ASI",
+            "answer_behavior": "single_mcq_adjacent_action",
+            "question_goal": (
+                "Ask what the person does immediately after a named anchor "
+                "step. The correct option must be the adjacent next action, "
+                "not the anchor action itself and not the current visible step."
+            ),
+        },
+        2: {
+            "slot_subtype": "asi_adjacent_action_before",
+            "question_way": QUESTION_WAY_TEMPORAL_ORDER,
+            "evidence_type": EVIDENCE_TEMPORAL_ORDER,
+            "benchmark_source": "ovo_asi_adjacent_step_before",
+            "benchmark_task": "ASI",
+            "answer_behavior": "single_mcq_adjacent_action",
+            "question_goal": (
+                "Ask what the person does immediately before a named anchor "
+                "step. The correct option must be the adjacent previous action, "
+                "not the anchor action itself and not a later/current step."
             ),
         },
     },
@@ -1722,13 +1791,23 @@ def pass3a_batch_source_row_targets(video_num_chunks: Mapping[str, int]) -> Dict
     return out
 
 
-def _slots_with_retry_headroom(final_slots: int, min_retry_slots: int) -> int:
+def _slots_with_retry_headroom(
+    final_slots: int,
+    min_retry_slots: int,
+    *,
+    headroom_fraction: Optional[float] = None,
+) -> int:
     if final_slots <= 0:
         return 0
+    fraction = (
+        PASS3A_SLOT_RETRY_HEADROOM_FRACTION
+        if headroom_fraction is None
+        else max(0.0, float(headroom_fraction))
+    )
     retry = max(
         0,
         int(min_retry_slots),
-        _ceil_count(final_slots * PASS3A_SLOT_RETRY_HEADROOM_FRACTION),
+        _ceil_count(final_slots * fraction),
     )
     return final_slots + retry
 
@@ -1744,6 +1823,7 @@ def pass3a_source_slot_requirements_from_rows(row_targets: Mapping[str, int]) ->
         "recall": _slots_with_retry_headroom(
             int(row_targets.get("recall", 0)),
             PASS3A_RECALL_MIN_RETRY_SLOTS,
+            headroom_fraction=PASS3A_RECALL_SLOT_RETRY_HEADROOM_FRACTION,
         ),
         "future": _slots_with_retry_headroom(
             int(row_targets.get("future", 0)),
@@ -1929,7 +2009,17 @@ def _ordered_slot_jobs(
     requirements: Mapping[str, int],
 ) -> List[Tuple[int, str]]:
     """Interleave slot construction by source budget."""
-    protected_variants = {("CR4", 2), ("N1", 2), ("R1", 2), ("CR5", 1)}
+    protected_variants = {
+        ("N1", 1),
+        ("N1", 2),
+        ("P1", 1),
+        ("CR2", 1),
+        ("CR2", 2),
+        ("CR4", 1),
+        ("CR4", 2),
+        ("R1", 2),
+        ("CR5", 1),
+    }
 
     def _variant_order(family: str, slot_index: int) -> int:
         if slot_index == 0:
