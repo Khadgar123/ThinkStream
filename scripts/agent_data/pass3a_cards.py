@@ -103,6 +103,7 @@ _QUESTION_RENDERING_LEAK_RE = re.compile(
     r"(?is)(?:"
     r"\boptions?\s*:"
     r"|(?:^|\n)\s*(?:\([A-E]\)|[A-E][\).:])\s+\S+"
+    r"|\b(?:among|from)\s+(?:these|the\s+following)\s+options\b"
     r"|\banswer\s+(?:with|using|in|only)\b"
     r"|\breturn\s+(?:only\s+)?(?:the\s+)?(?:letter|answer|yes|no)\b"
     r"|\b(?:choose|select)\s+(?:one|from|the\s+correct|the\s+best)\b"
@@ -945,6 +946,8 @@ def _verify_card_layers(
         opts = card.get("options") or []
         if not isinstance(opts, list) or len(opts) not in MC_OPTION_COUNTS:
             return "schema_mc_options_bad_count"
+        if any(not _strip_option_label(str(opt)).strip() for opt in opts):
+            return "schema_mc_empty_option"
         co = card.get("correct_option", "")
         if co not in MC_OPTION_LETTERS[:len(opts)]:
             return "schema_mc_bad_correct_letter"

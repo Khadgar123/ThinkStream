@@ -624,6 +624,64 @@ def test_recipe_multi_q_reward_gates_each_question_independently():
     assert abs(res["score"] - expected) < 1e-6, res
 
 
+def test_recipe_multi_q_rewards_recall_labeled_answer_when_recalled_and_correct():
+    from thinkstream.rl.thinkstream import _compute_score_multi_q
+    from thinkstream.trainer.rewards import (
+        compute_timing_reward,
+        compute_answer_decision_reward,
+        compute_silent_quality,
+    )
+
+    weights = {
+        "outcome": 1.0,
+        "answer_decision": 0.3,
+        "format": 0.1,
+    }
+    rewards = {
+        "outcome": lambda *a, **k: 0.0,
+        "timing": compute_timing_reward,
+        "answer_decision": compute_answer_decision_reward,
+        "format": lambda chunks: 1.0,
+        "silent_quality": compute_silent_quality,
+    }
+    questions = [{
+        "gold_answer": "red",
+        "answer_form": "short_exact",
+        "ask_chunk": 5,
+        "ask_chunks": [5],
+        "answer_chunks": [5],
+    }]
+    extra = {
+        "gold_action_per_chunk": {"5": "recall"},
+        "ts_chunk_kinds": ["recall"],
+        "ts_chunk_turn_kinds": ["recall"],
+        "ts_chunk_video_indices": [5],
+        "ts_chunk_event_indices": [5],
+        "ts_chunk_asst_texts": [
+            '<think>need history</think><tool_call>{"name":"recall","arguments":{"start_time":0,"end_time":3}}</tool_call>',
+        ],
+        "ts_chunk_action_space_errors": [""],
+        "ts_per_q_answer_chunk": [5],
+        "ts_per_q_answer_text": ["red"],
+        "ts_per_q_answers": [[]],
+    }
+
+    res = _compute_score_multi_q(
+        rewards,
+        weights,
+        questions,
+        extra,
+        "<think>ok</think></Response> red",
+    )
+
+    assert res["recall_answer_labeled"] == 1.0, res
+    assert res["recall_answer_used"] == 1.0, res
+    assert res["recall_answer_success"] == 1.0, res
+    assert res["recall_answer"] == 1.0, res
+    # 1.0 outcome + 0.3 answer_decision + 0.2 recall_answer + 0.1 format.
+    assert abs(res["score"] - 1.6) < 1e-6, res
+
+
 def test_recipe_multi_q_aggregates_by_expected_answer_slot():
     from thinkstream.rl.thinkstream import _compute_score_multi_q
     from thinkstream.trainer.rewards import (

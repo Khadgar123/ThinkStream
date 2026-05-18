@@ -767,7 +767,7 @@ def migrate_batch_samples(
 ) -> Dict[str, Any]:
     rollout_dir = batch_root / f"rollout_{out_suffix}"
     stats: Dict[str, Any] = {"videos": 0, "samples_3c": {}, "verified": {}}
-    rollout_files = sorted(p for p in rollout_dir.glob("*.json") if not p.name.startswith("_"))
+    rollout_files = sorted(p for p in rollout_dir.glob("*.json") if p.name != "_retrofit_stats.json")
     if limit_videos:
         rollout_files = rollout_files[:limit_videos]
     for rpath in rollout_files:
@@ -831,6 +831,58 @@ def _emit_split_from_verified(
     }
 
 
+def _build_rl_parquets(
+    *,
+    final_dir: Path,
+    rendered_dir: Path,
+    frame_protocol: str,
+    render_layout: str,
+) -> Dict[str, Any]:
+    """Build the RL/eval parquet artifacts paired with rebuilt trajectories."""
+    import pandas as pd
+
+    from scripts.agent_data.build_verl_parquet import _iter_rows_multi_q
+
+    jobs = [
+        ("train_rl", "train_rl_trajectories.jsonl", "train_rl_multi_q.parquet"),
+        ("val", "val_trajectories.jsonl", "val_rl_multi_q.parquet"),
+        ("test", "test_trajectories.jsonl", "test_rl_multi_q.parquet"),
+    ]
+    rendered_dir.mkdir(parents=True, exist_ok=True)
+    manifest: Dict[str, Any] = {
+        "generated_by": "retrofit_compact_memory.py",
+        "source_final_dir": str(final_dir),
+        "output_dir": str(rendered_dir),
+        "frame_protocol": frame_protocol,
+        "render_layout": render_layout,
+        "splits": {},
+    }
+    for split, src_name, dst_name in jobs:
+        src = final_dir / src_name
+        dst = rendered_dir / dst_name
+        if not src.exists():
+            manifest["splits"][split] = {"skipped": True, "reason": f"missing {src}"}
+            continue
+        rows = list(_iter_rows_multi_q(
+            src,
+            max_questions_per_traj=16,
+            frame_protocol=frame_protocol,
+            render_layout=render_layout,
+            include_student_cache=False,
+        ))
+        if not rows:
+            manifest["splits"][split] = {"skipped": True, "reason": "no rows produced"}
+            continue
+        pd.DataFrame(rows).to_parquet(dst, index=False)
+        manifest["splits"][split] = {
+            "rows": len(rows),
+            "output_path": str(dst),
+            "bytes": dst.stat().st_size,
+        }
+    _json_dump(rendered_dir / "_parquet_manifest.json", manifest)
+    return manifest
+
+
 def rebuild_final_and_messages(
     batch_root: Path,
     *,
@@ -870,18 +922,29 @@ def rebuild_final_and_messages(
         output_dir=trajectory_rendered_dir,
         frames_root=None,
     )
+    rl_rendered_dir = batch_root / "rendered" / f"{render_protocol}_{render_layout}_{out_suffix}"
+    rl_manifest = _build_rl_parquets(
+        final_dir=final_dir,
+        rendered_dir=rl_rendered_dir,
+        frame_protocol=render_protocol,
+        render_layout=render_layout,
+    )
     _json_dump(trajectory_rendered_dir / "render_manifest.json", {
         "generated_by": "retrofit_compact_memory.py",
         "source_final_dir": str(final_dir),
         "trajectory_output_dir": str(trajectory_rendered_dir),
+        "rl_output_dir": str(rl_rendered_dir),
         "frame_protocol": render_protocol,
         "render_layout": render_layout,
         "trajectory_manifest": trajectory_manifest,
+        "rl_manifest": rl_manifest,
     })
     return {
         "final_dir": str(final_dir),
         "trajectory_rendered_dir": str(trajectory_rendered_dir),
+        "rl_rendered_dir": str(rl_rendered_dir),
         "trajectory_manifest": trajectory_manifest,
+        "rl_manifest": rl_manifest,
     }
 
 

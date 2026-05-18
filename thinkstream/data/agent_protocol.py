@@ -1022,6 +1022,12 @@ def format_compact_memory_update_input(
         f"Covered latest span: t={start}-{end}\n"
         "Coverage check: preserve useful OLD_MEMORY and cover the listed "
         "NEW_CAPTIONS using their real timestamps.\n"
+        "Boundary rule: keep OLD_MEMORY <m> ranges as whole units; do not "
+        "repartition all history into new uniform slices. Treat contiguous "
+        "NEW_CAPTIONS as the latest new unit when OLD_MEMORY exists. If the "
+        "memory list is too long, merge adjacent complete units starting from "
+        "the oldest; never split an old <m> range or merge only half of one "
+        "range with half of another.\n"
         "Return only compact-memory XML lines:\n"
         '<m t="start-end">one concise event or state.</m>\n'
         "Do not output NEW_MEMORY:, markdown, prose, analysis, or any text "

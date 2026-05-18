@@ -463,6 +463,19 @@ def _ts_score_compress_memory_update(
     hit_max_tokens: bool = False,
 ) -> tuple[float, str, dict[str, float]]:
     try:
+        from thinkstream.rl.thinkstream import _score_compress_memory_update as _shared_score_compress_memory_update
+
+        return _shared_score_compress_memory_update(
+            output_text,
+            source_text,
+            expected_chunks,
+            action_error=action_error,
+            hit_max_tokens=hit_max_tokens,
+        )
+    except ImportError:
+        pass
+
+    try:
         from thinkstream.data.agent_protocol import parse_agent_output
     except Exception:
         return 0.0, "parse_unavailable", {}
@@ -561,6 +574,331 @@ def _reward_component_tensor(
 
 def _gate_positive_component(component: torch.Tensor, gate: torch.Tensor) -> torch.Tensor:
     return torch.where(component > 0.0, component * gate, component)
+
+
+def _trainer_env_bool(name: str, default: bool) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return str(value).strip().lower() not in {"0", "false", "no", "off", ""}
+
+
+def _trainer_env_float(name: str, default: float) -> float:
+    try:
+        return float(os.environ.get(name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
+def _reward_json_lists(
+    reward_extra_infos_dict: dict[str, Any],
+    key: str,
+    n_items: int,
+) -> list[list[Any]]:
+    values = reward_extra_infos_dict.get(key)
+    if values is None:
+        return [[] for _ in range(n_items)]
+    arr = np.asarray(values, dtype=object)
+    out: list[list[Any]] = []
+    for i in range(n_items):
+        raw = _plain_value(arr[i]) if i < len(arr) else []
+        if isinstance(raw, str):
+            try:
+                parsed = json.loads(raw)
+            except Exception:
+                parsed = []
+        else:
+            parsed = raw
+        parsed = _plain_value(parsed)
+        out.append(list(parsed) if isinstance(parsed, (list, tuple)) else [])
+    return out
+
+
+def _segment_index_for_event_chunk(
+    event_chunk: int,
+    starts: list[Any],
+    ends: list[Any],
+) -> int | None:
+    if event_chunk < 0:
+        return None
+    n = min(len(starts), len(ends))
+    for seg_i in range(n):
+        start = _safe_int(starts[seg_i], -1)
+        end = _safe_int(ends[seg_i], -1)
+        if start >= 0 and end >= start and start <= event_chunk <= end:
+            return seg_i
+    return None
+
+
+def _compute_answer_segment_advantage(
+    batch: DataProto,
+    reward_extra_infos_dict: dict[str, Any],
+    reward_index: Any,
+    n_traj: int,
+    *,
+    use_adv: bool,
+    starts_key: str = "segment_starts_json",
+    ends_key: str = "segment_ends_json",
+    scores_key: str = "segment_scores_json",
+    metric_name: str = "segment",
+    row_filter: Any | None = None,
+) -> tuple[torch.Tensor, torch.Tensor, dict[str, float]]:
+    response_mask = batch.batch["response_mask"]
+    device = response_mask.device
+    n_rows = response_mask.size(0)
+    row_adv = torch.zeros(n_rows, device=device, dtype=torch.float32)
+    row_mask = torch.zeros(n_rows, device=device, dtype=torch.float32)
+
+    starts_by_traj = _reward_json_lists(reward_extra_infos_dict, starts_key, n_traj)
+    ends_by_traj = _reward_json_lists(reward_extra_infos_dict, ends_key, n_traj)
+    scores_by_traj = _reward_json_lists(reward_extra_infos_dict, scores_key, n_traj)
+
+    flat_scores: list[float] = []
+    flat_groups: list[str] = []
+    flat_lookup: dict[tuple[int, int], int] = {}
+    group_values: defaultdict[str, list[float]] = defaultdict(list)
+    reward_index_arr = np.asarray(reward_index, dtype=object)
+    for traj_i in range(n_traj):
+        scores = scores_by_traj[traj_i]
+        starts = starts_by_traj[traj_i]
+        ends = ends_by_traj[traj_i]
+        n_seg = min(len(scores), len(starts), len(ends))
+        if n_seg <= 0:
+            continue
+        uid = (
+            str(_plain_value(reward_index_arr[traj_i]))
+            if traj_i < len(reward_index_arr) else str(traj_i)
+        )
+        for seg_i in range(n_seg):
+            flat_lookup[(traj_i, seg_i)] = len(flat_scores)
+            score = _safe_float(scores[seg_i], 0.0)
+            group = f"{uid}::{metric_name}::{seg_i}"
+            flat_scores.append(score)
+            flat_groups.append(group)
+            group_values[group].append(score)
+
+    score_std = float(np.std(flat_scores)) if len(flat_scores) > 1 else 0.0
+    score_range = (
+        float(max(flat_scores) - min(flat_scores))
+        if flat_scores else 0.0
+    )
+    comparable_groups = [
+        vals for vals in group_values.values()
+        if len(vals) >= 2
+    ]
+    tie_groups = [
+        vals for vals in comparable_groups
+        if max(vals) - min(vals) <= 1e-6
+    ]
+
+    metrics: dict[str, float] = {
+        f"recurrent/gdpo/{metric_name}_count": float(len(flat_scores)),
+        f"recurrent/gdpo/{metric_name}_rows": 0.0,
+        f"recurrent/gdpo/{metric_name}_score_mean": (
+            float(sum(flat_scores) / len(flat_scores)) if flat_scores else 0.0
+        ),
+        f"recurrent/gdpo/{metric_name}_score_std": score_std,
+        f"recurrent/gdpo/{metric_name}_score_range": score_range,
+        f"recurrent/gdpo/{metric_name}_group_count": float(len(group_values)),
+        f"recurrent/gdpo/{metric_name}_comparable_group_count": float(len(comparable_groups)),
+        f"recurrent/gdpo/{metric_name}_tie_group_frac": (
+            float(len(tie_groups) / len(comparable_groups))
+            if comparable_groups else 0.0
+        ),
+        f"recurrent/gdpo/{metric_name}_adv_std": 0.0,
+        f"recurrent/gdpo/{metric_name}_adv_nonzero_frac": 0.0,
+    }
+    if not flat_scores:
+        return row_adv, row_mask, metrics
+
+    flat_tensor = torch.tensor(flat_scores, device=device, dtype=torch.float32)
+    flat_mask = torch.ones_like(flat_tensor, dtype=torch.float32)
+    segment_adv = _conditional_group_advantage(
+        flat_tensor,
+        flat_groups,
+        flat_mask,
+        use_adv=use_adv,
+    )
+
+    sample_index_cpu = batch.batch["sample_index"].detach().cpu().numpy().astype(np.int64)
+    for row in range(n_rows):
+        if response_mask[row].sum().item() <= 0:
+            continue
+        if row_filter is not None and not bool(row_filter(row)):
+            continue
+        if row >= len(sample_index_cpu):
+            continue
+        traj_i = int(sample_index_cpu[row])
+        if traj_i < 0 or traj_i >= n_traj:
+            continue
+        event_chunk = _safe_int(_row_value(batch, "ts_action_event_chunk_idx", row, -1), -1)
+        seg_i = _segment_index_for_event_chunk(
+            event_chunk,
+            starts_by_traj[traj_i],
+            ends_by_traj[traj_i],
+        )
+        if seg_i is None:
+            continue
+        flat_i = flat_lookup.get((traj_i, seg_i))
+        if flat_i is None:
+            continue
+        row_adv[row] = segment_adv[flat_i]
+        row_mask[row] = 1.0
+
+    active_segment_adv = segment_adv[flat_mask > 0.0]
+    metrics[f"recurrent/gdpo/{metric_name}_rows"] = float(row_mask.sum().item())
+    metrics[f"recurrent/gdpo/{metric_name}_row_coverage"] = (
+        float(row_mask.sum().item())
+        / max(1.0, float((response_mask.sum(dim=-1) > 0).sum().item()))
+    )
+    metrics[f"recurrent/gdpo/{metric_name}_adv_std"] = (
+        float(active_segment_adv.std().item())
+        if active_segment_adv.numel() > 1 else 0.0
+    )
+    metrics[f"recurrent/gdpo/{metric_name}_adv_nonzero_frac"] = (
+        float((active_segment_adv.abs() > 1e-6).float().mean().item())
+        if active_segment_adv.numel() else 0.0
+    )
+    return row_adv, row_mask, metrics
+
+
+def _compute_compress_local_advantage(
+    batch: DataProto,
+    reward_extra_infos_dict: dict[str, Any],
+    reward_index: Any,
+    n_traj: int,
+    *,
+    use_adv: bool,
+    starts_key: str,
+    ends_key: str,
+    answer_scores_key: str,
+    quality_scores_key: str,
+    metric_name: str,
+    quality_rho: float,
+) -> tuple[torch.Tensor, torch.Tensor, dict[str, float]]:
+    answer_adv, answer_mask, answer_metrics = _compute_answer_segment_advantage(
+        batch,
+        reward_extra_infos_dict,
+        reward_index,
+        n_traj,
+        use_adv=use_adv,
+        starts_key=starts_key,
+        ends_key=ends_key,
+        scores_key=answer_scores_key,
+        metric_name=f"{metric_name}_answer",
+        row_filter=lambda row: _is_compress_action_row(batch, row),
+    )
+    quality_adv, quality_mask, quality_metrics = _compute_answer_segment_advantage(
+        batch,
+        reward_extra_infos_dict,
+        reward_index,
+        n_traj,
+        use_adv=use_adv,
+        starts_key=starts_key,
+        ends_key=ends_key,
+        scores_key=quality_scores_key,
+        metric_name=f"{metric_name}_quality",
+        row_filter=lambda row: _is_compress_action_row(batch, row),
+    )
+
+    rho = max(0.0, min(1.0, float(quality_rho)))
+    row_adv = (1.0 - rho) * answer_adv + rho * quality_adv
+    row_mask = torch.where(
+        (answer_mask > 0.0) | (quality_mask > 0.0),
+        torch.ones_like(answer_mask),
+        torch.zeros_like(answer_mask),
+    )
+    active_adv = row_adv[row_mask > 0.0]
+
+    metrics: dict[str, float] = {}
+    metrics.update(answer_metrics)
+    metrics.update(quality_metrics)
+    metrics[f"recurrent/gdpo/{metric_name}_quality_rho"] = float(rho)
+    metrics[f"recurrent/gdpo/{metric_name}_rows"] = float(row_mask.sum().item())
+    metrics[f"recurrent/gdpo/{metric_name}_adv_std"] = (
+        float(active_adv.std().item()) if active_adv.numel() > 1 else 0.0
+    )
+    metrics[f"recurrent/gdpo/{metric_name}_adv_nonzero_frac"] = (
+        float((active_adv.abs() > 1e-6).float().mean().item())
+        if active_adv.numel() else 0.0
+    )
+    return row_adv, row_mask, metrics
+
+
+def _is_compress_action_row(batch: DataProto, row: int) -> bool:
+    action_idx = _safe_int(_row_value(batch, "ts_action_index", row, -1), -1)
+    turn_kind = str(_row_action_value(batch, "ts_chunk_turn_kinds", row, action_idx, "") or "")
+    return turn_kind == "compress"
+
+
+def _is_noncompress_action_row(batch: DataProto, row: int) -> bool:
+    return not _is_compress_action_row(batch, row)
+
+
+def _credit_assignment_mode() -> str:
+    raw = (
+        os.environ.get("THINKSTREAM_CREDIT_ASSIGNMENT")
+        or os.environ.get("THINKSTREAM_SEGMENT_CREDIT_MODE")
+        or "question"
+    )
+    mode = str(raw or "").strip().lower().replace("-", "_")
+    aliases = {
+        "global": "global_gdpo",
+        "trajectory": "global_gdpo",
+        "trajectory_gdpo": "global_gdpo",
+        "gdpo": "global_gdpo",
+        "trajectory_grpo": "global_grpo",
+        "grpo": "global_grpo",
+        "trajectory_gspo": "global_gspo",
+        "gspo": "global_gspo",
+        "sequence": "global_gspo",
+        "sequence_grpo": "global_gspo",
+        "compress": "compress_boundary",
+        "compress_split": "compress_boundary",
+        "compress_segments": "compress_boundary",
+        "boundary": "compress_boundary",
+        "question_level": "question",
+        "answer": "question",
+        "answer_segment": "question",
+        "question_segment": "question",
+        "question_next": "question_next_compress",
+        "question_future_compress": "question_next_compress",
+        "next_compress": "question_next_compress",
+    }
+    mode = aliases.get(mode, mode)
+    if mode not in {
+        "global_grpo",
+        "global_gdpo",
+        "global_gspo",
+        "compress_boundary",
+        "question",
+        "question_next_compress",
+    }:
+        return "question"
+    if not _trainer_env_bool("THINKSTREAM_SEGMENT_CREDIT_ENABLED", True):
+        if mode in {"global_grpo", "global_gdpo", "global_gspo"}:
+            return mode
+        return "global_gdpo"
+    return mode
+
+
+def _credit_mode_id(mode: str) -> float:
+    return float({
+        "global_grpo": 0,
+        "global_gdpo": 1,
+        "compress_boundary": 2,
+        "question": 3,
+        "question_next_compress": 4,
+        "global_gspo": 5,
+    }.get(mode, -1))
+
+
+def _segment_global_base_mode() -> str:
+    raw = os.environ.get("THINKSTREAM_SEGMENT_GLOBAL_BASE", "gdpo")
+    mode = str(raw or "").strip().lower().replace("-", "_")
+    if mode in {"grpo", "global_grpo", "trajectory_grpo"}:
+        return "grpo"
+    return "gdpo"
 
 
 def _compress_score_for_action_row(batch: DataProto, row: int) -> tuple[float, float, str, dict[str, float]]:
@@ -713,35 +1051,246 @@ def _compute_recurrent_gdpo_advantages(
             _reward_component_tensor(reward_extra_infos_dict, "format", n_traj, device),
             gate,
         ),
+        "recall_answer": _reward_component_tensor(
+            reward_extra_infos_dict, "recall_answer", n_traj, device
+        ),
     }
     weights = _parse_weight_overrides({
         "outcome": 1.0,
         "answer_decision": 0.3,
         "format": 0.1,
+        "recall_answer": 0.2,
         "compress_quality": 0.1,
     })
 
-    weighted_action_adv = torch.zeros(response_mask.size(0), device=device, dtype=torch.float32)
+    global_grpo_scalar_adv = compute_1D_grpo_advantage(
+        token_level_rewards=total_score,
+        index=reward_index,
+        use_adv=use_adv,
+    ).to(device=device, dtype=torch.float32)
+    global_grpo_action_adv = global_grpo_scalar_adv[sample_index]
+    if "final_mask" in batch.batch.keys():
+        final_row_mask = batch.batch["final_mask"].to(device=device, dtype=torch.float32).reshape(-1)
+        if final_row_mask.numel() != response_mask.size(0):
+            fixed = torch.zeros(response_mask.size(0), device=device, dtype=torch.float32)
+            copy_n = min(int(final_row_mask.numel()), response_mask.size(0))
+            if copy_n > 0:
+                fixed[:copy_n] = final_row_mask[:copy_n]
+            final_row_mask = fixed
+    else:
+        final_row_mask = torch.ones(response_mask.size(0), device=device, dtype=torch.float32)
+    final_row_mask = final_row_mask.clamp(0.0, 1.0) * (response_mask.sum(dim=-1) > 0).to(dtype=torch.float32)
+    global_gspo_action_adv = global_grpo_action_adv * final_row_mask
+    global_gdpo_action_adv = torch.zeros(response_mask.size(0), device=device, dtype=torch.float32)
     metrics: dict[str, float] = {}
+    gdpo_weight_norm = sum(
+        abs(float(weights.get(key, 0.0)))
+        for key in components
+    )
+    gdpo_normalize_weights = _trainer_env_bool("THINKSTREAM_GDPO_NORMALIZE_WEIGHTS", True)
+    if not gdpo_normalize_weights or gdpo_weight_norm <= 1e-12:
+        gdpo_weight_norm = 1.0
+    metrics["recurrent/gdpo/global_grpo_score_mean"] = (
+        float(total_score.mean().item()) if total_score.numel() else 0.0
+    )
+    metrics["recurrent/gdpo/global_grpo_adv_std"] = (
+        float(global_grpo_scalar_adv.std().item()) if global_grpo_scalar_adv.numel() > 1 else 0.0
+    )
+    active_rows = (response_mask.sum(dim=-1) > 0).to(dtype=torch.float32)
+    active_row_count = float(active_rows.sum().item())
+    metrics["recurrent/gdpo/global_gspo_rows"] = float(final_row_mask.sum().item())
+    metrics["recurrent/gdpo/global_gspo_row_frac"] = (
+        float(final_row_mask.sum().item() / active_row_count) if active_row_count > 0 else 0.0
+    )
+    active_gspo_adv = global_gspo_action_adv[final_row_mask > 0.0]
+    metrics["recurrent/gdpo/global_gspo_adv_std"] = (
+        float(active_gspo_adv.std().item()) if active_gspo_adv.numel() > 1 else 0.0
+    )
     for key, scores in components.items():
         weight = float(weights.get(key, 0.0))
+        effective_weight = weight / gdpo_weight_norm
         adv_scalar = compute_1D_grpo_advantage(
             token_level_rewards=scores,
             index=reward_index,
             use_adv=use_adv,
         ).to(device=device, dtype=torch.float32)
-        weighted_action_adv = weighted_action_adv + weight * adv_scalar[sample_index]
+        global_gdpo_action_adv = global_gdpo_action_adv + effective_weight * adv_scalar[sample_index]
         metrics[f"recurrent/gdpo/{key}_weight"] = weight
+        metrics[f"recurrent/gdpo/{key}_effective_weight"] = effective_weight
         metrics[f"recurrent/gdpo/{key}_score_mean"] = float(scores.mean().item()) if scores.numel() else 0.0
         metrics[f"recurrent/gdpo/{key}_adv_std"] = (
             float(adv_scalar.std().item()) if adv_scalar.numel() > 1 else 0.0
         )
+    metrics["recurrent/gdpo/global_gdpo_weight_norm"] = float(gdpo_weight_norm)
+    metrics["recurrent/gdpo/global_gdpo_normalize_weights"] = float(bool(gdpo_normalize_weights))
 
-    advantages = weighted_action_adv.unsqueeze(-1).tile([1, response_length]) * response_mask
+    global_base_mode = _segment_global_base_mode()
+    credit_mode = _credit_assignment_mode()
+    if credit_mode == "global_grpo":
+        base_action_adv = global_grpo_action_adv
+    elif credit_mode == "global_gdpo":
+        base_action_adv = global_gdpo_action_adv
+    elif credit_mode == "global_gspo":
+        base_action_adv = global_gspo_action_adv
+    elif global_base_mode == "grpo":
+        base_action_adv = global_grpo_action_adv
+    else:
+        base_action_adv = global_gdpo_action_adv
+
+    combined_action_adv = base_action_adv
+    local_adv = torch.zeros(response_mask.size(0), device=device, dtype=torch.float32)
+    local_mask = torch.zeros(response_mask.size(0), device=device, dtype=torch.float32)
+    segment_enabled = credit_mode not in {"global_grpo", "global_gdpo", "global_gspo"}
+    segment_active = False
+    segment_alpha = max(0.0, min(1.0, _trainer_env_float("THINKSTREAM_SEGMENT_GLOBAL_ALPHA", 0.5)))
+    compress_quality_rho = max(0.0, min(1.0, _trainer_env_float("THINKSTREAM_COMPRESS_LOCAL_QUALITY_RHO", 0.1)))
+    if credit_mode == "question":
+        answer_adv, answer_mask, segment_metrics = _compute_answer_segment_advantage(
+            batch,
+            reward_extra_infos_dict,
+            reward_index,
+            n_traj,
+            use_adv=use_adv,
+            scores_key="segment_answer_scores_json",
+            metric_name="segment_answer",
+            row_filter=lambda row: _is_noncompress_action_row(batch, row),
+        )
+        metrics.update(segment_metrics)
+        compress_local_adv, compress_local_mask, compress_local_metrics = _compute_compress_local_advantage(
+            batch,
+            reward_extra_infos_dict,
+            reward_index,
+            n_traj,
+            use_adv=use_adv,
+            starts_key="segment_starts_json",
+            ends_key="segment_ends_json",
+            answer_scores_key="segment_answer_scores_json",
+            quality_scores_key="segment_compress_quality_json",
+            metric_name="segment_compress_local",
+            quality_rho=compress_quality_rho,
+        )
+        metrics.update(compress_local_metrics)
+        local_adv = torch.where(compress_local_mask > 0.0, compress_local_adv, answer_adv)
+        local_mask = torch.where(compress_local_mask > 0.0, compress_local_mask, answer_mask)
+    elif credit_mode == "compress_boundary":
+        answer_adv, answer_mask, segment_metrics = _compute_answer_segment_advantage(
+            batch,
+            reward_extra_infos_dict,
+            reward_index,
+            n_traj,
+            use_adv=use_adv,
+            starts_key="compress_segment_starts_json",
+            ends_key="compress_segment_ends_json",
+            scores_key="compress_segment_answer_scores_json",
+            metric_name="compress_segment_answer",
+            row_filter=lambda row: _is_noncompress_action_row(batch, row),
+        )
+        metrics.update(segment_metrics)
+        compress_local_adv, compress_local_mask, compress_local_metrics = _compute_compress_local_advantage(
+            batch,
+            reward_extra_infos_dict,
+            reward_index,
+            n_traj,
+            use_adv=use_adv,
+            starts_key="compress_segment_starts_json",
+            ends_key="compress_segment_ends_json",
+            answer_scores_key="compress_segment_answer_scores_json",
+            quality_scores_key="compress_segment_compress_quality_json",
+            metric_name="compress_segment_local",
+            quality_rho=compress_quality_rho,
+        )
+        metrics.update(compress_local_metrics)
+        local_adv = torch.where(compress_local_mask > 0.0, compress_local_adv, answer_adv)
+        local_mask = torch.where(compress_local_mask > 0.0, compress_local_mask, answer_mask)
+    elif credit_mode == "question_next_compress":
+        local_adv, local_mask, segment_metrics = _compute_answer_segment_advantage(
+            batch,
+            reward_extra_infos_dict,
+            reward_index,
+            n_traj,
+            use_adv=use_adv,
+            scores_key="segment_answer_scores_json",
+            metric_name="segment_answer",
+            row_filter=lambda row: _is_noncompress_action_row(batch, row),
+        )
+        metrics.update(segment_metrics)
+        compress_future_adv, compress_future_mask, compress_future_metrics = _compute_compress_local_advantage(
+            batch,
+            reward_extra_infos_dict,
+            reward_index,
+            n_traj,
+            use_adv=use_adv,
+            starts_key="compress_future_segment_starts_json",
+            ends_key="compress_future_segment_ends_json",
+            answer_scores_key="compress_future_segment_answer_scores_json",
+            quality_scores_key="compress_future_segment_compress_quality_json",
+            metric_name="compress_future_segment_local",
+            quality_rho=compress_quality_rho,
+        )
+        metrics.update(compress_future_metrics)
+        local_adv = torch.where(
+            compress_future_mask > 0.0,
+            compress_future_adv,
+            local_adv,
+        )
+        local_mask = torch.where(
+            compress_future_mask > 0.0,
+            compress_future_mask,
+            local_mask,
+        )
+
+    if segment_enabled:
+        segment_active = (
+            float(local_mask.sum().item()) > 0.0
+        )
+        if segment_active:
+            combined_action_adv = torch.where(
+                local_mask > 0.0,
+                segment_alpha * base_action_adv + (1.0 - segment_alpha) * local_adv,
+                base_action_adv,
+            )
+    else:
+        metrics["recurrent/gdpo/segment_count"] = 0.0
+        metrics["recurrent/gdpo/segment_rows"] = 0.0
+        metrics["recurrent/gdpo/segment_score_mean"] = 0.0
+        metrics["recurrent/gdpo/segment_score_std"] = 0.0
+        metrics["recurrent/gdpo/segment_score_range"] = 0.0
+        metrics["recurrent/gdpo/segment_adv_std"] = 0.0
+        metrics["recurrent/gdpo/segment_adv_nonzero_frac"] = 0.0
+    metrics["recurrent/gdpo/segment_enabled"] = float(bool(segment_enabled))
+    metrics["recurrent/gdpo/segment_global_alpha"] = float(segment_alpha)
+    metrics["recurrent/gdpo/compress_local_quality_rho"] = float(compress_quality_rho)
+    metrics["recurrent/gdpo/segment_global_base/grpo"] = float(global_base_mode == "grpo")
+    metrics["recurrent/gdpo/segment_global_base/gdpo"] = float(global_base_mode == "gdpo")
+    metrics["recurrent/gdpo/credit_mode_id"] = _credit_mode_id(credit_mode)
+    for name in (
+        "global_grpo",
+        "global_gdpo",
+        "global_gspo",
+        "compress_boundary",
+        "question",
+        "question_next_compress",
+    ):
+        metrics[f"recurrent/gdpo/credit_mode/{name}"] = float(credit_mode == name)
+
+    advantages = combined_action_adv.unsqueeze(-1).tile([1, response_length]) * response_mask
 
     compress_weight = float(weights.get("compress_quality", 0.0))
     compress_adv, compress_metrics = _compute_action_compress_advantage(batch, use_adv=use_adv)
-    if compress_weight:
+    default_compress_branch = (
+        not segment_active and credit_mode not in {"global_grpo", "global_gdpo", "global_gspo"}
+    )
+    compress_branch_enabled = _trainer_env_bool(
+        "THINKSTREAM_COMPRESS_ROW_ADV_ENABLED",
+        default_compress_branch,
+    )
+    if compress_weight and compress_branch_enabled:
+        suppress_segment_covered_compress = (
+            segment_active
+            and not _trainer_env_bool("THINKSTREAM_SEGMENT_EXTRA_COMPRESS_ROW_ADV", False)
+        )
+        if suppress_segment_covered_compress:
+            compress_adv = compress_adv * (1.0 - local_mask.clamp(0.0, 1.0))
         advantages = advantages + (
             compress_weight
             * compress_adv.unsqueeze(-1).tile([1, response_length])
@@ -749,6 +1298,14 @@ def _compute_recurrent_gdpo_advantages(
         )
     metrics.update(compress_metrics)
     metrics["recurrent/gdpo/compress_quality_weight"] = compress_weight
+    metrics["recurrent/gdpo/compress_row_adv_enabled"] = float(bool(compress_branch_enabled))
+    metrics["recurrent/gdpo/compress_quality_segment_suppressed"] = float(
+        bool(
+            compress_branch_enabled
+            and segment_active
+            and not _trainer_env_bool("THINKSTREAM_SEGMENT_EXTRA_COMPRESS_ROW_ADV", False)
+        )
+    )
     return advantages, metrics
 
 

@@ -210,6 +210,9 @@ Return only compact-memory XML lines and nothing else:
 
 Use only OLD_MEMORY and NEW_CAPTIONS timestamps and facts.
 Keep source ranges honest. If the source provides one contiguous summary range, keep it as one <m t="start-end">...</m> line; do not invent finer timestamp segments.
+Treat OLD_MEMORY ranges as fixed boundary units. Do not repartition all history into new uniform slices.
+Treat contiguous NEW_CAPTIONS as a latest new unit unless there is no OLD_MEMORY, where you may split raw captions into a few boundary-aligned units.
+If there are too many memory lines, merge adjacent complete units, starting from the oldest; never merge half of one old range with half of another.
 If OLD_MEMORY has any <m> lines, preserve useful old memory when it is still relevant.
 If NEW_CAPTIONS has any <c> lines, cover the latest new captions.
 Preserve important objects, actions, OCR/text, names, numbers, counts, colors, and state changes. Merge repeats.

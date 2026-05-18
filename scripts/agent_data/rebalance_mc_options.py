@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
 
 
-LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+LETTERS = list("ABCDE")
 TRAJ_FILES = {
     "train_sft": "train_sft_trajectories.jsonl",
     "train_rl": "train_rl_trajectories.jsonl",
@@ -38,7 +38,7 @@ ALL_JSONL_FILES = [
     *TRAJ_FILES.values(),
 ]
 
-OPTION_RE = re.compile(r"^\s*(?:\(([A-Z])\)|([A-Z])[\).:])\s*(.*)\s*$", re.DOTALL)
+OPTION_RE = re.compile(r"^\s*(?:\(([A-E])\)|([A-E])[\).:])\s*(.*)\s*$", re.DOTALL)
 ANSWER_RE = re.compile(r"</Response>\s*(.*?)\s*$", re.DOTALL)
 QUERY_BLOCK_RE = re.compile(
     r"(?P<qline>\[[^\]\n]+s\]\s+Q:\s+(?P<question>.*?)\n)"

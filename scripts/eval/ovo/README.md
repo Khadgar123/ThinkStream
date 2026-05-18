@@ -1,4 +1,4 @@
-# OVO Full-Video Eval
+# OVO Recurrent Eval
 
 Use the original `ovo_bench_new.json`. Do not convert to the old formatted
 JSONL layout.
@@ -26,28 +26,52 @@ python scripts/eval/ovo/build_rl_trajectories.py \
   --benchmark-json /path/to/ovo_bench_new.json \
   --out-jsonl data/ovo_rl/ovo_trajectories.jsonl \
   --out-parquet data/ovo_rl/ovo_rl_multi_q.parquet \
-  --split-policy strict25_45 \
+  --split-policy continuous_prefix \
   --post-context-chunks 2
 ```
 
-The converter now keeps only the benchmark tracks that match the current RL
-rollout contract. The resulting parquet is intended for the same verl recurrent
-AgentLoop validation/test path as RL rollout, so KV window behaviour, recall
-payload handling, and reward parsing stay shared. The validation dump is
+The current method-eval contract is `continuous_prefix`: each trajectory starts
+at source-video chunk 0 and runs continuously through the last answer slot plus
+post-context. Questions are injected at their original absolute chunks inside
+that trajectory. If one source video has overlapping open question windows, the
+builder emits sibling prefix tracks so the runtime prompt still has only one
+active query at a time.
+
+Sibling tracks are a pre-eval split, not a runtime fork. The builder sorts
+question active windows (`ask_chunk..answer/open_until`, closed interval) and
+places each question into the first sibling track with no active-window
+overlap. If none fits, it starts a new independent prefix track from chunk 0.
+
+For compressed ThinkStream eval, the builder writes planned compact-memory
+boundaries into `offline_compress_chunks`, with 25-45 new chunks per compact
+update. The planner chooses the lowest-risk boundary in each 25-45 chunk band,
+avoiding answer-active and support/evidence windows when possible:
+
+```bash
+THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE=offline_pass2_boundaries
+THINKSTREAM_COMPRESS_THRESHOLD=3200
+THINKSTREAM_COMPRESS_RANGE_MIN=25
+THINKSTREAM_COMPRESS_RANGE_MAX=45
+```
+
+The `64/4/6` setting is only a smoke/stress setting for compression/re-prefill
+plumbing. It is too frequent for benchmark scoring.
+
+The resulting parquet is intended for the same verl recurrent AgentLoop
+validation/test path as RL rollout, so KV window behaviour, recall payload
+handling, compression, and reward parsing stay shared. The validation dump is
 summarized by `scripts/audit/summarize_rl_recurrent_validation.py` into
 `summary.json` under the output directory.
 
 Split policies:
 
-- `strict25_45`: one question per row in a strict 25-45 second/chunk window.
-  The builder keeps the question away from the segment start boundary whenever
-  earlier context exists.
-- `strict25_45_stateful`: cut-plan mode for long multi-emit questions. It
-  splits long rows into contiguous 25-45 second/chunk parts; context-only parts
-  intentionally carry no scored question, and scored parts carry only the
-  per-emit answers that fall inside that part. This JSONL is for compress +
-  re-prefill evaluation and should not be converted to parquet until the
-  evaluator carries memory state across `stateful_split_parent_id` parts.
+- `continuous_prefix`: current method-eval path. Source-video prefix track,
+  grouped by non-overlapping question windows, no 25-45s truncation.
+- `strict25_45`: legacy short-window ablation. One question per row in a strict
+  25-45 second/chunk window; long OVO questions can be excluded.
+- `strict25_45_stateful`: legacy cut-plan ablation for compress + re-prefill.
+  It emits context/scored parts but does not represent the current continuous
+  method-eval contract.
 
 `summary.health` is the compact recurrent-rollout health block:
 
@@ -60,8 +84,9 @@ Metric convention:
 
 - `trajectory_mean_correct_question_weighted`: main OVO/RL content score.
 - `task_macro_trajectory_mean_correct`: mean over task scores.
-- REC and CRR keep one active query across multiple expected answer chunks;
-  SSR is expanded into per-probe trajectories because simultaneous active step
-  probes cannot be represented by the current single active-query state.
+- REC and CRR keep one active query across multiple expected answer chunks.
+- SSR probes are placed on continuous prefix tracks; overlapping probes are
+  split into sibling tracks to preserve the single-active-query runtime
+  contract.
 
 Use `scripts/eval/ovo/compare_runs.py` to compare result JSON files.

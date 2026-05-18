@@ -1965,7 +1965,7 @@ _STOPWORDS = {
 
 
 def _strip_mc_label(text: str) -> str:
-    return re.sub(r"^\s*(?:\([A-Z]\)|[A-Z][\).:])\s*", "", str(text or "")).strip()
+    return re.sub(r"^\s*(?:\([A-E]\)|[A-E][\).:])\s*", "", str(text or "")).strip()
 
 
 def _card_answer_text(card: Card) -> str:
@@ -2025,7 +2025,7 @@ def _answer_terms_present(card: Card, text: str) -> bool:
 def _correct_option_text(card: Card) -> str:
     correct = str(card.correct_option or "").strip().upper()
     options = list(card.options or [])
-    if len(correct) != 1 or correct < "A" or correct > "Z" or not options:
+    if len(correct) != 1 or correct < "A" or correct > "E" or not options:
         return ""
     idx = ord(correct) - ord("A")
     if idx < 0 or idx >= len(options):

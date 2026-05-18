@@ -20,6 +20,7 @@ import json
 import logging
 import os
 import random
+import re
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -55,6 +56,58 @@ MULTI_COMPRESSION_RESCUE_MAX_SPAN = int(
 MULTI_COMPRESSION_RESCUE_ASK_LEAD = int(
     os.environ.get("THINKSTREAM_MULTI_COMPRESSION_RESCUE_ASK_LEAD", "2")
 )
+MC_OPTION_LETTERS = "ABCDE"
+MC_OPTION_COUNTS = {4, 5}
+MC_OPTION_LABEL_RE = re.compile(r"^\s*(?:\([A-E]\)|[A-E][\).:])\s*")
+QUESTION_OPTION_RENDERING_LEAK_RE = re.compile(
+    r"(?is)(?:"
+    r"\boptions?\s*:"
+    r"|(?:^|\n)\s*(?:\([A-E]\)|[A-E][\).:])\s+\S+"
+    r"|\b(?:among|from)\s+(?:these|the\s+following)\s+options\b"
+    r")"
+)
+
+
+def _strip_mc_option_label(text: str) -> str:
+    return MC_OPTION_LABEL_RE.sub("", str(text or "")).strip()
+
+
+def _card_reject_reason(card: Dict) -> str:
+    """Reject stale pass3a cards that would corrupt MC rendering downstream."""
+    if QUESTION_OPTION_RENDERING_LEAK_RE.search(str(card.get("question") or "")):
+        return "question_option_rendering_leak"
+    if str(card.get("answer_form") or "") != "multiple_choice":
+        return ""
+    opts = card.get("options") or []
+    if not isinstance(opts, list) or len(opts) not in MC_OPTION_COUNTS:
+        return "schema_mc_options_bad_count"
+    if any(not _strip_mc_option_label(str(opt)) for opt in opts):
+        return "schema_mc_empty_option"
+    correct = str(card.get("correct_option") or "").strip().upper()
+    if correct not in MC_OPTION_LETTERS[:len(opts)]:
+        return "schema_mc_bad_correct_letter"
+    idx = ord(correct) - ord("A")
+    if idx < 0 or idx >= len(opts) or not _strip_mc_option_label(str(opts[idx])):
+        return "schema_mc_empty_correct_option"
+    return ""
+
+
+def _filter_cards_for_placement(cards: List[Dict], video_id: str = "") -> Tuple[List[Dict], Dict[str, int]]:
+    kept: List[Dict] = []
+    rejected: Dict[str, int] = {}
+    for card in cards:
+        reason = _card_reject_reason(card)
+        if reason:
+            rejected[reason] = rejected.get(reason, 0) + 1
+            continue
+        kept.append(card)
+    if rejected:
+        logger.info(
+            "[%s] 3b rejected stale/bad task cards: %s",
+            video_id,
+            dict(sorted(rejected.items(), key=lambda x: -x[1])),
+        )
+    return kept, rejected
 
 
 def _refine_selected_recall_with_rollout(
@@ -721,6 +774,7 @@ async def compute_all_placements(
     """
     rng = random.Random(stable_seed(seed, video_id, modulo=1_000_000))
     num_chunks = int(rollout.get("num_chunks", 0))
+    cards, _ = _filter_cards_for_placement(cards, video_id=video_id)
     cards_obj = [dict_to_card(c) for c in cards]
 
     all_placements: List[Placement] = []
@@ -769,7 +823,10 @@ def plan_trajectories(
     for p in placement_objs:
         placements_by_card.setdefault(p.card_id, []).append(p)
 
-    cards_obj = [dict_to_card(c) for c in cards_map.values()]
+    valid_card_dicts, _ = _filter_cards_for_placement(
+        list(cards_map.values()), video_id=video_id
+    )
+    cards_obj = [dict_to_card(c) for c in valid_card_dicts]
     cards_by_id = {c.card_id: c for c in cards_obj}
     filtered_by_card: Dict[str, List[Placement]] = {}
     rejected: Dict[str, int] = {}

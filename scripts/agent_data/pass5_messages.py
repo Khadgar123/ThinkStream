@@ -75,10 +75,10 @@ ANSWER_FORMAT_LINE_RE = re.compile(
     re.MULTILINE,
 )
 OPTION_LABEL_RE = re.compile(
-    r"^\s*(?:\(([A-Z])\)|([A-Z])[\).:])\s*(.*)$",
+    r"^\s*(?:\(([A-E])\)|([A-E])[\).:])\s*(.*)$",
     flags=re.IGNORECASE,
 )
-OPTION_LETTERS = tuple("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+OPTION_LETTERS = tuple("ABCDE")
 
 
 class QueryRenderContractError(ValueError):

@@ -32,10 +32,12 @@ FT_TASKS = {"REC", "SSR", "CRR"}
 ALL_TASKS = RT_TASKS | BT_TASKS | FT_TASKS
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 SPLIT_POLICIES = {
+    "continuous_prefix",
     "strict25_45",
     "strict25_45_stateful",
 }
 STRICT_BENCHMARK_POLICIES = {"strict25_45", "strict25_45_stateful"}
+CURRENT_SPLIT_POLICY = "continuous_prefix"
 
 
 @dataclass
@@ -384,6 +386,201 @@ def _segment_bounds_strict25_45(
     return start, end, False
 
 
+def _segment_bounds_continuous_prefix(
+    group: List[QuestionUnit],
+    *,
+    post_context_chunks: int,
+) -> Tuple[int, int, bool]:
+    """Run from source-video chunk 0 through the group's last answer slot."""
+    max_end = max(max(u.interval_end, u.score_until) for u in group)
+    return 0, max(0, int(max_end) + max(0, int(post_context_chunks))), False
+
+
+def _unit_active_window(unit: QuestionUnit) -> Tuple[int, int]:
+    q = unit.question
+    starts: List[int] = []
+    ends: List[int] = []
+    for raw in q.get("ask_chunks") or [q.get("ask_chunk")]:
+        try:
+            starts.append(int(raw))
+        except (TypeError, ValueError):
+            continue
+    for raw in q.get("answer_chunks") or [q.get("open_until")]:
+        try:
+            ends.append(int(raw))
+        except (TypeError, ValueError):
+            continue
+    start = min(starts) if starts else int(unit.interval_start)
+    end = max(ends) if ends else int(max(unit.interval_end, unit.score_until))
+    return start, max(start, end)
+
+
+def _windows_overlap(a: Tuple[int, int], b: Tuple[int, int]) -> bool:
+    return not (a[1] < b[0] or b[1] < a[0])
+
+
+def _question_active_window(q: Dict[str, Any]) -> Tuple[int, int]:
+    starts: List[int] = []
+    ends: List[int] = []
+    for raw in q.get("ask_chunks") or [q.get("ask_chunk")]:
+        try:
+            starts.append(int(raw))
+        except (TypeError, ValueError):
+            continue
+    for raw in q.get("answer_chunks") or [q.get("open_until")]:
+        try:
+            ends.append(int(raw))
+        except (TypeError, ValueError):
+            continue
+    start = min(starts) if starts else 0
+    end = max(ends) if ends else start
+    return start, max(start, end)
+
+
+def _question_support_intervals(q: Dict[str, Any]) -> List[Tuple[int, int]]:
+    intervals: List[Tuple[int, int]] = []
+    for raw in q.get("ovo_support_intervals") or []:
+        if not isinstance(raw, (list, tuple)) or len(raw) < 2:
+            continue
+        try:
+            start = int(raw[0])
+            end = int(raw[1])
+        except (TypeError, ValueError):
+            continue
+        if end < start:
+            start, end = end, start
+        intervals.append((start, end))
+    chunks: List[int] = []
+    for raw in q.get("support_chunks") or []:
+        try:
+            chunks.append(int(raw))
+        except (TypeError, ValueError):
+            continue
+    if chunks:
+        intervals.append((min(chunks), max(chunks)))
+    return intervals
+
+
+def _question_anchor_points(q: Dict[str, Any]) -> List[int]:
+    points: List[int] = []
+    for key in ("ask_chunks", "answer_chunks"):
+        for raw in q.get(key) or []:
+            try:
+                points.append(int(raw))
+            except (TypeError, ValueError):
+                continue
+    for key in ("ask_chunk", "open_until"):
+        try:
+            points.append(int(q[key]))
+        except (KeyError, TypeError, ValueError):
+            continue
+    return points
+
+
+def _compress_boundary_penalty(boundary: int, questions: List[Dict[str, Any]]) -> int:
+    """Lower is better. Avoid splitting answer-active and evidence windows."""
+    penalty = 0
+    b = int(boundary)
+    for q in questions:
+        active_start, active_end = _question_active_window(q)
+        if active_start <= b <= active_end:
+            penalty += 1_000_000
+        elif active_start - 2 <= b <= active_end + 2:
+            penalty += 50_000
+
+        for support_start, support_end in _question_support_intervals(q):
+            # Boundary b is between b-1 and b. s < b <= e splits evidence.
+            if support_start < b <= support_end:
+                penalty += 100_000
+            elif support_start - 2 <= b <= support_end + 2:
+                penalty += 5_000
+
+        for point in _question_anchor_points(q):
+            dist = abs(b - point)
+            if dist == 0:
+                penalty += 2_000_000
+            elif dist <= 2:
+                penalty += 800_000
+            elif dist <= 5:
+                penalty += 200_000
+            elif dist <= 10:
+                penalty += 50_000
+            elif dist <= 15:
+                penalty += 5_000
+            elif dist <= 20:
+                penalty += 500
+    return penalty
+
+
+def _plan_offline_compress_chunks(
+    questions: List[Dict[str, Any]],
+    *,
+    segment_start: int,
+    segment_end: int,
+    min_chunks: int,
+    max_chunks: int,
+) -> List[int]:
+    """Plan compact-memory boundaries inside a complete continuous trajectory.
+
+    Boundaries are the first visual chunk after a compressed raw range. The
+    runtime compresses accumulated recent_thinks before processing that chunk,
+    then re-prefills and continues at the same chunk.
+    """
+    min_chunks = max(1, int(min_chunks))
+    max_chunks = max(min_chunks, int(max_chunks))
+    start = max(0, int(segment_start))
+    end_exclusive = max(start, int(segment_end) + 1)
+    cursor = start
+    boundaries: List[int] = []
+    while end_exclusive - cursor > max_chunks:
+        lo = cursor + min_chunks
+        hi = min(cursor + max_chunks, end_exclusive - 1)
+        if lo > hi:
+            break
+        candidates = range(lo, hi + 1)
+        # Main key: avoid answer/evidence windows. Tie-break later boundaries
+        # to keep updates closer to 45 chunks and reduce compression frequency.
+        boundary = min(
+            candidates,
+            key=lambda b: (_compress_boundary_penalty(b, questions), -int(b)),
+        )
+        boundaries.append(int(boundary))
+        cursor = int(boundary)
+    return boundaries
+
+
+def _continuous_prefix_groups(
+    units: List[QuestionUnit],
+) -> List[List[QuestionUnit]]:
+    """Pack one source video into non-overlapping continuous-prefix tracks.
+
+    The runtime prompt renders a single active query. If two benchmark
+    questions are open at the same chunk, putting them in one trajectory would
+    hide one of them. Greedy sibling tracks preserve continuous KV within each
+    track while avoiding active-query collisions.
+    """
+    groups: List[List[QuestionUnit]] = []
+    windows_by_group: List[List[Tuple[int, int]]] = []
+    ordered = sorted(
+        units,
+        key=lambda u: (_unit_active_window(u)[0], _unit_active_window(u)[1], u.task, u.unit_id),
+    )
+    for unit in ordered:
+        window = _unit_active_window(unit)
+        placed = False
+        for gi, existing in enumerate(windows_by_group):
+            if any(_windows_overlap(window, other) for other in existing):
+                continue
+            groups[gi].append(unit)
+            existing.append(window)
+            placed = True
+            break
+        if not placed:
+            groups.append([unit])
+            windows_by_group.append([window])
+    return groups
+
+
 def _trajectory_id(video_path: str, group_index: int) -> str:
     stem = Path(video_path).with_suffix("").as_posix().strip("/").replace("/", "__")
     return f"ovo__{stem}__seg{group_index:03d}"
@@ -400,12 +597,19 @@ def _trajectory_from_group(
     post_context_chunks: int,
     short_min_span_chunks: int,
     short_max_span_chunks: int,
+    offline_compress_min_chunks: int,
+    offline_compress_max_chunks: int,
 ) -> Dict[str, Any]:
     if split_policy in {"strict25_45", "strict25_45_stateful"}:
         segment_start, segment_end, span_exceeded = _segment_bounds_strict25_45(
             group,
             min_span_chunks=short_min_span_chunks,
             max_span_chunks=short_max_span_chunks,
+            post_context_chunks=post_context_chunks,
+        )
+    elif split_policy == "continuous_prefix":
+        segment_start, segment_end, span_exceeded = _segment_bounds_continuous_prefix(
+            group,
             post_context_chunks=post_context_chunks,
         )
     else:
@@ -416,6 +620,17 @@ def _trajectory_from_group(
             post_context_chunks=post_context_chunks,
         )
     questions = [u.question for u in sorted(group, key=lambda u: (u.question["ask_chunk"], u.unit_id))]
+    offline_compress_chunks = (
+        _plan_offline_compress_chunks(
+            questions,
+            segment_start=int(segment_start),
+            segment_end=int(segment_end),
+            min_chunks=offline_compress_min_chunks,
+            max_chunks=offline_compress_max_chunks,
+        )
+        if split_policy == "continuous_prefix"
+        else []
+    )
     gold_action: Dict[str, str] = {}
     for q in questions:
         for ck in q.get("answer_chunks") or []:
@@ -434,12 +649,13 @@ def _trajectory_from_group(
         "segment_end_chunk": int(segment_end),
         "questions": questions,
         "gold_action_per_chunk": gold_action,
-        "offline_compress_chunks": [],
+        "offline_compress_chunks": offline_compress_chunks,
         "samples": [],
         "stats": {
             "n_chunks_covered": int(segment_end) + 1,
             "chunk_idx_max": int(segment_end),
             "n_questions": len(questions),
+            "n_offline_compress_chunks": len(offline_compress_chunks),
         },
         "ovo_split_meta": {
             "group_index": int(group_index),
@@ -451,14 +667,25 @@ def _trajectory_from_group(
             "segment_end_chunk": int(segment_end),
             "split_policy": split_policy,
             "benchmark_track": (
-                "strict_window"
-                if split_policy == "strict25_45"
-                else "stateful_multi_emit_reprefill"
+                "continuous_prefix"
+                if split_policy == "continuous_prefix"
+                else (
+                    "strict_window"
+                    if split_policy == "strict25_45"
+                    else "stateful_multi_emit_reprefill"
+                )
             ),
             "max_span_chunks": int(max_span_chunks),
             "short_min_span_chunks": int(short_min_span_chunks),
             "short_max_span_chunks": int(short_max_span_chunks),
             "span_exceeded_soft_limit": bool(span_exceeded),
+            "offline_compress_policy": (
+                "planned_avoid_answer_support_windows"
+                if split_policy == "continuous_prefix"
+                else ""
+            ),
+            "offline_compress_min_chunks": int(offline_compress_min_chunks),
+            "offline_compress_max_chunks": int(offline_compress_max_chunks),
         },
     }
 
@@ -714,14 +941,17 @@ def build_trajectories(
     pre_context_chunks: int = 64,
     post_context_chunks: int = 2,
     pack_across_tasks: bool = False,
-    split_policy: str = "strict25_45",
+    split_policy: str = CURRENT_SPLIT_POLICY,
     short_min_span_chunks: int = 20,
     short_max_span_chunks: int = 40,
+    offline_compress_min_chunks: int = 25,
+    offline_compress_max_chunks: int = 45,
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     if split_policy not in SPLIT_POLICIES:
         raise ValueError(
             f"split_policy must be one of {sorted(SPLIT_POLICIES)}, got {split_policy!r}"
         )
+    effective_pack_across_tasks = bool(pack_across_tasks or split_policy == "continuous_prefix")
     by_bucket: Dict[Tuple[str, str], List[QuestionUnit]] = defaultdict(list)
     task_counts: Counter = Counter()
     for sample in samples:
@@ -730,7 +960,7 @@ def build_trajectories(
             continue
         units = _units_for_sample(sample, scoring=scoring)
         for unit in units:
-            pack_key = "*" if pack_across_tasks else unit.task
+            pack_key = "*" if effective_pack_across_tasks else unit.task
             by_bucket[(unit.video_path, pack_key)].append(unit)
             task_counts[unit.task] += 1
 
@@ -744,10 +974,13 @@ def build_trajectories(
             short_min_span_chunks = 25
             short_max_span_chunks = 45
 
-        groups = [[unit] for unit in sorted(
-            units,
-            key=lambda u: (u.interval_start, u.interval_end, u.unit_id),
-        )]
+        if split_policy == "continuous_prefix":
+            groups = _continuous_prefix_groups(units)
+        else:
+            groups = [[unit] for unit in sorted(
+                units,
+                key=lambda u: (u.interval_start, u.interval_end, u.unit_id),
+            )]
         for group in groups:
             group_i = int(group_counter_by_video[video_path])
             group_counter_by_video[video_path] += 1
@@ -761,6 +994,8 @@ def build_trajectories(
                 post_context_chunks=post_context_chunks,
                 short_min_span_chunks=short_min_span_chunks,
                 short_max_span_chunks=short_max_span_chunks,
+                offline_compress_min_chunks=offline_compress_min_chunks,
+                offline_compress_max_chunks=offline_compress_max_chunks,
             )
             if (traj.get("ovo_split_meta") or {}).get("span_exceeded_soft_limit"):
                 span_exceeded += 1
@@ -805,11 +1040,15 @@ def build_trajectories(
         "questions": sum(len(t.get("questions") or []) for t in trajectories),
         "source_question_units": int(sum(task_counts.values())),
         "tasks": dict(task_counts),
-        "max_questions_per_trajectory": max_questions_per_trajectory,
+        "max_questions_per_trajectory": (
+            None if split_policy == "continuous_prefix" else max_questions_per_trajectory
+        ),
+        "requested_max_questions_per_trajectory": max_questions_per_trajectory,
         "max_span_chunks": max_span_chunks,
         "pre_context_chunks": pre_context_chunks,
         "post_context_chunks": post_context_chunks,
-        "pack_across_tasks": bool(pack_across_tasks),
+        "pack_across_tasks": bool(effective_pack_across_tasks),
+        "requested_pack_across_tasks": bool(pack_across_tasks),
         "split_policy": split_policy,
         "benchmark_tracks": [
             "strict25_45",
@@ -824,6 +1063,15 @@ def build_trajectories(
         "stateful_split_parent_rows": stateful_split_parents,
         "stateful_max_part_span": stateful_max_part_span,
         "stateful_over_45_rows": stateful_over_45_rows,
+        "continuous_prefix": split_policy == "continuous_prefix",
+        "offline_compress_policy": (
+            "planned_avoid_answer_support_windows"
+            if split_policy == "continuous_prefix"
+            else ""
+        ),
+        "offline_compress_min_chunks": int(offline_compress_min_chunks),
+        "offline_compress_max_chunks": int(offline_compress_max_chunks),
+        "offline_compress_events": sum(len(t.get("offline_compress_chunks") or []) for t in trajectories),
     }
     return trajectories, summary
 
@@ -867,9 +1115,11 @@ def main() -> int:
     ap.add_argument("--post-context-chunks", type=int, default=2)
     ap.add_argument(
         "--split-policy",
-        default="strict25_45",
+        default=CURRENT_SPLIT_POLICY,
         choices=sorted(SPLIT_POLICIES),
         help=(
+            "continuous_prefix=source-video prefix tracks from chunk 0 with "
+            "non-overlapping questions placed on the timeline; "
             "strict25_45=one question per row in a strict 25-45s window; "
             "strict25_45_stateful=split long multi-emit questions into "
             "25-45s scored/context parts for compress and re-prefill evaluation."
@@ -877,6 +1127,8 @@ def main() -> int:
     )
     ap.add_argument("--short-min-span-chunks", type=int, default=20)
     ap.add_argument("--short-max-span-chunks", type=int, default=40)
+    ap.add_argument("--offline-compress-min-chunks", type=int, default=25)
+    ap.add_argument("--offline-compress-max-chunks", type=int, default=45)
     ap.add_argument(
         "--pack-across-tasks",
         action="store_true",
@@ -907,14 +1159,21 @@ def main() -> int:
         split_policy=args.split_policy,
         short_min_span_chunks=max(1, int(args.short_min_span_chunks)),
         short_max_span_chunks=max(1, int(args.short_max_span_chunks)),
+        offline_compress_min_chunks=max(1, int(args.offline_compress_min_chunks)),
+        offline_compress_max_chunks=max(1, int(args.offline_compress_max_chunks)),
     )
     out_jsonl = Path(args.out_jsonl)
     _write_jsonl(out_jsonl, trajectories)
     if args.out_parquet:
+        parquet_max_questions = max(
+            (len(t.get("questions") or []) for t in trajectories),
+            default=1,
+        ) if args.split_policy == "continuous_prefix" else max(1, int(args.max_questions_per_trajectory))
+        summary["parquet_max_questions_per_traj"] = int(parquet_max_questions)
         summary["parquet_rows"] = _write_parquet(
             out_jsonl,
             Path(args.out_parquet),
-            max_questions_per_traj=max(1, int(args.max_questions_per_trajectory)),
+            max_questions_per_traj=int(parquet_max_questions),
         )
     text = json.dumps(summary, ensure_ascii=False, indent=2)
     print(text)

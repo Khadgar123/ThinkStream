@@ -1012,6 +1012,38 @@ def _entries_to_mem_text(entries: List[Dict]) -> str:
     return "\n".join(lines)
 
 
+def _compact_target_segment_count(total: int) -> int:
+    total = int(total or 0)
+    if total <= 0:
+        return 0
+    if total <= 6:
+        return 1
+    if total <= 36:
+        return 4
+    if total <= 72:
+        return 5
+    return 6
+
+
+def _balanced_ranges_with_count(source_chunks: List[int], n_segments: int) -> List[List[int]]:
+    chunks = sorted({int(c) for c in source_chunks})
+    if not chunks:
+        return []
+    start, end = chunks[0], chunks[-1]
+    total = end - start + 1
+    if total <= 0:
+        return []
+    n_segments = max(1, min(int(n_segments), total))
+    base, rem = divmod(total, n_segments)
+    ranges: List[List[int]] = []
+    cur = start
+    for i in range(n_segments):
+        span = base + (1 if i < rem else 0)
+        ranges.append([cur, cur + span - 1])
+        cur += span
+    return ranges
+
+
 def _balanced_compact_target_ranges(source_chunks: List[int]) -> List[List[int]]:
     """Return 4-6 near-equal inclusive chunk ranges for compact memory.
 
@@ -1024,26 +1056,268 @@ def _balanced_compact_target_ranges(source_chunks: List[int]) -> List[List[int]]
     if not chunks:
         return []
     start, end = chunks[0], chunks[-1]
-    total = end - start + 1
-    if total <= 0:
+    return _balanced_ranges_with_count(chunks, _compact_target_segment_count(end - start + 1))
+
+
+def _contiguous_chunk_runs(chunks: List[int]) -> List[List[int]]:
+    ordered = sorted({int(c) for c in chunks})
+    if not ordered:
         return []
-    if total <= 6:
-        n_segments = 1
-    elif total <= 36:
-        n_segments = 4
-    elif total <= 72:
-        n_segments = 5
-    else:
-        n_segments = 6
-    n_segments = max(1, min(n_segments, total))
-    base, rem = divmod(total, n_segments)
-    ranges: List[List[int]] = []
-    cur = start
-    for i in range(n_segments):
-        span = base + (1 if i < rem else 0)
-        ranges.append([cur, cur + span - 1])
-        cur += span
-    return ranges
+    runs: List[List[int]] = []
+    cur = [ordered[0]]
+    for chunk in ordered[1:]:
+        if chunk == cur[-1] + 1:
+            cur.append(chunk)
+        else:
+            runs.append(cur)
+            cur = [chunk]
+    runs.append(cur)
+    return runs
+
+
+def _allocate_segments_for_runs(runs: List[List[int]], total_segments: int) -> List[int]:
+    if not runs:
+        return []
+    total_segments = max(1, min(int(total_segments), sum(len(run) for run in runs)))
+    total_len = sum(len(run) for run in runs)
+    allocations = [
+        max(1, min(len(run), int(round(total_segments * len(run) / max(total_len, 1)))))
+        for run in runs
+    ]
+    while sum(allocations) > total_segments:
+        idx = max(
+            (i for i, n in enumerate(allocations) if n > 1),
+            key=lambda i: (allocations[i], len(runs[i])),
+            default=None,
+        )
+        if idx is None:
+            break
+        allocations[idx] -= 1
+    while sum(allocations) < total_segments:
+        idx = max(
+            (i for i, n in enumerate(allocations) if n < len(runs[i])),
+            key=lambda i: (len(runs[i]) - allocations[i], len(runs[i])),
+            default=None,
+        )
+        if idx is None:
+            break
+        allocations[idx] += 1
+    return allocations
+
+
+def _normalize_compact_units(units: List[Dict]) -> List[Dict]:
+    ordered = sorted(units, key=lambda item: (int(item["start"]), int(item["end"])))
+    normalized: List[Dict] = []
+    prev_end: Optional[int] = None
+    for unit in ordered:
+        start, end = int(unit["start"]), int(unit["end"])
+        if end < start:
+            start, end = end, start
+        source_parts = list(unit.get("source_parts") or [{
+            "kind": str(unit.get("kind", "source")),
+            "start": start,
+            "end": end,
+        }])
+        if (
+            normalized
+            and prev_end is not None
+            and start <= prev_end
+            and normalized[-1].get("kind") == unit.get("kind") == "old_memory"
+        ):
+            normalized[-1]["end"] = max(int(normalized[-1]["end"]), end)
+            normalized[-1].setdefault("source_parts", []).extend(source_parts)
+            prev_end = int(normalized[-1]["end"])
+            continue
+        if prev_end is not None and start <= prev_end:
+            start = prev_end + 1
+        if end < start:
+            continue
+        out = dict(unit)
+        out["start"] = start
+        out["end"] = end
+        out["source_parts"] = source_parts
+        normalized.append(out)
+        prev_end = end
+    return normalized
+
+
+def _compact_atomic_units_for_target_plan(source_items: List[Dict], target_count: int) -> List[Dict]:
+    """Return compact-planner units without splitting existing old <m> lines."""
+    old_units: List[Dict] = []
+    raw_chunks: List[int] = []
+    for item in source_items:
+        chunks = _item_source_chunks(item)
+        if item.get("type") == "summary":
+            if chunks:
+                start, end = min(chunks), max(chunks)
+            else:
+                start, end = _item_time_bounds(item)
+            old_units.append({
+                "kind": "old_memory",
+                "start": int(start),
+                "end": int(end),
+                "source_parts": [{
+                    "kind": "old_memory",
+                    "start": int(start),
+                    "end": int(end),
+                }],
+            })
+            continue
+        if item.get("type") == "think":
+            try:
+                raw_chunks.append(int(item.get("chunk")))
+            except (TypeError, ValueError):
+                raw_chunks.extend(chunks)
+
+    if not old_units:
+        return [
+            {
+                "kind": "new_captions",
+                "start": int(start),
+                "end": int(end),
+                "source_parts": [{
+                    "kind": "new_captions",
+                    "start": int(start),
+                    "end": int(end),
+                }],
+            }
+            for start, end in _balanced_compact_target_ranges(raw_chunks)
+        ]
+
+    all_chunks = _range_source_chunks(source_items)
+    if not all_chunks:
+        return _normalize_compact_units(old_units)
+
+    total_span = max(all_chunks) - min(all_chunks) + 1
+    raw_segment_count = 0
+    if raw_chunks:
+        raw_count = len(set(raw_chunks))
+        raw_segment_count = max(
+            1,
+            (target_count * raw_count + max(total_span, 1) - 1) // max(total_span, 1),
+        )
+        if len(set(raw_chunks)) >= COMPACT_MEMORY_MIN_NEW_CHUNKS and target_count >= 5:
+            raw_segment_count = max(raw_segment_count, 2)
+        if len(set(raw_chunks)) >= COMPACT_MEMORY_MIN_NEW_CHUNKS and target_count >= 6:
+            raw_segment_count = max(raw_segment_count, 3)
+        raw_segment_count = min(raw_segment_count, target_count, raw_count)
+
+    new_units: List[Dict] = []
+    runs = _contiguous_chunk_runs(raw_chunks)
+    for run, n_segments in zip(runs, _allocate_segments_for_runs(runs, raw_segment_count)):
+        for start, end in _balanced_ranges_with_count(run, n_segments):
+            new_units.append({
+                "kind": "new_captions",
+                "start": int(start),
+                "end": int(end),
+                "source_parts": [{
+                    "kind": "new_captions",
+                    "start": int(start),
+                    "end": int(end),
+                }],
+            })
+
+    return _normalize_compact_units(old_units + new_units)
+
+
+def _partition_compact_units(units: List[Dict], target_count: int) -> List[List[Dict]]:
+    """Partition atomic units into near-uniform target groups.
+
+    Existing old-memory summaries are never split. If the visible memory has too
+    many old units, adjacent complete summaries are grouped and the teacher is
+    asked to write a fresh higher-level summary for that group.
+    """
+    units = _normalize_compact_units(units)
+    if not units:
+        return []
+    n_groups = max(1, min(int(target_count), len(units)))
+    if len(units) <= n_groups:
+        return [[unit] for unit in units]
+
+    total_span = int(units[-1]["end"]) - int(units[0]["start"]) + 1
+    ideal = max(total_span / float(n_groups), 1.0)
+    m = len(units)
+    inf = float("inf")
+    dp = [[inf] * (n_groups + 1) for _ in range(m + 1)]
+    prev = [[-1] * (n_groups + 1) for _ in range(m + 1)]
+    dp[0][0] = 0.0
+
+    def group_cost(lo: int, hi: int) -> float:
+        group = units[lo:hi]
+        span = int(group[-1]["end"]) - int(group[0]["start"]) + 1
+        span_cost = ((span - ideal) / ideal) ** 2
+        kinds = {str(unit.get("kind")) for unit in group}
+        mixed_kind_penalty = 0.05 if len(kinds) > 1 else 0.0
+        new_units = sum(1 for unit in group if unit.get("kind") == "new_captions")
+        new_merge_penalty = 0.08 * max(0, new_units - 1)
+        recency_merge_penalty = 0.03 * max(0, len(group) - 1) * (lo / max(m - 1, 1))
+        return span_cost + mixed_kind_penalty + new_merge_penalty + recency_merge_penalty
+
+    for i in range(m):
+        for k in range(n_groups):
+            if dp[i][k] == inf:
+                continue
+            remaining_groups = n_groups - k - 1
+            max_j = m - remaining_groups
+            for j in range(i + 1, max_j + 1):
+                if m - j < remaining_groups:
+                    break
+                candidate = dp[i][k] + group_cost(i, j)
+                if candidate < dp[j][k + 1] - 1e-9:
+                    dp[j][k + 1] = candidate
+                    prev[j][k + 1] = i
+
+    if prev[m][n_groups] < 0:
+        return [[unit] for unit in units[:n_groups - 1]] + [units[n_groups - 1:]]
+
+    groups: List[List[Dict]] = []
+    idx, k = m, n_groups
+    while k > 0:
+        lo = prev[idx][k]
+        if lo < 0:
+            return [[unit] for unit in units[:n_groups - 1]] + [units[n_groups - 1:]]
+        groups.append(units[lo:idx])
+        idx, k = lo, k - 1
+    groups.reverse()
+    return groups
+
+
+def _boundary_aware_compact_target_plan(source_items: List[Dict]) -> Tuple[List[List[int]], List[Dict]]:
+    """Plan compact targets while treating existing old <m> summaries as atomic."""
+    chunks = _range_source_chunks(source_items)
+    if not chunks:
+        return [], []
+    start, end = min(chunks), max(chunks)
+    target_count = _compact_target_segment_count(end - start + 1)
+    units = _compact_atomic_units_for_target_plan(source_items, target_count)
+    groups = _partition_compact_units(units, target_count)
+    target_ranges: List[List[int]] = []
+    target_source_units: List[Dict] = []
+    for group in groups:
+        if not group:
+            continue
+        range_start, range_end = int(group[0]["start"]), int(group[-1]["end"])
+        sources: List[Dict] = []
+        for unit in group:
+            parts = unit.get("source_parts") or [{
+                "kind": str(unit.get("kind", "source")),
+                "start": int(unit["start"]),
+                "end": int(unit["end"]),
+            }]
+            for part in parts:
+                sources.append({
+                    "kind": str(part.get("kind", "source")),
+                    "start": int(part["start"]),
+                    "end": int(part["end"]),
+                })
+        old_count = sum(1 for source in sources if source["kind"] == "old_memory")
+        target_ranges.append([range_start, range_end])
+        target_source_units.append({
+            "target": [range_start, range_end],
+            "sources": sources,
+            "requires_rewrite": bool(len(sources) > 1 or old_count > 1),
+        })
+    return target_ranges, target_source_units
 
 
 def _format_target_ranges_for_prompt(target_ranges: List[List[int]]) -> str:
@@ -1053,6 +1327,26 @@ def _format_target_ranges_for_prompt(target_ranges: List[List[int]]) -> str:
         f'  <m t="{int(start)}-{int(end)}">...</m>'
         for start, end in target_ranges
     )
+
+
+def _format_target_source_units_for_prompt(target_source_units: List[Dict]) -> str:
+    if not target_source_units:
+        return "(none)"
+    lines: List[str] = []
+    for item in target_source_units:
+        target = item.get("target") or []
+        if not (isinstance(target, list) and len(target) == 2):
+            continue
+        source_bits: List[str] = []
+        for source in item.get("sources") or []:
+            kind = "OLD_MEMORY" if source.get("kind") == "old_memory" else "NEW_CAPTIONS"
+            source_bits.append(f'{kind}:{int(source["start"])}-{int(source["end"])}')
+        action = "rewrite-summary" if item.get("requires_rewrite") else "summarize-source"
+        lines.append(
+            f'  <target t="{int(target[0])}-{int(target[1])}" '
+            f'sources="{"; ".join(source_bits)}" action="{action}" />'
+        )
+    return "\n".join(lines) if lines else "(none)"
 
 
 def _compact_input_record(item: Dict) -> Optional[Dict]:
@@ -1355,7 +1649,7 @@ def build_compress_request(
             if isinstance(item.get("chunk"), int) or str(item.get("chunk", "")).isdigit()
         ]
         compress_chunks = _range_source_chunks(source_items)
-        target_ranges = _balanced_compact_target_ranges(compress_chunks)
+        target_ranges, target_source_units = _boundary_aware_compact_target_plan(source_items)
         if target_ranges:
             first_time, last_time = target_ranges[0][0], target_ranges[-1][1]
         merge_level = (
@@ -1372,6 +1666,7 @@ def build_compress_request(
             old_memory=old_memory_text,
             new_captions=new_captions_text,
             target_ranges=_format_target_ranges_for_prompt(target_ranges),
+            target_source_units=_format_target_source_units_for_prompt(target_source_units),
             start=int(first_time),
             end=int(last_time),
         )
@@ -1390,6 +1685,7 @@ def build_compress_request(
                 "chunks": compress_chunks,
                 "raw_think_chunks": raw_think_chunks,
                 "target_ranges": target_ranges,
+                "target_source_units": target_source_units,
                 "target_range_count": len(target_ranges),
                 "input_records": input_records,
                 "merge_level": merge_level,
@@ -1399,6 +1695,7 @@ def build_compress_request(
                     "n_new_captions": len(raw_think_items),
                     "n_old_memory": sum(1 for item in pre_action_timeline if item.get("type") == "summary"),
                     "target_ranges": target_ranges,
+                    "target_source_units": target_source_units,
                 },
                 "overlap_chunks": [],
                 "has_visual_context": False,
@@ -1650,7 +1947,7 @@ def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
         literal_block = literal_mem.group(0).strip() if literal_mem else raw_no_think
         raw_open_m = len(re.findall(r"<m\b", literal_block, flags=re.IGNORECASE))
         raw_close_m = len(re.findall(r"</m>", literal_block, flags=re.IGNORECASE))
-        if raw_open_m != raw_close_m:
+        if raw_open_m != raw_close_m or literal_mem is None:
             out["format_repaired"] = True
         return out
 

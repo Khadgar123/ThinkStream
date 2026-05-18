@@ -176,6 +176,10 @@ def _rl_gold_actions_and_offline_compress(
             continue
         sanitized[str(key)] = action
     if traj is not None:
+        for raw in traj.get("offline_compress_chunks") or []:
+            iv = _safe_int(raw)
+            if iv is not None and iv >= 0:
+                offline_compress.append(iv)
         offline_compress.extend(_offline_compress_chunks_from_samples(traj))
     return sanitized, sorted(set(offline_compress))
 

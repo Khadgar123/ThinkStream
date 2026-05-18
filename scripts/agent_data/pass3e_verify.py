@@ -197,7 +197,7 @@ def _verify_mc_response_text(resp_text: str, metadata: Dict) -> Tuple[bool, str]
     if correct and options:
         idx = ord(correct) - ord("A")
         if 0 <= idx < len(options):
-            option_text = re.sub(r"^\s*(?:\([A-Z]\)|[A-Z][\).:])\s*", "", str(options[idx]).strip(), flags=re.I)
+            option_text = re.sub(r"^\s*(?:\([A-E]\)|[A-E][\).:])\s*", "", str(options[idx]).strip(), flags=re.I)
     if correct:
         target = f"{correct}) {option_text}" if option_text else correct
         if resp_text.strip() != target:

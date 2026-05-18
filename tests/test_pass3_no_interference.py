@@ -375,6 +375,73 @@ def test_hld1_rejects_supported_concrete_option():
     assert reason.startswith("hld1_concrete_option_supported")
 
 
+def test_mc_card_rejects_empty_distractor_option():
+    from scripts.agent_data.pass3a_cards import _verify_card_layers
+
+    card = {
+        "card_id": "p0",
+        "family": "P1",
+        "question": "What letters were printed on the shorts?",
+        "answer_form": "multiple_choice",
+        "question_type": "single_emit",
+        "canonical_answer": "G.",
+        "correct_option": "C",
+        "options": ["A) U.S.C.", "B) N.C.", "C) G.", "D) "],
+        "gold_emits": [{"chunk": 0, "value": "C"}],
+        "grounding_frames": [0],
+    }
+
+    assert _verify_card_layers(card, {}) == "schema_mc_empty_option"
+
+
+def test_pass3b_rejects_stale_empty_mc_option():
+    from scripts.agent_data.pass3b_placement import _card_reject_reason
+
+    bad = {
+        "card_id": "p0",
+        "family": "P1",
+        "question": "What letters were printed on the shorts?",
+        "answer_form": "multiple_choice",
+        "question_type": "single_emit",
+        "canonical_answer": "G.",
+        "correct_option": "C",
+        "options": ["A) U.S.C.", "B) N.C.", "C) G.", "D) "],
+        "gold_emits": [{"chunk": 0, "value": "C"}],
+        "grounding_frames": [0],
+    }
+    good = dict(bad, options=["A) U.S.C.", "B) N.C.", "C) G.", "D) E.G."])
+
+    assert _card_reject_reason(bad) == "schema_mc_empty_option"
+    assert _card_reject_reason(good) == ""
+
+
+def test_pass3b_rejects_stale_option_rendering_leak():
+    from scripts.agent_data.pass3b_placement import _card_reject_reason
+
+    card = {
+        "card_id": "p0",
+        "family": "CR2",
+        "question": (
+            "After the vegetables were seen simmering in the pot, what was the "
+            "chef doing in the next observed step among these options?"
+        ),
+        "answer_form": "multiple_choice",
+        "question_type": "single_emit",
+        "canonical_answer": "stirring the pot",
+        "correct_option": "A",
+        "options": [
+            "A) stirring the pot",
+            "B) chopping herbs",
+            "C) washing a bowl",
+            "D) opening a drawer",
+        ],
+        "gold_emits": [{"chunk": 0, "value": "A"}],
+        "grounding_frames": [0],
+    }
+
+    assert _card_reject_reason(card) == "question_option_rendering_leak"
+
+
 def test_hld1_prompt_asks_for_diverse_ovo_negatives():
     from scripts.agent_data.pass3a_cards import PASS3A_TARGETS_BY_FAMILY
     from scripts.agent_data.placement.llm_prompts import card_generation_prompt

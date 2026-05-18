@@ -239,8 +239,8 @@ FAMILY_EXTRA_RULES = {
 - The correct option text MUST be exactly "Unable to answer"; canonical_answer
   MUST be exactly "Unable to answer"; gold_emits[0].value MUST be the correct
   letter for the Unable option.
-- Use four MC options by default; 2, 3, or 5 options are allowed when that is
-  natural for the question.
+- Use four MC options by default; use five only when a real unknown/abstain
+  choice is needed. Do not output two- or three-option MC cards.
   Put "Unable to answer" in a varied option slot.
 - For state yes/no HLD, still include plausible options, e.g. Yes, No, Unable to
   answer, and one plausible concrete state phrase.
@@ -1060,11 +1060,21 @@ Rules:
   format instructions, choice prompts, response-format phrases, or letter
   labels inside question. Options and answer requirements belong only in the
   structured fields below so later rendering can decide how to show them.
+- Never write phrases such as "among these options", "among the following
+  options", "choose/select the answer", or "return only the letter" in
+  question. The option list is rendered separately.
 - Do not mention benchmark names, family ids, or dataset/task labels in the
   user-facing question.
 - question must be a natural user-facing question. Do NOT mention internal
   chunk indices, frame numbers, timestamps, "c12", "chunk 12", or evidence
   row ids. Use visual/event references instead.
+- Standard QA questions should be grammatical English and normally end with a
+  question mark. Future/proactive cards may instead be imperative trigger
+  instructions such as "Wait until..." or "Watch for...", but they still must
+  read naturally.
+- Avoid vague placeholders like "something" or "this step" unless those words
+  are the literal visible text or the only natural user wording. Prefer the
+  concrete object, action, location, or event anchor from the evidence.
 - grounding_frames must reference chunks present in the evidence above.
 - When planned slots are provided, do not choose your own evidence position:
   gold_emits chunk list MUST exactly equal the slot answer_chunks; for

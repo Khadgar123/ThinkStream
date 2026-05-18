@@ -85,9 +85,28 @@
 #                            outcome/answer_decision/format/compress advantages
 #                            before weighted aggregation. Set legacy_grpo to
 #                            recover trajectory-scalar GRPO.
-#   THINKSTREAM_HDPO_WEIGHTS [outcome=1.0,answer_decision=0.3,format=0.1,compress_quality=0.1]
+#   THINKSTREAM_HDPO_WEIGHTS [outcome=1.0,answer_decision=0.3,format=0.1,recall_answer=0.2,compress_quality=0.1]
 #                            weights for the branch-normalized recurrent
 #                            advantage path.
+#   THINKSTREAM_CREDIT_ASSIGNMENT [question]
+#                            global_grpo broadcasts trajectory GRPO to every
+#                            action row; global_gspo uses the same trajectory
+#                            GRPO only on final rows; global_gdpo broadcasts
+#                            normalized component advantages. Segment modes:
+#                            question, compress_boundary, question_next_compress.
+#   THINKSTREAM_SEGMENT_GLOBAL_ALPHA [0.5]
+#                            segment modes mix alpha * global advantage with
+#                            (1-alpha) * local segment advantage.
+#   THINKSTREAM_COMPRESS_LOCAL_QUALITY_RHO [0.1]
+#                            compress rows mix (1-rho) * future-answer local
+#                            advantage with rho * compression-quality local
+#                            advantage.
+#   THINKSTREAM_GDPO_NORMALIZE_WEIGHTS [1]
+#                            normalize global GDPO component weights before
+#                            summing component advantages.
+#   THINKSTREAM_RECALL_ANSWER_WEIGHT [0.2]
+#                            bonus weight for recall-labeled questions where
+#                            the model uses recall and then answers correctly.
 #   THINKSTREAM_ROLLOUT_ENGINE [streaming]
 #                            local HF/CASIA-style rollout backend with visual
 #                            KV eviction. Full-prompt/vLLM rollout is disabled
@@ -305,7 +324,7 @@ export THINKSTREAM_RL_ROLLOUT_AUDIT_MAX="${THINKSTREAM_RL_ROLLOUT_AUDIT_MAX:-200
 export THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE="${THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE:-offline_pass2_boundaries}"
 export THINKSTREAM_RL_REWARD_PROFILE="${THINKSTREAM_RL_REWARD_PROFILE:-initial_outcome_time_format_decision}"
 export THINKSTREAM_RECURRENT_ADVANTAGE_MODE="${THINKSTREAM_RECURRENT_ADVANTAGE_MODE:-gdpo_hdpo}"
-export THINKSTREAM_HDPO_WEIGHTS="${THINKSTREAM_HDPO_WEIGHTS:-outcome=1.0,answer_decision=0.3,format=0.1,compress_quality=0.1}"
+export THINKSTREAM_HDPO_WEIGHTS="${THINKSTREAM_HDPO_WEIGHTS:-outcome=1.0,answer_decision=0.3,format=0.1,recall_answer=0.2,compress_quality=0.1}"
 export THINKSTREAM_ENABLE_STEP_ACTION_REWARD="${THINKSTREAM_ENABLE_STEP_ACTION_REWARD:-0}"
 export THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD="${THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD:-0}"
 export THINKSTREAM_ROLLOUT_ENGINE="${THINKSTREAM_ROLLOUT_ENGINE:-streaming}"
@@ -360,15 +379,16 @@ export THINKSTREAM_VISUAL_WINDOW_MODE="${THINKSTREAM_VISUAL_WINDOW_MODE:-sliding
 #                          final_mask; ray_trainer Phase 4d
 #                          (verl/verl/trainer/ppo/ray_trainer.py)
 #                          extracts trajectory-level reward, computes 1D
-#                          GRPO advantage by uid, broadcasts back to
-#                          action rows via sample_index, and pads to
+#                          GRPO/GDPO/GSPO-style advantages by uid, maps them
+#                          back to action rows via sample_index/final_mask,
+#                          and pads to
 #                          actor world_size with response_mask=0 on
 #                          padded rows. Required for >180-chunk training
 #                          without OOM.
 #
-# Reward is trajectory-level: score final trajectory text once, then broadcast
-# the resulting GRPO advantage to all action rows in that rollout. We do not
-# enable ReMemR1-style step/tool rewards in the default objective.
+# Reward is trajectory-level: score final trajectory text once, then assign
+# credit according to THINKSTREAM_CREDIT_ASSIGNMENT. We do not enable
+# ReMemR1-style step/tool rewards in the default objective.
 #
 # Activation:
 #   THINKSTREAM_RECURRENT_MODE=recurrent \
@@ -433,6 +453,20 @@ for _ts_env_name in \
     THINKSTREAM_COMPRESS_THRESHOLD \
     THINKSTREAM_COMPRESS_RANGE_MIN \
     THINKSTREAM_COMPRESS_RANGE_MAX \
+    THINKSTREAM_COMPRESS_TARGET_MIN_ITEMS \
+    THINKSTREAM_COMPRESS_TARGET_MAX_ITEMS \
+    THINKSTREAM_COMPRESS_BOUNDARY_TOLERANCE \
+    THINKSTREAM_CREDIT_ASSIGNMENT \
+    THINKSTREAM_SEGMENT_CREDIT_MODE \
+    THINKSTREAM_SEGMENT_CREDIT_ENABLED \
+    THINKSTREAM_SEGMENT_GLOBAL_BASE \
+    THINKSTREAM_SEGMENT_GLOBAL_ALPHA \
+    THINKSTREAM_COMPRESS_LOCAL_QUALITY_RHO \
+    THINKSTREAM_GDPO_NORMALIZE_WEIGHTS \
+    THINKSTREAM_RECALL_ANSWER_WEIGHT \
+    THINKSTREAM_RECALL_ANSWER_REQUIRE_VALID_RECALL \
+    THINKSTREAM_COMPRESS_ROW_ADV_ENABLED \
+    THINKSTREAM_SEGMENT_EXTRA_COMPRESS_ROW_ADV \
     THINKSTREAM_RECALL_VISUAL_LAYOUT \
     THINKSTREAM_RL_ROLLOUT_AUDIT \
     THINKSTREAM_RL_ROLLOUT_AUDIT_PATH \
@@ -441,6 +475,8 @@ for _ts_env_name in \
     THINKSTREAM_RL_ROLLOUT_AUDIT_FINAL_ONLY \
     THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_TURNS \
     THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_CHARS \
+    THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_SOURCE_CHARS \
+    THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_ASSISTANT_CHARS \
     THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_QUESTIONS
 do
     if [[ -n "${!_ts_env_name:-}" ]]; then

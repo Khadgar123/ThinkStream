@@ -118,6 +118,19 @@ def test_parse_recall_tool_call():
     print("[OK] parse_recall_tool_call")
 
 
+def test_parse_legacy_recall_time_range_tool_call():
+    text = (
+        "<think>need history</think>"
+        '<tool_call>{"name": "recall", "arguments": '
+        '{"query": "ignored legacy text", "time_range": [23, 28]}}</tool_call>'
+    )
+    spec = parse_assistant_output_to_spec(text, chunk_idx=96)
+    assert spec.action_type == ACTION_RECALL
+    assert spec.tool_call_id == "rec_96"
+    assert spec.tool_arguments == {"start_time": 23, "end_time": 28}
+    print("[OK] parse_legacy_recall_time_range_tool_call")
+
+
 def test_legacy_v12_inter_chunk_is_compress_boundary():
     sample = {
         "chunk_idx": 7,
@@ -911,8 +924,9 @@ if __name__ == "__main__":
     test_parse_silent_empty_answer()
     test_parse_response_with_answer()
     test_parse_legacy_answer_tag_to_response()
-    test_parse_compress_tool_call()
+    test_parse_compress_tool_call_is_rejected()
     test_parse_recall_tool_call()
+    test_parse_legacy_recall_time_range_tool_call()
     test_parse_malformed_tool_call_falls_back_to_silent()
     test_parse_no_think_section()
     test_build_questions_by_chunk_filters_missing_ask()

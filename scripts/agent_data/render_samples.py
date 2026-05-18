@@ -35,8 +35,8 @@ from thinkstream.data.agent_protocol import (
 
 logger = logging.getLogger(__name__)
 
-OPTION_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-_OPTION_LABEL_RE = re.compile(r"^\s*(?:\(([A-Z])\)|([A-Z])[\).:])\s*(.*)\s*$", re.DOTALL)
+OPTION_LETTERS = "ABCDE"
+_OPTION_LABEL_RE = re.compile(r"^\s*(?:\(([A-E])\)|([A-E])[\).:])\s*(.*)\s*$", re.DOTALL)
 
 
 def _strip_option_label(text: str) -> str:

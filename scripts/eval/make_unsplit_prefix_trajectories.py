@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-"""Create paired no-split prefix trajectories from split benchmark rows.
+"""Legacy helper: create paired no-split prefix rows from split benchmark rows.
 
 The input is a ThinkStream trajectory JSONL. Each output row keeps the same
 question payload and gold answer schedule, but starts from chunk 0 and runs
 until the last answer/ask chunk plus post-context. This gives a paired baseline
 for "accumulate KV from the beginning" without changing the benchmark question
 set.
+
+Current benchmark eval should prefer each benchmark builder's native
+``--split-policy continuous_prefix``. This helper cannot recover questions that
+were already dropped by an upstream short-window split.
 """
 
 from __future__ import annotations

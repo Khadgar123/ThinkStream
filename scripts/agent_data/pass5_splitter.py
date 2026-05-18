@@ -98,7 +98,7 @@ _SILENCE_RE = re.compile(r"</Silence>\s*$", re.DOTALL)
 _LEGACY_SILENCE_RE = re.compile(r"<silent>\s*$", re.DOTALL | re.IGNORECASE)
 _TOOL_CALL_RE = re.compile(r"<tool_call>\s*(\{.*?\})\s*</tool_call>", re.DOTALL)
 _MEM_RE = re.compile(r"<MEM>\s*(.*?)\s*</MEM>", re.DOTALL | re.IGNORECASE)
-_OPTION_LABEL_RE = re.compile(r"^\s*(?:\(([A-Z])\)|([A-Z])[\).:])\s*(.*)\s*$", re.DOTALL)
+_OPTION_LABEL_RE = re.compile(r"^\s*(?:\(([A-E])\)|([A-E])[\).:])\s*(.*)\s*$", re.DOTALL)
 _M_LINE_RE = re.compile(
     r'<m\s+t="(\d+)(?:\s*-\s*(\d+))?"\s*>(.*?)</m>',
     re.DOTALL | re.IGNORECASE,
@@ -134,6 +134,13 @@ def _normalise_recall_time_arg(value):
 def _normalise_recall_args(args: Dict) -> Dict:
     start = _normalise_recall_time_arg(args.get("start_time"))
     end = _normalise_recall_time_arg(args.get("end_time"))
+    if start is None or end is None:
+        legacy_range = _normalise_time_range_arg(
+            args.get("time_range") or args.get("time")
+        )
+        if isinstance(legacy_range, (list, tuple)) and len(legacy_range) >= 2:
+            start = _normalise_recall_time_arg(legacy_range[0])
+            end = _normalise_recall_time_arg(legacy_range[1])
     if start is None or end is None:
         raise ValueError(
             "recall tool_call requires start_time and end_time; "

@@ -802,7 +802,11 @@ Requirements:
 - Preserve exact visible names, jersey numbers, team labels, scoreboard values, OCR strings, sponsor/ad text, and distinctive colors when present.
 - Do not replace all older memory with a generic event line if OLD_MEMORY contains named players, OCR, or scoreboard values.
 - When NEW_CAPTIONS contains names, OCR, or scoreboard text, include the most important ones in the output.
-- If one input memory line overlaps several TARGET_RANGES, carry only the relevant high-level facts into each affected output line; do not copy the same sentence into every line.
+- OLD_MEMORY <m> lines are atomic input units. Do not split one old <m> line into partial target ranges.
+- If one TARGET_RANGES line covers several OLD_MEMORY lines or NEW_CAPTIONS units, synthesize a new higher-level sentence from all listed units. Do not concatenate old sentences.
+- If TARGET_SOURCE_UNITS says action="rewrite-summary", write a fresh abstracted summary of the listed sources. Do not reuse only the first old line.
+- Never copy an OLD_MEMORY <m> sentence verbatim or near-verbatim into a different t range. Changing only the t value is invalid.
+- When target ranges are coarser than OLD_MEMORY ranges, rewrite the content so the full requested interval is covered by a single concise summary.
 - It is acceptable to compress repeated generic play-by-play, but not to drop all exact identifiers.
 - Merge adjacent repeated captions; split when the main object, action, scene, or state changes.
 - Do not answer questions, add analysis, describe future actions, or write text outside the <m> lines."""
@@ -817,11 +821,17 @@ Covered latest span: t={start}-{end}
 TARGET_RANGES:
 {target_ranges}
 
+TARGET_SOURCE_UNITS:
+{target_source_units}
+
 Coverage check:
 - Output exactly the TARGET_RANGES above, in the same order and with the same t values.
 - Each TARGET_RANGES line must be filled with a concise factual summary from overlapping OLD_MEMORY and NEW_CAPTIONS.
 - If OLD_MEMORY has <m> lines, preserve useful old information in the target ranges it overlaps.
 - If NEW_CAPTIONS has <c> lines, cover the latest new caption timestamps in the target ranges they overlap.
+- Use TARGET_SOURCE_UNITS to decide which old and new units belong to each target.
+- If a target range lists multiple OLD_MEMORY units, summarize them together as one new higher-level sentence; do not concatenate or copy the old sentences.
+- Do not copy an OLD_MEMORY sentence unchanged unless the target t range is exactly the same and no NEW_CAPTIONS overlap it.
 - Do not output a single broad old range like <m t="0-60"> when TARGET_RANGES asks for smaller balanced ranges.
 - Do not output one line per second or copy raw captions nearly verbatim.
 - Every returned line must end with </m>; do not omit closing tags.

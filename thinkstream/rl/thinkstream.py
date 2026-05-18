@@ -1249,7 +1249,12 @@ def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
     """
     from thinkstream.data.agent_protocol import parse_agent_output
 
-    chunks = _split_assistant_chunks(solution_str)
+    chunks = [
+        str(x or "")
+        for x in _safe_list(extra.get("ts_chunk_asst_texts"))
+    ]
+    if not chunks:
+        chunks = _split_assistant_chunks(solution_str)
     if not chunks:
         return -1.0
     action_errors = _safe_list(extra.get("ts_chunk_action_space_errors"))
@@ -1419,36 +1424,239 @@ def _content_words(text: Any) -> set[str]:
     }
 
 
+def _merge_contiguous_intervals(
+    intervals: List[tuple[float, float]],
+    *,
+    max_gap: float = 1e-6,
+) -> List[tuple[float, float]]:
+    merged: List[tuple[float, float]] = []
+    for start, end in sorted(intervals):
+        if end <= start:
+            continue
+        if not merged or start > merged[-1][1] + max_gap:
+            merged.append((float(start), float(end)))
+        else:
+            merged[-1] = (merged[-1][0], max(merged[-1][1], float(end)))
+    return merged
+
+
+def _caption_intervals_from_text(
+    source_text: str,
+    expected_chunks: Optional[set[int]] = None,
+) -> List[tuple[float, float]]:
+    intervals: List[tuple[float, float]] = []
+    for match in _CAPTION_ENTRY_RE.finditer(str(source_text or "")):
+        interval = _range_to_interval(match.group(1), match.group(1))
+        if interval is not None:
+            intervals.append((interval[0], interval[1]))
+    if intervals:
+        return sorted(intervals)
+    return [
+        (float(chunk), float(chunk) + 1.0)
+        for chunk in sorted(expected_chunks or [])
+    ]
+
+
+def _merge_oldest_adjacent_units(
+    units: List[tuple[float, float]],
+    target_count: int,
+) -> List[tuple[float, float]]:
+    out = [(float(start), float(end)) for start, end in sorted(units)]
+    target_count = max(1, int(target_count))
+    while len(out) > target_count:
+        first = out.pop(0)
+        second = out.pop(0)
+        out.insert(0, (first[0], max(first[1], second[1])))
+    return out
+
+
+def _partition_units_near_uniform(
+    units: List[tuple[float, float]],
+    target_count: int,
+) -> List[tuple[float, float]]:
+    units = [(float(start), float(end)) for start, end in sorted(units) if end > start]
+    if not units:
+        return []
+    target_count = max(1, min(int(target_count), len(units)))
+    if target_count >= len(units):
+        return units
+    total = sum(_interval_len(unit) for unit in units)
+    if total <= 0.0:
+        return units
+
+    groups: List[List[tuple[float, float]]] = []
+    current: List[tuple[float, float]] = []
+    current_len = 0.0
+    remaining_groups = target_count
+    target_width = total / float(target_count)
+    for idx, unit in enumerate(units):
+        remaining_units = len(units) - idx
+        if current and remaining_groups > 1:
+            unit_len = _interval_len(unit)
+            before = abs(current_len - target_width)
+            after = abs((current_len + unit_len) - target_width)
+            must_leave_units = remaining_units <= remaining_groups - 1
+            if not must_leave_units and before <= after:
+                groups.append(current)
+                current = []
+                current_len = 0.0
+                remaining_groups -= 1
+        current.append(unit)
+        current_len += _interval_len(unit)
+    if current:
+        groups.append(current)
+
+    while len(groups) > target_count:
+        first = groups.pop(0)
+        groups[0] = first + groups[0]
+    while len(groups) < target_count and any(len(group) > 1 for group in groups):
+        for group_i, group in enumerate(groups):
+            if len(group) > 1:
+                groups[group_i] = group[:-1]
+                groups.insert(group_i + 1, [group[-1]])
+                break
+
+    return [(group[0][0], group[-1][1]) for group in groups if group]
+
+
+def _boundary_aware_target_partitions(
+    source_text: str,
+    source_entries: List[tuple[float, float, str]],
+    expected_chunks: Optional[set[int]],
+) -> List[List[tuple[float, float]]]:
+    max_items = max(1, _env_int("THINKSTREAM_COMPRESS_TARGET_MAX_ITEMS", 7))
+    min_items = max(1, min(max_items, _env_int("THINKSTREAM_COMPRESS_TARGET_MIN_ITEMS", 4)))
+    old_units = [(start, end) for start, end, _ in _memory_entries_from_text(source_text)]
+    caption_units = _caption_intervals_from_text(source_text, expected_chunks)
+
+    candidates: List[List[tuple[float, float]]] = []
+    if old_units:
+        # OLD_MEMORY boundaries are already recall indices. Keep them intact,
+        # add contiguous NEW_CAPTIONS as whole units, and only merge adjacent
+        # complete units when the memory budget is exceeded.
+        base_units = _merge_contiguous_intervals(old_units, max_gap=-1.0)
+        base_units.extend(_merge_contiguous_intervals(caption_units))
+        base_units = _merge_contiguous_intervals(base_units, max_gap=-1.0)
+        if not base_units:
+            return []
+        high = min(max_items, len(base_units))
+        low = min(min_items, high)
+        for target_count in range(low, high + 1):
+            candidates.append(_merge_oldest_adjacent_units(base_units, target_count))
+        if len(base_units) <= max_items:
+            candidates.append(base_units)
+    else:
+        raw_units = caption_units or [(start, end) for start, end, _ in source_entries]
+        raw_units = _merge_contiguous_intervals(raw_units, max_gap=-1.0)
+        if not raw_units:
+            return []
+        high = min(max_items, len(raw_units))
+        low = min(min_items, high)
+        for target_count in range(low, high + 1):
+            candidates.append(_partition_units_near_uniform(raw_units, target_count))
+
+    deduped: List[List[tuple[float, float]]] = []
+    seen: set[tuple[tuple[float, float], ...]] = set()
+    for candidate in candidates:
+        key = tuple((round(start, 6), round(end, 6)) for start, end in candidate)
+        if key and key not in seen:
+            seen.add(key)
+            deduped.append(candidate)
+    return deduped
+
+
+def _non_overlap_score(intervals: List[tuple[float, float]]) -> float:
+    total = sum(_interval_len(interval) for interval in intervals)
+    if total <= 0.0:
+        return 0.0
+    union = sum(_interval_len(interval) for interval in _merge_contiguous_intervals(intervals))
+    return max(0.0, min(1.0, union / total))
+
+
+def _partition_match_score(
+    target: List[tuple[float, float]],
+    emitted: List[tuple[float, float]],
+) -> float:
+    if not target or not emitted:
+        return 0.0
+    target_recall = sum(
+        max(_interval_iou(tgt, out) for out in emitted)
+        for tgt in target
+    ) / float(len(target))
+    emitted_precision = sum(
+        max(_interval_iou(out, tgt) for tgt in target)
+        for out in emitted
+    ) / float(len(emitted))
+    if target_recall <= 0.0 or emitted_precision <= 0.0:
+        return 0.0
+    return (target_recall * emitted_precision) ** 0.5
+
+
+def _boundary_alignment_score(
+    target: List[tuple[float, float]],
+    emitted: List[tuple[float, float]],
+) -> float:
+    if not target or not emitted:
+        return 0.0
+    boundaries = [target[0][0]]
+    for start, end in target:
+        boundaries.append(start)
+        boundaries.append(end)
+    tolerance = _env_float("THINKSTREAM_COMPRESS_BOUNDARY_TOLERANCE", 1.01)
+    hits = 0
+    total = 0
+    for start, end in emitted:
+        for value in (start, end):
+            total += 1
+            if any(abs(float(value) - float(boundary)) <= tolerance for boundary in boundaries):
+                hits += 1
+    return float(hits / total) if total else 0.0
+
+
+def _compress_time_score_with_details(
+    output_entries: List[tuple[float, float, str]],
+    source_entries: List[tuple[float, float, str]],
+    *,
+    source_text: str = "",
+    expected_chunks: Optional[set[int]] = None,
+) -> tuple[float, Dict[str, float]]:
+    if not output_entries or not source_entries:
+        return 0.0, {"count_score": 0.0, "target_item_count": 0.0, "non_overlap": 0.0}
+    emitted = [(entry[0], entry[1]) for entry in output_entries]
+    candidates = _boundary_aware_target_partitions(source_text, source_entries, expected_chunks)
+    if not candidates:
+        return 0.0, {"count_score": 0.0, "target_item_count": 0.0, "non_overlap": 0.0}
+
+    best = 0.0
+    best_count = 0
+    best_boundary = 0.0
+    for target in candidates:
+        boundary_score = _boundary_alignment_score(target, emitted)
+        score = _partition_match_score(target, emitted) * (0.5 + 0.5 * boundary_score)
+        if score > best:
+            best = score
+            best_count = len(target)
+            best_boundary = boundary_score
+
+    max_items = max(1, _env_int("THINKSTREAM_COMPRESS_TARGET_MAX_ITEMS", 7))
+    count = len(output_entries)
+    count_score = 1.0 if count <= max_items else (float(max_items) / float(count)) ** 2
+    non_overlap = _non_overlap_score(emitted)
+    score = max(0.0, min(1.0, best * count_score * non_overlap))
+    return score, {
+        "count_score": float(count_score),
+        "target_item_count": float(best_count),
+        "non_overlap": float(non_overlap),
+        "boundary_score": float(best_boundary),
+    }
+
+
 def _compress_time_score(
     output_entries: List[tuple[float, float, str]],
     source_entries: List[tuple[float, float, str]],
 ) -> float:
-    if not output_entries or not source_entries:
-        return 0.0
-    horizon_start = min(entry[0] for entry in source_entries)
-    horizon_end = max(entry[1] for entry in source_entries)
-    horizon_len = horizon_end - horizon_start
-    if horizon_len <= 0.0:
-        return 0.0
-    emitted = [(entry[0], entry[1]) for entry in output_entries]
-    best = 0.0
-    for k in (4, 5, 6):
-        width = horizon_len / float(k)
-        if width <= 0.0:
-            continue
-        part_scores = []
-        for idx in range(k):
-            ideal = (
-                horizon_start + idx * width,
-                horizon_start + (idx + 1) * width,
-            )
-            part_scores.append(max(_interval_iou(ideal, seg) for seg in emitted))
-        best = max(best, sum(part_scores) / float(k))
-    # Too-few ranges are already penalized by partition IoU. Only suppress
-    # over-fragmentation, which can otherwise cherry-pick ideal sub-ranges.
-    count = len(output_entries)
-    count_score = 1.0 if count <= 6 else (6.0 / float(count)) ** 2
-    return max(0.0, min(1.0, best * count_score))
+    score, _ = _compress_time_score_with_details(output_entries, source_entries)
+    return score
 
 
 def _compress_valid_time_score(
@@ -1572,7 +1780,12 @@ def _score_compress_memory_update(
         }
 
     valid_time = _compress_valid_time_score(output_entries, source_entries)
-    time_score = _compress_time_score(output_entries, source_entries)
+    time_score, time_details = _compress_time_score_with_details(
+        output_entries,
+        source_entries,
+        source_text=source_text,
+        expected_chunks=expected_chunks,
+    )
     source_precision = _compress_source_precision(output_entries, source_entries)
     source_grounding = _compress_source_grounding_gate(source_precision)
     score = valid_time * source_grounding * (0.85 * time_score + 0.15 * source_precision)
@@ -1587,6 +1800,7 @@ def _score_compress_memory_update(
         "source_precision": float(source_precision),
         "source_grounding": float(source_grounding),
         "item_count": float(len(output_entries)),
+        **time_details,
     }
     return float(max(0.0, min(1.0, score))), reason, details
 
@@ -1613,6 +1827,10 @@ def _compute_compress_quality(extra: Dict[str, Any]) -> Dict[str, float]:
     source_precisions: List[float] = []
     source_groundings: List[float] = []
     item_counts: List[float] = []
+    count_scores: List[float] = []
+    boundary_scores: List[float] = []
+    non_overlaps: List[float] = []
+    target_item_counts: List[float] = []
     reasons: Dict[str, int] = {}
     n = max(len(texts), len(turn_kinds), len(expected_by_turn))
     for i in range(n):
@@ -1645,6 +1863,10 @@ def _compute_compress_quality(extra: Dict[str, Any]) -> Dict[str, float]:
         source_precisions.append(float(details.get("source_precision", 0.0)))
         source_groundings.append(float(details.get("source_grounding", 0.0)))
         item_counts.append(float(details.get("item_count", 0.0)))
+        count_scores.append(float(details.get("count_score", 0.0)))
+        boundary_scores.append(float(details.get("boundary_score", 0.0)))
+        non_overlaps.append(float(details.get("non_overlap", 0.0)))
+        target_item_counts.append(float(details.get("target_item_count", 0.0)))
         reasons[reason] = reasons.get(reason, 0) + 1
 
     count = float(len(scores))
@@ -1660,6 +1882,10 @@ def _compute_compress_quality(extra: Dict[str, Any]) -> Dict[str, float]:
             "compress_quality_source_precision": 0.0,
             "compress_quality_source_grounding": 0.0,
             "compress_quality_item_count": 0.0,
+            "compress_quality_count_score": 0.0,
+            "compress_quality_boundary_score": 0.0,
+            "compress_quality_non_overlap": 0.0,
+            "compress_quality_target_item_count": 0.0,
         }
     out = {
         "compress_quality": float(sum(scores) / len(scores)),
@@ -1672,6 +1898,10 @@ def _compute_compress_quality(extra: Dict[str, Any]) -> Dict[str, float]:
         "compress_quality_source_precision": float(sum(source_precisions) / len(scores)),
         "compress_quality_source_grounding": float(sum(source_groundings) / len(scores)),
         "compress_quality_item_count": float(sum(item_counts) / len(scores)),
+        "compress_quality_count_score": float(sum(count_scores) / len(scores)),
+        "compress_quality_boundary_score": float(sum(boundary_scores) / len(scores)),
+        "compress_quality_non_overlap": float(sum(non_overlaps) / len(scores)),
+        "compress_quality_target_item_count": float(sum(target_item_counts) / len(scores)),
     }
     for reason, reason_count in reasons.items():
         out[f"compress_quality_reason_{reason}"] = float(reason_count / len(scores))
@@ -1765,6 +1995,7 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
     compress_source_texts = _safe_list(extra.get("ts_compress_source_texts"))
     max_turns = _env_int("THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_TURNS", 240)
     max_source_chars = _env_int("THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_SOURCE_CHARS", 8000)
+    max_assistant_chars = _env_int("THINKSTREAM_RL_ROLLOUT_AUDIT_MAX_ASSISTANT_CHARS", 1000)
 
     out: List[Dict[str, Any]] = []
     for i, raw in enumerate(texts[:max_turns]):
@@ -1799,7 +2030,7 @@ def _summarize_turns_for_audit(extra: Dict[str, Any], solution_str: str) -> List
             "hit_max_tokens": bool(hit_max_tokens[i]) if i < len(hit_max_tokens) else False,
             "stop_reason": stop_reasons[i] if i < len(stop_reasons) else "",
             "think": _short_text(parsed.get("think") or "", 360),
-            "assistant_text": _short_text(text, 1000),
+            "assistant_text": _short_text(text, max_assistant_chars),
         }
         if kind == "answer":
             item["answer_text"] = _short_text(parsed.get("answer_text") or "", 500)
@@ -2083,14 +2314,21 @@ def _active_reward_keys() -> set[str]:
     if profile in {"initial_outcome_time_format", "casia"}:
         return {"outcome", "timing", "format"}
     if profile in {
+        "initial_outcome_time_format_decision_recall",
+        "initial_outcome_decision_format_recall",
+        "answer_decision_recall",
+        "decision_recall",
+    }:
+        return {"outcome", "answer_decision", "format", "recall_answer"}
+    if profile in {
         "initial_outcome_time_format_decision",
         "initial_outcome_decision_format",
         "answer_decision",
         "decision",
     }:
-        return {"outcome", "answer_decision", "format"}
+        return {"outcome", "answer_decision", "format", "recall_answer"}
     # Default / aliases: answer correctness + answer/no-answer timing decision.
-    return {"outcome", "answer_decision", "format"}
+    return {"outcome", "answer_decision", "format", "recall_answer"}
 
 
 def _step_action_reward_enabled() -> bool:
@@ -2139,6 +2377,15 @@ def _combine_reward_parts(
         else:
             aux_total += weighted
     return outcome_total + aux_total, gate
+
+
+def _reward_weights_with_recall(defaults: Dict[str, float]) -> Dict[str, float]:
+    weights = dict(defaults)
+    weights.setdefault(
+        "recall_answer",
+        _env_float("THINKSTREAM_RECALL_ANSWER_WEIGHT", 0.2),
+    )
+    return _parse_hdpo_weight_overrides(weights)
 
 
 def _weighted_mean(values: List[float], weights: List[float]) -> float:
@@ -2205,6 +2452,131 @@ def _question_answer_opportunity_chunks(q: Dict[str, Any]) -> List[int]:
     return sorted(set(c for c in chunks if c >= 0))
 
 
+def _gold_action_map_for_extra(extra: Dict[str, Any]) -> Dict[str, str]:
+    gold_action = extra.get("gold_action_per_chunk") or {}
+    if not gold_action and extra.get("video_id"):
+        traj = _load_traj_index().get(str(extra["video_id"]))
+        if traj:
+            gold_action = traj.get("gold_action_per_chunk", {}) or {}
+    return _strip_offline_compress_actions(gold_action)
+
+
+def _recall_label_chunks_for_question(
+    q: Dict[str, Any],
+    gold_action_per_chunk: Dict[str, str],
+) -> List[int]:
+    recall_actions = {"recall", "recall_silent"}
+    ask_chunks = _coerce_int_list(q.get("ask_chunks") or [q.get("ask_chunk")])
+    direct = [
+        chunk for chunk in ask_chunks
+        if str((gold_action_per_chunk or {}).get(str(chunk), "")).strip() in recall_actions
+    ]
+    if direct:
+        return sorted(set(direct))
+
+    bounds = ask_chunks + _question_answer_opportunity_chunks(q)
+    if not bounds:
+        return []
+    lo = min(bounds)
+    hi = max(bounds)
+    out: List[int] = []
+    for key, action in (gold_action_per_chunk or {}).items():
+        if str(action).strip() not in recall_actions:
+            continue
+        try:
+            chunk = int(key)
+        except (TypeError, ValueError):
+            continue
+        if lo <= chunk <= hi:
+            out.append(chunk)
+    return sorted(set(out))
+
+
+def _answer_event_chunks_for_question(answer_events: Any, fallback_chunk: Any) -> List[int]:
+    chunks: List[int] = []
+    for ev in _safe_list(answer_events):
+        if hasattr(ev, "tolist"):
+            ev = ev.tolist()
+        if not isinstance(ev, dict):
+            continue
+        try:
+            chunk = int(ev.get("chunk", -1))
+        except (TypeError, ValueError):
+            chunk = -1
+        if chunk >= 0:
+            chunks.append(chunk)
+    try:
+        chunk = int(fallback_chunk)
+    except (TypeError, ValueError):
+        chunk = -1
+    if chunk >= 0:
+        chunks.append(chunk)
+    return sorted(set(chunks))
+
+
+def _used_recall_chunks(extra: Dict[str, Any]) -> set[int]:
+    chunk_kinds = _safe_list(extra.get("ts_chunk_kinds"))
+    if not chunk_kinds:
+        return set()
+    chunk_texts = _safe_list(extra.get("ts_chunk_asst_texts"))
+    turn_kinds = _safe_list(extra.get("ts_chunk_turn_kinds"))
+    action_errors = _safe_list(extra.get("ts_chunk_action_space_errors"))
+    out: set[int] = set()
+
+    try:
+        from thinkstream.data.agent_protocol import parse_agent_output
+    except Exception:
+        parse_agent_output = None
+
+    require_valid = _env_bool("THINKSTREAM_RECALL_ANSWER_REQUIRE_VALID_RECALL", True)
+    for turn_i, kind_raw in enumerate(chunk_kinds):
+        turn_kind = (
+            str(turn_kinds[turn_i] or "")
+            if turn_i < len(turn_kinds)
+            else ""
+        )
+        if turn_kind in {"recall_response", "post_recall", "compress"}:
+            continue
+        text = str(chunk_texts[turn_i] or "") if turn_i < len(chunk_texts) else ""
+        if _model_action_from_turn(str(kind_raw or "unknown"), text) != "recall":
+            continue
+        action_error = (
+            str(action_errors[turn_i] or "").strip()
+            if turn_i < len(action_errors)
+            else ""
+        )
+        if require_valid and action_error:
+            continue
+        if require_valid and parse_agent_output is not None:
+            parsed = parse_agent_output(text)
+            args = ((parsed.get("tool_call") or {}).get("arguments") or {})
+            if not _tool_time_range_runtime_ok(
+                "recall",
+                args,
+                current_chunk=_turn_current_chunk(extra, turn_i),
+            ):
+                continue
+        chunk = _turn_event_chunk(extra, turn_i)
+        if chunk >= 0:
+            out.add(int(chunk))
+    return out
+
+
+def _question_used_recall(
+    q: Dict[str, Any],
+    *,
+    label_chunks: List[int],
+    used_recall_chunks: set[int],
+    answer_event_chunks: List[int],
+) -> bool:
+    if not label_chunks or not used_recall_chunks:
+        return False
+    start = min(label_chunks)
+    end_candidates = answer_event_chunks + _question_answer_opportunity_chunks(q) + label_chunks
+    end = max(end_candidates) if end_candidates else max(label_chunks)
+    return any(start <= chunk <= end for chunk in used_recall_chunks)
+
+
 def _observed_horizon_chunk(extra: Dict[str, Any]) -> Optional[int]:
     """Highest video chunk actually rolled out for this trajectory."""
     observed: List[int] = []
@@ -2266,6 +2638,611 @@ def _combine_multi_q_reward_parts(
         else:
             total += weighted
     return total, gate, per_question_scores
+
+
+def _parse_hdpo_weight_overrides(defaults: Dict[str, float]) -> Dict[str, float]:
+    raw = os.environ.get("THINKSTREAM_HDPO_WEIGHTS", "").strip()
+    if not raw:
+        return dict(defaults)
+    weights = dict(defaults)
+    try:
+        parsed = json.loads(raw)
+        if isinstance(parsed, dict):
+            for key, value in parsed.items():
+                if key in weights:
+                    weights[key] = float(value)
+            return weights
+    except Exception:
+        pass
+    for item in raw.split(","):
+        if "=" not in item:
+            continue
+        key, value = item.split("=", 1)
+        key = key.strip()
+        if key not in weights:
+            continue
+        try:
+            weights[key] = float(value)
+        except ValueError:
+            continue
+    return weights
+
+
+def _question_segment_answer_point(q: Dict[str, Any]) -> int:
+    opportunity_chunks = _question_answer_opportunity_chunks(q)
+    if opportunity_chunks:
+        return int(max(opportunity_chunks))
+
+    chunks: List[int] = []
+    for raw in _safe_list(q.get("ask_chunks")):
+        try:
+            chunks.append(int(raw))
+        except (TypeError, ValueError):
+            continue
+    try:
+        ask_chunk = int(q.get("ask_chunk", -1))
+    except (TypeError, ValueError):
+        ask_chunk = -1
+    if ask_chunk >= 0:
+        chunks.append(ask_chunk)
+    return int(max(chunks)) if chunks else 0
+
+
+def _segment_index_for_chunk(
+    chunk: int,
+    segment_starts: List[int],
+    segment_ends: List[int],
+) -> Optional[int]:
+    if chunk < 0:
+        return None
+    for seg_i, (start, end) in enumerate(zip(segment_starts, segment_ends)):
+        if int(start) <= chunk <= int(end):
+            return seg_i
+    return None
+
+
+def _turn_event_chunk(extra: Dict[str, Any], turn_i: int) -> int:
+    event_indices = _safe_list(extra.get("ts_chunk_event_indices"))
+    video_indices = _safe_list(extra.get("ts_chunk_video_indices"))
+    for values in (event_indices, video_indices):
+        if turn_i >= len(values):
+            continue
+        try:
+            chunk = int(values[turn_i])
+        except (TypeError, ValueError):
+            continue
+        if chunk >= 0:
+            return chunk
+    return -1
+
+
+def _compress_turn_scores(extra: Dict[str, Any]) -> List[Dict[str, Any]]:
+    texts = _safe_list(extra.get("ts_chunk_asst_texts"))
+    turn_kinds = _safe_list(extra.get("ts_chunk_turn_kinds"))
+    action_errors = _safe_list(extra.get("ts_chunk_action_space_errors"))
+    expected_by_turn = _safe_list(extra.get("ts_compress_expected_chunks"))
+    hit_max_tokens = _safe_list(extra.get("ts_chunk_hit_max_tokens"))
+    source_texts = _safe_list(extra.get("ts_compress_source_texts"))
+
+    out: List[Dict[str, Any]] = []
+    n = max(len(texts), len(turn_kinds), len(expected_by_turn))
+    for i in range(n):
+        turn_kind = str(turn_kinds[i] or "") if i < len(turn_kinds) else ""
+        if turn_kind != "compress":
+            continue
+        event_chunk = _turn_event_chunk(extra, i)
+        expected = set(
+            _int_chunks_from_value(expected_by_turn[i])
+            if i < len(expected_by_turn) else []
+        )
+        if not expected:
+            continue
+        action_error = (
+            str(action_errors[i] or "").strip()
+            if i < len(action_errors) else ""
+        )
+        text = str(texts[i] or "") if i < len(texts) else ""
+        source_text = str(source_texts[i] or "") if i < len(source_texts) else ""
+        score, reason, _ = _score_compress_memory_update(
+            text,
+            source_text,
+            expected,
+            action_error=action_error,
+            hit_max_tokens=bool(hit_max_tokens[i]) if i < len(hit_max_tokens) else False,
+        )
+        out.append({
+            "turn": i,
+            "event_chunk": int(event_chunk),
+            "score": float(score),
+            "reason": reason,
+        })
+    return out
+
+
+def _compute_compress_quality_by_segment(
+    extra: Dict[str, Any],
+    segment_starts: List[int],
+    segment_ends: List[int],
+) -> tuple[List[float], List[float]]:
+    per_segment_scores: List[List[float]] = [[] for _ in segment_starts]
+    for item in _compress_turn_scores(extra):
+        seg_i = _segment_index_for_chunk(
+            int(item.get("event_chunk", -1)),
+            segment_starts,
+            segment_ends,
+        )
+        if seg_i is None:
+            continue
+        per_segment_scores[seg_i].append(float(item.get("score", 0.0)))
+
+    means: List[float] = []
+    counts: List[float] = []
+    for scores in per_segment_scores:
+        counts.append(float(len(scores)))
+        means.append(float(sum(scores) / len(scores)) if scores else 0.0)
+    return means, counts
+
+
+def _combine_segment_reward_parts(
+    weights: Dict[str, float],
+    parts: Dict[str, float],
+    *,
+    has_questions: bool = True,
+) -> tuple[float, float]:
+    gate = _outcome_gate(parts)
+    total = float(weights.get("outcome", 0.0) * parts.get("outcome", 0.0))
+    for key in ("answer_decision", "format", "compress_quality"):
+        weighted = float(weights.get(key, 0.0) * parts.get(key, 0.0))
+        if weighted > 0.0:
+            # Compression quality is local process quality. It should remain
+            # visible even when the segment's later answer is wrong; answer
+            # service pressure is applied by the trainer through the global and
+            # future-answer advantage mix.
+            local_gate = 1.0 if key == "compress_quality" else gate
+            total += local_gate * weighted
+        else:
+            total += weighted
+    return total, gate
+
+
+def _framework_format_scores_by_segment(
+    extra: Dict[str, Any],
+    segment_starts: List[int],
+    segment_ends: List[int],
+    *,
+    fallback: float,
+) -> List[float]:
+    try:
+        from thinkstream.data.agent_protocol import parse_agent_output
+    except Exception:
+        return [float(fallback)] * len(segment_starts)
+
+    texts = _safe_list(extra.get("ts_chunk_asst_texts"))
+    if not texts:
+        return [float(fallback)] * len(segment_starts)
+    action_errors = _safe_list(extra.get("ts_chunk_action_space_errors"))
+    turn_kinds = _safe_list(extra.get("ts_chunk_turn_kinds"))
+    per_segment_scores: List[List[float]] = [[] for _ in segment_starts]
+    for turn_i, text in enumerate(texts):
+        turn_kind = str(turn_kinds[turn_i] or "") if turn_i < len(turn_kinds) else ""
+        if turn_kind == "compress":
+            continue
+        seg_i = _segment_index_for_chunk(
+            _turn_event_chunk(extra, turn_i),
+            segment_starts,
+            segment_ends,
+        )
+        if seg_i is None:
+            continue
+        parsed = parse_agent_output(
+            str(text or ""),
+            allow_bare_answer=turn_kind in {"recall_response", "post_recall"},
+            allow_bare_memory=False,
+        )
+        action_error = (
+            str(action_errors[turn_i] or "").strip()
+            if turn_i < len(action_errors)
+            else ""
+        )
+        if parsed.get("format_error") or action_error:
+            per_segment_scores[seg_i].append(-1.0)
+            continue
+        kind = str(parsed.get("kind") or "")
+        if kind == "recall":
+            args = (parsed.get("tool_call") or {}).get("arguments") or {}
+            ok = _tool_time_range_runtime_ok(
+                kind,
+                args,
+                current_chunk=_turn_current_chunk(extra, turn_i),
+            )
+            per_segment_scores[seg_i].append(1.0 if ok else -1.0)
+        else:
+            per_segment_scores[seg_i].append(1.0)
+
+    scores: List[float] = []
+    for seg_scores in per_segment_scores:
+        if not seg_scores:
+            scores.append(1.0)
+        else:
+            scores.append(min(seg_scores) if any(s < 0.0 for s in seg_scores) else 1.0)
+    return scores
+
+
+def _json_compact(value: Any) -> str:
+    return json.dumps(_jsonable(value), ensure_ascii=False, separators=(",", ":"))
+
+
+def _segment_meta_key(prefix: str, name: str) -> str:
+    return f"{prefix}_{name}" if prefix else name
+
+
+def _segment_score_std(values: List[float]) -> float:
+    if len(values) < 2:
+        return 0.0
+    mean = sum(values) / len(values)
+    var = sum((float(v) - mean) ** 2 for v in values) / len(values)
+    return float(var ** 0.5)
+
+
+def _question_indices_in_segment(
+    questions: List[Dict[str, Any]],
+    scored_question_indices: List[int],
+    start: int,
+    end: int,
+) -> List[int]:
+    out: List[int] = []
+    for q_idx in scored_question_indices:
+        if q_idx >= len(questions):
+            continue
+        answer_point = _question_segment_answer_point(questions[q_idx])
+        if int(start) <= answer_point <= int(end):
+            out.append(int(q_idx))
+    return out
+
+
+def _build_segment_reward_metadata_for_bounds(
+    *,
+    prefix: str,
+    questions: List[Dict[str, Any]],
+    scored_question_indices: List[int],
+    per_q_parts: List[Dict[str, float]],
+    per_q_weights: List[float],
+    fmt: float,
+    extra: Dict[str, Any],
+    segment_starts: List[int],
+    segment_ends: List[int],
+    segment_question_indices: Optional[List[List[int]]] = None,
+    segment_compress_scores: Optional[List[List[float]]] = None,
+) -> Dict[str, Any]:
+    q_pos_by_idx = {
+        int(q_idx): pos
+        for pos, q_idx in enumerate(scored_question_indices)
+        if pos < len(per_q_parts)
+    }
+    if segment_question_indices is None:
+        segment_question_indices = [
+            _question_indices_in_segment(
+                questions,
+                scored_question_indices,
+                int(start),
+                int(end),
+            )
+            for start, end in zip(segment_starts, segment_ends)
+        ]
+
+    if segment_compress_scores is None:
+        segment_compress, segment_compress_counts = _compute_compress_quality_by_segment(
+            extra,
+            segment_starts,
+            segment_ends,
+        )
+    else:
+        segment_compress = [
+            float(sum(scores) / len(scores)) if scores else 0.0
+            for scores in segment_compress_scores
+        ]
+        segment_compress_counts = [float(len(scores)) for scores in segment_compress_scores]
+
+    segment_formats = _framework_format_scores_by_segment(
+        extra,
+        segment_starts,
+        segment_ends,
+        fallback=fmt,
+    )
+    gdpo_weights = _parse_hdpo_weight_overrides({
+        "outcome": 1.0,
+        "answer_decision": 0.3,
+        "format": 0.1,
+        "compress_quality": 0.1,
+    })
+
+    segment_scores: List[float] = []
+    segment_gates: List[float] = []
+    segment_outcomes: List[float] = []
+    segment_decisions: List[float] = []
+    segment_timings: List[float] = []
+    segment_answer_scores: List[float] = []
+    clean_question_indices: List[List[int]] = []
+    for seg_i, q_indices in enumerate(segment_question_indices):
+        positions = [
+            q_pos_by_idx[int(q_idx)]
+            for q_idx in q_indices
+            if int(q_idx) in q_pos_by_idx
+        ]
+        q_weights = [
+            float(per_q_weights[pos]) if pos < len(per_q_weights) else 1.0
+            for pos in positions
+        ]
+        q_outcomes = [
+            float(per_q_parts[pos].get("outcome", 0.0))
+            for pos in positions
+        ]
+        q_decisions = [
+            float(per_q_parts[pos].get("answer_decision", 0.0))
+            for pos in positions
+        ]
+        q_timings = [
+            float(per_q_parts[pos].get("timing", 0.0))
+            for pos in positions
+        ]
+        seg_parts = {
+            "outcome": _weighted_mean(q_outcomes, q_weights),
+            "answer_decision": _weighted_mean(q_decisions, q_weights),
+            "timing": _weighted_mean(q_timings, q_weights),
+            "format": float(segment_formats[seg_i]) if seg_i < len(segment_formats) else float(fmt),
+            "compress_quality": float(segment_compress[seg_i]) if seg_i < len(segment_compress) else 0.0,
+        }
+        seg_score, seg_gate = _combine_segment_reward_parts(
+            gdpo_weights,
+            seg_parts,
+            has_questions=bool(positions),
+        )
+        answer_only_parts = dict(seg_parts)
+        answer_only_parts["compress_quality"] = 0.0
+        answer_score, _ = _combine_segment_reward_parts(
+            gdpo_weights,
+            answer_only_parts,
+            has_questions=bool(positions),
+        )
+        segment_scores.append(float(seg_score))
+        segment_gates.append(float(seg_gate))
+        segment_outcomes.append(float(seg_parts["outcome"]))
+        segment_decisions.append(float(seg_parts["answer_decision"]))
+        segment_timings.append(float(seg_parts["timing"]))
+        segment_answer_scores.append(float(answer_score))
+        clean_question_indices.append([int(q_idx) for q_idx in q_indices])
+
+    segment_count = float(len(segment_scores))
+    compress_count = float(sum(segment_compress_counts))
+    score_range = (
+        float(max(segment_scores) - min(segment_scores))
+        if segment_scores else 0.0
+    )
+    return {
+        _segment_meta_key(prefix, "segment_count"): segment_count,
+        _segment_meta_key(prefix, "segment_score_mean"): _mean_or_zero(segment_scores),
+        _segment_meta_key(prefix, "segment_score_std"): _segment_score_std(segment_scores),
+        _segment_meta_key(prefix, "segment_score_range"): score_range,
+        _segment_meta_key(prefix, "segment_answer_score_mean"): _mean_or_zero(segment_answer_scores),
+        _segment_meta_key(prefix, "segment_answer_score_std"): _segment_score_std(segment_answer_scores),
+        _segment_meta_key(prefix, "segment_answer_score_range"): (
+            float(max(segment_answer_scores) - min(segment_answer_scores))
+            if segment_answer_scores else 0.0
+        ),
+        _segment_meta_key(prefix, "segment_outcome_mean"): _mean_or_zero(segment_outcomes),
+        _segment_meta_key(prefix, "segment_answer_decision_mean"): _mean_or_zero(segment_decisions),
+        _segment_meta_key(prefix, "segment_format_mean"): _mean_or_zero(segment_formats),
+        _segment_meta_key(prefix, "segment_compress_quality_mean"): _mean_or_zero(segment_compress),
+        _segment_meta_key(prefix, "segment_compress_count"): compress_count,
+        _segment_meta_key(prefix, "segment_starts_json"): _json_compact(segment_starts),
+        _segment_meta_key(prefix, "segment_ends_json"): _json_compact(segment_ends),
+        _segment_meta_key(prefix, "segment_scores_json"): _json_compact(segment_scores),
+        _segment_meta_key(prefix, "segment_answer_scores_json"): _json_compact(segment_answer_scores),
+        _segment_meta_key(prefix, "segment_gates_json"): _json_compact(segment_gates),
+        _segment_meta_key(prefix, "segment_outcomes_json"): _json_compact(segment_outcomes),
+        _segment_meta_key(prefix, "segment_answer_decisions_json"): _json_compact(segment_decisions),
+        _segment_meta_key(prefix, "segment_timings_json"): _json_compact(segment_timings),
+        _segment_meta_key(prefix, "segment_formats_json"): _json_compact(segment_formats[:len(segment_scores)]),
+        _segment_meta_key(prefix, "segment_compress_quality_json"): _json_compact(segment_compress),
+        _segment_meta_key(prefix, "segment_compress_counts_json"): _json_compact(segment_compress_counts),
+        _segment_meta_key(prefix, "segment_question_indices_json"): _json_compact(clean_question_indices),
+    }
+
+
+def _credit_horizon_chunk(
+    extra: Dict[str, Any],
+    questions: List[Dict[str, Any]],
+    scored_question_indices: List[int],
+) -> int:
+    candidates: List[int] = []
+    horizon = _observed_horizon_chunk(extra)
+    if horizon is not None:
+        candidates.append(int(horizon))
+    for q_idx in scored_question_indices:
+        if q_idx < len(questions):
+            candidates.append(_question_segment_answer_point(questions[q_idx]))
+    for item in _compress_turn_scores(extra):
+        chunk = int(item.get("event_chunk", -1))
+        if chunk >= 0:
+            candidates.append(chunk)
+    return max(candidates) if candidates else 0
+
+
+def _build_question_segment_reward_metadata(
+    *,
+    questions: List[Dict[str, Any]],
+    scored_question_indices: List[int],
+    per_q_parts: List[Dict[str, float]],
+    per_q_weights: List[float],
+    fmt: float,
+    extra: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Build answer-point segments for recurrent credit assignment.
+
+    Each segment covers the stream since the previous answer point and carries
+    a local score: outcome + answer-decision + framework format + any compress
+    quality that happened inside the same segment.
+    """
+    entries: List[tuple[int, int, int]] = []
+    for pos, q_idx in enumerate(scored_question_indices):
+        if pos >= len(per_q_parts) or q_idx >= len(questions):
+            continue
+        entries.append((
+            _question_segment_answer_point(questions[q_idx]),
+            pos,
+            q_idx,
+        ))
+    entries.sort(key=lambda x: (int(x[0]), int(x[2])))
+
+    grouped: List[tuple[int, List[int], List[int]]] = []
+    for answer_point, pos, q_idx in entries:
+        if grouped and grouped[-1][0] == answer_point:
+            grouped[-1][1].append(pos)
+            grouped[-1][2].append(q_idx)
+        else:
+            grouped.append((int(answer_point), [pos], [q_idx]))
+
+    segment_starts: List[int] = []
+    segment_ends: List[int] = []
+    prev_end = -1
+    for answer_point, _, _ in grouped:
+        start = max(0, prev_end + 1)
+        end = max(start, int(answer_point))
+        segment_starts.append(start)
+        segment_ends.append(end)
+        prev_end = end
+
+    segment_question_indices: List[List[int]] = []
+    for _, _, q_indices in grouped:
+        segment_question_indices.append([int(q_idx) for q_idx in q_indices])
+
+    return _build_segment_reward_metadata_for_bounds(
+        prefix="",
+        questions=questions,
+        scored_question_indices=scored_question_indices,
+        per_q_parts=per_q_parts,
+        per_q_weights=per_q_weights,
+        fmt=fmt,
+        extra=extra,
+        segment_starts=segment_starts,
+        segment_ends=segment_ends,
+        segment_question_indices=segment_question_indices,
+    )
+
+
+def _compress_boundary_bounds(
+    extra: Dict[str, Any],
+    questions: List[Dict[str, Any]],
+    scored_question_indices: List[int],
+) -> tuple[List[int], List[int]]:
+    horizon = _credit_horizon_chunk(extra, questions, scored_question_indices)
+    compress_chunks = sorted({
+        int(item.get("event_chunk", -1))
+        for item in _compress_turn_scores(extra)
+        if int(item.get("event_chunk", -1)) >= 0
+    })
+    if not compress_chunks:
+        return [0], [max(0, horizon)]
+
+    starts: List[int] = []
+    ends: List[int] = []
+    first = compress_chunks[0]
+    if first > 0:
+        starts.append(0)
+        ends.append(first - 1)
+    for i, chunk in enumerate(compress_chunks):
+        next_chunk = compress_chunks[i + 1] if i + 1 < len(compress_chunks) else None
+        starts.append(int(chunk))
+        end = int(next_chunk - 1) if next_chunk is not None else int(max(horizon, chunk))
+        ends.append(max(int(chunk), end))
+    return starts, ends
+
+
+def _build_compress_boundary_segment_reward_metadata(
+    *,
+    questions: List[Dict[str, Any]],
+    scored_question_indices: List[int],
+    per_q_parts: List[Dict[str, float]],
+    per_q_weights: List[float],
+    fmt: float,
+    extra: Dict[str, Any],
+) -> Dict[str, Any]:
+    starts, ends = _compress_boundary_bounds(extra, questions, scored_question_indices)
+    return _build_segment_reward_metadata_for_bounds(
+        prefix="compress",
+        questions=questions,
+        scored_question_indices=scored_question_indices,
+        per_q_parts=per_q_parts,
+        per_q_weights=per_q_weights,
+        fmt=fmt,
+        extra=extra,
+        segment_starts=starts,
+        segment_ends=ends,
+    )
+
+
+def _build_compress_future_segment_reward_metadata(
+    *,
+    questions: List[Dict[str, Any]],
+    scored_question_indices: List[int],
+    per_q_parts: List[Dict[str, float]],
+    per_q_weights: List[float],
+    fmt: float,
+    extra: Dict[str, Any],
+) -> Dict[str, Any]:
+    horizon = _credit_horizon_chunk(extra, questions, scored_question_indices)
+    scores_by_chunk: Dict[int, List[float]] = {}
+    for item in _compress_turn_scores(extra):
+        chunk = int(item.get("event_chunk", -1))
+        if chunk < 0:
+            continue
+        scores_by_chunk.setdefault(chunk, []).append(float(item.get("score", 0.0)))
+    compress_chunks = sorted(scores_by_chunk)
+    if not compress_chunks:
+        return _build_segment_reward_metadata_for_bounds(
+            prefix="compress_future",
+            questions=questions,
+            scored_question_indices=scored_question_indices,
+            per_q_parts=per_q_parts,
+            per_q_weights=per_q_weights,
+            fmt=fmt,
+            extra=extra,
+            segment_starts=[],
+            segment_ends=[],
+            segment_question_indices=[],
+            segment_compress_scores=[],
+        )
+
+    starts: List[int] = []
+    ends: List[int] = []
+    question_indices: List[List[int]] = []
+    compress_scores: List[List[float]] = []
+    for i, chunk in enumerate(compress_chunks):
+        next_chunk = compress_chunks[i + 1] if i + 1 < len(compress_chunks) else None
+        end = int(next_chunk - 1) if next_chunk is not None else int(max(horizon, chunk))
+        starts.append(int(chunk))
+        ends.append(max(int(chunk), end))
+        question_indices.append(_question_indices_in_segment(
+            questions,
+            scored_question_indices,
+            int(chunk),
+            max(int(chunk), end),
+        ))
+        compress_scores.append(scores_by_chunk.get(int(chunk), []))
+
+    return _build_segment_reward_metadata_for_bounds(
+        prefix="compress_future",
+        questions=questions,
+        scored_question_indices=scored_question_indices,
+        per_q_parts=per_q_parts,
+        per_q_weights=per_q_weights,
+        fmt=fmt,
+        extra=extra,
+        segment_starts=starts,
+        segment_ends=ends,
+        segment_question_indices=question_indices,
+        segment_compress_scores=compress_scores,
+    )
 
 
 def _answer_decision_reward(
@@ -2830,6 +3807,7 @@ def _compute_score_multi_q(
     solution_str: str,
 ) -> Dict[str, float]:
     """Score a multi-Q trajectory. Aggregate by expected answer slot."""
+    weights = _reward_weights_with_recall(weights)
     trajectory_solution = _trajectory_solution_text(extra, solution_str)
     n_q = len(questions)
     if n_q == 0:
@@ -2846,6 +3824,8 @@ def _compute_score_multi_q(
     per_q_chunk = list(per_q_chunk_raw) + [-1] * (n_q - len(per_q_chunk_raw))
     per_q_text = list(per_q_text_raw) + [""] * (n_q - len(per_q_text_raw))
     per_q_answers = list(per_q_answers_raw) + [[]] * (n_q - len(per_q_answers_raw))
+    gold_action_per_chunk = _gold_action_map_for_extra(extra)
+    recall_chunks_used = _used_recall_chunks(extra)
     horizon_chunk = _observed_horizon_chunk(extra)
     scored_question_indices: List[int] = []
     excluded_future = 0
@@ -2861,8 +3841,12 @@ def _compute_score_multi_q(
     per_q_timing: List[float] = []
     per_q_decision: List[float] = []
     per_q_silent: List[float] = []
+    per_q_recall_answer: List[float] = []
     per_q_parts: List[Dict[str, float]] = []
     per_q_weights: List[float] = []
+    recall_answer_labeled = 0
+    recall_answer_used = 0
+    recall_answer_success = 0
     n_answered = 0
     n_answered_total = 0
     for answer_events_raw in per_q_answers[:n_q]:
@@ -2887,15 +3871,39 @@ def _compute_score_multi_q(
                 model_answer=str(per_q_text[q_idx] or ""),
                 answered_chunk=int(per_q_chunk[q_idx]),
             )
+        label_chunks = _recall_label_chunks_for_question(q, gold_action_per_chunk)
+        answer_event_chunks = _answer_event_chunks_for_question(
+            answer_events,
+            per_q_chunk[q_idx] if q_idx < len(per_q_chunk) else -1,
+        )
+        recall_labeled = bool(label_chunks)
+        recall_used = _question_used_recall(
+            q,
+            label_chunks=label_chunks,
+            used_recall_chunks=recall_chunks_used,
+            answer_event_chunks=answer_event_chunks,
+        )
+        recall_answer_action = 1.0 if recall_labeled and recall_used else 0.0
+        recall_answer_success_value = recall_answer_action * float(sub["outcome"])
+        if recall_labeled:
+            recall_answer_labeled += 1
+            if recall_used:
+                recall_answer_used += 1
+            if recall_answer_success_value > 0.0:
+                recall_answer_success += 1
         per_q_outcome.append(sub["outcome"])
         per_q_timing.append(sub["timing"])
         per_q_decision.append(sub["answer_decision"])
         per_q_silent.append(sub["silent_quality"])
+        per_q_recall_answer.append(recall_answer_success_value)
         per_q_parts.append({
             "outcome": float(sub["outcome"]),
             "answer_decision": float(sub["answer_decision"]),
             "timing": float(sub["timing"]),
             "silent_quality": float(sub["silent_quality"]),
+            # The scalar reward gate in _combine_reward_parts multiplies this
+            # action-use bit by the same question's answer correctness.
+            "recall_answer": float(recall_answer_action),
         })
         if sub["answered"] > 0:
             n_answered += 1
@@ -2905,6 +3913,7 @@ def _compute_score_multi_q(
     avg_timing = _weighted_mean(per_q_timing, per_q_weights)
     avg_decision = _weighted_mean(per_q_decision, per_q_weights)
     avg_silent = _weighted_mean(per_q_silent, per_q_weights)
+    avg_recall_answer = _weighted_mean(per_q_recall_answer, per_q_weights)
 
     # Format is trajectory-level (not per-Q). It is a minimal
     # framework-executability signal: parse/action-space/runtime time_range
@@ -2917,6 +3926,18 @@ def _compute_score_multi_q(
         "timing": avg_timing,
         "format": fmt,
         "silent_quality": avg_silent,
+        "recall_answer": avg_recall_answer,
+        "recall_answer_labeled": float(recall_answer_labeled),
+        "recall_answer_used": float(recall_answer_used),
+        "recall_answer_success": float(recall_answer_success),
+        "recall_answer_used_rate": (
+            float(recall_answer_used) / float(recall_answer_labeled)
+            if recall_answer_labeled else 0.0
+        ),
+        "recall_answer_success_rate": (
+            float(recall_answer_success) / float(recall_answer_labeled)
+            if recall_answer_labeled else 0.0
+        ),
     }
     total, gate, per_q_scores = _combine_multi_q_reward_parts(
         weights,
@@ -2924,13 +3945,30 @@ def _compute_score_multi_q(
         {"format": fmt},
         question_weights=per_q_weights,
     )
-    gold_action_per_chunk = extra.get("gold_action_per_chunk") or {}
-    if not gold_action_per_chunk and extra.get("video_id"):
-        traj = _load_traj_index().get(str(extra["video_id"]))
-        if traj:
-            gold_action_per_chunk = _strip_offline_compress_actions(
-                traj.get("gold_action_per_chunk", {}) or {}
-            )
+    segment_meta = _build_question_segment_reward_metadata(
+        questions=questions,
+        scored_question_indices=scored_question_indices,
+        per_q_parts=per_q_parts,
+        per_q_weights=per_q_weights,
+        fmt=fmt,
+        extra=extra,
+    )
+    segment_meta.update(_build_compress_boundary_segment_reward_metadata(
+        questions=questions,
+        scored_question_indices=scored_question_indices,
+        per_q_parts=per_q_parts,
+        per_q_weights=per_q_weights,
+        fmt=fmt,
+        extra=extra,
+    ))
+    segment_meta.update(_build_compress_future_segment_reward_metadata(
+        questions=questions,
+        scored_question_indices=scored_question_indices,
+        per_q_parts=per_q_parts,
+        per_q_weights=per_q_weights,
+        fmt=fmt,
+        extra=extra,
+    ))
     recall_audit: Dict[str, Any] = {}
     action_avg = _per_chunk_action_avg(
         extra, gold_action_per_chunk, audit_out=recall_audit,
@@ -2966,6 +4004,7 @@ def _compute_score_multi_q(
     return {
         "score": total,
         **{k: float(v) for k, v in parts.items()},
+        **segment_meta,
         "outcome_gate": float(gate),
         "n_questions": float(len(scored_question_indices)),
         "n_questions_total": float(n_q),
@@ -3010,6 +4049,7 @@ def compute_score(
                 "silent_quality": 0.0, "compress_quality": 0.0}
 
     extra = extra_info or {}
+    weights = _reward_weights_with_recall(weights)
 
     # ── Multi-Q dispatch ──
     # Parquet round-trip wraps List[Dict] columns in numpy.ndarray, which
@@ -3154,6 +4194,33 @@ def compute_score(
         parts["silent_quality"] = rewards["silent_quality"](
             final_answer, gold_action, gold_answer
         )
+        recall_q = {
+            "ask_chunk": min(ask_chunks) if ask_chunks else -1,
+            "ask_chunks": ask_chunks,
+            "answer_chunks": [
+                int(x) for x in (visible_start, visible_end)
+                if x is not None
+            ],
+        }
+        recall_label_chunks = _recall_label_chunks_for_question(
+            recall_q,
+            gold_action_per_chunk,
+        )
+        recall_used = _question_used_recall(
+            recall_q,
+            label_chunks=recall_label_chunks,
+            used_recall_chunks=_used_recall_chunks(extra),
+            answer_event_chunks=(
+                [int(answer_chunk)] if answer_chunk is not None else []
+            ),
+        )
+        parts["recall_answer"] = (
+            1.0 if recall_label_chunks and recall_used and parts["outcome"] > 0.0
+            else 0.0
+        )
+        parts["recall_answer_labeled"] = float(bool(recall_label_chunks))
+        parts["recall_answer_used"] = float(bool(recall_label_chunks and recall_used))
+        parts["recall_answer_success"] = float(parts["recall_answer"] > 0.0)
     except Exception as e:
         logger.warning("v12 reward component failed: %s", e)
         return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
