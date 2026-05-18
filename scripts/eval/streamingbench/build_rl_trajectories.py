@@ -371,31 +371,31 @@ def _compress_boundary_penalty(boundary: int, questions: List[Dict[str, Any]]) -
     for q in questions:
         active_start, active_end = _question_window(q)
         if active_start <= b <= active_end:
-            penalty += 1_000_000
+            penalty += 1_000_000_000
         elif active_start - 2 <= b <= active_end + 2:
-            penalty += 50_000
+            penalty += 5_000_000
 
         for support_start, support_end in _question_support_intervals(q):
             # Boundary b is between b-1 and b. s < b <= e splits evidence.
             if support_start < b <= support_end:
-                penalty += 100_000
+                penalty += 100_000_000
             elif support_start - 2 <= b <= support_end + 2:
-                penalty += 5_000
+                penalty += 1_000_000
 
         for point in _question_anchor_points(q):
             dist = abs(b - point)
             if dist == 0:
-                penalty += 2_000_000
+                penalty += 10_000_000
             elif dist <= 2:
-                penalty += 800_000
+                penalty += 5_000_000
             elif dist <= 5:
-                penalty += 200_000
+                penalty += 2_000_000
             elif dist <= 10:
-                penalty += 50_000
+                penalty += 1_000_000
             elif dist <= 15:
-                penalty += 5_000
+                penalty += 100_000
             elif dist <= 20:
-                penalty += 500
+                penalty += 10_000
     return penalty
 
 
