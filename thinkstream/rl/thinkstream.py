@@ -2319,16 +2319,16 @@ def _active_reward_keys() -> set[str]:
         "answer_decision_recall",
         "decision_recall",
     }:
-        return {"outcome", "answer_decision", "format", "recall_answer"}
+        return {"outcome", "answer_decision", "format", "recall_answer", "compress_quality"}
     if profile in {
         "initial_outcome_time_format_decision",
         "initial_outcome_decision_format",
         "answer_decision",
         "decision",
     }:
-        return {"outcome", "answer_decision", "format", "recall_answer"}
+        return {"outcome", "answer_decision", "format", "recall_answer", "compress_quality"}
     # Default / aliases: answer correctness + answer/no-answer timing decision.
-    return {"outcome", "answer_decision", "format", "recall_answer"}
+    return {"outcome", "answer_decision", "format", "recall_answer", "compress_quality"}
 
 
 def _step_action_reward_enabled() -> bool:
@@ -2384,6 +2384,10 @@ def _reward_weights_with_recall(defaults: Dict[str, float]) -> Dict[str, float]:
     weights.setdefault(
         "recall_answer",
         _env_float("THINKSTREAM_RECALL_ANSWER_WEIGHT", 0.2),
+    )
+    weights.setdefault(
+        "compress_quality",
+        _env_float("THINKSTREAM_COMPRESS_QUALITY_WEIGHT", 0.1),
     )
     return _parse_hdpo_weight_overrides(weights)
 
@@ -3939,10 +3943,14 @@ def _compute_score_multi_q(
             if recall_answer_labeled else 0.0
         ),
     }
+    parts.update(_compute_compress_quality(extra))
     total, gate, per_q_scores = _combine_multi_q_reward_parts(
         weights,
         per_q_parts,
-        {"format": fmt},
+        {
+            "format": fmt,
+            "compress_quality": float(parts.get("compress_quality", 0.0)),
+        },
         question_weights=per_q_weights,
     )
     segment_meta = _build_question_segment_reward_metadata(
@@ -3987,7 +3995,6 @@ def _compute_score_multi_q(
         questions,
         per_q_answers,
     ))
-    parts.update(_compute_compress_quality(extra))
 
     action_space_errors = [
         str(x) for x in _safe_list(extra.get("ts_chunk_action_space_errors"))
@@ -4221,6 +4228,7 @@ def compute_score(
         parts["recall_answer_labeled"] = float(bool(recall_label_chunks))
         parts["recall_answer_used"] = float(bool(recall_label_chunks and recall_used))
         parts["recall_answer_success"] = float(parts["recall_answer"] > 0.0)
+        parts.update(_compute_compress_quality(extra))
     except Exception as e:
         logger.warning("v12 reward component failed: %s", e)
         return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
@@ -4242,7 +4250,6 @@ def compute_score(
     # Recall monitor — wandb-only, not reward (P7).
     for k, v in recall_audit.items():
         parts[k] = float(v)
-    parts.update(_compute_compress_quality(extra))
 
     action_space_errors = [
         str(x) for x in _safe_list(extra.get("ts_chunk_action_space_errors"))

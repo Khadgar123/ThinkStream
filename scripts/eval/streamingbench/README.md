@@ -10,12 +10,16 @@ python scripts/eval/streamingbench/build_rl_trajectories.py \
   --csv-dir /path/to/StreamingBench/StreamingBench \
   --video-root /path/to/StreamingBench/extracted \
   --frames-root /path/to/StreamingBench/frames_fps2 \
-  --out-jsonl output/benchmark_splits/current/streamingbench/streaming_trajectories.jsonl \
-  --out-parquet output/benchmark_splits/current/streamingbench/streaming_rl_multi_q.parquet \
+  --tasks OP \
+  --out-jsonl output/benchmark_splits/current/streamingbench/OP/streaming_trajectories.jsonl \
+  --out-parquet output/benchmark_splits/current/streamingbench/OP/streaming_rl_multi_q.parquet \
   --split-policy continuous_prefix \
   --sample-per-task-type 0 \
-  --summary-out output/benchmark_splits/current/streamingbench/rl_build_summary.json
+  --summary-out output/benchmark_splits/current/streamingbench/OP/build_summary.json
 ```
+
+Current report subcategories are `OP CR CS ATP EU TR PR SU ACP CT`. The builder
+accepts those aliases through `--tasks`; `SU` maps to Spatial Understanding.
 
 `continuous_prefix` groups questions by source video, starts each trajectory at
 chunk 0, and runs through the last answer slot plus post-context. Overlapping

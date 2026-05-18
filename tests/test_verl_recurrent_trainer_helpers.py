@@ -478,7 +478,7 @@ def test_recurrent_gdpo_global_mode_uses_recall_answer_component():
     assert metrics["recurrent/gdpo/recall_answer_adv_std"] > 0.0
 
 
-def test_recurrent_gdpo_global_gspo_uses_only_final_rows():
+def test_recurrent_gdpo_global_gspo_broadcasts_like_grpo_for_gspo_loss():
     prompt_len = 2
     response_len = 3
     data = DataProto.from_single_dict({
@@ -515,12 +515,65 @@ def test_recurrent_gdpo_global_gspo_uses_only_final_rows():
             os.environ["THINKSTREAM_CREDIT_ASSIGNMENT"] = old_mode
 
     row_adv = adv[:, 0]
-    assert torch.allclose(row_adv[[0, 2]], torch.zeros(2), atol=1e-6)
+    assert row_adv[0] > 0
     assert row_adv[1] > 0
+    assert row_adv[2] < 0
     assert row_adv[3] < 0
     assert metrics["recurrent/gdpo/credit_mode/global_gspo"] == 1.0
-    assert metrics["recurrent/gdpo/global_gspo_rows"] == 2.0
+    assert metrics["recurrent/gdpo/global_gspo_rows"] == 4.0
+    assert metrics["recurrent/gdpo/global_gspo_final_rows"] == 2.0
     assert metrics["recurrent/gdpo/segment_enabled"] == 0.0
+
+
+def test_recurrent_gdpo_gates_positive_compress_quality_by_outcome():
+    prompt_len = 2
+    response_len = 3
+    data = DataProto.from_single_dict({
+        "prompts": torch.zeros(2, prompt_len, dtype=torch.long),
+        "responses": torch.zeros(2, response_len, dtype=torch.long),
+        "attention_mask": torch.ones(2, prompt_len + response_len, dtype=torch.long),
+        "response_mask": torch.ones(2, response_len, dtype=torch.long),
+        "sample_index": torch.tensor([0, 1], dtype=torch.long),
+        "final_mask": torch.tensor([True, True], dtype=torch.bool),
+        "uid": np.array(["same", "same"], dtype=object),
+    })
+    reward_tensor = torch.zeros(2, response_len)
+    reward_extras = {
+        "outcome": np.array([1.0, 0.0], dtype=object),
+        "answer_decision": np.array([0.0, 0.0], dtype=object),
+        "format": np.array([0.0, 0.0], dtype=object),
+        "recall_answer": np.array([0.0, 0.0], dtype=object),
+        "compress_quality": np.array([0.5, 1.0], dtype=object),
+        "outcome_gate": np.array([1.0, 0.0], dtype=object),
+    }
+
+    old_weights = os.environ.get("THINKSTREAM_HDPO_WEIGHTS")
+    old_mode = os.environ.get("THINKSTREAM_CREDIT_ASSIGNMENT")
+    os.environ["THINKSTREAM_HDPO_WEIGHTS"] = (
+        "outcome=0,answer_decision=0,format=0,recall_answer=0,compress_quality=1"
+    )
+    os.environ["THINKSTREAM_CREDIT_ASSIGNMENT"] = "global_gdpo"
+    try:
+        gdpo_adv, metrics = _compute_recurrent_gdpo_advantages(
+            data,
+            reward_tensor,
+            reward_extras,
+            np.array(["same", "same"], dtype=object),
+            use_adv=False,
+        )
+    finally:
+        if old_weights is None:
+            os.environ.pop("THINKSTREAM_HDPO_WEIGHTS", None)
+        else:
+            os.environ["THINKSTREAM_HDPO_WEIGHTS"] = old_weights
+        if old_mode is None:
+            os.environ.pop("THINKSTREAM_CREDIT_ASSIGNMENT", None)
+        else:
+            os.environ["THINKSTREAM_CREDIT_ASSIGNMENT"] = old_mode
+
+    assert gdpo_adv[0, 0] > 0
+    assert gdpo_adv[1, 0] < 0
+    assert metrics["recurrent/gdpo/compress_quality_weight"] == 1.0
 
 
 def test_recurrent_gdpo_compress_boundary_mode_uses_boundary_segments():

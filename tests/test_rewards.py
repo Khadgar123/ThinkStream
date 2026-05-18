@@ -530,6 +530,40 @@ def test_recipe_reward_allows_auxiliary_when_answer_correct():
     assert abs(score - 1.4) < 1e-6
 
 
+def test_recipe_reward_includes_compress_quality_in_global_scalar():
+    from thinkstream.rl.thinkstream import _combine_reward_parts
+
+    weights = {
+        "outcome": 1.0,
+        "compress_quality": 0.1,
+    }
+    parts = {
+        "outcome": 1.0,
+        "compress_quality": 0.8,
+    }
+
+    score, gate = _combine_reward_parts(weights, parts)
+    assert gate == 1.0
+    assert abs(score - 1.08) < 1e-6
+
+
+def test_recipe_reward_gates_positive_compress_quality_when_answer_wrong():
+    from thinkstream.rl.thinkstream import _combine_reward_parts
+
+    weights = {
+        "outcome": 1.0,
+        "compress_quality": 0.1,
+    }
+    parts = {
+        "outcome": 0.0,
+        "compress_quality": 1.0,
+    }
+
+    score, gate = _combine_reward_parts(weights, parts)
+    assert gate == 0.0
+    assert score == 0.0
+
+
 def test_recipe_reward_scales_auxiliary_on_partial_outcome():
     from thinkstream.rl.thinkstream import _combine_reward_parts
 

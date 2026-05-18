@@ -43,6 +43,11 @@ Current builders:
 - OVO: `scripts/eval/ovo/build_rl_trajectories.py --split-policy continuous_prefix`
 - StreamingBench: `scripts/eval/streamingbench/build_rl_trajectories.py --split-policy continuous_prefix`
 
+Current benchmark splits are materialized per report subcategory, not as one
+all-task parquet. StreamingBench uses `OP CR CS ATP EU TR PR SU ACP CT`.
+OVO uses `OCR ACR ATR STU FPD OJR`, `EPM ASI HLD`, and `REC SSR CRR`; group
+averages are computed from those per-task results.
+
 The paired parquet is produced by the builders through
 `scripts.agent_data.build_verl_parquet` in multi-Q mode, so one parquet row is
 one recurrent trajectory.
@@ -61,8 +66,9 @@ one recurrent trajectory.
 
 ## Existing Current Split Files
 
-- `output/benchmark_splits/current/ovo/`
-- `output/benchmark_splits/current/streamingbench/`
+- `output/benchmark_splits/current/ovo/<TASK>/`
+- `output/benchmark_splits/current/streamingbench/<TASK>/`
 
-Each directory should contain a trajectory JSONL, a paired multi-Q parquet, and
-a build summary. `build_summary.json` records the split policy and span stats.
+Each subdirectory should contain a trajectory JSONL, a paired multi-Q parquet,
+and a build summary. `build_summary.json` records the split policy and span
+stats.

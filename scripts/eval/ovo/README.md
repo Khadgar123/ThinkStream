@@ -24,11 +24,16 @@ first render OVO into ThinkStream multi-Q trajectory rows and parquet:
 ```bash
 python scripts/eval/ovo/build_rl_trajectories.py \
   --benchmark-json /path/to/ovo_bench_new.json \
-  --out-jsonl data/ovo_rl/ovo_trajectories.jsonl \
-  --out-parquet data/ovo_rl/ovo_rl_multi_q.parquet \
+  --tasks OCR \
+  --out-jsonl output/benchmark_splits/current/ovo/OCR/ovo_trajectories.jsonl \
+  --out-parquet output/benchmark_splits/current/ovo/OCR/ovo_rl_multi_q.parquet \
   --split-policy continuous_prefix \
-  --post-context-chunks 2
+  --post-context-chunks 2 \
+  --summary-out output/benchmark_splits/current/ovo/OCR/build_summary.json
 ```
+
+Current report subcategories are `OCR ACR ATR STU FPD OJR`, `EPM ASI HLD`, and
+`REC SSR CRR`. Group averages are computed from those per-task runs.
 
 The current method-eval contract is `continuous_prefix`: each trajectory starts
 at source-video chunk 0 and runs continuously through the last answer slot plus

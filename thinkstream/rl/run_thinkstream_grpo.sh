@@ -91,7 +91,8 @@
 #   THINKSTREAM_CREDIT_ASSIGNMENT [question]
 #                            global_grpo broadcasts trajectory GRPO to every
 #                            action row; global_gspo uses the same trajectory
-#                            GRPO only on final rows; global_gdpo broadcasts
+#                            GRPO advantage broadcast plus verl's GSPO
+#                            sequence-ratio policy loss; global_gdpo broadcasts
 #                            normalized component advantages. Segment modes:
 #                            question, compress_boundary, question_next_compress.
 #   THINKSTREAM_SEGMENT_GLOBAL_ALPHA [0.5]
@@ -325,6 +326,22 @@ export THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE="${THINKSTREAM_RL_COMPRESS_TRIGGER
 export THINKSTREAM_RL_REWARD_PROFILE="${THINKSTREAM_RL_REWARD_PROFILE:-initial_outcome_time_format_decision}"
 export THINKSTREAM_RECURRENT_ADVANTAGE_MODE="${THINKSTREAM_RECURRENT_ADVANTAGE_MODE:-gdpo_hdpo}"
 export THINKSTREAM_HDPO_WEIGHTS="${THINKSTREAM_HDPO_WEIGHTS:-outcome=1.0,answer_decision=0.3,format=0.1,recall_answer=0.2,compress_quality=0.1}"
+export THINKSTREAM_CREDIT_ASSIGNMENT="${THINKSTREAM_CREDIT_ASSIGNMENT:-question}"
+POLICY_LOSS_MODE="${POLICY_LOSS_MODE:-${THINKSTREAM_POLICY_LOSS_MODE:-}}"
+if [[ -z "${POLICY_LOSS_MODE}" ]]; then
+    _credit_mode_lc="${THINKSTREAM_CREDIT_ASSIGNMENT//-/_}"
+    _credit_mode_lc="${_credit_mode_lc,,}"
+    case "${_credit_mode_lc}" in
+        global_gspo|trajectory_gspo|gspo|sequence|sequence_grpo)
+            POLICY_LOSS_MODE=gspo
+            ;;
+        *)
+            POLICY_LOSS_MODE=vanilla
+            ;;
+    esac
+fi
+export POLICY_LOSS_MODE
+export THINKSTREAM_POLICY_LOSS_MODE="${POLICY_LOSS_MODE}"
 export THINKSTREAM_ENABLE_STEP_ACTION_REWARD="${THINKSTREAM_ENABLE_STEP_ACTION_REWARD:-0}"
 export THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD="${THINKSTREAM_ENABLE_COMPRESS_ACTION_REWARD:-0}"
 export THINKSTREAM_ROLLOUT_ENGINE="${THINKSTREAM_ROLLOUT_ENGINE:-streaming}"
@@ -457,6 +474,7 @@ for _ts_env_name in \
     THINKSTREAM_COMPRESS_TARGET_MAX_ITEMS \
     THINKSTREAM_COMPRESS_BOUNDARY_TOLERANCE \
     THINKSTREAM_CREDIT_ASSIGNMENT \
+    THINKSTREAM_POLICY_LOSS_MODE \
     THINKSTREAM_SEGMENT_CREDIT_MODE \
     THINKSTREAM_SEGMENT_CREDIT_ENABLED \
     THINKSTREAM_SEGMENT_GLOBAL_BASE \
@@ -520,6 +538,7 @@ PYTHONUNBUFFERED=1 "${PYTHON_BIN}" -m verl.trainer.main_ppo \
     actor_rollout_ref.actor.use_kl_loss=False \
     actor_rollout_ref.actor.kl_loss_coef=0.0 \
     actor_rollout_ref.actor.kl_loss_type=low_var_kl \
+    actor_rollout_ref.actor.policy_loss.loss_mode=${POLICY_LOSS_MODE} \
     actor_rollout_ref.actor.entropy_coeff=0.0 \
     actor_rollout_ref.actor.use_dynamic_bsz=True \
     actor_rollout_ref.actor.ppo_max_token_len_per_gpu=${PPO_MAX_TOKEN_LEN_PER_GPU} \

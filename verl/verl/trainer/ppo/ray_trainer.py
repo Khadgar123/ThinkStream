@@ -1054,6 +1054,10 @@ def _compute_recurrent_gdpo_advantages(
         "recall_answer": _reward_component_tensor(
             reward_extra_infos_dict, "recall_answer", n_traj, device
         ),
+        "compress_quality": _gate_positive_component(
+            _reward_component_tensor(reward_extra_infos_dict, "compress_quality", n_traj, device),
+            gate,
+        ),
     }
     weights = _parse_weight_overrides({
         "outcome": 1.0,
@@ -1080,7 +1084,7 @@ def _compute_recurrent_gdpo_advantages(
     else:
         final_row_mask = torch.ones(response_mask.size(0), device=device, dtype=torch.float32)
     final_row_mask = final_row_mask.clamp(0.0, 1.0) * (response_mask.sum(dim=-1) > 0).to(dtype=torch.float32)
-    global_gspo_action_adv = global_grpo_action_adv * final_row_mask
+    global_gspo_action_adv = global_grpo_action_adv
     global_gdpo_action_adv = torch.zeros(response_mask.size(0), device=device, dtype=torch.float32)
     metrics: dict[str, float] = {}
     gdpo_weight_norm = sum(
@@ -1098,11 +1102,12 @@ def _compute_recurrent_gdpo_advantages(
     )
     active_rows = (response_mask.sum(dim=-1) > 0).to(dtype=torch.float32)
     active_row_count = float(active_rows.sum().item())
-    metrics["recurrent/gdpo/global_gspo_rows"] = float(final_row_mask.sum().item())
+    metrics["recurrent/gdpo/global_gspo_final_rows"] = float(final_row_mask.sum().item())
+    metrics["recurrent/gdpo/global_gspo_rows"] = active_row_count
     metrics["recurrent/gdpo/global_gspo_row_frac"] = (
-        float(final_row_mask.sum().item() / active_row_count) if active_row_count > 0 else 0.0
+        1.0 if active_row_count > 0 else 0.0
     )
-    active_gspo_adv = global_gspo_action_adv[final_row_mask > 0.0]
+    active_gspo_adv = global_gspo_action_adv[active_rows > 0.0]
     metrics["recurrent/gdpo/global_gspo_adv_std"] = (
         float(active_gspo_adv.std().item()) if active_gspo_adv.numel() > 1 else 0.0
     )

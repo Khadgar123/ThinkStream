@@ -34,6 +34,18 @@ SAMPLE_RE = re.compile(r"sample_(?P<sample>\d+)")
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 SPLIT_POLICIES = {"continuous_prefix", "strict_window"}
 CURRENT_SPLIT_POLICY = "continuous_prefix"
+TASK_ALIASES = {
+    "OP": "Object Perception",
+    "CR": "Causal Reasoning",
+    "CS": "Clips Summarize",
+    "ATP": "Attribute Perception",
+    "EU": "Event Understanding",
+    "TR": "Text-Rich Understanding",
+    "PR": "Prospective Reasoning",
+    "SU": "Spatial Understanding",
+    "ACP": "Action Perception",
+    "CT": "Counting",
+}
 
 
 @dataclass(frozen=True)
@@ -78,6 +90,29 @@ def _parse_options(value: str) -> List[str]:
 
 def _normalize(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", str(text or "").lower())
+
+
+def _parse_task_filter(value: str) -> Optional[set[str]]:
+    raw_items = [x.strip() for x in str(value or "").split(",") if x.strip()]
+    if not raw_items:
+        return None
+    out: set[str] = set()
+    unknown: List[str] = []
+    for item in raw_items:
+        key = item.upper()
+        if key in TASK_ALIASES:
+            out.add(TASK_ALIASES[key])
+        elif item in TASK_ALIASES.values():
+            out.add(item)
+        else:
+            unknown.append(item)
+    if unknown:
+        raise ValueError(
+            "unknown StreamingBench task filter(s): "
+            + ", ".join(sorted(unknown))
+            + f"; known aliases: {', '.join(sorted(TASK_ALIASES))}"
+        )
+    return out
 
 
 def _question_family_sample(qid: str, task_type: str, fallback_idx: int) -> Tuple[str, int]:
@@ -580,6 +615,9 @@ def _write_parquet(jsonl_path: Path, parquet_path: Path, *, max_questions_per_tr
 
 def build(args: argparse.Namespace) -> Dict[str, Any]:
     rows, load_summary = load_rows(args.csv_dir, args.video_root, args.frames_root)
+    task_filter = _parse_task_filter(args.tasks)
+    if task_filter:
+        rows = [row for row in rows if row.task_type in task_filter]
     selected = _sample_rows(
         rows,
         per_task=max(0, int(args.sample_per_task_type)),
@@ -632,6 +670,7 @@ def build(args: argparse.Namespace) -> Dict[str, Any]:
         ),
         "sample_per_task_type": int(args.sample_per_task_type),
         "limit": int(args.limit),
+        "requested_tasks": sorted(task_filter) if task_filter else [],
         "split_policy": split_policy,
         "continuous_prefix": split_policy == "continuous_prefix",
         "max_questions_per_trajectory": (
@@ -671,6 +710,14 @@ def main() -> int:
     ap.add_argument("--out-parquet", default="")
     ap.add_argument("--summary-out", default="")
     ap.add_argument("--sample-per-task-type", type=int, default=0)
+    ap.add_argument(
+        "--tasks",
+        default="",
+        help=(
+            "Comma-separated task names or aliases. Aliases: "
+            "OP, CR, CS, ATP, EU, TR, PR, SU, ACP, CT."
+        ),
+    )
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--support-window-sec", type=int, default=32)
