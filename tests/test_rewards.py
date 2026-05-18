@@ -149,6 +149,82 @@ def test_format_v12():
     print("✓ format_v12")
 
 
+def test_rl_framework_format_uses_casia_like_proportion():
+    from thinkstream.rl.thinkstream import _framework_format_score
+
+    extra = {
+        "ts_chunk_asst_texts": [
+            "<think>a</think></Silence>",
+            "<think>b</think>",
+            "<think>c</think></Response> ok",
+            '<m t="0-1">compact memory is scored elsewhere</m>',
+        ],
+        "ts_chunk_turn_kinds": ["streaming", "streaming", "streaming", "compress"],
+        "ts_chunk_action_space_errors": ["", "", "", ""],
+    }
+
+    # CASIA-like: one malformed non-compress turn out of three scored turns.
+    assert abs(_framework_format_score(extra, "") - (2.0 / 3.0)) < 1e-6
+    assert _framework_format_score({}, "") == 0.0
+    assert _framework_format_score(
+        {
+            "ts_chunk_asst_texts": ['<m t="0-1">memory only</m>'],
+            "ts_chunk_turn_kinds": ["compress"],
+            "ts_chunk_action_space_errors": [""],
+        },
+        "",
+    ) == 1.0
+    assert _framework_format_score(
+        {
+            "ts_chunk_asst_texts": [
+                "<think>a</think></Silence>",
+                '<m t="0-1">memory only</m>',
+            ],
+            "ts_chunk_action_space_errors": ["", ""],
+        },
+        "",
+    ) == 1.0
+
+
+def test_rl_segment_format_uses_casia_like_proportion():
+    from thinkstream.rl.thinkstream import _framework_format_scores_by_segment
+
+    extra = {
+        "ts_chunk_asst_texts": [
+            "<think>a</think></Silence>",
+            "<think>b</think>",
+            "<think>c</think></Response> ok",
+            "<think>d</think></Silence>",
+        ],
+        "ts_chunk_event_indices": [0, 1, 2, 3],
+        "ts_chunk_turn_kinds": ["streaming", "streaming", "streaming", "streaming"],
+        "ts_chunk_action_space_errors": ["", "", "", "action_not_allowed:test"],
+    }
+
+    scores = _framework_format_scores_by_segment(
+        extra,
+        [0, 2, 4],
+        [1, 3, 5],
+        fallback=0.0,
+    )
+    assert scores == [0.5, 0.5, 1.0]
+
+    scores = _framework_format_scores_by_segment(
+        {
+            "ts_chunk_asst_texts": [
+                "<think>a</think></Silence>",
+                '<m t="0-1">memory only</m>',
+            ],
+            "ts_chunk_event_indices": [0, 1],
+            "ts_chunk_action_space_errors": ["", ""],
+        },
+        [0],
+        [1],
+        fallback=0.0,
+    )
+    assert scores == [1.0]
+
+
 def test_v12_advantage_aggregation():
     """Test multi-level GRPO advantage: 2 videos × 4 rollouts each, 3 chunks per rollout."""
     from thinkstream.trainer.rewards import aggregate_advantages
@@ -202,21 +278,21 @@ def test_v12_advantage_aggregation():
     # State_advantage: answer_decision on rollout 0 of each video should be
     # > rollout 1/2/3. So adv[rollout_0_chunks] > adv[rollout_1_chunks].
     # Rollout 0 of video 0: rows 0,1,2 — answer_decision=1, others=0.
-    # State sum = 1*0.3 + 1*0.1 = 0.4
+    # State sum = 1*0.5 + 1*0.1 = 0.6
     # Rollout 1-3 of video 0: rows 3..11 — answer_decision=0, format=1.
     # State = 0.1
-    # Per-chunk-position group: 4 rollouts at chunk 0 → values [0.4, 0.1, 0.1, 0.1], mean=0.175
-    # Rollout 0 chunk 0 state_adv = 0.4 - 0.175 = 0.225
-    # Rollout 1 chunk 0 state_adv = 0.1 - 0.175 = -0.075
-    # final_adv = 0.7*0 + 0.3*0.225 = 0.0675 (rollout 0)
-    # final_adv = 0.7*0 + 0.3*-0.075 = -0.0225 (rollout 1)
+    # Per-chunk-position group: 4 rollouts at chunk 0 → values [0.6, 0.1, 0.1, 0.1], mean=0.225
+    # Rollout 0 chunk 0 state_adv = 0.6 - 0.225 = 0.375
+    # Rollout 1 chunk 0 state_adv = 0.1 - 0.225 = -0.125
+    # final_adv = 0.7*0 + 0.3*0.375 = 0.1125 (rollout 0)
+    # final_adv = 0.7*0 + 0.3*-0.125 = -0.0375 (rollout 1)
     rollout_0_chunk_0 = adv[0].item()
     rollout_1_chunk_0 = adv[n_chunks].item()
     assert rollout_0_chunk_0 > rollout_1_chunk_0, (
         f"rollout 0 should have higher advantage than rollout 1: "
         f"{rollout_0_chunk_0} vs {rollout_1_chunk_0}"
     )
-    assert abs(rollout_0_chunk_0 - 0.0675) < 1e-3, rollout_0_chunk_0
+    assert abs(rollout_0_chunk_0 - 0.1125) < 1e-3, rollout_0_chunk_0
 
     print("✓ v12 multi-level advantage aggregation")
 
@@ -535,7 +611,7 @@ def test_recipe_reward_includes_compress_quality_in_global_scalar():
 
     weights = {
         "outcome": 1.0,
-        "compress_quality": 0.1,
+        "compress_quality": 0.3,
     }
     parts = {
         "outcome": 1.0,
@@ -544,7 +620,7 @@ def test_recipe_reward_includes_compress_quality_in_global_scalar():
 
     score, gate = _combine_reward_parts(weights, parts)
     assert gate == 1.0
-    assert abs(score - 1.08) < 1e-6
+    assert abs(score - 1.24) < 1e-6
 
 
 def test_recipe_reward_gates_positive_compress_quality_when_answer_wrong():
@@ -552,7 +628,7 @@ def test_recipe_reward_gates_positive_compress_quality_when_answer_wrong():
 
     weights = {
         "outcome": 1.0,
-        "compress_quality": 0.1,
+        "compress_quality": 0.3,
     }
     parts = {
         "outcome": 0.0,
@@ -712,8 +788,8 @@ def test_recipe_multi_q_rewards_recall_labeled_answer_when_recalled_and_correct(
     assert res["recall_answer_used"] == 1.0, res
     assert res["recall_answer_success"] == 1.0, res
     assert res["recall_answer"] == 1.0, res
-    # 1.0 outcome + 0.3 answer_decision + 0.2 recall_answer + 0.1 format.
-    assert abs(res["score"] - 1.6) < 1e-6, res
+    # 1.0 outcome + 0.3 answer_decision + 0.5 recall_answer + 0.1 format.
+    assert abs(res["score"] - 1.9) < 1e-6, res
 
 
 def test_recipe_multi_q_aggregates_by_expected_answer_slot():
@@ -1186,6 +1262,8 @@ if __name__ == "__main__":
     test_timing_v12()
     test_answer_decision_v12()
     test_format_v12()
+    test_rl_framework_format_uses_casia_like_proportion()
+    test_rl_segment_format_uses_casia_like_proportion()
     test_silent_quality_v12()
     test_trajectory_outcome_v124_single_question()
     test_trajectory_outcome_v124_multi_question_mixed()

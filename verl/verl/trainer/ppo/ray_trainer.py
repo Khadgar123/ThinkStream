@@ -228,6 +228,240 @@ def _safe_int(value: Any, default: int = -1) -> int:
         return default
 
 
+def _reward_numeric_array(reward_extra_infos_dict: dict[str, Any] | None, key: str) -> np.ndarray:
+    if not reward_extra_infos_dict or key not in reward_extra_infos_dict:
+        return np.asarray([], dtype=np.float32)
+    raw_values = reward_extra_infos_dict.get(key)
+    if hasattr(raw_values, "tolist"):
+        raw_values = raw_values.tolist()
+    if isinstance(raw_values, (list, tuple)):
+        values = list(raw_values)
+    else:
+        values = [raw_values]
+
+    out: list[float] = []
+    for value in values:
+        value = _plain_value(value)
+        if isinstance(value, (dict, list, tuple)):
+            continue
+        try:
+            item = float(value)
+        except (TypeError, ValueError):
+            continue
+        if math.isfinite(item):
+            out.append(item)
+    return np.asarray(out, dtype=np.float32)
+
+
+def _add_numeric_stats(metrics: dict[str, float], prefix: str, values: np.ndarray) -> None:
+    if values.size == 0:
+        return
+    metrics[f"{prefix}/count"] = float(values.size)
+    metrics[f"{prefix}/mean"] = float(np.mean(values))
+    metrics[f"{prefix}/std"] = float(np.std(values))
+    metrics[f"{prefix}/min"] = float(np.min(values))
+    metrics[f"{prefix}/max"] = float(np.max(values))
+
+
+def _add_sum_rate(
+    metrics: dict[str, float],
+    prefix: str,
+    numerator: np.ndarray,
+    denominator: np.ndarray,
+) -> None:
+    if numerator.size == 0 and denominator.size == 0:
+        return
+    num = float(np.sum(numerator)) if numerator.size else 0.0
+    den = float(np.sum(denominator)) if denominator.size else 0.0
+    metrics[f"{prefix}/sum"] = num
+    metrics[f"{prefix}/denom_sum"] = den
+    metrics[f"{prefix}/rate"] = num / den if den > 0.0 else 0.0
+
+
+def _collect_thinkstream_reward_metrics(
+    reward_extra_infos_dict: dict[str, Any] | None,
+    *,
+    prefix: str = "train/thinkstream",
+) -> dict[str, float]:
+    """Summarize ThinkStream reward extras for console/wandb logging."""
+
+    metrics: dict[str, float] = {}
+    if not reward_extra_infos_dict:
+        return metrics
+
+    reward_keys = (
+        "score",
+        "outcome",
+        "answer_decision",
+        "format",
+        "recall_answer",
+        "compress_quality",
+        "outcome_gate",
+        "action_space",
+    )
+    for key in reward_keys:
+        values = _reward_numeric_array(reward_extra_infos_dict, key)
+        if values.size:
+            _add_numeric_stats(metrics, f"{prefix}/reward/{key}", values)
+
+    weights = _parse_weight_overrides({
+        "outcome": 1.0,
+        "answer_decision": 0.5,
+        "format": 0.1,
+        "recall_answer": 0.5,
+        "compress_quality": 0.3,
+    })
+    weight_norm = sum(abs(float(v)) for v in weights.values())
+    if weight_norm <= 1e-12:
+        weight_norm = 1.0
+    for key, weight in weights.items():
+        values = _reward_numeric_array(reward_extra_infos_dict, key)
+        mean_value = float(np.mean(values)) if values.size else 0.0
+        metrics[f"{prefix}/reward_weight/{key}"] = float(weight)
+        metrics[f"{prefix}/reward_weight_normalized/{key}"] = float(weight) / weight_norm
+        metrics[f"{prefix}/reward_weighted_mean/{key}"] = float(weight) * mean_value
+
+    outcome_values = _reward_numeric_array(reward_extra_infos_dict, "outcome")
+    mean_correct = _reward_numeric_array(reward_extra_infos_dict, "trajectory_mean_correct")
+    all_correct = _reward_numeric_array(reward_extra_infos_dict, "trajectory_all_correct")
+    per_q_min = _reward_numeric_array(reward_extra_infos_dict, "per_q_outcome_min")
+    per_q_max = _reward_numeric_array(reward_extra_infos_dict, "per_q_outcome_max")
+    n_questions = _reward_numeric_array(reward_extra_infos_dict, "n_questions")
+    n_questions_total = _reward_numeric_array(reward_extra_infos_dict, "n_questions_total")
+    n_answered = _reward_numeric_array(reward_extra_infos_dict, "n_answered")
+    n_answered_total = _reward_numeric_array(reward_extra_infos_dict, "n_answered_total")
+    _add_numeric_stats(metrics, f"{prefix}/accuracy/outcome", outcome_values)
+    _add_numeric_stats(metrics, f"{prefix}/accuracy/trajectory_mean_correct", mean_correct)
+    _add_numeric_stats(metrics, f"{prefix}/accuracy/trajectory_all_correct", all_correct)
+    _add_numeric_stats(metrics, f"{prefix}/accuracy/per_q_outcome_min", per_q_min)
+    _add_numeric_stats(metrics, f"{prefix}/accuracy/per_q_outcome_max", per_q_max)
+    _add_numeric_stats(metrics, f"{prefix}/accuracy/n_questions", n_questions)
+    _add_numeric_stats(metrics, f"{prefix}/accuracy/n_questions_total", n_questions_total)
+    _add_sum_rate(metrics, f"{prefix}/accuracy/answered_rate", n_answered, n_questions)
+    _add_sum_rate(metrics, f"{prefix}/accuracy/answered_total_rate", n_answered_total, n_questions_total)
+
+    format_values = _reward_numeric_array(reward_extra_infos_dict, "format")
+    if format_values.size:
+        metrics[f"{prefix}/format/perfect_traj_frac"] = float(np.mean(format_values >= 0.999))
+        metrics[f"{prefix}/format/imperfect_traj_frac"] = float(np.mean(format_values < 0.999))
+        metrics[f"{prefix}/format/zero_traj_frac"] = float(np.mean(format_values <= 0.0))
+
+    action_space = _reward_numeric_array(reward_extra_infos_dict, "action_space")
+    if action_space.size:
+        illegal_rates = np.maximum(0.0, -action_space)
+        _add_numeric_stats(metrics, f"{prefix}/format/action_space_illegal_rate", illegal_rates)
+
+    recall_labeled = _reward_numeric_array(reward_extra_infos_dict, "recall_answer_labeled")
+    recall_used = _reward_numeric_array(reward_extra_infos_dict, "recall_answer_used")
+    recall_success = _reward_numeric_array(reward_extra_infos_dict, "recall_answer_success")
+    _add_numeric_stats(metrics, f"{prefix}/recall/answer_labeled", recall_labeled)
+    _add_numeric_stats(metrics, f"{prefix}/recall/answer_used", recall_used)
+    _add_numeric_stats(metrics, f"{prefix}/recall/answer_success", recall_success)
+    _add_sum_rate(metrics, f"{prefix}/recall/answer_used_per_labeled", recall_used, recall_labeled)
+    _add_sum_rate(metrics, f"{prefix}/recall/answer_success_per_labeled", recall_success, recall_labeled)
+    _add_sum_rate(metrics, f"{prefix}/recall/answer_success_per_used", recall_success, recall_used)
+    for key in (
+        "recall_answer_used_rate",
+        "recall_answer_success_rate",
+        "recall_call_count",
+        "recall_request_span_mean",
+        "recall_returned_span_mean",
+        "recall_returned_count_mean",
+        "recall_back_gap_mean",
+        "post_recall_answer_count",
+        "post_recall_answer_rate",
+        "post_recall_outcome_mean",
+        "recall_align_rate",
+        "recall_runtime_ok_rate",
+    ):
+        _add_numeric_stats(metrics, f"{prefix}/recall/{key}", _reward_numeric_array(reward_extra_infos_dict, key))
+
+    recall_calls = _reward_numeric_array(reward_extra_infos_dict, "recall_call_count")
+    if recall_calls.size:
+        metrics[f"{prefix}/recall/call_traj_frac"] = float(np.mean(recall_calls > 0.0))
+        metrics[f"{prefix}/recall/call_count_sum"] = float(np.sum(recall_calls))
+    _add_sum_rate(
+        metrics,
+        f"{prefix}/recall/alignment",
+        _reward_numeric_array(reward_extra_infos_dict, "recall_matched"),
+        _reward_numeric_array(reward_extra_infos_dict, "recall_seen"),
+    )
+    _add_sum_rate(
+        metrics,
+        f"{prefix}/recall/runtime_ok",
+        _reward_numeric_array(reward_extra_infos_dict, "recall_runtime_ok"),
+        _reward_numeric_array(reward_extra_infos_dict, "recall_runtime_seen"),
+    )
+
+    compress_count = _reward_numeric_array(reward_extra_infos_dict, "compress_quality_count")
+    if compress_count.size:
+        metrics[f"{prefix}/compress/traj_frac"] = float(np.mean(compress_count > 0.0))
+        metrics[f"{prefix}/compress/count_sum"] = float(np.sum(compress_count))
+    for key in (
+        "compress_quality",
+        "compress_quality_count",
+        "compress_quality_parse_ok",
+        "compress_quality_cover_ok",
+        "compress_quality_old_only",
+        "compress_quality_valid_time",
+        "compress_quality_time_score",
+        "compress_quality_source_precision",
+        "compress_quality_source_grounding",
+        "compress_quality_item_count",
+        "compress_quality_count_score",
+        "compress_quality_boundary_score",
+        "compress_quality_non_overlap",
+        "compress_quality_target_item_count",
+        "compress_align_rate",
+    ):
+        _add_numeric_stats(metrics, f"{prefix}/compress/{key}", _reward_numeric_array(reward_extra_infos_dict, key))
+    _add_sum_rate(
+        metrics,
+        f"{prefix}/compress/alignment",
+        _reward_numeric_array(reward_extra_infos_dict, "compress_matched"),
+        _reward_numeric_array(reward_extra_infos_dict, "compress_seen"),
+    )
+    for key in reward_extra_infos_dict:
+        if str(key).startswith("compress_quality_reason_"):
+            reason = str(key)[len("compress_quality_reason_"):]
+            _add_numeric_stats(
+                metrics,
+                f"{prefix}/compress/reason/{reason}",
+                _reward_numeric_array(reward_extra_infos_dict, key),
+            )
+
+    return metrics
+
+
+def _collect_thinkstream_advantage_metrics(
+    batch: DataProto,
+    *,
+    prefix: str = "train/thinkstream",
+) -> dict[str, float]:
+    if batch.batch is None or "advantages" not in batch.batch.keys():
+        return {}
+    advantages = batch.batch["advantages"].detach().float()
+    if "response_mask" in batch.batch.keys():
+        mask = batch.batch["response_mask"].to(device=advantages.device).bool()
+        values = advantages[mask]
+    else:
+        values = advantages.reshape(-1)
+    if values.numel() == 0:
+        return {}
+    metrics = {
+        f"{prefix}/advantage/token_count": float(values.numel()),
+        f"{prefix}/advantage/token_mean": float(values.mean().item()),
+        f"{prefix}/advantage/token_std": float(values.std().item()) if values.numel() > 1 else 0.0,
+        f"{prefix}/advantage/token_min": float(values.min().item()),
+        f"{prefix}/advantage/token_max": float(values.max().item()),
+        f"{prefix}/advantage/token_abs_mean": float(values.abs().mean().item()),
+        f"{prefix}/advantage/token_positive_frac": float((values > 0.0).float().mean().item()),
+        f"{prefix}/advantage/token_negative_frac": float((values < 0.0).float().mean().item()),
+        f"{prefix}/advantage/token_zero_frac": float((values == 0.0).float().mean().item()),
+    }
+    return metrics
+
+
 def _row_value(batch: DataProto, key: str, row: int, default: Any = None) -> Any:
     values = batch.non_tensor_batch.get(key)
     if values is None:
@@ -1061,10 +1295,10 @@ def _compute_recurrent_gdpo_advantages(
     }
     weights = _parse_weight_overrides({
         "outcome": 1.0,
-        "answer_decision": 0.3,
+        "answer_decision": 0.5,
         "format": 0.1,
-        "recall_answer": 0.2,
-        "compress_quality": 0.1,
+        "recall_answer": 0.5,
+        "compress_quality": 0.3,
     })
 
     global_grpo_scalar_adv = compute_1D_grpo_advantage(
@@ -3059,6 +3293,13 @@ class RayPPOTrainer:
                 )
                 # collect metrics
                 metrics.update(compute_data_metrics(batch=batch, use_critic=self.use_critic))
+                reward_monitor_infos = (
+                    recurrent_reward_extra_infos_dict
+                    if recurrent_rollout
+                    else reward_extra_infos_dict
+                )
+                metrics.update(_collect_thinkstream_reward_metrics(reward_monitor_infos))
+                metrics.update(_collect_thinkstream_advantage_metrics(batch))
                 # GDPO per-component reward metrics
                 gdpo_reward_keys = self.config.algorithm.get("gdpo_reward_keys", None)
                 if gdpo_reward_keys and self.config.algorithm.adv_estimator in ("gdpo", AdvantageEstimator.GDPO):

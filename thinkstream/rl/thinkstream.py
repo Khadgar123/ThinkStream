@@ -1239,13 +1239,12 @@ def _tool_time_range_runtime_ok(
 
 
 def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
-    """Minimal RL format reward for framework executability.
+    """CASIA-like RL format reward for framework executability.
 
-    Positive credit means the turn can be parsed and executed. Negative credit
-    is reserved for failures that break or stall rollout: malformed v12 output,
-    illegal turn-local action, or tool windows that cannot touch observed
-    memory. It intentionally does not compare recall start/end arguments against
-    gold labels.
+    Score is the proportion of non-compress turns that can be parsed and
+    executed. Compression has its own branch-local validity and quality reward,
+    so compress turns are excluded here to avoid double-counting. This is a
+    format-quality signal in [0, 1], not a hard trajectory gate.
     """
     from thinkstream.data.agent_protocol import parse_agent_output
 
@@ -1256,7 +1255,7 @@ def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
     if not chunks:
         chunks = _split_assistant_chunks(solution_str)
     if not chunks:
-        return -1.0
+        return 0.0
     action_errors = _safe_list(extra.get("ts_chunk_action_space_errors"))
     turn_kinds = _safe_list(extra.get("ts_chunk_turn_kinds"))
     scores: List[float] = []
@@ -1270,15 +1269,17 @@ def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
         parsed = parse_agent_output(
             text,
             allow_bare_answer=turn_kind in {"recall_response", "post_recall"},
-            allow_bare_memory=turn_kind == "compress",
+            allow_bare_memory=turn_kind in {"", "compress"},
         )
+        if str(parsed.get("kind") or "") == "compress":
+            continue
         action_error = (
             str(action_errors[turn_i] or "").strip()
             if turn_i < len(action_errors)
             else ""
         )
         if parsed.get("format_error") or action_error:
-            scores.append(-1.0)
+            scores.append(0.0)
             continue
         kind = str(parsed.get("kind") or "")
         if kind == "recall":
@@ -1288,12 +1289,14 @@ def _framework_format_score(extra: Dict[str, Any], solution_str: str) -> float:
                 args,
                 current_chunk=_turn_current_chunk(extra, turn_i),
             )
-            scores.append(1.0 if ok else -1.0)
-        elif kind == "compress":
-            scores.append(1.0 if parsed.get("memory_text") else -1.0)
+            scores.append(1.0 if ok else 0.0)
         else:
             scores.append(1.0)
-    return min(scores) if any(s < 0.0 for s in scores) else 1.0
+    if not scores:
+        # All turns were compress turns; leave trajectory-format neutral because
+        # compression validity is scored by compress_quality.
+        return 1.0
+    return float(sum(scores) / len(scores))
 
 
 def _int_chunks_from_value(value: Any) -> List[int]:
@@ -2383,11 +2386,11 @@ def _reward_weights_with_recall(defaults: Dict[str, float]) -> Dict[str, float]:
     weights = dict(defaults)
     weights.setdefault(
         "recall_answer",
-        _env_float("THINKSTREAM_RECALL_ANSWER_WEIGHT", 0.2),
+        _env_float("THINKSTREAM_RECALL_ANSWER_WEIGHT", 0.5),
     )
     weights.setdefault(
         "compress_quality",
-        _env_float("THINKSTREAM_COMPRESS_QUALITY_WEIGHT", 0.1),
+        _env_float("THINKSTREAM_COMPRESS_QUALITY_WEIGHT", 0.3),
     )
     return _parse_hdpo_weight_overrides(weights)
 
@@ -2841,15 +2844,17 @@ def _framework_format_scores_by_segment(
         parsed = parse_agent_output(
             str(text or ""),
             allow_bare_answer=turn_kind in {"recall_response", "post_recall"},
-            allow_bare_memory=False,
+            allow_bare_memory=turn_kind == "",
         )
+        if str(parsed.get("kind") or "") == "compress":
+            continue
         action_error = (
             str(action_errors[turn_i] or "").strip()
             if turn_i < len(action_errors)
             else ""
         )
         if parsed.get("format_error") or action_error:
-            per_segment_scores[seg_i].append(-1.0)
+            per_segment_scores[seg_i].append(0.0)
             continue
         kind = str(parsed.get("kind") or "")
         if kind == "recall":
@@ -2859,7 +2864,7 @@ def _framework_format_scores_by_segment(
                 args,
                 current_chunk=_turn_current_chunk(extra, turn_i),
             )
-            per_segment_scores[seg_i].append(1.0 if ok else -1.0)
+            per_segment_scores[seg_i].append(1.0 if ok else 0.0)
         else:
             per_segment_scores[seg_i].append(1.0)
 
@@ -2868,7 +2873,7 @@ def _framework_format_scores_by_segment(
         if not seg_scores:
             scores.append(1.0)
         else:
-            scores.append(min(seg_scores) if any(s < 0.0 for s in seg_scores) else 1.0)
+            scores.append(float(sum(seg_scores) / len(seg_scores)))
     return scores
 
 
@@ -2955,9 +2960,9 @@ def _build_segment_reward_metadata_for_bounds(
     )
     gdpo_weights = _parse_hdpo_weight_overrides({
         "outcome": 1.0,
-        "answer_decision": 0.3,
+        "answer_decision": 0.5,
         "format": 0.1,
-        "compress_quality": 0.1,
+        "compress_quality": 0.3,
     })
 
     segment_scores: List[float] = []
@@ -3919,9 +3924,9 @@ def _compute_score_multi_q(
     avg_silent = _weighted_mean(per_q_silent, per_q_weights)
     avg_recall_answer = _weighted_mean(per_q_recall_answer, per_q_weights)
 
-    # Format is trajectory-level (not per-Q). It is a minimal
-    # framework-executability signal: parse/action-space/runtime time_range
-    # validity, without gold range/query matching.
+    # Format is trajectory-level (not per-Q). It is a CASIA-like proportion of
+    # parse/action-space/runtime-valid non-compress turns, without gold
+    # range/query matching.
     fmt = float(_framework_format_score(extra, trajectory_solution))
 
     parts = {

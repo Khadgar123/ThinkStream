@@ -16,6 +16,8 @@ from verl import DataProto  # noqa: E402
 from verl.trainer.ppo.ray_trainer import (  # noqa: E402
     _attach_action_reward_extras,
     _attach_recurrent_original_fields,
+    _collect_thinkstream_advantage_metrics,
+    _collect_thinkstream_reward_metrics,
     _compute_recurrent_gdpo_advantages,
     _is_recurrent_rollout_batch,
     _make_action_token_scores,
@@ -97,6 +99,76 @@ def test_recurrent_actor_update_divisor_matches_local_minibatch():
     local_rows = (expanded_rows + pad_size) // 8
     local_mini_batch = (2 * 8) // 8
     assert local_rows % local_mini_batch == 0
+
+
+def test_thinkstream_reward_metrics_summarize_trajectory_extras():
+    reward_extras = {
+        "score": np.array([1.7, 0.2], dtype=object),
+        "outcome": np.array([1.0, 0.0], dtype=object),
+        "trajectory_mean_correct": np.array([1.0, 0.25], dtype=object),
+        "trajectory_all_correct": np.array([1.0, 0.0], dtype=object),
+        "per_q_outcome_min": np.array([1.0, 0.0], dtype=object),
+        "per_q_outcome_max": np.array([1.0, 0.5], dtype=object),
+        "n_questions": np.array([4.0, 4.0], dtype=object),
+        "n_questions_total": np.array([4.0, 4.0], dtype=object),
+        "n_answered": np.array([4.0, 2.0], dtype=object),
+        "n_answered_total": np.array([4.0, 3.0], dtype=object),
+        "answer_decision": np.array([1.0, -0.5], dtype=object),
+        "format": np.array([1.0, 0.5], dtype=object),
+        "recall_answer": np.array([0.25, 0.0], dtype=object),
+        "recall_answer_labeled": np.array([1.0, 2.0], dtype=object),
+        "recall_answer_used": np.array([1.0, 1.0], dtype=object),
+        "recall_answer_success": np.array([1.0, 0.0], dtype=object),
+        "recall_call_count": np.array([2.0, 0.0], dtype=object),
+        "recall_matched": np.array([1.0, 0.0], dtype=object),
+        "recall_seen": np.array([2.0, 1.0], dtype=object),
+        "recall_runtime_ok": np.array([2.0, 0.0], dtype=object),
+        "recall_runtime_seen": np.array([2.0, 0.0], dtype=object),
+        "recall_returned_count_mean": np.array([8.0, 0.0], dtype=object),
+        "post_recall_outcome_mean": np.array([1.0, 0.0], dtype=object),
+        "compress_quality": np.array([0.8, 0.0], dtype=object),
+        "compress_quality_count": np.array([3.0, 0.0], dtype=object),
+        "compress_quality_parse_ok": np.array([1.0, 0.0], dtype=object),
+        "compress_quality_source_precision": np.array([0.9, 0.0], dtype=object),
+        "compress_matched": np.array([1.0, 0.0], dtype=object),
+        "compress_seen": np.array([2.0, 0.0], dtype=object),
+        "action_space": np.array([0.0, -0.25], dtype=object),
+    }
+
+    metrics = _collect_thinkstream_reward_metrics(reward_extras)
+
+    assert abs(metrics["train/thinkstream/reward/score/mean"] - 0.95) < 1e-6
+    assert metrics["train/thinkstream/accuracy/answered_rate/rate"] == 0.75
+    assert metrics["train/thinkstream/recall/answer_success_per_labeled/rate"] == 1.0 / 3.0
+    assert metrics["train/thinkstream/recall/call_traj_frac"] == 0.5
+    assert metrics["train/thinkstream/recall/alignment/rate"] == 1.0 / 3.0
+    assert metrics["train/thinkstream/recall/runtime_ok/rate"] == 1.0
+    assert metrics["train/thinkstream/compress/traj_frac"] == 0.5
+    assert metrics["train/thinkstream/compress/alignment/rate"] == 0.5
+    assert metrics["train/thinkstream/format/imperfect_traj_frac"] == 0.5
+    assert metrics["train/thinkstream/format/action_space_illegal_rate/mean"] == 0.125
+    assert abs(metrics["train/thinkstream/reward_weight_normalized/recall_answer"] - (0.5 / 2.4)) < 1e-6
+
+
+def test_thinkstream_advantage_metrics_use_active_response_tokens():
+    data = DataProto.from_single_dict({
+        "advantages": torch.tensor([
+            [1.0, -1.0, 0.0],
+            [2.0, 0.0, 0.0],
+        ]),
+        "response_mask": torch.tensor([
+            [1, 1, 0],
+            [1, 0, 0],
+        ]),
+    })
+
+    metrics = _collect_thinkstream_advantage_metrics(data)
+
+    assert metrics["train/thinkstream/advantage/token_count"] == 3.0
+    assert metrics["train/thinkstream/advantage/token_min"] == -1.0
+    assert metrics["train/thinkstream/advantage/token_max"] == 2.0
+    assert abs(metrics["train/thinkstream/advantage/token_positive_frac"] - (2.0 / 3.0)) < 1e-6
+    assert abs(metrics["train/thinkstream/advantage/token_negative_frac"] - (1.0 / 3.0)) < 1e-6
 
 
 def test_recurrent_gdpo_advantage_keeps_compress_on_compress_rows():

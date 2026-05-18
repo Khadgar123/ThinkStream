@@ -55,6 +55,8 @@
 #   LIMIT_VIDEOS [2]        legacy multimodal prompt cap for video_meta blocks
 #   PROJECT_NAME [thinkstream-v12]
 #   EXPERIMENT_NAME [grpo-v12.26-verl-$THINKSTREAM_FRAME_PROTOCOL]
+#   TRAINER_LOGGER [auto]       ["console","wandb"] when WANDB_API_KEY or a
+#                                local wandb login is present; otherwise console.
 #   SAVE_DIR [./output/$EXPERIMENT_NAME]
 #   SAVE_FREQ [50] / TEST_FREQ [25]
 #   VAL_ONLY [false] run validation via the RL AgentLoop and exit
@@ -85,7 +87,7 @@
 #                            outcome/answer_decision/format/compress advantages
 #                            before weighted aggregation. Set legacy_grpo to
 #                            recover trajectory-scalar GRPO.
-#   THINKSTREAM_HDPO_WEIGHTS [outcome=1.0,answer_decision=0.3,format=0.1,recall_answer=0.2,compress_quality=0.1]
+#   THINKSTREAM_HDPO_WEIGHTS [outcome=1.0,answer_decision=0.5,format=0.1,recall_answer=0.5,compress_quality=0.3]
 #                            weights for the branch-normalized recurrent
 #                            advantage path.
 #   THINKSTREAM_CREDIT_ASSIGNMENT [question]
@@ -105,7 +107,7 @@
 #   THINKSTREAM_GDPO_NORMALIZE_WEIGHTS [1]
 #                            normalize global GDPO component weights before
 #                            summing component advantages.
-#   THINKSTREAM_RECALL_ANSWER_WEIGHT [0.2]
+#   THINKSTREAM_RECALL_ANSWER_WEIGHT [0.5]
 #                            bonus weight for recall-labeled questions where
 #                            the model uses recall and then answers correctly.
 #   THINKSTREAM_ROLLOUT_ENGINE [streaming]
@@ -258,7 +260,13 @@ export MM_CACHE_GB
 export THINKSTREAM_MM_CACHE_GB="${MM_CACHE_GB}"
 
 PROJECT_NAME=${PROJECT_NAME:-thinkstream-v12}
-TRAINER_LOGGER=${TRAINER_LOGGER:-'["console"]'}
+if [[ -z "${TRAINER_LOGGER:-}" ]]; then
+    if [[ -n "${WANDB_API_KEY:-}" ]] || { [[ -n "${HOME:-}" ]] && grep -q "api.wandb.ai" "${HOME}/.netrc" 2>/dev/null; }; then
+        TRAINER_LOGGER='["console","wandb"]'
+    else
+        TRAINER_LOGGER='["console"]'
+    fi
+fi
 THINKSTREAM_FRAME_PROTOCOL="${THINKSTREAM_FRAME_PROTOCOL:-video_meta}"
 THINKSTREAM_RENDER_LAYOUT="${THINKSTREAM_RENDER_LAYOUT:-standard_query_last}"
 case "${THINKSTREAM_RENDER_LAYOUT}" in
@@ -325,7 +333,7 @@ export THINKSTREAM_RL_ROLLOUT_AUDIT_MAX="${THINKSTREAM_RL_ROLLOUT_AUDIT_MAX:-200
 export THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE="${THINKSTREAM_RL_COMPRESS_TRIGGER_SOURCE:-offline_pass2_boundaries}"
 export THINKSTREAM_RL_REWARD_PROFILE="${THINKSTREAM_RL_REWARD_PROFILE:-initial_outcome_time_format_decision}"
 export THINKSTREAM_RECURRENT_ADVANTAGE_MODE="${THINKSTREAM_RECURRENT_ADVANTAGE_MODE:-gdpo_hdpo}"
-export THINKSTREAM_HDPO_WEIGHTS="${THINKSTREAM_HDPO_WEIGHTS:-outcome=1.0,answer_decision=0.3,format=0.1,recall_answer=0.2,compress_quality=0.1}"
+export THINKSTREAM_HDPO_WEIGHTS="${THINKSTREAM_HDPO_WEIGHTS:-outcome=1.0,answer_decision=0.5,format=0.1,recall_answer=0.5,compress_quality=0.3}"
 export THINKSTREAM_CREDIT_ASSIGNMENT="${THINKSTREAM_CREDIT_ASSIGNMENT:-question}"
 POLICY_LOSS_MODE="${POLICY_LOSS_MODE:-${THINKSTREAM_POLICY_LOSS_MODE:-}}"
 if [[ -z "${POLICY_LOSS_MODE}" ]]; then

@@ -75,14 +75,13 @@ import torch
 V12_REWARD_DICT_KEYS: tuple = (
     "outcome",          # 0/1 per-question correctness; dominant signal
     "answer_decision",  # slot/event answer timing: no reward for ordinary silence
-    "format",           # 0/1 — tags balanced, JSON parses, exactly one terminal
+    "format",           # [0,1] — CASIA-like valid non-compress turn proportion
 )
 
 _V12_PRODUCTION_WEIGHTS: Dict[str, float] = {
     "outcome":          1.0,    # primary signal — DeepEyesV2 0.8 ↑ to 1.0 (drop format weight)
-    "answer_decision":  0.3,    # answer/no-answer timing decision at slots/events
-    "format":           0.1,    # weak — gate-like; per DeepEyesV2 0.2 but lower since
-                                # answer_decision already shapes streaming timing
+    "answer_decision":  0.5,    # answer/no-answer timing decision; CASIA correctness:time is 2:1
+    "format":           0.1,    # light protocol-quality signal; compression owns memory quality
 }
 
 
@@ -136,7 +135,7 @@ def per_reward_group_norm(
         also produce 0 (no NaN leak).
 
     Why mean-only (not (x-μ)/σ): bimodal reward distributions (e.g. when
-    half the group failed format and got -1.0) make σ unstable and amplify
+    half the group failed format) make σ unstable and amplify
     noise. ReMemR1's training script uses ``grpo_use_adv=False`` for the
     same reason.
     """
