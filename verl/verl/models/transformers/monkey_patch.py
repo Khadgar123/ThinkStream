@@ -314,6 +314,11 @@ def apply_monkey_patch(
         tiled_mlp_shards: Number of shards for TiledMLP (higher = lower memory, slightly slower).
     """
 
+    from verl.models.transformers.rocm_patch_embed import patch_rocm_vl_patch_embed
+
+    if patch_rocm_vl_patch_embed(model):
+        print("Patched ROCm VLM patch_embed Conv3d to linear projection")
+
     # Apply TiledMLP monkey patch for memory-efficient MLP computation
     if use_tiled_mlp:
         from verl.models.transformers.tiled_mlp import apply_tiled_mlp_monkey_patch

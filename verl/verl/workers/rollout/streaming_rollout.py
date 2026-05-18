@@ -43,6 +43,83 @@ logger = logging.getLogger(__file__)
 logger.setLevel(os.getenv("VERL_LOGGING_LEVEL", "INFO"))
 
 
+_ROCM_ONLY_ENV_KEYS = (
+    "HIP_VISIBLE_DEVICES",
+    "ROCR_VISIBLE_DEVICES",
+    "FLASH_ATTENTION_TRITON_AMD_ENABLE",
+    "PYTORCH_ROCM_ARCH",
+    "ROCM_HOME",
+    "HIP_HOME",
+    "RAY_EXPERIMENTAL_NOSET_HIP_VISIBLE_DEVICES",
+    "RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES",
+)
+
+
+def _is_rocm_runtime() -> bool:
+    from verl.models.transformers.rocm_patch_embed import is_rocm_runtime
+
+    return is_rocm_runtime()
+
+
+def _set_streaming_visible_devices(cuda_visible_devices: str) -> None:
+    visible = str(cuda_visible_devices)
+    os.environ[get_visible_devices_keyword()] = visible
+    os.environ["CUDA_VISIBLE_DEVICES"] = visible
+    if _is_rocm_runtime():
+        # On ROCm, Ray/verl reports CUDA_VISIBLE_DEVICES as the generic device
+        # key, while PyTorch/flash-attn also respect HIP_VISIBLE_DEVICES.
+        os.environ["HIP_VISIBLE_DEVICES"] = visible
+        os.environ["ROCR_VISIBLE_DEVICES"] = visible
+        os.environ.setdefault("FLASH_ATTENTION_TRITON_AMD_ENABLE", "TRUE")
+        os.environ.setdefault("PYTORCH_ROCM_ARCH", "gfx942")
+        if os.path.isdir("/opt/rocm"):
+            os.environ.setdefault("ROCM_HOME", "/opt/rocm")
+            os.environ.setdefault("HIP_HOME", "/opt/rocm")
+    else:
+        for key in _ROCM_ONLY_ENV_KEYS:
+            os.environ.pop(key, None)
+
+
+def _build_streaming_server_env(visible: str) -> dict[str, str]:
+    visible = str(visible)
+    env_vars = {
+        "RAY_EXPERIMENTAL_NOSET_CUDA_VISIBLE_DEVICES": "1",
+        "NCCL_CUMEM_ENABLE": "0",
+        "CUDA_VISIBLE_DEVICES": visible,
+        get_visible_devices_keyword(): visible,
+    }
+    rocm_runtime = _is_rocm_runtime()
+    if rocm_runtime:
+        env_vars.update({
+            "RAY_EXPERIMENTAL_NOSET_HIP_VISIBLE_DEVICES": "1",
+            "RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES": "1",
+            "HIP_VISIBLE_DEVICES": visible,
+            "ROCR_VISIBLE_DEVICES": visible,
+            "FLASH_ATTENTION_TRITON_AMD_ENABLE": "TRUE",
+            "PYTORCH_ROCM_ARCH": "gfx942",
+        })
+        if os.path.isdir("/opt/rocm"):
+            env_vars.setdefault("ROCM_HOME", "/opt/rocm")
+            env_vars.setdefault("HIP_HOME", "/opt/rocm")
+    else:
+        # Stale ROCm settings route flash-attn through Triton AMD kernels on
+        # NVIDIA nodes and fail before rollout generation starts.
+        env_vars["FLASH_ATTENTION_TRITON_AMD_ENABLE"] = "FALSE"
+    propagate_keys = []
+    if rocm_runtime:
+        propagate_keys.extend([
+            "LD_LIBRARY_PATH",
+            "PYTORCH_ROCM_ARCH",
+            "ROCM_HOME",
+            "HIP_HOME",
+        ])
+    for key in propagate_keys:
+        value = os.environ.get(key)
+        if value:
+            env_vars[key] = value
+    return env_vars
+
+
 def _dtype_from_config(dtype_name: str) -> torch.dtype:
     value = str(dtype_name or "bfloat16").lower()
     if value in {"bf16", "bfloat16"}:
@@ -232,7 +309,7 @@ class StreamingRolloutServer:
         nnodes: int,
         cuda_visible_devices: str,
     ):
-        os.environ[get_visible_devices_keyword()] = cuda_visible_devices
+        _set_streaming_visible_devices(cuda_visible_devices)
         self.config: RolloutConfig = omega_conf_to_dataclass(config)
         self.model_config: HFModelConfig = omega_conf_to_dataclass(model_config)
         self.rollout_mode = rollout_mode
@@ -347,6 +424,10 @@ class StreamingRolloutServer:
             attn_implementation="flash_attention_2",
             low_cpu_mem_usage=True,
         )
+        from verl.models.transformers.rocm_patch_embed import patch_rocm_vl_patch_embed
+
+        if patch_rocm_vl_patch_embed(self._model):
+            logger.info("Patched ROCm VLM patch_embed Conv3d to linear projection")
         self._processor = AutoProcessor.from_pretrained(
             model_path,
             padding_side="left",
@@ -1081,18 +1162,15 @@ class StreamingReplica(RolloutReplica):
             )
         )
         node_id, cuda_visible_device = worker_info
+        visible = str(cuda_visible_device)
+        env_vars = _build_streaming_server_env(visible)
         name = f"streaming_server_{self.replica_rank}_0"
         server = self.server_class.options(
             scheduling_strategy=ray.util.scheduling_strategies.NodeAffinitySchedulingStrategy(
                 node_id=node_id,
                 soft=False,
             ),
-            runtime_env={
-                "env_vars": {
-                    "RAY_EXPERIMENTAL_NOSET_CUDA_VISIBLE_DEVICES": "1",
-                    "NCCL_CUMEM_ENABLE": "0",
-                }
-            },
+            runtime_env={"env_vars": env_vars},
             name=name,
             max_concurrency=32,
         ).remote(
@@ -1104,7 +1182,7 @@ class StreamingReplica(RolloutReplica):
             node_rank=0,
             gpus_per_node=1,
             nnodes=1,
-            cuda_visible_devices=str(cuda_visible_device),
+            cuda_visible_devices=visible,
         )
         self.servers.append(server)
         self._server_handle = server
