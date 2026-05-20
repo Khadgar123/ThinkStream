@@ -1143,6 +1143,47 @@ def test_single_question_window_boundaries_and_scalar_chunks():
     assert ds._window_for_question(empty_q, n_chunks=0) == (0, 0)
 
 
+def test_recall_post_metrics_use_current_post_recall_turn_and_support_hit():
+    from thinkstream.rl.thinkstream import _recall_range_and_post_answer_stats
+
+    question = {
+        "question": "What letter?",
+        "answer_form": "multiple_choice",
+        "correct_option": "A",
+        "gold_answer": "alpha",
+        "ask_chunks": [10],
+        "answer_chunks": [10],
+        "support_chunks": [3],
+        "per_emit_answers": [{"chunk": 10, "value": "A"}],
+    }
+    extra = {
+        "gold_action_per_chunk": {"10": "recall"},
+        "ts_chunk_kinds": ["recall", "silent", "answer"],
+        "ts_chunk_turn_kinds": ["streaming", "post_recall", "streaming"],
+        "ts_chunk_asst_texts": [
+            '<think>need earlier evidence</think><tool_call>{"name":"recall","arguments":{"start_time":0,"end_time":3}}</tool_call>',
+            "<think>I still cannot answer from recall.</think>",
+            "<think>now answer</think>\n</Response> A",
+        ],
+        "ts_chunk_video_indices": [10, 10, 20],
+        "ts_chunk_event_indices": [10, 10, 20],
+        "ts_recall_time_ranges": [{"start_time": 0, "end_time": 3}, None, None],
+        "ts_recall_returned_chunks": [[2], [], []],
+    }
+    stats = _recall_range_and_post_answer_stats(
+        extra,
+        [question],
+        [[{"chunk": 20, "text": "A", "expected_chunk": 10}]],
+    )
+
+    assert stats["post_recall_turn_count"] == 1.0
+    assert stats["post_recall_answer_count"] == 0.0
+    assert stats["post_recall_outcome_mean"] == 0.0
+    assert stats["recall_support_seen"] == 1.0
+    assert stats["recall_support_request_hit_rate"] == 1.0
+    assert stats["recall_support_returned_hit_rate"] == 0.0
+
+
 def test_single_question_segment_uses_student_snapshot_or_rolls_from_zero():
     ds = _single_q_dataset_stub()
     q = {
@@ -1286,6 +1327,7 @@ if __name__ == "__main__":
     test_rl_dataset_recovers_legacy_offline_compress_boundaries()
     test_rl_compress_output_transfers_student_memory_state()
     test_single_question_window_boundaries_and_scalar_chunks()
+    test_recall_post_metrics_use_current_post_recall_turn_and_support_hit()
     test_single_question_segment_uses_student_snapshot_or_rolls_from_zero()
     test_silent_quality_v12_complements_outcome()
     test_v12_advantage_aggregation()

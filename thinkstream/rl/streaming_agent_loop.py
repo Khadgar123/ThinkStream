@@ -2696,6 +2696,7 @@ def _register_streaming_agent_loop():
                         answer_event: Dict[str, Any] = {
                             "chunk": int(chunk_idx),
                             "text": answer_str,
+                            "turn_kind": str(turn_kind or ""),
                         }
                         if per_q_answer_chunk[q_idx] < 0:
                             per_q_answer_chunk[q_idx] = chunk_idx

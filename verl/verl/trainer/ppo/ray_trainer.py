@@ -209,6 +209,57 @@ def _plain_value(value: Any) -> Any:
     return value
 
 
+def _reward_extra_values_list(value: Any) -> list[Any]:
+    value = _plain_value(value)
+    if isinstance(value, (list, tuple)):
+        return list(value)
+    return [value]
+
+
+def _metric_key_fragment(value: Any) -> str:
+    text = str(value)
+    return re.sub(r"[^0-9A-Za-z_.-]+", "_", text).strip("_") or "unknown"
+
+
+def _filter_sample_aligned_reward_extras(
+    reward_extra_infos_dict: dict[str, Any] | None,
+    expected_len: int,
+    *,
+    context: str,
+) -> tuple[dict[str, list[Any]], dict[str, float]]:
+    """Keep only reward extras that can be indexed per validation sample."""
+
+    if not reward_extra_infos_dict:
+        return {}, {}
+    expected_len = int(expected_len)
+    filtered: dict[str, list[Any]] = {}
+    mismatch_metrics: dict[str, float] = {}
+    mismatch_keys: list[str] = []
+    for key, value in reward_extra_infos_dict.items():
+        values = _reward_extra_values_list(value)
+        if len(values) == expected_len:
+            filtered[key] = values
+            continue
+        if expected_len == 0 and len(values) == 0:
+            filtered[key] = values
+            continue
+        mismatch_keys.append(str(key))
+        safe_key = _metric_key_fragment(key)
+        mismatch_metrics[f"val-aux/reward_extra_mismatch/{safe_key}/observed_len"] = float(len(values))
+        mismatch_metrics[f"val-aux/reward_extra_mismatch/{safe_key}/expected_len"] = float(expected_len)
+
+    if mismatch_keys:
+        mismatch_metrics["val-aux/reward_extra_mismatch/count"] = float(len(mismatch_keys))
+        preview = ", ".join(mismatch_keys[:8])
+        if len(mismatch_keys) > 8:
+            preview += f", ... (+{len(mismatch_keys) - 8})"
+        print(
+            "Warning: dropping sample-misaligned reward extras "
+            f"in {context}: expected_len={expected_len}, keys=[{preview}]"
+        )
+    return filtered, mismatch_metrics
+
+
 def _safe_float(value: Any, default: float = 0.0) -> float:
     value = _plain_value(value)
     try:
@@ -368,9 +419,21 @@ def _collect_thinkstream_reward_metrics(
         "recall_returned_span_mean",
         "recall_returned_count_mean",
         "recall_back_gap_mean",
+        "recall_support_seen",
+        "recall_support_request_hit",
+        "recall_support_returned_hit",
+        "recall_support_request_hit_rate",
+        "recall_support_returned_hit_rate",
+        "recall_support_request_cover_mean",
+        "recall_support_returned_cover_mean",
+        "post_recall_turn_count",
         "post_recall_answer_count",
         "post_recall_answer_rate",
+        "post_recall_answer_per_recall_rate",
         "post_recall_outcome_mean",
+        "post_recall_current_answer_count",
+        "post_recall_current_answer_rate",
+        "post_recall_current_outcome_mean",
         "recall_align_rate",
         "recall_runtime_ok_rate",
     ):
@@ -1562,6 +1625,12 @@ def _attach_action_reward_extras(
         arr = np.asarray(value, dtype=object)
         if len(arr) == 0:
             continue
+        if sample_index_np.size and len(arr) <= int(sample_index_np.max()):
+            print(
+                "Warning: skipping action reward extra with too few trajectory values "
+                f"for broadcast: key={key}, len={len(arr)}, max_sample_index={int(sample_index_np.max())}"
+            )
+            continue
         action_infos[key] = arr[sample_index_np]
     batch.non_tensor_batch.update(action_infos)
     return action_infos
@@ -1893,8 +1962,9 @@ class RayPPOTrainer:
                 base_data[key] = [row.get(key, "") for row in parsed_rows]
 
         for k, v in reward_extra_infos_dict.items():
-            if len(v) == n:
-                base_data[k] = v
+            values = _reward_extra_values_list(v)
+            if len(values) == n:
+                base_data[k] = values
 
         lines = []
         for i in range(n):
@@ -2128,6 +2198,12 @@ class RayPPOTrainer:
 
         self._maybe_log_val_generations(inputs=sample_inputs, outputs=sample_outputs, scores=sample_scores)
 
+        reward_extra_infos_dict, reward_extra_mismatch_metrics = _filter_sample_aligned_reward_extras(
+            reward_extra_infos_dict,
+            len(sample_scores),
+            context="validation",
+        )
+
         # dump generations
         val_data_dir = self.config.trainer.get("validation_data_dir", None)
         if val_data_dir:
@@ -2142,9 +2218,6 @@ class RayPPOTrainer:
                 raw_outputs=sample_raw_outputs,
             )
 
-        for key_info, lst in reward_extra_infos_dict.items():
-            assert len(lst) == 0 or len(lst) == len(sample_scores), f"{key_info}: {len(lst)=}, {len(sample_scores)=}"
-
         if merged:
             print("_merge_validation_results validate result will be merged")
             return {
@@ -2154,11 +2227,33 @@ class RayPPOTrainer:
                 "reward_extra_infos_dict": reward_extra_infos_dict,
             }
         data_sources = np.concatenate(data_source_lst, axis=0)
-        return self._val_metrics_update(data_sources, sample_uids, reward_extra_infos_dict, sample_turns)
+        return self._val_metrics_update(
+            data_sources,
+            sample_uids,
+            reward_extra_infos_dict,
+            sample_turns,
+            extra_metrics=reward_extra_mismatch_metrics,
+        )
 
-    def _val_metrics_update(self, data_sources, sample_uids, reward_extra_infos_dict, sample_turns):
+    def _val_metrics_update(
+        self,
+        data_sources,
+        sample_uids,
+        reward_extra_infos_dict,
+        sample_turns,
+        extra_metrics: Optional[dict[str, float]] = None,
+    ):
+        reward_extra_infos_dict, mismatch_metrics = _filter_sample_aligned_reward_extras(
+            reward_extra_infos_dict,
+            len(sample_uids) if sample_uids else len(data_sources),
+            context="validation_metrics",
+        )
         data_src2var2metric2val = process_validation_metrics(data_sources, sample_uids, reward_extra_infos_dict)
         metric_dict = {}
+        if mismatch_metrics:
+            metric_dict.update(mismatch_metrics)
+        if extra_metrics:
+            metric_dict.update(extra_metrics)
         for data_source, var2metric2val in data_src2var2metric2val.items():
             core_var = "acc" if "acc" in var2metric2val else "reward"
             for var_name, metric2val in var2metric2val.items():

@@ -19,6 +19,7 @@ from verl.trainer.ppo.ray_trainer import (  # noqa: E402
     _collect_thinkstream_advantage_metrics,
     _collect_thinkstream_reward_metrics,
     _compute_recurrent_gdpo_advantages,
+    _filter_sample_aligned_reward_extras,
     _is_recurrent_rollout_batch,
     _make_action_token_scores,
     _recurrent_actor_update_divisor,
@@ -169,6 +170,35 @@ def test_thinkstream_advantage_metrics_use_active_response_tokens():
     assert metrics["train/thinkstream/advantage/token_max"] == 2.0
     assert abs(metrics["train/thinkstream/advantage/token_positive_frac"] - (2.0 / 3.0)) < 1e-6
     assert abs(metrics["train/thinkstream/advantage/token_negative_frac"] - (1.0 / 3.0)) < 1e-6
+
+
+def test_validation_reward_extra_filter_drops_misaligned_fields():
+    reward_extras = {
+        "reward": [1.0, 0.5, 0.0],
+        "compress_quality_reason_hit_max": [0.0],
+        "request_id": np.array(["a", "b", "c"], dtype=object),
+        "scalar_batch_metric": 1.0,
+    }
+
+    filtered, metrics = _filter_sample_aligned_reward_extras(
+        reward_extras,
+        3,
+        context="test",
+    )
+
+    assert filtered == {
+        "reward": [1.0, 0.5, 0.0],
+        "request_id": ["a", "b", "c"],
+    }
+    assert "compress_quality_reason_hit_max" not in filtered
+    assert "scalar_batch_metric" not in filtered
+    assert metrics["val-aux/reward_extra_mismatch/count"] == 2.0
+    assert (
+        metrics[
+            "val-aux/reward_extra_mismatch/compress_quality_reason_hit_max/observed_len"
+        ]
+        == 1.0
+    )
 
 
 def test_recurrent_gdpo_advantage_keeps_compress_on_compress_rows():

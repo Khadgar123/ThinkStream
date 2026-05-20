@@ -353,11 +353,40 @@ class CustomRLHFDataset(_RLHFDataset):  # type: ignore[misc, valid-type]
         from qwen_vl_utils import process_vision_info
 
         messages = cls._drop_empty_video_items(messages)
-        return process_vision_info(
+        explicit_video_metadata = []
+        if str(os.environ.get("THINKSTREAM_PRESERVE_EXPLICIT_VIDEO_METADATA", "")).strip().lower() in {
+            "1", "true", "yes", "on",
+        }:
+            for message in messages or []:
+                content = message.get("content") if isinstance(message, dict) else None
+                if not isinstance(content, list):
+                    continue
+                for item in content:
+                    if not isinstance(item, dict) or item.get("type") != "video":
+                        continue
+                    meta = item.get("video_metadata")
+                    if isinstance(meta, dict):
+                        cleaned_meta = dict(meta)
+                        cleaned_meta.pop("do_sample_frames", None)
+                        explicit_video_metadata.append(cleaned_meta)
+        images, videos = process_vision_info(
             messages,
             image_patch_size=image_patch_size,
             return_video_metadata=True,
         )
+        if videos is not None and explicit_video_metadata:
+            fixed_videos = []
+            for i, video_item in enumerate(videos):
+                if isinstance(video_item, tuple) and len(video_item) == 2:
+                    video_tensor, video_meta = video_item
+                else:
+                    video_tensor, video_meta = video_item, None
+                fixed_videos.append((
+                    video_tensor,
+                    explicit_video_metadata[i] if i < len(explicit_video_metadata) else video_meta,
+                ))
+            videos = fixed_videos
+        return images, videos
 
     @staticmethod
     def _plain_list(value: Any) -> List[Any]:
@@ -1808,6 +1837,17 @@ def _score_compress_memory_update(
     return float(max(0.0, min(1.0, score))), reason, details
 
 
+_COMPRESS_QUALITY_REASON_KEYS = (
+    "parse_unavailable",
+    "action_error",
+    "invalid",
+    "missing",
+    "no_source",
+    "ok",
+    "hit_max",
+)
+
+
 def _compute_compress_quality(extra: Dict[str, Any]) -> Dict[str, float]:
     """Low-complexity compression branch signal.
 
@@ -1889,6 +1929,10 @@ def _compute_compress_quality(extra: Dict[str, Any]) -> Dict[str, float]:
             "compress_quality_boundary_score": 0.0,
             "compress_quality_non_overlap": 0.0,
             "compress_quality_target_item_count": 0.0,
+            **{
+                f"compress_quality_reason_{reason}": 0.0
+                for reason in _COMPRESS_QUALITY_REASON_KEYS
+            },
         }
     out = {
         "compress_quality": float(sum(scores) / len(scores)),
@@ -1906,8 +1950,13 @@ def _compute_compress_quality(extra: Dict[str, Any]) -> Dict[str, float]:
         "compress_quality_non_overlap": float(sum(non_overlaps) / len(scores)),
         "compress_quality_target_item_count": float(sum(target_item_counts) / len(scores)),
     }
+    for reason in _COMPRESS_QUALITY_REASON_KEYS:
+        out[f"compress_quality_reason_{reason}"] = float(
+            reasons.get(reason, 0) / len(scores)
+        )
     for reason, reason_count in reasons.items():
-        out[f"compress_quality_reason_{reason}"] = float(reason_count / len(scores))
+        if reason not in _COMPRESS_QUALITY_REASON_KEYS:
+            out[f"compress_quality_reason_{reason}"] = float(reason_count / len(scores))
     return out
 
 
@@ -1963,6 +2012,7 @@ def _summarize_questions_for_audit(questions: List[Dict[str, Any]]) -> List[Dict
             "question": _short_text(q.get("question") or q.get("query") or "", 500),
             "ask_chunks": _jsonable(_safe_list(q.get("ask_chunks"))),
             "answer_chunks": _jsonable(_safe_list(q.get("answer_chunks"))),
+            "support_chunks": _jsonable(_question_support_chunks(q)),
             "answer_form": q.get("answer_form"),
             "correct_option": q.get("correct_option"),
             "gold_answer": _short_text(q.get("gold_answer") or q.get("answer") or "", 500),
@@ -3696,16 +3746,66 @@ def _mean_or_zero(values: List[float]) -> float:
     return float(sum(values) / len(values)) if values else 0.0
 
 
+def _metric_text_key(value: Any) -> str:
+    return re.sub(r"\s+", " ", str(value or "").strip()).lower()
+
+
+def _question_support_chunks(q: Dict[str, Any]) -> List[int]:
+    chunks: List[int] = []
+    for key in (
+        "support_chunks",
+        "evidence_chunks",
+        "grounding_chunks",
+        "grounding_frames",
+    ):
+        chunks.extend(_int_chunks_from_value(q.get(key)))
+    key_chunks = q.get("key_chunks")
+    if isinstance(key_chunks, dict):
+        for key in ("support", "supports", "evidence", "grounding"):
+            chunks.extend(_int_chunks_from_value(key_chunks.get(key)))
+    return sorted(set(c for c in chunks if c >= 0))
+
+
+def _support_hits_in_time_range(
+    raw_range: Any,
+    support_chunks: set[int],
+    *,
+    chunk_sec: float = 1.0,
+) -> set[int]:
+    if not isinstance(raw_range, dict):
+        return set()
+    start = _safe_float_or_none(raw_range.get("start_time"))
+    end = _safe_float_or_none(raw_range.get("end_time"))
+    if start is None or end is None or end < start:
+        return set()
+    width = max(float(chunk_sec), 1e-6)
+    hits: set[int] = set()
+    for chunk in support_chunks:
+        chunk_start = float(chunk) * width
+        chunk_end = chunk_start + width
+        if chunk_start <= end and chunk_end > start:
+            hits.add(int(chunk))
+    return hits
+
+
 def _recall_range_and_post_answer_stats(
     extra: Dict[str, Any],
     questions: List[Dict[str, Any]],
     per_q_answers: List[Any],
 ) -> Dict[str, float]:
-    """Monitor recall ranges and the first answer after each recall call."""
+    """Monitor recall ranges and the current post-recall answer.
+
+    The post-recall outcome intentionally scores only the answer emitted on
+    the immediate post_recall turn. It does not scan forward to the next later
+    answer, because that masks failed/empty post-recall behavior.
+    """
     chunk_kinds = [str(x or "") for x in _safe_list(extra.get("ts_chunk_kinds"))]
+    chunk_texts = _safe_list(extra.get("ts_chunk_asst_texts"))
+    turn_kinds = [str(x or "") for x in _safe_list(extra.get("ts_chunk_turn_kinds"))]
     video_indices = _safe_list(extra.get("ts_chunk_video_indices"))
     recall_ranges = _safe_list(extra.get("ts_recall_time_ranges"))
     returned_chunks_all = _safe_list(extra.get("ts_recall_returned_chunks"))
+    gold_action_per_chunk = _gold_action_map_for_extra(extra)
 
     request_spans: List[float] = []
     returned_spans: List[float] = []
@@ -3713,13 +3813,38 @@ def _recall_range_and_post_answer_stats(
     back_gaps: List[float] = []
     recall_chunks: List[int] = []
 
+    support_targets: List[Dict[str, Any]] = []
+    for q_idx, q in enumerate(questions):
+        support = set(_question_support_chunks(q))
+        if not support:
+            continue
+        labels = _recall_label_chunks_for_question(q, gold_action_per_chunk)
+        if not labels:
+            continue
+        answer_bounds = _question_answer_opportunity_chunks(q)
+        support_targets.append({
+            "q_idx": int(q_idx),
+            "labels": set(int(x) for x in labels),
+            "start": int(min(labels)),
+            "end": int(max(answer_bounds + labels)),
+            "support": support,
+        })
+
+    recall_support_seen = 0
+    recall_support_request_hits = 0
+    recall_support_returned_hits = 0
+    recall_support_request_cover: List[float] = []
+    recall_support_returned_cover: List[float] = []
+
     for i, kind in enumerate(chunk_kinds):
         if kind != "recall":
             continue
-        try:
-            current_chunk = int(video_indices[i]) if i < len(video_indices) else i
-        except (TypeError, ValueError):
-            current_chunk = i
+        current_chunk = _turn_event_chunk(extra, i)
+        if current_chunk < 0:
+            try:
+                current_chunk = int(video_indices[i]) if i < len(video_indices) else i
+            except (TypeError, ValueError):
+                current_chunk = i
         recall_chunks.append(current_chunk)
 
         raw_range = recall_ranges[i] if i < len(recall_ranges) else None
@@ -3743,6 +3868,30 @@ def _recall_range_and_post_answer_stats(
             back_gaps.append(float(current_chunk - max(returned)))
         else:
             returned_counts.append(0.0)
+
+        exact_support: set[int] = set()
+        window_support: set[int] = set()
+        for target in support_targets:
+            support = set(target.get("support") or set())
+            if current_chunk in set(target.get("labels") or set()):
+                exact_support.update(support)
+            elif int(target.get("start", -1)) <= current_chunk <= int(target.get("end", -1)):
+                window_support.update(support)
+        target_support = exact_support or window_support
+        if target_support:
+            recall_support_seen += 1
+            request_hits = _support_hits_in_time_range(raw_range, target_support)
+            returned_hits = set(returned) & target_support
+            if request_hits:
+                recall_support_request_hits += 1
+            if returned_hits:
+                recall_support_returned_hits += 1
+            recall_support_request_cover.append(
+                float(len(request_hits)) / float(len(target_support))
+            )
+            recall_support_returned_cover.append(
+                float(len(returned_hits)) / float(len(target_support))
+            )
 
     answer_events: List[Dict[str, Any]] = []
     for q_idx, raw_events in enumerate(per_q_answers[:len(questions)]):
@@ -3779,32 +3928,94 @@ def _recall_range_and_post_answer_stats(
             answer_events.append({
                 "chunk": chunk,
                 "q_idx": q_idx,
+                "text": text,
+                "text_key": _metric_text_key(text),
+                "turn_kind": str(ev.get("turn_kind", "") or ""),
                 "outcome": outcome,
             })
     answer_events.sort(key=lambda x: (int(x.get("chunk", -1)), int(x.get("q_idx", -1))))
 
+    post_recall_turn_count = 0
     post_outcomes: List[float] = []
-    for recall_chunk in recall_chunks:
-        ev = next(
-            (x for x in answer_events if int(x.get("chunk", -1)) >= recall_chunk),
-            None,
-        )
-        if ev is not None:
+    used_answer_event_indices: set[int] = set()
+    for turn_i, turn_kind in enumerate(turn_kinds):
+        if turn_kind not in {"post_recall", "recall_response"}:
+            continue
+        post_recall_turn_count += 1
+        text = str(chunk_texts[turn_i] or "") if turn_i < len(chunk_texts) else ""
+        answer_text = _extract_answer_text_current(text, allow_bare_answer=True)
+        if not answer_text:
+            continue
+        chunk = _turn_event_chunk(extra, turn_i)
+        answer_key = _metric_text_key(answer_text)
+        matched_idx: Optional[int] = None
+        for idx, ev in enumerate(answer_events):
+            if idx in used_answer_event_indices:
+                continue
+            if int(ev.get("chunk", -1)) == chunk and str(ev.get("text_key", "")) == answer_key:
+                matched_idx = idx
+                break
+        if matched_idx is None:
+            same_chunk = [
+                idx for idx, ev in enumerate(answer_events)
+                if idx not in used_answer_event_indices
+                and int(ev.get("chunk", -1)) == chunk
+            ]
+            if len(same_chunk) == 1:
+                matched_idx = same_chunk[0]
+        if matched_idx is None:
+            post_outcomes.append(0.0)
+            continue
+        used_answer_event_indices.add(matched_idx)
+        post_outcomes.append(float(answer_events[matched_idx].get("outcome", 0.0)))
+
+    if post_recall_turn_count == 0:
+        for idx, ev in enumerate(answer_events):
+            if str(ev.get("turn_kind", "") or "") not in {"post_recall", "recall_response"}:
+                continue
+            if idx in used_answer_event_indices:
+                continue
+            post_recall_turn_count += 1
+            used_answer_event_indices.add(idx)
             post_outcomes.append(float(ev.get("outcome", 0.0)))
 
     recall_count = float(len(recall_chunks))
     post_count = float(len(post_outcomes))
+    post_turn_count = float(post_recall_turn_count)
+    support_seen = float(recall_support_seen)
     return {
         "recall_call_count": recall_count,
         "recall_request_span_mean": _mean_or_zero(request_spans),
         "recall_returned_span_mean": _mean_or_zero(returned_spans),
         "recall_returned_count_mean": _mean_or_zero(returned_counts),
         "recall_back_gap_mean": _mean_or_zero(back_gaps),
+        "recall_support_seen": support_seen,
+        "recall_support_request_hit": float(recall_support_request_hits),
+        "recall_support_returned_hit": float(recall_support_returned_hits),
+        "recall_support_request_hit_rate": (
+            float(recall_support_request_hits) / support_seen
+            if support_seen > 0.0 else 0.0
+        ),
+        "recall_support_returned_hit_rate": (
+            float(recall_support_returned_hits) / support_seen
+            if support_seen > 0.0 else 0.0
+        ),
+        "recall_support_request_cover_mean": _mean_or_zero(recall_support_request_cover),
+        "recall_support_returned_cover_mean": _mean_or_zero(recall_support_returned_cover),
+        "post_recall_turn_count": post_turn_count,
         "post_recall_answer_count": post_count,
         "post_recall_answer_rate": (
+            post_count / post_turn_count if post_turn_count > 0.0 else 0.0
+        ),
+        "post_recall_answer_per_recall_rate": (
             post_count / recall_count if recall_count > 0.0 else 0.0
         ),
         "post_recall_outcome_mean": _mean_or_zero(post_outcomes),
+        "post_recall_current_answer_count": post_count,
+        "post_recall_current_answer_rate": (
+            post_count / post_turn_count if post_turn_count > 0.0 else 0.0
+        ),
+        "post_recall_current_outcome_mean": _mean_or_zero(post_outcomes),
     }
 
 
@@ -3820,11 +4031,21 @@ def _compute_score_multi_q(
     trajectory_solution = _trajectory_solution_text(extra, solution_str)
     n_q = len(questions)
     if n_q == 0:
-        return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
-                "answer_decision": 0.0, "format": 0.0,
-                "silent_quality": 0.0,
-                "compress_quality": 0.0,
-                "n_questions": 0.0, "n_answers": 0.0, "n_answered": 0.0}
+        parts = {
+            "outcome": 0.0,
+            "timing": 0.0,
+            "answer_decision": 0.0,
+            "format": 0.0,
+            "silent_quality": 0.0,
+            **_compute_compress_quality(extra),
+        }
+        return {
+            "score": 0.0,
+            **parts,
+            "n_questions": 0.0,
+            "n_answers": 0.0,
+            "n_answered": 0.0,
+        }
 
     # Per-Q answer attribution from the agent loop's extra_fields.
     per_q_chunk_raw = _safe_list(extra.get("ts_per_q_answer_chunk"))
@@ -4054,13 +4275,19 @@ def compute_score(
          "timing": ..., "format": ..., "silent_quality": ...,
          "compress_quality": ...}
     """
+    extra = extra_info or {}
     rewards, weights = _load_thinkstream_rewards()
     if not rewards:
-        return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
-                "answer_decision": 0.0, "format": 0.0,
-                "silent_quality": 0.0, "compress_quality": 0.0}
+        return {
+            "score": 0.0,
+            "outcome": 0.0,
+            "timing": 0.0,
+            "answer_decision": 0.0,
+            "format": 0.0,
+            "silent_quality": 0.0,
+            **_compute_compress_quality(extra),
+        }
 
-    extra = extra_info or {}
     weights = _reward_weights_with_recall(weights)
 
     # ── Multi-Q dispatch ──
@@ -4236,9 +4463,15 @@ def compute_score(
         parts.update(_compute_compress_quality(extra))
     except Exception as e:
         logger.warning("v12 reward component failed: %s", e)
-        return {"score": 0.0, "outcome": 0.0, "timing": 0.0,
-                "answer_decision": 0.0, "format": 0.0,
-                "silent_quality": 0.0, "compress_quality": 0.0}
+        return {
+            "score": 0.0,
+            "outcome": 0.0,
+            "timing": 0.0,
+            "answer_decision": 0.0,
+            "format": 0.0,
+            "silent_quality": 0.0,
+            **_compute_compress_quality(extra),
+        }
 
     total, gate = _combine_reward_parts(weights, parts)
 

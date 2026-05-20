@@ -40,7 +40,12 @@ from verl.trainer.ppo.metric_utils import (
     compute_timing_metrics,
     process_validation_metrics,
 )
-from verl.trainer.ppo.ray_trainer import RayPPOTrainer, apply_kl_penalty, compute_advantage
+from verl.trainer.ppo.ray_trainer import (
+    RayPPOTrainer,
+    _filter_sample_aligned_reward_extras,
+    apply_kl_penalty,
+    compute_advantage,
+)
 from verl.trainer.ppo.reward import compute_reward
 from verl.trainer.ppo.utils import Role
 from verl.utils.checkpoint.checkpoint_manager import should_save_ckpt_esi
@@ -634,13 +639,18 @@ class RobRayPPOTrainer(RayPPOTrainer):
 
             data_source_lst.append(test_batch.non_tensor_batch.get("data_source", ["unknown"] * reward_tensor.shape[0]))
 
-        for key_info, lst in reward_extra_infos_dict.items():
-            assert len(lst) == 0 or len(lst) == len(sample_scores), f"{key_info}: {len(lst)=}, {len(sample_scores)=}"
+        reward_extra_infos_dict, reward_extra_mismatch_metrics = _filter_sample_aligned_reward_extras(
+            reward_extra_infos_dict,
+            len(sample_scores),
+            context="vla_validation",
+        )
 
         data_sources = np.concatenate(data_source_lst, axis=0)
 
         data_src2var2metric2val = process_validation_metrics(data_sources, sample_uids, reward_extra_infos_dict)
         metric_dict = {}
+        if reward_extra_mismatch_metrics:
+            metric_dict.update(reward_extra_mismatch_metrics)
         for data_source, var2metric2val in data_src2var2metric2val.items():
             core_var = "acc" if "acc" in var2metric2val else "reward"
             for var_name, metric2val in var2metric2val.items():
