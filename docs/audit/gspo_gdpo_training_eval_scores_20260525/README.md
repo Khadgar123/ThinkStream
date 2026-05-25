@@ -15,17 +15,19 @@ No new training run, restart, or model eval was launched for this export.
 - `validation_by_category_observed.csv`, `validation_by_task_observed.csv`: observed validation breakdowns.
 
 ## Restart-Aware Chains
-- `gspo_preferred`: `gspo_main` steps 11-60, then `gspo_kl_from60` steps 61-69, plus estimated step70.
-- `gdpo_preferred`: `gdpo_main` steps 11-50, then `gdpo_kl_from50` steps 51-80.
+- `gspo_preferred`: estimated train steps 1-10, `gspo_main` steps 11-60, then `gspo_kl_from60` steps 61-69, plus estimated step70.
+- `gdpo_preferred`: estimated train steps 1-10, `gdpo_main` steps 11-50, then `gdpo_kl_from50` steps 51-80.
 
 ## Estimation Policy
 - Missing per-metric values inside an observed validation row are filled from the nearest observed checkpoint in the same run.
+- Missing training steps 1-10 are backfilled from the median of the first observed training steps 11-15.
 - Missing GSPO training step70 is estimated as the median of GSPO preferred training steps 65-69.
 - Missing GSPO validation/eval step70 is estimated by half-step linear extrapolation from validation steps 50 and 60.
 - All estimated rows are marked `estimated`; mixed observed rows are marked `mixed_observed_estimated`.
 
 ## Key Values
 - Observed train rows exported: 148.
+- Preferred chain train rows exported: 150, including 21 estimated rows.
 - GSPO estimated validation/eval step70 accuracy: 80.78%; score: 1.447.
 - GDPO preferred validation/eval step80 accuracy: 77.11%; score: 1.313.
 - GSPO train score first/last observed in preferred chain: 1.360 -> 1.250.

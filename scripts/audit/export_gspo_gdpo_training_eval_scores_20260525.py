@@ -164,6 +164,25 @@ def train_chain(raw_rows: list[dict[str, object]]) -> list[dict[str, object]]:
     by_run_step = {(str(row["run"]), int(row["step"])): row for row in raw_rows}
     chain_rows: list[dict[str, object]] = []
 
+    def prefix_estimates(chain: str, run: str, label: str) -> list[dict[str, object]]:
+        hist = [by_run_step[(run, step)] for step in range(11, 16) if (run, step) in by_run_step]
+        out: list[dict[str, object]] = []
+        for step in range(1, 11):
+            row: dict[str, object] = {
+                "chain": chain,
+                "run": label,
+                "step": step,
+                "status": "estimated",
+                "source_path": "",
+                "estimation_method": f"backfill_median_of_first_observed_training_steps_11_15_from_{run}; no new run/eval launched",
+            }
+            for metric in TRAIN_METRICS:
+                vals = [float(h[metric]) for h in hist if isinstance(h.get(metric), (int, float))]
+                row[metric] = statistics.median(vals) if vals else None
+            out.append(row)
+        return out
+
+    chain_rows.extend(prefix_estimates("gspo_preferred", "gspo_main", "gspo_estimated_prefix"))
     for step in range(11, 61):
         row = by_run_step.get(("gspo_main", step))
         if row:
@@ -191,6 +210,7 @@ def train_chain(raw_rows: list[dict[str, object]]) -> list[dict[str, object]]:
         gspo_est[metric] = statistics.median(vals) if vals else None
     chain_rows.append(gspo_est)
 
+    chain_rows.extend(prefix_estimates("gdpo_preferred", "gdpo_main", "gdpo_estimated_prefix"))
     for step in range(11, 51):
         row = by_run_step.get(("gdpo_main", step))
         if row:
@@ -496,17 +516,20 @@ def write_readme(
         "- `validation_by_category_observed.csv`, `validation_by_task_observed.csv`: observed validation breakdowns.",
         "",
         "## Restart-Aware Chains",
-        "- `gspo_preferred`: `gspo_main` steps 11-60, then `gspo_kl_from60` steps 61-69, plus estimated step70.",
-        "- `gdpo_preferred`: `gdpo_main` steps 11-50, then `gdpo_kl_from50` steps 51-80.",
+        "- `gspo_preferred`: estimated train steps 1-10, `gspo_main` steps 11-60, then `gspo_kl_from60` steps 61-69, plus estimated step70.",
+        "- `gdpo_preferred`: estimated train steps 1-10, `gdpo_main` steps 11-50, then `gdpo_kl_from50` steps 51-80.",
         "",
         "## Estimation Policy",
         "- Missing per-metric values inside an observed validation row are filled from the nearest observed checkpoint in the same run.",
+        "- Missing training steps 1-10 are backfilled from the median of the first observed training steps 11-15.",
         "- Missing GSPO training step70 is estimated as the median of GSPO preferred training steps 65-69.",
         "- Missing GSPO validation/eval step70 is estimated by half-step linear extrapolation from validation steps 50 and 60.",
         "- All estimated rows are marked `estimated`; mixed observed rows are marked `mixed_observed_estimated`.",
         "",
         "## Key Values",
         f"- Observed train rows exported: {len(train_raw)}.",
+        f"- Preferred chain train rows exported: {len(train_pref)}, including "
+        f"{sum(1 for row in train_pref if row.get('status') == 'estimated')} estimated rows.",
         f"- GSPO estimated validation/eval step70 accuracy: {pct(float(gspo_eval70['trajectory_mean_correct_question_weighted']))}; "
         f"score: {float(gspo_eval70['score_question_weighted']):.3f}.",
         f"- GDPO preferred validation/eval step80 accuracy: {pct(float(gdpo_eval80['trajectory_mean_correct_question_weighted']))}; "
