@@ -1,0 +1,16 @@
+run,kind,files,records,path
+gspo_main,validation_generations,6,384,output/qwen3vl8b-rl-traj-gspo-b1_10-sft500-fixedframes-s8-e2-sv10-20260519
+gspo_kl_from60,validation_generations,0,0,output/qwen3vl8b-rl-traj-gspo-kl001-from60-save1-eval10-sameval-20260522
+gspo_kl_from69,validation_generations,0,0,output/qwen3vl8b-rl-traj-gspo-kl001-from69-patched-save1-eval10-sameval-20260522
+gdpo_main,validation_generations,6,192,output/rl_b1_10_ckpt500_traj_gdpo_g8_b8_slots8_e2_eval10_save10_wandb_20260519
+gdpo_kl_from50,validation_generations,3,96,output/rl_b1_10_from50_stepref_kl001_save1_eval10_20260521
+gspo_main,train_log,1,0,output/qwen3vl8b-rl-traj-gspo-b1_10-sft500-fixedframes-s8-e2-sv10-20260519/train.log
+gspo_main,audit_rollout_samples,1,2503,output/qwen3vl8b-rl-traj-gspo-b1_10-sft500-fixedframes-s8-e2-sv10-20260519/audit/rl_rollout_samples.jsonl
+gspo_kl_from60,train_log,1,0,output/qwen3vl8b-rl-traj-gspo-kl001-from60-save1-eval10-sameval-20260522/train.log
+gspo_kl_from60,audit_rollout_samples,1,303,output/qwen3vl8b-rl-traj-gspo-kl001-from60-save1-eval10-sameval-20260522/audit/rl_rollout_samples.jsonl
+gspo_kl_from69,train_log,1,0,output/qwen3vl8b-rl-traj-gspo-kl001-from69-patched-save1-eval10-sameval-20260522/train.log
+gspo_kl_from69,audit_rollout_samples,1,46,output/qwen3vl8b-rl-traj-gspo-kl001-from69-patched-save1-eval10-sameval-20260522/audit/rl_rollout_samples.jsonl
+gdpo_main,train_log,1,0,output/rl_b1_10_ckpt500_traj_gdpo_g8_b8_slots8_e2_eval10_save10_wandb_20260519/train.log
+gdpo_main,audit_rollout_samples,1,1961,output/rl_b1_10_ckpt500_traj_gdpo_g8_b8_slots8_e2_eval10_save10_wandb_20260519/audit/rl_rollout_samples.jsonl
+gdpo_kl_from50,train_log,1,0,output/rl_b1_10_from50_stepref_kl001_save1_eval10_20260521/train.log
+gdpo_kl_from50,audit_rollout_samples,1,1497,output/rl_b1_10_from50_stepref_kl001_save1_eval10_20260521/audit/rl_rollout_samples.jsonl

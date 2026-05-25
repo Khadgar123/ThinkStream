@@ -1,0 +1,6 @@
+dimension,data_file,x,y_metrics,smoothing,conclusion_hint
+Training Reward / Outcome,training_preferred_chain_long.csv,step,train/thinkstream/reward/score/mean; train/thinkstream/reward/outcome/mean,roll5,No stable monotonic rise; use rolling mean to show noise.
+Recall Usage and Request Hit,training_preferred_chain_long.csv,step,call_traj_frac; recall_call_count/mean; recall_support_request_hit_rate/mean,roll5,Usage/request-hit are clearer than returned-hit for whether recall is being used.
+Recall Effectiveness,training_preferred_chain_long.csv,step,answer_used_per_labeled/rate; answer_success_per_labeled/rate; post_recall_outcome_mean/mean,roll5,Track use and successful use; avoid overclaiming answer_success_per_used if usage shifts.
+Compact Memory Quality,training_preferred_chain_long.csv,step,compress_quality/mean; cover_ok/mean; boundary_score/mean; source_precision/mean,roll5,"These are the strongest memory-quality curves, especially compress_quality and cover_ok."
+Training-Time Eval Accuracy,training_time_validation_eval_chain_long.csv,checkpoint step,trajectory_mean_correct_question_weighted; score_question_weighted; outcome_question_weighted,none,"This is the train-time validation/eval curve, not LVB/OVO/StreamingBench benchmark eval."
